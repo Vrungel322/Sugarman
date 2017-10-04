@@ -102,7 +102,7 @@
         android:screenOrientation="portrait"
         android:theme="@style/SugarmanBackgroundActivityTheme"/>
     <activity
-        android:name=".ui.activities.ProfileActivity"
+        android:name=".ui.activities.profile.ProfileActivity"
         android:screenOrientation="portrait"
         android:theme="@style/SugarmanBackgroundActivityTheme"/>
     <activity

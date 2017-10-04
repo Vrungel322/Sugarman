@@ -56,7 +56,7 @@ public class MaskTransformation implements Transformation {
     //canvas = new Canvas(bitmap);
 
     if (hasBorder) {
-      drawable.setBounds(-5, -7, width + 5, height + 7);
+      drawable.setBounds(-5, -10, width + 5, height + 10);
       DrawableCompat.setTint(drawable, borderColor);
       drawable.draw(canvas);
     }

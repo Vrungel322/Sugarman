@@ -24,16 +24,29 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/profile_divider_size"
-            android:background="@color/divider_color"
-            android:layout_marginBottom="10dp"/>
+            android:background="@color/divider_color"/>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <ImageView
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_width="@dimen/profile_avatar_size"
+                android:layout_height="@dimen/profile_avatar_size"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/border_anim"
+                />
         <ImageView
             android:id="@+id/iv_avatar"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:layout_width="@dimen/profile_avatar_size"
             android:layout_height="@dimen/profile_avatar_size"
-            android:layout_gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
             android:src="@drawable/ic_gray_avatar" />
-
+        </RelativeLayout>
         <!-- maxLines isn't working on some device. use deprecated singleLine too-->
         <com.sugarman.myb.ui.views.CustomFontTextView
             android:id="@+id/tv_name"
@@ -100,16 +113,37 @@
                 android:layout_height="wrap_content"
 
                 android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/ll_edit_profile_container"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/profile_item_height"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
                 <com.sugarman.myb.ui.views.CustomFontTextView
                     android:paddingStart="@dimen/profile_padding"
                     android:id="@+id/tv_edit_profile"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="@dimen/profile_item_height"
                     android:gravity="left|center_vertical"
                     android:text="@string/profile_settings"
                     android:textColor="@color/dark_gray"
                     android:textSize="@dimen/profile_item_text_size"
                     app:font="@string/font_roboto_regular" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center_vertical"
+                    android:gravity="end|center_vertical">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/profile_item_height"
+                    android:adjustViewBounds="true"
+                    android:padding="15dp"
+                    android:src="@drawable/ic_profile"
+                    android:gravity="end|center_vertical"
+                    />
+                </RelativeLayout>
+                </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
@@ -138,13 +172,22 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end|center_vertical"
-                        android:paddingEnd="@dimen/profile_padding"
                         android:gravity="end|center_vertical">
+                        <ImageView
+                            android:id="@+id/no_invites_image"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/profile_item_height"
+                            android:adjustViewBounds="true"
+                            android:padding="15dp"
+                            android:src="@drawable/ic_invites"
+                            android:gravity="end|center_vertical"
+                            />
                     <com.sugarman.myb.ui.views.CustomFontTextView
                         android:id="@+id/tv_invite_counter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/profile_counter_margin"
+                        android:layout_marginEnd="15dp"
                         android:background="@drawable/circle_indicator"
                         android:textColor="@color/red"
                         android:visibility="gone"
@@ -182,13 +225,22 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end|center_vertical"
-                        android:paddingEnd="@dimen/profile_padding"
                         android:gravity="end|center_vertical">
+                        <ImageView
+                            android:id="@+id/no_requests_image"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/profile_item_height"
+                            android:adjustViewBounds="true"
+                            android:padding="15dp"
+                            android:src="@drawable/ic_requests"
+                            android:gravity="end|center_vertical"
+                            />
                     <com.sugarman.myb.ui.views.CustomFontTextView
                         android:id="@+id/tv_requests_counter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/profile_counter_margin"
+                        android:layout_marginEnd="15dp"
                         android:textSize="14sp"
                         android:background="@drawable/circle_indicator"
                         android:padding="9dp"
@@ -229,7 +281,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end|center_vertical"
-                        android:paddingEnd="@dimen/profile_padding"
+                        android:paddingEnd="15dp"
                         android:gravity="end|center_vertical">
                         <com.sugarman.myb.ui.views.CustomFontTextView
                             android:id="@+id/tv_invite_friends_counter"
@@ -271,6 +323,20 @@
                         android:textColor="@color/dark_gray"
                         android:textSize="@dimen/profile_item_text_size"
                         app:font="@string/font_roboto_regular" />
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|center_vertical"
+                        android:gravity="end|center_vertical">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/profile_item_height"
+                        android:adjustViewBounds="true"
+                        android:padding="15dp"
+                        android:src="@drawable/ic_stats"
+                        android:gravity="end|center_vertical"
+                        />
+                    </RelativeLayout>
 
                 </LinearLayout>
 
@@ -280,16 +346,40 @@
                     android:background="@color/divider_color"
                     android:layout_marginStart="@dimen/profile_padding"/>
 
+            <LinearLayout
+                android:id="@+id/ll_high_score_container"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/profile_item_height"
+                android:gravity="left|center_vertical"
+                android:orientation="horizontal">
+
                 <com.sugarman.myb.ui.views.CustomFontTextView
                 android:paddingStart="@dimen/profile_padding"
                 android:id="@+id/tv_high_score"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="@dimen/profile_item_height"
                 android:gravity="left|center_vertical"
                 android:text="@string/high_score"
                 android:textColor="@color/dark_gray"
                 android:textSize="@dimen/profile_item_text_size"
                 app:font="@string/font_roboto_regular" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center_vertical"
+                    android:gravity="end|center_vertical">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/profile_item_height"
+                        android:adjustViewBounds="true"
+                        android:padding="15dp"
+                        android:src="@drawable/ic_stats"
+                        android:gravity="end|center_vertical"
+                        />
+                </RelativeLayout>
+
+                </LinearLayout>
 
                 <View
                     android:layout_width="match_parent"
@@ -331,9 +421,15 @@
                     android:background="@color/divider_color"
                     android:layout_marginStart="@dimen/profile_padding"/>
 
+            <LinearLayout
+                android:id="@+id/ll_settings_container"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/profile_item_height"
+                android:gravity="left|center_vertical"
+                android:orientation="horizontal">
                 <com.sugarman.myb.ui.views.CustomFontTextView
                     android:id="@+id/tv_settings"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="@dimen/profile_item_height"
                     android:gravity="left|center_vertical"
                     android:text="@string/settings"
@@ -342,15 +438,37 @@
                     android:textSize="@dimen/profile_item_text_size"
                     app:font="@string/font_roboto_regular" />
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center_vertical"
+                    android:gravity="end|center_vertical">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/profile_item_height"
+                        android:adjustViewBounds="true"
+                        android:padding="15dp"
+                        android:src="@drawable/ic_settings"
+                        android:gravity="end|center_vertical"
+                        />
+                </RelativeLayout>
+                </LinearLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/profile_divider_size"
                     android:background="@color/divider_color"
                     android:layout_marginStart="@dimen/profile_padding"/>
 
+            <LinearLayout
+                android:id="@+id/ll_tutorial_container"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/profile_item_height"
+                android:gravity="left|center_vertical"
+                android:orientation="horizontal">
                 <com.sugarman.myb.ui.views.CustomFontTextView
                     android:id="@+id/tv_intro"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="@dimen/profile_item_height"
                     android:gravity="left|center_vertical"
                     android:text="@string/intro"
@@ -359,22 +477,62 @@
                     android:textSize="@dimen/profile_item_text_size"
                     app:font="@string/font_roboto_regular" />
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center_vertical"
+                    android:gravity="end|center_vertical">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/profile_item_height"
+                    android:adjustViewBounds="true"
+                    android:padding="15dp"
+                    android:src="@drawable/ic_tutorial"
+                    android:gravity="end|center_vertical"
+                    />
+                </RelativeLayout>
+                </LinearLayout>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/profile_divider_size"
                     android:background="@color/divider_color"
                     android:layout_marginStart="@dimen/profile_padding"/>
 
-                <com.sugarman.myb.ui.views.CustomFontTextView
-                    android:id="@+id/tv_logout"
+
+
+                <LinearLayout
+                    android:id="@+id/ll_logout_container"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/profile_item_height"
                     android:gravity="left|center_vertical"
-                    android:text="@string/log_out"
-                    android:textColor="@color/dark_gray"
-                    android:textSize="@dimen/profile_item_text_size"
-                    android:paddingStart="@dimen/profile_padding"
-                    app:font="@string/font_roboto_regular" />
+                    android:orientation="horizontal">
+                    <com.sugarman.myb.ui.views.CustomFontTextView
+                        android:id="@+id/tv_logout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/profile_item_height"
+                        android:gravity="left|center_vertical"
+                        android:text="@string/log_out"
+                        android:textColor="@color/dark_gray"
+                        android:textSize="@dimen/profile_item_text_size"
+                        android:paddingStart="@dimen/profile_padding"
+                        app:font="@string/font_roboto_regular" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|center_vertical"
+                        android:gravity="end|center_vertical">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/profile_item_height"
+                            android:adjustViewBounds="true"
+                            android:padding="15dp"
+                            android:src="@drawable/ic_logout"
+                            android:gravity="end|center_vertical"
+                            />
+                    </RelativeLayout>
+                </LinearLayout>
 
                 <View
                     android:layout_width="0dp"
