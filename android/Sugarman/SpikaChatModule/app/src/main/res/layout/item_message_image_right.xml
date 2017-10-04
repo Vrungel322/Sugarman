@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/parentView"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="4dp"
+    android:layout_marginTop="1dp"
+    android:background="@color/trans"
+    android:paddingTop="0dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginBottom="3dp"
+        android:id="@+id/rlDateSeparator">
+
+        <com.clover_studio.spikachatmodule.view.CustomTextView
+            android:id="@+id/dateSeparatorTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+            android:textColor="#9E9E9E"
+            android:textSize="11sp"
+            />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rlDateSeparator">
+
+        <com.clover_studio.spikachatmodule.view.roundimage.RoundImageView
+            android:id="@+id/avatar"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignBottom="@+id/peak_off_and_below"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp"
+            android:contentDescription="@null"
+            android:scaleType="centerCrop"/>
+        <View
+            android:id="@+id/rightLittleThing"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+
+
+
+        <ImageView
+            android:id="@+id/peak_off_and_align_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            android:layout_alignBottom="@+id/myContentRL"
+            android:layout_toRightOf="@+id/myContentRL"
+            android:layout_toEndOf="@+id/myContentRL"/>
+
+        <ImageView
+            android:id="@+id/peak_below"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/myContentRL"
+            android:layout_alignEnd="@+id/myContentRL"
+            android:contentDescription="@null"
+            android:layout_below="@+id/myContentRL"/>
+
+        <ImageView
+            android:id="@+id/peak_off_and_below"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            android:layout_below="@+id/myContentRL"
+            android:layout_toRightOf="@+id/myContentRL"
+            android:layout_toEndOf="@+id/myContentRL"/>
+
+        <View
+            android:id="@+id/peak_fill_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/myContentRL"
+            android:layout_alignLeft="@id/peak_below"
+            android:layout_alignStart="@id/peak_below"
+            android:layout_alignRight="@+id/myContentRL"
+            android:layout_alignEnd="@+id/myContentRL"
+            android:layout_alignTop="@id/peak_off_and_align_bottom"
+            android:background="#EFEFEF"/>
+
+        <RelativeLayout
+            android:id="@+id/myContentRL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name"
+            android:layout_toLeftOf="@id/rightLittleThing"
+            android:layout_toStartOf="@id/rightLittleThing">
+            <FrameLayout
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="35dp"
+                android:layout_marginStart="35dp"
+                android:background="@drawable/my_message_background_drawable"
+                >
+
+                <com.clover_studio.spikachatmodule.view.roundimage.RoundedImageView
+                    android:id="@+id/image"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:scaleType="centerCrop"/>
+
+            </FrameLayout>
+            <ImageView
+                android:id="@+id/status_image"
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:layout_margin="5dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/seen_lonely"
+                />
+        </RelativeLayout>
+        <com.clover_studio.spikachatmodule.view.CustomTextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/rightLittleThing"
+            android:layout_toStartOf="@+id/rightLittleThing"
+            android:layout_marginLeft="3dp"
+            android:layout_marginStart="3dp"
+            android:layout_alignParentRight="true"
+            android:text=""
+            android:textColor="#80A2A2A2"
+            android:textSize="10sp"
+            android:layout_marginBottom="3dp"
+            />
+
+        <com.clover_studio.spikachatmodule.view.CustomTextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="1dp"
+            android:layout_toLeftOf="@id/time"
+            android:layout_toStartOf="@id/time"
+            android:layout_alignBottom="@id/time"
+            android:text=""
+            android:layout_marginTop="5dp"
+            android:textColor="#A2A2A2"
+            android:textSize="10sp"
+            android:textStyle="normal"
+            />
+
+    </RelativeLayout>
+
+</RelativeLayout>

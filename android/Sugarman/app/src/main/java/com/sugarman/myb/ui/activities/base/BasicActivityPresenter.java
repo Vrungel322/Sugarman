@@ -1,0 +1,45 @@
+package com.sugarman.myb.ui.activities.base;
+
+import com.arellomobile.mvp.InjectViewState;
+import com.sugarman.myb.App;
+import com.sugarman.myb.api.DataManager;
+import com.sugarman.myb.api.models.requests.RefreshUserDataRequest;
+import com.sugarman.myb.base.BasicPresenter;
+import com.sugarman.myb.utils.SharedPreferenceHelper;
+import com.sugarman.myb.utils.ThreadSchedulers;
+import java.util.TimeZone;
+import javax.inject.Inject;
+import rx.Subscription;
+
+/**
+ * Created by nikita on 19.09.17.
+ */
+@InjectViewState public class BasicActivityPresenter extends BasicPresenter<IBaseActivityView> {
+  @Inject DataManager mDataManager;
+
+  @Override protected void inject() {
+    App.getAppComponent().inject(this);
+  }
+
+  public void refreshToken(String fbAccessToken, String vkToken) {
+    RefreshUserDataRequest request = new RefreshUserDataRequest();
+    request.setToken(fbAccessToken);
+    request.setVkToken(vkToken);
+    request.setgToken("none");
+    request.setPhoneToken("none");
+    request.setPhoneNumber("none");
+    request.setEmail("none");
+    request.setName("none");
+    request.setVkId("none");
+    request.setFbId("none");
+    request.setPictureUrl("none");
+    request.setTimezone(TimeZone.getDefault().getID());
+    Subscription subscriptions = mDataManager.refreshRxUserData(request)
+        .compose(ThreadSchedulers.applySchedulers())
+        .subscribe(usersResponseCall -> {
+          SharedPreferenceHelper.saveToken(usersResponseCall.getTokens());
+          getViewState().startSplashActivity();
+        }, Throwable::printStackTrace);
+    addToUnsubscription(subscriptions);
+  }
+}

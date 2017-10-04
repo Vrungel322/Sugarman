@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <dimen name="title_text_size">18sp</dimen>
+  <dimen name="empty_list_message_text_size">22sp</dimen>
+  <dimen name="fb_btn_text_size">18sp</dimen>
+  <dimen name="fb_btn_width">245dp</dimen>
+  <dimen name="action_bar_shadow_height">20dp</dimen>
+  <dimen name="error_layout_padding">4dp</dimen>
+  <dimen name="error_layout_text_size">13sp</dimen>
+
+  <!-- SPLASH ACTIVITY -->
+  <dimen name="splash_margin">10dp</dimen>
+
+  <!-- LOGIN ACTIVITY -->
+  <dimen name="login_little_margin">3dp</dimen>
+  <dimen name="login_margin">10dp</dimen>
+  <dimen name="login_large_margin">15dp</dimen>
+  <dimen name="login_terms_height">20dp</dimen>
+  <dimen name="login_text_size">14sp</dimen>
+  <dimen name="login_margin_top">30dp</dimen>
+
+  <!-- PROGRESS FRAGMENT -->
+  <dimen name="progress_size">60dp</dimen>
+  <dimen name="progress_margin">5dp</dimen>
+  <dimen name="progress_text_size">20sp</dimen>
+  <dimen name="progress_padding">40dp</dimen>
+  <dimen name="progress_margin_bottom">20dp</dimen>
+
+  <!-- DIALOGS -->
+  <dimen name="dialog_padding">20dp</dimen>
+  <dimen name="dialog_corners">5dp</dimen>
+  <dimen name="dialog_card_elevation">5dp</dimen>
+  <dimen name="dialog_title_text_size">22sp</dimen>
+  <dimen name="dialog_content_text_size">16sp</dimen>
+  <dimen name="dialog_content_margin_vertical">15dp</dimen>
+  <dimen name="dialog_content_margin_horizontal">40dp</dimen>
+  <dimen name="dialog_buttons_text_size">14sp</dimen>
+  <dimen name="dialog_double_stroke_width">2dp</dimen>
+  <dimen name="dialog_stroke_width">1dp</dimen>
+  <dimen name="dialog_alert_button_padding_vertical">5dp</dimen>
+  <dimen name="dialog_button_padding">18dp</dimen>
+  <dimen name="dialog_content_min_width">200dp</dimen>
+  <dimen name="dialog_image_steps_size">55dp</dimen>
+
+  <!-- MAIN ACTIVITY -->
+  <dimen name="main_padding">15dp</dimen>
+  <dimen name="main_notification_text_size">16sp</dimen>
+  <dimen name="main_square_size">45dp</dimen>
+  <dimen name="main_stroke_width">2dp</dimen>
+  <dimen name="main_circle_container_size">218dp</dimen>
+  <dimen name="main_circle_shadow_size">190dp</dimen>
+  <dimen name="main_counter_text_size">40sp</dimen>
+  <dimen name="main_steps_caps_text_size">12sp</dimen>
+  <dimen name="main_circle_indicator_stroke">7dp</dimen>
+  <dimen name="main_circle_indicator_stroke_width">4dp</dimen>
+  <dimen name="main_search_margin">15dp</dimen>
+  <dimen name="main_divider_height">1dp</dimen>
+  <dimen name="main_search_divider_margin">5dp</dimen>
+  <dimen name="main_search_icon_padding">10dp</dimen>
+  <dimen name="main_search_text_size">18sp</dimen>
+  <dimen name="main_search_margin_bottom">8dp</dimen>
+  <dimen name="main_container_animation_icon">120dp</dimen>
+  <dimen name="main_size_animated_image">100dp</dimen>
+  <dimen name="main_size_pager_arrow_width">2dp</dimen>
+
+  <!-- PROFILE ACTIVITY -->
+  <dimen name="profile_padding">25dp</dimen>
+  <dimen name="profile_avatar_size">@dimen/high_group_icon_size</dimen>
+  <dimen name="profile_cross_margin">20dp</dimen>
+  <dimen name="profile_name_text_size">20sp</dimen>
+  <dimen name="profile_name_margin">5dp</dimen>
+  <dimen name="profile_total_count_text_size">14sp</dimen>
+  <dimen name="profile_item_text_size">16sp</dimen>
+  <dimen name="profile_counter_padding_horizontal_large">9dp</dimen>
+  <dimen name="profile_counter_padding_horizontal_small">5dp</dimen>
+  <dimen name="profile_counter_padding_vertical">3dp</dimen>
+  <dimen name="profile_counter_margin">10dp</dimen>
+  <dimen name="profile_s_size">25dp</dimen>
+  <dimen name="profile_item_height">56dp</dimen>
+  <dimen name="profile_divider_size">1dp</dimen>
+  <dimen name="profile_text_ver_size">12sp</dimen>
+
+  <!-- HIGH SCORE ACTIVITY -->
+  <dimen name="high_score_padding">@dimen/main_padding</dimen>
+  <dimen name="high_score_content_padding">10dp</dimen>
+  <dimen name="high_score_elevation">@dimen/dialog_card_elevation</dimen>
+  <dimen name="high_score_trophy_padding">15dp</dimen>
+  <dimen name="high_sore_text_size">19sp</dimen>
+  <dimen name="high_score_group_height">190dp</dimen>
+  <dimen name="high_group_icon_size">76dp</dimen>
+  <dimen name="high_group_name_text_size">20sp</dimen>
+  <dimen name="high_score_group_margin">5dp</dimen>
+  <dimen name="high_score_group_divider_height">1dp</dimen>
+  <dimen name="high_score_group_divider_width">70dp</dimen>
+  <dimen name="high_score_group_text_size">13sp</dimen>
+  <dimen name="high_score_title_height">72dp</dimen>
+  <dimen name="high_score_overlapping_trophy">-12dp</dimen>
+  <dimen name="high_score_start_margin_trophy">28dp</dimen>
+  <dimen name="high_score_title_margin_bottom">6dp</dimen>
+  <dimen name="high_score_elevation_container_title">10dp</dimen>
+
+  <!-- INVITES ACTIVITY -->
+  <dimen name="invites_padding">@dimen/main_padding</dimen>
+  <dimen name="invites_avatar_size">52dp</dimen>
+  <dimen name="invites_avatar_margin">25dp</dimen>
+  <dimen name="invites_text_size">16sp</dimen>
+  <dimen name="invites_margin_between_btns">20dp</dimen>
+  <dimen name="invites_divider_height">1dp</dimen>
+  <dimen name="invites_margin">15dp</dimen>
+
+  <!-- REQUESTS ACTIVITY -->
+  <dimen name="requests_padding">@dimen/main_padding</dimen>
+  <dimen name="requests_avatar_size">@dimen/invites_avatar_size</dimen>
+  <dimen name="requests_avatar_margin">@dimen/invites_avatar_margin</dimen>
+  <dimen name="requests_text_size">@dimen/invites_text_size</dimen>
+  <dimen name="requests_margin_between_btns">@dimen/invites_margin_between_btns</dimen>
+  <dimen name="requests_divider_height">@dimen/invites_divider_height</dimen>
+  <dimen name="requests_margin">@dimen/invites_margin</dimen>
+
+  <!-- CREATE GROUP ACTIVITY -->
+  <dimen name="create_group_right_icon_padding">8dp</dimen>
+  <dimen name="create_group_padding">@dimen/main_padding</dimen>
+  <dimen name="create_group_add_photo_size">@dimen/high_group_icon_size</dimen>
+  <dimen name="create_group_text_size">14sp</dimen>
+  <dimen name="create_group_et_text_size">16sp</dimen>
+  <dimen name="create_group_elevation">@dimen/dialog_card_elevation</dimen>
+  <dimen name="create_group_et_name_width">200dp</dimen>
+  <dimen name="create_group_divider_height">1dp</dimen>
+  <dimen name="create_group_small_padding">5dp</dimen>
+  <dimen name="create_group_et_padding_horizontal">6dp</dimen>
+  <dimen name="create_group_et_padding_vertical">6dp</dimen>
+  <dimen name="create_group_clear_input_size">20dp</dimen>
+  <dimen name="create_group_margin_large">25dp</dimen>
+  <dimen name="create_group_user_text_size">16sp</dimen>
+  <dimen name="create_group_user_manage_btn_width">85dp</dimen>
+  <dimen name="create_group_user_manage_btn_padding">10dp</dimen>
+  <dimen name="create_group_icon_suga_size">25dp</dimen>
+
+  <!-- SEARCH GROUP ACTIVITY -->
+  <dimen name="search_group_elevation">@dimen/dialog_card_elevation</dimen>
+  <dimen name="search_group_padding">@dimen/main_padding</dimen>
+  <dimen name="search_group_et_padding">@dimen/create_group_et_padding_horizontal</dimen>
+  <dimen name="search_group_et_padding_vertical">@dimen/create_group_et_padding_vertical</dimen>
+  <dimen name="search_group_et_text_size">@dimen/create_group_et_text_size</dimen>
+  <dimen name="search_group_margin_vertical">8dp</dimen>
+  <dimen name="search_group_ic_clear_margin">10dp</dimen>
+  <dimen name="search_group_ic_clear_padding">10dp</dimen>
+  <dimen name="search_group_ic_clear_width">30dp</dimen>
+  <dimen name="search_group_et_padding_end">40dp</dimen>
+  <dimen name="search_group_text_size">18sp</dimen>
+  <dimen name="search_group_avatar_text_size">@dimen/create_group_add_photo_size</dimen>
+  <dimen name="search_group_item_margin">10dp</dimen>
+  <dimen name="search_group_name_text_size">14sp</dimen>
+  <dimen name="search_group_time_text_size">12sp</dimen>
+  <dimen name="search_group_members_text_size">13sp</dimen>
+  <dimen name="search_group_created_by_text_size">11sp</dimen>
+  <dimen name="search_group_btn_padding">25dp</dimen>
+  <dimen name="search_group_item_divider_height">8dp</dimen>
+
+  <!-- CONGRATULATIONS ACTIVITY -->
+  <dimen name="congratulations_external_padding">@dimen/main_padding</dimen>
+  <dimen name="congratulations_elevation">@dimen/dialog_card_elevation</dimen>
+  <dimen name="congratulations_padding">@dimen/create_group_padding</dimen>
+  <dimen name="congratulations_cross_margin">@dimen/profile_cross_margin</dimen>
+  <dimen name="congratulations_large_text_size">17sp</dimen>
+  <dimen name="congratulations_margin">40dp</dimen>
+  <dimen name="congratulations_image_size">@dimen/search_group_avatar_text_size</dimen>
+  <dimen name="congratulations_text_size">18sp</dimen>
+  <dimen name="congratulations_desc_margin">30dp</dimen>
+  <dimen name="congratulation_myb_width">160dp</dimen>
+  <dimen name="congratulation_image_width">170dp</dimen>
+
+  <!-- DAILY ACTIVITY -->
+  <dimen name="daily_external_padding">@dimen/congratulations_external_padding</dimen>
+  <dimen name="daily_elevation">@dimen/dialog_card_elevation</dimen>
+  <dimen name="daily_padding">@dimen/congratulations_padding</dimen>
+  <dimen name="daily_cross_size">50dp</dimen>
+  <dimen name="daily_cross_margin">@dimen/congratulations_cross_margin</dimen>
+  <dimen name="daily_margin">@dimen/congratulations_margin</dimen>
+  <dimen name="daily_image_size">@dimen/congratulations_image_size</dimen>
+  <dimen name="daily_text_size">@dimen/congratulations_text_size</dimen>
+  <dimen name="daily_desc_margin">@dimen/congratulations_desc_margin</dimen>
+  <dimen name="daily_title_margin">-5dp</dimen>
+
+  <!--FAILED ACTIVITY -->
+  <dimen name="failed_external_padding">@dimen/congratulations_external_padding</dimen>
+  <dimen name="failed_elevation">@dimen/dialog_card_elevation</dimen>
+  <dimen name="failed_padding">@dimen/congratulations_padding</dimen>
+  <dimen name="failed_cross_size">45dp</dimen>
+  <dimen name="failed_margin">@dimen/congratulations_margin</dimen>
+  <dimen name="failed_image_size">70dp</dimen>
+  <dimen name="failed_text_size">@dimen/congratulations_text_size</dimen>
+  <dimen name="failed_medium_margin">20dp</dimen>
+  <dimen name="failed_share_margin_bottom">60dp</dimen>
+  <dimen name="failed_recreate_image">30dp</dimen>
+  <dimen name="failed_regroup_text_size">16sp</dimen>
+  <dimen name="failed_regroup_margin">4dp</dimen>
+
+  <!-- NO CHALLENGES FRAGMENT -->
+  <dimen name="no_challenges_padding">@dimen/main_padding</dimen>
+  <dimen name="no_challenges_elevation">@dimen/dialog_card_elevation</dimen>
+  <dimen name="no_challenges_large_text_size">20sp</dimen>
+  <dimen name="no_challenges_divider_width">@dimen/high_score_group_divider_width</dimen>
+  <dimen name="no_challenges_divider_height">@dimen/high_score_group_divider_height</dimen>
+  <dimen name="no_challenges_divider_margin">25dp</dimen>
+  <dimen name="no_challenges_text_size">18sp</dimen>
+  <dimen name="no_challenges_icon_create_group_size">30dp</dimen>
+
+  <!-- CHALLENGE WILL START FRAGMENT -->
+  <dimen name="challenge_will_start_group_name_text_size">20sp</dimen>
+  <dimen name="challenge_will_start_members_text_size">14sp</dimen>
+  <dimen name="challenge_will_start_time_text_size">22sp</dimen>
+  <dimen name="challenge_will_start_time_margin">20dp</dimen>
+
+  <!-- CHALLENGE FRAGMENT -->
+  <dimen name="challenge_padding">@dimen/main_padding</dimen>
+  <dimen name="challenge_pager_fragment_height">260dp</dimen>
+  <dimen name="challenge_elevation">@dimen/dialog_card_elevation</dimen>
+  <dimen name="challenge_group_name_text_size">15sp</dimen>
+  <dimen name="challenge_day_text_size">12sp</dimen>
+  <dimen name="challenge_members_text_size">12sp</dimen>
+  <dimen name="challenge_danger_text_size">11sp</dimen>
+  <dimen name="challenge_danger_margin">7dp</dimen>
+  <dimen name="challenge_gradient_vertical_padding">5dp</dimen>
+  <dimen name="challenge_line_indicator_height">24dp</dimen>
+  <dimen name="challenge_subtitle_text_size">12sp</dimen>
+  <dimen name="challenge_laziest_margin">4dp</dimen>
+  <dimen name="challenge_laziest_avatar_size">@dimen/main_square_size</dimen>
+  <dimen name="challenge_view_all_text_size">16sp</dimen>
+  <dimen name="challenge_number_text_size">10sp</dimen>
+  <dimen name="challenge_tap_photo_text_size">11sp</dimen>
+  <dimen name="challenge_tap_photo_margin">4dp</dimen>
+  <dimen name="challenge_indicator_width">2dp</dimen>
+  <dimen name="challenge_small_margin">5dp</dimen>
+  <dimen name="challenge_indicator_margin">4dp</dimen>
+  <dimen name="challenge_margin_top_bottom">10dp</dimen>
+
+  <!-- GROUP DETAILS ACTIVITY -->
+  <dimen name="group_details_external_padding">@dimen/main_padding</dimen>
+  <dimen name="group_details_elevation">@dimen/dialog_card_elevation</dimen>
+  <dimen name="group_details_padding">@dimen/main_padding</dimen>
+  <dimen name="group_details_cross_size">40dp</dimen>
+  <dimen name="group_details_large_text_size">@dimen/congratulations_large_text_size</dimen>
+  <dimen name="group_details_image_size">@dimen/profile_avatar_size</dimen>
+  <dimen name="group_details_margin">10dp</dimen>
+  <dimen name="group_details_divider_width">40dp</dimen>
+  <dimen name="group_details_divider_height">1px</dimen>
+  <dimen name="group_details_text_size">12sp</dimen>
+  <dimen name="group_details_small_margin">3dp</dimen>
+  <dimen name="group_details_large_margin">20dp</dimen>
+  <dimen name="group_details_item_height">100dp</dimen>
+  <dimen name="group_details_avatar_size">@dimen/invites_avatar_size</dimen>
+  <dimen name="group_details_steps_text_size">11sp</dimen>
+  <dimen name="group_details_num_width">35dp</dimen>
+  <dimen name="group_details_pengin_margin">40dp</dimen>
+  <dimen name="group_deatils_icon_bad_padding">4dp</dimen>
+
+  <!-- ADD MEMBERS ACTIVITY -->
+  <dimen name="add_member_padding">@dimen/main_padding</dimen>
+  <dimen name="add_member_margin_vertical">@dimen/search_group_margin_vertical</dimen>
+  <dimen name="add_member_et_padding">@dimen/search_group_et_padding</dimen>
+  <dimen name="add_member_et_padding_vertical">@dimen/search_group_et_padding_vertical</dimen>
+  <dimen name="add_member_et_padding_end">@dimen/search_group_et_padding_end</dimen>
+  <dimen name="add_member_ic_clear_margin">25dp</dimen>
+  <dimen name="add_member_ic_clear_padding">@dimen/search_group_ic_clear_padding</dimen>
+  <dimen name="add_member_ic_clear_width">@dimen/search_group_ic_clear_width</dimen>
+  <dimen name="add_member_et_text_size">@dimen/search_group_et_text_size</dimen>
+
+  <!-- STATS FRAGMENT -->
+  <dimen name="stats_padding">@dimen/main_padding</dimen>
+  <dimen name="stats_indicator_width">5dp</dimen>
+  <dimen name="stats_vertical_indicator_margin">10dp</dimen>
+  <dimen name="stats_title_text_size">24sp</dimen>
+  <dimen name="stats_pager_indicator_size">6dp</dimen>
+  <dimen name="stats_pager_indicator_gape">15dp</dimen>
+  <dimen name="stats_transparent_view_height">70dp</dimen>
+  <dimen name="stats_pager_indicator_height">20dp</dimen>
+  <dimen name="stats_steps_text_size">12sp</dimen>
+  <dimen name="stats_days_text_size">10sp</dimen>
+  <dimen name="stats_days_height">30dp</dimen>
+  <dimen name="stats_card_height">76dp</dimen>
+
+  <!-- NOTIFICATIONS FRAGMENT -->
+  <dimen name="notifications_bottom_divider_width">50dp</dimen>
+  <dimen name="notifications_bottom_divider_height">4dp</dimen>
+  <dimen name="notifications_bottom_container_height">14dp</dimen>
+  <dimen name="notifications_bottom_margin">5dp</dimen>
+  <dimen name="notifications_image_size">50dp</dimen>
+  <dimen name="notifications_text_size">14sp</dimen>
+  <dimen name="notification_divider_height">1px</dimen>
+  <dimen name="notifications_cross_margin">8dp</dimen>
+  <dimen name="notifications_container_height">80dp</dimen>
+  <dimen name="notifications_item_padding">10dp</dimen>
+  <dimen name="fab_margin">16dp</dimen>
+</resources>

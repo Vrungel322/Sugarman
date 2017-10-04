@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="members">
+        <item quantity="one">участник</item>
+        <item quantity="few">участника</item>
+        <item quantity="many">участников</item>
+        <item quantity="other">участников</item>
+    </plurals>
+
+    <plurals name="members_cap">
+        <item quantity="one">Участник</item>
+        <item quantity="few">Участника</item>
+        <item quantity="many">Участников</item>
+        <item quantity="other">Участников</item>
+    </plurals>
+
+    <plurals name="asses_have_been_kicked">
+        <item quantity="one">задницу подтолкнули</item>
+        <item quantity="few">задницы подтолкнули</item>
+        <item quantity="many">задниц подтолкнули</item>
+        <item quantity="other">задниц подтолкнули</item>
+    </plurals>
+
+    <plurals name="group_steps">
+        <item quantity="one">шаг группы сегодня</item>
+        <item quantity="few">шага группы сегодня</item>
+        <item quantity="many">шагов группы сегодня</item>
+        <item quantity="other">шагов группы сегодня</item>
+    </plurals>
+
+    <plurals name="steps">
+        <item quantity="one">Шаг </item>
+        <item quantity="few">Шага</item>
+        <item quantity="many">Шагов</item>
+        <item quantity="other">Шагов</item>
+    </plurals>
+
+    <plurals name="walked_days_template">
+        <item quantity="one">%1$d день по 10 000  шагов</item>
+        <item quantity="few">%1$d дня по 10 000  шагов</item>
+        <item quantity="many">%1$d дней по 10 000  шагов</item>
+        <item quantity="other">%1$d дней по 10 000  шагов</item>
+    </plurals>
+
+    <plurals name="group_kicked_template">
+        <item quantity="one">Вас пнули под зад %1$d раз</item>
+        <item quantity="few">Вас пнули под зад %1$d раза</item>
+        <item quantity="many">Вас пнули под зад %1$d раз</item>
+        <item quantity="other">Вас пнули под зад %1$d раз</item>
+    </plurals>
+</resources>

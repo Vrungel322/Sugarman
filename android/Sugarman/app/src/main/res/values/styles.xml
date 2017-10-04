@@ -1,0 +1,64 @@
+<resources>
+
+  <!-- Base application theme. -->
+  <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <!-- Customize your theme here. -->
+    <item name="colorPrimary">@color/colorPrimary</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    <item name="colorAccent">@color/colorAccent</item>
+  </style>
+
+  <!-- background is blink, when soft keyboard is appears -->
+  <style name="SugarmanActivityTheme" parent="AppTheme">
+    <item name="android:windowAnimationStyle">@null</item>
+    <item name="android:windowActionBar">false</item>
+    <item name="android:windowNoTitle">true</item>
+    <item name="android:windowBackground">@android:color/white</item>
+  </style>
+
+
+  <style name="StatsActivityTheme" parent="SugarmanActivityTheme">
+    <item name="android:windowBackground">@android:color/transparent</item>
+    <item name="android:windowIsTranslucent">true</item>
+    <item name="android:windowContentOverlay">@null</item>
+    <item name="android:backgroundDimEnabled">false</item>
+    <item name="android:windowActionBar">false</item>
+    <item name="android:windowNoTitle">true</item>
+  </style>
+
+  <style name="SugarmanBackgroundActivityTheme" parent="SugarmanActivityTheme">
+    <item name="android:windowBackground">@drawable/background_splash</item>
+  </style>
+
+  <style name="SugarmanProgress" parent="Base.Widget.AppCompat.ProgressBar">
+    <item name="colorAccent">@android:color/black</item>
+  </style>
+
+  <style name="FacebookButton">
+    <item name="android:textSize">@dimen/fb_btn_text_size</item>
+    <item name="android:background">@drawable/buy_button</item>
+    <item name="android:layout_marginTop">15dp</item>
+  </style>
+
+  <style name="SugarmanDialog" parent="@android:style/Theme.Dialog">
+    <item name="android:windowFrame">@null</item>
+    <item name="android:windowBackground">@color/white_transparent</item>
+    <item name="android:windowIsFloating">false</item>
+    <item name="android:windowContentOverlay">@null</item>
+    <item name="android:windowTitleStyle">@null</item>
+    <item name="android:colorBackgroundCacheHint">@null</item>
+    <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+    <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+    <item name="android:gravity">center</item>
+  </style>
+
+  <style name="squareImageStyle" parent="AppTheme"/>
+
+  <style name="BackgroundLayout">
+    <item name="android:background">@drawable/background</item>
+  </style>
+
+  <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+  <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+</resources>

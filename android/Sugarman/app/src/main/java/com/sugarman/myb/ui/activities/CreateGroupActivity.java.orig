@@ -1,0 +1,921 @@
+package com.sugarman.myb.ui.activities;
+
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.ClipData;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.graphics.BitmapCompat;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.util.Pair;
+import android.view.View;
+import android.view.ViewTreeObserver;
+import android.widget.EditText;
+import android.widget.ImageView;
+import butterknife.BindView;
+import butterknife.OnClick;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
+import com.facebook.share.model.GameRequestContent;
+import com.facebook.share.widget.GameRequestDialog;
+import com.sugarman.myb.App;
+import com.sugarman.myb.R;
+import com.sugarman.myb.adapters.FriendsAdapter;
+import com.sugarman.myb.api.clients.CreateGroupClient;
+import com.sugarman.myb.api.clients.FBApiClient;
+import com.sugarman.myb.api.clients.JoinGroupClient;
+import com.sugarman.myb.api.models.responses.Tracking;
+import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
+import com.sugarman.myb.api.models.responses.me.groups.CreatedGroup;
+import com.sugarman.myb.constants.Config;
+import com.sugarman.myb.constants.Constants;
+import com.sugarman.myb.constants.DialogConstants;
+import com.sugarman.myb.eventbus.events.ReportStepsEvent;
+import com.sugarman.myb.listeners.ApiCreateGroupListener;
+import com.sugarman.myb.listeners.ApiJoinGroupListener;
+import com.sugarman.myb.listeners.AsyncSaveBitmapToFileListener;
+import com.sugarman.myb.listeners.OnFBGetFriendsListener;
+import com.sugarman.myb.tasks.SaveBitmapToFileAsyncTask;
+import com.sugarman.myb.ui.activities.base.BaseActivity;
+import com.sugarman.myb.ui.dialogs.DialogButton;
+import com.sugarman.myb.ui.dialogs.SugarmanDialog;
+import com.sugarman.myb.ui.views.MaskImage;
+import com.sugarman.myb.utils.AnalyticsHelper;
+import com.sugarman.myb.utils.BitmapUtils;
+import com.sugarman.myb.utils.ContactsHelper;
+import com.sugarman.myb.utils.DeviceHelper;
+import com.sugarman.myb.utils.SharedPreferenceHelper;
+import com.vk.sdk.VKSdk;
+import com.vk.sdk.api.VKApiConst;
+import com.vk.sdk.api.VKError;
+import com.vk.sdk.api.VKParameters;
+import com.vk.sdk.api.VKRequest;
+import com.vk.sdk.api.VKResponse;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import timber.log.Timber;
+
+import static com.sugarman.myb.utils.ImageHelper.scaleCenterCrop;
+
+public class CreateGroupActivity extends BaseActivity
+    implements View.OnClickListener, OnFBGetFriendsListener, ApiCreateGroupListener,
+    ApiJoinGroupListener, AsyncSaveBitmapToFileListener, View.OnFocusChangeListener {
+
+  private static final String TAG = CreateGroupActivity.class.getName();
+
+  @BindView(R.id.fb_filter) ImageView fbFilter;
+  @BindView(R.id.vk_filter) ImageView vkFilter;
+  @BindView(R.id.ph_filter) ImageView phFilter;
+
+  String currentFilter = "";
+
+  boolean isVkLoggedIn = false, isFbLoggedIn = false;
+
+  private FriendsAdapter friendsAdapter;
+  MaskImage mi;
+  private RecyclerView rcvFriends;
+  private ImageView ivGroupAvatar;
+  private EditText etGroupName;
+  private EditText etMemberFilter;
+  private View vAddPhotoContainer;
+  private View vNoFriends;
+  private View vClearGroupName;
+  private View vClearMembersFilter;
+
+  private FBApiClient fbApiClient;
+  private CreateGroupClient mCreateGroupClient;
+  private JoinGroupClient mJoinGroupClient;
+
+  private CallbackManager fbCallbackManager;
+  private GameRequestDialog fbInviteDialog;
+
+  private final List<FacebookFriend> filtered = new ArrayList<>();
+  private final List<FacebookFriend> allFriends = new ArrayList<>();
+
+  private final List<FacebookFriend> invitable = new ArrayList<>();
+  private final List<FacebookFriend> members = new ArrayList<>();
+
+  private boolean isFriendsFound = false;
+
+  private File selectedFile;
+
+  private int networksToLoad = 1, networksLoaded = 0;
+
+  private final FacebookCallback<GameRequestDialog.Result> fbInviteCallback =
+      new FacebookCallback<GameRequestDialog.Result>() {
+
+        @Override public void onSuccess(GameRequestDialog.Result result) {
+          showProgressFragmentTemp();
+
+          List<String> recipients = result.getRequestRecipients();
+          fbApiClient.getFriendsInfo(recipients);
+        }
+
+        @Override public void onCancel() {
+          // nothing
+        }
+
+        @Override public void onError(FacebookException error) {
+          if (DeviceHelper.isNetworkConnected()) {
+            new SugarmanDialog.Builder(CreateGroupActivity.this,
+                DialogConstants.FAILURE_INVITE_FB_FRIENDS_ID).content(error.getMessage()).show();
+          } else {
+            showNoInternetConnectionDialog();
+          }
+        }
+      };
+
+  private final TextWatcher groupNameWatcher = new TextWatcher() {
+    @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+      // nothing
+    }
+
+    @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+      // nothing
+    }
+
+    @Override public void afterTextChanged(Editable s) {
+      boolean isEmpty = TextUtils.isEmpty(s);
+      vClearGroupName.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
+    }
+  };
+
+  private final TextWatcher filterWatcher = new TextWatcher() {
+    @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+      // nothing
+    }
+
+    @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+      // nothing
+    }
+
+    @Override public void afterTextChanged(Editable s) {
+      boolean isEmpty = TextUtils.isEmpty(s);
+      vClearMembersFilter.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
+      if (!isEmpty) {
+        filterFacebookFriends(s.toString());
+      } else {
+        filtered.clear();
+        filtered.addAll(allFriends);
+        setFriends(filtered);
+      }
+    }
+  };
+
+  @Override protected void onCreate(Bundle savedStateInstance) {
+    setContentView(R.layout.activity_create_group);
+    super.onCreate(savedStateInstance);
+
+    if (!SharedPreferenceHelper.getFacebookId().equals("none")) {
+      networksToLoad++;
+      isFbLoggedIn = true;
+      fbFilter.setAlpha(1.0f);
+    }
+    if (VKSdk.isLoggedIn()) {
+      networksToLoad++;
+      isVkLoggedIn = true;
+      vkFilter.setAlpha(1.0f);
+    }
+
+    //getWindow().setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.background));
+
+    //        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_CONTACTS},1);
+    //        Cursor phones = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,null,null, null);
+    //        Log.e("Contact", ""+phones.getCount());
+    //        while (phones.moveToNext())
+    //        {
+    //            String name=phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+    //            String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+    ////
+    //            Log.e("Contact", name + "-" + phoneNumber);
+    ////
+    //        }
+    //        phones.close();
+
+    fbApiClient = new FBApiClient();
+    mCreateGroupClient = new CreateGroupClient();
+    mJoinGroupClient = new JoinGroupClient();
+
+    friendsAdapter = new FriendsAdapter(this);
+
+    fbCallbackManager = CallbackManager.Factory.create();
+    fbInviteDialog = new GameRequestDialog(this);
+    fbInviteDialog.registerCallback(fbCallbackManager, fbInviteCallback);
+
+    vAddPhotoContainer = findViewById(R.id.ll_add_photo_container);
+    vNoFriends = findViewById(R.id.tv_no_friends);
+    etGroupName = (EditText) findViewById(R.id.et_group_name);
+    etMemberFilter = (EditText) findViewById(R.id.et_search);
+    ivGroupAvatar = (ImageView) findViewById(R.id.iv_group_avatar);
+    rcvFriends = (RecyclerView) findViewById(R.id.rcv_friends);
+    vClearGroupName = findViewById(R.id.iv_clear_group_name_input);
+    vClearMembersFilter = findViewById(R.id.iv_clear_member_filter_input);
+    View vCross = findViewById(R.id.iv_cross);
+    View vApply = findViewById(R.id.iv_apply);
+
+    rcvFriends.setLayoutManager(new LinearLayoutManager(this));
+    rcvFriends.setAdapter(friendsAdapter);
+
+    etMemberFilter.addTextChangedListener(filterWatcher);
+    etGroupName.addTextChangedListener(groupNameWatcher);
+
+    String userName = SharedPreferenceHelper.getUserName();
+    String groupName = String.format(getString(R.string.group_name_template), userName);
+    etGroupName.setText(groupName);
+
+    vApply.setOnClickListener(this);
+    vCross.setOnClickListener(this);
+    vClearGroupName.setOnClickListener(this);
+    vClearMembersFilter.setOnClickListener(this);
+    vAddPhotoContainer.setOnClickListener(this);
+
+    etMemberFilter.setOnFocusChangeListener(this);
+    etGroupName.setOnFocusChangeListener(this);
+
+    Bitmap bitmap = ((BitmapDrawable) ivGroupAvatar.getDrawable()).getBitmap();
+    mi = new MaskImage(this, R.drawable.group_avatar, false, 0xff000000);
+    bitmap = mi.transform(bitmap);
+    ivGroupAvatar.setImageBitmap(bitmap);
+
+    AsyncTask.execute(new Runnable() {
+      @Override public void run() {
+        HashMap<String, String> contactList =
+            ContactsHelper.getContactList(CreateGroupActivity.this);
+
+        for (String key : contactList.keySet()) {
+          if (contactList.get(key).startsWith("+")) {
+            FacebookFriend friend = new FacebookFriend(contactList.get(key), key,
+                "https://sugarman-myb.s3.amazonaws.com/Group_New.png", FacebookFriend.CODE_INVITABLE,
+                "ph");
+            allFriends.add(friend);
+          }
+        }
+        networksLoaded++;
+        Timber.e("Contacts loaded");
+        runOnUiThread(new Runnable() {
+          @Override public void run() {
+            setFriends(allFriends);
+          }
+        });
+        checkNetworksLoaded();
+      }
+    });
+
+    final View contentView = findViewById(android.R.id.content);
+    contentView.getViewTreeObserver()
+        .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+          private int mPreviousHeight;
+
+          @Override public void onGlobalLayout() {
+            int newHeight = contentView.getHeight();
+            if (mPreviousHeight != 0) {
+              if (mPreviousHeight > newHeight) {
+                // Height decreased: keyboard was shown
+                if (etMemberFilter.isFocused()) {
+                  //vAddPhotoContainer.setVisibility(View.GONE);
+                } else {
+                  //vAddPhotoContainer.setVisibility(View.VISIBLE);
+                }
+              } else if (mPreviousHeight < newHeight) {
+                // Height increased: keyboard was hidden
+                //vAddPhotoContainer.setVisibility(View.VISIBLE);
+              }
+            }
+            mPreviousHeight = newHeight;
+          }
+        });
+
+    VKRequest request = new VKRequest("friends.get",
+        VKParameters.from(VKApiConst.FIELDS, "photo_100", "order", "name"));
+    request.executeWithListener(new VKRequest.VKRequestListener() {
+      @Override public void onComplete(VKResponse response) {
+        super.onComplete(response);
+        JSONObject resp = response.json;
+        Log.e("VK response", response.responseString);
+        try {
+          JSONArray items = resp.getJSONObject("response").getJSONArray("items");
+          for (int i = 0; i < items.length(); i++) {
+
+            JSONObject item = items.getJSONObject(i);
+            int id = item.getInt("id");
+            String firstName = item.getString("first_name");
+            String lastName = item.getString("last_name");
+            String photoUrl = item.getString("photo_100");
+            int online = item.getInt("online");
+
+            FacebookFriend friend =
+                new FacebookFriend(Integer.toString(id), firstName + " " + lastName, photoUrl,
+                    FacebookFriend.CODE_INVITABLE, "vk");
+
+            allFriends.add(friend);
+          }
+          networksLoaded++;
+          Timber.e("VK LOADED");
+          checkNetworksLoaded();
+          //setFriends(allFriends);
+        } catch (JSONException e) {
+          e.printStackTrace();
+        }
+      }
+
+      @Override public void onError(VKError error) {
+        super.onError(error);
+        //Log.e("VK", error.errorMessage);
+      }
+    });
+
+    AnalyticsHelper.reportInvite();
+  }
+
+  @OnClick(R.id.fb_filter) public void showFbFriends() {
+    if (isFbLoggedIn) {
+      if (!currentFilter.equals("fb")) {
+        filtered.clear();
+
+        for (FacebookFriend friend : allFriends) {
+          if (friend.getSocialNetwork().equals("fb")) {
+            filtered.add(friend);
+          }
+        }
+
+        setFriends(filtered);
+        currentFilter = "fb";
+        phFilter.setAlpha(0.5f);
+        vkFilter.setAlpha(0.5f);
+        fbFilter.setAlpha(1.0f);
+      } else {
+        setFriends(allFriends);
+        currentFilter = "";
+        phFilter.setAlpha(1.0f);
+        if (isVkLoggedIn) vkFilter.setAlpha(1.0f);
+      }
+    } else {
+      AlertDialog.Builder builder = new AlertDialog.Builder(CreateGroupActivity.this);
+      builder.setMessage("Log in to Facebook?").setTitle("Not logged in");
+      builder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
+        public void onClick(DialogInterface dialog, int id) {
+          Intent intent = new Intent(CreateGroupActivity.this, EditProfileActivity.class);
+
+          startActivity(intent);
+        }
+      });
+      builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+        public void onClick(DialogInterface dialog, int id) {
+          // User cancelled the dialog
+        }
+      });
+
+      // Create the AlertDialog
+      AlertDialog dialog = builder.create();
+      dialog.show();
+    }
+  }
+
+  @OnClick(R.id.vk_filter) public void showVkFriends() {
+    if (isVkLoggedIn) {
+      if (!currentFilter.equals("vk")) {
+        filtered.clear();
+
+        for (FacebookFriend friend : allFriends) {
+          if (friend.getSocialNetwork().equals("vk")) {
+            filtered.add(friend);
+          }
+        }
+
+        setFriends(filtered);
+        currentFilter = "vk";
+        fbFilter.setAlpha(0.5f);
+        phFilter.setAlpha(0.5f);
+        vkFilter.setAlpha(1.0f);
+      } else {
+        setFriends(allFriends);
+        currentFilter = "";
+        if (isFbLoggedIn) fbFilter.setAlpha(1.0f);
+        phFilter.setAlpha(1.0f);
+      }
+    } else {
+      AlertDialog.Builder builder = new AlertDialog.Builder(CreateGroupActivity.this);
+      builder.setMessage("Log in to VK?").setTitle("Not logged in");
+      builder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
+        public void onClick(DialogInterface dialog, int id) {
+          Intent intent = new Intent(CreateGroupActivity.this, EditProfileActivity.class);
+          startActivity(intent);
+        }
+      });
+      builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+        public void onClick(DialogInterface dialog, int id) {
+          // User cancelled the dialog
+        }
+      });
+
+      // Create the AlertDialog
+      AlertDialog dialog = builder.create();
+      dialog.show();
+    }
+  }
+
+  @OnClick(R.id.ph_filter) public void showPhFriends() {
+    if (!currentFilter.equals("ph")) {
+      filtered.clear();
+
+      for (FacebookFriend friend : allFriends) {
+        if (friend.getSocialNetwork().equals("ph")) {
+          filtered.add(friend);
+        }
+      }
+
+      setFriends(filtered);
+      currentFilter = "ph";
+      fbFilter.setAlpha(0.5f);
+      vkFilter.setAlpha(0.5f);
+      phFilter.setAlpha(1.0f);
+    } else {
+      setFriends(allFriends);
+      currentFilter = "";
+      if (isFbLoggedIn) fbFilter.setAlpha(1.0f);
+      if (isVkLoggedIn) vkFilter.setAlpha(1.0f);
+    }
+  }
+
+  private void checkNetworksLoaded() {
+    Timber.e(networksLoaded + " out of " + networksToLoad);
+    if (networksLoaded == networksToLoad) closeProgressFragment();
+  }
+
+  @Override protected void onStart() {
+    super.onStart();
+
+    fbApiClient.registerListener(this);
+    mCreateGroupClient.registerListener(this);
+    mJoinGroupClient.registerListener(this);
+  }
+
+  @Override protected void onStop() {
+    super.onStop();
+
+    fbApiClient.unregisterListener();
+    mCreateGroupClient.unregisterListener();
+    mJoinGroupClient.unregisterListener();
+    mi = null;
+  }
+
+  @Override protected void onResume() {
+    super.onResume();
+
+    if (!isFriendsFound) {
+      getFacebookFriends();
+    }
+  }
+
+  @SuppressLint("NewApi") // checking version inside
+  @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    fbCallbackManager.onActivityResult(requestCode, resultCode, data);
+
+    switch (requestCode) {
+      case Constants.INTENT_CHOOSER_IMAGE_REQUEST_CODE:
+        if (resultCode == RESULT_OK) {
+          if (data == null || (data.getData() == null && data.getClipData() == null)) {
+            // return data from camera
+            processCaptureCamera();
+          } else {
+            // return data from gallery
+            processCameraGallery(data);
+          }
+        } else {
+          Log.d(TAG, "chooser image result: " + requestCode);
+        }
+
+        SharedPreferenceHelper.saveCaptureCameraUri("");
+        SharedPreferenceHelper.saveCaptureCameraPath("");
+        break;
+      default:
+        break;
+    }
+  }
+
+  @Override
+  public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions,
+      @NonNull final int[] grantResults) {
+    boolean userAllowed = true;
+    switch (requestCode) {
+      case Constants.REQUEST_EXTERNAL_STORAGE_PERMISSION_CODE:
+        for (final int result : grantResults) {
+          userAllowed &= (result == PackageManager.PERMISSION_GRANTED);
+        }
+
+        if (userAllowed) {
+          chooseGroupAvatar();
+        } else {
+          showNeedExternalStoragePermission();
+        }
+        break;
+      default:
+        Log.d(TAG, "not supported request code: " + requestCode);
+        break;
+    }
+  }
+
+  @Override public void onClick(View v) {
+    int id = v.getId();
+    switch (id) {
+      case R.id.iv_cross:
+        setResult(RESULT_CANCELED);
+        finish();
+        break;
+      case R.id.iv_apply:
+        DeviceHelper.hideKeyboard(this);
+        checkFilledData();
+        break;
+      case R.id.ll_add_photo_container:
+        tryChooseGroupAvatar();
+        break;
+      case R.id.iv_clear_group_name_input:
+        etGroupName.setText("");
+        break;
+      case R.id.iv_clear_member_filter_input:
+        etMemberFilter.setText("");
+        break;
+      default:
+        Log.d(TAG,
+            "Click on not processed view with id " + getResources().getResourceEntryName(id));
+        break;
+    }
+  }
+
+  @Override public void onFocusChange(View v, boolean hasFocus) {
+    int id = v.getId();
+    switch (id) {
+      case R.id.et_group_name:
+        if (hasFocus) {
+          vAddPhotoContainer.setVisibility(View.VISIBLE);
+        }
+        break;
+      case R.id.et_search:
+        //
+        // vAddPhotoContainer.setVisibility(hasFocus ? View.GONE : View.VISIBLE);
+        break;
+      default:
+        Log.d(TAG,
+            "focus on not processed view with id " + getResources().getResourceEntryName(id));
+        break;
+    }
+  }
+
+  @Override public void onClickDialog(SugarmanDialog dialog, DialogButton button) {
+    String id = dialog.getId();
+
+    switch (id) {
+      case DialogConstants.API_CREATE_GROUP_FAILURE_ID:
+      case DialogConstants.FAILURE_CONVERT_FB_FRIENDS_ID:
+      case DialogConstants.FAILURE_INVITE_FB_FRIENDS_ID:
+        dialog.dismiss();
+        setResult(RESULT_CANCELED);
+        finish();
+        break;
+      default:
+        super.onClickDialog(dialog, button);
+        break;
+    }
+  }
+
+  @Override public void onGetFacebookFriendsSuccess(List<FacebookFriend> friends,
+      List<FacebookFriend> invitable) {
+    isFriendsFound = true;
+
+    int size = friends.size();
+    for (int i = 0; i < size; i++) {
+      friends.get(i).setIsInvitable(FacebookFriend.CODE_NOT_INVITABLE);
+    }
+
+    size = invitable.size();
+
+    for (int i = 0; i < size; i++) {
+      invitable.get(i).setIsInvitable(FacebookFriend.CODE_INVITABLE);
+    }
+
+    this.invitable.clear();
+    this.invitable.addAll(invitable);
+
+    for (FacebookFriend friend : friends)
+      if (friend.getSocialNetwork() == null) friend.setSocialNetwork("fb");
+    for (FacebookFriend friend : invitable)
+      if (friend.getSocialNetwork() == null) friend.setSocialNetwork("fb");
+    //allFriends.clear();
+    allFriends.addAll(friends);
+    allFriends.addAll(invitable);
+
+    etMemberFilter.setText("");
+
+    setFriends(allFriends);
+    networksLoaded++;
+    Timber.e("FB LOADED");
+    checkNetworksLoaded();
+  }
+
+  @Override public void onGetFacebookFriendsFailure(String message) {
+    this.allFriends.clear();
+    this.invitable.clear();
+
+    setFriends(allFriends);
+    closeProgressFragment();
+
+    if (DeviceHelper.isNetworkConnected()) {
+      new SugarmanDialog.Builder(this, DialogConstants.FAILURE_GET_FACEBOOK_FRIENDS_ID).content(
+          message).show();
+    } else {
+      showNoInternetConnectionDialog();
+    }
+  }
+
+  @Override public void onGetFriendInfoSuccess(List<FacebookFriend> convertedFriends) {
+    members.addAll(convertedFriends);
+    createGroup(members);
+  }
+
+  @Override public void onGetFriendInfoFailure(String message) {
+    closeProgressFragment();
+
+    if (DeviceHelper.isNetworkConnected()) {
+      new SugarmanDialog.Builder(this, DialogConstants.FAILURE_CONVERT_FB_FRIENDS_ID).content(
+          message).show();
+    } else {
+      showNoInternetConnectionDialog();
+    }
+  }
+
+  @Override public void onApiCreateGroupSuccess(CreatedGroup createdGroup) {
+    mJoinGroupClient.joinGroup(createdGroup.getId());
+  }
+
+  @Override public void onApiCreateGroupFailure(String message) {
+    if (DeviceHelper.isNetworkConnected()) {
+      new SugarmanDialog.Builder(this, DialogConstants.API_CREATE_GROUP_FAILURE_ID).content(message)
+          .show();
+    } else {
+      showNoInternetConnectionDialog();
+    }
+  }
+
+  @Override public void onApiJoinGroupSuccess(Tracking result) {
+    closeProgressFragment();
+    int activeTrackings = SharedPreferenceHelper.getActiveTrackingsCreated();
+    SharedPreferenceHelper.saveActiveTrackingsCreated(++activeTrackings);
+
+    App.getEventBus().post(new ReportStepsEvent());
+    Intent data = new Intent();
+    data.putExtra(Constants.INTENT_CREATED_TRACKING, result);
+    setResult(RESULT_OK, data);
+    finish();
+  }
+
+  @Override public void onApiJoinGroupFailure(String message) {
+    if (DeviceHelper.isNetworkConnected()) {
+      new SugarmanDialog.Builder(this, DialogConstants.API_JOIN_GROUP_FAILURE_ID).content(message)
+          .show();
+    } else {
+      showNoInternetConnectionDialog();
+    }
+  }
+
+  @Override public void onAsyncBitmapSaveSuccess(String path) {
+    selectedFile = new File(path);
+    closeProgressFragment();
+  }
+
+  @Override public void onAsyncBitmapSaveFailed() {
+    closeProgressFragment();
+  }
+
+  private void tryChooseGroupAvatar() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      if (checkSelfPermission(Manifest.permission.RECORD_AUDIO)
+          != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+            android.Manifest.permission.RECORD_AUDIO)) {
+          showNeedExternalStoragePermission();
+        } else {
+          requestPermissions(Constants.PERMISSION_EXTERNAL_STORAGE,
+              Constants.REQUEST_EXTERNAL_STORAGE_PERMISSION_CODE);
+        }
+      } else {
+        chooseGroupAvatar();
+      }
+    } else {
+      chooseGroupAvatar();
+    }
+  }
+
+  private void chooseGroupAvatar() {
+    Intent galleryIntent = DeviceHelper.getGalleryIntent();
+    Pair<String[], Parcelable[]> cameraData = DeviceHelper.getCameraData();
+    Parcelable[] cameraIntents = cameraData.second;
+
+    String path = cameraData.first[0];
+    String uri = cameraData.first[1];
+
+    SharedPreferenceHelper.saveCaptureCameraUri(uri);
+    SharedPreferenceHelper.saveCaptureCameraPath(path);
+
+    if (!TextUtils.isEmpty(uri)
+        && !TextUtils.isEmpty(path)
+        && galleryIntent != null
+        && cameraIntents != null) {
+      Intent chooserIntent = Intent.createChooser(galleryIntent, getString(R.string.add_photo));
+      chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, cameraIntents);
+
+      startActivityForResult(chooserIntent, Constants.INTENT_CHOOSER_IMAGE_REQUEST_CODE);
+    } else {
+      Log.e(TAG, "failure prepare data for get group avatar");
+    }
+  }
+
+  private void showNeedExternalStoragePermission() {
+    new SugarmanDialog.Builder(this, DialogConstants.NEED_EXTERNAL_STORAGE_PERMISSION_ID).content(
+        R.string.need_your_permission).positiveText(R.string.okay).show();
+  }
+
+  private void processCaptureCamera() {
+    String filePath = SharedPreferenceHelper.getCaptureCameraPath();
+    String cameraUri = SharedPreferenceHelper.getCaptureCameraUri();
+
+    selectedFile = new File(filePath);
+    setGroupAvatar(selectedFile);
+
+    if (!TextUtils.isEmpty(cameraUri)) {
+      Uri uri = Uri.parse(cameraUri);
+      DeviceHelper.revokeWritePermission(uri);
+    } else {
+      Log.e(TAG, "captured camera uri is null");
+    }
+  }
+
+  private void processCameraGallery(Intent data) {
+    ClipData clipData = data.getClipData();
+    if (clipData != null
+        && clipData.getItemAt(0) != null
+        && clipData.getItemAt(0).getUri() != null) {
+      Uri uri = clipData.getItemAt(0).getUri();
+      selectedFile = DeviceHelper.pickedExistingPicture(uri);
+      setGroupAvatar(selectedFile);
+    } else if (data.getData() != null) {
+      String path = DeviceHelper.getRealPathFromUri(data.getData());
+      selectedFile = new File(path);
+      setGroupAvatar(selectedFile);
+    } else {
+      Log.e(TAG, "failure get image from gallery");
+    }
+  }
+
+  private void filterFacebookFriends(String filter) {
+    filtered.clear();
+    if (TextUtils.isEmpty(filter)) {
+      filtered.addAll(allFriends);
+    } else {
+      for (FacebookFriend friend : allFriends) {
+        if (friend.getName().toLowerCase().contains(filter.toLowerCase())) {
+          filtered.add(friend);
+        }
+      }
+    }
+
+    setFriends(filtered);
+  }
+
+  private void getFacebookFriends() {
+    if (DeviceHelper.isNetworkConnected()) {
+      showProgressFragmentTemp();
+      fbApiClient.searchFriends();
+    } else {
+      showNoInternetConnectionDialog();
+    }
+  }
+
+  private void checkFilledData() {
+
+    filtered.clear();
+    filtered.addAll(allFriends);
+    setFriends(filtered);
+
+    String groupName = etGroupName.getText().toString();
+    List<FacebookFriend> selectedFriends = friendsAdapter.getSelectedFriends();
+    members.clear();
+
+    for (FacebookFriend friend : selectedFriends)
+      if (friend.getSocialNetwork().equals("vk")) {
+        VKRequest request = new VKRequest("messages.send",
+            VKParameters.from(VKApiConst.USER_ID, Integer.parseInt(friend.getId()),
+                VKApiConst.MESSAGE, getResources().getString(R.string.invite_message)));
+        request.executeWithListener(new VKRequest.VKRequestListener() {
+          @Override public void onComplete(VKResponse response) {
+            super.onComplete(response);
+            JSONObject resp = response.json;
+            Log.e("VK response", response.responseString);
+          }
+
+          @Override public void onError(VKError error) {
+            super.onError(error);
+            Log.e("VK response", " " + error.errorCode + error.toString());
+          }
+        });
+      }
+
+    if (TextUtils.isEmpty(groupName.replace(" ", ""))) {
+      new SugarmanDialog.Builder(this, DialogConstants.GROUP_NAME_IS_EMPTY_ID).content(
+          R.string.group_name_is_empty).show();
+    } else if (selectedFriends.isEmpty()) {
+      new SugarmanDialog.Builder(this, DialogConstants.FRIENDS_LIST_IS_IMPTY_ID).content(
+          R.string.members_list_is_empty).show();
+    } else {
+      List<String> ids = new ArrayList<>();
+      String id;
+      for (FacebookFriend friend : selectedFriends) {
+        if (invitable.contains(friend)) {
+          id = friend.getId();
+          Timber.e("Invitable: " + friend.getName());
+          ids.add(id);
+        } else {
+          members.add(friend);
+        }
+      }
+
+      if (!ids.isEmpty()) {
+        GameRequestContent content =
+            new GameRequestContent.Builder().setMessage(getString(R.string.play_with_me))
+                .setRecipients(ids)
+                .build();
+        fbInviteDialog.show(content);
+      } else {
+        createGroup(members);
+      }
+    }
+  }
+
+  private void createGroup(List<FacebookFriend> members) {
+    showProgressFragmentTemp();
+    String groupName = etGroupName.getText().toString();
+    mCreateGroupClient.createGroup(members, groupName, selectedFile, CreateGroupActivity.this);
+  }
+
+  private void setFriends(List<FacebookFriend> friends) {
+    friendsAdapter.setValue(friends);
+
+    if (friends.isEmpty()) {
+      rcvFriends.setVisibility(View.GONE);
+      //vNoFriends.setVisibility(View.VISIBLE);
+    } else {
+      rcvFriends.setVisibility(View.VISIBLE);
+      //vNoFriends.setVisibility(View.GONE);
+    }
+  }
+
+  private void setGroupAvatar(File file) {
+    if (file != null && file.exists() && file.isFile()) {
+      String path = file.getAbsolutePath();
+      Bitmap bm = BitmapFactory.decodeFile(path);
+      bm = BitmapUtils.getRotatedBitmap(path, bm);
+      bm = BitmapUtils.scaleBitmap(bm, Config.MAX_PICTURE_SIZE_SEND_TO_SERVER,
+          Config.MAX_PICTURE_SIZE_SEND_TO_SERVER);
+
+      showProgressFragmentTemp();
+      new SaveBitmapToFileAsyncTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, bm);
+
+      bm = scaleCenterCrop(bm, bm.getHeight() < bm.getWidth() ? bm.getHeight() : bm.getWidth(),
+          bm.getHeight() < bm.getWidth() ? bm.getHeight() : bm.getWidth());
+      bm = Bitmap.createScaledBitmap(bm, bm.getWidth() / 3, bm.getHeight() / 3, true);
+      MaskImage mi = new MaskImage(this, R.drawable.group_avatar, false, 0xff000000);
+      bm = mi.transform(bm);
+      Log.e("Image TRAAAAH", "" + BitmapCompat.getAllocationByteCount(bm));
+      ivGroupAvatar.setImageBitmap(bm);
+      ivGroupAvatar.setVisibility(View.VISIBLE);
+      //vAddPhotoContainer.setBackgroundResource(R.drawable.dark_gray_double_stroke_background);
+    } else {
+      Log.e(TAG, "file isn't exists: " + (file == null ? null : file.getAbsolutePath()));
+    }
+  }
+}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:drawable="@drawable/sugar_stand_50" android:duration="30" />
+    <item android:drawable="@drawable/sugar_stand_51" android:duration="30" />
+    <item android:drawable="@drawable/sugar_stand_52" android:duration="30" />
+    <item android:drawable="@drawable/sugar_stand_53" android:duration="30" />
+    <item android:drawable="@drawable/sugar_stand_54" android:duration="30" />
+    <item android:drawable="@drawable/sugar_stand_55" android:duration="30" />
+    <item android:drawable="@drawable/sugar_stand_56" android:duration="30" />
+    <item android:drawable="@drawable/sugar_stand_57" android:duration="30" />
+    <item android:drawable="@drawable/sugar_stand_58" android:duration="30" />
+    <item android:drawable="@drawable/sugar_stand_59" android:duration="30" />
+    <item android:drawable="@drawable/sugar_stand_60" android:duration="30" />
+
+</animation-list>

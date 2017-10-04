@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="congratulation_myb_width">130dp</dimen>
+    <dimen name="congratulation_image_width">140dp</dimen>
+    <dimen name="error_layout_text_size">11sp</dimen>
+</resources>

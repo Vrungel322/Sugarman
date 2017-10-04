@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <com.sugarman.myb.ui.views.CustomFontTextView
+        android:id="@+id/tv_steps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/stats_steps_text_size"
+        app:font="@string/font_roboto_condensed"
+        tools:text="6,201" />
+
+    <com.sugarman.myb.ui.views.VerticalIndicatorView
+        android:id="@+id/viv_steps"
+        android:layout_width="@dimen/stats_indicator_width"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/stats_vertical_indicator_margin"
+        android:layout_marginTop="@dimen/stats_vertical_indicator_margin" />
+</LinearLayout>

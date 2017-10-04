@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<FrameLayout
+    android:id="@+id/parentLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardUseCompatPadding="false">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"> <!-- 3 элемента - назад, имя группы, МУБ/редактировать -->
+
+                    <ImageView
+                        android:id="@+id/iv_cross"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:contentDescription="@string/content_description"
+                        android:layout_gravity="center"
+                        android:padding="7dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/back_arrow" />
+
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                         />
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+                        <com.sugarman.myb.ui.views.CustomFontTextView
+                            android:id="@+id/tv_group_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:ellipsize="end"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:textColor="@color/dark_gray"
+                            android:textSize="17sp"
+                            app:font="@string/font_roboto_medium"
+                            tools:text="Little Monkeys " />
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:id="@+id/iv_edit"
+                        android:layout_width="47dp"
+                        android:layout_height="47dp"
+                        android:contentDescription="@string/content_description"
+                        android:padding="6dp"
+                        android:layout_gravity="center"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/kick_kick"
+                        android:visibility="visible"
+                        tools:visibility="visible" />
+
+
+
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/group_details_divider_height"
+                    android:background="@color/gray" />
+                <!-- maxLines not working on some devices, use deprecated singleLine -->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center">
+
+
+                <ImageView
+                    android:id="@+id/iv_group_avatar"
+                    android:layout_weight="34"
+                    android:layout_width="0dp"
+                    android:layout_margin="12dp"
+                    android:layout_height="76dp"
+                    android:src="@drawable/ic_gray_avatar" />
+
+
+                    <LinearLayout
+                        android:layout_weight="91"
+                        android:id="@+id/linear_group_stats"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:paddingBottom="13dp"
+                        android:visibility="gone">
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+                    <com.sugarman.myb.ui.views.CustomFontTextView
+                        android:id="@+id/tv_my_steps"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#E10F0F"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_marginTop="6dp"
+                        android:textAlignment="center"
+                        tools:textColor="#E10F0F"
+                        android:textSize="18sp"
+                        android:text="2500"
+                        app:font="@string/font_roboto_medium"/>
+                        <com.sugarman.myb.ui.views.CustomFontTextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="#5A5A5A"
+                            android:textAlignment="center"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:textSize="12sp"
+                            android:text="@string/my_steps_today"
+                            app:font="@string/font_roboto_regular"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                            <com.sugarman.myb.ui.views.CustomFontTextView
+                                android:id="@+id/tv_group_steps"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColor="#5A5A5A"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:layout_marginTop="6dp"
+                                android:textAlignment="center"
+                                android:textSize="16sp"
+                                android:text="2500"
+                                app:font="@string/font_roboto_medium" />
+                            <com.sugarman.myb.ui.views.CustomFontTextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColor="#5A5A5A"
+                                android:textAlignment="center"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:textSize="12sp"
+                                android:text="@string/total_group_steps"
+                                app:font="@string/font_roboto_regular" />
+                            </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                            <com.sugarman.myb.ui.views.CustomFontTextView
+                                android:id="@+id/tv_asses"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColor="#5A5A5A"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:layout_marginTop="6dp"
+                                android:textAlignment="center"
+                                android:textSize="16sp"
+                                android:text="2500"
+                                app:font="@string/font_roboto_medium" />
+                            <com.sugarman.myb.ui.views.CustomFontTextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColor="#5A5A5A"
+                                android:textAlignment="center"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:textSize="12sp"
+                                android:text="@string/total_assess_kicked"
+                                app:font="@string/font_roboto_regular" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_weight="91"
+                        android:id="@+id/linear_group_timer"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:visibility="gone">
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:paddingBottom="25dp"
+                            android:layout_height="match_parent">
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/tv_timer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:textAlignment="center"
+                            android:layout_marginBottom="13dp"
+                            android:gravity="center"
+                            android:fontFamily="@string/font_roboto_light"
+                            android:letterSpacing="0.230"
+                            android:textSize="18sp"
+                            android:textColor="#E10F0F"
+                            android:text=""
+                            />
+                        <TextView
+                            android:id="@+id/tv_edit_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:textAlignment="center"
+                            android:background="@drawable/edit_group_stroke"
+                            android:fontFamily="@string/font_roboto_medium"
+                            android:layout_marginLeft="35dp"
+                            android:layout_marginRight="35dp"
+                            android:paddingTop="6dp"
+                            android:paddingBottom="6dp"
+                            android:textSize="14sp"
+                            android:textColor="#5A5A5A"
+                            android:text="@string/edit_group"/>
+                        </LinearLayout>
+                        </RelativeLayout>
+
+                        </LinearLayout>
+                </LinearLayout>
+
+
+                <View
+                    android:id="@+id/borderline"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/group_details_divider_height"
+                    android:background="@color/gray" />
+
+                <RelativeLayout
+                    android:id="@+id/relative_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:visibility="visible">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:paddingTop="6dp"
+                        android:id="@+id/rcv_group_members"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#FAFAFA"
+                        android:scrollbars="none" />
+
+
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/group_details_divider_height"
+                    android:background="@color/gray" />
+
+                <RelativeLayout
+                    android:id="@+id/relative_chat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible">
+                    <RelativeLayout
+                        android:id="@+id/chat_to_hide"
+                        android:layout_width="match_parent"
+                        android:visibility="gone"
+                        android:layout_height="match_parent">
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rvMain"
+                        android:background="@color/white"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_above="@+id/typingTextView"
+                        android:layout_below="@+id/tToolbar"
+                        android:splitMotionEvents="false"
+                        android:cacheColorHint="@android:color/transparent"
+                        android:clipToPadding="false"
+                        android:scrollbars="vertical"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:layout_marginBottom="47dp"/>
+
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <View android:layout_height="1px"
+                            android:layout_width="match_parent"
+                            android:layout_above="@id/etMessage"
+                            android:background="#DEDEDE"/>
+                        <ProgressBar
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:id="@+id/loadingAboveSendButton"
+                            android:layout_alignRight="@id/btnSend"
+                            android:layout_centerVertical="true"
+                            android:visibility="gone"/>
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
+                            android:contentDescription="@null"
+                            android:background="@color/trans"
+                            android:src="@drawable/attach"
+                            android:tint="@color/chat_red"
+                            android:paddingBottom="8dp"
+                            android:paddingEnd="10dp"
+                            android:paddingRight="10dp"
+                            android:visibility="visible"
+                            android:layout_alignParentBottom="true"
+                            android:id="@+id/btnSend"
+                            />
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@null"
+                            android:layout_centerVertical="true"
+                            android:background="@color/trans"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginLeft="10dp"
+                            android:id="@+id/btnStickers" />
+
+
+                        <ImageButton
+                            android:id="@+id/attach_file"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toLeftOf="@id/etMessage"
+                            android:src="@drawable/attach"
+                            android:tint="#CCC"/>
+
+
+                        <com.clover_studio.spikachatmodule.view.CustomEditText
+                            android:id="@+id/etMessage"
+                            android:layout_width="match_parent"
+                            android:textColorHint="#f45353"
+                            android:layout_height="wrap_content"
+                            android:padding="15dp"
+                            android:hint="@string/wake_them_up"
+                            android:windowSoftInputMode="adjustPan"
+                            android:isScrollContainer="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_toLeftOf="@id/btnSend"
+                            android:layout_toStartOf="@id/btnSend"
+                            android:maxLines="5"
+                            android:imeOptions="actionDone"
+                            android:singleLine="true"
+                            android:fontFamily="@string/font_roboto_regular"
+                            android:inputType="textCapSentences|textMultiLine"
+                            android:background="@drawable/edittext_background_white_border_corners"
+                            android:textSize="15sp"
+                            />
+
+                        <View
+                            android:id="@+id/viewForMenuBehind"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/black_trans"
+                            android:layout_alignParentBottom="true"
+                            android:visibility="gone"/>
+
+                        <include
+                            layout="@layout/layout_menu_message"
+                            android:layout_width="match_parent"
+                            android:layout_margin="10dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"/>
+
+                        <include
+                            layout="@layout/layout_menu_stickers"
+                            android:layout_width="match_parent"
+                            android:layout_margin="10dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"/>
+                    </RelativeLayout>
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/chat_not_available"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="gone">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:textAlignment="center"
+                            android:paddingBottom="35dp"
+                            android:textSize="28sp"
+                            android:textColor="#E42509"
+                            android:text="@string/chat_not_available"
+                            />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:textAlignment="center"
+                            android:paddingTop="25dp"
+                            android:textColor="#E42509"
+                            android:text="@string/must_be_in_group"/>
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" />
+
+    <include
+        android:id="@+id/layout_conn_error"
+        layout="@layout/layout_connection_error"
+        android:visibility="gone" />
+
+</FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        android:foreground="@drawable/chat_background"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        app:behavior_hideable="false"
+        app:behavior_peekHeight="35dp"
+        app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+
+        <LinearLayout
+            android:id="@+id/hiddenContentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="260dp"
+            android:orientation="vertical"><!-- вот тут вот надо переделать -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="35dp">
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    />
+            <TextView
+                android:id="@+id/sneekPeakTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:text="Chat"
+                />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    />
+            </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+            </RelativeLayout>
+        </LinearLayout>
+
+    </FrameLayout>
+</android.support.design.widget.CoordinatorLayout>

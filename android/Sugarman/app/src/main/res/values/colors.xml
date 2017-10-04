@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FF2D27</color>
+    <color name="colorPrimaryDark">#FF2D27</color>
+    <color name="colorAccent">@color/dark_gray</color>
+
+    <color name="light_red">#f9c5c6</color>
+
+    <color name="dark_gray">#343434</color>
+    <color name="gray">#bdbdbd</color>
+    <color name="gray_pending">#95989A</color>
+    <color name="light_gray">#d8d8d8</color>
+    <color name="red">#dc0c0c</color>
+    <color name="dark_red">#ba2828</color>
+    <color name="chat_red">#e10f0f</color>
+    <color name="selected_user_grey">#8f8f8f</color>
+    <color name="day_challenge">#e5800c</color>
+    <color name="yellow_active_user">#feea3b</color>
+
+    <color name="white_transparent">#99FFFFFF</color>
+    <color name="heavy_white_transparent">#EEFFFFFF</color>
+    <color name="divider_color">#D9DADB</color>
+
+    <color name="red_transparent">#AAdc0c0c</color>
+</resources>

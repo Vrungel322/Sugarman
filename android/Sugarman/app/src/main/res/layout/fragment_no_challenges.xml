@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="10dp">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view_no_challenge"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/no_challenges_padding"
+        android:layout_marginRight="@dimen/no_challenges_padding"
+        android:layout_marginTop="@dimen/no_challenges_padding"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardElevation="@dimen/no_challenges_elevation"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/imageBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/group_with_plus"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                />
+        <LinearLayout
+            android:layout_margin="10dp"
+            android:id="@+id/linear_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/text_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="25dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+            <com.sugarman.myb.ui.views.CustomFontTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/create_a_group_and_challenge"
+                android:textColor="@color/dark_gray"
+                android:textSize="18sp"
+                app:font="@string/font_roboto_light" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <com.sugarman.myb.ui.views.CustomFontTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/your_friends_to_walk"
+                            android:textColor="@color/dark_gray"
+                            android:textSize="18sp"
+                            app:font="@string/font_roboto_light" />
+                        <com.sugarman.myb.ui.views.CustomFontTextView
+                            android:layout_marginLeft="3dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/ten_k_steps"
+                            android:textColor="#FF0000"
+                            android:textSize="18sp"
+                            app:font="@string/font_roboto_light" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <com.sugarman.myb.ui.views.CustomFontTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/per_day"
+                            android:textColor="@color/dark_gray"
+                            android:textSize="18sp"
+                            app:font="@string/font_roboto_light" />
+                        <com.sugarman.myb.ui.views.CustomFontTextView
+                            android:layout_marginLeft="3dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/for_21_days"
+                            android:textColor="#FF0000"
+                            android:textSize="18sp"
+                            app:font="@string/font_roboto_light" />
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+
+                <com.sugarman.myb.ui.views.CustomFontTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tap_on_plus"
+                    android:textColor="#95989A"
+                    android:textSize="13sp"
+                    app:font="@string/font_roboto_regular" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_marginBottom="23dp">
+            <com.sugarman.myb.ui.views.CustomFontTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/or_tap_on"
+                android:textColor="#95989A"
+                android:textSize="11sp"
+                app:font="@string/font_roboto_regular" />
+                <ImageView
+                    android:layout_width="11dp"
+                    android:layout_height="11dp"
+                    android:layout_marginLeft="3dp"
+                    android:layout_marginRight="3dp"
+                    android:src="@drawable/search"/>
+
+                <com.sugarman.myb.ui.views.CustomFontTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/to_search_for_pending"
+                    android:textColor="#95989A"
+                    android:textSize="11sp"
+                    app:font="@string/font_roboto_regular" />
+            </LinearLayout>
+        </LinearLayout>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+</LinearLayout>

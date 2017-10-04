@@ -1,0 +1,530 @@
+<resources>
+  <string name="app_name">MYB</string>
+
+  <string name="content_description">@string/app_name</string>
+  <string name="move_your_butt">MOOVE YOUR BUTT by Sugarman</string>
+
+  <integer name="com_vk_sdk_AppId">6167040</integer>
+
+  <string name="invite_message">Hi friend, I am using this app and I want to build a walking group with you. Check out the app and let me know when you have it downloaded and we will create a fun group to virtually walk together and guard each other! \nhttp://bit.ly/MYBInviteInApp</string>
+
+  <!-- DIALOGS -->
+  <string name="okay">Okay</string>
+  <string name="alert_default_title">Oh Snap!</string>
+  <string name="no_internet_connection">It looks like you don\'t have internet connection, try to reconnect.</string>
+  <string name="update_old_version">You MUST upgrade to continue and enjoy new functionalities</string>
+  <string name="need_your_permission">This is action isn\'t available without your permission.</string>
+  <string name="step_detector_not_supported">Step detector is not supported on this device</string>
+  <string name="group_name_is_empty">Please enter group name</string>
+  <string name="members_list_is_empty">In order to create group you need to choose members</string>
+  <string name="play_with_me">Come play this level with me</string>
+  <string name="max_active_groups">Sorry, you can only have up to 3 active groups</string>
+  <string name="this_user_has_completed_daily">This user has completed his daily steps!</string>
+  <string name="you_cant_kick_self">You can\'t kick your own ass</string>
+  <string name="editing_your_group_is_possible_on_warm_up">Editing your group is possible only on warm up day</string>
+  <string name="invite_is_no_available_template">Your invitation to %1$s is no longer available</string>
+  <string name="you_cant_kick_pending">Can\'t kick pending users ass</string>
+  <string name="you_cant_kick_more_that_self">You can\'t MYB user that walked more steps than you</string>
+  <string name="you_cant_kick_foreign_users">You can\'t kick users not from your groups</string>
+
+  <string name="check_facebook">For this action need the native Facebook for Android app installed, version 7.0 or higher</string>
+  <string name="update_fb">Update FB</string>
+  <string name="cancel">Cancel</string>
+
+  <!-- LOGIN ACTIVITY -->
+  <string name="we_will_never_post_on_your_timeline">We will never post on your timeline</string>
+  <string name="terms_of_use">Terms of Use</string>
+  <string name="privacy_policy">Privacy Policy</string>
+  <string name="divider">|</string>
+
+  <!-- PROGRESS FRAGMENT -->
+  <string name="loading">Loading&#8230;</string>
+
+  <!-- MAIN ACTIVITY -->
+  <string name="steps_today_caps">STEPS TODAY</string>
+  <string name="search_groups">Search groups</string>
+
+  <!-- PROFILE ACTIVITY -->
+  <string name="invites">Invites</string>
+  <string name="requests">Requests</string>
+  <string name="high_score">High Score</string>
+  <string name="invite_friends">Invite friends</string>
+  <string name="settings">Settings</string>
+  <string name="log_out">Log Out</string>
+  <string name="intro">Tutorial</string>
+  <string name="profile_my_stats">My stats</string>
+
+  <!-- INTRO ACTIVITY -->
+  <string name="menu">Menu</string>
+  <string name="skip">Skip</string>
+  <string name="move">Move</string>
+
+  <!-- HIGH SCORE ACTIVITY -->
+  <string name="group_that_i_created">Group That I\'ve Created</string>
+  <string name="nothig_to_show_yet">Nothing to show yet :(</string>
+  <string name="group_that_i_participated">Group That I Participated</string>
+  <string name="group_position_template">Your position was %1$d</string>
+
+  <!-- INVITES ACTIVITY -->
+  <string name="decline">Decline</string>
+  <string name="accept">Accept</string>
+  <string name="no_invites">No Invites</string>
+  <string name="invite_description_template">%1$s has invited you to join %2$s group.</string>
+  <string name="invite_description_flag1">has invited you to join</string>
+  <string name="invite_description_flag2">group.</string>
+
+  <!-- REQUESTS ACTIVITY -->
+  <string name="approve">Approve</string>
+  <string name="request_description_template">%1$s has requested to join %2$s group.</string>
+  <string name="request_description_flag1">has requested to join</string>
+  <string name="request_description_flag2">group.</string>
+  <string name="no_requests">No Requests</string>
+
+  <!-- CREATE GROUP ACTIVITY -->
+  <string name="create">Create a Group</string>
+  <string name="add">Add</string>
+  <string name="remove">Remove</string>
+  <string name="photo">Photo</string>
+  <string name="create_group_et_hint">Enter Group Name</string>
+  <string name="search">Search</string>
+  <string name="add_photo">Add Photo</string>
+  <string name="no_friends_found">No friends found</string>
+  <string name="group_name_template">%1$s\'s group</string>
+
+  <!-- SEARCH GROUP ACTIVITY -->
+  <string name="no_search_group">No Groups</string>
+  <string name="available">Available</string>
+  <string name="unavailable">Unavailable</string>
+  <string name="created_by_template">Created by: %1$s</string>
+  <string name="days_ago_template">%1$s days ago</string>
+  <string name="join">Join</string>
+  <string name="requested">Requested</string>
+
+  <!-- CONGRATULATIONS ACTIVITY -->
+  <string name="congratulations">Congratulations!</string>
+  <string name="congratulations_description_template">Your group %1$s has finished the challenge</string>
+  <string name="congratulations_description_flag1">Your group</string>
+  <string name="congratulations_description_flag2">has finished the challenge</string>
+
+  <!-- DAILY ACTIVITY -->
+  <string name="your_the_daily">You\'re the daily</string>
+  <string name="sugarman">Sugarman!</string>
+  <string name="daily_description_template">You\'re the first from %1$s group to reach 10K Steps</string>
+  <string name="daily_description_flag1">You\'re the first from</string>
+  <string name="daily_description_flag2">group to reach</string>
+
+  <string name="your_not_the_daily">You\'re not the daily</string>
+  <string name="daily_description_template_not">%1$s was the first from %2$s group to reach 10K Steps. Try harder tomorrow!</string>
+  <string name="daily_description_flag1_not"> is the first from</string>
+  <string name="daily_description_flag2_not">group to reach</string>
+
+  <!-- FAILED ACTIVITY -->
+  <string name="failed_thanks_to_bears_template">Your group %1$s has failed thanks to these lazy bears</string>
+  <string name="failed_thanks_to_bears_left">Your group</string>
+  <string name="failed_thanks_to_bears_right">has failed thanks to these lazy bears</string>
+  <string name="failed_regroup">Re-Group without laziest</string>
+
+  <!-- NO CHALLENGES FRAGMENT -->
+  <string name="all_you_have_to_do_is_walk">All you have to do is walk</string>
+  <string name="create_a_group_and_challenge">Create a group and challenge </string>
+  <string name="your_friends_to_walk">your friends to walk  </string>
+  <string name="ten_k_steps">10K steps</string>
+  <string name="per_day">per day  </string>
+  <string name="for_21_days">for 21 days</string>
+  <string name="steps_per_day_in_21_day">10K steps per day in 21 days</string>
+  <string name="tap_on">Tap on&#160;</string>
+  <string name="to_create_a_group">&#160;to create a group</string>
+  <string name="and_start_a_challenges">and start a challenge</string>
+  <string name="tap_on_plus">Tap on + to create a group and start a challenge</string>
+  <string name="or_tap_on"> or tap on </string>
+  <string name="to_search_for_pending">  to search for pending groups</string>
+
+  <!-- CHALLENGE WILL START FRAGMENT -->
+  <string name="this_challenge_will_start_in">This challenge will start in</string>
+
+  <!-- CHALLENGE FRAGMENT -->
+  <string name="danger_indicator">DANGER INDICATOR</string>
+  <string name="myb">myb</string>
+  <string name="good">good</string>
+  <string name="the_laziest">THE LAZIEST</string>
+  <string name="view">VIEW</string>
+  <string name="all">ALL</string>
+  <string name="tap_on_photo_to_kick_ass">Tap on photo to kick-ass</string>
+  <string name="challenge_day_template">Day %1$d</string>
+  <string name="plural_decimal_template">%1$d %2$s</string>
+  <string name="plural_string_template">%1$s %2$s</string>
+  <string name="timer_template">%1$s:%2$s:%3$s:%4$s</string>
+  <string name="warming_up">Warming up</string>
+  <string name="yesterday">Yesterday</string>
+  <string name="today">Today</string>
+  <string name="best">BEST</string>
+  <string name="fastest">SUGARMAN</string>
+  <string name="laziest">LAZIEST</string>
+  <string name="all_heroes">ALL HEROES</string>
+  <string name="group_steps_today">Group steps today</string>
+  <string name="day">Day</string>
+  <string name="users">users</string>
+  <string name="sugarman_is">Sugarman is </string>
+  <string name="todays_fastest">fastest</string>
+
+  <!-- GROUP DETAILS ACTIVITY -->
+  <string name="pending">Pending</string>
+  <string name="lazy">Lazy</string>
+  <string name="walk">Walking</string>
+  <string name="run">Running</string>
+  <string name="kicked_user">%1$s\'s ass was kicked</string>
+  <string name="edit_group">Edit Group</string>
+  <string name="chat_not_available">Chat is not available!</string>
+  <string name="must_be_in_group">You should be in group</string>
+  <string name="kicked_users">Kicked %1$d users!</string>
+  <string name="cant_kick_anybody">You can\'t kick anybody in this group!</string>
+  <string name="cant_kick_not_in_group">You can\'t kick people if you are not a part of the group!</string>
+  <string name="my_steps_today">My steps\nToday</string>
+  <string name="total_assess_kicked">Total asses\nKicked</string>
+  <string name="total_group_steps">Total group\nSteps</string>
+  <string name="wake_them_up">Type to wake them up…</string>
+  <string name="steps">Steps</string>
+
+  <!-- ADD MEMBER ACTIVITY -->
+  <string name="add_members">Add Members</string>
+  <string name="search_member">Search to add new members</string>
+  <string name="added">Added</string>
+
+  <!-- STATS ACTIVITY -->
+  <string name="my_stats">My Stats</string>
+  <string name="warming_up_caps">Warming up</string>
+  <string name="stats_day_template">Day %1$d</string>
+  <string name="last_day">Last Day</string>
+
+  <!-- STATS ACTIVITY -->
+  <string name="pref_language_options">Language</string>
+  <string name="pref_language">English</string>
+
+
+
+
+  <!-- SHOP ACTIVITY -->
+
+  <string name="products_for_true_walkers">Products for true walkers</string>
+
+  <string name="buy_for">Buy for</string>
+
+  <string name="buy_now_for">Buy now for</string>
+
+  <string name="free_for">Free for %1$s friends</string>
+
+  <string name="sugarman_cap">Sugarman cap</string>
+
+  <string name="phone_holder">Phone holder</string>
+
+  <string name="sugarman_comics">Sugarman comics</string>
+
+
+
+  <string name="purchase_details">Purchase details</string>
+
+  <string name="total_price">Total price</string>
+
+  <string name="delivery_information">Delivery information</string>
+
+  <string name="country">Country</string>
+
+  <string name="city">City</string>
+
+  <string name="street">Street</string>
+
+  <string name="zip_code">ZIP Code</string>
+
+  <string name="full_name">Full name</string>
+
+  <string name="all_fields_required">All fields required</string>
+
+  <string name="invite_friends_and_get_gift">Invite friends to the MYB\nand get this product for FREE after\n5 installations</string>
+
+  <string name="already_installed_by_your_link">Already installed by your link</string>
+
+
+
+
+
+  <!-- PHONE LOGIN -->
+
+  <string name="your_phone_number">Your phone number</string>
+
+  <string name="please_confirm">Please confirm your country code and enter\nyour phone number</string>
+
+  <string name="we_have_sent_you">We have sent you an SMS with a code\nto the number above</string>
+
+  <string name="to_complete">To complete your phone number verification\nplease enter the 5-digit activation code</string>
+
+
+
+  <!-- PROFILE SETTINGS ACTIVITY -->
+
+  <string name="social_network">SOCIAL NETWORKS</string>
+
+  <string name="change_profile_photo">Change profile photo</string>
+
+  <string name="profile_settings">Profile Settings</string>
+
+
+  <string name="not_logged_in">Not logged in</string>
+  <string name="log_in_to_vk">Log in to VK?</string>
+  <string name="log_in_to_fb">Log in to Facebook?</string>
+
+  <string name="the_email_is_not_valid">The e-mail you entered is not valid</string>
+
+  <string name="coming_soon">Coming soon</string>
+
+  <string name="invite_friends_to_the_MYB">Invite friends to the MYB\nand get this product for FREE\nafter 5 installations</string>
+  <string name="already_installed">Already installed by your link</string>
+
+
+  <!-- LANGUAGE SETTINGS -->
+  <array name="pref_language_array">
+    <item>English</item>
+    <item>עברית</item>
+    <item>Русский</item>
+  </array>
+
+  <!-- LANGUAGE CODE SETTINGS -->
+  <array name="pref_language_code_array">
+    <item>en</item>
+    <item>iw</item>
+    <item>ru</item>
+  </array>
+
+
+  <!-- NOTIFICATIONS FRAGMENT -->
+  <array name="notifications_types">
+    <item>will start the challenge in an hour, stay tuned!</item>
+    <item>group has started the challenge! Good luck!</item>
+    <item>has poked you!</item><!-- <item>ping you to MYB on_ae_314_qp_group</item>-->
+    <item>has invited you to_ae_314_qp_group</item>
+    <item>Congrats! Your group_ae_314_qp_has finished the challenge!</item>
+    <item>Congratulations, you are the daily Sugarman in_ae_314_qp_group</item>
+    <item>has joined_ae_314_qp_group</item>
+    <item>has failed the challenge</item>
+    <item>You have one more day to add friends to your_ae_314_qp_group</item>
+    <item>Your invitation to_ae_314_qp_is no longer available</item>
+    <item>has approved your request to join_ae_314_qp_group</item>
+    <item>has requested to join_ae_314_qp_group</item>
+    <item>is unable to start 10000 Steps Per Day due to lack of users</item>
+    <item>kicked you to MYB on_ae_314_qp_group</item>
+  </array>
+  <string name="title_activity_approve_otp">ApproveOtpActivity</string>
+  <string name="empty_field_denied">%1$s can not be empty</string>
+  <string name="purchase_request_send">We hope you will enjoy your purchase.</string>
+  <string name="choooseCountry">Choose country</string>
+
+  <!-- Country Codes -->
+  <string-array name="CountryCodes" >
+    <item>93,AF</item>
+    <item>355,AL</item>
+    <item>213,DZ</item>
+    <item>376,AD</item>
+    <item>244,AO</item>
+    <item>672,AQ</item>
+    <item>54,AR</item>
+    <item>374,AM</item>
+    <item>297,AW</item>
+    <item>61,AU</item>
+    <item>43,AT</item>
+    <item>994,AZ</item>
+    <item>973,BH</item>
+    <item>880,BD</item>
+    <item>375,BY</item>
+    <item>32,BE</item>
+    <item>501,BZ</item>
+    <item>229,BJ</item>
+    <item>975,BT</item>
+    <item>591,BO</item>
+    <item>387,BA</item>
+    <item>267,BW</item>
+    <item>55,BR</item>
+    <item>673,BN</item>
+    <item>359,BG</item>
+    <item>226,BF</item>
+    <item>95,MM</item>
+    <item>257,BI</item>
+    <item>855,KH</item>
+    <item>237,CM</item>
+    <item>1,CA</item>
+    <item>238,CV</item>
+    <item>236,CF</item>
+    <item>235,TD</item>
+    <item>56,CL</item>
+    <item>86,CN</item>
+    <item>61,CX</item>
+    <item>61,CC</item>
+    <item>57,CO</item>
+    <item>269,KM</item>
+    <item>242,CG</item>
+    <item>243,CD</item>
+    <item>682,CK</item>
+    <item>506,CR</item>
+    <item>385,HR</item>
+    <item>53,CU</item>
+    <item>357,CY</item>
+    <item>420,CZ</item>
+    <item>45,DK</item>
+    <item>253,DJ</item>
+    <item>670,TL</item>
+    <item>593,EC</item>
+    <item>20,EG</item>
+    <item>503,SV</item>
+    <item>240,GQ</item>
+    <item>291,ER</item>
+    <item>372,EE</item>
+    <item>251,ET</item>
+    <item>500,FK</item>
+    <item>298,FO</item>
+    <item>679,FJ</item>
+    <item>358,FI</item>
+    <item>33,FR</item>
+    <item>689,PF</item>
+    <item>241,GA</item>
+    <item>220,GM</item>
+    <item>995,GE</item>
+    <item>49,DE</item>
+    <item>233,GH</item>
+    <item>350,GI</item>
+    <item>30,GR</item>
+    <item>299,GL</item>
+    <item>502,GT</item>
+    <item>224,GN</item>
+    <item>245,GW</item>
+    <item>592,GY</item>
+    <item>509,HT</item>
+    <item>504,HN</item>
+    <item>852,HK</item>
+    <item>36,HU</item>
+    <item>91,IN</item>
+    <item>62,ID</item>
+    <item>98,IR</item>
+    <item>964,IQ</item>
+    <item>353,IE</item>
+    <item>44,IM</item>
+    <item>972,IL</item>
+    <item>39,IT</item>
+    <item>225,CI</item>
+    <item>81,JP</item>
+    <item>962,JO</item>
+    <item>7,KZ</item>
+    <item>254,KE</item>
+    <item>686,KI</item>
+    <item>965,KW</item>
+    <item>996,KG</item>
+    <item>856,LA</item>
+    <item>371,LV</item>
+    <item>961,LB</item>
+    <item>266,LS</item>
+    <item>231,LR</item>
+    <item>218,LY</item>
+    <item>423,LI</item>
+    <item>370,LT</item>
+    <item>352,LU</item>
+    <item>853,MO</item>
+    <item>389,MK</item>
+    <item>261,MG</item>
+    <item>265,MW</item>
+    <item>60,MY</item>
+    <item>960,MV</item>
+    <item>223,ML</item>
+    <item>356,MT</item>
+    <item>692,MH</item>
+    <item>222,MR</item>
+    <item>230,MU</item>
+    <item>262,YT</item>
+    <item>52,MX</item>
+    <item>691,FM</item>
+    <item>373,MD</item>
+    <item>377,MC</item>
+    <item>976,MN</item>
+    <item>382,ME</item>
+    <item>212,MA</item>
+    <item>258,MZ</item>
+    <item>264,NA</item>
+    <item>674,NR</item>
+    <item>977,NP</item>
+    <item>31,NL</item>
+    <item>599,AN</item>
+    <item>687,NC</item>
+    <item>64,NZ</item>
+    <item>505,NI</item>
+    <item>227,NE</item>
+    <item>234,NG</item>
+    <item>683,NU</item>
+    <item>850,KP</item>
+    <item>47,NO</item>
+    <item>968,OM</item>
+    <item>92,PK</item>
+    <item>680,PW</item>
+    <item>507,PA</item>
+    <item>675,PG</item>
+    <item>595,PY</item>
+    <item>51,PE</item>
+    <item>63,PH</item>
+    <item>870,PN</item>
+    <item>48,PL</item>
+    <item>351,PT</item>
+    <item>1,PR</item>
+    <item>974,QA</item>
+    <item>40,RO</item>
+    <item>7,RU</item>
+    <item>250,RW</item>
+    <item>590,BL</item>
+    <item>685,WS</item>
+    <item>378,SM</item>
+    <item>239,ST</item>
+    <item>966,SA</item>
+    <item>221,SN</item>
+    <item>381,RS</item>
+    <item>248,SC</item>
+    <item>232,SL</item>
+    <item>65,SG</item>
+    <item>421,SK</item>
+    <item>386,SI</item>
+    <item>677,SB</item>
+    <item>252,SO</item>
+    <item>27,ZA</item>
+    <item>82,KR</item>
+    <item>34,ES</item>
+    <item>94,LK</item>
+    <item>290,SH</item>
+    <item>508,PM</item>
+    <item>249,SD</item>
+    <item>597,SR</item>
+    <item>268,SZ</item>
+    <item>46,SE</item>
+    <item>41,CH</item>
+    <item>963,SY</item>
+    <item>886,TW</item>
+    <item>992,TJ</item>
+    <item>255,TZ</item>
+    <item>66,TH</item>
+    <item>228,TG</item>
+    <item>690,TK</item>
+    <item>676,TO</item>
+    <item>216,TN</item>
+    <item>90,TR</item>
+    <item>993,TM</item>
+    <item>688,TV</item>
+    <item>971,AE</item>
+    <item>256,UG</item>
+    <item>44,GB</item>
+    <item>380,UA</item>
+    <item>598,UY</item>
+    <item>1,US</item>
+    <item>998,UZ</item>
+    <item>678,VU</item>
+    <item>39,VA</item>
+    <item>58,VE</item>
+    <item>84,VN</item>
+    <item>681,WF</item>
+    <item>967,YE</item>
+    <item>260,ZM</item>
+    <item>263,ZW</item>
+  </string-array>
+
+</resources>

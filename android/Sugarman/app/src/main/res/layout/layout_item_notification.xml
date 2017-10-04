@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_notification_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/notification_divider_height"
+        android:background="@color/gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/notifications_container_height"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/notifications_item_padding">
+
+        <com.sugarman.myb.ui.views.StrokeImage
+            android:id="@+id/iv_avatar"
+            android:layout_width="@dimen/notifications_image_size"
+            android:layout_height="@dimen/notifications_image_size"
+            android:layout_marginEnd="@dimen/main_padding"
+            android:background="@color/dark_gray"
+            android:padding="@dimen/dialog_double_stroke_width"
+            android:src="@drawable/ic_gray_avatar" />
+
+        <com.sugarman.myb.ui.views.CustomFontTextView
+            android:id="@+id/tv_message"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:textColor="@color/dark_gray"
+            android:textSize="@dimen/notifications_text_size"
+            app:font="@string/font_roboto_regular"
+            tools:text="Roy Miller has invited you to join new challenge" />
+
+        <ImageView
+            android:id="@+id/iv_cross"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/notifications_cross_margin"
+            android:contentDescription="@string/content_description"
+            android:src="@drawable/ic_cross" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/notification_divider_height"
+        android:background="@color/gray" />
+</LinearLayout>

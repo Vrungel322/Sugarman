@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/daily_external_padding"
+        app:cardElevation="@dimen/daily_elevation"
+        app:cardUseCompatPadding="false">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/ll_container_root"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/failed_share_margin_bottom">
+
+                <ImageView
+                    android:id="@+id/girl_pic"
+                    android:layout_width="@dimen/congratulation_image_width"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/congratulations_desc_margin"
+                    android:layout_marginEnd="@dimen/failed_margin"
+                    android:layout_marginStart="@dimen/failed_margin"
+                    android:layout_marginTop="@dimen/failed_medium_margin"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/content_description"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_congrat_stamp" />
+
+                <com.sugarman.myb.ui.views.StrokeImage
+                    android:id="@+id/iv_group_avatar"
+                    android:layout_width="@dimen/congratulations_image_size"
+                    android:layout_height="@dimen/congratulations_image_size"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@color/dark_gray"
+                    android:padding="@dimen/main_stroke_width"
+                    android:src="@drawable/ic_group" />
+
+                <com.sugarman.myb.ui.views.CustomFontTextView
+                    android:id="@+id/tv_daily_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/congratulations_desc_margin"
+                    android:layout_marginStart="@dimen/congratulations_desc_margin"
+                    android:layout_marginTop="@dimen/congratulations_desc_margin"
+                    android:gravity="center"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="@dimen/daily_text_size"
+                    app:font="@string/font_roboto_regular"
+                    tools:text="You're the first from Little Monkeys group to reach 10K Steps" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="2" />
+
+                <!-- Share btn without preview -->
+                <com.facebook.share.widget.ShareButton
+                    android:id="@+id/btn_fb_share"
+                    style="@style/FacebookButton"
+                    android:layout_width="@dimen/fb_btn_width"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:theme="@style/FacebookButton" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/iv_cross"
+                android:layout_width="@dimen/failed_cross_size"
+                android:layout_height="@dimen/failed_cross_size"
+                android:layout_alignParentEnd="true"
+                android:layout_marginBottom="@dimen/daily_cross_margin"
+                android:contentDescription="@string/content_description"
+                android:padding="@dimen/daily_padding"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_cross" />
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <LinearLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" />
+
+    <include
+        android:id="@+id/layout_conn_error"
+        layout="@layout/layout_connection_error"
+        android:visibility="gone" />
+
+</FrameLayout>

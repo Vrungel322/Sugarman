@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dialog_content_margin_horizontal"
+            android:layout_marginLeft="@dimen/dialog_content_margin_horizontal"
+            android:layout_marginRight="@dimen/dialog_content_margin_horizontal"
+            android:layout_marginStart="@dimen/dialog_content_margin_horizontal"
+            android:orientation="vertical"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="@dimen/dialog_corners"
+            app:cardElevation="@dimen/dialog_card_elevation"
+            app:contentPadding="@dimen/dialog_padding">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:minWidth="@dimen/dialog_content_min_width"
+                android:orientation="vertical">
+
+                <com.sugarman.myb.ui.views.CustomFontTextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="@dimen/dialog_title_text_size"
+                    android:visibility="gone"
+                    app:font="@string/font_roboto_bold"
+                    tools:text="@string/alert_default_title" />
+
+                <ImageView
+                    android:layout_width="@dimen/dialog_image_steps_size"
+                    android:layout_height="@dimen/dialog_image_steps_size"
+                    android:visibility="gone"
+                    android:src="@drawable/ic_error_dialog" />
+
+                <com.sugarman.myb.ui.views.CustomFontTextView
+                    android:id="@+id/tv_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dialog_content_margin_vertical"
+                    android:layout_marginTop="@dimen/dialog_content_margin_vertical"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="@dimen/dialog_content_text_size"
+                    tools:text="@string/no_internet_connection" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingEnd="@dimen/dialog_button_padding"
+                    android:paddingLeft="@dimen/dialog_button_padding"
+                    android:paddingRight="@dimen/dialog_button_padding"
+                    android:paddingStart="@dimen/dialog_button_padding">
+
+                    <com.sugarman.myb.ui.views.CustomFontTextView
+                        android:id="@+id/tv_negative"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/dark_gray_stroke_background"
+                        android:gravity="center"
+                        android:paddingBottom="@dimen/dialog_alert_button_padding_vertical"
+                        android:paddingEnd="@dimen/dialog_button_padding"
+                        android:paddingLeft="@dimen/dialog_button_padding"
+                        android:paddingRight="@dimen/dialog_button_padding"
+                        android:paddingStart="@dimen/dialog_button_padding"
+                        android:paddingTop="@dimen/dialog_alert_button_padding_vertical"
+                        android:textColor="@color/dark_gray"
+                        android:textSize="@dimen/dialog_buttons_text_size"
+                        android:visibility="gone"
+                        app:font="@string/font_roboto_regular"
+                        tools:text="@string/cancel" />
+
+                    <View
+                        android:id="@+id/v_button_divider"
+                        android:layout_width="@dimen/dialog_button_padding"
+                        android:layout_height="0dp"
+                        android:visibility="gone" />
+
+                    <com.sugarman.myb.ui.views.CustomFontTextView
+                        android:id="@+id/tv_positive"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bkgr_btn_add"
+                        android:gravity="center"
+                        android:paddingBottom="@dimen/dialog_alert_button_padding_vertical"
+                        android:paddingEnd="@dimen/dialog_button_padding"
+                        android:paddingLeft="@dimen/dialog_button_padding"
+                        android:paddingRight="@dimen/dialog_button_padding"
+                        android:paddingStart="@dimen/dialog_button_padding"
+                        android:paddingTop="@dimen/dialog_alert_button_padding_vertical"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/dialog_buttons_text_size"
+                        app:font="@string/font_roboto_bold"
+                        tools:text="@string/okay" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+</RelativeLayout>

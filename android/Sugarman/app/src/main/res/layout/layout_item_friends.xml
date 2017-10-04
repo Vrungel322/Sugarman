@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp">
+
+    <LinearLayout
+        android:id="@+id/ll_friend_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:paddingRight="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="@dimen/invites_avatar_size"
+            android:layout_height="@dimen/invites_avatar_size"
+            android:padding = "3dp"
+            >
+        <ImageView
+            android:id="@+id/iv_avatar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_gray_avatar" />
+            <ImageButton
+                android:id="@+id/social_network_icon"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_red_avatar"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/iv_indicataor_invitable"
+            android:layout_width="@dimen/create_group_icon_suga_size"
+            android:layout_height="@dimen/create_group_icon_suga_size"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_status_app_user" />
+
+        <com.sugarman.myb.ui.views.CustomFontTextView
+            android:id="@+id/tv_user_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/create_group_padding"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="@color/dark_gray"
+            android:textSize="13sp"
+            app:font="@string/font_roboto_medium"
+            tools:text="Taylor Walker" />
+
+        <com.sugarman.myb.ui.views.CustomFontTextView
+            android:id="@+id/tv_remove_add"
+            android:layout_width="@dimen/create_group_user_manage_btn_width"
+            android:layout_height="30dp"
+            android:background="@drawable/add_and_remove"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:lines="1"
+            android:paddingBottom="@dimen/dialog_alert_button_padding_vertical"
+            android:paddingEnd="15dp"
+            android:paddingLeft="@dimen/create_group_user_manage_btn_padding"
+            android:paddingRight="@dimen/create_group_user_manage_btn_padding"
+            android:paddingStart="@dimen/create_group_user_manage_btn_padding"
+            android:paddingTop="@dimen/dialog_alert_button_padding_vertical"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/dialog_buttons_text_size"
+            app:font="@string/font_roboto_medium"
+            tools:text="Add" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/gray" />
+</LinearLayout>

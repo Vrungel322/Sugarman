@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/BackgroundLayout">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/ll_action_bar_container"
+            android:layout_width="match_parent"
+            android:layout_height="?android:actionBarSize"
+            android:background="@android:color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingEnd="@dimen/requests_padding"
+            android:paddingStart="@dimen/requests_padding">
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/content_description"
+                android:paddingEnd="@dimen/invites_padding"
+                android:paddingStart="0dp"
+                android:src="@drawable/ic_back" />
+
+            <com.sugarman.myb.ui.views.CustomFontTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingEnd="@dimen/invites_padding"
+                android:paddingStart="0dp"
+                android:text="@string/requests"
+                android:textColor="@color/dark_gray"
+                android:textSize="@dimen/title_text_size"
+                app:font="@string/font_roboto_medium" />
+
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rcv_requests"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/ll_action_bar_container"
+            android:scrollbars="none"
+            android:visibility="gone" />
+
+        <com.sugarman.myb.ui.views.CustomFontTextView
+            android:id="@+id/tv_no_requests"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/ll_action_bar_container"
+            android:gravity="center"
+            android:text="@string/no_requests"
+            android:textColor="@color/dark_gray"
+            android:textSize="@dimen/empty_list_message_text_size"
+            app:font="@string/font_roboto_bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/action_bar_shadow_height"
+            android:layout_below="@id/ll_action_bar_container"
+            android:background="@drawable/bottom_shadow" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" />
+
+    <include
+        android:id="@+id/layout_conn_error"
+        layout="@layout/layout_connection_error"
+        android:visibility="gone" />
+</FrameLayout>

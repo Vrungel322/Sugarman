@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CustomFontTextView">
+        <attr name="font" format="string" />
+    </declare-styleable>
+
+    <attr name="centered" format="boolean" />
+    <attr name="selectedColor" format="color" />
+    <attr name="strokeWidth" format="dimension" />
+    <attr name="unselectedColor" format="color" />
+
+    <declare-styleable name="StrokeImage">
+        <attr name="android:src" />
+        <attr name="squareImageStyle" format="reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="CustomFontLetterSpacingTextView">
+        <attr name="spacing" format="float" />
+    </declare-styleable>
+
+</resources>

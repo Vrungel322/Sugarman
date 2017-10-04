@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="members">
+        <item quantity="one">משתתף</item>
+        <item quantity="other">משתתפים</item>
+    </plurals>
+
+    <plurals name="members_cap">
+        <item quantity="one">משתתף</item>
+        <item quantity="other">משתתפים</item>
+    </plurals>
+
+    <plurals name="asses_have_been_kicked">
+        <item quantity="one">בעיטה בתחת</item>
+        <item quantity="other">בעיטות בתחת</item>
+    </plurals>
+
+    <plurals name="group_steps">
+        <item quantity="one">צעדים בקבוצה היום</item>
+        <item quantity="other">צעדים בקבוצה היום</item>
+    </plurals>
+
+    <plurals name="steps">
+        <item quantity="one">צעד</item>
+        <item quantity="other">צעדים</item>
+    </plurals>
+
+    <plurals name="walked_days_template">
+        <item quantity="one">הלך 10k במשך %1$d ימים</item>
+        <item quantity="other">הלך 10k במשך %1$d ימים</item>
+    </plurals>
+
+    <plurals name="group_kicked_template">
+        <item quantity="one">התחת שלך נבעט  %1$d פעמים</item>
+        <item quantity="other">התחת שלך נבעט  %1$d פעמים</item>
+    </plurals>
+</resources>

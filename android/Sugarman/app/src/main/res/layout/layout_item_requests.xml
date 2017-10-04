@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/requests_padding"
+    android:paddingStart="@dimen/requests_padding"
+    android:paddingBottom="@dimen/requests_padding">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.sugarman.myb.ui.views.StrokeImage
+            android:id="@+id/iv_avatar"
+            android:layout_width="@dimen/requests_avatar_size"
+            android:layout_height="@dimen/requests_avatar_size"
+            android:background="@color/dark_gray"
+            android:padding="@dimen/dialog_double_stroke_width"
+            android:src="@drawable/ic_gray_avatar" />
+
+        <com.sugarman.myb.ui.views.CustomFontTextView
+            android:id="@+id/tv_request_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/requests_avatar_margin"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:textColor="@color/dark_gray"
+            android:textSize="@dimen/requests_text_size"
+            app:font="@string/font_roboto_regular"
+            tools:text="Roy Miller has requested to join Little Monkeys group." />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/requests_margin"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <com.sugarman.myb.ui.views.CustomFontTextView
+            android:id="@+id/tv_decline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/requests_margin_between_btns"
+            android:background="@drawable/bkgr_btn_remove"
+            android:gravity="center"
+            android:paddingBottom="@dimen/dialog_alert_button_padding_vertical"
+            android:paddingEnd="@dimen/dialog_button_padding"
+            android:paddingLeft="@dimen/dialog_button_padding"
+            android:paddingRight="@dimen/dialog_button_padding"
+            android:paddingStart="@dimen/dialog_button_padding"
+            android:paddingTop="@dimen/dialog_alert_button_padding_vertical"
+            android:text="@string/decline"
+            android:textColor="@color/red"
+            android:textSize="@dimen/dialog_buttons_text_size"
+            app:font="@string/font_roboto_regular" />
+
+        <com.sugarman.myb.ui.views.CustomFontTextView
+            android:id="@+id/tv_approve"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bkgr_btn_add"
+            android:gravity="center"
+            android:paddingBottom="@dimen/dialog_alert_button_padding_vertical"
+            android:paddingEnd="@dimen/dialog_button_padding"
+            android:paddingLeft="@dimen/dialog_button_padding"
+            android:paddingRight="@dimen/dialog_button_padding"
+            android:paddingStart="@dimen/dialog_button_padding"
+            android:paddingTop="@dimen/dialog_alert_button_padding_vertical"
+            android:text="@string/approve"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/dialog_buttons_text_size"
+            app:font="@string/font_roboto_bold" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/requests_divider_height"
+        android:layout_marginTop="@dimen/requests_margin_between_btns"
+        android:background="@color/gray" />
+
+</LinearLayout>

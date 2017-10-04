@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/BackgroundLayout"
+    android:id="@+id/fl_root_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/stats_transparent_view_height"
+        android:layout_marginTop="@dimen/stats_transparent_view_height"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/stats_padding">
+
+        <com.sugarman.myb.ui.views.CustomFontTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/stats_padding"
+            android:text="@string/my_stats"
+            android:textColor="@color/dark_gray"
+            android:textSize="@dimen/stats_title_text_size"
+            app:font="@string/font_roboto_bold" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp_stats"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="@dimen/stats_padding"
+            android:layout_weight="1" />
+
+        <com.sugarman.myb.ui.views.SquarePageIndicator
+            android:id="@+id/spi_stats"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/stats_pager_indicator_height" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:orientation="horizontal" />
+
+    <include
+        android:id="@+id/layout_conn_error"
+        layout="@layout/layout_connection_error"
+        android:visibility="gone" />
+
+</FrameLayout>

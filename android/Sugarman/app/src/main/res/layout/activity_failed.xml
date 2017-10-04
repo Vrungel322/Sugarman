@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/failed_external_padding"
+        app:cardElevation="@dimen/failed_elevation"
+        app:cardUseCompatPadding="false">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/ll_container_root"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/failed_share_margin_bottom">
+
+                <ImageView
+                    android:layout_width="@dimen/congratulation_myb_width"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/content_description"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_app" />
+
+                <ImageView
+                    android:layout_width="@dimen/congratulation_image_width"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/failed_medium_margin"
+                    android:layout_marginEnd="@dimen/failed_margin"
+                    android:layout_marginStart="@dimen/failed_margin"
+                    android:layout_marginTop="@dimen/failed_medium_margin"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/content_description"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_failed_stamp" />
+
+                <com.sugarman.myb.ui.views.CustomFontTextView
+                    android:id="@+id/tv_failed_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/congratulations_desc_margin"
+                    android:layout_marginStart="@dimen/congratulations_desc_margin"
+                    android:gravity="center"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/failed_text_size"
+                    app:font="@string/font_roboto_regular"
+                    tools:text="Your group Little Monkeys has failed thangs to this lazy bears" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/failed_medium_margin"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <com.sugarman.myb.ui.views.StrokeImage
+                            android:id="@+id/iv_avatar_first"
+                            android:layout_width="@dimen/failed_image_size"
+                            android:layout_height="@dimen/failed_image_size"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:background="@color/red"
+                            android:padding="@dimen/main_stroke_width"
+                            android:src="@drawable/ic_red_avatar"
+                            android:visibility="gone" />
+
+                        <com.sugarman.myb.ui.views.CustomFontTextView
+                            android:id="@+id/tv_name_first"
+                            android:layout_width="@dimen/failed_image_size"
+                            android:layout_height="wrap_content"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:textSize="@dimen/group_details_text_size"
+                            android:visibility="gone"
+                            app:font="@string/font_roboto_bold"
+                            tools:text="Anastasia Kaminanskisky"
+                            tools:textColor="@color/dark_gray" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/v_divider_first"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <com.sugarman.myb.ui.views.StrokeImage
+                            android:id="@+id/iv_avatar_second"
+                            android:layout_width="@dimen/failed_image_size"
+                            android:layout_height="@dimen/failed_image_size"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:background="@color/red"
+                            android:padding="@dimen/main_stroke_width"
+                            android:src="@drawable/ic_red_avatar"
+                            android:visibility="gone" />
+
+                        <com.sugarman.myb.ui.views.CustomFontTextView
+                            android:id="@+id/tv_name_second"
+                            android:layout_width="@dimen/failed_image_size"
+                            android:layout_height="wrap_content"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:textSize="@dimen/group_details_text_size"
+                            android:visibility="gone"
+                            app:font="@string/font_roboto_bold"
+                            tools:text="Anastasia Kaminanskisky"
+                            tools:textColor="@color/dark_gray" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/v_divider_second"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:visibility="gone"
+                        tools:visibility="gone" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <com.sugarman.myb.ui.views.StrokeImage
+                            android:id="@+id/iv_avatar_third"
+                            android:layout_width="@dimen/failed_image_size"
+                            android:layout_height="@dimen/failed_image_size"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:background="@color/red"
+                            android:padding="@dimen/main_stroke_width"
+                            android:src="@drawable/ic_red_avatar"
+                            android:visibility="gone"
+                            tools:visibility="gone" />
+
+                        <com.sugarman.myb.ui.views.CustomFontTextView
+                            android:id="@+id/tv_name_third"
+                            android:layout_width="@dimen/failed_image_size"
+                            android:layout_height="wrap_content"
+                            android:maxLines="1"
+                            android:singleLine="true"
+                            android:textSize="@dimen/group_details_text_size"
+                            android:visibility="gone"
+                            app:font="@string/font_roboto_bold"
+                            tools:text="Anastasia Kaminanskisky"
+                            tools:textColor="@color/red" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.5" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="2" />
+
+                <LinearLayout
+                    android:id="@+id/ll_recreate"
+                    android:layout_width="@dimen/fb_btn_width"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="6dp"
+                    android:background="@drawable/background_recreate_button"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:padding="6dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:layout_width="@dimen/failed_recreate_image"
+                        android:layout_height="@dimen/failed_recreate_image"
+                        android:src="@drawable/ic_recreate" />
+
+                    <com.sugarman.myb.ui.views.CustomFontTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="@dimen/failed_regroup_margin"
+                        android:layout_marginStart="@dimen/failed_regroup_margin"
+                        android:gravity="center"
+                        android:text="@string/failed_regroup"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/failed_regroup_text_size"
+                        app:font="@string/font_roboto_regular" />
+
+                </LinearLayout>
+
+                <!-- Share btn without preview -->
+                <com.facebook.share.widget.ShareButton
+                    android:id="@+id/btn_fb_share"
+                    style="@style/FacebookButton"
+                    android:layout_width="@dimen/fb_btn_width"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:theme="@style/FacebookButton" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/iv_cross"
+                android:layout_width="@dimen/failed_cross_size"
+                android:layout_height="@dimen/failed_cross_size"
+                android:layout_alignParentEnd="true"
+                android:contentDescription="@string/content_description"
+                android:padding="@dimen/failed_padding"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_cross" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+
+    <LinearLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" />
+
+    <include
+        android:id="@+id/layout_conn_error"
+        layout="@layout/layout_connection_error"
+        android:visibility="gone" />
+
+</FrameLayout>
