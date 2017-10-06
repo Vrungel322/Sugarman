@@ -95,6 +95,7 @@ public class AddMemberActivity extends BaseActivity
   @BindView(R.id.vk_filter) ImageView vkFilter;
   @BindView(R.id.ph_filter) ImageView phFilter;
   String currentFilter = "";
+  View vApply;
   boolean isFbLoggedIn = false, isVkLoggedIn = false;
   private AddMembersClient mAddMembersClient;
   private EditGroupClient mEditGroupClient;
@@ -224,7 +225,7 @@ public class AddMemberActivity extends BaseActivity
     fbInviteDialog.registerCallback(fbCallbackManager, fbInviteCallback);
 
     View vCross = findViewById(R.id.iv_cross);
-    View vApply = findViewById(R.id.iv_apply);
+    vApply = findViewById(R.id.iv_apply);
     vClearMembersFilter = findViewById(R.id.iv_clear_member_filter_input);
     rcvMembers = (RecyclerView) findViewById(R.id.rcv_friends);
     rcvVkFriends = (RecyclerView) findViewById(R.id.rcv_vk_friends);
@@ -627,6 +628,8 @@ public class AddMemberActivity extends BaseActivity
         break;
       case R.id.iv_apply:
         DeviceHelper.hideKeyboard(this);
+        vApply.setEnabled(false);
+        showProgressFragment();
 
         for (FacebookFriend friend : allFriends) {
           if (friend.isSelected()) {
@@ -948,7 +951,7 @@ public class AddMemberActivity extends BaseActivity
     Timber.e("onApiEditGroupSuccess");
 
     closeProgressFragment();
-    //finish();
+    finish();
   }
 
   @Override public void onApiEditGroupFailure(String message) {

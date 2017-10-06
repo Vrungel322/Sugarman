@@ -213,7 +213,8 @@ public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecy
                     }
                 }
                 else {
-                    if (Tools.isMimeTypeImage(message.file.file.mimeType)) {
+
+                    if (message.file != null && Tools.isMimeTypeImage(message.file.file.mimeType)) {
                         cellType = R.layout.item_message_image_left;
                     }
                     else {

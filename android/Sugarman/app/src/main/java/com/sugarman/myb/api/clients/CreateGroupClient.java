@@ -122,16 +122,18 @@ public class CreateGroupClient extends BaseApiClient {
         } else {
           phoneNumbers.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
               (CountryCodeHelper.getCountryZipCode() + friend.getId()).replace(" ", "")));
+          Timber.e(CountryCodeHelper.getCountryZipCode() + friend.getId());
         }
-        Timber.e(CountryCodeHelper.getCountryZipCode() + friend.getId());
-        phoneNumbers.add(
-            RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getId()));
+
         phoneNames.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
             "Walker " + new Random().nextInt(9000)));
         phonePictures.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
             "https://sugarman-myb.s3.amazonaws.com/Group_New.png"));
+        Timber.e("pictures phone: " + phonePictures.size()+ " names phone: " + phoneNames.size() + " ids phone: " + phoneNumbers.size() );
       }
     }
+
+
 
     Call<CreateGroupResponse> call = App.getApiInstance()
         .createGroup(filePart, name, fbToken, ids, vkids, phoneNumbers, names, vkNames, phoneNames,

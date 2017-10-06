@@ -99,8 +99,13 @@ public class GetUserInfoActivity extends BaseActivity
     Log.e("ApiRefreshUserData", "Called");
     SharedPreferenceHelper.saveUser(response.getUser());
     SharedPreferenceHelper.saveToken(response.getTokens());
-    Log.e("Token", "huy" + response.toString());
-    Log.e("Tokens gavnishe", response.getTokens().getAccessToken());
+    if(response.getUser().getEmail()!=null && !response.getUser().getEmail().equals(""))
+    {
+      Timber.e("RETURNED EMAIL " + response.getUser().getEmail());
+      SharedPreferenceHelper.saveEmail(response.getUser().getEmail());
+    }
+    Timber.e("huy" + response.toString());
+    Timber.e(response.getTokens().getAccessToken());
 
     checkFirebaseToken();
   }

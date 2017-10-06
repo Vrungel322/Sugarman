@@ -21,6 +21,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
+import butterknife.BindView;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.squareup.picasso.Picasso;
 import com.sugarman.myb.R;
@@ -62,8 +63,10 @@ public class ProfileActivity extends BaseActivity implements View.OnTouchListene
   private TextView tvRequestsCounter;
   private TextView tvInviteFriendsCounter;
   @InjectPresenter ProfileActivityPresenter mPresenter;
+  @BindView(R.id.wave1) ImageView wave1;
+  @BindView(R.id.wave2) ImageView wave2;
+  @BindView(R.id.wave3) ImageView wave3;
   ImageView ivNoInvites, ivNoRequests;
-  TextView tvName;
   ImageView ivAvatar;
   int days;
   private ImageView loadingStrip;
@@ -117,7 +120,6 @@ public class ProfileActivity extends BaseActivity implements View.OnTouchListene
     tvRequestsCounter = (TextView) findViewById(R.id.tv_requests_counter);
     loadingStrip = (ImageView) findViewById(R.id.loading_strip);
     ivAvatar = (ImageView) findViewById(R.id.iv_avatar);
-    tvName = (TextView) findViewById(R.id.tv_name);
     ivNoInvites = (ImageView) findViewById(R.id.no_invites_image);
     ivNoRequests = (ImageView) findViewById(R.id.no_requests_image);
     TextView tvTotal = (TextView) findViewById(R.id.tv_total_steps);
@@ -206,16 +208,44 @@ public class ProfileActivity extends BaseActivity implements View.OnTouchListene
         break;
     }
     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_scale_up);
-    ivAvatar.startAnimation(animation);
+    Animation animation2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_scale_up);
+    Animation animation3 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_scale_up);
+
+    new Thread(new Runnable() {
+      @Override public void run() {
+        runOnUiThread(new Runnable() {
+          @Override public void run() {
+            wave1.startAnimation(animation);
+          }
+        });
+
+        try {
+          Thread.currentThread().sleep(700);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+        runOnUiThread(new Runnable() {
+          @Override public void run() {
+            wave2.startAnimation(animation2);
+          }
+        });
+        try {
+          Thread.currentThread().sleep(700);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+        runOnUiThread(new Runnable() {
+          @Override public void run() {
+            wave3.startAnimation(animation3);
+          }
+        });
+      }
+    }).start();
 
   }
 
   @Override protected void onResume() {
     super.onResume();
-    String name = SharedPreferenceHelper.getUserName();
-    if (!TextUtils.isEmpty(name)) {
-      tvName.setText(name);
-    }
 
     String urlAvatar = SharedPreferenceHelper.getAvatar();
     if (TextUtils.isEmpty(urlAvatar)) {
@@ -226,7 +256,7 @@ public class ProfileActivity extends BaseActivity implements View.OnTouchListene
           .fit()
           .centerCrop()
           .placeholder(R.drawable.ic_red_avatar)
-          .transform(new MaskTransformation(this, R.drawable.mask, true, 0xffff0000))
+          .transform(new MaskTransformation(this, R.drawable.profile_mask, false, 0xffff0000))
           .error(R.drawable.ic_red_avatar)
           .into(ivAvatar);
     }

@@ -479,7 +479,7 @@
         <item>971,AE</item>
         <item>256,UG</item>
         <item>44,GB</item>
-        <item>380,UA</item>
+        <item>38,UA</item>
         <item>598,UY</item>
         <item>1,US</item>
         <item>998,UZ</item>
@@ -492,5 +492,7 @@
         <item>260,ZM</item>
         <item>263,ZW</item>
     </string-array>
+
+    <string name="the_phone_is_not_valid">Проверьте номер телефона</string>
 
 </resources>

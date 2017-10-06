@@ -16,11 +16,14 @@ import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.listeners.ApiRefreshUserDataListener;
 import com.sugarman.myb.models.CountryCodeEntity;
+import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.utils.Converters;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PhoneLoginActivity extends GetUserInfoActivity implements ApiRefreshUserDataListener {
 
@@ -57,12 +60,28 @@ public class PhoneLoginActivity extends GetUserInfoActivity implements ApiRefres
     nextButton.setEnabled(true);
   }
 
+  public static boolean isPhoneValid(String phone)
+  {
+    String expression = "^[+][0-9]{10,13}$";
+    Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+    Matcher matcher = pattern.matcher(phone);
+    return matcher.matches();
+
+  }
+
   @OnClick(R.id.iv_cart) public void toApproveOtp() {
     phoneNumber = etPhoneNumber.getText().toString();
     //SharedPreferenceHelper.savePhoneNumber(phoneNumber);
-    nextButton.setEnabled(false);
-    refreshUserData("none", "none", "none", phoneNumber, "enter@email.com",
-        "Walker " + new Random().nextInt(9000), "none", "none", "none");
+    if(isPhoneValid(phoneNumber)) {
+      nextButton.setEnabled(false);
+      refreshUserData("none", "none", "none", phoneNumber, "enter@email.com", "Walker " + new Random().nextInt(9000), "none", "none", "none");
+    }
+    else
+    {
+      new SugarmanDialog.Builder(this, "Phone").content(getResources().getString(R.string.the_phone_is_not_valid))
+          .build()
+          .show();
+    }
   }
 
   @Override public void onApiRefreshUserDataSuccess(UsersResponse response) {

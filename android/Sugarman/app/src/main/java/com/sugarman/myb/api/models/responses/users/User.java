@@ -16,6 +16,8 @@ public class User {
 
   @SerializedName("completed_days_count") private int completedDaysCount;
 
+  @SerializedName("email") private String email;
+
   @SerializedName("fbid") private String facebookId;
 
   @SerializedName("vkid") private String vkid;
@@ -60,6 +62,10 @@ public class User {
 
   public String getVkid() {
     return vkid;
+  }
+
+  public String getEmail() {
+    return email;
   }
 
   public Date getCreateUTCDate() {
