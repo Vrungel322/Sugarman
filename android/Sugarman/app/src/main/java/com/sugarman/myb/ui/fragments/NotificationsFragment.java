@@ -31,7 +31,7 @@ import com.sugarman.myb.eventbus.events.RefreshTrackingsEvent;
 import com.sugarman.myb.listeners.ApiMarkNotificationListener;
 import com.sugarman.myb.listeners.OnNotificationActionListener;
 import com.sugarman.myb.models.NotificationItem;
-import com.sugarman.myb.ui.activities.MainActivity;
+import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
 import com.sugarman.myb.ui.activities.base.BaseActivity;
 import com.sugarman.myb.utils.DeviceHelper;
 import com.sugarman.myb.utils.IntentExtractorHelper;

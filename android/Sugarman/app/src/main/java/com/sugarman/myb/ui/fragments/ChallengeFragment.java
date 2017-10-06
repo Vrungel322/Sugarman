@@ -40,7 +40,7 @@ import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.constants.Config;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.models.ChallengeMember;
-import com.sugarman.myb.ui.activities.MainActivity;
+import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
 import com.sugarman.myb.ui.views.CropCircleTransformation;
 import com.sugarman.myb.ui.views.CropSquareTransformation;
 import com.sugarman.myb.ui.views.MaskTransformation;

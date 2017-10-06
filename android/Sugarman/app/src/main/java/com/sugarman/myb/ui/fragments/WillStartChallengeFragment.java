@@ -21,7 +21,7 @@ import com.sugarman.myb.api.models.responses.Group;
 import com.sugarman.myb.api.models.responses.Member;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.models.ChallengeWillStartItem;
-import com.sugarman.myb.ui.activities.MainActivity;
+import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
 import com.sugarman.myb.ui.views.CropCircleTransformation;
 import com.sugarman.myb.ui.views.MaskTransformation;
 import java.text.DecimalFormat;

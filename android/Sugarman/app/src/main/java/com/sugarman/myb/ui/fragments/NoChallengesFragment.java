@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import com.sugarman.myb.R;
 import com.sugarman.myb.constants.Constants;
-import com.sugarman.myb.ui.activities.MainActivity;
+import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
 import com.sugarman.myb.utils.IntentExtractorHelper;
 
 public class NoChallengesFragment extends BaseChallengeFragment implements View.OnClickListener {

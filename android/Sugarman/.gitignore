@@ -12,6 +12,8 @@
 # Generated files
 bin/
 gen/
+*.bin
+*.lock
 
 # Gradle files
 .gradle/

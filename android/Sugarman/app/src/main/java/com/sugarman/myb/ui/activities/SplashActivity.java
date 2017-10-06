@@ -25,6 +25,7 @@ import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.constants.DialogConstants;
 import com.sugarman.myb.eventbus.events.NeedOpenSpecificActivityEvent;
 import com.sugarman.myb.tasks.DeleteFileAsyncTask;
+import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
 import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.utils.AnalyticsHelper;

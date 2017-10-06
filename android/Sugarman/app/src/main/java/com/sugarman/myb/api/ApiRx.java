@@ -4,6 +4,7 @@ import com.sugarman.myb.api.models.requests.PurchaseDataRequest;
 import com.sugarman.myb.api.models.requests.RefreshUserDataRequest;
 import com.sugarman.myb.api.models.responses.CountInvitesResponse;
 import com.sugarman.myb.api.models.responses.InvitersImgUrls;
+import com.sugarman.myb.api.models.levelSystem.TaskEntity;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import java.util.List;
 import okhttp3.RequestBody;
@@ -44,6 +45,9 @@ public interface ApiRx {
   @GET("v2/get_inviter_picture") Observable<InvitersImgUrls> loadInvitersImgUrls(
       @Header("Authorization") String accessToken);
 
-  @GET("/v2/count_inviters") Observable<CountInvitesResponse> countInvites(
+  @GET("v2/count_inviters") Observable<CountInvitesResponse> countInvites(
       @Header("Authorization") String accessToken);
+
+  @GET("v3/get_all_tasks")
+  Observable<List<TaskEntity>> fetchTasks();
 }

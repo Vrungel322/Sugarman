@@ -11,6 +11,7 @@ import com.sugarman.myb.R;
 import com.sugarman.myb.adapters.IntroPagerAdapter;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.ui.activities.base.BaseActivity;
+import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
 import com.sugarman.myb.utils.IntentExtractorHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 
