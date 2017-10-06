@@ -80,7 +80,7 @@ public class DataManager {
     return mRestApi.countInvites(Constants.BEARER + SharedPreferenceHelper.getAccessToken());
   }
 
-  public Observable<List<TaskEntity>> fetchTasks() {
+  public Observable<TaskEntity> fetchTasks() {
     return mRestApi.fetchTasks();
   }
 }

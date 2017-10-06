@@ -24,8 +24,8 @@ import timber.log.Timber;
     Subscription subscription = mDataManager.fetchTasks()
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(taskEntities -> {
-          Timber.e(String.valueOf(taskEntities.size()));
-        });
+          Timber.e(String.valueOf(taskEntities.getTasks().size()));
+        },Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 }

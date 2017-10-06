@@ -85,7 +85,7 @@ public class RestApi {
     return api.countInvites(accessToken);
   }
 
-  public Observable<List<TaskEntity>> fetchTasks() {
+  public Observable<TaskEntity> fetchTasks() {
     return api.fetchTasks();
   }
 }

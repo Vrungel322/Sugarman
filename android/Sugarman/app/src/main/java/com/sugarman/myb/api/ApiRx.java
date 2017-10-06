@@ -49,5 +49,5 @@ public interface ApiRx {
       @Header("Authorization") String accessToken);
 
   @GET("v3/get_all_tasks")
-  Observable<List<TaskEntity>> fetchTasks();
+  Observable<TaskEntity> fetchTasks();
 }
