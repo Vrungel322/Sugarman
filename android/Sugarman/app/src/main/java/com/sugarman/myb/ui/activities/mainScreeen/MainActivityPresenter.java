@@ -20,6 +20,7 @@ import timber.log.Timber;
     fetchTasks();
   }
 
+
   private void fetchTasks() {
     Subscription subscription = mDataManager.fetchTasks()
         .compose(ThreadSchedulers.applySchedulers())

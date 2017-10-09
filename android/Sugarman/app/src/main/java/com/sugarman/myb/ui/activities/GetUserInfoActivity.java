@@ -104,6 +104,11 @@ public class GetUserInfoActivity extends BaseActivity
       Timber.e("RETURNED EMAIL " + response.getUser().getEmail());
       SharedPreferenceHelper.saveEmail(response.getUser().getEmail());
     }
+    if(response.getUser().getPhoneNumber()!=null && !response.getUser().getPhoneNumber().equals(""))
+    {
+      Timber.e("RETURNED PHONE " + response.getUser().getPhoneNumber());
+      SharedPreferenceHelper.savePhoneNumber(response.getUser().getPhoneNumber());
+    }
     Timber.e("huy" + response.toString());
     Timber.e(response.getTokens().getAccessToken());
 

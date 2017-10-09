@@ -237,7 +237,7 @@ public class User {
         + ", currentDayUTCDate="
         + currentDayUTCDate
         + ", updatedAtUTCDate="
-        + updatedAtUTCDate + ", phoneOTP=" + phoneOTP + ", isPending=" + isPending
+        + updatedAtUTCDate + ", phoneOTP=" + phoneOTP + ", phone=" + phoneNumber+ ", isPending=" + isPending
         + '}';
   }
 }

@@ -410,7 +410,7 @@ public class LoginActivity extends GetUserInfoActivity
       Timber.e("ApiRefreshMyUserInfoFailure");
       haveTokensAndUserData();
 
-        showFailureDialog(message, DialogConstants.API_GET_MY_USER_FAILURE_ID);
+      showFailureDialog(message, DialogConstants.API_GET_MY_USER_FAILURE_ID);
     } else {
       showNoInternetConnectionDialog();
     }

@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -126,14 +128,14 @@ public class ProfileActivity extends BaseActivity implements View.OnTouchListene
     TextView tvVersion = (TextView) findViewById(R.id.tv_version);
     View vInvites = findViewById(R.id.ll_invites_container);
     View vRequests = findViewById(R.id.ll_requests_container);
-    View vHighScore = findViewById(R.id.tv_high_score);
+    View vHighScore = findViewById(R.id.ll_high_score_container);
     View vInviteFriends = findViewById(R.id.tv_invite_friends);
     View vPrivacyPolicy = findViewById(R.id.tv_privacy_policy);
     View vTermsOfUse = findViewById(R.id.tv_terms_of_use);
-    View vLogout = findViewById(R.id.tv_logout);
+    View vLogout = findViewById(R.id.ll_logout_container);
     View vCross = findViewById(R.id.iv_cross);
-    View vSettings = findViewById(R.id.tv_settings);
-    View vProfileSettings = findViewById(R.id.tv_edit_profile);
+    View vSettings = findViewById(R.id.ll_settings_container);
+    View vProfileSettings = findViewById(R.id.ll_edit_profile_container);
 
     if (!invitesEnabled) vInviteFriends.setVisibility(View.GONE);
 
@@ -150,12 +152,19 @@ public class ProfileActivity extends BaseActivity implements View.OnTouchListene
         Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
         Bitmap bmp = Bitmap.createBitmap(width, height, conf); // this creates a MUTABLE bitmap
         Canvas canvas = new Canvas(bmp);
+        Paint paint = new Paint();
+        paint.setStrokeWidth(2);
+        paint.setStrokeCap(Paint.Cap.ROUND);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setColor(0xffD9DADB);
+        paint.setAntiAlias(true);
+        canvas.drawRoundRect(new RectF(38, height/4-1, width - 38, height-height/4),25,25,paint);
         Paint p = new Paint();
         p.setStrokeWidth(height / 2);
         p.setStrokeCap(Paint.Cap.ROUND);
         p.setColor(0xfff8C1C1);
-        canvas.drawLine(50, height / 2, width - 50, height / 2, p);
-        p.setColor(0xffFD3E3E);
+        //canvas.drawLine(50, height / 2, width - 50, height / 2, p);
+        p.setColor(0xffFA2928);
         int drawto = ((width - 100) / 21) * days;
         if(days>0)
         canvas.drawLine(50, height / 2, drawto, height / 2, p);
@@ -164,10 +173,8 @@ public class ProfileActivity extends BaseActivity implements View.OnTouchListene
       }
     });
 
-    String walkedDaysTemplate =
-        getResources().getQuantityString(R.plurals.walked_days_template, days, days);
-    String totalText = String.format(walkedDaysTemplate, days);
-    tvTotal.setText(totalText);
+    Typeface tfDin = Typeface.createFromAsset(getAssets(), "din_light.ttf");
+    tvTotal.setTypeface(tfDin);
 
     String version = DeviceHelper.getAppVersionName();
     if (!TextUtils.isEmpty(version)) {
@@ -195,7 +202,7 @@ public class ProfileActivity extends BaseActivity implements View.OnTouchListene
     vProfileSettings.setOnTouchListener(this);
     //vInviteFriends.                             setOnTouchListener(this);
     findViewById(R.id.ll_invite_friends_container).setOnTouchListener(this);
-    findViewById(R.id.tv_intro).setOnTouchListener(this);
+    findViewById(R.id.ll_tutorial_container).setOnTouchListener(this);
     findViewById(R.id.ll_my_stats_container).setOnTouchListener(this);
 
     int openActivityCode = IntentExtractorHelper.getOpenActivityCode(intent);
@@ -207,6 +214,34 @@ public class ProfileActivity extends BaseActivity implements View.OnTouchListene
         openRequestsActivity();
         break;
     }
+
+
+  }
+
+  @Override protected void onPause() {
+    super.onPause();
+    wave1.clearAnimation();
+    wave2.clearAnimation();
+    wave3.clearAnimation();
+  }
+
+  @Override protected void onResume() {
+    super.onResume();
+
+    String urlAvatar = SharedPreferenceHelper.getAvatar();
+    if (TextUtils.isEmpty(urlAvatar)) {
+      ivAvatar.setImageResource(R.drawable.ic_red_avatar);
+    } else {
+      Picasso.with(this)
+          .load(urlAvatar)
+          .fit()
+          .centerCrop()
+          .placeholder(R.drawable.ic_red_avatar)
+          .transform(new MaskTransformation(this, R.drawable.profile_mask, false, 0xffff0000))
+          .error(R.drawable.ic_red_avatar)
+          .into(ivAvatar);
+    }
+
     Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_scale_up);
     Animation animation2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_scale_up);
     Animation animation3 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_scale_up);
@@ -241,25 +276,6 @@ public class ProfileActivity extends BaseActivity implements View.OnTouchListene
         });
       }
     }).start();
-
-  }
-
-  @Override protected void onResume() {
-    super.onResume();
-
-    String urlAvatar = SharedPreferenceHelper.getAvatar();
-    if (TextUtils.isEmpty(urlAvatar)) {
-      ivAvatar.setImageResource(R.drawable.ic_red_avatar);
-    } else {
-      Picasso.with(this)
-          .load(urlAvatar)
-          .fit()
-          .centerCrop()
-          .placeholder(R.drawable.ic_red_avatar)
-          .transform(new MaskTransformation(this, R.drawable.profile_mask, false, 0xffff0000))
-          .error(R.drawable.ic_red_avatar)
-          .into(ivAvatar);
-    }
   }
 
   @Override public void onBackPressed() {
@@ -311,7 +327,7 @@ public class ProfileActivity extends BaseActivity implements View.OnTouchListene
           case R.id.tv_terms_of_use:
             openInWebView(Config.TERMS_OF_USE_URL);
             break;
-          case R.id.tv_settings:
+          case R.id.ll_settings_container:
             openSettingsActivity();
             break;
           case R.id.tv_privacy_policy:
@@ -323,7 +339,7 @@ public class ProfileActivity extends BaseActivity implements View.OnTouchListene
           case R.id.ll_requests_container:
             openRequestsActivity();
             break;
-          case R.id.tv_high_score:
+          case R.id.ll_high_score_container:
             openHighScoreActivity();
             break;
           case R.id.ll_invite_friends_container:
@@ -334,13 +350,13 @@ public class ProfileActivity extends BaseActivity implements View.OnTouchListene
             sendIntent.setType("text/plain");
             startActivity(sendIntent);
             break;
-          case R.id.tv_intro:
+          case R.id.ll_tutorial_container:
             openIntroActivity();
             break;
           case R.id.ll_my_stats_container:
             openMyStatsActivity();
             break;
-          case R.id.tv_logout:
+          case R.id.ll_logout_container:
             logout();
             VKSdk.logout();
             break;
@@ -348,7 +364,7 @@ public class ProfileActivity extends BaseActivity implements View.OnTouchListene
           case R.id.iv_avatar:
             closeActivity();
             break;
-          case R.id.tv_edit_profile:
+          case R.id.ll_edit_profile_container:
             Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
             startActivity(intent);
             break;
@@ -357,7 +373,6 @@ public class ProfileActivity extends BaseActivity implements View.OnTouchListene
                 "Click on not processed view with id " + getResources().getResourceEntryName(id));
             break;
         }
-        ;
 
         break;
       case MotionEvent.ACTION_DOWN:

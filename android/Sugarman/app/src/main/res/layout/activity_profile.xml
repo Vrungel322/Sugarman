@@ -101,6 +101,7 @@
             android:layout_marginBottom="@dimen/profile_padding"
             android:lines="1"
             android:textColor="#80333333"
+            android:text="@string/tap_to_see"
             android:textSize="12sp"
             app:font="@string/font_roboto_light"
             tools:text="Walked 10k for 34 days" />
