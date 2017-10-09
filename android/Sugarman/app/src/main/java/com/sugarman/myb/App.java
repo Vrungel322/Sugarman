@@ -40,6 +40,7 @@ import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKAccessTokenTracker;
 import com.vk.sdk.VKSdk;
 import io.fabric.sdk.android.Fabric;
+import io.realm.Realm;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -282,6 +283,9 @@ public class App extends MultiDexApplication {
 
     vkAccessTokenTracker.startTracking();
     VKSdk.initialize(this);
+
+    Realm.init(this);
+
 
     Map<String, String> headers = new HashMap<>();
     headers.put("Referer", SingletonLikeApp.getInstance().getConfig(App.this).apiBaseUrl);
