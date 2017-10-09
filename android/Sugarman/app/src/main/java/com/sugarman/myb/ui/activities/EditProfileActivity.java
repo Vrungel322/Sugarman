@@ -34,6 +34,7 @@ import com.sugarman.myb.base.BasicActivity;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.listeners.ApiBaseListener;
 import com.sugarman.myb.listeners.ApiRefreshUserDataListener;
+import com.sugarman.myb.ui.activities.base.BaseActivity;
 import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.ui.views.MaskImage;
@@ -52,7 +53,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import timber.log.Timber;
 
-public class EditProfileActivity extends BasicActivity
+public class EditProfileActivity extends BaseActivity
     implements ApiBaseListener, ApiRefreshUserDataListener {
   @BindView(R.id.iv_profile_avatar) ImageView profileAvatar;
   @BindView(R.id.iv_next) ImageView nextButton;
@@ -250,6 +251,7 @@ public class EditProfileActivity extends BasicActivity
           .show();
     }
     Log.e("EDIT PROFILE", "PRESSED");
+showProgressFragment();
   }
 
   @OnClick(R.id.iv_back) public void ivBackClicked() {

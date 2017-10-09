@@ -85,7 +85,14 @@ public class DataManager {
   }
 
   public Observable<TaskEntity> fetchTasks() {
+
     return mRestApi.fetchTasks();
+  }
+
+  public Observable<TaskEntity> fetchCompletedTasks()
+  {
+    Timber.e("Called fetchCompletedTasks");
+    return mRestApi.fetchCompletedTasks(SharedPreferenceHelper.getAccessToken());
   }
 }
 

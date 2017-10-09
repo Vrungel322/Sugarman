@@ -53,6 +53,7 @@
   <string name="log_out">Log Out</string>
   <string name="intro">Tutorial</string>
   <string name="profile_my_stats">My stats</string>
+  <string name="tap_to_see">Tap to see what to do next</string>
 
   <!-- INTRO ACTIVITY -->
   <string name="menu">Menu</string>

@@ -18,14 +18,26 @@ import timber.log.Timber;
   @Override protected void onFirstViewAttach() {
     super.onFirstViewAttach();
     fetchTasks();
+    fetchCompletedTasks();
   }
+
 
   private void fetchTasks() {
     Subscription subscription = mDataManager.fetchTasks()
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(taskEntities -> {
-          Timber.e(String.valueOf(taskEntities.getTasks().size()));
+          Timber.e("All tasks " + String.valueOf(taskEntities.getTasks().size()));
         },Throwable::printStackTrace);
+    addToUnsubscription(subscription);
+  }
+
+  private void fetchCompletedTasks()
+  {
+    Subscription subscription = mDataManager.fetchCompletedTasks()
+        .compose(ThreadSchedulers.applySchedulers())
+        .subscribe(taskEntities -> {
+          Timber.e("Completed tasks " +String.valueOf(taskEntities.getTasks().size()));
+        }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 }
