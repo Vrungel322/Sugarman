@@ -42,6 +42,8 @@ public class User {
 
   @SerializedName("is_pending") private String isPending;
 
+  @SerializedName("level") private int level;
+
   private Date createUTCDate;
 
   private Date currentDayUTCDate;
@@ -66,6 +68,10 @@ public class User {
 
   public String getEmail() {
     return email;
+  }
+
+  public int getLevel() {
+    return level;
   }
 
   public Date getCreateUTCDate() {

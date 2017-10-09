@@ -51,6 +51,7 @@
     <string name="log_out">Выйти</string>
     <string name="intro">Обучение</string>
     <string name="profile_my_stats">Моя статистика</string>
+    <string name="level">УРОВЕНЬ %1$d</string>
 
     <!-- HIGH SCORE ACTIVITY -->
     <string name="group_that_i_created">Группа, созданная мной</string>

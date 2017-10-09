@@ -130,6 +130,7 @@ public class GetUserInfoActivity extends BaseActivity
       App.appendLog(Constants.TAG_TEST_GO_TO_NEXT_DAY,
           "stat  " + i + "   " + allMyInfo.getStats()[i].toString());
     }
+    Timber.e("Level: " + allMyInfo.getUser().getLevel());
     App.appendLog(Constants.TAG_TEST_GO_TO_NEXT_DAY,
         getClass().getSimpleName() + " received stats finish:");
     SharedPreferenceHelper.saveStats(allMyInfo.getStats());

@@ -60,18 +60,18 @@
     <dimen name="main_search_icon_padding">10dp</dimen>
     <dimen name="main_search_text_size">18sp</dimen>
     <dimen name="main_search_margin_bottom">8dp</dimen>
-    <dimen name="main_container_animation_icon">80dp</dimen>
-    <dimen name="main_size_animated_image">60dp</dimen>
+    <dimen name="main_container_animation_icon">120dp</dimen>
+    <dimen name="main_size_animated_image">100dp</dimen>
     <dimen name="main_size_pager_arrow_width">2dp</dimen>
 
     <!-- PROFILE ACTIVITY -->
-    <dimen name="profile_padding">@dimen/main_padding</dimen>
+    <dimen name="profile_padding">25dp</dimen>
     <dimen name="profile_avatar_size">@dimen/high_group_icon_size</dimen>
     <dimen name="profile_cross_margin">20dp</dimen>
     <dimen name="profile_name_text_size">20sp</dimen>
     <dimen name="profile_name_margin">5dp</dimen>
     <dimen name="profile_total_count_text_size">14sp</dimen>
-    <dimen name="profile_item_text_size">18sp</dimen>
+    <dimen name="profile_item_text_size">16sp</dimen>
     <dimen name="profile_counter_padding_horizontal_large">9dp</dimen>
     <dimen name="profile_counter_padding_horizontal_small">5dp</dimen>
     <dimen name="profile_counter_padding_vertical">3dp</dimen>
@@ -88,7 +88,7 @@
     <dimen name="high_score_trophy_padding">15dp</dimen>
     <dimen name="high_sore_text_size">19sp</dimen>
     <dimen name="high_score_group_height">190dp</dimen>
-    <dimen name="high_group_icon_size">50dp</dimen>
+    <dimen name="high_group_icon_size">76dp</dimen>
     <dimen name="high_group_name_text_size">20sp</dimen>
     <dimen name="high_score_group_margin">5dp</dimen>
     <dimen name="high_score_group_divider_height">1dp</dimen>
@@ -102,7 +102,7 @@
 
     <!-- INVITES ACTIVITY -->
     <dimen name="invites_padding">@dimen/main_padding</dimen>
-    <dimen name="invites_avatar_size">55dp</dimen>
+    <dimen name="invites_avatar_size">52dp</dimen>
     <dimen name="invites_avatar_margin">25dp</dimen>
     <dimen name="invites_text_size">16sp</dimen>
     <dimen name="invites_margin_between_btns">20dp</dimen>
@@ -128,12 +128,12 @@
     <dimen name="create_group_et_name_width">200dp</dimen>
     <dimen name="create_group_divider_height">1dp</dimen>
     <dimen name="create_group_small_padding">5dp</dimen>
-    <dimen name="create_group_et_padding_horizontal">10dp</dimen>
-    <dimen name="create_group_et_padding_vertical">10dp</dimen>
+    <dimen name="create_group_et_padding_horizontal">6dp</dimen>
+    <dimen name="create_group_et_padding_vertical">6dp</dimen>
     <dimen name="create_group_clear_input_size">20dp</dimen>
     <dimen name="create_group_margin_large">25dp</dimen>
     <dimen name="create_group_user_text_size">16sp</dimen>
-    <dimen name="create_group_user_manage_btn_width">90dp</dimen>
+    <dimen name="create_group_user_manage_btn_width">85dp</dimen>
     <dimen name="create_group_user_manage_btn_padding">10dp</dimen>
     <dimen name="create_group_icon_suga_size">25dp</dimen>
 
@@ -155,7 +155,7 @@
     <dimen name="search_group_time_text_size">12sp</dimen>
     <dimen name="search_group_members_text_size">13sp</dimen>
     <dimen name="search_group_created_by_text_size">11sp</dimen>
-    <dimen name="search_group_btn_padding">30dp</dimen>
+    <dimen name="search_group_btn_padding">25dp</dimen>
     <dimen name="search_group_item_divider_height">8dp</dimen>
 
     <!-- CONGRATULATIONS ACTIVITY -->
@@ -163,7 +163,7 @@
     <dimen name="congratulations_elevation">@dimen/dialog_card_elevation</dimen>
     <dimen name="congratulations_padding">@dimen/create_group_padding</dimen>
     <dimen name="congratulations_cross_margin">@dimen/profile_cross_margin</dimen>
-    <dimen name="congratulations_large_text_size">23sp</dimen>
+    <dimen name="congratulations_large_text_size">17sp</dimen>
     <dimen name="congratulations_margin">40dp</dimen>
     <dimen name="congratulations_image_size">@dimen/search_group_avatar_text_size</dimen>
     <dimen name="congratulations_text_size">18sp</dimen>
@@ -240,18 +240,18 @@
     <dimen name="group_details_external_padding">@dimen/main_padding</dimen>
     <dimen name="group_details_elevation">@dimen/dialog_card_elevation</dimen>
     <dimen name="group_details_padding">@dimen/main_padding</dimen>
-    <dimen name="group_details_cross_size">50dp</dimen>
+    <dimen name="group_details_cross_size">40dp</dimen>
     <dimen name="group_details_large_text_size">@dimen/congratulations_large_text_size</dimen>
     <dimen name="group_details_image_size">@dimen/profile_avatar_size</dimen>
     <dimen name="group_details_margin">10dp</dimen>
     <dimen name="group_details_divider_width">40dp</dimen>
     <dimen name="group_details_divider_height">1px</dimen>
-    <dimen name="group_details_text_size">14sp</dimen>
+    <dimen name="group_details_text_size">12sp</dimen>
     <dimen name="group_details_small_margin">3dp</dimen>
     <dimen name="group_details_large_margin">20dp</dimen>
     <dimen name="group_details_item_height">100dp</dimen>
     <dimen name="group_details_avatar_size">@dimen/invites_avatar_size</dimen>
-    <dimen name="group_details_steps_text_size">13sp</dimen>
+    <dimen name="group_details_steps_text_size">11sp</dimen>
     <dimen name="group_details_num_width">35dp</dimen>
     <dimen name="group_details_pengin_margin">40dp</dimen>
     <dimen name="group_deatils_icon_bad_padding">4dp</dimen>
@@ -292,4 +292,5 @@
     <dimen name="notifications_cross_margin">8dp</dimen>
     <dimen name="notifications_container_height">80dp</dimen>
     <dimen name="notifications_item_padding">10dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>

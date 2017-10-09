@@ -68,6 +68,7 @@ public class ProfileActivity extends BaseActivity implements View.OnTouchListene
   @BindView(R.id.wave1) ImageView wave1;
   @BindView(R.id.wave2) ImageView wave2;
   @BindView(R.id.wave3) ImageView wave3;
+  @BindView(R.id.tv_level) TextView level;
   ImageView ivNoInvites, ivNoRequests;
   ImageView ivAvatar;
   int days;
@@ -172,6 +173,8 @@ public class ProfileActivity extends BaseActivity implements View.OnTouchListene
         loadingStrip.setImageBitmap(bmp);
       }
     });
+
+    level.setText(String.format(getString(R.string.level),SharedPreferenceHelper.getLevel()));
 
     Typeface tfDin = Typeface.createFromAsset(getAssets(), "din_light.ttf");
     tvTotal.setTypeface(tfDin);
