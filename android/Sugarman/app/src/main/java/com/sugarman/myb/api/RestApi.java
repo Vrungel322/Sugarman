@@ -1,10 +1,10 @@
 package com.sugarman.myb.api;
 
+import com.sugarman.myb.api.models.levelSystem.TaskEntity;
 import com.sugarman.myb.api.models.requests.PurchaseDataRequest;
 import com.sugarman.myb.api.models.requests.RefreshUserDataRequest;
 import com.sugarman.myb.api.models.responses.CountInvitesResponse;
 import com.sugarman.myb.api.models.responses.InvitersImgUrls;
-import com.sugarman.myb.api.models.levelSystem.TaskEntity;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.constants.Constants;
@@ -89,9 +89,7 @@ public class RestApi {
     return api.fetchTasks();
   }
 
-  public Observable<TaskEntity> fetchCompletedTasks()
-  {
-    Timber.e("Called fetchCompletedTasks");
-    return api.fetchCompletedTasks();
+  public Observable<List<String>> fetchCompletedTasks(String accessToken) {
+    return api.fetchCompletedTasks(accessToken);
   }
 }
