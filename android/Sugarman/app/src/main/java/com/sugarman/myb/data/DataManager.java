@@ -32,7 +32,8 @@ public class DataManager {
   private PreferencesHelper mPref;
   private ContentResolver mContentResolver;
 
-  public DataManager(RestApi restApi, PreferencesHelper pref, ContentResolver contentResolver,DbHelper dbHelper) {
+  public DataManager(RestApi restApi, PreferencesHelper pref, ContentResolver contentResolver,
+      DbHelper dbHelper) {
     mRestApi = restApi;
     mPref = pref;
     mContentResolver = contentResolver;
@@ -89,10 +90,8 @@ public class DataManager {
     return mRestApi.fetchTasks();
   }
 
-  public Observable<TaskEntity> fetchCompletedTasks()
-  {
-    Timber.e("Called fetchCompletedTasks");
-    return mRestApi.fetchCompletedTasks(SharedPreferenceHelper.getAccessToken());
+  public Observable<List<String>> fetchCompletedTasks() {
+    return mRestApi.fetchCompletedTasks(Constants.BEARER + SharedPreferenceHelper.getAccessToken());
   }
 }
 

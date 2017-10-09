@@ -35,8 +35,8 @@ import timber.log.Timber;
   {
     Subscription subscription = mDataManager.fetchCompletedTasks()
         .compose(ThreadSchedulers.applySchedulers())
-        .subscribe(taskEntities -> {
-          Timber.e("Completed tasks " +String.valueOf(taskEntities.getTasks().size()));
+        .subscribe(ids -> {
+          Timber.e("Completed tasks " +String.valueOf(ids.size()));
         }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
