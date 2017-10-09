@@ -50,4 +50,9 @@ public interface ApiRx {
 
   @GET("v3/get_all_tasks")
   Observable<TaskEntity> fetchTasks();
+
+  @GET("v3/get_completed_tasks")
+  Observable<TaskEntity> fetchCompletedTasks();
+
+
 }
