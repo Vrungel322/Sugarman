@@ -52,7 +52,7 @@ public interface ApiRx {
   Observable<TaskEntity> fetchTasks();
 
   @GET("v3/get_completed_tasks")
-  Observable<TaskEntity> fetchCompletedTasks();
+  Observable<TaskEntity> fetchCompletedTasks(@Header("Authorization") String accessToken);
 
 
 }

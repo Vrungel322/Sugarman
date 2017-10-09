@@ -89,9 +89,9 @@ public class RestApi {
     return api.fetchTasks();
   }
 
-  public Observable<TaskEntity> fetchCompletedTasks()
+  public Observable<TaskEntity> fetchCompletedTasks(String accessToken)
   {
     Timber.e("Called fetchCompletedTasks");
-    return api.fetchCompletedTasks();
+    return api.fetchCompletedTasks(accessToken);
   }
 }
