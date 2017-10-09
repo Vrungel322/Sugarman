@@ -2,9 +2,9 @@ package com.sugarman.myb.ui.activities.base;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.sugarman.myb.App;
-import com.sugarman.myb.api.DataManager;
 import com.sugarman.myb.api.models.requests.RefreshUserDataRequest;
 import com.sugarman.myb.base.BasicPresenter;
+import com.sugarman.myb.data.DataManager;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.ThreadSchedulers;
 import java.util.TimeZone;

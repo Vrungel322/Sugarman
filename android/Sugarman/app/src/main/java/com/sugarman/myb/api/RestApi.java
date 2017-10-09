@@ -27,7 +27,7 @@ public class RestApi {
     this.api = api;
   }
 
-  Observable<UsersResponse> refreshRxUserData(RefreshUserDataRequest request) {
+  public Observable<UsersResponse> refreshRxUserData(RefreshUserDataRequest request) {
     return api.refreshRxUserData(request);
   }
 
