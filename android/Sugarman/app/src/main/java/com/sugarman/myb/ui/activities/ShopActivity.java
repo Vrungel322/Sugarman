@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.sugarman.myb.R;
+import com.sugarman.myb.ui.activities.productDetail.ProductDetailsActivity;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,6 +56,14 @@ public class ShopActivity extends AppCompatActivity implements View.OnClickListe
           Intent intent = new Intent(ShopActivity.this, ProductDetailsActivity.class);
 
           intent.putExtra("productId", productId);
+          //MOCK - need to be gone -------------------->
+          ArrayList<String> imgs = new ArrayList<>();
+          for (int i = 0; i < 10; i++) {
+            imgs.add(
+                "http://www.sporttimedv.ru/25619-thickbox_default/muzhskie-bejsbolki-kepki-krasnaya-polo-ralph-lauren.jpg");
+          }
+          // <----------------
+          intent.putStringArrayListExtra("imgUrls", imgs);
           startActivity(intent);
         }
       });

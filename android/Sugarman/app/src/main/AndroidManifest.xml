@@ -203,7 +203,7 @@
 
     <activity android:name=".ui.activities.ShopActivity"
         android:screenOrientation="portrait"/>
-    <activity android:name=".ui.activities.ProductDetailsActivity"
+    <activity android:name=".ui.activities.productDetail.ProductDetailsActivity"
         android:screenOrientation="portrait"/>
     <activity android:name=".ui.activities.checkout.CheckoutActivity"
         android:screenOrientation="portrait"/>

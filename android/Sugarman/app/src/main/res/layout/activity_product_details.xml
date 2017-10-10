@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.sugarman.myb.ui.activities.ProductDetailsActivity"
+    tools:context="com.sugarman.myb.ui.activities.productDetail.ProductDetailsActivity"
     >
 
   <LinearLayout
@@ -141,7 +141,19 @@
           android:layout_height="match_parent"
           android:adjustViewBounds="true"
           android:scaleType="centerCrop"
+          android:visibility="gone"
           android:src="@drawable/shop_hat"
+          />
+
+      <com.mzelzoghbi.zgallery.CustomViewPager
+          android:id="@+id/viewPagerImages"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_alignParentBottom="true"
+          android:layout_alignParentLeft="true"
+          android:layout_alignParentStart="true"
+          android:layout_alignParentTop="true"
+          android:layout_marginBottom="3dp"
           />
     </android.support.v7.widget.CardView>
 

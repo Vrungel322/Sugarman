@@ -5,6 +5,7 @@ import com.sugarman.myb.api.models.requests.PurchaseDataRequest;
 import com.sugarman.myb.api.models.requests.RefreshUserDataRequest;
 import com.sugarman.myb.api.models.responses.CountInvitesResponse;
 import com.sugarman.myb.api.models.responses.InvitersImgUrls;
+import com.sugarman.myb.api.models.responses.ShopProduct;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.constants.Constants;
@@ -77,6 +78,22 @@ public class DataManager {
   public Observable<CountInvitesResponse> countInvites() {
     Timber.e(SharedPreferenceHelper.getAccessToken());
     return mRestApi.countInvites(Constants.BEARER + SharedPreferenceHelper.getAccessToken());
+  }
+
+  public Observable<List<ShopProduct>> fetchProducts() {
+    List<ShopProduct> shopProducts = new ArrayList<>();
+    List<String> imgs = new ArrayList<>();
+    for (int i = 0; i < 10; i++) {
+      imgs.add(
+          "http://www.sporttimedv.ru/25619-thickbox_default/muzhskie-bejsbolki-kepki-krasnaya-polo-ralph-lauren.jpg");
+    }
+
+    for (int i = 0; i < 10; i++) {
+      shopProducts.add(new ShopProduct(
+          "http://www.sporttimedv.ru/25619-thickbox_default/muzhskie-bejsbolki-kepki-krasnaya-polo-ralph-lauren.jpg",
+          imgs, "name " + i, "10$"));
+    }
+    return Observable.just(shopProducts);
   }
 }
 

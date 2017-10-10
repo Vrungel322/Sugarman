@@ -114,6 +114,9 @@ dependencies {
   //Timber
   compile 'com.jakewharton.timber:timber:4.5.1'
   compile files('libs/PayPal_MPL.jar')
+
+  //ZGallery
+  compile 'com.github.mzelzoghbi:zgallery:0.3'
 }
 
 apply plugin: 'com.google.gms.google-services'
