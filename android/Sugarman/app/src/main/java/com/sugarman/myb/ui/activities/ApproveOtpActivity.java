@@ -56,7 +56,7 @@ public class ApproveOtpActivity extends AppCompatActivity implements ApiApproveO
     btn.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
         client.approveOtp(SharedPreferenceHelper.getUserId(),
-            SharedPreferenceHelper.getPhoneNumber(), otpEditText.getText().toString());
+            phoneNumberStr, otpEditText.getText().toString());
       }
     });
   }
@@ -92,7 +92,9 @@ public class ApproveOtpActivity extends AppCompatActivity implements ApiApproveO
         Timber.e("phoneNumberStr " + phoneNumberStr);
         SharedPreferenceHelper.savePhoneNumber(phoneNumberStr);
 
-        SharedPreferenceHelper.saveToken(mTokens);
+        if(mTokens!=null) {
+          SharedPreferenceHelper.saveToken(mTokens);
+        }
         startActivity(intent);
       } else {
         new SugarmanDialog.Builder(this, "Error").content("Please check the code you have entered!")

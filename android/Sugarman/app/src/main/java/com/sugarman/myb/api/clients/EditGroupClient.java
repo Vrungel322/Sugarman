@@ -123,7 +123,7 @@ else if (friend.getSocialNetwork().equals("vk")) {
           Timber.e((CountryCodeHelper.getCountryZipCode() + friend.getId()).replace(" ", ""));
 
         }
-        phoneNames.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), "Walker " + new Random().nextInt(9000)));
+        phoneNames.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getName()));
           phonePictures.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
               "https://sugarman-myb.s3.amazonaws.com/Group_New.png"));
 

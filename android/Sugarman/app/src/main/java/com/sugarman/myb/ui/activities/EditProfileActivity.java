@@ -78,6 +78,15 @@ public class EditProfileActivity extends BasicActivity
     return matcher.matches();
   }
 
+  public static boolean isPhoneValid(String phone)
+  {
+    String expression = "^[+][0-9]{10,13}$";
+    Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+    Matcher matcher = pattern.matcher(phone);
+    return matcher.matches();
+
+  }
+
   @Override protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_edit_profile);
     super.onCreate(savedInstanceState);
@@ -187,6 +196,7 @@ public class EditProfileActivity extends BasicActivity
 
   @OnClick(R.id.iv_next) public void ivNextClicked() {
     //SharedPreferenceHelper.saveUserName("Test name");
+
 editProfile();
   }
 
@@ -199,11 +209,39 @@ editProfile();
     displayNumber = etPhone.getText().toString();
 
     if (isEmailValid(displayEmail)) {
-      editProfileClient.editUser(displayNumber, displayEmail, displayName,
-          SharedPreferenceHelper.getFbId(), SharedPreferenceHelper.getVkId(),
-          SharedPreferenceHelper.getAvatar(), selectedFile); //brand.png
-      SharedPreferenceHelper.saveEmail(displayEmail);
-      //showNextActivity();
+      if(displayNumber.equals("")) {
+        displayNumber = "none";
+        Timber.e("Got in here 1");
+        editProfileClient.editUser(displayNumber, displayEmail, displayName,
+            SharedPreferenceHelper.getFbId(), SharedPreferenceHelper.getVkId(),
+            SharedPreferenceHelper.getAvatar(), selectedFile); //brand.png
+        SharedPreferenceHelper.saveEmail(displayEmail);
+        nextButton.setEnabled(false);
+        backButton.setEnabled(false);
+        //showNextActivity();
+      }
+      else
+      {
+        if(isPhoneValid(displayNumber))
+        {
+          Timber.e("Got in here 2");
+          editProfileClient.editUser(displayNumber, displayEmail, displayName,
+              SharedPreferenceHelper.getFbId(), SharedPreferenceHelper.getVkId(),
+              SharedPreferenceHelper.getAvatar(), selectedFile); //brand.png
+          SharedPreferenceHelper.saveEmail(displayEmail);
+          nextButton.setEnabled(false);
+          backButton.setEnabled(false);
+          //showNextActivity();
+        }
+        else
+        {
+          new SugarmanDialog.Builder(this, "Phone").content(getResources().getString(R.string.the_phone_is_not_valid))
+              .build()
+              .show();
+        }
+      }
+
+
 
     } else {
       new SugarmanDialog.Builder(this, "Email").content(getResources().getString(R.string.the_email_is_not_valid))
@@ -215,6 +253,10 @@ editProfile();
 
   @OnClick(R.id.iv_back) public void ivBackClicked() {
     editProfile();
+  }
+
+  @Override public void onBackPressed() {
+    ivBackClicked();
   }
 
   @OnClick({ R.id.iv_profile_avatar, R.id.tv_change_photo }) public void ivAvatarClicked() {
@@ -394,7 +436,6 @@ editProfile();
       intent.putExtra("otp", otp);
       intent.putExtra("showSettings", false);
       intent.putExtra("phone", displayNumber);
-      intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
       startActivity(intent);
     } else {
       SharedPreferenceHelper.savePhoneNumber(etPhone.getText().toString());

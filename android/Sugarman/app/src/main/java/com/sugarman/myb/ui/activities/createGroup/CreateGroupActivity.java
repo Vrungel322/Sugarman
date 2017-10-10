@@ -153,6 +153,7 @@ public class CreateGroupActivity extends BaseActivity
 
           List<String> recipients = result.getRequestRecipients();
           fbApiClient.getFriendsInfo(recipients);
+
         }
 
         @Override public void onCancel() {
@@ -658,6 +659,7 @@ public class CreateGroupActivity extends BaseActivity
 
   @Override public void onApiCreateGroupSuccess(CreatedGroup createdGroup) {
     mJoinGroupClient.joinGroup(createdGroup.getId());
+
   }
 
   @Override public void onApiCreateGroupFailure(String message) {
@@ -697,6 +699,11 @@ public class CreateGroupActivity extends BaseActivity
       SendVkInvitationDialog.newInstance(intiteByVk)
           .show(getFragmentManager(), "SendVkInvitationDialog");
     }
+    else {
+      finish();
+    }
+    if(intiteByVk.isEmpty() && idsFb.isEmpty())
+    {finish();}
   }
 
   @Override public void onApiJoinGroupFailure(String message) {
