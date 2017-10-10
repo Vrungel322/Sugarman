@@ -9,6 +9,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.mzelzoghbi.zgallery.CustomViewPager;
 import com.sugarman.myb.R;
 import com.sugarman.myb.base.BasicActivity;
+import com.sugarman.myb.ui.activities.checkout.CheckoutActivity;
 import com.sugarman.myb.ui.activities.shopInviteFriend.ShopInviteFriendsActivity;
 import java.util.List;
 
@@ -42,13 +43,13 @@ public class ProductDetailsActivity extends BasicActivity implements IProductDet
     final int productId = intent.getIntExtra("productId", -1);
 
     buyNowFor.setOnClickListener(view -> {
-      //Intent intent = new Intent(ProductDetailsActivity.this, CheckoutActivity.class);
-      //intent.putExtra("checkout", 1);
-      //intent.putExtra("productId", productId);
-      //intent.putExtra("productName", productNameString);
-      //intent.putExtra("productImageId", productImageId);
-      //intent.putExtra("productPrice", productPrice);
-      //startActivity(intent);
+      Intent intent1 = new Intent(ProductDetailsActivity.this, CheckoutActivity.class);
+      intent1.putExtra("checkout", 1);
+      intent1.putExtra("productId", productId);
+      intent1.putExtra("productName", productNameString);
+      intent1.putExtra("productImageId", productImageId);
+      intent1.putExtra("productPrice", productPrice);
+      startActivity(intent1);
     });
 
     freeForFriends.setOnClickListener(view -> {
