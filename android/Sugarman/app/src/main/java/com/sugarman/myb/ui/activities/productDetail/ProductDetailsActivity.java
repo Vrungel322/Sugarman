@@ -19,7 +19,7 @@ public class ProductDetailsActivity extends BasicActivity implements IProductDet
   @BindView(R.id.product_name)TextView productName;
   @BindView(R.id.buy_now_for_x)TextView buyNowFor;
   @BindView(R.id.free_for_x_friends) TextView freeForFriends;
-  @BindView(R.id.product_image)ImageView productImage;
+  //@BindView(R.id.product_image)ImageView productImage;
   int productPrice = 0;
   int productImageId = 0;
   String productNameString = "";
@@ -65,7 +65,7 @@ public class ProductDetailsActivity extends BasicActivity implements IProductDet
         productName.setText(getResources().getString(R.string.sugarman_cap));
         //buyNowFor.setText("Buy now for 17$");
         freeForFriends.setText(String.format(getResources().getString(R.string.free_for),"5"));
-        productImage.setImageDrawable(getResources().getDrawable(productImageId));
+        //productImage.setImageDrawable(getResources().getDrawable(productImageId));
         break;
       case 2:
         productPrice = 12;
@@ -74,7 +74,7 @@ public class ProductDetailsActivity extends BasicActivity implements IProductDet
         productName.setText(getResources().getString(R.string.phone_holder));
         //buyNowFor.setText("Buy now for 12$");
         freeForFriends.setText(String.format(getResources().getString(R.string.free_for),"5"));
-        productImage.setImageDrawable(getResources().getDrawable(productImageId));
+        //productImage.setImageDrawable(getResources().getDrawable(productImageId));
         break;
       case 3:
         productPrice = 3;
@@ -83,7 +83,7 @@ public class ProductDetailsActivity extends BasicActivity implements IProductDet
         productName.setText(getResources().getString(R.string.sugarman_comics));
         //buyNowFor.setText("Buy now for 3$");
         freeForFriends.setText("Free for 5 friends");
-        productImage.setImageDrawable(getResources().getDrawable(productImageId));
+        //productImage.setImageDrawable(getResources().getDrawable(productImageId));
         break;
     }
   }
