@@ -10,6 +10,7 @@ import com.sugarman.myb.ui.activities.base.BasicActivityPresenter;
 import com.sugarman.myb.ui.activities.checkout.CheckoutActivityPresenter;
 import com.sugarman.myb.ui.activities.createGroup.CreateGroupActivityPresenter;
 import com.sugarman.myb.ui.activities.productDetail.ProductDetailsActivityPresenter;
+import com.sugarman.myb.ui.activities.shop.ShopActivityPresenter;
 import com.sugarman.myb.ui.activities.shopInviteFriend.ShopInviteFriendsActivityPresenter;
 import com.sugarman.myb.ui.dialogs.sendVkInvitation.SendVkInvitationDialogPresenter;
 import dagger.Component;
@@ -38,4 +39,6 @@ import dagger.Component;
   void inject(CreateGroupActivityPresenter presenter);
 
   void inject(ProductDetailsActivityPresenter presenter);
+
+  void inject(ShopActivityPresenter presenter);
 }

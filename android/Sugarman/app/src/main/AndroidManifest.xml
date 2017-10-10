@@ -201,7 +201,7 @@
       </intent-filter>
     </receiver>
 
-    <activity android:name=".ui.activities.ShopActivity"
+    <activity android:name=".ui.activities.shop.ShopActivity"
         android:screenOrientation="portrait"/>
     <activity android:name=".ui.activities.productDetail.ProductDetailsActivity"
         android:screenOrientation="portrait"/>

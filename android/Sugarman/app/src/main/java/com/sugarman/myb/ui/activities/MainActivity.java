@@ -15,7 +15,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
-import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -77,6 +76,7 @@ import com.sugarman.myb.models.ChallengeWillStartItem;
 import com.sugarman.myb.models.NoChallengeItem;
 import com.sugarman.myb.services.MasterStepDetectorService;
 import com.sugarman.myb.ui.activities.createGroup.CreateGroupActivity;
+import com.sugarman.myb.ui.activities.shop.ShopActivity;
 import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.ui.fragments.BaseFragment;
@@ -104,7 +104,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import org.greenrobot.eventbus.Subscribe;
-import timber.log.Timber;
 
 public class MainActivity extends GetUserInfoActivity implements View.OnClickListener {
 
