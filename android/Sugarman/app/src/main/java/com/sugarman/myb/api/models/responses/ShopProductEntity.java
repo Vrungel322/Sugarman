@@ -2,6 +2,7 @@ package com.sugarman.myb.api.models.responses;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 /**
@@ -9,11 +10,11 @@ import java.util.List;
  */
 
 public class ShopProductEntity implements Parcelable {
-  private  String id;
-  private String productName;
-  private String productDescription;
-  private String productPrice;
-  private List<String> imgDetailUrls;
+  @SerializedName("name") private String productName;
+  @SerializedName("desc") private String productDescription;
+  @SerializedName("price")private String productPrice;
+  @SerializedName("images")private List<String> imgDetailUrls;
+  @SerializedName("id") private  String id;
 
   public ShopProductEntity(String id, String productName, String productDescription,
       String productPrice, List<String> imgDetailUrls) {

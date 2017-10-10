@@ -81,18 +81,7 @@ public class DataManager {
   }
 
   public Observable<List<ShopProductEntity>> fetchProducts() {
-    List<ShopProductEntity> shopProductEntities = new ArrayList<>();
-    List<String> imgs = new ArrayList<>();
-    for (int i = 0; i < 10; i++) {
-      imgs.add(
-          "http://www.sporttimedv.ru/25619-thickbox_default/muzhskie-bejsbolki-kepki-krasnaya-polo-ralph-lauren.jpg");
-    }
-
-    for (int i = 0; i < 10; i++) {
-      shopProductEntities.add(
-          new ShopProductEntity(String.valueOf(i), "name " + i, "decsript", "10$", imgs));
-    }
-    return Observable.just(shopProductEntities);
+    return mRestApi.fetchProducts();
   }
 }
 

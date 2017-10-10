@@ -4,6 +4,7 @@ import com.sugarman.myb.api.models.requests.PurchaseDataRequest;
 import com.sugarman.myb.api.models.requests.RefreshUserDataRequest;
 import com.sugarman.myb.api.models.responses.CountInvitesResponse;
 import com.sugarman.myb.api.models.responses.InvitersImgUrls;
+import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.constants.Constants;
@@ -82,5 +83,9 @@ public class RestApi {
 
   public Observable<CountInvitesResponse> countInvites(String accessToken) {
     return api.countInvites(accessToken);
+  }
+
+  public Observable<List<ShopProductEntity>> fetchProducts() {
+    return api.fetchProducts();
   }
 }
