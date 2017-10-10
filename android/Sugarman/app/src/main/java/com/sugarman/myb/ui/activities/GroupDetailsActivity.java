@@ -2010,7 +2010,7 @@ public class GroupDetailsActivity extends BaseActivity
 
   private void openAddMembersActivity() {
     Intent intent = new Intent(GroupDetailsActivity.this, AddMemberActivity.class);
-    
+
     Member[] membersTemp = new Member[100];
     ArrayList<Member> members1 = new ArrayList<Member>(Arrays.asList(members));
     Collections.addAll(members1, pendings);
