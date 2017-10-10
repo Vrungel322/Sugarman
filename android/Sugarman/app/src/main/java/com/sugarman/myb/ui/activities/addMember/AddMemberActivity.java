@@ -634,7 +634,9 @@ public class AddMemberActivity extends BaseActivity
         for (FacebookFriend friend : allFriends) {
           if (friend.isSelected()) {
             if (friend.getSocialNetwork().equals("fb")) {
-              mIdsFb.add(friend.getId());
+              if (friend.getIsInvitable() == FacebookFriend.CODE_INVITABLE) {
+                mIdsFb.add(friend.getId());
+              }
             }
             if (friend.getSocialNetwork().equals("ph")) {
               mInviteByPh.add(friend);
@@ -662,6 +664,8 @@ public class AddMemberActivity extends BaseActivity
                   .setRecipients(mIdsFb)
                   .build();
           fbInviteDialog.show(content);
+        }else {
+          checkFilledData();
         }
         if (!mInviteByVk.isEmpty()) {
           //mPresenter.sendInvitationInVk(mInviteByVk,
