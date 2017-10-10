@@ -207,6 +207,7 @@ public class AddMemberActivity extends BaseActivity
 
     Intent intent = getIntent();
     addedMembers = IntentExtractorHelper.getMembers(intent);
+    Timber.e("Added Members " + addedMembers.length);
     trackingId = IntentExtractorHelper.getTrackingId(intent);
     pendingMembers = IntentExtractorHelper.getPendings(intent);
     groupName = IntentExtractorHelper.getGroupName(intent);
@@ -280,11 +281,11 @@ public class AddMemberActivity extends BaseActivity
         List<FacebookFriend> phoneFriends = new ArrayList<FacebookFriend>();
 
         for (String key : contactList.keySet()) {
-            FacebookFriend friend =
-                new FacebookFriend(contactList.get(key), key, "", FacebookFriend.CODE_INVITABLE,
-                    "ph");
-            allFriends.add(friend);
-            phoneFriends.add(friend);
+          FacebookFriend friend =
+              new FacebookFriend(contactList.get(key), key, "", FacebookFriend.CODE_INVITABLE,
+                  "ph");
+          allFriends.add(friend);
+          phoneFriends.add(friend);
         }
 
         runOnUiThread(new Runnable() {
@@ -325,7 +326,6 @@ public class AddMemberActivity extends BaseActivity
 
             allFriends.add(friend);
           }
-
         } catch (JSONException e) {
           e.printStackTrace();
         }
@@ -336,7 +336,6 @@ public class AddMemberActivity extends BaseActivity
         checkForUnique();
       }
 
-
       @Override public void onError(VKError error) {
         super.onError(error);
         setFriends(allFriends);
@@ -345,20 +344,21 @@ public class AddMemberActivity extends BaseActivity
     });
   }
 
-  void checkForUnique()
-  {
-    for (FacebookFriend friend : allFriends) {
+  void checkForUnique() {
+    for (int i = 0; i < allFriends.size(); i++) {
       for (Member member : addedMembers) {
-        if (TextUtils.equals(member.getName(), friend.getName())) {
-          friend.setAdded(true);
+        if (TextUtils.equals(member.getName(), allFriends.get(i).getName()) || member.getFbid()
+            .equals(allFriends.get(i).getId())) {
+          allFriends.get(i).setAdded(true);
         }
       }
 
       for (Member member : pendingMembers) {
-        if (TextUtils.equals(member.getName(), friend.getName())) {
-          friend.setPending(true);
+        if (TextUtils.equals(member.getName(), allFriends.get(i).getName())) {
+          allFriends.get(i).setPending(true);
         }
       }
+      Timber.e(String.valueOf(allFriends.get(i).isAdded()));
     }
   }
 
@@ -388,7 +388,8 @@ public class AddMemberActivity extends BaseActivity
       }
     } else {
       AlertDialog.Builder builder = new AlertDialog.Builder(AddMemberActivity.this);
-      builder.setMessage(getResources().getString(R.string.log_in_to_fb)).setTitle(getResources().getString(R.string.not_logged_in));
+      builder.setMessage(getResources().getString(R.string.log_in_to_fb))
+          .setTitle(getResources().getString(R.string.not_logged_in));
       builder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
         public void onClick(DialogInterface dialog, int id) {
           Intent intent = new Intent(AddMemberActivity.this, EditProfileActivity.class);
@@ -437,7 +438,8 @@ public class AddMemberActivity extends BaseActivity
       }
     } else {
       AlertDialog.Builder builder = new AlertDialog.Builder(AddMemberActivity.this);
-      builder.setMessage(getResources().getString(R.string.log_in_to_vk)).setTitle(getResources().getString(R.string.not_logged_in));
+      builder.setMessage(getResources().getString(R.string.log_in_to_vk))
+          .setTitle(getResources().getString(R.string.not_logged_in));
       builder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
         public void onClick(DialogInterface dialog, int id) {
           Intent intent = new Intent(AddMemberActivity.this, EditProfileActivity.class);
@@ -664,7 +666,7 @@ public class AddMemberActivity extends BaseActivity
                   .setRecipients(mIdsFb)
                   .build();
           fbInviteDialog.show(content);
-        }else {
+        } else {
           checkFilledData();
         }
         if (!mInviteByVk.isEmpty()) {
@@ -719,16 +721,17 @@ public class AddMemberActivity extends BaseActivity
     allFriends.addAll(friends);
     allFriends.addAll(invitable);
 
-    for (FacebookFriend friend : allFriends) {
+    for (int i = 0; i < allFriends.size(); i++) {
       for (Member member : addedMembers) {
-        if (TextUtils.equals(member.getName(), friend.getName())) {
-          friend.setAdded(true);
+        if (TextUtils.equals(member.getName(), allFriends.get(i).getName()) || member.getFbid()
+            .equals(allFriends.get(i).getId())) {
+          allFriends.get(i).setAdded(true);
         }
       }
 
       for (Member member : pendingMembers) {
-        if (TextUtils.equals(member.getName(), friend.getName())) {
-          friend.setPending(true);
+        if (TextUtils.equals(member.getName(), allFriends.get(i).getName())) {
+          allFriends.get(i).setPending(true);
         }
       }
     }
@@ -971,13 +974,11 @@ public class AddMemberActivity extends BaseActivity
   @Override public void addMemberToServer(List<FacebookFriend> mFacebookFriends) {
     Timber.e("addMemberToServer RxBus" + mFacebookFriends.get(0).getSocialNetwork());
     addMembersVk(mFacebookFriends);
-
   }
 
   private void addMembersVk(List<FacebookFriend> members) {
     showProgressFragment();
     Timber.e("addMembersVk" + members.get(0).getSocialNetwork());
-
 
     // TODO: 03.10.2017 uznat pochemu ne dobavlyaetsya na ui chelovek iz VK
     //mInviteByVk.clear();

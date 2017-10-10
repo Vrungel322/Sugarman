@@ -9,6 +9,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import timber.log.Timber;
 
 public class GetTrackingInfoClient extends BaseApiClient {
 
@@ -61,6 +62,7 @@ public class GetTrackingInfoClient extends BaseApiClient {
   }
 
   public void getTrackingInfo(String trackingId) {
+    Timber.e(trackingId);
     Call<TrackingInfoResponse> call = App.getApiInstance().getTrackingInfo(trackingId);
     call.enqueue(mCallback);
   }

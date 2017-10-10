@@ -156,147 +156,439 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 public class GroupDetailsActivity extends BaseActivity
     implements View.OnClickListener, ApiPokeListener, OnStepMembersActionListener,
     ApiGetTrackingInfoListener {
+  private static final String TAG = GroupDetailsActivity.class.getName();
+  private static final int TAKE_PICTURE = 12;
+  private final int DELAY_REFRESH_GROUP_INFO = 5000;
+  private final Handler handler = App.getHandlerInstance();
+  protected boolean doNotHideProgressNow = false;
+  protected boolean doNotShowProgressNow = false;
+  protected Retrofit client;
+  protected RecyclerView rvMessages;
+  protected MenuManager menuManager;
+  protected StickersManager stickersManager;
+  protected List<String> sentMessages = new ArrayList<>();
+  protected List<User> typingUsers = new ArrayList<>();
+  //data from last paging
+  protected List<Message> lastDataFromServer = new ArrayList<>();
+  //for scroll when keyboard opens
+  protected int lastVisibleItem = 0;
   Thread thread = new Thread();
   FrameLayout parentLayout;
-
-  private List<Member> lessThanYou = new ArrayList<>();
-
-  private static final String TAG = GroupDetailsActivity.class.getName();
-
   View borderline;
   int[] location;
   LinearLayout hiddenContentContainer;
   int[] brokenGlassIds;
   File pathToSerialize;
   boolean amIInGroup = false;
-
-  private final int DELAY_REFRESH_GROUP_INFO = 5000;
-
-  protected boolean doNotHideProgressNow = false;
-  protected boolean doNotShowProgressNow = false;
-
   TextView sneekPeakTextView;
-
   TextView tvMySteps;
-
   boolean showChat = true;
   boolean blockChat = false;
-
+  User user;
+  SimpleProgressDialog dialog;
+  Button chatTestBtn;
+  RelativeLayout rlChat, rlInfo;
+  ImageView attachButton;
+  String timeFormatted;
+  private List<Member> lessThanYou = new ArrayList<>();
   private String trackingId;
   private String groupPictureUrl;
   private String groupName;
-  User user;
-
-  protected Retrofit client;
-
-  SimpleProgressDialog dialog;
-
   private Member[] members = new Member[0];
   private Member[] pendings = new Member[0];
-
   private long timestampCreate;
   private boolean isEditable = false;
-
   private int assesCount = 0;
+  //LinearLayout tabsContainer;
   private int todaySteps;
   private int groupStepsWithoutMe;
-
-  Button chatTestBtn;
-
   private PokeClient mPokeClient;
-
   private View vEdit;
   private TextView tvAsses;
   private TextView tvGroupName;
   private TextView tvSteps;
+  //protected TextView tvTyping;
   private ImageView ivGroupAvatar;
-
   private LinearLayout linearInfo, linearTimer;
   private TextView tvEditGroup, tvTimer;
-
   private TextView tvChatTab, tvInfoTab;
-  RelativeLayout rlChat, rlInfo;
-  //LinearLayout tabsContainer;
-
   private GroupMembersAdapter membersAdapter;
-
   private GetTrackingInfoClient mTrackingInfoClient;
-
-  private final Handler handler = App.getHandlerInstance();
   private final Runnable runnable = new Runnable() {
     @Override public void run() {
       mTrackingInfoClient.getTrackingInfo(trackingId);
     }
   };
-
   private User activeUser;
-
   private ListView settingsListView;
-  protected RecyclerView rvMessages;
-  //protected TextView tvTyping;
-
   private EditText etMessage;
   private RelativeLayout chatToHide, chatNotAvailable;
   private ImageButton btnSend;
   private ImageButton btnStickers;
   private ProgressBar pbAboveSend;
   private ChatActivity.ButtonType buttonType = ChatActivity.ButtonType.MENU;
+  protected OnMenuManageListener onMenuManagerListener = new OnMenuManageListener() {
+    @Override public void onMenuOpened() {
+      buttonType = ChatActivity.ButtonType.MENU_OPENED;
+    }
+
+    @Override public void onMenuClosed() {
+      buttonType = ChatActivity.ButtonType.MENU;
+      etMessage.setEnabled(true);
+      findViewById(R.id.viewForMenuBehind).setVisibility(View.GONE);
+    }
+  };
   private ChatActivity.StickersType stickersType = ChatActivity.StickersType.CLOSED;
   private ChatActivity.TypingType typingType = ChatActivity.TypingType.BLANK;
+  protected TextWatcher etMessageTextWatcher = new TextWatcher() {
+    @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    }
+
+    @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+    }
+
+    @Override public void afterTextChanged(Editable s) {
+      if (s.length() == 0) {
+        animateSendButton(false);
+      } else {
+        animateSendButton(true);
+      }
+      sendTypingType(s.length());
+    }
+  };
   private TextView newMessagesButton;
-  ImageView attachButton;
-
-  protected MenuManager menuManager;
-  protected StickersManager stickersManager;
-  protected List<String> sentMessages = new ArrayList<>();
-  protected List<User> typingUsers = new ArrayList<>();
-
-  //data from last paging
-  protected List<Message> lastDataFromServer = new ArrayList<>();
-
-  //for scroll when keyboard opens
-  protected int lastVisibleItem = 0;
-
   // is socket closed on pause
   private boolean pausedForSocket = false;
   // don't close socket when open camera or location or audio activity
   private boolean forceStaySocket = false;
-  // first time resume called
-  private boolean firstTime = true;
+  protected OnMenuButtonsListener onMenuButtonsListener = new OnMenuButtonsListener() {
+    @Override public void onCameraClicked() {
+      forceStaySocket = true;
+      CameraPhotoPreviewActivity.starCameraPhotoPreviewActivity(GroupDetailsActivity.this);
+      onButtonMenuOpenedClicked();
+    }
 
-  //message queue for unsent message when socket is not connected
-  private List<Message> unSentMessageList = new ArrayList<>();
-
-  //message queue for new message from latest api when listView is not at bottom
-  private List<Message> unReadMessage = new ArrayList<>();
-
-  public enum ButtonType {
-    MENU, SEND, MENU_OPENED, IN_ANIMATION;
-  }
-
-  public enum StickersType {
-    CLOSED, OPENED, IN_ANIMATION;
-  }
-
-  public enum TypingType {
-    TYPING, BLANK;
-  }
-
-  private LocationModel tempLocationForPermission;
-
-  class MyFocusChangeListener implements View.OnFocusChangeListener {
-
-    public void onFocusChange(View v, boolean hasFocus) {
-
-      if (hasFocus) {
-
-        InputMethodManager imm =
-            (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(GroupDetailsActivity.this.getCurrentFocus().getWindowToken(),
-            0);
+    @Override public void onAudioClicked() {
+      forceStaySocket = true;
+      onButtonMenuOpenedClicked();
+      if (ContextCompat.checkSelfPermission(GroupDetailsActivity.this,
+          Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED
+          || ContextCompat.checkSelfPermission(GroupDetailsActivity.this,
+          Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+        ActivityCompat.requestPermissions(GroupDetailsActivity.this, new String[] {
+            Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE
+        }, Const.PermissionCode.MICROPHONE);
+      } else if (ContextCompat.checkSelfPermission(GroupDetailsActivity.this,
+          Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+        ActivityCompat.requestPermissions(GroupDetailsActivity.this,
+            new String[] { Manifest.permission.RECORD_AUDIO }, Const.PermissionCode.MICROPHONE);
+      } else if (ContextCompat.checkSelfPermission(GroupDetailsActivity.this,
+          Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+        ActivityCompat.requestPermissions(GroupDetailsActivity.this,
+            new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE },
+            Const.PermissionCode.MICROPHONE);
+      } else {
+        RecordAudioActivity.starRecordAudioActivity(GroupDetailsActivity.this);
       }
     }
-  }
+
+    private void onButtonMenuOpenedClicked() {
+      if (buttonType == ChatActivity.ButtonType.IN_ANIMATION) {
+        return;
+      }
+      buttonType = ChatActivity.ButtonType.IN_ANIMATION;
+
+      menuManager.closeMenu();
+    }
+
+    @Override public void onFileClicked() {
+      Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+      intent.setType("image/*");
+      forceStaySocket = true;
+      startActivityForResult(intent, Const.RequestCode.PICK_FILE);
+      onButtonMenuOpenedClicked();
+    }
+
+    @Override public void onVideoClicked() {
+      forceStaySocket = true;
+      RecordVideoActivity.starVideoPreviewActivity(GroupDetailsActivity.this);
+      onButtonMenuOpenedClicked();
+    }
+
+    @Override public void onLocationClicked() {
+      forceStaySocket = true;
+      onButtonMenuOpenedClicked();
+      if (ContextCompat.checkSelfPermission(GroupDetailsActivity.this,
+          Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        ActivityCompat.requestPermissions(GroupDetailsActivity.this,
+            new String[] { Manifest.permission.ACCESS_COARSE_LOCATION },
+            Const.PermissionCode.LOCATION_MY);
+      } else {
+        LocationActivity.startLocationActivity(GroupDetailsActivity.this);
+      }
+    }
+
+    @Override public void onGalleryClicked() {
+      forceStaySocket = true;
+      CameraPhotoPreviewActivity.starCameraFromGalleryPhotoPreviewActivity(
+          GroupDetailsActivity.this);
+      onButtonMenuOpenedClicked();
+    }
+
+    @Override public void onContactClicked() {
+      if (ContextCompat.checkSelfPermission(GroupDetailsActivity.this,
+          Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+        ActivityCompat.requestPermissions(GroupDetailsActivity.this,
+            new String[] { Manifest.permission.READ_CONTACTS }, Const.PermissionCode.READ_CONTACTS);
+      } else {
+        requestContacts();
+      }
+      onButtonMenuOpenedClicked();
+    }
+  };
+  // first time resume called
+  private boolean firstTime = true;
+  //message queue for unsent message when socket is not connected
+  private List<Message> unSentMessageList = new ArrayList<>();
+  //message queue for new message from latest api when listView is not at bottom
+  private List<Message> unReadMessage = new ArrayList<>();
+  private LocationModel tempLocationForPermission;
+  protected MessageRecyclerViewAdapter.OnLastItemAndOnClickListener onLastItemAndClickItemListener =
+      new MessageRecyclerViewAdapter.OnLastItemAndOnClickListener() {
+        @Override public void onLastItem() {
+          LogCS.e("LOG", "LAST ITEM");
+          if (lastDataFromServer.size() < 50) {
+            //no more paging
+            LogCS.e("LOG", "NO MORE MESSAGES");
+          } else {
+            if (lastDataFromServer.size() > 0) {
+              String lastMessageId = lastDataFromServer.get(lastDataFromServer.size() - 1)._id;
+              boolean isInit = false;
+              getMessages(isInit, lastMessageId);
+            }
+          }
+        }
+
+        private void downloadFile(Message item) {
+
+          File file =
+              new File(Tools.getDownloadFolderPath() + "/" + item.created + item.file.file.name);
+
+          if (file.exists()) {
+            OpenDownloadedFile.downloadedFileDialog(file, GroupDetailsActivity.this);
+          } else {
+
+            final DownloadFileDialog dialog =
+                DownloadFileDialog.startDialog(GroupDetailsActivity.this);
+
+            DownloadFileManager.downloadVideo(GroupDetailsActivity.this,
+                Tools.getFileUrlFromId(item.file.file.id, GroupDetailsActivity.this), file,
+                new DownloadFileManager.OnDownloadListener() {
+                  @Override public void onStart() {
+                    LogCS.d("LOG", "START UPLOADING");
+                  }
+
+                  @Override public void onSetMax(final int max) {
+                    GroupDetailsActivity.this.runOnUiThread(new Runnable() {
+                      @Override public void run() {
+                        dialog.setMax(max);
+                      }
+                    });
+                  }
+
+                  @Override public void onProgress(final int current) {
+                    GroupDetailsActivity.this.runOnUiThread(new Runnable() {
+                      @Override public void run() {
+                        dialog.setCurrent(current);
+                      }
+                    });
+                  }
+
+                  @Override public void onFinishDownload() {
+                    GroupDetailsActivity.this.runOnUiThread(new Runnable() {
+                      @Override public void run() {
+                        dialog.fileDownloaded();
+                      }
+                    });
+                  }
+
+                  @Override public void onResponse(boolean isSuccess, final String path) {
+                    GroupDetailsActivity.this.runOnUiThread(new Runnable() {
+                      @Override public void run() {
+                        dialog.dismiss();
+                        OpenDownloadedFile.downloadedFileDialog(new File(path),
+                            GroupDetailsActivity.this);
+                      }
+                    });
+                  }
+                });
+          }
+        }
+
+        @Override public void onClickItem(final Message item) {
+          if (item.deleted != -1 && item.deleted != 0) {
+            return;
+          }
+          if (item.type == Const.MessageType.TYPE_FILE) {
+            if (Tools.isMimeTypeImage(item.file.file.mimeType)) {
+              PreviewPhotoDialog.startDialog(GroupDetailsActivity.this,
+                  Tools.getFileUrlFromId(item.file.file.id, GroupDetailsActivity.this), item);
+            } else if (Tools.isMimeTypeVideo(item.file.file.mimeType)) {
+              PreviewVideoDialog.startDialog(GroupDetailsActivity.this, item.file);
+            } else if (Tools.isMimeTypeAudio(item.file.file.mimeType)) {
+              PreviewAudioDialog.startDialog(GroupDetailsActivity.this, item.file);
+            } else {
+              downloadFile(item);
+            }
+          } else if (item.type == Const.MessageType.TYPE_LOCATION) {
+            forceStaySocket = true;
+            if (ContextCompat.checkSelfPermission(GroupDetailsActivity.this,
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+              tempLocationForPermission = item.location;
+              ActivityCompat.requestPermissions(GroupDetailsActivity.this,
+                  new String[] { Manifest.permission.ACCESS_COARSE_LOCATION },
+                  Const.PermissionCode.LOCATION_THEIR);
+            } else {
+              LocationActivity.startShowLocationActivity(GroupDetailsActivity.this,
+                  item.location.lat, item.location.lng);
+            }
+          } else if (item.type == Const.MessageType.TYPE_CONTACT) {
+            OpenDownloadedFile.selectedContactDialog(item.message, GroupDetailsActivity.this);
+          } else {
+            if (item.attributes != null && item.attributes.linkData != null) {
+              Intent browserIntent =
+                  new Intent(Intent.ACTION_VIEW, Uri.parse(item.attributes.linkData.url));
+              startActivity(browserIntent);
+            } else {
+              // do nothing for now
+            }
+          }
+        }
+
+        private void openMessageInfoDialog(Message message) {
+          PreviewMessageDialog.startDialog(GroupDetailsActivity.this, message, activeUser);
+        }
+
+        private void confirmDeleteMessage(final Message message) {
+          NotifyDialog dialog = NotifyDialog.startConfirm(GroupDetailsActivity.this,
+              getString(com.clover_studio.spikachatmodule.R.string.delete_message_title),
+              getString(com.clover_studio.spikachatmodule.R.string.delete_message_text));
+          dialog.setTwoButtonListener(new NotifyDialog.TwoButtonDialogListener() {
+            @Override public void onOkClicked(NotifyDialog dialog) {
+              dialog.dismiss();
+              sendDeleteMessage(message._id);
+            }
+
+            @Override public void onCancelClicked(NotifyDialog dialog) {
+              dialog.dismiss();
+            }
+          });
+          //dialog.setButtonsText(getString(com.clover_studio.spikachatmodule.R.string.NO_CAPITAL), getString(com.clover_studio.spikachatmodule.R.string.YES_CAPITAL));
+        }
+
+        @Override public void onLongClick(Message item) {
+          boolean showDelete = true;
+          if (!activeUser.userID.equals(item.user.userID)
+              || item.type == Const.MessageType.TYPE_NEW_USER
+              || item.type == Const.MessageType.TYPE_USER_LEAVE) {
+
+            showDelete = false;
+          }
+
+          boolean showCopy = true;
+          if (item.type != Const.MessageType.TYPE_TEXT) {
+            showCopy = false;
+          }
+
+          boolean showShare = false;
+          if (item.type == Const.MessageType.TYPE_FILE && Tools.isMimeTypeImage(
+              item.file.file.mimeType)) {
+            showShare = true;
+          }
+
+          InfoMessageDialog.startDialogWithOptions(GroupDetailsActivity.this, item, activeUser,
+              showCopy, showDelete, showShare, new InfoMessageDialog.OnInfoListener() {
+                @Override public void onDeleteMessage(Message message, Dialog dialog) {
+                  confirmDeleteMessage(message);
+                }
+
+                @Override public void onDetailsClicked(Message message, Dialog dialog) {
+                  openMessageInfoDialog(message);
+                }
+
+                @Override public void onShareClicked(Message message, Dialog dialog) {
+                  handleProgress(true);
+                  File file = new File(
+                      Tools.getImageFolderPath() + "/" + message.created + message.file.file.name);
+
+                  if (file.exists()) {
+                    Tools.shareImage(GroupDetailsActivity.this, file);
+                  } else {
+                    DownloadFileManager.downloadVideo(GroupDetailsActivity.this,
+                        Tools.getFileUrlFromId(message.file.file.id, GroupDetailsActivity.this),
+                        file, new DownloadFileManager.OnDownloadListener() {
+                          @Override public void onStart() {
+                          }
+
+                          @Override public void onSetMax(int max) {
+                          }
+
+                          @Override public void onProgress(int current) {
+                          }
+
+                          @Override public void onFinishDownload() {
+                          }
+
+                          @Override public void onResponse(boolean isSuccess, String path) {
+                            Tools.shareImage(GroupDetailsActivity.this, new File(path));
+                          }
+                        });
+                  }
+                }
+              });
+        }
+      };
+  private SocketManagerListener socketListener = new SocketManagerListener() {
+    @Override public void onConnect() {
+      LogCS.w("LOG", "CONNECTED TO SOCKET");
+    }
+
+    @Override public void onSocketFailed() {
+      //GroupDetailsActivity.this.socketFailedDialog();
+    }
+
+    @Override public void onNewUser(Object... args) {
+      Log.w("LOG", "new user, args" + args[0].toString());
+    }
+
+    @Override public void onLoginWithSocket() {
+      GroupDetailsActivity.this.loginWithSocket();
+    }
+
+    @Override public void onUserLeft(User user) {
+      GroupDetailsActivity.this.onUserLeft(user);
+    }
+
+    @Override public void onTyping(SendTyping typing) {
+      GroupDetailsActivity.this.onTyping(typing);
+    }
+
+    @Override public void onMessageReceived(Message message) {
+      GroupDetailsActivity.this.onMessageReceived(message);
+    }
+
+    @Override public void onMessagesUpdated(List<Message> messages) {
+
+      GroupDetailsActivity.this.onMessagesUpdated(messages);
+    }
+
+    @Override public void onSocketError(int code) {
+      GroupDetailsActivity.this.onSocketError(code);
+    }
+  };
+  private BroadcastReceiverImplementation broadcastReceiverImplementation =
+      new BroadcastReceiverImplementation();
+  private Uri imageUri;
 
   @Override protected void onCreate(Bundle savedStateInstance) {
     setContentView(R.layout.activity_group_details);
@@ -743,65 +1035,6 @@ public class GroupDetailsActivity extends BaseActivity
     GroupDetailsActivity.this.sendUnSentMessages();
   }
 
-  private SocketManagerListener socketListener = new SocketManagerListener() {
-    @Override public void onConnect() {
-      LogCS.w("LOG", "CONNECTED TO SOCKET");
-    }
-
-    @Override public void onSocketFailed() {
-      //GroupDetailsActivity.this.socketFailedDialog();
-    }
-
-    @Override public void onNewUser(Object... args) {
-      Log.w("LOG", "new user, args" + args[0].toString());
-    }
-
-    @Override public void onLoginWithSocket() {
-      GroupDetailsActivity.this.loginWithSocket();
-    }
-
-    @Override public void onUserLeft(User user) {
-      GroupDetailsActivity.this.onUserLeft(user);
-    }
-
-    @Override public void onTyping(SendTyping typing) {
-      GroupDetailsActivity.this.onTyping(typing);
-    }
-
-    @Override public void onMessageReceived(Message message) {
-      GroupDetailsActivity.this.onMessageReceived(message);
-    }
-
-    @Override public void onMessagesUpdated(List<Message> messages) {
-
-      GroupDetailsActivity.this.onMessagesUpdated(messages);
-    }
-
-    @Override public void onSocketError(int code) {
-      GroupDetailsActivity.this.onSocketError(code);
-    }
-  };
-
-  private BroadcastReceiverImplementation broadcastReceiverImplementation =
-      new BroadcastReceiverImplementation();
-
-  private class BroadcastReceiverImplementation extends BroadcastReceiver {
-    @Override public void onReceive(Context context, Intent intent) {
-      if (intent.getAction().equals(ApplicationStateManager.APPLICATION_PAUSED)) {
-        //LogCS.e("******* PAUSE *******");
-        //SocketManager.getInstance().closeAndDisconnectSocket();
-        //pausedForSocket = true;
-      } else if (intent.getAction().equals(ApplicationStateManager.APPLICATION_RESUMED)) {
-        LogCS.e("******* RESUMED *******" + GroupDetailsActivity.this.getClass().getName());
-        if (pausedForSocket) {
-          SocketManager.getInstance().setListener(socketListener);
-          SocketManager.getInstance().tryToReconnect(GroupDetailsActivity.this);
-          pausedForSocket = false;
-        }
-      }
-    }
-  }
-
   private void scrollRecyclerToBottomWithAnimation() {
     rvMessages.smoothScrollToPosition(rvMessages.getAdapter().getItemCount() - 1);
   }
@@ -973,6 +1206,17 @@ public class GroupDetailsActivity extends BaseActivity
     });
   }
 
+  //    protected void noUserDialog() {
+  //        NotifyDialog dialog = NotifyDialog.startInfo(this, getString(com.clover_studio.spikachatmodule.R.string.user_error_title), getString(com.clover_studio.spikachatmodule.R.string.user_error_not_sent));
+  //        dialog.setOneButtonListener(new NotifyDialog.OneButtonDialogListener() {
+  //            @Override
+  //            public void onOkClicked(NotifyDialog dialog) {
+  //                dialog.dismiss();
+  //                finish();
+  //            }
+  //        });
+  //    }
+
   private void sendLocation(String address, LatLng latLng) {
 
     Message message = new Message();
@@ -990,319 +1234,12 @@ public class GroupDetailsActivity extends BaseActivity
     onMessageSent(message);
   }
 
-  protected MessageRecyclerViewAdapter.OnLastItemAndOnClickListener onLastItemAndClickItemListener =
-      new MessageRecyclerViewAdapter.OnLastItemAndOnClickListener() {
-        @Override public void onLastItem() {
-          LogCS.e("LOG", "LAST ITEM");
-          if (lastDataFromServer.size() < 50) {
-            //no more paging
-            LogCS.e("LOG", "NO MORE MESSAGES");
-          } else {
-            if (lastDataFromServer.size() > 0) {
-              String lastMessageId = lastDataFromServer.get(lastDataFromServer.size() - 1)._id;
-              boolean isInit = false;
-              getMessages(isInit, lastMessageId);
-            }
-          }
-        }
-
-        private void downloadFile(Message item) {
-
-          File file =
-              new File(Tools.getDownloadFolderPath() + "/" + item.created + item.file.file.name);
-
-          if (file.exists()) {
-            OpenDownloadedFile.downloadedFileDialog(file, GroupDetailsActivity.this);
-          } else {
-
-            final DownloadFileDialog dialog =
-                DownloadFileDialog.startDialog(GroupDetailsActivity.this);
-
-            DownloadFileManager.downloadVideo(GroupDetailsActivity.this,
-                Tools.getFileUrlFromId(item.file.file.id, GroupDetailsActivity.this), file,
-                new DownloadFileManager.OnDownloadListener() {
-                  @Override public void onStart() {
-                    LogCS.d("LOG", "START UPLOADING");
-                  }
-
-                  @Override public void onSetMax(final int max) {
-                    GroupDetailsActivity.this.runOnUiThread(new Runnable() {
-                      @Override public void run() {
-                        dialog.setMax(max);
-                      }
-                    });
-                  }
-
-                  @Override public void onProgress(final int current) {
-                    GroupDetailsActivity.this.runOnUiThread(new Runnable() {
-                      @Override public void run() {
-                        dialog.setCurrent(current);
-                      }
-                    });
-                  }
-
-                  @Override public void onFinishDownload() {
-                    GroupDetailsActivity.this.runOnUiThread(new Runnable() {
-                      @Override public void run() {
-                        dialog.fileDownloaded();
-                      }
-                    });
-                  }
-
-                  @Override public void onResponse(boolean isSuccess, final String path) {
-                    GroupDetailsActivity.this.runOnUiThread(new Runnable() {
-                      @Override public void run() {
-                        dialog.dismiss();
-                        OpenDownloadedFile.downloadedFileDialog(new File(path),
-                            GroupDetailsActivity.this);
-                      }
-                    });
-                  }
-                });
-          }
-        }
-
-        @Override public void onClickItem(final Message item) {
-          if (item.deleted != -1 && item.deleted != 0) {
-            return;
-          }
-          if (item.type == Const.MessageType.TYPE_FILE) {
-            if (Tools.isMimeTypeImage(item.file.file.mimeType)) {
-              PreviewPhotoDialog.startDialog(GroupDetailsActivity.this,
-                  Tools.getFileUrlFromId(item.file.file.id, GroupDetailsActivity.this), item);
-            } else if (Tools.isMimeTypeVideo(item.file.file.mimeType)) {
-              PreviewVideoDialog.startDialog(GroupDetailsActivity.this, item.file);
-            } else if (Tools.isMimeTypeAudio(item.file.file.mimeType)) {
-              PreviewAudioDialog.startDialog(GroupDetailsActivity.this, item.file);
-            } else {
-              downloadFile(item);
-            }
-          } else if (item.type == Const.MessageType.TYPE_LOCATION) {
-            forceStaySocket = true;
-            if (ContextCompat.checkSelfPermission(GroupDetailsActivity.this,
-                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-              tempLocationForPermission = item.location;
-              ActivityCompat.requestPermissions(GroupDetailsActivity.this,
-                  new String[] { Manifest.permission.ACCESS_COARSE_LOCATION },
-                  Const.PermissionCode.LOCATION_THEIR);
-            } else {
-              LocationActivity.startShowLocationActivity(GroupDetailsActivity.this,
-                  item.location.lat, item.location.lng);
-            }
-          } else if (item.type == Const.MessageType.TYPE_CONTACT) {
-            OpenDownloadedFile.selectedContactDialog(item.message, GroupDetailsActivity.this);
-          } else {
-            if (item.attributes != null && item.attributes.linkData != null) {
-              Intent browserIntent =
-                  new Intent(Intent.ACTION_VIEW, Uri.parse(item.attributes.linkData.url));
-              startActivity(browserIntent);
-            } else {
-              // do nothing for now
-            }
-          }
-        }
-
-        private void openMessageInfoDialog(Message message) {
-          PreviewMessageDialog.startDialog(GroupDetailsActivity.this, message, activeUser);
-        }
-
-        private void confirmDeleteMessage(final Message message) {
-          NotifyDialog dialog = NotifyDialog.startConfirm(GroupDetailsActivity.this,
-              getString(com.clover_studio.spikachatmodule.R.string.delete_message_title),
-              getString(com.clover_studio.spikachatmodule.R.string.delete_message_text));
-          dialog.setTwoButtonListener(new NotifyDialog.TwoButtonDialogListener() {
-            @Override public void onOkClicked(NotifyDialog dialog) {
-              dialog.dismiss();
-              sendDeleteMessage(message._id);
-            }
-
-            @Override public void onCancelClicked(NotifyDialog dialog) {
-              dialog.dismiss();
-            }
-          });
-          //dialog.setButtonsText(getString(com.clover_studio.spikachatmodule.R.string.NO_CAPITAL), getString(com.clover_studio.spikachatmodule.R.string.YES_CAPITAL));
-        }
-
-        @Override public void onLongClick(Message item) {
-          boolean showDelete = true;
-          if (!activeUser.userID.equals(item.user.userID)
-              || item.type == Const.MessageType.TYPE_NEW_USER
-              || item.type == Const.MessageType.TYPE_USER_LEAVE) {
-
-            showDelete = false;
-          }
-
-          boolean showCopy = true;
-          if (item.type != Const.MessageType.TYPE_TEXT) {
-            showCopy = false;
-          }
-
-          boolean showShare = false;
-          if (item.type == Const.MessageType.TYPE_FILE && Tools.isMimeTypeImage(
-              item.file.file.mimeType)) {
-            showShare = true;
-          }
-
-          InfoMessageDialog.startDialogWithOptions(GroupDetailsActivity.this, item, activeUser,
-              showCopy, showDelete, showShare, new InfoMessageDialog.OnInfoListener() {
-                @Override public void onDeleteMessage(Message message, Dialog dialog) {
-                  confirmDeleteMessage(message);
-                }
-
-                @Override public void onDetailsClicked(Message message, Dialog dialog) {
-                  openMessageInfoDialog(message);
-                }
-
-                @Override public void onShareClicked(Message message, Dialog dialog) {
-                  handleProgress(true);
-                  File file = new File(
-                      Tools.getImageFolderPath() + "/" + message.created + message.file.file.name);
-
-                  if (file.exists()) {
-                    Tools.shareImage(GroupDetailsActivity.this, file);
-                  } else {
-                    DownloadFileManager.downloadVideo(GroupDetailsActivity.this,
-                        Tools.getFileUrlFromId(message.file.file.id, GroupDetailsActivity.this),
-                        file, new DownloadFileManager.OnDownloadListener() {
-                          @Override public void onStart() {
-                          }
-
-                          @Override public void onSetMax(int max) {
-                          }
-
-                          @Override public void onProgress(int current) {
-                          }
-
-                          @Override public void onFinishDownload() {
-                          }
-
-                          @Override public void onResponse(boolean isSuccess, String path) {
-                            Tools.shareImage(GroupDetailsActivity.this, new File(path));
-                          }
-                        });
-                  }
-                }
-              });
-        }
-      };
-
-  //    protected void noUserDialog() {
-  //        NotifyDialog dialog = NotifyDialog.startInfo(this, getString(com.clover_studio.spikachatmodule.R.string.user_error_title), getString(com.clover_studio.spikachatmodule.R.string.user_error_not_sent));
-  //        dialog.setOneButtonListener(new NotifyDialog.OneButtonDialogListener() {
-  //            @Override
-  //            public void onOkClicked(NotifyDialog dialog) {
-  //                dialog.dismiss();
-  //                finish();
-  //            }
-  //        });
-  //    }
-
-  private static final int TAKE_PICTURE = 12;
-  private Uri imageUri;
-  protected OnMenuButtonsListener onMenuButtonsListener = new OnMenuButtonsListener() {
-    @Override public void onCameraClicked() {
-      forceStaySocket = true;
-      CameraPhotoPreviewActivity.starCameraPhotoPreviewActivity(GroupDetailsActivity.this);
-      onButtonMenuOpenedClicked();
-    }
-
-    @Override public void onAudioClicked() {
-      forceStaySocket = true;
-      onButtonMenuOpenedClicked();
-      if (ContextCompat.checkSelfPermission(GroupDetailsActivity.this,
-          Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED
-          || ContextCompat.checkSelfPermission(GroupDetailsActivity.this,
-          Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-        ActivityCompat.requestPermissions(GroupDetailsActivity.this, new String[] {
-            Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE
-        }, Const.PermissionCode.MICROPHONE);
-      } else if (ContextCompat.checkSelfPermission(GroupDetailsActivity.this,
-          Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-        ActivityCompat.requestPermissions(GroupDetailsActivity.this,
-            new String[] { Manifest.permission.RECORD_AUDIO }, Const.PermissionCode.MICROPHONE);
-      } else if (ContextCompat.checkSelfPermission(GroupDetailsActivity.this,
-          Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-        ActivityCompat.requestPermissions(GroupDetailsActivity.this,
-            new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE },
-            Const.PermissionCode.MICROPHONE);
-      } else {
-        RecordAudioActivity.starRecordAudioActivity(GroupDetailsActivity.this);
-      }
-    }
-
-    private void onButtonMenuOpenedClicked() {
-      if (buttonType == ChatActivity.ButtonType.IN_ANIMATION) {
-        return;
-      }
-      buttonType = ChatActivity.ButtonType.IN_ANIMATION;
-
-      menuManager.closeMenu();
-    }
-
-    @Override public void onFileClicked() {
-      Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-      intent.setType("image/*");
-      forceStaySocket = true;
-      startActivityForResult(intent, Const.RequestCode.PICK_FILE);
-      onButtonMenuOpenedClicked();
-    }
-
-    @Override public void onVideoClicked() {
-      forceStaySocket = true;
-      RecordVideoActivity.starVideoPreviewActivity(GroupDetailsActivity.this);
-      onButtonMenuOpenedClicked();
-    }
-
-    @Override public void onLocationClicked() {
-      forceStaySocket = true;
-      onButtonMenuOpenedClicked();
-      if (ContextCompat.checkSelfPermission(GroupDetailsActivity.this,
-          Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-        ActivityCompat.requestPermissions(GroupDetailsActivity.this,
-            new String[] { Manifest.permission.ACCESS_COARSE_LOCATION },
-            Const.PermissionCode.LOCATION_MY);
-      } else {
-        LocationActivity.startLocationActivity(GroupDetailsActivity.this);
-      }
-    }
-
-    @Override public void onGalleryClicked() {
-      forceStaySocket = true;
-      CameraPhotoPreviewActivity.starCameraFromGalleryPhotoPreviewActivity(
-          GroupDetailsActivity.this);
-      onButtonMenuOpenedClicked();
-    }
-
-    @Override public void onContactClicked() {
-      if (ContextCompat.checkSelfPermission(GroupDetailsActivity.this,
-          Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-        ActivityCompat.requestPermissions(GroupDetailsActivity.this,
-            new String[] { Manifest.permission.READ_CONTACTS }, Const.PermissionCode.READ_CONTACTS);
-      } else {
-        requestContacts();
-      }
-      onButtonMenuOpenedClicked();
-    }
-  };
-
   public void requestContacts() {
     Intent intent = new Intent(Intent.ACTION_PICK);
     intent.setType(ContactsContract.Contacts.CONTENT_TYPE);
     forceStaySocket = true;
     startActivityForResult(intent, Const.RequestCode.CONTACT_CHOOSE);
   }
-
-  protected OnMenuManageListener onMenuManagerListener = new OnMenuManageListener() {
-    @Override public void onMenuOpened() {
-      buttonType = ChatActivity.ButtonType.MENU_OPENED;
-    }
-
-    @Override public void onMenuClosed() {
-      buttonType = ChatActivity.ButtonType.MENU;
-      etMessage.setEnabled(true);
-      findViewById(R.id.viewForMenuBehind).setVisibility(View.GONE);
-    }
-  };
 
   protected void onSendMenuButtonClicked() {
     if (buttonType == ChatActivity.ButtonType.SEND) {
@@ -1398,23 +1335,6 @@ public class GroupDetailsActivity extends BaseActivity
       onMessageSent(message);
     }
   }
-
-  protected TextWatcher etMessageTextWatcher = new TextWatcher() {
-    @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-    }
-
-    @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
-    }
-
-    @Override public void afterTextChanged(Editable s) {
-      if (s.length() == 0) {
-        animateSendButton(false);
-      } else {
-        animateSendButton(true);
-      }
-      sendTypingType(s.length());
-    }
-  };
 
   private void animateSendButton(final boolean toSend) {
     if (toSend && buttonType == ChatActivity.ButtonType.SEND) {
@@ -1834,47 +1754,6 @@ public class GroupDetailsActivity extends BaseActivity
     }
   }
 
-  String timeFormatted;
-
-  class MyThread implements Runnable {
-    Tracking tracking;
-
-    public MyThread(Tracking tracking) {
-      this.tracking = tracking;
-    }
-
-    @Override public void run() {
-      while (true) {
-
-        long startTimestamp = tracking.getStartUTCDate().getTime();
-        long timeMs = startTimestamp - System.currentTimeMillis();
-
-        NumberFormat timeFormatter = new DecimalFormat("00");
-        float day = (System.currentTimeMillis() - tracking.getStartUTCDate().getTime())
-            / (float) Constants.MS_IN_DAY;
-        int days = (int) (timeMs / Constants.MS_IN_DAY);
-        int hours = (int) ((timeMs % Constants.MS_IN_DAY) / Constants.MS_IN_HOUR);
-        int minutes = (int) ((timeMs % Constants.MS_IN_HOUR) / Constants.MS_IN_MIN);
-        int sec = (int) ((timeMs % Constants.MS_IN_MIN) / Constants.MS_IN_SEC);
-        String timerTemplate = getString(R.string.timer_template);
-        timeFormatted =
-            String.format(timerTemplate, timeFormatter.format(days), timeFormatter.format(hours),
-                timeFormatter.format(minutes), timeFormatter.format(sec));
-
-        runOnUiThread(new Runnable() {
-          @Override public void run() {
-            tvTimer.setText(timeFormatted);
-          }
-        });
-        try {
-          Thread.currentThread().sleep(1000);
-        } catch (InterruptedException ex) {
-          ex.printStackTrace();
-        }
-      }
-    }
-  }
-
   @Override public void onApiGetTrackingInfoSuccess(Tracking tracking) {
     if (tracking != null) {
       Group group = tracking.getGroup();
@@ -2131,13 +2010,101 @@ public class GroupDetailsActivity extends BaseActivity
 
   private void openAddMembersActivity() {
     Intent intent = new Intent(GroupDetailsActivity.this, AddMemberActivity.class);
-    intent.putExtra(Constants.INTENT_MEMBERS, members);
+    
+    Member[] membersTemp = new Member[100];
+    ArrayList<Member> members1 = new ArrayList<Member>(Arrays.asList(members));
+    Collections.addAll(members1, pendings);
+    membersTemp = members1.toArray(new Member[members1.size()]);
+
+    intent.putExtra(Constants.INTENT_MEMBERS, membersTemp);
     intent.putExtra(Constants.INTENT_PENDINGS, pendings);
     intent.putExtra(Constants.INTENT_TRACKING_ID, trackingId);
     intent.putExtra(Constants.INTENT_TIMESTAMP_CREATE, timestampCreate);
     intent.putExtra(Constants.INTENT_GROUP_NAME, groupName);
     intent.putExtra(Constants.INTENT_GROUP_PICTURE, groupPictureUrl);
     startActivityForResult(intent, Constants.ADD_MEMBER_ACTIVITY_REQUEST_CODE);
+  }
+
+  public enum ButtonType {
+    MENU, SEND, MENU_OPENED, IN_ANIMATION;
+  }
+
+  public enum StickersType {
+    CLOSED, OPENED, IN_ANIMATION;
+  }
+
+  public enum TypingType {
+    TYPING, BLANK;
+  }
+
+  class MyFocusChangeListener implements View.OnFocusChangeListener {
+
+    public void onFocusChange(View v, boolean hasFocus) {
+
+      if (hasFocus) {
+
+        InputMethodManager imm =
+            (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(GroupDetailsActivity.this.getCurrentFocus().getWindowToken(),
+            0);
+      }
+    }
+  }
+
+  private class BroadcastReceiverImplementation extends BroadcastReceiver {
+    @Override public void onReceive(Context context, Intent intent) {
+      if (intent.getAction().equals(ApplicationStateManager.APPLICATION_PAUSED)) {
+        //LogCS.e("******* PAUSE *******");
+        //SocketManager.getInstance().closeAndDisconnectSocket();
+        //pausedForSocket = true;
+      } else if (intent.getAction().equals(ApplicationStateManager.APPLICATION_RESUMED)) {
+        LogCS.e("******* RESUMED *******" + GroupDetailsActivity.this.getClass().getName());
+        if (pausedForSocket) {
+          SocketManager.getInstance().setListener(socketListener);
+          SocketManager.getInstance().tryToReconnect(GroupDetailsActivity.this);
+          pausedForSocket = false;
+        }
+      }
+    }
+  }
+
+  class MyThread implements Runnable {
+    Tracking tracking;
+
+    public MyThread(Tracking tracking) {
+      this.tracking = tracking;
+    }
+
+    @Override public void run() {
+      while (true) {
+
+        long startTimestamp = tracking.getStartUTCDate().getTime();
+        long timeMs = startTimestamp - System.currentTimeMillis();
+
+        NumberFormat timeFormatter = new DecimalFormat("00");
+        float day = (System.currentTimeMillis() - tracking.getStartUTCDate().getTime())
+            / (float) Constants.MS_IN_DAY;
+        int days = (int) (timeMs / Constants.MS_IN_DAY);
+        int hours = (int) ((timeMs % Constants.MS_IN_DAY) / Constants.MS_IN_HOUR);
+        int minutes = (int) ((timeMs % Constants.MS_IN_HOUR) / Constants.MS_IN_MIN);
+        int sec = (int) ((timeMs % Constants.MS_IN_MIN) / Constants.MS_IN_SEC);
+        String timerTemplate = getString(R.string.timer_template);
+        timeFormatted =
+            String.format(timerTemplate, timeFormatter.format(days), timeFormatter.format(hours),
+                timeFormatter.format(minutes), timeFormatter.format(sec));
+
+        runOnUiThread(new Runnable() {
+          @Override public void run() {
+            tvTimer.setText(timeFormatted);
+          }
+        });
+        try {
+          Thread.currentThread().sleep(1000);
+        } catch (InterruptedException ex) {
+          ex.printStackTrace();
+        }
+      }
+    }
   }
   ///////////////////////////////////////////////////////////////////////////////////////////CHAT PART OF THE CODE
 
