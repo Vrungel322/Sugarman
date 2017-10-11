@@ -291,7 +291,7 @@ public class AddMemberActivity extends BaseActivity
         runOnUiThread(new Runnable() {
           @Override public void run() {
             checkForUnique();
-            setFriends(phoneFriends);
+            //setFriends(phoneFriends);
           }
         });
         networksLoaded++;
@@ -347,14 +347,20 @@ public class AddMemberActivity extends BaseActivity
   void checkForUnique() {
     for (int i = 0; i < allFriends.size(); i++) {
       for (Member member : addedMembers) {
-        if (TextUtils.equals(member.getName(), allFriends.get(i).getName()) || member.getFbid()
-            .equals(allFriends.get(i).getId())) {
+        if (TextUtils.equals(member.getName(), allFriends.get(i).getName())
+            || member.getFbid().equals(allFriends.get(i).getId())
+            || member.getVkId().equals(allFriends.get(i).getId())
+            || member.getPhoneNumber().equals(allFriends.get(i).getId())) {
           allFriends.get(i).setAdded(true);
         }
       }
 
       for (Member member : pendingMembers) {
-        if (TextUtils.equals(member.getName(), allFriends.get(i).getName())) {
+        //if (TextUtils.equals(member.getName(), allFriends.get(i).getName())) {
+        if (TextUtils.equals(member.getName(), allFriends.get(i).getName())
+            || member.getFbid().equals(allFriends.get(i).getId())
+            || member.getVkId().equals(allFriends.get(i).getId())
+            || member.getPhoneNumber().equals(allFriends.get(i).getId())) {
           allFriends.get(i).setPending(true);
         }
       }

@@ -152,6 +152,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
+import timber.log.Timber;
 
 public class GroupDetailsActivity extends BaseActivity
     implements View.OnClickListener, ApiPokeListener, OnStepMembersActionListener,
@@ -2015,6 +2016,9 @@ public class GroupDetailsActivity extends BaseActivity
     ArrayList<Member> members1 = new ArrayList<Member>(Arrays.asList(members));
     Collections.addAll(members1, pendings);
     membersTemp = members1.toArray(new Member[members1.size()]);
+    Timber.e("pending " + pendings[0].getName());
+    Timber.e("members " + members[0].getName());
+    Timber.e("members1 " + members1.size());
 
     intent.putExtra(Constants.INTENT_MEMBERS, membersTemp);
     intent.putExtra(Constants.INTENT_PENDINGS, pendings);
