@@ -1,6 +1,7 @@
 package com.sugarman.myb.api;
 
 import android.content.ContentResolver;
+import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.requests.PurchaseDataRequest;
 import com.sugarman.myb.api.models.requests.RefreshUserDataRequest;
 import com.sugarman.myb.api.models.responses.CountInvitesResponse;
@@ -13,6 +14,7 @@ import com.sugarman.myb.data.local.PreferencesHelper;
 import com.sugarman.myb.utils.ContactsHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import retrofit2.Response;
@@ -80,8 +82,19 @@ public class DataManager {
     return mRestApi.countInvites(Constants.BEARER + SharedPreferenceHelper.getAccessToken());
   }
 
-  public Observable<List<ShopProductEntity>> fetchProducts() {
-    return mRestApi.fetchProducts();
+  public Observable<List<ShopProductEntity>> fetchProducts(List<String> productName) {
+    ArrayList<ShopProductEntity> entities = new ArrayList<>();
+    entities.add(new ShopProductEntity("0", productName.get(0), "", "",
+            Arrays.asList(String.valueOf(R.drawable.cap1), String.valueOf(R.drawable.cap2),
+                String.valueOf(R.drawable.cap3))));
+    entities.add(new ShopProductEntity("1", productName.get(1), "", "",
+            Arrays.asList(String.valueOf(R.drawable.belt1), String.valueOf(R.drawable.belt2),
+                String.valueOf(R.drawable.belt3))));
+    entities.add(new ShopProductEntity("2", productName.get(2), "", "",
+            Arrays.asList(String.valueOf(R.drawable.com1), String.valueOf(R.drawable.com2),
+                String.valueOf(R.drawable.com3),String.valueOf(R.drawable.com4))));
+    return Observable.just(entities);
+        //return mRestApi.fetchProducts();
   }
 }
 

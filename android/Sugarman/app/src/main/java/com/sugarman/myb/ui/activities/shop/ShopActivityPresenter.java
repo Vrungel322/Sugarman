@@ -4,12 +4,19 @@ import com.arellomobile.mvp.InjectViewState;
 import com.sugarman.myb.App;
 import com.sugarman.myb.base.BasicPresenter;
 import com.sugarman.myb.utils.ThreadSchedulers;
+import java.util.List;
 import rx.Subscription;
 
 /**
  * Created by nikita on 10.10.2017.
  */
 @InjectViewState public class ShopActivityPresenter extends BasicPresenter<IShopActivityView> {
+  private final List<String> mProductNameList;
+
+  public ShopActivityPresenter(List<String> productNames) {
+    this.mProductNameList = productNames;
+  }
+
   @Override protected void inject() {
     App.getAppComponent().inject(this);
   }
@@ -20,7 +27,7 @@ import rx.Subscription;
   }
 
   private void fetchProducts() {
-    Subscription subscription = mDataManager.fetchProducts()
+    Subscription subscription = mDataManager.fetchProducts(mProductNameList)
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(shopProductEntities -> {
           getViewState().showProducts(shopProductEntities);

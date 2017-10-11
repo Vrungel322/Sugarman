@@ -36,7 +36,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
 
   @Override public void onBindViewHolder(ProductsViewHolder holder, int position) {
     Glide.with(holder.mImageViewThumb.getContext())
-        .load(mShopProductEntities.get(position).getImgDetailUrls().get(0))
+        .load(Integer.parseInt(mShopProductEntities.get(position).getImgDetailUrls().get(0)))
         .placeholder(AppCompatResources.getDrawable(holder.mImageViewThumb.getContext(),
             R.drawable.placeholder))
         .dontAnimate()

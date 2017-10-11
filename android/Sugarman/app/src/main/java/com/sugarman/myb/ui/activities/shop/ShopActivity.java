@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.BindView;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.base.BasicActivity;
@@ -32,6 +33,15 @@ public class ShopActivity extends BasicActivity implements IShopActivityView, Vi
   Typeface tfDin;
 
   private ProductsAdapter mProductsAdapter;
+
+  @ProvidePresenter
+  public ShopActivityPresenter providePresenter(){
+    List<String> productNames = new ArrayList<>();
+    productNames.add(getString(R.string.sugarman_cap));
+    productNames.add(getString(R.string.phone_holder));
+    productNames.add(getString(R.string.sugarman_comics));
+    return new ShopActivityPresenter(productNames);
+  }
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_shop);

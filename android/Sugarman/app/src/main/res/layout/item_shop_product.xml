@@ -1,22 +1,25 @@
-<LinearLayout android:id="@+id/card_container_1"
-    android:layout_width="200dp"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="20dp"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="10dp"
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_container_1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
     >
 
   <android.support.v7.widget.CardView
-      android:layout_width="180dp"
-      android:layout_height="180dp"
+      android:id="@+id/cardView2"
+      android:layout_width="170dp"
+      android:layout_height="170dp"
+      android:layout_marginLeft="16dp"
+      android:layout_marginRight="8dp"
+      android:layout_marginTop="8dp"
       android:background="#ccc"
       app:cardCornerRadius="9dp"
       app:cardElevation="5dp"
+      app:layout_constraintLeft_toLeftOf="parent"
+      app:layout_constraintRight_toRightOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
       >
     <ImageView
         android:id="@+id/product_thumb"
@@ -24,19 +27,27 @@
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
-        android:src="@drawable/shop_hat"
+        tools:src="@drawable/shop_hat"
         />
   </android.support.v7.widget.CardView>
-
   <TextView
       android:id="@+id/product_title"
-      android:layout_marginTop="8dp"
-      android:layout_width="match_parent"
+      android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_gravity="center"
+      android:layout_marginBottom="8dp"
+      android:layout_marginEnd="24dp"
+      android:layout_marginLeft="8dp"
+      android:layout_marginRight="8dp"
+      android:layout_marginStart="24dp"
+      android:layout_marginTop="8dp"
       android:gravity="center"
       android:text="@string/sugarman_cap"
       android:textColor="#262628"
       android:textSize="17sp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintLeft_toLeftOf="parent"
+      app:layout_constraintRight_toRightOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/cardView2"
       />
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

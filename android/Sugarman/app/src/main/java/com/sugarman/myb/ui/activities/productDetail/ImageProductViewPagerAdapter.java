@@ -35,7 +35,9 @@ public class ImageProductViewPagerAdapter extends PagerAdapter {
     View itemView = mLayoutInflater.inflate(R.layout.item_page, container, false);
     final ImageView imageView = (ImageView) itemView.findViewById(R.id.iv);
     Picasso.with(mContext)
-        .load(urls.get(position))
+        .load(Integer.parseInt(urls.get(position)))
+        .fit()
+        .centerCrop()
         .placeholder(
             AppCompatResources.getDrawable(mContext, R.drawable.ic_our_work_placeholder_130dp))
         .into(imageView);
