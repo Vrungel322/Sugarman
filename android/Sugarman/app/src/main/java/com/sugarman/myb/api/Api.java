@@ -2,6 +2,8 @@ package com.sugarman.myb.api;
 
 import com.sugarman.myb.api.models.requests.AddMembersRequest;
 import com.sugarman.myb.api.models.requests.ApproveOtpRequest;
+import com.sugarman.myb.api.models.requests.CheckPhoneRequest;
+import com.sugarman.myb.api.models.requests.CheckVkRequest;
 import com.sugarman.myb.api.models.requests.CountInvitesRequest;
 import com.sugarman.myb.api.models.requests.JoinGroupRequest;
 import com.sugarman.myb.api.models.requests.PokeRequest;
@@ -11,6 +13,8 @@ import com.sugarman.myb.api.models.requests.SendFirebaseTokenRequest;
 import com.sugarman.myb.api.models.requests.StatsRequest;
 import com.sugarman.myb.api.models.responses.AllMyUserDataResponse;
 import com.sugarman.myb.api.models.responses.ApproveOtpResponse;
+import com.sugarman.myb.api.models.responses.CheckPhoneResponse;
+import com.sugarman.myb.api.models.responses.CheckVkResponse;
 import com.sugarman.myb.api.models.responses.CountInvitesResponse;
 import com.sugarman.myb.api.models.responses.ResendMessageResponse;
 import com.sugarman.myb.api.models.responses.devices.DevicesResponse;
@@ -148,4 +152,8 @@ public interface Api {
       @Path("tracking_id") String trackingId);
 
   @POST("/v1/stats/day") Call<Void> reportStats(@Body StatsRequest requst);
+
+  @POST("/v3/check_phone") Call<CheckPhoneResponse> checkPhone(@Body CheckPhoneRequest phones);
+
+  @POST("/v3/check_vk") Call<CheckVkResponse> checkVk(@Body CheckVkRequest phones);
 }
