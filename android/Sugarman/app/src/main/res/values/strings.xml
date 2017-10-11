@@ -211,7 +211,8 @@
 
   <string name="buy_now_for">Buy now for</string>
 
-  <string name="free_for">Free for %1$s friends</string>
+  <string name="free_for">Free for 5 friends</string>
+  <!--<string name="free_for">Free for %1$s friends</string>-->
 
   <string name="sugarman_cap">Sugarman cap</string>
 

@@ -206,7 +206,8 @@
 
   <string name="buy_now_for">קנה עכשיו ב</string>
 
-  <string name="free_for">חינם עבור %1$s חברים</string>
+  <string name="free_for">חינם עבור 5 חברים</string>
+  <!--<string name="free_for">חינם עבור %1$s חברים</string>-->
 
   <string name="sugarman_cap">כובע שוגרמן</string>
 
