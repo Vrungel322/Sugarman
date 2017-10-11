@@ -40,6 +40,8 @@ import com.facebook.share.widget.GameRequestDialog;
 import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.adapters.FriendsAdapter;
+import com.sugarman.myb.api.clients.CheckPhonesClient;
+import com.sugarman.myb.api.clients.CheckVkClient;
 import com.sugarman.myb.api.clients.CreateGroupClient;
 import com.sugarman.myb.api.clients.FBApiClient;
 import com.sugarman.myb.api.clients.JoinGroupClient;
@@ -50,6 +52,8 @@ import com.sugarman.myb.constants.Config;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.constants.DialogConstants;
 import com.sugarman.myb.eventbus.events.ReportStepsEvent;
+import com.sugarman.myb.listeners.ApiCheckPhoneListener;
+import com.sugarman.myb.listeners.ApiCheckVkListener;
 import com.sugarman.myb.listeners.ApiCreateGroupListener;
 import com.sugarman.myb.listeners.ApiJoinGroupListener;
 import com.sugarman.myb.listeners.AsyncSaveBitmapToFileListener;
@@ -86,7 +90,7 @@ import static com.sugarman.myb.utils.ImageHelper.scaleCenterCrop;
 public class CreateGroupActivity extends BaseActivity
     implements View.OnClickListener, OnFBGetFriendsListener, ApiCreateGroupListener,
     ApiJoinGroupListener, AsyncSaveBitmapToFileListener, View.OnFocusChangeListener,
-    ICreateGroupActivityView {
+    ICreateGroupActivityView, ApiCheckPhoneListener, ApiCheckVkListener {
 
   private static final String TAG = CreateGroupActivity.class.getName();
   private final List<FacebookFriend> filtered = new ArrayList<>();
@@ -171,6 +175,8 @@ public class CreateGroupActivity extends BaseActivity
       };
   private CreateGroupClient mCreateGroupClient;
   private JoinGroupClient mJoinGroupClient;
+  public CheckPhonesClient mCheckPhoneClient;
+  public CheckVkClient mCheckVkClient;
   private CallbackManager fbCallbackManager;
   private GameRequestDialog fbInviteDialog;
   private boolean isFriendsFound = false;
@@ -211,6 +217,8 @@ public class CreateGroupActivity extends BaseActivity
     fbApiClient = new FBApiClient();
     mCreateGroupClient = new CreateGroupClient();
     mJoinGroupClient = new JoinGroupClient();
+    mCheckPhoneClient = new CheckPhonesClient();
+    mCheckVkClient = new CheckVkClient();
 
     friendsAdapter = new FriendsAdapter(this);
 
@@ -257,21 +265,20 @@ public class CreateGroupActivity extends BaseActivity
       @Override public void run() {
         HashMap<String, String> contactList =
             ContactsHelper.getContactList(CreateGroupActivity.this);
-
+        List<String> phonesToCheck = new ArrayList<String>();
         for (String key : contactList.keySet()) {
-            FacebookFriend friend = new FacebookFriend(contactList.get(key), key,
+            FacebookFriend friend = new FacebookFriend(contactList.get(key).replace(" ",""), key,
                 "https://sugarman-myb.s3.amazonaws.com/Group_New.png",
                 FacebookFriend.CODE_INVITABLE, "ph");
             allFriends.add(friend);
+          phonesToCheck.add(contactList.get(key).replace(" ",""));
+          Timber.e(contactList.get(key));
         }
+
+        mCheckPhoneClient.checkPhones(phonesToCheck);
         networksLoaded++;
         Timber.e("Contacts loaded");
-        runOnUiThread(new Runnable() {
-          @Override public void run() {
-            setFriends(allFriends);
-          }
-        });
-        checkNetworksLoaded();
+
       }
     });
 
@@ -306,6 +313,7 @@ public class CreateGroupActivity extends BaseActivity
         super.onComplete(response);
         JSONObject resp = response.json;
         Log.e("VK response", response.responseString);
+        List<String> vkToCheck = new ArrayList<String>();
         try {
           JSONArray items = resp.getJSONObject("response").getJSONArray("items");
           for (int i = 0; i < items.length(); i++) {
@@ -322,10 +330,12 @@ public class CreateGroupActivity extends BaseActivity
                     FacebookFriend.CODE_INVITABLE, "vk");
 
             allFriends.add(friend);
+            vkToCheck.add(friend.getId());
           }
+
+          mCheckVkClient.checkVks(vkToCheck);
           networksLoaded++;
           Timber.e("VK LOADED");
-          checkNetworksLoaded();
           //setFriends(allFriends);
         } catch (JSONException e) {
           e.printStackTrace();
@@ -462,6 +472,8 @@ public class CreateGroupActivity extends BaseActivity
     fbApiClient.registerListener(this);
     mCreateGroupClient.registerListener(this);
     mJoinGroupClient.registerListener(this);
+    mCheckPhoneClient.registerListener(this);
+    mCheckVkClient.registerListener(this);
   }
 
   @Override protected void onStop() {
@@ -470,6 +482,8 @@ public class CreateGroupActivity extends BaseActivity
     fbApiClient.unregisterListener();
     mCreateGroupClient.unregisterListener();
     mJoinGroupClient.unregisterListener();
+    mCheckPhoneClient.unregisterListener();
+    mCheckVkClient.unregisterListener();
     mi = null;
   }
 
@@ -938,5 +952,74 @@ public class CreateGroupActivity extends BaseActivity
     } else {
       Log.e(TAG, "file isn't exists: " + (file == null ? null : file.getAbsolutePath()));
     }
+  }
+
+  @Override public void onApiCheckPhoneSuccess(List<String> phones) {
+
+    Timber.e("SET INVITABLE 1 " + phones.size());
+
+    for(String s : phones)
+    {
+      Timber.e("SET INVITABLE IF 1.5 ");
+      for(FacebookFriend friend : allFriends)
+      {
+        Timber.e("SET INVITABLE for 2 " + friend.getName());
+        if(friend.getSocialNetwork().equals("ph"))
+        {
+          Timber.e("SET INVITABLE IF 3 " + friend.getName());
+          if(friend.getId().equals(s))
+          {
+            Timber.e("SET INVITABLE IF 4 " + friend.getName());
+            friend.setIsInvitable(FacebookFriend.CODE_NOT_INVITABLE);
+          }
+        }
+      }
+    }
+
+    runOnUiThread(new Runnable() {
+      @Override public void run() {
+        setFriends(allFriends);
+      }
+    });
+    checkNetworksLoaded();
+
+  }
+
+  @Override public void onApiCheckPhoneFailure(String message) {
+
+  }
+
+  @Override public void onApiCheckVkSuccess(List<String> vks) {
+
+    Timber.e("SET INVITABLE IF 1 " + vks.size());
+    for(String s : vks)
+    {
+      Timber.e("SET INVITABLE IF 1.5 ");
+      for(FacebookFriend friend : allFriends)
+      {
+        Timber.e("SET INVITABLE for 2 " + friend.getName());
+        if(friend.getSocialNetwork().equals("vk"))
+        {
+          Timber.e("SET INVITABLE IF 3 " + friend.getName());
+          if(friend.getId().equals(s))
+          {
+            Timber.e("SET INVITABLE IF 4 " + friend.getName());
+            friend.setIsInvitable(FacebookFriend.CODE_NOT_INVITABLE);
+          }
+        }
+      }
+    }
+
+    runOnUiThread(new Runnable() {
+      @Override public void run() {
+        setFriends(allFriends);
+      }
+    });
+    checkNetworksLoaded();
+
+  }
+
+  @Override public void onApiCheckVkFailure(String message) {
+
   }
 }

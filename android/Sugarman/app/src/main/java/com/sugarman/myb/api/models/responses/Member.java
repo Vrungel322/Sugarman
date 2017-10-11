@@ -102,7 +102,7 @@ public class Member implements Parcelable {
     return pictureUrl;
   }
 
-  protected void setPictureUrl(String pictureUrl) {
+  public void setPictureUrl(String pictureUrl) {
     this.pictureUrl = pictureUrl;
   }
 

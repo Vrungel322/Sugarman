@@ -168,6 +168,9 @@ if(str.contains(" "))      str = str.replaceAll("( +)", " ").trim();
         bestName.setText(str);
       }
       bestSteps.setText(String.format(Locale.US, "%,d", best.getSteps()));
+      if(best.getPictureUrl()==null)
+        best.setPictureUrl("");
+
       Picasso.with(getActivity())
           .load(best.getPictureUrl())
           //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
