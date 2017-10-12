@@ -388,7 +388,6 @@ public class AddMemberActivity extends BaseActivity
       }
       Timber.e(String.valueOf(allFriends.get(i).isAdded()));
     }
-    membersAdapter.notifyDataSetChanged();
   }
 
   @OnClick(R.id.fb_filter) public void showFbFriends() {
@@ -700,7 +699,9 @@ public class AddMemberActivity extends BaseActivity
                   .build();
           fbInviteDialog.show(content);
         } else {
-          checkFilledData();
+          Timber.e("!mIdsFb.isEmpty()");
+          // TODO: 12.10.2017 check Fb invite and create group
+          //checkFilledData();
         }
         if (!mInviteByVk.isEmpty()) {
           //mPresenter.sendInvitationInVk(mInviteByVk,
@@ -948,6 +949,7 @@ public class AddMemberActivity extends BaseActivity
   }
 
   private void addMembersPh(List<FacebookFriend> members) {
+    Timber.e("addMembersPh " + members.size());
     showProgressFragment();
     //mInviteByPh.clear();
 
