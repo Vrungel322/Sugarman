@@ -66,6 +66,7 @@ import com.sugarman.myb.ui.views.MaskTransformation;
 import com.sugarman.myb.utils.AnalyticsHelper;
 import com.sugarman.myb.utils.BitmapUtils;
 import com.sugarman.myb.utils.ContactsHelper;
+import com.sugarman.myb.utils.CountryCodeHelper;
 import com.sugarman.myb.utils.DeviceHelper;
 import com.sugarman.myb.utils.IntentExtractorHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
@@ -94,8 +95,8 @@ public class AddMemberActivity extends BaseActivity
   private final List<FacebookFriend> filtered = new ArrayList<>();
   private final List<FacebookFriend> allFriends = new ArrayList<>();
   private final List<FacebookFriend> invitable = new ArrayList<>();
-  List<FacebookFriend> phoneFriends;
   private final List<FacebookFriend> members = new ArrayList<>();
+  List<FacebookFriend> phoneFriends;
   @InjectPresenter AddMemberActivityPresenter mPresenter;
   @BindView(R.id.fb_filter) ImageView fbFilter;
   @BindView(R.id.vk_filter) ImageView vkFilter;
@@ -291,15 +292,21 @@ public class AddMemberActivity extends BaseActivity
         List<String> phToCheck = new ArrayList<String>();
         HashMap<String, String> contactList = ContactsHelper.getContactList(AddMemberActivity.this);
 
-
         for (String key : contactList.keySet()) {
+          String phone = contactList.get(key);
+          if (phone.contains("+")) {
+            phone = phone.replace(" ", "");
+          } else {
+            phone = CountryCodeHelper.getCountryZipCode() + phone.replace(" ", "");
+          }
           FacebookFriend friend =
-              new FacebookFriend(contactList.get(key), key, "", FacebookFriend.CODE_INVITABLE,
-                  "ph");
+              new FacebookFriend(phone, key, "", FacebookFriend.CODE_INVITABLE, "ph");
+          Timber.e(phone);
           allFriends.add(friend);
           //phoneFriends.add(friend);
-          phToCheck.add(contactList.get(key).replace(" ",""));
+          phToCheck.add(contactList.get(key).replace(" ", ""));
         }
+        checkForUnique();
 
         mCheckPhoneClient.checkPhones(phToCheck);
       }
@@ -340,7 +347,6 @@ public class AddMemberActivity extends BaseActivity
         networksLoaded++;
         mCheckVkClient.checkVks(vkToCheck);
 
-
         setFriends(allFriends);
         checkForUnique();
       }
@@ -354,12 +360,16 @@ public class AddMemberActivity extends BaseActivity
   }
 
   void checkForUnique() {
+    Timber.e("checkForUnique");
     for (int i = 0; i < allFriends.size(); i++) {
       for (Member member : addedMembers) {
         if (TextUtils.equals(member.getName(), allFriends.get(i).getName())
-            || member.getFbid().equals(allFriends.get(i).getId())
+            || member.getFbid()
+            .equals(allFriends.get(i).getId())
             || member.getVkId().equals(allFriends.get(i).getId())
             || member.getPhoneNumber().equals(allFriends.get(i).getId())) {
+          Timber.e("1");
+
           allFriends.get(i).setAdded(true);
         }
       }
@@ -367,14 +377,18 @@ public class AddMemberActivity extends BaseActivity
       for (Member member : pendingMembers) {
         //if (TextUtils.equals(member.getName(), allFriends.get(i).getName())) {
         if (TextUtils.equals(member.getName(), allFriends.get(i).getName())
-            || member.getFbid().equals(allFriends.get(i).getId())
+            || member.getFbid()
+            .equals(allFriends.get(i).getId())
             || member.getVkId().equals(allFriends.get(i).getId())
             || member.getPhoneNumber().equals(allFriends.get(i).getId())) {
+          Timber.e("2");
+
           allFriends.get(i).setPending(true);
         }
       }
       Timber.e(String.valueOf(allFriends.get(i).isAdded()));
     }
+    membersAdapter.notifyDataSetChanged();
   }
 
   @OnClick(R.id.fb_filter) public void showFbFriends() {
@@ -1009,17 +1023,13 @@ public class AddMemberActivity extends BaseActivity
   @Override public void onApiCheckVkSuccess(List<String> vks) {
 
     Timber.e("SET INVITABLE IF 1 " + vks.size());
-    for(String s : vks)
-    {
+    for (String s : vks) {
       Timber.e("SET INVITABLE IF 1.5 ");
-      for(FacebookFriend friend : allFriends)
-      {
+      for (FacebookFriend friend : allFriends) {
         Timber.e("SET INVITABLE for 2 " + friend.getName());
-        if(friend.getSocialNetwork().equals("vk"))
-        {
+        if (friend.getSocialNetwork().equals("vk")) {
           Timber.e("SET INVITABLE IF 3 " + friend.getName());
-          if(friend.getId().equals(s))
-          {
+          if (friend.getId().equals(s)) {
             Timber.e("SET INVITABLE IF 4 " + friend.getName());
             friend.setIsInvitable(FacebookFriend.CODE_NOT_INVITABLE);
           }
@@ -1042,14 +1052,10 @@ public class AddMemberActivity extends BaseActivity
 
   @Override public void onApiCheckPhoneSuccess(List<String> phones) {
 
-    for(String s : phones)
-    {
-      for(FacebookFriend friend : allFriends)
-      {
-        if(friend.getSocialNetwork().equals("ph"))
-        {
-          if(friend.getId().equals(s))
-          {
+    for (String s : phones) {
+      for (FacebookFriend friend : allFriends) {
+        if (friend.getSocialNetwork().equals("ph")) {
+          if (friend.getId().equals(s)) {
             friend.setIsInvitable(FacebookFriend.CODE_NOT_INVITABLE);
           }
         }
