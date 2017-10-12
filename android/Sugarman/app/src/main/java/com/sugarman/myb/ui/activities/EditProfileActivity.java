@@ -252,7 +252,7 @@ editProfile();
   }
 
   @OnClick(R.id.iv_back) public void ivBackClicked() {
-    editProfile();
+    finish();
   }
 
   @Override public void onBackPressed() {
