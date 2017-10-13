@@ -116,7 +116,10 @@ dependencies {
   compile files('libs/PayPal_MPL.jar')
 
   //ZGallery
-  compile 'com.github.mzelzoghbi:zgallery:0.3'
+  compile ('com.github.mzelzoghbi:zgallery:0.3')
+      {
+        exclude group: 'com.github.chrisbanes', module: 'PhotoView'
+      }
 }
 
 apply plugin: 'com.google.gms.google-services'
