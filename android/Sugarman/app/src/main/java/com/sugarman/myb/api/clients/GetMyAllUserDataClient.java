@@ -5,6 +5,7 @@ import com.sugarman.myb.api.models.responses.AllMyUserDataResponse;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.listeners.ApiBaseListener;
 import com.sugarman.myb.listeners.ApiGetMyAllUserInfoListener;
+import com.sugarman.myb.utils.SharedPreferenceHelper;
 import java.lang.ref.WeakReference;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -26,6 +27,7 @@ public class GetMyAllUserDataClient extends BaseApiClient {
       if (clientListener.get() != null) {
         if (dataResponse != null) {
           if (response.code() == Constants.RESPONSE_228) {
+            SharedPreferenceHelper.setOTPStatus(dataResponse.getUser().getNeedOTP());
             ((ApiGetMyAllUserInfoListener) clientListener.get()).onApiGetMyAllUserInfoNeedApproveOTP(
                 dataResponse.getUser().getPhoneNumber());
           } else {

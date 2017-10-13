@@ -71,6 +71,8 @@ public abstract class SharedPreferenceConstants {
 
   public static final String STEP_COUNTER_TIMESTAMP_LAST_VALUE = "sc_timestamp_last_value";
 
+  public static final String OTP_STATUS = "OTP_STATUS";
+
   private SharedPreferenceConstants() {
     // only static methods and fields
   }
