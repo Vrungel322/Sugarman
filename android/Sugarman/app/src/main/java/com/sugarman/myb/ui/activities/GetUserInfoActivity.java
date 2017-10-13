@@ -126,13 +126,13 @@ public class GetUserInfoActivity extends BaseActivity
     Stats[] stats = allMyInfo.getStats();
     App.appendLog(Constants.TAG_TEST_GO_TO_NEXT_DAY,
         getClass().getSimpleName() + " received stats:");
-    for (int i = 0; i < stats.length; i++) {
-      App.appendLog(Constants.TAG_TEST_GO_TO_NEXT_DAY,
-          "stat  " + i + "   " + allMyInfo.getStats()[i].toString());
-    }
-    App.appendLog(Constants.TAG_TEST_GO_TO_NEXT_DAY,
-        getClass().getSimpleName() + " received stats finish:");
-    SharedPreferenceHelper.saveStats(allMyInfo.getStats());
+    //for (int i = 0; i < stats.length; i++) {
+    //  App.appendLog(Constants.TAG_TEST_GO_TO_NEXT_DAY,
+    //      "stat  " + i + "   " + allMyInfo.getStats()[i].toString());
+    //}
+    //App.appendLog(Constants.TAG_TEST_GO_TO_NEXT_DAY,
+    //    getClass().getSimpleName() + " received stats finish:");
+      SharedPreferenceHelper.saveStats(allMyInfo.getStats());
 
     this.actualTrackings = allMyInfo.getTrackings();
 
@@ -162,6 +162,10 @@ public class GetUserInfoActivity extends BaseActivity
   }
 
   @Override public void onApiGetMyAllUserInfoFailure(String message) {
+  }
+
+  @Override public void onApiGetMyAllUserInfoNeedApproveOTP(String phone) {
+
   }
 
   public void refreshUserData(AccessToken accessToken, String vkToken, String gToken,

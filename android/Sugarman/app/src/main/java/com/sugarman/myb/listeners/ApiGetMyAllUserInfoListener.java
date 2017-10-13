@@ -7,4 +7,6 @@ public interface ApiGetMyAllUserInfoListener extends ApiBaseListener {
   void onApiGetMyAllUserInfoSuccess(AllMyUserDataResponse allMyInfo);
 
   void onApiGetMyAllUserInfoFailure(String message);
+
+  void onApiGetMyAllUserInfoNeedApproveOTP(String phone);
 }

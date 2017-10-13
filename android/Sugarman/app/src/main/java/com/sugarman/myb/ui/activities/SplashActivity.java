@@ -221,6 +221,14 @@ public class SplashActivity extends GetUserInfoActivity
     }
   }
 
+  @Override public void onApiGetMyAllUserInfoNeedApproveOTP(String phoneNumber) {
+    Intent intent = new Intent(SplashActivity.this, ApproveOtpActivity.class);
+    intent.putExtra("showSettings", false);
+    intent.putExtra("phone", phoneNumber);
+    Timber.e("phone "+ phoneNumber);
+    startActivity(intent);
+  }
+
   private void openLoginActivity() {
     Timber.e("openLoginActivity");
     Intent intent = new Intent(SplashActivity.this, LoginActivity.class);

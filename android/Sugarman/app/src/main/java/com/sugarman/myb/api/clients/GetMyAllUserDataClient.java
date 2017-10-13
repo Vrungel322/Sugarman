@@ -1,8 +1,8 @@
 package com.sugarman.myb.api.clients;
 
-import android.util.Log;
 import com.sugarman.myb.App;
 import com.sugarman.myb.api.models.responses.AllMyUserDataResponse;
+import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.listeners.ApiBaseListener;
 import com.sugarman.myb.listeners.ApiGetMyAllUserInfoListener;
 import java.lang.ref.WeakReference;
@@ -25,8 +25,13 @@ public class GetMyAllUserDataClient extends BaseApiClient {
 
       if (clientListener.get() != null) {
         if (dataResponse != null) {
-          ((ApiGetMyAllUserInfoListener) clientListener.get()).onApiGetMyAllUserInfoSuccess(
-              dataResponse);
+          if (response.code() == Constants.RESPONSE_228) {
+            ((ApiGetMyAllUserInfoListener) clientListener.get()).onApiGetMyAllUserInfoNeedApproveOTP(
+                dataResponse.getUser().getPhoneNumber());
+          } else {
+            ((ApiGetMyAllUserInfoListener) clientListener.get()).onApiGetMyAllUserInfoSuccess(
+                dataResponse);
+          }
         } else if (errorBody != null) {
           String errorMessage = parseErrorBody(errorBody);
           responseFailure(TAG, errorMessage);
@@ -56,7 +61,7 @@ public class GetMyAllUserDataClient extends BaseApiClient {
     @Override public void onFailure(Call<AllMyUserDataResponse> call, Throwable t) {
       if (clientListener.get() != null) {
         String message = requestFailure(TAG, t);
-        Timber.e("OnFailure");
+        Timber.e("OnFailure " + message);
         ((ApiGetMyAllUserInfoListener) clientListener.get()).onApiGetMyAllUserInfoFailure(message);
       } else {
         listenerNotRegistered(TAG);

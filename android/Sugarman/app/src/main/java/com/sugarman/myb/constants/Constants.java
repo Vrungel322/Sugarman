@@ -181,6 +181,8 @@ public abstract class Constants {
 
   public static final int SUCCESS_RESPONSE_CODE = 200;
 
+  public static final int RESPONSE_228 = 228;
+
   public static final int FIREBASE_NOTIFICATION_ID = 1011;
 
   public static final int SWITCH_TO_NEXT_DAY_REQUEST_CODE = 2;
