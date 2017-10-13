@@ -98,41 +98,33 @@ public class EditGroupClient extends BaseApiClient {
         SharedPreferenceHelper.getFBAccessToken());
 
     for (FacebookFriend friend : members) {
-      if(friend.getSocialNetwork().equals("fb")) {
+      if (friend.getSocialNetwork().equals("fb")) {
         Timber.e("FB FRIEND = " + friend.getName());
         ids.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getId()));
         names.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getName()));
-        pictures.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
-            friend.getPicture()));
-      }
-else if (friend.getSocialNetwork().equals("vk")) {
+        pictures.add(
+            RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getPicture()));
+      } else if (friend.getSocialNetwork().equals("vk")) {
         Timber.e("VK FRIEND = " + friend.getName());
         vkids.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getId()));
-        vkNames.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getName()));
-        vkpictures.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
-            friend.getPicture()));
+        vkNames.add(
+            RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getName()));
+        vkpictures.add(
+            RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getPicture()));
+      } else {
+
+        phoneNumbers.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
+            friend.getId().replace(" ", "")));
+        phoneNames.add(
+            RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getName()));
+        phonePictures.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
+            "https://sugarman-myb.s3.amazonaws.com/Group_New.png"));
       }
-      else
-      {
-        if (friend.getId().contains("+")){
-          phoneNumbers.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),friend.getId().replace(" ", "")));
-        }
-        else {
-          phoneNumbers.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
-              (CountryCodeHelper.getCountryZipCode() + friend.getId()).replace(" ", "")));
-          Timber.e((CountryCodeHelper.getCountryZipCode() + friend.getId()).replace(" ", ""));
-
-        }
-        phoneNames.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getName()));
-          phonePictures.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
-              "https://sugarman-myb.s3.amazonaws.com/Group_New.png"));
-
-      }
-
     }
 
-    Call<EditGroupResponse> call =
-        App.getApiInstance().editGroup(trackingId, filePart, name, ids, vkids, phoneNumbers, names, vkNames, phoneNames, pictures, vkpictures, phonePictures);
+    Call<EditGroupResponse> call = App.getApiInstance()
+        .editGroup(trackingId, filePart, name, ids, vkids, phoneNumbers, names, vkNames, phoneNames,
+            pictures, vkpictures, phonePictures);
     Timber.e("Called editGroup");
     call.enqueue(mCallback);
   }

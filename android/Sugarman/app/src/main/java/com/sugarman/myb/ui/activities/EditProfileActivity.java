@@ -216,8 +216,7 @@ editProfile();
             SharedPreferenceHelper.getFbId(), SharedPreferenceHelper.getVkId(),
             SharedPreferenceHelper.getAvatar(), selectedFile); //brand.png
         SharedPreferenceHelper.saveEmail(displayEmail);
-        nextButton.setEnabled(false);
-        backButton.setEnabled(false);
+        //nextButton.setEnabled(false);
         //showNextActivity();
       }
       else
@@ -229,8 +228,8 @@ editProfile();
               SharedPreferenceHelper.getFbId(), SharedPreferenceHelper.getVkId(),
               SharedPreferenceHelper.getAvatar(), selectedFile); //brand.png
           SharedPreferenceHelper.saveEmail(displayEmail);
-          nextButton.setEnabled(false);
-          backButton.setEnabled(false);
+          Timber.e(displayNumber);
+          //nextButton.setEnabled(false);
           //showNextActivity();
         }
         else

@@ -76,6 +76,8 @@ public abstract class Config {
   private static final int RED_MEMBERS_FIRST_COUNT = 1;
   private static final int RED_MEMBERS_SECOND_COUNT = 2;
   private static final int RED_MEMBERS_THIRD_COUNT = 3;
+  public static final String PAYPAL_CLIENT_ID =
+      "AadX9C07qYD8AfEc_BpU30El-IMg3_jSZQJRKVPLuxIAF2EiqudSUENYTcF62DFHr-wRRhXbUINE9plI";
 
   public static int getCountRedMembers(int totalMembers) {
     int countRedMembers;

@@ -81,7 +81,7 @@ public class ApproveOtpActivity extends AppCompatActivity implements ApiApproveO
   @Override public void onApiApproveOtpSuccess(ApproveOtpResponse response) {
     Timber.e("OTP" + otp);
     if (otp != null) {
-      if (otp.equals(otpEditText.getText().toString())) {
+      if (response.getCode().equals("0")) {
         Intent intent;
         if (showSettings) {
           intent = new Intent(ApproveOtpActivity.this, EditProfileActivity.class);
@@ -96,7 +96,7 @@ public class ApproveOtpActivity extends AppCompatActivity implements ApiApproveO
           SharedPreferenceHelper.saveToken(mTokens);
         }
         startActivity(intent);
-      } else {
+      } else if (response.getCode().equals("1")) {
         new SugarmanDialog.Builder(this, "Error").content("Please check the code you have entered!")
             .show();
       }

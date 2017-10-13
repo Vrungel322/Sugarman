@@ -116,24 +116,21 @@ public class CreateGroupClient extends BaseApiClient {
       } else {
 
         Timber.e("Phone contact " + friend.getName());
-        if (friend.getId().contains("+")) {
-          phoneNumbers.add(
-              RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getId().replace(" ","")));
-        } else {
-          phoneNumbers.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
-              (CountryCodeHelper.getCountryZipCode() + friend.getId()).replace(" ", "")));
-          Timber.e(CountryCodeHelper.getCountryZipCode() + friend.getId());
-        }
 
-        phoneNames.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
-            friend.getName()));
+        phoneNumbers.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
+            friend.getId().replace(" ", "")));
+        phoneNames.add(
+            RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getName()));
         phonePictures.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
             "https://sugarman-myb.s3.amazonaws.com/Group_New.png"));
-        Timber.e("pictures phone: " + phonePictures.size()+ " names phone: " + phoneNames.size() + " ids phone: " + phoneNumbers.size() );
+        Timber.e("pictures phone: "
+            + phonePictures.size()
+            + " names phone: "
+            + phoneNames.size()
+            + " ids phone: "
+            + phoneNumbers.size());
       }
     }
-
-
 
     Call<CreateGroupResponse> call = App.getApiInstance()
         .createGroup(filePart, name, fbToken, ids, vkids, phoneNumbers, names, vkNames, phoneNames,

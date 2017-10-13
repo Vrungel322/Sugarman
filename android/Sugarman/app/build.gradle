@@ -113,7 +113,10 @@ dependencies {
   annotationProcessor 'com.arello-mobile:moxy-compiler:1.5.3'
   //Timber
   compile 'com.jakewharton.timber:timber:4.5.1'
+
+  //PayPal
   compile files('libs/PayPal_MPL.jar')
+  compile 'com.paypal.sdk:paypal-android-sdk:2.15.3'
 
   //ZGallery
   compile ('com.github.mzelzoghbi:zgallery:0.3')
