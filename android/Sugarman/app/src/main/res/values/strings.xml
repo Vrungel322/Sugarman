@@ -320,6 +320,7 @@
   <string name="choooseCountry">Choose country</string>
   <string name="changePhone">Change phone number</string>
   <string name="resend_code">Resend Code</string>
+  <string name="wait_for">wait for</string>
 
   <!-- Country Codes -->
   <string-array name="CountryCodes" >

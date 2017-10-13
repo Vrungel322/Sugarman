@@ -227,6 +227,7 @@ public class SplashActivity extends GetUserInfoActivity
     intent.putExtra("phone", phoneNumber);
     Timber.e("phone "+ phoneNumber);
     startActivity(intent);
+    finish();
   }
 
   private void openLoginActivity() {

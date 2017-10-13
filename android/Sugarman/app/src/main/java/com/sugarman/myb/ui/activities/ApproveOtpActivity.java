@@ -62,7 +62,7 @@ public class ApproveOtpActivity extends AppCompatActivity implements ApiApproveO
 
       @Override public void onTick(long l) {
         resendCode.setClickable(false);
-        resendCode.setText("wait for " + l / 1000);
+        resendCode.setText(getString(R.string.wait_for) + l / 1000);
       }
 
       @Override public void onFinish() {
@@ -75,6 +75,11 @@ public class ApproveOtpActivity extends AppCompatActivity implements ApiApproveO
     btn.setOnClickListener(
         view -> client.approveOtp(SharedPreferenceHelper.getUserId(), phoneNumberStr,
             otpEditText.getText().toString()));
+  }
+
+  @OnClick(R.id.tvChangePhone) public void tvChangePhoneClicked() {
+    Intent intent = new Intent(ApproveOtpActivity.this, PhoneLoginActivity.class);
+    startActivity(intent);
   }
 
   @OnClick(R.id.iv_back) public void nextActivity() {
