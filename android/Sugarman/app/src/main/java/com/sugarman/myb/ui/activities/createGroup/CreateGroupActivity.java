@@ -32,6 +32,7 @@ import android.widget.ImageView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.clover_studio.spikachatmodule.utils.Const;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -97,6 +98,8 @@ public class CreateGroupActivity extends BaseActivity
   private final List<FacebookFriend> allFriends = new ArrayList<>();
   private final List<FacebookFriend> invitable = new ArrayList<>();
   private final List<FacebookFriend> members = new ArrayList<>();
+  public CheckPhonesClient mCheckPhoneClient;
+  public CheckVkClient mCheckVkClient;
   @BindView(R.id.fb_filter) ImageView fbFilter;
   @BindView(R.id.vk_filter) ImageView vkFilter;
   @BindView(R.id.ph_filter) ImageView phFilter;
@@ -157,7 +160,6 @@ public class CreateGroupActivity extends BaseActivity
 
           List<String> recipients = result.getRequestRecipients();
           fbApiClient.getFriendsInfo(recipients);
-
         }
 
         @Override public void onCancel() {
@@ -175,13 +177,11 @@ public class CreateGroupActivity extends BaseActivity
       };
   private CreateGroupClient mCreateGroupClient;
   private JoinGroupClient mJoinGroupClient;
-  public CheckPhonesClient mCheckPhoneClient;
-  public CheckVkClient mCheckVkClient;
   private CallbackManager fbCallbackManager;
   private GameRequestDialog fbInviteDialog;
   private boolean isFriendsFound = false;
   private File selectedFile;
-  private int networksToLoad = 1, networksLoaded = 0;
+  private int networksToLoad = 0, networksLoaded = 0;
   private boolean vkPeopleAdd;
 
   @Override protected void onCreate(Bundle savedStateInstance) {
@@ -261,26 +261,30 @@ public class CreateGroupActivity extends BaseActivity
     bitmap = mi.transform(bitmap);
     ivGroupAvatar.setImageBitmap(bitmap);
 
-    AsyncTask.execute(new Runnable() {
-      @Override public void run() {
+    if (checkCallingOrSelfPermission(Constants.READ_PHONE_CONTACTS_PERMISSION)
+        == PackageManager.PERMISSION_GRANTED) {
+
+      AsyncTask.execute(() -> {
         HashMap<String, String> contactList =
             ContactsHelper.getContactList(CreateGroupActivity.this);
         List<String> phonesToCheck = new ArrayList<String>();
         for (String key : contactList.keySet()) {
-            FacebookFriend friend = new FacebookFriend(contactList.get(key).replace(" ",""), key,
-                "https://sugarman-myb.s3.amazonaws.com/Group_New.png",
-                FacebookFriend.CODE_INVITABLE, "ph");
-            allFriends.add(friend);
-          phonesToCheck.add(contactList.get(key).replace(" ",""));
+          FacebookFriend friend = new FacebookFriend(contactList.get(key).replace(" ", ""), key,
+              "https://sugarman-myb.s3.amazonaws.com/Group_New.png", FacebookFriend.CODE_INVITABLE,
+              "ph");
+          allFriends.add(friend);
+          phonesToCheck.add(contactList.get(key).replace(" ", ""));
           Timber.e(contactList.get(key));
         }
 
         mCheckPhoneClient.checkPhones(phonesToCheck);
         networksLoaded++;
+        networksToLoad++;
         Timber.e("Contacts loaded");
-
-      }
-    });
+      });
+    } else {
+      phFilter.setAlpha(0.5f);
+    }
 
     final View contentView = findViewById(android.R.id.content);
     contentView.getViewTreeObserver()
@@ -375,7 +379,8 @@ public class CreateGroupActivity extends BaseActivity
       }
     } else {
       AlertDialog.Builder builder = new AlertDialog.Builder(CreateGroupActivity.this);
-      builder.setMessage(getResources().getString(R.string.log_in_to_fb)).setTitle(getResources().getString(R.string.not_logged_in));
+      builder.setMessage(getResources().getString(R.string.log_in_to_fb))
+          .setTitle(getResources().getString(R.string.not_logged_in));
       builder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
         public void onClick(DialogInterface dialog, int id) {
           Intent intent = new Intent(CreateGroupActivity.this, EditProfileActivity.class);
@@ -419,7 +424,8 @@ public class CreateGroupActivity extends BaseActivity
       }
     } else {
       AlertDialog.Builder builder = new AlertDialog.Builder(CreateGroupActivity.this);
-      builder.setMessage(getResources().getString(R.string.log_in_to_vk)).setTitle(getResources().getString(R.string.not_logged_in));
+      builder.setMessage(getResources().getString(R.string.log_in_to_vk))
+          .setTitle(getResources().getString(R.string.not_logged_in));
       builder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
         public void onClick(DialogInterface dialog, int id) {
           Intent intent = new Intent(CreateGroupActivity.this, EditProfileActivity.class);
@@ -449,6 +455,11 @@ public class CreateGroupActivity extends BaseActivity
       }
 
       setFriends(filtered);
+      if (checkCallingOrSelfPermission(Constants.READ_PHONE_CONTACTS_PERMISSION)
+          != PackageManager.PERMISSION_GRANTED) {
+        ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.READ_CONTACTS },
+            Const.PermissionCode.READ_CONTACTS);
+      }
       currentFilter = "ph";
       fbFilter.setAlpha(0.5f);
       vkFilter.setAlpha(0.5f);
@@ -673,7 +684,6 @@ public class CreateGroupActivity extends BaseActivity
 
   @Override public void onApiCreateGroupSuccess(CreatedGroup createdGroup) {
     mJoinGroupClient.joinGroup(createdGroup.getId());
-
   }
 
   @Override public void onApiCreateGroupFailure(String message) {
@@ -709,15 +719,15 @@ public class CreateGroupActivity extends BaseActivity
         intiteByVk.add(friend);
       }
     }
-    if (!intiteByVk.isEmpty()){
+    if (!intiteByVk.isEmpty()) {
       SendVkInvitationDialog.newInstance(intiteByVk)
           .show(getFragmentManager(), "SendVkInvitationDialog");
-    }
-    else {
+    } else {
       finish();
     }
-    if(intiteByVk.isEmpty() && idsFb.isEmpty())
-    {finish();}
+    if (intiteByVk.isEmpty() && idsFb.isEmpty()) {
+      finish();
+    }
   }
 
   @Override public void onApiJoinGroupFailure(String message) {
@@ -852,7 +862,6 @@ public class CreateGroupActivity extends BaseActivity
     List<FacebookFriend> selectedFriends = friendsAdapter.getSelectedFriends();
     members.clear();
 
-
     if (TextUtils.isEmpty(groupName.replace(" ", ""))) {
       new SugarmanDialog.Builder(this, DialogConstants.GROUP_NAME_IS_EMPTY_ID).content(
           R.string.group_name_is_empty).show();
@@ -898,7 +907,7 @@ public class CreateGroupActivity extends BaseActivity
       //vNoFriends.setVisibility(View.VISIBLE);
     } else {
       rcvFriends.setVisibility(View.VISIBLE);
-     // vNoFriends.setVisibility(View.GONE);
+      // vNoFriends.setVisibility(View.GONE);
     }
   }
 
@@ -958,17 +967,13 @@ public class CreateGroupActivity extends BaseActivity
 
     Timber.e("SET INVITABLE 1 " + phones.size());
 
-    for(String s : phones)
-    {
+    for (String s : phones) {
       Timber.e("SET INVITABLE IF 1.5 ");
-      for(FacebookFriend friend : allFriends)
-      {
+      for (FacebookFriend friend : allFriends) {
         Timber.e("SET INVITABLE for 2 " + friend.getName());
-        if(friend.getSocialNetwork().equals("ph"))
-        {
+        if (friend.getSocialNetwork().equals("ph")) {
           Timber.e("SET INVITABLE IF 3 " + friend.getName());
-          if(friend.getId().equals(s))
-          {
+          if (friend.getId().equals(s)) {
             Timber.e("SET INVITABLE IF 4 " + friend.getName());
             friend.setIsInvitable(FacebookFriend.CODE_NOT_INVITABLE);
           }
@@ -982,7 +987,6 @@ public class CreateGroupActivity extends BaseActivity
       }
     });
     checkNetworksLoaded();
-
   }
 
   @Override public void onApiCheckPhoneFailure(String message) {
@@ -992,17 +996,13 @@ public class CreateGroupActivity extends BaseActivity
   @Override public void onApiCheckVkSuccess(List<String> vks) {
 
     Timber.e("SET INVITABLE IF 1 " + vks.size());
-    for(String s : vks)
-    {
+    for (String s : vks) {
       Timber.e("SET INVITABLE IF 1.5 ");
-      for(FacebookFriend friend : allFriends)
-      {
+      for (FacebookFriend friend : allFriends) {
         Timber.e("SET INVITABLE for 2 " + friend.getName());
-        if(friend.getSocialNetwork().equals("vk"))
-        {
+        if (friend.getSocialNetwork().equals("vk")) {
           Timber.e("SET INVITABLE IF 3 " + friend.getName());
-          if(friend.getId().equals(s))
-          {
+          if (friend.getId().equals(s)) {
             Timber.e("SET INVITABLE IF 4 " + friend.getName());
             friend.setIsInvitable(FacebookFriend.CODE_NOT_INVITABLE);
           }
@@ -1016,7 +1016,6 @@ public class CreateGroupActivity extends BaseActivity
       }
     });
     checkNetworksLoaded();
-
   }
 
   @Override public void onApiCheckVkFailure(String message) {

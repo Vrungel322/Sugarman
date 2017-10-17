@@ -96,6 +96,7 @@ public abstract class Constants {
 
   // Rotations (for camera activities)
   private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
+  public static final String READ_PHONE_CONTACTS_PERMISSION = "android.permission.READ_CONTACTS";
 
   static {
     ORIENTATIONS.append(Surface.ROTATION_0, 90);
