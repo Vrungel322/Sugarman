@@ -29,6 +29,7 @@ import android.widget.ImageView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.clover_studio.spikachatmodule.utils.Const;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -66,7 +67,6 @@ import com.sugarman.myb.ui.views.MaskTransformation;
 import com.sugarman.myb.utils.AnalyticsHelper;
 import com.sugarman.myb.utils.BitmapUtils;
 import com.sugarman.myb.utils.ContactsHelper;
-import com.sugarman.myb.utils.CountryCodeHelper;
 import com.sugarman.myb.utils.DeviceHelper;
 import com.sugarman.myb.utils.IntentExtractorHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
@@ -161,7 +161,7 @@ public class AddMemberActivity extends BaseActivity
   private GameRequestDialog fbInviteDialog;
   private String trackingId;
   private File selectedFile;
-  private int networksToLoad = 1, networksLoaded = 0;
+  private int networksToLoad = 0, networksLoaded = 0;
   private boolean vkIntitationSend;
   private List<String> mIdsFb = new ArrayList<>();
   private List<FacebookFriend> mInviteByPh = new ArrayList<>();
@@ -287,8 +287,10 @@ public class AddMemberActivity extends BaseActivity
     sivGroupAvatar.setOnClickListener(this);
     vClearGroupName.setOnClickListener(this);
 
-    AsyncTask.execute(new Runnable() {
-      @Override public void run() {
+    if (checkCallingOrSelfPermission(Constants.READ_PHONE_CONTACTS_PERMISSION)
+        == PackageManager.PERMISSION_GRANTED) {
+
+      AsyncTask.execute(() -> {
         List<String> phToCheck = new ArrayList<String>();
         HashMap<String, String> contactList = ContactsHelper.getContactList(AddMemberActivity.this);
 
@@ -302,10 +304,12 @@ public class AddMemberActivity extends BaseActivity
           phToCheck.add(contactList.get(key).replace(" ", ""));
         }
         checkForUnique();
-
+        networksToLoad++;
         mCheckPhoneClient.checkPhones(phToCheck);
-      }
-    });
+      });
+    } else {
+      phFilter.setAlpha(0.5f);
+    }
 
     AnalyticsHelper.reportInvite();
 
@@ -493,6 +497,11 @@ public class AddMemberActivity extends BaseActivity
       }
 
       setFilteredFriends(filtered);
+      if (checkCallingOrSelfPermission(Constants.READ_PHONE_CONTACTS_PERMISSION)
+          != PackageManager.PERMISSION_GRANTED) {
+        ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.READ_CONTACTS },
+            Const.PermissionCode.READ_CONTACTS);
+      }
       currentFilter = "ph";
       fbFilter.setAlpha(0.5f);
       vkFilter.setAlpha(0.5f);
