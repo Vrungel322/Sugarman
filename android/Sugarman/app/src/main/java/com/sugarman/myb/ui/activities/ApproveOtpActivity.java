@@ -98,6 +98,7 @@ public class ApproveOtpActivity extends AppCompatActivity implements ApiApproveO
 
   @OnClick(R.id.tvChangePhone) public void tvChangePhoneClicked() {
     Intent intent = new Intent(ApproveOtpActivity.this, PhoneLoginActivity.class);
+    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
     startActivity(intent);
   }
 
