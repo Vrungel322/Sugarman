@@ -196,6 +196,7 @@ public class AddMemberActivity extends BaseActivity
           }
         }
       };
+  private List<Phones> mDistinktorList;
 
   @Override protected void onCreate(Bundle savedStateInstance) {
     setContentView(R.layout.activity_add_member);
@@ -955,11 +956,45 @@ public class AddMemberActivity extends BaseActivity
 
   private void addMembersPh(List<FacebookFriend> members) {
     Timber.e("addMembersPh " + members.size());
+    List<String> facebookElements = new ArrayList<>();
+    List<FacebookFriend> vkElements = new ArrayList<>();
     showProgressFragment();
     //mInviteByPh.clear();
 
-    mEditGroupClient.editGroup(trackingId, members, etGroupName.getText().toString(), selectedFile);
-    mAddMembersClient.addMembers(trackingId, members);
+    //chech if some of members are present in mDistinktorList, if yes -> send him msg in social nenwork , else by sms
+    //______________________________________________________________________________________________
+    for (int i = 0; i < members.size(); i++) {
+      for (int j = 0; j < mDistinktorList.size(); j++) {
+        if (mDistinktorList.get(j).getFbid().equals(members.get(i).getId())) {
+          facebookElements.add(members.get(i).getId());
+          members.remove(i);
+        }
+      }
+    }
+    for (int i = 0; i < members.size(); i++) {
+      for (int j = 0; j < mDistinktorList.size(); j++) {
+        if (mDistinktorList.get(j).getVkid().equals(members.get(i).getId())) {
+          vkElements.add(members.get(i));
+          members.remove(i);
+        }
+      }
+    }
+    if (!vkElements.isEmpty()) {
+      mPresenter.sendInvitationInVk(vkElements, getString(R.string.invite_message));
+    }
+    if (!facebookElements.isEmpty()) {
+      GameRequestContent content =
+          new GameRequestContent.Builder().setMessage(getString(R.string.play_with_me))
+              .setRecipients(facebookElements)
+              .build();
+      fbInviteDialog.show(content);
+    }
+    if (!members.isEmpty()) {
+      mEditGroupClient.editGroup(trackingId, members, etGroupName.getText().toString(),
+          selectedFile);
+      mAddMembersClient.addMembers(trackingId, members);
+    }
+    //______________________________________________________________________________________________
   }
 
   private void getFacebookFriends() {
@@ -1058,6 +1093,8 @@ public class AddMemberActivity extends BaseActivity
   }
 
   @Override public void onApiCheckPhoneSuccess(List<Phones> phones) {
+
+    mDistinktorList = phones;
 
     for (Phones p : phones) {
       for (FacebookFriend friend : allFriends) {
