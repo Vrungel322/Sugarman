@@ -7,8 +7,10 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
@@ -207,21 +209,33 @@ public class EditProfileActivity extends BasicActivity
   }
 
   @OnClick(R.id.cb_ph) public void cbPhClicked() {
-    //if (checkCallingOrSelfPermission(Constants.READ_PHONE_CONTACTS_PERMISSION)
-    //!= PackageManager.PERMISSION_GRANTED) {
-    ActivityCompat.requestPermissions(EditProfileActivity.this, new String[] { Manifest.permission.READ_CONTACTS },
-        Const.PermissionCode.READ_CONTACTS);
-    //}
+    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      Intent intent = new Intent();
+      intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+      Uri uri = Uri.fromParts("package", getPackageName(), null);
+      intent.setData(uri);
+      startActivity(intent);
+    } else {
+      ActivityCompat.requestPermissions(EditProfileActivity.this,
+          new String[] { Manifest.permission.READ_CONTACTS }, Const.PermissionCode.READ_CONTACTS);
+    }
   }
 
   @OnClick(R.id.tv_ph) public void tvPhClicked() {
-    ActivityCompat.requestPermissions(EditProfileActivity.this, new String[] { Manifest.permission.READ_CONTACTS },
-        Const.PermissionCode.READ_CONTACTS);
+
+    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      Intent intent = new Intent();
+      intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+      Uri uri = Uri.fromParts("package", getPackageName(), null);
+      intent.setData(uri);
+      startActivity(intent);
+    } else {
+      ActivityCompat.requestPermissions(EditProfileActivity.this,
+          new String[] { Manifest.permission.READ_CONTACTS }, Const.PermissionCode.READ_CONTACTS);
+    }
   }
 
-  @Override
-  public void onRequestPermissionsResult(int requestCode,
-      @NonNull String permissions[],
+  @Override public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
       @NonNull int[] grantResults) {
     switch (requestCode) {
       case Const.PermissionCode.READ_CONTACTS: {
