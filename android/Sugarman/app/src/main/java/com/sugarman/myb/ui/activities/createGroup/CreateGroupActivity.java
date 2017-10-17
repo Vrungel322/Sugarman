@@ -184,6 +184,7 @@ public class CreateGroupActivity extends BaseActivity
   private File selectedFile;
   private int networksToLoad = 0, networksLoaded = 0;
   private boolean vkPeopleAdd;
+  private List<Phones> mDistinktorList = new ArrayList<>();
 
   @Override protected void onCreate(Bundle savedStateInstance) {
     setContentView(R.layout.activity_create_group);
@@ -896,6 +897,38 @@ public class CreateGroupActivity extends BaseActivity
 
   private void createGroup(List<FacebookFriend> members) {
     showProgressFragmentTemp();
+    List<String> facebookElements = new ArrayList<>();
+    List<FacebookFriend> vkElements = new ArrayList<>();
+
+    //chech if some of members are present in mDistinktorList, if yes -> send him msg in social nenwork , else by sms
+    //______________________________________________________________________________________________
+    for (int i = 0; i < members.size(); i++) {
+      for (int j = 0; j < mDistinktorList.size(); j++) {
+        if (mDistinktorList.get(j).getFbid().equals(members.get(i).getId())) {
+          facebookElements.add(members.get(i).getId());
+          members.remove(i);
+        }
+      }
+    }
+    for (int i = 0; i < members.size(); i++) {
+      for (int j = 0; j < mDistinktorList.size(); j++) {
+        if (mDistinktorList.get(j).getVkid().equals(members.get(i).getId())) {
+          vkElements.add(members.get(i));
+          members.remove(i);
+        }
+      }
+    }
+    if (!vkElements.isEmpty()) {
+      mPresenter.sendInvitationInVk(vkElements, getString(R.string.invite_message));
+    }
+    if (!facebookElements.isEmpty()) {
+      GameRequestContent content =
+          new GameRequestContent.Builder().setMessage(getString(R.string.play_with_me))
+              .setRecipients(facebookElements)
+              .build();
+      fbInviteDialog.show(content);
+    }
+    //______________________________________________________________________________________________
     String groupName = etGroupName.getText().toString();
     mCreateGroupClient.createGroup(members, groupName, selectedFile, CreateGroupActivity.this);
   }
@@ -965,6 +998,8 @@ public class CreateGroupActivity extends BaseActivity
   }
 
   @Override public void onApiCheckPhoneSuccess(List<Phones> phones) {
+    mDistinktorList = phones;
+
 
     Timber.e("Check phones ");
 
