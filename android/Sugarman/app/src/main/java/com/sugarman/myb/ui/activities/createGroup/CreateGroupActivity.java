@@ -46,6 +46,7 @@ import com.sugarman.myb.api.clients.CheckVkClient;
 import com.sugarman.myb.api.clients.CreateGroupClient;
 import com.sugarman.myb.api.clients.FBApiClient;
 import com.sugarman.myb.api.clients.JoinGroupClient;
+import com.sugarman.myb.api.models.responses.Phones;
 import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.api.models.responses.me.groups.CreatedGroup;
@@ -263,6 +264,7 @@ public class CreateGroupActivity extends BaseActivity
 
     if (checkCallingOrSelfPermission(Constants.READ_PHONE_CONTACTS_PERMISSION)
         == PackageManager.PERMISSION_GRANTED) {
+      networksToLoad++;
 
       AsyncTask.execute(() -> {
         HashMap<String, String> contactList =
@@ -278,8 +280,7 @@ public class CreateGroupActivity extends BaseActivity
         }
 
         mCheckPhoneClient.checkPhones(phonesToCheck);
-        networksLoaded++;
-        networksToLoad++;
+
         Timber.e("Contacts loaded");
       });
     } else {
@@ -338,7 +339,7 @@ public class CreateGroupActivity extends BaseActivity
           }
 
           mCheckVkClient.checkVks(vkToCheck);
-          networksLoaded++;
+
           Timber.e("VK LOADED");
           //setFriends(allFriends);
         } catch (JSONException e) {
@@ -963,17 +964,19 @@ public class CreateGroupActivity extends BaseActivity
     }
   }
 
-  @Override public void onApiCheckPhoneSuccess(List<String> phones) {
+  @Override public void onApiCheckPhoneSuccess(List<Phones> phones) {
+
+    Timber.e("Check phones ");
 
     Timber.e("SET INVITABLE 1 " + phones.size());
 
-    for (String s : phones) {
+    for (Phones p : phones) {
       Timber.e("SET INVITABLE IF 1.5 ");
       for (FacebookFriend friend : allFriends) {
         Timber.e("SET INVITABLE for 2 " + friend.getName());
         if (friend.getSocialNetwork().equals("ph")) {
           Timber.e("SET INVITABLE IF 3 " + friend.getName());
-          if (friend.getId().equals(s)) {
+          if (friend.getId().equals(p.getPhone())) {
             Timber.e("SET INVITABLE IF 4 " + friend.getName());
             friend.setIsInvitable(FacebookFriend.CODE_NOT_INVITABLE);
           }
@@ -986,14 +989,18 @@ public class CreateGroupActivity extends BaseActivity
         setFriends(allFriends);
       }
     });
+    networksLoaded++;
+    Timber.e("Check phones " + networksLoaded);
     checkNetworksLoaded();
   }
 
   @Override public void onApiCheckPhoneFailure(String message) {
-
+    Timber.e("Govno check phone");
   }
 
   @Override public void onApiCheckVkSuccess(List<String> vks) {
+
+    Timber.e("OnApiCheckVkSuccess");
 
     Timber.e("SET INVITABLE IF 1 " + vks.size());
     for (String s : vks) {
@@ -1015,6 +1022,8 @@ public class CreateGroupActivity extends BaseActivity
         setFriends(allFriends);
       }
     });
+    networksLoaded++;
+    Timber.e("networkds loaded checkvk " + networksLoaded);
     checkNetworksLoaded();
   }
 

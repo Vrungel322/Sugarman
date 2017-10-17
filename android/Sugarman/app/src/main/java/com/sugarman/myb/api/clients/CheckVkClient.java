@@ -58,6 +58,7 @@ public class CheckVkClient extends BaseApiClient {
 
   public void checkVks(List<String> vks)
   {
+    Timber.e("CHECK VK CALLED");
 
     CheckVkRequest request = new CheckVkRequest();
     request.setVks(vks);

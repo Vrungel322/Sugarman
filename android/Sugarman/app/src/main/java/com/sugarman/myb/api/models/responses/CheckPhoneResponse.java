@@ -11,9 +11,9 @@ import java.util.List;
 
 public class CheckPhoneResponse {
 
-  @SerializedName("phones") private List<String> phones;
+  @SerializedName("phones") private List<Phones> phones;
 
-  public List<String> getPhones() {
+  public List<Phones> getPhones() {
     return phones;
   }
 }

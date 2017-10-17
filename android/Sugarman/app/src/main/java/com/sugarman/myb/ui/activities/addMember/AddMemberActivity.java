@@ -45,6 +45,7 @@ import com.sugarman.myb.api.clients.CheckVkClient;
 import com.sugarman.myb.api.clients.EditGroupClient;
 import com.sugarman.myb.api.clients.FBApiClient;
 import com.sugarman.myb.api.models.responses.Member;
+import com.sugarman.myb.api.models.responses.Phones;
 import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.constants.Config;
@@ -1056,12 +1057,12 @@ public class AddMemberActivity extends BaseActivity
 
   }
 
-  @Override public void onApiCheckPhoneSuccess(List<String> phones) {
+  @Override public void onApiCheckPhoneSuccess(List<Phones> phones) {
 
-    for (String s : phones) {
+    for (Phones p : phones) {
       for (FacebookFriend friend : allFriends) {
         if (friend.getSocialNetwork().equals("ph")) {
-          if (friend.getId().equals(s)) {
+          if (friend.getId().equals(p.getPhone())) {
             friend.setIsInvitable(FacebookFriend.CODE_NOT_INVITABLE);
           }
         }

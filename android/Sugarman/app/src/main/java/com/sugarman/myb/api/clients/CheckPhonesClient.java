@@ -49,12 +49,14 @@ public class CheckPhonesClient extends BaseApiClient {
 
 
     @Override public void onFailure(Call<CheckPhoneResponse> call, Throwable t) {
-
+        Timber.e("Check phones failure");
     }
   };
 
   public void checkPhones(List<String> phones)
   {
+
+    Timber.e("Check phones");
 
     CheckPhoneRequest request = new CheckPhoneRequest();
     request.setPhones(phones);
