@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -19,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
+import com.clover_studio.spikachatmodule.utils.Const;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -58,8 +60,10 @@ public class EditProfileActivity extends BasicActivity
   @BindView(R.id.iv_back) ImageView backButton;
   @BindView(R.id.tv_facebook) TextView tvFb;
   @BindView(R.id.tv_vk) TextView tvVk;
+  @BindView(R.id.tv_ph) TextView tvPh;
   @BindView(R.id.cb_facebook) CheckBox cbFb;
   @BindView(R.id.cb_vk) CheckBox cbVk;
+  @BindView(R.id.cb_ph) CheckBox cbPh;
   EditProfileClient editProfileClient;
   String displayNumber;
   String otp;
@@ -70,7 +74,6 @@ public class EditProfileActivity extends BasicActivity
   private CallbackManager callbackManager;
   private RefreshUserDataClient mRefreshUserDataClient;
 
-
   public static boolean isEmailValid(String email) {
     String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
     Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
@@ -78,13 +81,11 @@ public class EditProfileActivity extends BasicActivity
     return matcher.matches();
   }
 
-  public static boolean isPhoneValid(String phone)
-  {
+  public static boolean isPhoneValid(String phone) {
     String expression = "^[+][0-9]{10,13}$";
     Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
     Matcher matcher = pattern.matcher(phone);
     return matcher.matches();
-
   }
 
   @Override protected void onCreate(Bundle savedInstanceState) {
@@ -97,12 +98,12 @@ public class EditProfileActivity extends BasicActivity
       }, 5500);
     }
 
-
     editProfileClient = new EditProfileClient();
     editProfileClient.registerListener(this);
 
     etName.setText(SharedPreferenceHelper.getUserName());
-    etPhone.setText(SharedPreferenceHelper.getPhoneNumber().equals("none")?"":SharedPreferenceHelper.getPhoneNumber());
+    etPhone.setText(SharedPreferenceHelper.getPhoneNumber().equals("none") ? ""
+        : SharedPreferenceHelper.getPhoneNumber());
     etEmail.setText(SharedPreferenceHelper.getEmail());
 
     mRefreshUserDataClient = new RefreshUserDataClient();
@@ -110,10 +111,9 @@ public class EditProfileActivity extends BasicActivity
 
     selectedFile = null;
 
-    if (SharedPreferenceHelper.getOTPStatus()){
+    if (SharedPreferenceHelper.getOTPStatus()) {
       etPhone.setError(String.format(getString(R.string.approve_phone_pls)));
     }
-
 
     callbackManager = CallbackManager.Factory.create();
     Log.e("FBAccess", "GOVNO" + SharedPreferenceHelper.getFBAccessToken());
@@ -160,6 +160,13 @@ public class EditProfileActivity extends BasicActivity
             Log.e("Facebook token", "Error " + e.getMessage());
           }
         });
+
+    if (checkCallingOrSelfPermission(Constants.READ_PHONE_CONTACTS_PERMISSION)
+        != PackageManager.PERMISSION_GRANTED) {
+      cbPh.setChecked(false);
+    } else {
+      cbPh.setChecked(true);
+    }
   }
 
   @OnClick(R.id.cb_facebook) public void cbFacebookClicked() {
@@ -199,14 +206,42 @@ public class EditProfileActivity extends BasicActivity
     cbVk.setChecked(VKSdk.isLoggedIn());
   }
 
+  @OnClick(R.id.cb_ph) public void cbPhClicked() {
+    //if (checkCallingOrSelfPermission(Constants.READ_PHONE_CONTACTS_PERMISSION)
+    //!= PackageManager.PERMISSION_GRANTED) {
+    ActivityCompat.requestPermissions(EditProfileActivity.this, new String[] { Manifest.permission.READ_CONTACTS },
+        Const.PermissionCode.READ_CONTACTS);
+    //}
+  }
+
+  @OnClick(R.id.tv_ph) public void tvPhClicked() {
+    ActivityCompat.requestPermissions(EditProfileActivity.this, new String[] { Manifest.permission.READ_CONTACTS },
+        Const.PermissionCode.READ_CONTACTS);
+  }
+
+  @Override
+  public void onRequestPermissionsResult(int requestCode,
+      @NonNull String permissions[],
+      @NonNull int[] grantResults) {
+    switch (requestCode) {
+      case Const.PermissionCode.READ_CONTACTS: {
+        //if ((grantResults.length > 0) && (grantResults[0]) == PackageManager.PERMISSION_GRANTED) {
+        //  cbPh.setChecked(true);
+        //}else {
+        //  cbPh.setChecked(false);
+        //}
+        return;
+      }
+    }
+  }
+
   @OnClick(R.id.iv_next) public void ivNextClicked() {
     //SharedPreferenceHelper.saveUserName("Test name");
 
-editProfile();
+    editProfile();
   }
 
-  private void editProfile()
-  {
+  private void editProfile() {
     String displayName = etName.getText().toString();
     Log.e("display name", displayName);
     SharedPreferenceHelper.saveUserName(displayName);
@@ -214,7 +249,7 @@ editProfile();
     displayNumber = etPhone.getText().toString();
 
     if (isEmailValid(displayEmail)) {
-      if(displayNumber.equals("")) {
+      if (displayNumber.equals("")) {
         displayNumber = "none";
         Timber.e("Got in here 1");
         editProfileClient.editUser(displayNumber, displayEmail, displayName,
@@ -223,11 +258,8 @@ editProfile();
         SharedPreferenceHelper.saveEmail(displayEmail);
         //nextButton.setEnabled(false);
         //showNextActivity();
-      }
-      else
-      {
-        if(isPhoneValid(displayNumber))
-        {
+      } else {
+        if (isPhoneValid(displayNumber)) {
           Timber.e("Got in here 2");
           editProfileClient.editUser(displayNumber, displayEmail, displayName,
               SharedPreferenceHelper.getFbId(), SharedPreferenceHelper.getVkId(),
@@ -236,21 +268,14 @@ editProfile();
           Timber.e(displayNumber);
           //nextButton.setEnabled(false);
           //showNextActivity();
-        }
-        else
-        {
-          new SugarmanDialog.Builder(this, "Phone").content(getResources().getString(R.string.the_phone_is_not_valid))
-              .build()
-              .show();
+        } else {
+          new SugarmanDialog.Builder(this, "Phone").content(
+              getResources().getString(R.string.the_phone_is_not_valid)).build().show();
         }
       }
-
-
-
     } else {
-      new SugarmanDialog.Builder(this, "Email").content(getResources().getString(R.string.the_email_is_not_valid))
-          .build()
-          .show();
+      new SugarmanDialog.Builder(this, "Email").content(
+          getResources().getString(R.string.the_email_is_not_valid)).build().show();
     }
     Log.e("EDIT PROFILE", "PRESSED");
   }
@@ -418,11 +443,10 @@ editProfile();
 
     {
       new SugarmanDialog.Builder(this, "soc network").content(response.getError()).build().show();
-      if(response.getError().equals("This Facebook account is already created")) {
+      if (response.getError().equals("This Facebook account is already created")) {
         logoutFacebook();
       }
-      if(response.getError().equals("This VK account is already created"))
-      {
+      if (response.getError().equals("This VK account is already created")) {
         logoutVk();
       }
     }
