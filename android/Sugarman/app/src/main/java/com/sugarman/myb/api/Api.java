@@ -27,7 +27,6 @@ import com.sugarman.myb.api.models.responses.me.requests.RequestsResponse;
 import com.sugarman.myb.api.models.responses.me.score.HighScoreResponse;
 import com.sugarman.myb.api.models.responses.me.stats.StatsResponse;
 import com.sugarman.myb.api.models.responses.me.trackings.MyTrackingsResponse;
-import com.sugarman.myb.api.models.responses.me.user.MyUserResponse;
 import com.sugarman.myb.api.models.responses.trackings.TrackingInfoResponse;
 import com.sugarman.myb.api.models.responses.trackings.TrackingStatsResponse;
 import com.sugarman.myb.api.models.responses.trackings.TrackingsResponse;
@@ -84,7 +83,7 @@ public interface Api {
 
   @GET("/v1/me/trackings") Call<MyTrackingsResponse> getMyTrackings();
 
-  @GET("/v1/me") Call<MyUserResponse> getMyUser();
+  //@GET("/v1/me") Call<MyUserResponse> getMyUser();
 
   @GET("/v1/me/invites") Call<InvitesResponse> getMyInvites();
 

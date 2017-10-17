@@ -534,5 +534,9 @@
     <item>263,ZW</item>
   </string-array>
   <string name="the_phone_is_not_valid">מספר הטלפון שהזנת אינו חוקי</string>
+  <string name="approve_phone_pls">You need to approve phone number</string>
+  <string name="changePhone">Change phone number</string>
+  <string name="resend_code">Resend Code</string>
+  <string name="wait_for">Resend in</string>
 
 </resources>

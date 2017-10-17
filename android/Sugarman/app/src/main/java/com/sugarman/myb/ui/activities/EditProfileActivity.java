@@ -110,6 +110,11 @@ public class EditProfileActivity extends BasicActivity
 
     selectedFile = null;
 
+    if (SharedPreferenceHelper.getOTPStatus()){
+      etPhone.setError(String.format(getString(R.string.approve_phone_pls)));
+    }
+
+
     callbackManager = CallbackManager.Factory.create();
     Log.e("FBAccess", "GOVNO" + SharedPreferenceHelper.getFBAccessToken());
     if (!SharedPreferenceHelper.getFbId().equals("none")) {

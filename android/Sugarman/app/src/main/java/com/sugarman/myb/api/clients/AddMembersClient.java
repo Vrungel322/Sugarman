@@ -65,6 +65,7 @@ public class AddMembersClient extends BaseApiClient {
   public void addMembers(String trackingId, List<FacebookFriend> friends) {
     AddMembersRequest request = new AddMembersRequest();
     int friendsCount = friends.size();
+    Timber.e(String.valueOf(friendsCount));
     Member[] members = new Member[friendsCount];
 
     for (int i = 0; i < friendsCount; i++) {

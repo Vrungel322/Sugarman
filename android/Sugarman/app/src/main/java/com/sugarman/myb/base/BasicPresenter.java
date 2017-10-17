@@ -4,13 +4,9 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import com.arellomobile.mvp.MvpPresenter;
 import com.arellomobile.mvp.MvpView;
-import com.google.gson.Gson;
 import com.sugarman.myb.api.DataManager;
-import com.sugarman.myb.api.error.IErrorResponse;
 import com.sugarman.myb.utils.RxBus;
-import java.io.IOException;
 import javax.inject.Inject;
-import okhttp3.ResponseBody;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
@@ -40,19 +36,4 @@ public abstract class BasicPresenter<V extends MvpView> extends MvpPresenter<V> 
 
   protected abstract void inject();
 
-  public <T extends IErrorResponse> String handleError(ResponseBody errorBody, Class<T> clazz) {
-    T errorResponse = null;
-    StringBuilder sb = new StringBuilder();
-    try {
-      errorResponse = new Gson().fromJson(errorBody.string(), clazz);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    if (errorResponse != null) {
-      for (int i = 0; i < errorResponse.getError().size(); i++) {
-        sb.append(errorResponse.getError().get(i));
-      }
-    }
-    return sb.toString();
-  }
 }

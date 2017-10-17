@@ -1,6 +1,5 @@
 package com.sugarman.myb.api.clients;
 
-import com.sugarman.myb.App;
 import com.sugarman.myb.api.models.responses.me.user.MyUserResponse;
 import com.sugarman.myb.api.models.responses.users.User;
 import com.sugarman.myb.listeners.ApiBaseListener;
@@ -58,8 +57,8 @@ public class GetMyUserClient extends BaseApiClient {
     clientListener = new WeakReference<>(listener);
   }
 
-  public void getUser() {
-    Call<MyUserResponse> call = App.getApiInstance().getMyUser();
-    call.enqueue(mCallback);
-  }
+  //public void getUser() {
+  //  Call<MyUserResponse> call = App.getApiInstance().getMyUser();
+  //  call.enqueue(mCallback);
+  //}
 }
