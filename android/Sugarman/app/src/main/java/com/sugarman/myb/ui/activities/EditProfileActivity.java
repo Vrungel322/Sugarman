@@ -235,16 +235,7 @@ public class EditProfileActivity extends BasicActivity
   }
 
   @OnClick(R.id.iv_next) public void ivNextClicked() {
-    if (etPhone.getError() != null) {
-      Intent intent = new Intent(EditProfileActivity.this, ApproveOtpActivity.class);
-      intent.putExtra("otp", otp);
-      intent.putExtra("showSettings", false);
-      intent.putExtra("phone", etPhone.getText().toString());
-      startActivity(intent);
-    }{
       editProfile();
-    }
-
   }
 
   private void editProfile() {
@@ -474,8 +465,8 @@ public class EditProfileActivity extends BasicActivity
 
   private void showNextActivity() {
     Timber.e(SharedPreferenceHelper.getPhoneNumber() + " " + (etPhone.getText().toString()));
-    if (!SharedPreferenceHelper.getPhoneNumber().equals(etPhone.getText().toString())
-        && !etPhone.getText().toString().equals("")) {
+    if ((!SharedPreferenceHelper.getPhoneNumber().equals(etPhone.getText().toString())
+        && !etPhone.getText().toString().equals("")) || etPhone.getError() != null) {
       Intent intent = new Intent(EditProfileActivity.this, ApproveOtpActivity.class);
       intent.putExtra("otp", otp);
       intent.putExtra("showSettings", false);

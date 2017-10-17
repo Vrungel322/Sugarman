@@ -130,6 +130,7 @@ public class ApproveOtpActivity extends AppCompatActivity implements ApiApproveO
         if(mTokens!=null) {
           SharedPreferenceHelper.saveToken(mTokens);
         }
+        SharedPreferenceHelper.setOTPStatus(response.getUser().getNeedOTP());
         startActivity(intent);
       } else if (response.getCode().equals("1")) {
         new SugarmanDialog.Builder(this, "Error").content("Please check the code you have entered!")
