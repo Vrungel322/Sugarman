@@ -11,7 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -235,20 +234,6 @@ public class EditProfileActivity extends BasicActivity
     }
   }
 
-  @Override public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
-      @NonNull int[] grantResults) {
-    switch (requestCode) {
-      case Const.PermissionCode.READ_CONTACTS: {
-        //if ((grantResults.length > 0) && (grantResults[0]) == PackageManager.PERMISSION_GRANTED) {
-        //  cbPh.setChecked(true);
-        //}else {
-        //  cbPh.setChecked(false);
-        //}
-        return;
-      }
-    }
-  }
-
   @OnClick(R.id.iv_next) public void ivNextClicked() {
     //SharedPreferenceHelper.saveUserName("Test name");
 
@@ -339,6 +324,16 @@ public class EditProfileActivity extends BasicActivity
 
   @Override public void onUpdateOldVersion() {
 
+  }
+
+  @Override protected void onResume() {
+    super.onResume();
+    if (checkCallingOrSelfPermission(Constants.READ_PHONE_CONTACTS_PERMISSION)
+        != PackageManager.PERMISSION_GRANTED) {
+      cbPh.setChecked(false);
+    } else {
+      cbPh.setChecked(true);
+    }
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
