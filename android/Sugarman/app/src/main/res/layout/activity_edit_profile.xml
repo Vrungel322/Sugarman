@@ -179,6 +179,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="+38 095 671 27 16"
+            android:paddingEnd="15dp"
             android:layout_gravity="center"
             android:background="@android:color/transparent"
             android:inputType="phone"
