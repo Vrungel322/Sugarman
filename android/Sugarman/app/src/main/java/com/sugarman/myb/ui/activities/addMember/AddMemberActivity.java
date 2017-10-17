@@ -308,6 +308,12 @@ public class AddMemberActivity extends BaseActivity
         checkForUnique();
         networksToLoad++;
         mCheckPhoneClient.checkPhones(phToCheck);
+        runOnUiThread(new Runnable() {
+          @Override public void run() {
+            setFriends(allFriends);
+          }
+        });
+
       });
     } else {
       phFilter.setAlpha(0.5f);
@@ -965,7 +971,7 @@ public class AddMemberActivity extends BaseActivity
     //______________________________________________________________________________________________
     for (int i = 0; i < members.size(); i++) {
       for (int j = 0; j < mDistinktorList.size(); j++) {
-        if (mDistinktorList.get(j).getFbid().equals(members.get(i).getId())) {
+        if (mDistinktorList.get(j).getFbid()!=null) {
           facebookElements.add(members.get(i).getId());
           members.remove(i);
         }
@@ -973,7 +979,7 @@ public class AddMemberActivity extends BaseActivity
     }
     for (int i = 0; i < members.size(); i++) {
       for (int j = 0; j < mDistinktorList.size(); j++) {
-        if (mDistinktorList.get(j).getVkid().equals(members.get(i).getId())) {
+        if (mDistinktorList.get(j).getVkid()!=null) {
           vkElements.add(members.get(i));
           members.remove(i);
         }
