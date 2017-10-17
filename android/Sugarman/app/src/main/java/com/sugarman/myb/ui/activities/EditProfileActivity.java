@@ -235,9 +235,16 @@ public class EditProfileActivity extends BasicActivity
   }
 
   @OnClick(R.id.iv_next) public void ivNextClicked() {
-    //SharedPreferenceHelper.saveUserName("Test name");
+    if (etPhone.getError() != null) {
+      Intent intent = new Intent(EditProfileActivity.this, ApproveOtpActivity.class);
+      intent.putExtra("otp", otp);
+      intent.putExtra("showSettings", false);
+      intent.putExtra("phone", etPhone.getText().toString());
+      startActivity(intent);
+    }{
+      editProfile();
+    }
 
-    editProfile();
   }
 
   private void editProfile() {
