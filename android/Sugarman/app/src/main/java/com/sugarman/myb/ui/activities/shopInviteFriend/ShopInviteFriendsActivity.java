@@ -441,7 +441,6 @@ public class ShopInviteFriendsActivity extends BasicActivity
   }
 
   @Override public void addPhoneContact(List<FacebookFriend> facebookFriends) {
-    Timber.e(String.valueOf(facebookFriends.size()));
     membersAdapter.addPhoneContacts(facebookFriends);
   }
 
@@ -459,7 +458,6 @@ public class ShopInviteFriendsActivity extends BasicActivity
   }
 
   @Override public void addVkFriends(List<FacebookFriend> friends) {
-    Timber.e("addVkFriends");
     membersAdapter.addVkFriends(friends);
   }
 
@@ -469,7 +467,6 @@ public class ShopInviteFriendsActivity extends BasicActivity
 
   @Override public void loadInviterImgUrls(List<String> imgUrls) {
     for (int i = 0; i < imgUrls.size(); i++) {
-      Timber.e(imgUrls.get(i));
       Picasso.with(this)
           .load(Uri.parse(imgUrls.get(i)))
           .fit()
