@@ -14,4 +14,10 @@ import java.util.List;
   void addMemberToServer(List<FacebookFriend> mFacebookFriends);
 
   void finishActivity();
+
+  void fillListByCachedData(List<FacebookFriend> facebookFriends);
+
+  void showProgress();
+
+  void hideProgress();
 }

@@ -116,5 +116,9 @@ public class DataManager {
         "_______________________________________________________________________________");
     Timber.e("Cached size " + mDbHelper.getAll(FacebookFriend.class).size());
   }
+
+  public Observable<List<FacebookFriend>> getCachedFriends(){
+    return Observable.just(mDbHelper.getAll(FacebookFriend.class));
+  }
 }
 

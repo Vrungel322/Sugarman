@@ -6,6 +6,7 @@ import com.sugarman.myb.App;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.base.BasicPresenter;
 import com.sugarman.myb.data.DataManager;
+import com.sugarman.myb.utils.ThreadSchedulers;
 import com.vk.sdk.api.VKApiConst;
 import com.vk.sdk.api.VKError;
 import com.vk.sdk.api.VKParameters;
@@ -14,6 +15,7 @@ import com.vk.sdk.api.VKResponse;
 import java.util.List;
 import javax.inject.Inject;
 import org.json.JSONObject;
+import rx.Subscription;
 
 /**
  * Created by nikita on 02.10.2017.
@@ -25,6 +27,21 @@ import org.json.JSONObject;
 
   @Override protected void inject() {
     App.getAppComponent().inject(this);
+  }
+
+  @Override protected void onFirstViewAttach() {
+    super.onFirstViewAttach();
+    fillListByCachedData();
+  }
+
+  private void fillListByCachedData() {
+    getViewState().showProgress();
+    Subscription subscription = mDataManager.getCachedFriends()
+        .compose(ThreadSchedulers.applySchedulers())
+        .subscribe(facebookFriends -> {
+          getViewState().fillListByCachedData(facebookFriends);
+          getViewState().hideProgress();
+        }); addToUnsubscription(subscription);
   }
 
   public void sendInvitationInVk(List<FacebookFriend> selectedFriends, String inviteMsg) {

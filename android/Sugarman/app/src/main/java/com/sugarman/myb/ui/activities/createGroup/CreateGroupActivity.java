@@ -847,7 +847,7 @@ public class CreateGroupActivity extends BaseActivity
 
   private void getFacebookFriends() {
     if (DeviceHelper.isNetworkConnected()) {
-      showProgressFragmentTemp();
+      //showProgressFragmentTemp();
       fbApiClient.searchFriends();
     } else {
       showNoInternetConnectionDialog();
@@ -1066,6 +1066,19 @@ public class CreateGroupActivity extends BaseActivity
   }
 
   @Override public void onApiCheckVkFailure(String message) {
+
+  }
+
+  @Override public void fillListByCachedData(List<FacebookFriend> facebookFriends) {
+    friendsAdapter.setValue(facebookFriends);
+  }
+
+  @Override public void showProgress() {
+    showProgressFragment();
+  }
+
+  @Override public void hideProgress() {
+    closeProgressFragment();
 
   }
 }

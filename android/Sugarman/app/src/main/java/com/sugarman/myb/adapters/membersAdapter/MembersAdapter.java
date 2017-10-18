@@ -178,6 +178,24 @@ public class MembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.ViewHold
     notifyDataSetChanged();
   }
 
+  public void setValuesClearList(List<FacebookFriend> values) {
+    mUnselected.clear();
+    mSelected.clear();
+    Timber.e("setFilteredValue");
+
+    for (FacebookFriend friend : values) {
+      if (friend.isSelected()) {
+        mSelected.add(friend);
+      } else {
+        mUnselected.add(friend);
+      }
+    }
+
+    Collections.sort(mSelected, FacebookFriend.BY_NAME_ASC);
+    Collections.sort(mUnselected, FacebookFriend.BY_NAME_ASC);
+    notifyDataSetChanged();
+  }
+
   public void addVkFriends(List<FacebookFriend> values){
     Collections.sort(values, FacebookFriend.BY_NAME_ASC);
     mUnselected.addAll(values);
