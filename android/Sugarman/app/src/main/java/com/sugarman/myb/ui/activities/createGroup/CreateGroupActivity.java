@@ -934,6 +934,9 @@ public class CreateGroupActivity extends BaseActivity
   }
 
   private void setFriends(List<FacebookFriend> friends) {
+    //Cache friends
+    mPresenter.cacheFriends(friends);
+
     friendsAdapter.setValue(friends);
 
     if (friends.isEmpty()) {

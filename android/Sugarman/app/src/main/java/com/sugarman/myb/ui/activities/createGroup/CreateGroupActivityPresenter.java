@@ -5,12 +5,14 @@ import com.arellomobile.mvp.InjectViewState;
 import com.sugarman.myb.App;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.base.BasicPresenter;
+import com.sugarman.myb.data.DataManager;
 import com.vk.sdk.api.VKApiConst;
 import com.vk.sdk.api.VKError;
 import com.vk.sdk.api.VKParameters;
 import com.vk.sdk.api.VKRequest;
 import com.vk.sdk.api.VKResponse;
 import java.util.List;
+import javax.inject.Inject;
 import org.json.JSONObject;
 
 /**
@@ -19,6 +21,8 @@ import org.json.JSONObject;
 
 @InjectViewState public class CreateGroupActivityPresenter
     extends BasicPresenter<ICreateGroupActivityView> {
+  @Inject DataManager mDataManager;
+
   @Override protected void inject() {
     App.getAppComponent().inject(this);
   }
@@ -43,5 +47,9 @@ import org.json.JSONObject;
         });
       }
     }
+  }
+
+  public void cacheFriends(List<FacebookFriend> friends) {
+    mDataManager.cacheFriends(friends);
   }
 }

@@ -31,6 +31,13 @@ public class DbHelper {
     realm.commitTransaction();
   }
 
+  public <T extends RealmObject> boolean isExists(Class<T> clazz, String field, String value) {
+    Realm realm = Realm.getInstance(mConfiguration);
+    RealmQuery<T> query = realm.where(clazz).equalTo(field, value);
+
+    return query.count() != 0;
+  }
+
   public <T extends RealmObject> List<T> getAll(Class<T> clazz) {
     List<T> list = new ArrayList<T>();
     Realm realm = Realm.getInstance(mConfiguration);
