@@ -1,7 +1,8 @@
-package com.sugarman.myb.api;
+package com.sugarman.myb.data;
 
 import android.content.ContentResolver;
 import com.sugarman.myb.R;
+import com.sugarman.myb.api.RestApi;
 import com.sugarman.myb.api.models.requests.PurchaseDataRequest;
 import com.sugarman.myb.api.models.requests.RefreshUserDataRequest;
 import com.sugarman.myb.api.models.responses.CountInvitesResponse;
@@ -10,6 +11,7 @@ import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.constants.Constants;
+import com.sugarman.myb.data.db.DbHelper;
 import com.sugarman.myb.data.local.PreferencesHelper;
 import com.sugarman.myb.utils.ContactsHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
@@ -28,13 +30,16 @@ import timber.log.Timber;
 public class DataManager {
 
   private RestApi mRestApi;
+  private DbHelper mDbHelper;
   private PreferencesHelper mPref;
   private ContentResolver mContentResolver;
 
-  public DataManager(RestApi restApi, PreferencesHelper pref, ContentResolver contentResolver) {
+  public DataManager(RestApi restApi, PreferencesHelper pref, ContentResolver contentResolver,
+      DbHelper dbHelper) {
     mRestApi = restApi;
     mPref = pref;
     mContentResolver = contentResolver;
+    mDbHelper = dbHelper;
   }
 
   public Observable<UsersResponse> refreshRxUserData(RefreshUserDataRequest request) {
@@ -85,16 +90,35 @@ public class DataManager {
   public Observable<List<ShopProductEntity>> fetchProducts(List<String> productName) {
     ArrayList<ShopProductEntity> entities = new ArrayList<>();
     entities.add(new ShopProductEntity("0", productName.get(0), "", "",
-            Arrays.asList(String.valueOf(R.drawable.cap1), String.valueOf(R.drawable.cap2),
-                String.valueOf(R.drawable.cap3))));
+        Arrays.asList(String.valueOf(R.drawable.cap1), String.valueOf(R.drawable.cap2),
+            String.valueOf(R.drawable.cap3))));
     entities.add(new ShopProductEntity("1", productName.get(1), "", "",
-            Arrays.asList(String.valueOf(R.drawable.belt1), String.valueOf(R.drawable.belt2),
-                String.valueOf(R.drawable.belt3))));
+        Arrays.asList(String.valueOf(R.drawable.belt1), String.valueOf(R.drawable.belt2),
+            String.valueOf(R.drawable.belt3))));
     entities.add(new ShopProductEntity("2", productName.get(2), "", "",
-            Arrays.asList(String.valueOf(R.drawable.com1), String.valueOf(R.drawable.com2),
-                String.valueOf(R.drawable.com3),String.valueOf(R.drawable.com4))));
+        Arrays.asList(String.valueOf(R.drawable.com1), String.valueOf(R.drawable.com2),
+            String.valueOf(R.drawable.com3), String.valueOf(R.drawable.com4))));
     return Observable.just(entities);
-        //return mRestApi.fetchProducts();
+    //return mRestApi.fetchProducts();
+  }
+
+  public void cacheFriends(List<FacebookFriend> friends) {
+    for (int i = 0; i < friends.size(); i++) {
+      if (!mDbHelper.isExists(FacebookFriend.class, "name", friends.get(i).getName())){
+        mDbHelper.save(friends.get(i));
+      }
+    }
+
+    for (int i = 0; i < mDbHelper.getAll(FacebookFriend.class).size(); i++) {
+      Timber.e("Cached item " + mDbHelper.getAll(FacebookFriend.class).get(i).getName() + " id : " + mDbHelper.getAll(FacebookFriend.class).get(i).getId());
+    }
+    Timber.e(
+        "_______________________________________________________________________________");
+    Timber.e("Cached size " + mDbHelper.getAll(FacebookFriend.class).size());
+  }
+
+  public Observable<List<FacebookFriend>> getCachedFriends(){
+    return Observable.just(mDbHelper.getAll(FacebookFriend.class));
   }
 }
 

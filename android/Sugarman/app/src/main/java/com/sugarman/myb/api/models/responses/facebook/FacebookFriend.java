@@ -4,9 +4,11 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 import com.google.gson.annotations.SerializedName;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 import java.util.Comparator;
 
-public class FacebookFriend implements Parcelable {
+public class FacebookFriend extends RealmObject implements Parcelable {
 
   public final static int CODE_INVITABLE = 1;
   public final static int CODE_NOT_INVITABLE = 0;
@@ -16,16 +18,28 @@ public class FacebookFriend implements Parcelable {
       return o1.name.compareTo(o2.name);
     }
   };
+  public static final Creator<FacebookFriend> CREATOR = new Creator<FacebookFriend>() {
+    @Override public FacebookFriend createFromParcel(Parcel in) {
+      return new FacebookFriend(in);
+    }
+
+    @Override public FacebookFriend[] newArray(int size) {
+      return new FacebookFriend[size];
+    }
+  };
+  //private String socialNetwork = new String("fb");
+  public String socialNetwork;
   String photoUrl;
   @SerializedName("id") private String id;
-  @SerializedName("name") private String name;
+  @PrimaryKey @SerializedName("name") private String name;
   @SerializedName("picture") private FacebookPicture picture;
-  //private String socialNetwork = new String("fb");
-   public String socialNetwork;
   private int isInvitable;
   private boolean isSelected;
   private boolean isAdded;
   private boolean isPending;
+
+  public FacebookFriend() {
+  }
 
   public FacebookFriend(String id, String name, String photoUrl, int isInvitable,
       String socialNetwork) {
@@ -62,16 +76,6 @@ public class FacebookFriend implements Parcelable {
     return 0;
   }
 
-  public static final Creator<FacebookFriend> CREATOR = new Creator<FacebookFriend>() {
-    @Override public FacebookFriend createFromParcel(Parcel in) {
-      return new FacebookFriend(in);
-    }
-
-    @Override public FacebookFriend[] newArray(int size) {
-      return new FacebookFriend[size];
-    }
-  };
-
   public String getPhotoUrl() {
     return photoUrl;
   }
@@ -96,10 +100,6 @@ public class FacebookFriend implements Parcelable {
     this.name = name;
   }
 
-  public void setPicture(FacebookPicture picture) {
-    this.picture = picture;
-  }
-
   public String getSocialNetwork() {
     return socialNetwork;
   }
@@ -116,10 +116,6 @@ public class FacebookFriend implements Parcelable {
     this.isInvitable = isInvitable;
   }
 
-  public void setSelected(boolean selected) {
-    isSelected = selected;
-  }
-
   public boolean isAdded() {
     return isAdded;
   }
@@ -128,26 +124,30 @@ public class FacebookFriend implements Parcelable {
     isAdded = added;
   }
 
-  public void setPending(boolean pending) {
-    isPending = pending;
-  }
-
   public String getPicture() {
     if (picture != null) return picture.getData().getUrl();
     return photoUrl;
   }
 
+  public void setPicture(FacebookPicture picture) {
+    this.picture = picture;
+  }
 
   public boolean isSelected() {
     return isSelected;
   }
 
-
+  public void setSelected(boolean selected) {
+    isSelected = selected;
+  }
 
   public boolean isPending() {
     return isPending;
   }
 
+  public void setPending(boolean pending) {
+    isPending = pending;
+  }
 
   @Override public boolean equals(Object o) {
     if (this == o) {

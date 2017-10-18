@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 apply plugin: 'me.tatarka.retrolambda'
+//realm
+apply plugin: 'realm-android'
 
 buildscript {
   repositories {

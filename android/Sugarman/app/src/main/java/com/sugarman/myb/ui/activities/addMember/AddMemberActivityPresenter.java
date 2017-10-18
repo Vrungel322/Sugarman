@@ -32,12 +32,25 @@ import rx.Subscription;
   @Override protected void onFirstViewAttach() {
     super.onFirstViewAttach();
     subscribeAddVkFriendsEvent();
+    fillListByCachedData();
+  }
+
+  private void fillListByCachedData() {
+    getViewState().showProgress();
+    Subscription subscription = mDataManager.getCachedFriends()
+        .compose(ThreadSchedulers.applySchedulers())
+        .subscribe(facebookFriends -> {
+          getViewState().fillListByCachedData(facebookFriends);
+          getViewState().hideProgress();
+        });
+    addToUnsubscription(subscription);
   }
 
   private void subscribeAddVkFriendsEvent() {
     Subscription subscription = mRxBus.filteredObservable(RxBusHelper.AddMemberVkEvent.class)
         .compose(ThreadSchedulers.applySchedulers())
-        .subscribe(addMemberVkEvent -> getViewState().addMemberToServer(addMemberVkEvent.mFacebookFriends));
+        .subscribe(addMemberVkEvent -> getViewState().addMemberToServer(
+            addMemberVkEvent.mFacebookFriends));
     addToUnsubscription(subscription);
   }
 

@@ -1041,6 +1041,19 @@ public class AddMemberActivity extends BaseActivity
     //______________________________________________________________________________________________
   }
 
+  @Override public void fillListByCachedData(List<FacebookFriend> facebookFriends) {
+    membersAdapter.setValuesClearList(facebookFriends);
+  }
+
+  @Override public void showProgress() {
+    showProgressFragment();
+  }
+
+  @Override public void hideProgress() {
+    closeProgressFragment();
+
+  }
+
   private void getFacebookFriends() {
     if (DeviceHelper.isNetworkConnected()) {
       showProgressFragment();
