@@ -65,7 +65,6 @@ import com.sugarman.myb.ui.activities.EditProfileActivity;
 import com.sugarman.myb.ui.activities.base.BaseActivity;
 import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
-import com.sugarman.myb.ui.dialogs.sendVkInvitation.SendVkInvitationDialog;
 import com.sugarman.myb.ui.views.MaskImage;
 import com.sugarman.myb.utils.AnalyticsHelper;
 import com.sugarman.myb.utils.BitmapUtils;
@@ -726,8 +725,9 @@ public class CreateGroupActivity extends BaseActivity
       }
     }
     if (!intiteByVk.isEmpty()) {
-      SendVkInvitationDialog.newInstance(intiteByVk)
-          .show(getFragmentManager(), "SendVkInvitationDialog");
+      finish();
+      //SendVkInvitationDialog.newInstance(intiteByVk)
+      //    .show(getFragmentManager(), "SendVkInvitationDialog");
     } else {
       finish();
     }
