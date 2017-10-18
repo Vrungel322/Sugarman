@@ -965,7 +965,7 @@ public class AddMemberActivity extends BaseActivity
     //______________________________________________________________________________________________
     for (int i = 0; i < members.size(); i++) {
       for (int j = 0; j < mDistinktorList.size(); j++) {
-        if (mDistinktorList.get(j).getFbid().equals(members.get(i).getId())) {
+        if (!members.isEmpty() && mDistinktorList.get(j).getFbid().equals(members.get(i).getId())) {
           facebookElements.add(members.get(i).getId());
           members.remove(i);
         }
@@ -973,25 +973,60 @@ public class AddMemberActivity extends BaseActivity
     }
     for (int i = 0; i < members.size(); i++) {
       for (int j = 0; j < mDistinktorList.size(); j++) {
-        if (mDistinktorList.get(j).getVkid().equals(members.get(i).getId())) {
+        if (!members.isEmpty() && mDistinktorList.get(j).getVkid().equals(members.get(i).getId())) {
           vkElements.add(members.get(i));
           members.remove(i);
         }
       }
     }
     if (!vkElements.isEmpty()) {
+      Timber.e("Vk Unique Send");
       mPresenter.sendInvitationInVk(vkElements, getString(R.string.invite_message));
     }
     if (!facebookElements.isEmpty()) {
+      Timber.e("Fb Unique Send");
+      GameRequestDialog tempDialog = new GameRequestDialog(this);
+      tempDialog.registerCallback(fbCallbackManager,
+          new FacebookCallback<GameRequestDialog.Result>() {
+            @Override public void onSuccess(GameRequestDialog.Result result) {
+              finish();
+            }
+
+            @Override public void onCancel() {
+
+            }
+
+            @Override public void onError(FacebookException error) {
+
+            }
+          });
       GameRequestContent content =
           new GameRequestContent.Builder().setMessage(getString(R.string.play_with_me))
               .setRecipients(facebookElements)
               .build();
-      fbInviteDialog.show(content);
+      tempDialog.show(content);
     }
     if (!members.isEmpty()) {
+      Timber.e("Fb Unique Send , members "+members.size());
       mEditGroupClient.editGroup(trackingId, members, etGroupName.getText().toString(),
           selectedFile);
+      mAddMembersClient.registerListener(new ApiAddMembersListener() {
+        @Override public void onApiAddMembersSuccess() {
+          finish();
+        }
+
+        @Override public void onApiAddMembersFailure(String message) {
+
+        }
+
+        @Override public void onApiUnauthorized() {
+
+        }
+
+        @Override public void onUpdateOldVersion() {
+
+        }
+      });
       mAddMembersClient.addMembers(trackingId, members);
     }
     //______________________________________________________________________________________________
@@ -1049,6 +1084,10 @@ public class AddMemberActivity extends BaseActivity
   @Override public void addMemberToServer(List<FacebookFriend> mFacebookFriends) {
     Timber.e("addMemberToServer RxBus" + mFacebookFriends.get(0).getSocialNetwork());
     addMembersVk(mFacebookFriends);
+  }
+
+  @Override public void finishActivity() {
+    finish();
   }
 
   private void addMembersVk(List<FacebookFriend> members) {

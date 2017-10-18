@@ -12,4 +12,6 @@ import java.util.List;
 @StateStrategyType(AddToEndSingleStrategy.class) public interface IAddMemberActivityView
     extends MvpView {
   void addMemberToServer(List<FacebookFriend> mFacebookFriends);
+
+  void finishActivity();
 }
