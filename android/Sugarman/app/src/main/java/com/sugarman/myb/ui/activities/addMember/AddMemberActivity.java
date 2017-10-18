@@ -967,78 +967,7 @@ public class AddMemberActivity extends BaseActivity
     List<FacebookFriend> vkElements = new ArrayList<>();
     showProgressFragment();
     //mInviteByPh.clear();
-
-    //chech if some of members are present in mDistinktorList, if yes -> send him msg in social nenwork , else by sms
-    //______________________________________________________________________________________________
-
-    for (int i = 0; i < members.size(); i++) {
-      for (int j = 0; j < mDistinktorList.size(); j++) {
-        if (!members.isEmpty() && mDistinktorList.get(j).getFbid().equals(members.get(i).getId())) {
-          facebookElements.add(members.get(i).getId());
-          members.remove(i);
-        }
-      }
-    }
-    for (int i = 0; i < members.size(); i++) {
-      Timber.e("Members size " + members.size());
-      for (int j = 0; j < mDistinktorList.size(); j++) {
-        if (!members.isEmpty() && mDistinktorList.get(j).getVkid().equals(members.get(i).getId())) {
-          vkElements.add(members.get(i));
-          members.remove(i);
-        }
-      }
-    }
-    if (!vkElements.isEmpty()) {
-      Timber.e("Vk Unique Send");
-      mPresenter.sendInvitationInVk(vkElements, getString(R.string.invite_message));
-    }
-    if (!facebookElements.isEmpty()) {
-      Timber.e("Fb Unique Send");
-      GameRequestDialog tempDialog = new GameRequestDialog(this);
-      tempDialog.registerCallback(fbCallbackManager,
-          new FacebookCallback<GameRequestDialog.Result>() {
-            @Override public void onSuccess(GameRequestDialog.Result result) {
-              finish();
-            }
-
-            @Override public void onCancel() {
-
-            }
-
-            @Override public void onError(FacebookException error) {
-
-            }
-          });
-      GameRequestContent content =
-          new GameRequestContent.Builder().setMessage(getString(R.string.play_with_me))
-              .setRecipients(facebookElements)
-              .build();
-      tempDialog.show(content);
-    }
-    if (!members.isEmpty()) {
-      Timber.e("Fb Unique Send , members "+members.size());
-      mEditGroupClient.editGroup(trackingId, members, etGroupName.getText().toString(),
-          selectedFile);
-      mAddMembersClient.registerListener(new ApiAddMembersListener() {
-        @Override public void onApiAddMembersSuccess() {
-          finish();
-        }
-
-        @Override public void onApiAddMembersFailure(String message) {
-
-        }
-
-        @Override public void onApiUnauthorized() {
-
-        }
-
-        @Override public void onUpdateOldVersion() {
-
-        }
-      });
       mAddMembersClient.addMembers(trackingId, members);
-    }
-    //______________________________________________________________________________________________
   }
 
   @Override public void fillListByCachedData(List<FacebookFriend> facebookFriends) {
