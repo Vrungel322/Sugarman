@@ -348,13 +348,17 @@ public class AddMemberActivity extends BaseActivity
         networksLoaded++;
         mCheckVkClient.checkVks(vkToCheck);
 
-        setFriends(allFriends);
+        //setFriends(allFriends);
+        membersAdapter.notifyDataSetChanged();
+
         checkForUnique();
       }
 
       @Override public void onError(VKError error) {
         super.onError(error);
-        setFriends(allFriends);
+        //setFriends(allFriends);
+        membersAdapter.notifyDataSetChanged();
+
         //        Log.e("VK", error.errorMessage);
       }
     });
@@ -544,7 +548,10 @@ public class AddMemberActivity extends BaseActivity
 
   private void checkNetworksLoaded() {
     Timber.e(networksLoaded + " out of " + networksToLoad);
-    if (networksLoaded == networksToLoad) closeProgressFragment();
+    if (networksLoaded == networksToLoad) {
+      closeProgressFragment();
+      setFriends(allFriends);
+    }
   }
 
   @SuppressLint("NewApi") // checking version inside
@@ -783,8 +790,10 @@ public class AddMemberActivity extends BaseActivity
     networksLoaded++;
 
     Timber.e("onGetFacebookFriendsSuccess");
-    setFriends(friends);
-    setFriends(invitable);
+    //setFriends(friends);
+    //setFriends(invitable);
+    membersAdapter.notifyDataSetChanged();
+
     checkNetworksLoaded();
   }
 
@@ -793,7 +802,9 @@ public class AddMemberActivity extends BaseActivity
     this.invitable.clear();
     Timber.e("onGetFacebookFriendsFailure");
 
-    setFriends(allFriends);
+    //setFriends(allFriends);
+    membersAdapter.notifyDataSetChanged();
+
     closeProgressFragment();
 
     if (DeviceHelper.isNetworkConnected()) {
@@ -1007,7 +1018,7 @@ public class AddMemberActivity extends BaseActivity
       tempDialog.show(content);
     }
     if (!members.isEmpty()) {
-      Timber.e("Fb Unique Send , members "+members.size());
+      Timber.e("Fb Unique Send , members " + members.size());
       mEditGroupClient.editGroup(trackingId, members, etGroupName.getText().toString(),
           selectedFile);
       mAddMembersClient.registerListener(new ApiAddMembersListener() {
@@ -1042,7 +1053,6 @@ public class AddMemberActivity extends BaseActivity
 
   @Override public void hideProgress() {
     closeProgressFragment();
-
   }
 
   private void getFacebookFriends() {
