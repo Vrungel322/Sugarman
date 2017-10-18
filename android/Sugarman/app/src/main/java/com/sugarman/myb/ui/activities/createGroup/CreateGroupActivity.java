@@ -475,8 +475,12 @@ public class CreateGroupActivity extends BaseActivity
   }
 
   private void checkNetworksLoaded() {
-    Timber.e(networksLoaded + " out of " + networksToLoad);
-    if (networksLoaded == networksToLoad) closeProgressFragment();
+    if (networksLoaded == networksToLoad) {
+      Timber.e(networksLoaded + " out of " + networksToLoad + "allFriends side is "+ allFriends.size());
+      closeProgressFragment();
+      //Cache friends
+      mPresenter.cacheFriends(allFriends);
+    }
   }
 
   @Override protected void onStart() {
@@ -904,7 +908,7 @@ public class CreateGroupActivity extends BaseActivity
     //______________________________________________________________________________________________
     for (int i = 0; i < members.size(); i++) {
       for (int j = 0; j < mDistinktorList.size(); j++) {
-        if (!members.isEmpty() &&mDistinktorList.get(j).getFbid().equals(members.get(i).getId())) {
+        if (!members.isEmpty() && mDistinktorList.get(j).getFbid().equals(members.get(i).getId())) {
           facebookElements.add(members.get(i).getId());
           members.remove(i);
         }
@@ -912,7 +916,7 @@ public class CreateGroupActivity extends BaseActivity
     }
     for (int i = 0; i < members.size(); i++) {
       for (int j = 0; j < mDistinktorList.size(); j++) {
-        if (!members.isEmpty() &&mDistinktorList.get(j).getVkid().equals(members.get(i).getId())) {
+        if (!members.isEmpty() && mDistinktorList.get(j).getVkid().equals(members.get(i).getId())) {
           vkElements.add(members.get(i));
           members.remove(i);
         }
@@ -934,9 +938,6 @@ public class CreateGroupActivity extends BaseActivity
   }
 
   private void setFriends(List<FacebookFriend> friends) {
-    //Cache friends
-    mPresenter.cacheFriends(friends);
-
     friendsAdapter.setValue(friends);
 
     if (friends.isEmpty()) {
@@ -1003,7 +1004,6 @@ public class CreateGroupActivity extends BaseActivity
   @Override public void onApiCheckPhoneSuccess(List<Phones> phones) {
     mDistinktorList = phones;
 
-
     Timber.e("Check phones ");
 
     Timber.e("SET INVITABLE 1 " + phones.size());
@@ -1022,10 +1022,9 @@ public class CreateGroupActivity extends BaseActivity
       }
     }
 
-    runOnUiThread(new Runnable() {
-      @Override public void run() {
-        setFriends(allFriends);
-      }
+    runOnUiThread(() -> {
+      //setFriends(allFriends);
+      friendsAdapter.notifyItemRangeChanged(0,allFriends.size());
     });
     networksLoaded++;
     Timber.e("Check phones " + networksLoaded);
@@ -1079,6 +1078,5 @@ public class CreateGroupActivity extends BaseActivity
 
   @Override public void hideProgress() {
     closeProgressFragment();
-
   }
 }
