@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import com.arellomobile.mvp.MvpPresenter;
 import com.arellomobile.mvp.MvpView;
-import com.sugarman.myb.api.DataManager;
+import com.sugarman.myb.data.DataManager;
 import com.sugarman.myb.utils.RxBus;
 import javax.inject.Inject;
 import rx.Subscription;

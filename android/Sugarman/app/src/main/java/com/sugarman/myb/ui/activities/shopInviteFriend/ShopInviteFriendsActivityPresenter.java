@@ -3,7 +3,7 @@ package com.sugarman.myb.ui.activities.shopInviteFriend;
 import android.util.Log;
 import com.arellomobile.mvp.InjectViewState;
 import com.sugarman.myb.App;
-import com.sugarman.myb.api.DataManager;
+import com.sugarman.myb.data.DataManager;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.base.BasicPresenter;
 import com.sugarman.myb.constants.Constants;

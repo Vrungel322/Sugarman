@@ -1,7 +1,8 @@
-package com.sugarman.myb.api;
+package com.sugarman.myb.data;
 
 import android.content.ContentResolver;
 import com.sugarman.myb.R;
+import com.sugarman.myb.api.RestApi;
 import com.sugarman.myb.api.models.requests.PurchaseDataRequest;
 import com.sugarman.myb.api.models.requests.RefreshUserDataRequest;
 import com.sugarman.myb.api.models.responses.CountInvitesResponse;
@@ -10,6 +11,7 @@ import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.constants.Constants;
+import com.sugarman.myb.data.db.DbHelper;
 import com.sugarman.myb.data.local.PreferencesHelper;
 import com.sugarman.myb.utils.ContactsHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
@@ -28,15 +30,16 @@ import timber.log.Timber;
 public class DataManager {
 
   private RestApi mRestApi;
+  private DbHelper mDbHelper;
   private PreferencesHelper mPref;
   private ContentResolver mContentResolver;
 
-  public DataManager(RestApi restApi, PreferencesHelper pref, ContentResolver contentResolver) {
+  public DataManager(RestApi restApi, PreferencesHelper pref, ContentResolver contentResolver,DbHelper dbHelper) {
     mRestApi = restApi;
     mPref = pref;
     mContentResolver = contentResolver;
+    mDbHelper = dbHelper;
   }
-
   public Observable<UsersResponse> refreshRxUserData(RefreshUserDataRequest request) {
     return mRestApi.refreshRxUserData(request);
   }
