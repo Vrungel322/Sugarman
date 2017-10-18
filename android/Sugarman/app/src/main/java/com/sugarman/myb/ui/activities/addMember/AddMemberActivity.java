@@ -1044,6 +1044,7 @@ public class AddMemberActivity extends BaseActivity
   }
 
   @Override public void fillListByCachedData(List<FacebookFriend> facebookFriends) {
+    Timber.e("SizeOf list AddM "+ facebookFriends.size());
     membersAdapter.setValuesClearList(facebookFriends);
   }
 
@@ -1076,7 +1077,7 @@ public class AddMemberActivity extends BaseActivity
   }
 
   private void setFriends(List<FacebookFriend> friends) {
-    membersAdapter.setValue(friends);
+    membersAdapter.setValuesClearList(friends);
 
     if (friends.isEmpty()) {
       rcvMembers.setVisibility(View.GONE);
