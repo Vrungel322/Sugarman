@@ -308,13 +308,6 @@ public class AddMemberActivity extends BaseActivity
         checkForUnique();
         networksToLoad++;
         mCheckPhoneClient.checkPhones(phToCheck);
-        runOnUiThread(new Runnable() {
-          @Override public void run() {
-            if(networksToLoad==1)
-              setFriends(allFriends);
-          }
-        });
-
       });
     } else {
       phFilter.setAlpha(0.5f);
@@ -355,13 +348,17 @@ public class AddMemberActivity extends BaseActivity
         networksLoaded++;
         mCheckVkClient.checkVks(vkToCheck);
 
-        setFriends(allFriends);
+        //setFriends(allFriends);
+        membersAdapter.notifyDataSetChanged();
+
         checkForUnique();
       }
 
       @Override public void onError(VKError error) {
         super.onError(error);
-        setFriends(allFriends);
+        //setFriends(allFriends);
+        membersAdapter.notifyDataSetChanged();
+
         //        Log.e("VK", error.errorMessage);
       }
     });
@@ -444,12 +441,9 @@ public class AddMemberActivity extends BaseActivity
     }
   }
 
-
-
   private void setFilteredFriends(List<FacebookFriend> filtered) {
     membersAdapter.setFilteredValue(filtered);
   }
-
 
   @OnClick(R.id.vk_filter) public void showVkFriends() {
     //addMembersFromPreviousAdapter();
@@ -542,9 +536,6 @@ public class AddMemberActivity extends BaseActivity
     mAddMembersClient.unregisterListener();
     mCheckPhoneClient.unregisterListener();
     mCheckVkClient.unregisterListener();
-
-    mCheckPhoneClient = null;
-    mCheckVkClient = null;
   }
 
   @Override protected void onResume() {
@@ -557,7 +548,10 @@ public class AddMemberActivity extends BaseActivity
 
   private void checkNetworksLoaded() {
     Timber.e(networksLoaded + " out of " + networksToLoad);
-    if (networksLoaded == networksToLoad) closeProgressFragment();
+    if (networksLoaded == networksToLoad) {
+      closeProgressFragment();
+      setFriends(allFriends);
+    }
   }
 
   @SuppressLint("NewApi") // checking version inside
@@ -796,8 +790,10 @@ public class AddMemberActivity extends BaseActivity
     networksLoaded++;
 
     Timber.e("onGetFacebookFriendsSuccess");
-    setFriends(friends);
-    setFriends(invitable);
+    //setFriends(friends);
+    //setFriends(invitable);
+    membersAdapter.notifyDataSetChanged();
+
     checkNetworksLoaded();
   }
 
@@ -806,7 +802,9 @@ public class AddMemberActivity extends BaseActivity
     this.invitable.clear();
     Timber.e("onGetFacebookFriendsFailure");
 
-    setFriends(allFriends);
+    //setFriends(allFriends);
+    membersAdapter.notifyDataSetChanged();
+
     closeProgressFragment();
 
     if (DeviceHelper.isNetworkConnected()) {
@@ -973,10 +971,80 @@ public class AddMemberActivity extends BaseActivity
     List<FacebookFriend> vkElements = new ArrayList<>();
     showProgressFragment();
     //mInviteByPh.clear();
+
+    //chech if some of members are present in mDistinktorList, if yes -> send him msg in social nenwork , else by sms
+    //______________________________________________________________________________________________
+    for (int i = 0; i < members.size(); i++) {
+      for (int j = 0; j < mDistinktorList.size(); j++) {
+        if (!members.isEmpty() && mDistinktorList.get(j).getFbid().equals(members.get(i).getId())) {
+          facebookElements.add(members.get(i).getId());
+          members.remove(i);
+        }
+      }
+    }
+    for (int i = 0; i < members.size(); i++) {
+      for (int j = 0; j < mDistinktorList.size(); j++) {
+        if (!members.isEmpty() && mDistinktorList.get(j).getVkid().equals(members.get(i).getId())) {
+          vkElements.add(members.get(i));
+          members.remove(i);
+        }
+      }
+    }
+    if (!vkElements.isEmpty()) {
+      Timber.e("Vk Unique Send");
+      mPresenter.sendInvitationInVk(vkElements, getString(R.string.invite_message));
+    }
+    if (!facebookElements.isEmpty()) {
+      Timber.e("Fb Unique Send");
+      GameRequestDialog tempDialog = new GameRequestDialog(this);
+      tempDialog.registerCallback(fbCallbackManager,
+          new FacebookCallback<GameRequestDialog.Result>() {
+            @Override public void onSuccess(GameRequestDialog.Result result) {
+              finish();
+            }
+
+            @Override public void onCancel() {
+
+            }
+
+            @Override public void onError(FacebookException error) {
+
+            }
+          });
+      GameRequestContent content =
+          new GameRequestContent.Builder().setMessage(getString(R.string.play_with_me))
+              .setRecipients(facebookElements)
+              .build();
+      tempDialog.show(content);
+    }
+    if (!members.isEmpty()) {
+      Timber.e("Fb Unique Send , members " + members.size());
+      mEditGroupClient.editGroup(trackingId, members, etGroupName.getText().toString(),
+          selectedFile);
+      mAddMembersClient.registerListener(new ApiAddMembersListener() {
+        @Override public void onApiAddMembersSuccess() {
+          finish();
+        }
+
+        @Override public void onApiAddMembersFailure(String message) {
+
+        }
+
+        @Override public void onApiUnauthorized() {
+
+        }
+
+        @Override public void onUpdateOldVersion() {
+
+        }
+      });
       mAddMembersClient.addMembers(trackingId, members);
+    }
+    //______________________________________________________________________________________________
   }
 
   @Override public void fillListByCachedData(List<FacebookFriend> facebookFriends) {
+    Timber.e("SizeOf list AddM "+ facebookFriends.size());
     membersAdapter.setValuesClearList(facebookFriends);
   }
 
@@ -986,7 +1054,6 @@ public class AddMemberActivity extends BaseActivity
 
   @Override public void hideProgress() {
     closeProgressFragment();
-
   }
 
   private void getFacebookFriends() {
@@ -1010,7 +1077,7 @@ public class AddMemberActivity extends BaseActivity
   }
 
   private void setFriends(List<FacebookFriend> friends) {
-    membersAdapter.setValue(friends);
+    membersAdapter.setValuesClearList(friends);
 
     if (friends.isEmpty()) {
       rcvMembers.setVisibility(View.GONE);
