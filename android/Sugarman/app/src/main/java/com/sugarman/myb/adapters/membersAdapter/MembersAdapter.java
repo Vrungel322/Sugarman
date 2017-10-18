@@ -175,7 +175,7 @@ public class MembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.ViewHold
 
     Collections.sort(mSelected, FacebookFriend.BY_NAME_ASC);
     Collections.sort(mUnselected, FacebookFriend.BY_NAME_ASC);
-    notifyDataSetChanged();
+    notifyItemRangeChanged(0, values.size());
   }
 
   public void setValuesClearList(List<FacebookFriend> values) {

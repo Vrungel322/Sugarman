@@ -73,7 +73,8 @@ public interface Api {
       @Part("members[][phonename]") List<RequestBody> phoneNames,
       @Part("members[][picture_url]") List<RequestBody> pictures,
       @Part("members[][picture_url_vk]") List<RequestBody> picturesVK,
-      @Part("members[][picture_url_phone]") List<RequestBody> picturesPhone);
+      @Part("members[][picture_url_phone]") List<RequestBody> picturesPhone,
+      @Part("vk_token") RequestBody vkToken);
 
   @POST("/v2/resend_message") Call<ResendMessageResponse> resendMessage(@Body
       ResendMessageRequest request);

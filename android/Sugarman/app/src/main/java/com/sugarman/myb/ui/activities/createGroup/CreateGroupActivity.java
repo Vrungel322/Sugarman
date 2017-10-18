@@ -65,7 +65,6 @@ import com.sugarman.myb.ui.activities.EditProfileActivity;
 import com.sugarman.myb.ui.activities.base.BaseActivity;
 import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
-import com.sugarman.myb.ui.dialogs.sendVkInvitation.SendVkInvitationDialog;
 import com.sugarman.myb.ui.views.MaskImage;
 import com.sugarman.myb.utils.AnalyticsHelper;
 import com.sugarman.myb.utils.BitmapUtils;
@@ -475,8 +474,12 @@ public class CreateGroupActivity extends BaseActivity
   }
 
   private void checkNetworksLoaded() {
-    Timber.e(networksLoaded + " out of " + networksToLoad);
-    if (networksLoaded == networksToLoad) closeProgressFragment();
+    if (networksLoaded == networksToLoad) {
+      Timber.e(networksLoaded + " out of " + networksToLoad + "allFriends side is "+ allFriends.size());
+      closeProgressFragment();
+      //Cache friends
+      mPresenter.cacheFriends(allFriends);
+    }
   }
 
   @Override protected void onStart() {
@@ -722,8 +725,9 @@ public class CreateGroupActivity extends BaseActivity
       }
     }
     if (!intiteByVk.isEmpty()) {
-      SendVkInvitationDialog.newInstance(intiteByVk)
-          .show(getFragmentManager(), "SendVkInvitationDialog");
+      finish();
+      //SendVkInvitationDialog.newInstance(intiteByVk)
+      //    .show(getFragmentManager(), "SendVkInvitationDialog");
     } else {
       finish();
     }
@@ -905,9 +909,6 @@ public class CreateGroupActivity extends BaseActivity
   }
 
   private void setFriends(List<FacebookFriend> friends) {
-    //Cache friends
-    mPresenter.cacheFriends(friends);
-
     friendsAdapter.setValue(friends);
 
     if (friends.isEmpty()) {
@@ -974,7 +975,6 @@ public class CreateGroupActivity extends BaseActivity
   @Override public void onApiCheckPhoneSuccess(List<Phones> phones) {
     mDistinktorList = phones;
 
-
     Timber.e("Check phones ");
 
     Timber.e("SET INVITABLE 1 " + phones.size());
@@ -993,10 +993,9 @@ public class CreateGroupActivity extends BaseActivity
       }
     }
 
-    runOnUiThread(new Runnable() {
-      @Override public void run() {
-        setFriends(allFriends);
-      }
+    runOnUiThread(() -> {
+      //setFriends(allFriends);
+      friendsAdapter.notifyItemRangeChanged(0,allFriends.size());
     });
     networksLoaded++;
     Timber.e("Check phones " + networksLoaded);
@@ -1050,6 +1049,5 @@ public class CreateGroupActivity extends BaseActivity
 
   @Override public void hideProgress() {
     closeProgressFragment();
-
   }
 }

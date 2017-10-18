@@ -19,7 +19,6 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import timber.log.Timber;
 
 public class FriendsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     implements ItemUsersActionListener {
@@ -82,7 +81,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
       String name = friend.getName();
       friendsHolder.tvUserName.setText(name);
 
-      Timber.e("Friend " + friend.getName() +" is invitable: " + friend.getIsInvitable());
+      //Timber.e("Friend " + friend.getName() +" is invitable: " + friend.getIsInvitable());
       if (friend.getIsInvitable() == FacebookFriend.CODE_INVITABLE) {
         friendsHolder.ivIndicatorInvitable.setVisibility(View.INVISIBLE);
       } else {

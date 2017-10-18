@@ -132,9 +132,14 @@ public class CreateGroupClient extends BaseApiClient {
       }
     }
 
+    String vkTokenStr = SharedPreferenceHelper.getVkToken();
+    RequestBody vkToken =
+        RequestBody.create(MediaType.parse(Constants.IMAGE_JPEG_TYPE), vkTokenStr);
+
+
     Call<CreateGroupResponse> call = App.getApiInstance()
         .createGroup(filePart, name, fbToken, ids, vkids, phoneNumbers, names, vkNames, phoneNames,
-            pictures, vkpictures, phonePictures);
+            pictures, vkpictures, phonePictures, vkToken);
     call.enqueue(mCallback);
   }
 }

@@ -444,9 +444,12 @@ public class AddMemberActivity extends BaseActivity
     }
   }
 
+
+
   private void setFilteredFriends(List<FacebookFriend> filtered) {
     membersAdapter.setFilteredValue(filtered);
   }
+
 
   @OnClick(R.id.vk_filter) public void showVkFriends() {
     //addMembersFromPreviousAdapter();
@@ -539,6 +542,9 @@ public class AddMemberActivity extends BaseActivity
     mAddMembersClient.unregisterListener();
     mCheckPhoneClient.unregisterListener();
     mCheckVkClient.unregisterListener();
+
+    mCheckPhoneClient = null;
+    mCheckVkClient = null;
   }
 
   @Override protected void onResume() {
