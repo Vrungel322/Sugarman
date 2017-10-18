@@ -310,7 +310,8 @@ public class AddMemberActivity extends BaseActivity
         mCheckPhoneClient.checkPhones(phToCheck);
         runOnUiThread(new Runnable() {
           @Override public void run() {
-            setFriends(allFriends);
+            if(networksToLoad==1)
+              setFriends(allFriends);
           }
         });
 
@@ -969,15 +970,21 @@ public class AddMemberActivity extends BaseActivity
 
     //chech if some of members are present in mDistinktorList, if yes -> send him msg in social nenwork , else by sms
     //______________________________________________________________________________________________
+
     for (int i = 0; i < members.size(); i++) {
-      for (int j = 0; j < mDistinktorList.size(); j++) {
-        if (mDistinktorList.get(j).getFbid()!=null) {
-          facebookElements.add(members.get(i).getId());
-          members.remove(i);
+      Timber.e("Members size " + members.size());
+      if(mDistinktorList.size()>0) {
+        for (int j = 0; j < mDistinktorList.size(); j++) {
+          if (mDistinktorList.get(j).getFbid() != null) {
+            Timber.e("Size" + mDistinktorList.size());
+            facebookElements.add(mDistinktorList.get(j).getFbid());
+            members.remove(i);
+          }
         }
       }
     }
     for (int i = 0; i < members.size(); i++) {
+      Timber.e("Members size " + members.size());
       for (int j = 0; j < mDistinktorList.size(); j++) {
         if (mDistinktorList.get(j).getVkid()!=null) {
           vkElements.add(members.get(i));

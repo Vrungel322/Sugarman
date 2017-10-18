@@ -904,6 +904,7 @@ public class CreateGroupActivity extends BaseActivity
     //______________________________________________________________________________________________
     for (int i = 0; i < members.size(); i++) {
       for (int j = 0; j < mDistinktorList.size(); j++) {
+        if(mDistinktorList.get(j).getFbid()!=null)
         if (mDistinktorList.get(j).getFbid().equals(members.get(i).getId())) {
           facebookElements.add(members.get(i).getId());
           members.remove(i);
@@ -912,6 +913,7 @@ public class CreateGroupActivity extends BaseActivity
     }
     for (int i = 0; i < members.size(); i++) {
       for (int j = 0; j < mDistinktorList.size(); j++) {
+        if(mDistinktorList.get(j).getVkid()!=null)
         if (mDistinktorList.get(j).getVkid().equals(members.get(i).getId())) {
           vkElements.add(members.get(i));
           members.remove(i);
