@@ -52,6 +52,7 @@ import rx.Subscription;
             super.onComplete(response);
             JSONObject resp = response.json;
             Log.e("VK response", response.responseString);
+            getViewState().finishActivity();
           }
 
           @Override public void onError(VKError error) {
