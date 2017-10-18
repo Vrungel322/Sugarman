@@ -475,7 +475,8 @@ public class CreateGroupActivity extends BaseActivity
 
   private void checkNetworksLoaded() {
     if (networksLoaded == networksToLoad) {
-      Timber.e(networksLoaded + " out of " + networksToLoad + "allFriends side is "+ allFriends.size());
+      Timber.e(
+          networksLoaded + " out of " + networksToLoad + "allFriends side is " + allFriends.size());
       closeProgressFragment();
       //Cache friends
       mPresenter.cacheFriends(allFriends);
@@ -908,7 +909,9 @@ public class CreateGroupActivity extends BaseActivity
     //______________________________________________________________________________________________
     for (int i = 0; i < members.size(); i++) {
       for (int j = 0; j < mDistinktorList.size(); j++) {
-        if (!members.isEmpty() && mDistinktorList.get(j).getFbid().equals(members.get(i).getId())) {
+        if (!members.isEmpty() && mDistinktorList.get(j).getFbid() != null && mDistinktorList.get(j)
+            .getFbid()
+            .equals(members.get(i).getId())) {
           facebookElements.add(members.get(i).getId());
           members.remove(i);
         }
@@ -916,7 +919,9 @@ public class CreateGroupActivity extends BaseActivity
     }
     for (int i = 0; i < members.size(); i++) {
       for (int j = 0; j < mDistinktorList.size(); j++) {
-        if (!members.isEmpty() && mDistinktorList.get(j).getVkid().equals(members.get(i).getId())) {
+        if (!members.isEmpty() && mDistinktorList.get(j).getVkid() != null && mDistinktorList.get(j)
+            .getVkid()
+            .equals(members.get(i).getId())) {
           vkElements.add(members.get(i));
           members.remove(i);
         }
@@ -1004,7 +1009,7 @@ public class CreateGroupActivity extends BaseActivity
   @Override public void onApiCheckPhoneSuccess(List<Phones> phones) {
     mDistinktorList = phones;
 
-    Timber.e("Check phones ");
+    Timber.e("Check phones " + mDistinktorList.size());
 
     Timber.e("SET INVITABLE 1 " + phones.size());
 
@@ -1024,7 +1029,7 @@ public class CreateGroupActivity extends BaseActivity
 
     runOnUiThread(() -> {
       //setFriends(allFriends);
-      friendsAdapter.notifyItemRangeChanged(0,allFriends.size());
+      friendsAdapter.notifyItemRangeChanged(0, allFriends.size());
     });
     networksLoaded++;
     Timber.e("Check phones " + networksLoaded);
