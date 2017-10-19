@@ -29,6 +29,7 @@ import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.StringHelper;
 import java.util.Map;
 import java.util.Set;
+import timber.log.Timber;
 
 public class FcmListenerService extends FirebaseMessagingService {
 
@@ -96,6 +97,7 @@ public class FcmListenerService extends FirebaseMessagingService {
     int type = StringHelper.getNotificationMessageType(flags, text);
     Intent intent = new Intent(this, SplashActivity.class);
     String trackingId = getTrackingId(notification);
+    Timber.e("Message" + type);
 
     switch (type) {
       case NotificationMessageType.GROUP_NAME_GOOD_LUCK:

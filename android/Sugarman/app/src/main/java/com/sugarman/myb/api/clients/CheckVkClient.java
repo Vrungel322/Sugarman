@@ -22,6 +22,8 @@ import timber.log.Timber;
 
 public class CheckVkClient extends BaseApiClient {
   private static final String TAG = CheckVkClient.class.getName();
+  Call<CheckVkResponse> call;
+  boolean isCanceled = false;
   @Override public void registerListener(ApiBaseListener listener) {
     clientListener = new WeakReference<>(listener);
   }
@@ -32,6 +34,7 @@ public class CheckVkClient extends BaseApiClient {
       ResponseBody errorBody = dataResponse.errorBody();
       if (dataResponse != null) {
         Timber.e("SET INVITABLE 0");
+        if(!isCanceled)
         ((ApiCheckVkListener) clientListener.get()).onApiCheckVkSuccess(dataResponse.body().getVks());
       } else if (errorBody != null) {
         String errorMessage = parseErrorBody(errorBody);
@@ -56,6 +59,17 @@ public class CheckVkClient extends BaseApiClient {
     }
   };
 
+  public boolean isRequestRunning()
+  {
+    return call!=null;
+  }
+
+  public void cancelRequest()
+  {
+    //call.cancel();
+    isCanceled=true;
+  }
+
   public void checkVks(List<String> vks)
   {
     Timber.e("CHECK VK CALLED");
@@ -63,7 +77,7 @@ public class CheckVkClient extends BaseApiClient {
     CheckVkRequest request = new CheckVkRequest();
     request.setVks(vks);
 
-    Call<CheckVkResponse> call = App.getApiInstance().checkVk(request);
+    call = App.getApiInstance().checkVk(request);
     call.enqueue(mCallback);
 }
 }

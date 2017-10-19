@@ -37,7 +37,7 @@ import rx.Subscription;
   private void fillListByCachedData() {
     getViewState().showProgress();
     Subscription subscription = mDataManager.getCachedFriends()
-        .compose(ThreadSchedulers.applySchedulers())
+        .compose(ThreadSchedulers.applySchedulers()).doOnError(throwable -> throwable.printStackTrace())
         .subscribe(facebookFriends -> {
           getViewState().fillListByCachedData(facebookFriends);
           getViewState().hideProgress();

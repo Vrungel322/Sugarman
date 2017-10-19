@@ -185,9 +185,18 @@ public class CreateGroupActivity extends BaseActivity
   private boolean vkPeopleAdd;
   private List<Phones> mDistinktorList = new ArrayList<>();
 
+  @Override protected void onDestroy() {
+    super.onDestroy();
+    //if(mCheckPhoneClient.isRequestRunning())
+    mCheckPhoneClient.cancelRequest();
+    //if(mCheckVkClient.isRequestRunning())
+    mCheckVkClient.cancelRequest();
+  }
+
   @Override protected void onCreate(Bundle savedStateInstance) {
     setContentView(R.layout.activity_create_group);
     super.onCreate(savedStateInstance);
+    Timber.e("VK TOKEN " + SharedPreferenceHelper.getVkToken());
 
     if (!SharedPreferenceHelper.getFacebookId().equals("none")) {
       networksToLoad++;
@@ -276,7 +285,7 @@ public class CreateGroupActivity extends BaseActivity
               "ph");
           allFriends.add(friend);
           phonesToCheck.add(contactList.get(key).replace(" ", ""));
-          Timber.e(contactList.get(key));
+        //  Timber.e(contactList.get(key));
         }
 
         mCheckPhoneClient.checkPhones(phonesToCheck);
@@ -474,6 +483,8 @@ public class CreateGroupActivity extends BaseActivity
   }
 
   private void checkNetworksLoaded() {
+    Timber.e(
+        networksLoaded + " out of " + networksToLoad + "allFriends side is " + allFriends.size());
     if (networksLoaded == networksToLoad) {
       Timber.e(
           networksLoaded + " out of " + networksToLoad + "allFriends side is " + allFriends.size());
@@ -881,7 +892,7 @@ public class CreateGroupActivity extends BaseActivity
       for (FacebookFriend friend : selectedFriends) {
         if (invitable.contains(friend)) {
           id = friend.getId();
-          Timber.e("Invitable: " + friend.getName());
+          //Timber.e("Invitable: " + friend.getName());
           ids.add(id);
         } else {
           members.add(friend);
@@ -1009,18 +1020,18 @@ public class CreateGroupActivity extends BaseActivity
   @Override public void onApiCheckPhoneSuccess(List<Phones> phones) {
     mDistinktorList = phones;
 
-    Timber.e("Check phones " + mDistinktorList.size());
+    //Timber.e("Check phones " + mDistinktorList.size());
 
-    Timber.e("SET INVITABLE 1 " + phones.size());
+    //Timber.e("SET INVITABLE 1 " + phones.size());
 
     for (Phones p : phones) {
-      Timber.e("SET INVITABLE IF 1.5 ");
+     // Timber.e("SET INVITABLE IF 1.5 ");
       for (FacebookFriend friend : allFriends) {
-        Timber.e("SET INVITABLE for 2 " + friend.getName());
+      //  Timber.e("SET INVITABLE for 2 " + friend.getName());
         if (friend.getSocialNetwork().equals("ph")) {
-          Timber.e("SET INVITABLE IF 3 " + friend.getName());
+        //  Timber.e("SET INVITABLE IF 3 " + friend.getName());
           if (friend.getId().equals(p.getPhone())) {
-            Timber.e("SET INVITABLE IF 4 " + friend.getName());
+        //    Timber.e("SET INVITABLE IF 4 " + friend.getName());
             friend.setIsInvitable(FacebookFriend.CODE_NOT_INVITABLE);
           }
         }
@@ -1042,17 +1053,17 @@ public class CreateGroupActivity extends BaseActivity
 
   @Override public void onApiCheckVkSuccess(List<String> vks) {
 
-    Timber.e("OnApiCheckVkSuccess");
+  //  Timber.e("OnApiCheckVkSuccess");
 
-    Timber.e("SET INVITABLE IF 1 " + vks.size());
+   // Timber.e("SET INVITABLE IF 1 " + vks.size());
     for (String s : vks) {
-      Timber.e("SET INVITABLE IF 1.5 ");
+    //Timber.e("SET INVITABLE IF 1.5 ");
       for (FacebookFriend friend : allFriends) {
-        Timber.e("SET INVITABLE for 2 " + friend.getName());
+     //   Timber.e("SET INVITABLE for 2 " + friend.getName());
         if (friend.getSocialNetwork().equals("vk")) {
-          Timber.e("SET INVITABLE IF 3 " + friend.getName());
+     //     Timber.e("SET INVITABLE IF 3 " + friend.getName());
           if (friend.getId().equals(s)) {
-            Timber.e("SET INVITABLE IF 4 " + friend.getName());
+      //      Timber.e("SET INVITABLE IF 4 " + friend.getName());
             friend.setIsInvitable(FacebookFriend.CODE_NOT_INVITABLE);
           }
         }

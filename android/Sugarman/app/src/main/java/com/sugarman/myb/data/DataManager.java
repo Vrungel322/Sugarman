@@ -105,22 +105,16 @@ public class DataManager {
   public void cacheFriends(List<FacebookFriend> friends) {
     mDbHelper.dropRealmTable(FacebookFriend.class);
     for (int i = 0; i < friends.size(); i++) {
+
+      if(friends.get(i).getPhotoUrl()==null) {
+        friends.get(i).setPhotoUrl("https://sugarman-myb.s3.amazonaws.com/Group_New.png");
+      }
       mDbHelper.save(friends.get(i));
     }
 
-    for (int i = 0; i < mDbHelper.getAll(FacebookFriend.class).size(); i++) {
-      Timber.e("Cached item save "
-          + mDbHelper.getAll(FacebookFriend.class).get(i).getName()
-          + " id : "
-          + mDbHelper.getAll(FacebookFriend.class).get(i).getId());
-    }
-    Timber.e(
-        "_______________________________________________________________________________Total : "
-            + mDbHelper.getAll(FacebookFriend.class).size());
   }
 
   public Observable<List<FacebookFriend>> getCachedFriends() {
-    Timber.e("Cached size get " + mDbHelper.getAll(FacebookFriend.class).size());
 
     return Observable.just(mDbHelper.getAll(FacebookFriend.class));
   }

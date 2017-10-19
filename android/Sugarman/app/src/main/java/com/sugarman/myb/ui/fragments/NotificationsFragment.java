@@ -2,8 +2,10 @@ package com.sugarman.myb.ui.fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -232,6 +234,11 @@ public class NotificationsFragment extends BaseFragment
         openRequestsActivity();
         break;
       default:
+        if(item.getUrl()!=null) {
+          Intent i = new Intent(Intent.ACTION_VIEW);
+          i.setData(Uri.parse(item.getUrl()));
+          startActivity(i);
+        }
         Log.e(TAG, "not processed notification type: " + type);
         break;
     }

@@ -20,6 +20,7 @@ public class NotificationItem extends Notification {
     setOriginator(notification.getUser());
     setRecipient(notification.getRecipient());
     setText(notification.getText());
+    setUrl(notification.getUrl());
     setUpdatedAt(notification.getUpdatedAt());
     setUser(notification.getUser());
     setTrackingId(notification.getTrackingId());

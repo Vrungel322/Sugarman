@@ -30,6 +30,8 @@ public class Notification implements Parcelable {
 
   @SerializedName("text") private String text;
 
+  @SerializedName("url") private String url;
+
   @SerializedName("updated_at") private String updatedAt;
 
   @SerializedName("user") private User user;
@@ -52,8 +54,17 @@ public class Notification implements Parcelable {
     originator = in.readParcelable(User.class.getClassLoader());
     recipient = in.readString();
     text = in.readString();
+    url = in.readString();
     user = in.readParcelable(User.class.getClassLoader());
     trackingId = in.readString();
+  }
+
+  public String getUrl() {
+    return url;
+  }
+
+  public void setUrl(String url) {
+    this.url = url;
   }
 
   public String getCreatedAt() {
