@@ -286,6 +286,10 @@ public class EditProfileActivity extends BasicActivity
     // TODO: 19.10.2017 need to Check if ANYTHING change, but now zaglushka
     DialogHelper.createSimpleDialog("ok", "not ok", "title", "content", this,
         (dialogInterface, i) -> {
+          SharedPreferenceHelper.savePhoneNumber(etPhone.getText().toString());
+          SharedPreferenceHelper.saveEmail(etEmail.getText().toString());
+          SharedPreferenceHelper.saveUserName(etName.getText().toString());
+
           mPresenter.sendUserDataToServer(etPhone.getText().toString(),
               etEmail.getText().toString(), etName.getText().toString(),
               SharedPreferenceHelper.getFbId(), SharedPreferenceHelper.getVkId(),
