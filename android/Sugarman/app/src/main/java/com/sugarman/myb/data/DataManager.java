@@ -108,19 +108,21 @@ public class DataManager {
       mDbHelper.save(friends.get(i));
     }
 
-    for (int i = 0; i < mDbHelper.getAll(FacebookFriend.class).size(); i++) {
-      Timber.e("Cached item save "
-          + mDbHelper.getAll(FacebookFriend.class).get(i).getName()
-          + " id : "
-          + mDbHelper.getAll(FacebookFriend.class).get(i).getId());
-    }
+    //for (int i = 0; i < mDbHelper.getAll(FacebookFriend.class).size(); i++) {
+    //  Timber.e("Cached item save "
+    //      + mDbHelper.getAll(FacebookFriend.class).get(i).getName()
+    //      + " id : "
+    //      + mDbHelper.getAll(FacebookFriend.class).get(i).getId()
+    //      + " photo : "
+    //      + mDbHelper.getAll(FacebookFriend.class).get(i).getPhotoUrl());
+    //}
     Timber.e(
         "_______________________________________________________________________________Total : "
             + mDbHelper.getAll(FacebookFriend.class).size());
   }
 
   public Observable<List<FacebookFriend>> getCachedFriends() {
-    Timber.e("Cached size get " + mDbHelper.getAll(FacebookFriend.class).size());
+    //Timber.e("Cached size get " + mDbHelper.getAll(FacebookFriend.class).size());
 
     return Observable.just(mDbHelper.getAll(FacebookFriend.class));
   }

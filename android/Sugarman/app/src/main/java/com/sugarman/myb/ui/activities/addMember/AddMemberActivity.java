@@ -299,7 +299,7 @@ public class AddMemberActivity extends BaseActivity
         for (String key : contactList.keySet()) {
           String phone = contactList.get(key);
           FacebookFriend friend =
-              new FacebookFriend(phone, key, "", FacebookFriend.CODE_INVITABLE, "ph");
+              new FacebookFriend(phone, key, " ", FacebookFriend.CODE_INVITABLE, "ph");
           Timber.e(phone);
           allFriends.add(friend);
           //phoneFriends.add(friend);

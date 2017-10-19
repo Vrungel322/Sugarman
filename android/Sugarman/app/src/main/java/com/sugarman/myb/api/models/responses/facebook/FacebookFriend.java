@@ -5,6 +5,7 @@ import android.os.Parcelable;
 import android.text.TextUtils;
 import com.google.gson.annotations.SerializedName;
 import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
 import java.util.Comparator;
 
@@ -29,10 +30,10 @@ public class FacebookFriend extends RealmObject implements Parcelable {
   };
   //private String socialNetwork = new String("fb");
   public String socialNetwork;
-  String photoUrl;
-  @SerializedName("id") private String id;
-  @PrimaryKey @SerializedName("name") private String name;
-  @SerializedName("picture") private FacebookPicture picture;
+  @Ignore String photoUrl;
+  @PrimaryKey @SerializedName("id") private String id;
+  @SerializedName("name") private String name;
+  @Ignore @SerializedName("picture") private FacebookPicture picture;
   private int isInvitable;
   private boolean isSelected;
   private boolean isAdded;
