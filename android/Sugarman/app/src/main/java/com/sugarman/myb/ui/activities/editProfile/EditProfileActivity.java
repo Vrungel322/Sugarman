@@ -1,4 +1,4 @@
-package com.sugarman.myb.ui.activities;
+package com.sugarman.myb.ui.activities.editProfile;
 
 import android.Manifest;
 import android.content.ClipData;
@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.clover_studio.spikachatmodule.utils.Const;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -37,11 +38,14 @@ import com.sugarman.myb.base.BasicActivity;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.listeners.ApiBaseListener;
 import com.sugarman.myb.listeners.ApiRefreshUserDataListener;
+import com.sugarman.myb.ui.activities.ApproveOtpActivity;
+import com.sugarman.myb.ui.activities.IntroActivity;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.ui.views.MaskImage;
 import com.sugarman.myb.ui.views.MaskTransformation;
 import com.sugarman.myb.utils.AnalyticsHelper;
 import com.sugarman.myb.utils.DeviceHelper;
+import com.sugarman.myb.utils.DialogHelper;
 import com.sugarman.myb.utils.SaveFileHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.vk.sdk.VKAccessToken;
@@ -55,7 +59,8 @@ import java.util.regex.Pattern;
 import timber.log.Timber;
 
 public class EditProfileActivity extends BasicActivity
-    implements ApiBaseListener, ApiRefreshUserDataListener {
+    implements ApiBaseListener, ApiRefreshUserDataListener, IEditProfileActivityView {
+  @InjectPresenter EditProfileActivityPresenter mPresenter;
   @BindView(R.id.iv_profile_avatar) ImageView profileAvatar;
   @BindView(R.id.iv_next) ImageView nextButton;
   @BindView(R.id.iv_back) ImageView backButton;
@@ -235,7 +240,7 @@ public class EditProfileActivity extends BasicActivity
   }
 
   @OnClick(R.id.iv_next) public void ivNextClicked() {
-      editProfile();
+    editProfile();
   }
 
   private void editProfile() {
@@ -278,7 +283,14 @@ public class EditProfileActivity extends BasicActivity
   }
 
   @OnClick(R.id.iv_back) public void ivBackClicked() {
-    finish();
+    // TODO: 19.10.2017 need to Check if ANYTHING change, but now zaglushka
+    DialogHelper.createSimpleDialog("ok", "not ok", "title", "content", this,
+        (dialogInterface, i) -> {
+          mPresenter.sendUserDataToServer(etPhone.getText().toString(),
+              etEmail.getText().toString(), etName.getText().toString(),
+              SharedPreferenceHelper.getFbId(), SharedPreferenceHelper.getVkId(),
+              SharedPreferenceHelper.getAvatar(), selectedFile);
+        }, null).create().show();
   }
 
   @Override public void onBackPressed() {
@@ -475,9 +487,7 @@ public class EditProfileActivity extends BasicActivity
     } else {
       SharedPreferenceHelper.savePhoneNumber(etPhone.getText().toString());
       if (SharedPreferenceHelper.introIsShown()) {
-        Intent intent = new Intent(EditProfileActivity.this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+        finish();
       } else {
         Intent intent = new Intent(EditProfileActivity.this, IntroActivity.class);
         intent.putExtra(IntroActivity.CODE_IS_OPEN_LOGIN_ACTIVITY, true);
@@ -485,5 +495,9 @@ public class EditProfileActivity extends BasicActivity
         startActivity(intent);
       }
     }
+  }
+
+  @Override public void finishActivity() {
+    finish();
   }
 }

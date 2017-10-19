@@ -1,5 +1,6 @@
 package com.sugarman.myb.api;
 
+import android.util.Log;
 import com.sugarman.myb.api.models.requests.PurchaseDataRequest;
 import com.sugarman.myb.api.models.requests.RefreshUserDataRequest;
 import com.sugarman.myb.api.models.responses.CountInvitesResponse;
@@ -8,9 +9,12 @@ import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.constants.Constants;
+import com.sugarman.myb.utils.SharedPreferenceHelper;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Response;
 import rx.Observable;
@@ -87,5 +91,37 @@ public class RestApi {
 
   public Observable<List<ShopProductEntity>> fetchProducts() {
     return api.fetchProducts();
+  }
+
+  public Observable<UsersResponse> sendUserDataToServer(String phone, String email, String name, String fbId,
+      String vkId, String pictureUrl, File selectedFile,String accessToken) {
+    MultipartBody.Part filePart = null;
+
+    if (selectedFile != null && selectedFile.exists() && selectedFile.isFile()) {
+      RequestBody requestFile =
+          RequestBody.create(MediaType.parse(Constants.IMAGE_JPEG_TYPE), pictureUrl);
+      filePart =
+          MultipartBody.Part.createFormData(Constants.PICTURE, selectedFile.getName(), requestFile);
+      Log.e("FILE NAME", selectedFile.getName());
+    }
+
+    RequestBody userIdReq = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
+        SharedPreferenceHelper.getUserId());
+    RequestBody fbIdReq = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), fbId);
+    RequestBody vkIdReq = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), vkId);
+    RequestBody fbToken = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
+        SharedPreferenceHelper.getFBAccessToken());
+    //RequestBody googleIdReq = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), googleId);
+    RequestBody phoneNumReq =
+        RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), phone);
+    RequestBody emailReq = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), email);
+    RequestBody nameReq = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), name);
+    RequestBody pictureReq =
+        RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), pictureUrl);
+    RequestBody vkReq = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), SharedPreferenceHelper.getVkToken());
+    RequestBody gReq = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), "none");
+
+    return api.editUser(filePart, userIdReq, fbIdReq, vkIdReq, phoneNumReq, emailReq, pictureReq, nameReq,
+        fbToken, vkReq, gReq,accessToken);
   }
 }

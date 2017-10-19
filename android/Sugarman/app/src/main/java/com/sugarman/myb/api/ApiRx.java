@@ -7,6 +7,7 @@ import com.sugarman.myb.api.models.responses.InvitersImgUrls;
 import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import java.util.List;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Response;
 import retrofit2.http.Body;
@@ -49,4 +50,12 @@ public interface ApiRx {
       @Header("Authorization") String accessToken);
 
   @GET("v3/get_products") Observable<List<ShopProductEntity>> fetchProducts();
+
+  @Multipart @POST("/v2/editusers") Observable<UsersResponse> editUser(
+      @Part MultipartBody.Part filePart, @Part("userId") RequestBody userId,
+      @Part("fbid") RequestBody fbId, @Part("vkid") RequestBody vkId,
+      @Part("phone_number") RequestBody phoneNumber, @Part("email") RequestBody email,
+      @Part("picture_url") RequestBody pictureUrl, @Part("name") RequestBody name,
+      @Part("token") RequestBody fbToken, @Part("vk_token") RequestBody vkToken,
+      @Part("g_token") RequestBody gToken, @Header("Authorization") String accessToken);
 }
