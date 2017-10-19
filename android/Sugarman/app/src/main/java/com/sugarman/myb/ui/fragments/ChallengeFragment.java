@@ -168,8 +168,8 @@ if(str.contains(" "))      str = str.replaceAll("( +)", " ").trim();
         bestName.setText(str);
       }
       bestSteps.setText(String.format(Locale.US, "%,d", best.getSteps()));
-      if(best.getPictureUrl()==null)
-        best.setPictureUrl("");
+      if(best.getPictureUrl()==null||best.getPictureUrl().equals(" ")||best.getPictureUrl().equals(""))
+        best.setPictureUrl("https://sugarman-myb.s3.amazonaws.com/Group_New.png");
 
       Picasso.with(getActivity())
           .load(best.getPictureUrl())
