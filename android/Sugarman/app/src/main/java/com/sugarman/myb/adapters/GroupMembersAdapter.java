@@ -266,7 +266,7 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
           //}
 
           if (myPosition == -1) {
-            memberHolder.tvSteps.setVisibility(View.GONE);
+            //memberHolder.tvSteps.setVisibility(View.GONE);
             //                        memberHolder.tvAction.setVisibility(View.GONE);
           } else if (!TextUtils.equals(member.getId(), userId)) {
             switch (member.getAction()) {

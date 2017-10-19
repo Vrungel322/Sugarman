@@ -122,9 +122,13 @@ public class EditGroupClient extends BaseApiClient {
       }
     }
 
+    String vkTokenStr = SharedPreferenceHelper.getVkToken();
+    RequestBody vkToken =
+        RequestBody.create(MediaType.parse(Constants.IMAGE_JPEG_TYPE), vkTokenStr);
+
     Call<EditGroupResponse> call = App.getApiInstance()
         .editGroup(trackingId, filePart, name, ids, vkids, phoneNumbers, names, vkNames, phoneNames,
-            pictures, vkpictures, phonePictures);
+            pictures, vkpictures, phonePictures, vkToken);
     Timber.e("Called editGroup");
     call.enqueue(mCallback);
   }

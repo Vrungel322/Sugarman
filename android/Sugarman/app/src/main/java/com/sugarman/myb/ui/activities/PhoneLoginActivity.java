@@ -62,7 +62,7 @@ public class PhoneLoginActivity extends GetUserInfoActivity implements ApiRefres
 
   public static boolean isPhoneValid(String phone)
   {
-    String expression = "^[+][0-9]{10,13}$";
+    String expression = "^[+][0-9]{8,15}$";
     Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
     Matcher matcher = pattern.matcher(phone);
     return matcher.matches();

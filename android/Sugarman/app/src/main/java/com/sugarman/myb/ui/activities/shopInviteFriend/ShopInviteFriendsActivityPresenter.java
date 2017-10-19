@@ -51,7 +51,6 @@ import timber.log.Timber;
     Subscription subscription = mDataManager.countInvites()
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(countInvitesResponse -> {
-          Timber.e("InvitersCount " + countInvitesResponse.getCount());
         }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
@@ -101,13 +100,9 @@ import timber.log.Timber;
           }
         });
     addToUnsubscription(subscription);
-
-    Timber.e(String.valueOf(selectedMembers.size()));
-    Timber.e(SharedPreferenceHelper.getUserId());
   }
 
   public void loadVkFriends() {
-    Timber.e("loadVkFriends");
     VKRequest request = new VKRequest("friends.get",
         VKParameters.from(VKApiConst.FIELDS, "photo_100", "order", "name"));
     request.executeWithListener(new VKRequest.VKRequestListener() {
@@ -133,7 +128,6 @@ import timber.log.Timber;
           }
           getViewState().hideLoader();
           getViewState().addVkFriends(friendsVk);
-          Timber.e("VK LOADED");
         } catch (JSONException e) {
           e.printStackTrace();
         }
