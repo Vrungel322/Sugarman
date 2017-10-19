@@ -629,6 +629,11 @@ public class MainActivity extends GetUserInfoActivity implements View.OnClickLis
     ivAnimatedMan = (ImageView) findViewById(R.id.iv_animated_man);
     Log.e("Showed steps before ai", "" + SharedPreferenceHelper.getShowedSteps());
     // updateAnimations();
+
+    mGetMyInvitesClient.getInvites(true);
+    mGetMyRequestsClient.getRequests(true);
+
+
   }
 
   private void updateAnimations(int todaySteps) {
