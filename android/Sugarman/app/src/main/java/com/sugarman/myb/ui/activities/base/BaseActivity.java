@@ -243,7 +243,7 @@ public abstract class BaseActivity extends BasicActivity
         dialog.dismiss();
 
         setResult(RESULT_CANCELED);
-        finish();
+        //finish();
         break;
       default:
         Log.d(TAG, "not processed click dialog with id: " + id);

@@ -152,8 +152,10 @@ public class FriendsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
   public void setValue(List<FacebookFriend> values) {
     mUnselected.clear();
     mSelected.clear();
+    List<FacebookFriend> newFriends = new ArrayList<>();
+    newFriends.addAll(values);
 
-    for (FacebookFriend friend : values) {
+    for (FacebookFriend friend : newFriends) {
       if (friend.isSelected()) {
         mSelected.add(friend);
       } else {

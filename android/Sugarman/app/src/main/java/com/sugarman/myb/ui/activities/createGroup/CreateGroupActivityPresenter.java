@@ -6,6 +6,7 @@ import com.sugarman.myb.App;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.base.BasicPresenter;
 import com.sugarman.myb.data.DataManager;
+import com.sugarman.myb.utils.ThreadSchedulers;
 import com.vk.sdk.api.VKApiConst;
 import com.vk.sdk.api.VKError;
 import com.vk.sdk.api.VKParameters;
@@ -35,16 +36,9 @@ import rx.Subscription;
 
   private void fillListByCachedData() {
     getViewState().showProgress();
-    Subscription subscription =
-        mDataManager.getCachedFriends()
-
-            //.compose(ThreadSchedulers.applySchedulers())
-            //.concatMap(Observable::from)
-            //.concatMap(facebookFriend -> {Timber.e("1photo "+facebookFriend.getPhotoUrl()+ " "+ facebookFriend.getName());
-            //  return Observable.just(facebookFriend);})
-            //.toList()
-
-            .subscribe(facebookFriends -> {
+    Subscription subscription = mDataManager.getCachedFriends()
+        .compose(ThreadSchedulers.applySchedulers())
+        .subscribe(facebookFriends -> {
           getViewState().fillListByCachedData(facebookFriends);
           getViewState().hideProgress();
         },Throwable::printStackTrace);

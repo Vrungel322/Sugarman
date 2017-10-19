@@ -862,6 +862,10 @@ public class AddMemberActivity extends BaseActivity
   @Override protected void onDestroy() {
     membersAdapter.clearLists();
     super.onDestroy();
+    //if(mCheckPhoneClient.isRequestRunning())
+      mCheckPhoneClient.cancelRequest();
+    //if(mCheckVkClient.isRequestRunning())
+      mCheckVkClient.cancelRequest();
   }
 
   private void tryChooseGroupAvatar() {

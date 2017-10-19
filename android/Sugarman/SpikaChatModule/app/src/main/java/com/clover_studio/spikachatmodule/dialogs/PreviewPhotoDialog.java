@@ -101,7 +101,11 @@ public class PreviewPhotoDialog extends Dialog {
                 @Override
                 public void onResponse(boolean isSuccess, String path) {
                     if(isSuccess){
-                        if(!path.equals(null))showImage(new File(path));
+                        if(path!=null)showImage(new File(path));
+                        else {
+                            new NotifyDialog(getContext(), getContext().getResources().getString(R.string.error),"Can't load image", NotifyDialog.Type.INFO).show();
+                            dismiss();
+                        }
                     }else{
                         getOwnerActivity().runOnUiThread(new Runnable() {
                             @Override

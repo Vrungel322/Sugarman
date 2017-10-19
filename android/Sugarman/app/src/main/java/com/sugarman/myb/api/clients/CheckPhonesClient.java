@@ -19,6 +19,8 @@ import timber.log.Timber;
 
 public class CheckPhonesClient extends BaseApiClient {
   private static final String TAG = CheckPhonesClient.class.getName();
+  Call<CheckPhoneResponse> call;
+  boolean isCanceled = false;
   @Override public void registerListener(ApiBaseListener listener) {
     clientListener = new WeakReference<>(listener);
   }
@@ -26,9 +28,11 @@ public class CheckPhonesClient extends BaseApiClient {
   private final Callback<CheckPhoneResponse> mCallback = new Callback<CheckPhoneResponse>() {
 
     @Override public void onResponse(Call<CheckPhoneResponse> call, Response<CheckPhoneResponse> dataResponse) {
+      Timber.e("Check Phone callback " + isCanceled);
       ResponseBody errorBody = dataResponse.errorBody();
       if (dataResponse != null) {
         Timber.e("SET INVITABLE 0");
+        if(!isCanceled)
         ((ApiCheckPhoneListener) clientListener.get()).onApiCheckPhoneSuccess(dataResponse.body().getPhones());
       } else if (errorBody != null) {
         String errorMessage = parseErrorBody(errorBody);
@@ -53,6 +57,18 @@ public class CheckPhonesClient extends BaseApiClient {
     }
   };
 
+  public boolean isRequestRunning()
+  {
+    return call!=null;
+  }
+
+  public void cancelRequest()
+  {
+    Timber.e("Canceled request");
+//    call.cancel();
+    isCanceled=true;
+  }
+
   public void checkPhones(List<String> phones)
   {
 
@@ -61,7 +77,7 @@ public class CheckPhonesClient extends BaseApiClient {
     CheckPhoneRequest request = new CheckPhoneRequest();
     request.setPhones(phones);
 
-    Call<CheckPhoneResponse> call = App.getApiInstance().checkPhone(request);
+    call = App.getApiInstance().checkPhone(request);
     call.enqueue(mCallback);
 }
 }
