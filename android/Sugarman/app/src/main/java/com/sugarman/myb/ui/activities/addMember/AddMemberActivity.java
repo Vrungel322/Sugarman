@@ -59,7 +59,7 @@ import com.sugarman.myb.listeners.AsyncSaveBitmapToFileListener;
 import com.sugarman.myb.listeners.OnFBGetFriendsListener;
 import com.sugarman.myb.models.VkFriend;
 import com.sugarman.myb.tasks.SaveBitmapToFileAsyncTask;
-import com.sugarman.myb.ui.activities.EditProfileActivity;
+import com.sugarman.myb.ui.activities.editProfile.EditProfileActivity;
 import com.sugarman.myb.ui.activities.base.BaseActivity;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.ui.dialogs.sendVkInvitation.SendVkInvitationDialog;

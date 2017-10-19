@@ -15,6 +15,7 @@ import com.sugarman.myb.data.db.DbHelper;
 import com.sugarman.myb.data.local.PreferencesHelper;
 import com.sugarman.myb.utils.ContactsHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -42,6 +43,9 @@ public class DataManager {
     mDbHelper = dbHelper;
   }
 
+  ///////////////////////////////////////////////////////////////////////////
+  // REST
+  ///////////////////////////////////////////////////////////////////////////
   public Observable<UsersResponse> refreshRxUserData(RefreshUserDataRequest request) {
     return mRestApi.refreshRxUserData(request);
   }
@@ -59,22 +63,6 @@ public class DataManager {
   public Observable<Response<Void>> addFriendsToShopGroup(
       ArrayList<FacebookFriend> selectedMembers) {
     return mRestApi.addFriendsToShopGroup(SharedPreferenceHelper.getUserId(), selectedMembers);
-  }
-
-  public Observable<List<FacebookFriend>> loadContactsFromContactBook() {
-    return Observable.create(subscriber -> {
-      List<FacebookFriend> allFriends = new ArrayList<>();
-
-      HashMap<String, String> contactList = ContactsHelper.getContactList(mContentResolver);
-      for (String key : contactList.keySet()) {
-        FacebookFriend friend = new FacebookFriend(contactList.get(key), key,
-            "https://sugarman-myb.s3.amazonaws.com/Group_New.png", FacebookFriend.CODE_INVITABLE,
-            "ph");
-        allFriends.add(friend);
-        subscriber.onNext(allFriends);
-        subscriber.onCompleted();
-      }
-    });
   }
 
   public Observable<InvitersImgUrls> loadInvitersImgUrls() {
@@ -102,6 +90,15 @@ public class DataManager {
     //return mRestApi.fetchProducts();
   }
 
+  public Observable<UsersResponse> sendUserDataToServer(String phone, String email, String name,
+      String fbId, String vkId, String avatar, File selectedFile) {
+    return mRestApi.sendUserDataToServer(phone, email, name, fbId, vkId, avatar, selectedFile,
+        Constants.BEARER + SharedPreferenceHelper.getAccessToken());
+  }
+
+  ///////////////////////////////////////////////////////////////////////////
+  // DB
+  ///////////////////////////////////////////////////////////////////////////
   public void cacheFriends(List<FacebookFriend> friends) {
     mDbHelper.dropRealmTable(FacebookFriend.class);
     for (int i = 0; i < friends.size(); i++) {
@@ -117,6 +114,22 @@ public class DataManager {
   public Observable<List<FacebookFriend>> getCachedFriends() {
 
     return Observable.just(mDbHelper.getAll(FacebookFriend.class));
+  }
+
+  public Observable<List<FacebookFriend>> loadContactsFromContactBook() {
+    return Observable.create(subscriber -> {
+      List<FacebookFriend> allFriends = new ArrayList<>();
+
+      HashMap<String, String> contactList = ContactsHelper.getContactList(mContentResolver);
+      for (String key : contactList.keySet()) {
+        FacebookFriend friend = new FacebookFriend(contactList.get(key), key,
+            "https://sugarman-myb.s3.amazonaws.com/Group_New.png", FacebookFriend.CODE_INVITABLE,
+            "ph");
+        allFriends.add(friend);
+        subscriber.onNext(allFriends);
+        subscriber.onCompleted();
+      }
+    });
   }
 }
 

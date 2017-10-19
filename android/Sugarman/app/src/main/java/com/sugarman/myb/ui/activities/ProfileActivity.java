@@ -31,6 +31,7 @@ import com.sugarman.myb.eventbus.events.InvitesUpdatedEvent;
 import com.sugarman.myb.eventbus.events.RequestsRemovedEvent;
 import com.sugarman.myb.eventbus.events.RequestsUpdatedEvent;
 import com.sugarman.myb.ui.activities.base.BaseActivity;
+import com.sugarman.myb.ui.activities.editProfile.EditProfileActivity;
 import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.ui.views.MaskTransformation;
