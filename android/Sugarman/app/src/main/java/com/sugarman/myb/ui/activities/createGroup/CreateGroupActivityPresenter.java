@@ -37,11 +37,12 @@ import rx.Subscription;
   private void fillListByCachedData() {
     getViewState().showProgress();
     Subscription subscription = mDataManager.getCachedFriends()
-        .compose(ThreadSchedulers.applySchedulers()).doOnError(throwable -> throwable.printStackTrace())
+        .compose(ThreadSchedulers.applySchedulers())
         .subscribe(facebookFriends -> {
           getViewState().fillListByCachedData(facebookFriends);
           getViewState().hideProgress();
-        }); addToUnsubscription(subscription);
+        },Throwable::printStackTrace);
+    addToUnsubscription(subscription);
   }
 
   public void sendInvitationInVk(List<FacebookFriend> selectedFriends, String inviteMsg) {
