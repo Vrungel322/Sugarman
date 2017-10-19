@@ -72,6 +72,9 @@ public class MembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.ViewHold
           friend.getPicture())) {
 
         String url = friend.getPicture();
+        Timber.e("URLSTART"+url+"URLEND");
+        if(url == null||url.equals("")||url.equals(" "))
+          url = "https://sugarman-myb.s3.amazonaws.com/Group_New.png";
         Picasso.with(context)
             .load(url)
             .placeholder(R.drawable.ic_gray_avatar)
@@ -107,13 +110,16 @@ public class MembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.ViewHold
 
       boolean isPending = friend.isPending();
       boolean isAdded = friend.isAdded();
-      if (isPending || isAdded) {
-        membersHolder.tvActionBtn.setText(isPending ? pending : added);
+      boolean isSelected = friend.isSelected();
+      if (isPending || isAdded || isSelected) {
+        if(isPending) membersHolder.tvActionBtn.setText(pending);
+        if(isAdded) membersHolder.tvActionBtn.setText(added);
+        if(isSelected) membersHolder.tvActionBtn.setText(remove);
         //membersHolder.tvActionBtn.setBackgroundResource(R.drawable.gray_double_stroke_background);
         membersHolder.tvActionBtn.setBackgroundResource(R.drawable.remove);
         membersHolder.tvActionBtn.setTextColor(colorRed);
       } else {
-        membersHolder.tvActionBtn.setText(friend.isSelected() ? remove : add);
+        membersHolder.tvActionBtn.setText(add);
         //membersHolder.tvActionBtn.setBackgroundResource(R.drawable.dark_gray_double_stroke_background);
         membersHolder.tvActionBtn.setBackgroundResource(R.drawable.add_and_remove);
         membersHolder.tvActionBtn.setTextColor(colorWhite);
