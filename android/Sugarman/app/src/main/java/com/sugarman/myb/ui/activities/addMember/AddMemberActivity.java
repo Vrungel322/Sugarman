@@ -27,6 +27,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -103,7 +104,7 @@ public class AddMemberActivity extends BaseActivity
   @BindView(R.id.fb_filter) ImageView fbFilter;
   @BindView(R.id.vk_filter) ImageView vkFilter;
   @BindView(R.id.ph_filter) ImageView phFilter;
-  @BindView(R.id.progressBar2) ProgressBar pb;
+  @BindView(R.id.progressBar2) RelativeLayout pb;
   String currentFilter = "";
   View vApply;
   boolean isFbLoggedIn = false, isVkLoggedIn = false;
@@ -203,6 +204,14 @@ public class AddMemberActivity extends BaseActivity
   @Override protected void onCreate(Bundle savedStateInstance) {
     setContentView(R.layout.activity_add_member);
     super.onCreate(savedStateInstance);
+
+    pb.setVisibility(View.GONE);
+    pb.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View view) {
+
+      }
+    });
+
     if (!SharedPreferenceHelper.getFbId().equals("none")) {
       networksToLoad++;
       isFbLoggedIn = true;

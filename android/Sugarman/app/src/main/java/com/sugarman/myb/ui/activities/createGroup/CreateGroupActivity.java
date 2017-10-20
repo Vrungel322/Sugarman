@@ -30,6 +30,7 @@ import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -104,7 +105,7 @@ public class CreateGroupActivity extends BaseActivity
   @BindView(R.id.fb_filter) ImageView fbFilter;
   @BindView(R.id.vk_filter) ImageView vkFilter;
   @BindView(R.id.ph_filter) ImageView phFilter;
-  @BindView(R.id.pb_spinner) ProgressBar pb;
+  @BindView(R.id.pb_spinner) RelativeLayout pb;
   String currentFilter = "";
   boolean isVkLoggedIn = false, isFbLoggedIn = false;
   MaskImage mi;
@@ -199,6 +200,12 @@ public class CreateGroupActivity extends BaseActivity
   @Override protected void onCreate(Bundle savedStateInstance) {
     setContentView(R.layout.activity_create_group);
     super.onCreate(savedStateInstance);
+    pb.setVisibility(View.GONE);
+    pb.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View view) {
+
+      }
+    });
     Timber.e("VK TOKEN " + SharedPreferenceHelper.getVkToken());
 
     if (!SharedPreferenceHelper.getFacebookId().equals("none")) {
