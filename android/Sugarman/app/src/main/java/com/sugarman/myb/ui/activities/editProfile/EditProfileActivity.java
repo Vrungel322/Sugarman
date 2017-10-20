@@ -207,8 +207,6 @@ public class EditProfileActivity extends BasicActivity
     mBundleUserSettings = new Bundle();
     mBundleUserSettings.putString(NAME_FROM_SETTINGS, etName.getText().toString());
     mBundleUserSettings.putString(PHONE_FROM_SETTINGS, etPhone.getText().toString());
-    Timber.e("Phone " + mBundleUserSettings.getString(PHONE_FROM_SETTINGS));
-
     mBundleUserSettings.putString(EMAIL_FROM_SETTINGS, etEmail.getText().toString());
     mBundleUserSettings.putString(AVATAR_URL_FROM_SETTINGS, SharedPreferenceHelper.getAvatar());
     mBundleUserSettings.putBoolean(IS_FB_LOGGED_IN_FROM_SETTINGS, cbFb.isChecked());
@@ -349,7 +347,7 @@ public class EditProfileActivity extends BasicActivity
             SharedPreferenceHelper.savePhoneNumber(etPhone.getText().toString());
             SharedPreferenceHelper.saveEmail(etEmail.getText().toString());
             SharedPreferenceHelper.saveUserName(etName.getText().toString());
-            networkCount= networkTotalCount;
+            networkCount = networkTotalCount;
 
             mPresenter.sendUserDataToServer(etPhone.getText().toString(),
                 etEmail.getText().toString(), etName.getText().toString(),
@@ -388,7 +386,8 @@ public class EditProfileActivity extends BasicActivity
             mPresenter.sendUserDataToServer(mBundleUserSettings.getString(PHONE_FROM_SETTINGS),
                 mBundleUserSettings.getString(EMAIL_FROM_SETTINGS),
                 mBundleUserSettings.getString(NAME_FROM_SETTINGS), SharedPreferenceHelper.getFbId(),
-                SharedPreferenceHelper.getVkId(), AVATAR_URL_FROM_SETTINGS, selectedFile);
+                SharedPreferenceHelper.getVkId(),
+                mBundleUserSettings.getString(AVATAR_URL_FROM_SETTINGS), selectedFile);
           }).create().show();
     } else {
       finish();
