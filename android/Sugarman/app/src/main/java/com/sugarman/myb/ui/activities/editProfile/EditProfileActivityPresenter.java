@@ -3,6 +3,7 @@ package com.sugarman.myb.ui.activities.editProfile;
 import com.arellomobile.mvp.InjectViewState;
 import com.sugarman.myb.App;
 import com.sugarman.myb.base.BasicPresenter;
+import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.ThreadSchedulers;
 import java.io.File;
 import rx.Subscription;
@@ -23,6 +24,7 @@ import rx.Subscription;
         mDataManager.sendUserDataToServer(phone, email, name, fbId, vkId, avatar, selectedFile)
             .compose(ThreadSchedulers.applySchedulers())
             .subscribe(usersResponse -> {
+              SharedPreferenceHelper.setOTPStatus(usersResponse.getUser().getNeedOTP());
               getViewState().hidePb();
               getViewState().finishActivity();
             });

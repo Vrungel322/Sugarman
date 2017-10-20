@@ -455,6 +455,9 @@ public class EditProfileActivity extends BasicActivity
 
   @Override protected void onResume() {
     super.onResume();
+    if (SharedPreferenceHelper.getOTPStatus()) {
+      etPhone.setError(String.format(getString(R.string.approve_phone_pls)));
+    }
     if (checkCallingOrSelfPermission(Constants.READ_PHONE_CONTACTS_PERMISSION)
         != PackageManager.PERMISSION_GRANTED) {
       cbPh.setChecked(false);
@@ -579,6 +582,9 @@ public class EditProfileActivity extends BasicActivity
   }
 
   @Override public void onApiRefreshUserDataSuccess(UsersResponse response) {
+    if (SharedPreferenceHelper.getOTPStatus()) {
+      etPhone.setError(String.format(getString(R.string.approve_phone_pls)));
+    }
     if (response.getResult() != null) {
       AnalyticsHelper.reportLogin(true);
       Log.e("ApiRefreshUserData", "Called");
@@ -631,6 +637,10 @@ public class EditProfileActivity extends BasicActivity
         + networkCount
         + " network total count = "
         + networkTotalCount);
+
+    if (SharedPreferenceHelper.getOTPStatus()) {
+      etPhone.setError(String.format(getString(R.string.approve_phone_pls)));
+    }
     if (networkCount >= networkTotalCount) finish();
   }
 
