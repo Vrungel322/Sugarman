@@ -26,6 +26,7 @@ import android.util.Pair;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -102,6 +103,7 @@ public class AddMemberActivity extends BaseActivity
   @BindView(R.id.fb_filter) ImageView fbFilter;
   @BindView(R.id.vk_filter) ImageView vkFilter;
   @BindView(R.id.ph_filter) ImageView phFilter;
+  @BindView(R.id.progressBar2) ProgressBar pb;
   String currentFilter = "";
   View vApply;
   boolean isFbLoggedIn = false, isVkLoggedIn = false;
@@ -676,7 +678,8 @@ vApply.setEnabled(true);
       case R.id.iv_apply:
         DeviceHelper.hideKeyboard(this);
         //vApply.setEnabled(false);
-        showProgressFragment();
+        
+        showProgress();
 
         for (FacebookFriend friend : allFriends) {
           if (friend.isSelected()) {
@@ -719,11 +722,10 @@ vApply.setEnabled(true);
           // TODO: 12.10.2017 check Fb invite and create group
           //checkFilledData();
         }
+
         if (!mInviteByVk.isEmpty()) {
-          //mPresenter.sendInvitationInVk(mInviteByVk,
-          //    getResources().getString(R.string.invite_message));
-          SendVkInvitationDialog.newInstance(mInviteByVk)
-              .show(getFragmentManager(), "SendVkInvitationDialog");
+          mPresenter.sendInvitationInVk(mInviteByVk,
+              getResources().getString(R.string.invite_message));
           Timber.e("vk here");
           vkIntitationSend = true;
         }
@@ -981,22 +983,6 @@ vApply.setEnabled(true);
 
     //chech if some of members are present in mDistinktorList, if yes -> send him msg in social nenwork , else by sms
     //______________________________________________________________________________________________
-    for (int i = 0; i < members.size(); i++) {
-      for (int j = 0; j < mDistinktorList.size(); j++) {
-        if (!members.isEmpty() && mDistinktorList.get(j).getFbid().equals(members.get(i).getId())) {
-          facebookElements.add(members.get(i).getId());
-          members.remove(i);
-        }
-      }
-    }
-    for (int i = 0; i < members.size(); i++) {
-      for (int j = 0; j < mDistinktorList.size(); j++) {
-        if (!members.isEmpty() && mDistinktorList.get(j).getVkid().equals(members.get(i).getId())) {
-          vkElements.add(members.get(i));
-          members.remove(i);
-        }
-      }
-    }
     if (!vkElements.isEmpty()) {
       Timber.e("Vk Unique Send");
       mPresenter.sendInvitationInVk(vkElements, getString(R.string.invite_message));
@@ -1052,15 +1038,15 @@ vApply.setEnabled(true);
 
   @Override public void fillListByCachedData(List<FacebookFriend> facebookFriends) {
     Timber.e("SizeOf list AddM "+ facebookFriends.size());
-    membersAdapter.setValuesClearList(facebookFriends);
+    membersAdapter.setValuesClearList(new ArrayList<>(facebookFriends));
   }
 
   @Override public void showProgress() {
-    showProgressFragment();
+    pb.setVisibility(View.VISIBLE);
   }
 
   @Override public void hideProgress() {
-    closeProgressFragment();
+    pb.setVisibility(View.GONE);
   }
 
   private void getFacebookFriends() {
@@ -1098,7 +1084,7 @@ vApply.setEnabled(true);
   @Override public void onApiEditGroupSuccess(Tracking group) {
     Timber.e("onApiEditGroupSuccess");
 
-    closeProgressFragment();
+    hideProgress();
     finish();
   }
 

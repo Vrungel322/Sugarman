@@ -258,12 +258,19 @@
         </RelativeLayout>
     </LinearLayout>
 
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        style="?android:attr/progressBarStyle"
+        />
     <LinearLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal" />
-
+        android:orientation="horizontal"
+        />
     <include
         android:id="@+id/layout_conn_error"
         layout="@layout/layout_connection_error"
