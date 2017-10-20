@@ -145,6 +145,7 @@ public class ShopInviteFriendsActivity extends BasicActivity
   @Override protected void onCreate(Bundle savedStateInstance) {
     setContentView(R.layout.activity_shop_invite_friends);
     super.onCreate(savedStateInstance);
+    bAddFriends.setEnabled(true);
     ConstraintLayout mainLayout = (ConstraintLayout) findViewById(R.id.mainLayout);
 
     //getWindow().setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.background));
@@ -433,6 +434,7 @@ public class ShopInviteFriendsActivity extends BasicActivity
   }
 
   @OnClick(R.id.bAddFriends) public void bAddFriendsClicked() {
+    bAddFriends.setEnabled(false);
     sendInvitation();
   }
 

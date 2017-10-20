@@ -183,6 +183,7 @@ public class CreateGroupActivity extends BaseActivity
   private File selectedFile;
   private int networksToLoad = 0, networksLoaded = 0;
   private boolean vkPeopleAdd;
+  View vApply;
   private List<Phones> mDistinktorList = new ArrayList<>();
 
   @Override protected void onDestroy() {
@@ -245,7 +246,7 @@ public class CreateGroupActivity extends BaseActivity
     vClearGroupName = findViewById(R.id.iv_clear_group_name_input);
     vClearMembersFilter = findViewById(R.id.iv_clear_member_filter_input);
     View vCross = findViewById(R.id.iv_cross);
-    View vApply = findViewById(R.id.iv_apply);
+    vApply = findViewById(R.id.iv_apply);
 
     rcvFriends.setLayoutManager(new LinearLayoutManager(this));
     rcvFriends.setAdapter(friendsAdapter);
@@ -517,7 +518,7 @@ public class CreateGroupActivity extends BaseActivity
 
   @Override protected void onResume() {
     super.onResume();
-
+vApply.setEnabled(true);
     if (!isFriendsFound) {
       getFacebookFriends();
     }
@@ -580,6 +581,21 @@ public class CreateGroupActivity extends BaseActivity
         finish();
         break;
       case R.id.iv_apply:
+        vApply.setEnabled(false);
+        new Thread(new Runnable() {
+          @Override public void run() {
+            try {
+              Thread.currentThread().sleep(5000);
+            } catch (InterruptedException e) {
+              e.printStackTrace();
+            }
+            runOnUiThread(new Runnable() {
+              @Override public void run() {
+                vApply.setEnabled(true);
+              }
+            });
+          }
+        }).start();
         DeviceHelper.hideKeyboard(this);
         checkFilledData();
         break;
@@ -913,6 +929,7 @@ public class CreateGroupActivity extends BaseActivity
 
   private void createGroup(List<FacebookFriend> members) {
     showProgressFragmentTemp();
+    vApply.setEnabled(false);
     List<String> facebookElements = new ArrayList<>();
     List<FacebookFriend> vkElements = new ArrayList<>();
 

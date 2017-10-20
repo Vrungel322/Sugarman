@@ -140,6 +140,8 @@ public class MembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.ViewHold
         friend = mUnselected.get(position - mSelected.size());
       }
 
+      Timber.e("Friend network " + friend.getSocialNetwork());
+
       if (!friend.isPending() && !friend.isAdded()) {
         boolean isSelected = !friend.isSelected();
         friend.setSelected(isSelected);

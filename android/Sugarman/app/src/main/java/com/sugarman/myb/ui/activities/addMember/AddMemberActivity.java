@@ -540,7 +540,7 @@ public class AddMemberActivity extends BaseActivity
 
   @Override protected void onResume() {
     super.onResume();
-
+vApply.setEnabled(true);
     if (!isFriendsFound) {
       getFacebookFriends();
     }
@@ -675,7 +675,7 @@ public class AddMemberActivity extends BaseActivity
         break;
       case R.id.iv_apply:
         DeviceHelper.hideKeyboard(this);
-        vApply.setEnabled(false);
+        //vApply.setEnabled(false);
         showProgressFragment();
 
         for (FacebookFriend friend : allFriends) {
@@ -683,13 +683,16 @@ public class AddMemberActivity extends BaseActivity
             if (friend.getSocialNetwork().equals("fb")) {
               if (friend.getIsInvitable() == FacebookFriend.CODE_INVITABLE) {
                 mIdsFb.add(friend.getId());
+                Timber.e("friend added fb");
               }
             }
             if (friend.getSocialNetwork().equals("ph")) {
               mInviteByPh.add(friend);
+              Timber.e("friend added ph");
             }
             if (friend.getSocialNetwork().equals("vk")) {
               mInviteByVk.add(friend);
+              Timber.e("friend added vk");
             }
           }
         }
@@ -1101,6 +1104,7 @@ public class AddMemberActivity extends BaseActivity
 
   @Override public void onApiEditGroupFailure(String message) {
     if (DeviceHelper.isNetworkConnected()) {
+      Timber.e("onApiEditGroupFailure " + message);
       //new SugarmanDialog.Builder(this, DialogConstants.API_JOIN_GROUP_FAILURE_ID)
       //        .content(message)
       //        .show();
