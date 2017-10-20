@@ -29,6 +29,8 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -103,6 +105,7 @@ public class CreateGroupActivity extends BaseActivity
   @BindView(R.id.fb_filter) ImageView fbFilter;
   @BindView(R.id.vk_filter) ImageView vkFilter;
   @BindView(R.id.ph_filter) ImageView phFilter;
+  @BindView(R.id.pb_spinner) RelativeLayout pb;
   String currentFilter = "";
   boolean isVkLoggedIn = false, isFbLoggedIn = false;
   MaskImage mi;
@@ -197,6 +200,12 @@ public class CreateGroupActivity extends BaseActivity
   @Override protected void onCreate(Bundle savedStateInstance) {
     setContentView(R.layout.activity_create_group);
     super.onCreate(savedStateInstance);
+    pb.setVisibility(View.GONE);
+    pb.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View view) {
+
+      }
+    });
     Timber.e("VK TOKEN " + SharedPreferenceHelper.getVkToken());
 
     if (!SharedPreferenceHelper.getFacebookId().equals("none")) {
@@ -581,21 +590,6 @@ vApply.setEnabled(true);
         finish();
         break;
       case R.id.iv_apply:
-        vApply.setEnabled(false);
-        new Thread(new Runnable() {
-          @Override public void run() {
-            try {
-              Thread.currentThread().sleep(5000);
-            } catch (InterruptedException e) {
-              e.printStackTrace();
-            }
-            runOnUiThread(new Runnable() {
-              @Override public void run() {
-                vApply.setEnabled(true);
-              }
-            });
-          }
-        }).start();
         DeviceHelper.hideKeyboard(this);
         checkFilledData();
         break;
@@ -717,6 +711,7 @@ vApply.setEnabled(true);
 
   @Override public void onApiCreateGroupSuccess(CreatedGroup createdGroup) {
     mJoinGroupClient.joinGroup(createdGroup.getId());
+    hideProgress();
   }
 
   @Override public void onApiCreateGroupFailure(String message) {
@@ -888,6 +883,7 @@ vApply.setEnabled(true);
 
   private void checkFilledData() {
 
+    showProgress();
     filtered.clear();
     filtered.addAll(allFriends);
     setFriends(filtered);
@@ -1106,10 +1102,10 @@ vApply.setEnabled(true);
   }
 
   @Override public void showProgress() {
-    showProgressFragment();
+    pb.setVisibility(View.VISIBLE);
   }
 
   @Override public void hideProgress() {
-    closeProgressFragment();
+    pb.setVisibility(View.GONE);
   }
 }
