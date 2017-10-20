@@ -15,6 +15,7 @@ import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.listeners.ItemUsersActionListener;
 import com.sugarman.myb.ui.views.CropCircleTransformation;
+import io.realm.Realm;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,6 +28,8 @@ public class FriendsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
   private final List<FacebookFriend> mUnselected = new ArrayList<>();
   private final List<FacebookFriend> mSelected = new ArrayList<>();
+  //need for  getAllList ONLY !!!
+  private final List<FacebookFriend> mAllItems = new ArrayList<>();
 
   private final Context context;
 
@@ -132,7 +135,11 @@ public class FriendsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
       }
 
       boolean isSelected = !friend.isSelected();
-      friend.setSelected(isSelected);
+      Realm.getDefaultInstance().executeTransaction(realm -> {
+        FacebookFriend myObject = friend;
+        myObject.setSelected(isSelected);
+        realm.insertOrUpdate(myObject); // could be copyToRealmOrUpdate
+      });
 
       if (isSelected) {
         mSelected.add(friend);
@@ -152,6 +159,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
   public void setValue(List<FacebookFriend> values) {
     mUnselected.clear();
     mSelected.clear();
+    mAllItems.clear();
     List<FacebookFriend> newFriends = new ArrayList<>();
     newFriends.addAll(values);
 
@@ -165,6 +173,28 @@ public class FriendsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     Collections.sort(mSelected, FacebookFriend.BY_NAME_ASC);
     Collections.sort(mUnselected, FacebookFriend.BY_NAME_ASC);
+    mAllItems.addAll(mSelected);
+    mAllItems.addAll(mUnselected);
+    notifyDataSetChanged();
+  }
+
+  public void addValue(List<FacebookFriend> values) {
+    mAllItems.clear();
+    List<FacebookFriend> newFriends = new ArrayList<>();
+    newFriends.addAll(values);
+
+    for (FacebookFriend friend : newFriends) {
+      if (friend.isSelected()) {
+        mSelected.add(friend);
+      } else {
+        mUnselected.add(friend);
+      }
+    }
+
+    Collections.sort(mSelected, FacebookFriend.BY_NAME_ASC);
+    Collections.sort(mUnselected, FacebookFriend.BY_NAME_ASC);
+    mAllItems.addAll(mSelected);
+    mAllItems.addAll(mUnselected);
     notifyDataSetChanged();
   }
 
@@ -180,6 +210,10 @@ public class FriendsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     } else {
       return null;
     }
+  }
+
+  public List<FacebookFriend> getAllList() {
+    return mAllItems;
   }
 
   private static class FriendsHolder extends RecyclerView.ViewHolder

@@ -34,6 +34,8 @@ public class EditProfileClient extends BaseApiClient {
       if (clientListener.get() != null) {
         if (dataResponse != null) {
           Log.e("Token", "ATLICHNA 2");
+          SharedPreferenceHelper.setOTPStatus(dataResponse.getUser().getNeedOTP());
+
           ((ApiRefreshUserDataListener) clientListener.get()).onApiRefreshUserDataSuccess(
               dataResponse);
         } else if (errorBody != null) {

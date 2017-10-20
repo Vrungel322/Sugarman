@@ -207,8 +207,6 @@ public class EditProfileActivity extends BasicActivity
     mBundleUserSettings = new Bundle();
     mBundleUserSettings.putString(NAME_FROM_SETTINGS, etName.getText().toString());
     mBundleUserSettings.putString(PHONE_FROM_SETTINGS, etPhone.getText().toString());
-    Timber.e("Phone " + mBundleUserSettings.getString(PHONE_FROM_SETTINGS));
-
     mBundleUserSettings.putString(EMAIL_FROM_SETTINGS, etEmail.getText().toString());
     mBundleUserSettings.putString(AVATAR_URL_FROM_SETTINGS, SharedPreferenceHelper.getAvatar());
     mBundleUserSettings.putBoolean(IS_FB_LOGGED_IN_FROM_SETTINGS, cbFb.isChecked());
@@ -349,7 +347,7 @@ public class EditProfileActivity extends BasicActivity
             SharedPreferenceHelper.savePhoneNumber(etPhone.getText().toString());
             SharedPreferenceHelper.saveEmail(etEmail.getText().toString());
             SharedPreferenceHelper.saveUserName(etName.getText().toString());
-            networkCount= networkTotalCount;
+            networkCount = networkTotalCount;
 
             mPresenter.sendUserDataToServer(etPhone.getText().toString(),
                 etEmail.getText().toString(), etName.getText().toString(),
@@ -388,7 +386,8 @@ public class EditProfileActivity extends BasicActivity
             mPresenter.sendUserDataToServer(mBundleUserSettings.getString(PHONE_FROM_SETTINGS),
                 mBundleUserSettings.getString(EMAIL_FROM_SETTINGS),
                 mBundleUserSettings.getString(NAME_FROM_SETTINGS), SharedPreferenceHelper.getFbId(),
-                SharedPreferenceHelper.getVkId(), AVATAR_URL_FROM_SETTINGS, selectedFile);
+                SharedPreferenceHelper.getVkId(),
+                mBundleUserSettings.getString(AVATAR_URL_FROM_SETTINGS), selectedFile);
           }).create().show();
     } else {
       finish();
@@ -455,6 +454,9 @@ public class EditProfileActivity extends BasicActivity
 
   @Override protected void onResume() {
     super.onResume();
+    if (SharedPreferenceHelper.getOTPStatus()) {
+      etPhone.setError(String.format(getString(R.string.approve_phone_pls)));
+    }
     if (checkCallingOrSelfPermission(Constants.READ_PHONE_CONTACTS_PERMISSION)
         != PackageManager.PERMISSION_GRANTED) {
       cbPh.setChecked(false);
@@ -579,6 +581,9 @@ public class EditProfileActivity extends BasicActivity
   }
 
   @Override public void onApiRefreshUserDataSuccess(UsersResponse response) {
+    if (SharedPreferenceHelper.getOTPStatus()) {
+      etPhone.setError(String.format(getString(R.string.approve_phone_pls)));
+    }
     if (response.getResult() != null) {
       AnalyticsHelper.reportLogin(true);
       Log.e("ApiRefreshUserData", "Called");
@@ -631,6 +636,10 @@ public class EditProfileActivity extends BasicActivity
         + networkCount
         + " network total count = "
         + networkTotalCount);
+
+    if (SharedPreferenceHelper.getOTPStatus()) {
+      etPhone.setError(String.format(getString(R.string.approve_phone_pls)));
+    }
     if (networkCount >= networkTotalCount) finish();
   }
 

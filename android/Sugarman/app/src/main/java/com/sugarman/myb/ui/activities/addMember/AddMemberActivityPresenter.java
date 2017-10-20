@@ -57,4 +57,9 @@ import rx.Subscription;
   public void sendInvitationInVk(List<FacebookFriend> selectedFriends, String inviteMsg) {
     getViewState().addMemberToServer(selectedFriends);
   }
+
+  public void cacheFriends(List<FacebookFriend> allFriends) {
+    mDataManager.cacheFriends(allFriends);
+
+  }
 }
