@@ -266,6 +266,11 @@ public class MembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.ViewHold
     mSelected.clear();
   }
 
+  public List<FacebookFriend> getAllList() {
+     mSelected.addAll(mUnselected);
+    return mSelected;
+  }
+
   private static class MembersHolder extends RecyclerView.ViewHolder
       implements View.OnClickListener {
 
