@@ -281,6 +281,14 @@
   <string name="invite_friends_to_the_MYB">Invite friends to the MYB\nand get this product for FREE\nafter 5 installations</string>
   <string name="already_installed">Already installed by your link</string>
 
+  <string name="save_changes">Save changes?</string>
+  <string name="changes_have_been_made">Changes have been made. Do you want to save or discard?</string>
+  <string name="save">Save</string>
+  <string name="discard">Discard</string>
+
+  <string name="resend_in">Resend in</string>
+  <string name="seconds">Seconds</string>
+  <string name="change_phone_number">Change phone number</string>
 
   <!-- LANGUAGE SETTINGS -->
   <array name="pref_language_array">

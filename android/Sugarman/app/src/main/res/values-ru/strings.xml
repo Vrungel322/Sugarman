@@ -211,6 +211,14 @@
     <string name="already_installed">Уже установили по Вашей ссылке</string>
 
 
+    <string name="save_changes">Сохранить изменения?</string>
+    <string name="changes_have_been_made">Были сделаны изменения. Вы хотите сохранить или отменить их?</string>
+    <string name="save">Сохранить</string>
+    <string name="discard">Отменить</string>
+
+    <string name="resend_in">Повтор через</string>
+    <string name="seconds">секунд</string>
+    <string name="change_phone_number">Изменить номер</string>
 
     <!-- LANGUAGE SETTINGS -->
     <array name="pref_language_array">
