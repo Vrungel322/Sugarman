@@ -349,7 +349,7 @@ public class EditProfileActivity extends BasicActivity
             SharedPreferenceHelper.savePhoneNumber(etPhone.getText().toString());
             SharedPreferenceHelper.saveEmail(etEmail.getText().toString());
             SharedPreferenceHelper.saveUserName(etName.getText().toString());
-            networkCount++;
+            networkCount= networkTotalCount;
 
             mPresenter.sendUserDataToServer(etPhone.getText().toString(),
                 etEmail.getText().toString(), etName.getText().toString(),
@@ -360,7 +360,7 @@ public class EditProfileActivity extends BasicActivity
             //VK
             if (VKSdk.isLoggedIn()) {
               if (!mBundleUserSettings.getBoolean(IS_VK_LOGGED_IN_FROM_SETTINGS)) {
-                VKSdk.logout();
+                logoutVk();
               }
             }
             if (!VKSdk.isLoggedIn()) {
