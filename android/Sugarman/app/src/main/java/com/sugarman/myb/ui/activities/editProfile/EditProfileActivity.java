@@ -342,8 +342,10 @@ public class EditProfileActivity extends BasicActivity
           "FB 2 network Count = " + networkCount + " network total count = " + networkTotalCount);
     }
     if (isChangeAnything()) {
-      DialogHelper.createSimpleDialog("ok", "not ok", "title", "save?", this,
-          (dialogInterface, i) -> {
+      DialogHelper.createSimpleDialog(getResources().getString(R.string.save),
+          getResources().getString(R.string.discard),
+          getResources().getString(R.string.save_changes),
+          getResources().getString(R.string.changes_have_been_made), this, (dialogInterface, i) -> {
             SharedPreferenceHelper.savePhoneNumber(etPhone.getText().toString());
             SharedPreferenceHelper.saveEmail(etEmail.getText().toString());
             SharedPreferenceHelper.saveUserName(etName.getText().toString());
@@ -487,6 +489,7 @@ public class EditProfileActivity extends BasicActivity
               SharedPreferenceHelper.getAvatar(), selectedFile);
         }
       }
+
       @Override public void onError(VKError error) {
         logoutVk();
         // ÐŸÑ€Ð¾Ð¸Ð·Ð¾ÑˆÐ»Ð° Ð¾ÑˆÐ¸Ð±ÐºÐ° Ð°Ð²Ñ‚Ð¾Ñ€Ð¸Ð·Ð°Ñ†Ð¸Ð¸ (Ð½Ð°Ð¿Ñ€Ð¸Ð¼ÐµÑ€, Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÑŒ Ð·Ð°Ð¿Ñ€ÐµÑ‚Ð¸Ð» Ð°Ð²Ñ‚Ð¾Ñ€Ð¸Ð·Ð°Ñ†Ð¸ÑŽ)

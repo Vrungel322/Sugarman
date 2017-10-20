@@ -288,7 +288,7 @@
 
   <string name="resend_in">Resend in</string>
   <string name="seconds">Seconds</string>
-  <string name="change_phone_number">Change phone number</string>
+  <string name="changePhone">Change phone number</string>
 
   <!-- LANGUAGE SETTINGS -->
   <array name="pref_language_array">
@@ -326,7 +326,6 @@
   <string name="empty_field_denied">%1$s can not be empty</string>
   <string name="purchase_request_send">We hope you will enjoy your purchase.</string>
   <string name="choooseCountry">Choose country</string>
-  <string name="changePhone">Change phone number</string>
   <string name="resend_code">Resend Code</string>
   <string name="wait_for">Resend in</string>
   <string name="approve_phone_pls">You need to approve phone number</string>

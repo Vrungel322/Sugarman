@@ -63,7 +63,7 @@ public class ApproveOtpActivity extends AppCompatActivity implements ApiApproveO
 
       @Override public void onTick(long l) {
         resendCode.setClickable(false);
-        resendCode.setText(getString(R.string.wait_for) + " " + l / 1000 + " seconds");
+        resendCode.setText(getResources().getString(R.string.resend_in) + " " + l / 1000 + " " + getResources().getString(R.string.seconds));
       }
 
       @Override public void onFinish() {

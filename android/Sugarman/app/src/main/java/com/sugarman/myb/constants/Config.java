@@ -15,8 +15,8 @@ public abstract class Config {
 
   public static final String PRIVACY_POLICY = "http://www.sugarman.eu/privacy-policy/";
 
-  //public static final String SERVER_URL = "http://sugarman-server.herokuapp.com/";
-  public static final String SERVER_URL = "http://sugarman-server-test.herokuapp.com/";
+  public static final String SERVER_URL = "http://sugarman-server.herokuapp.com/";
+  //public static final String SERVER_URL = "http://sugarman-server-test.herokuapp.com/";
   //http://sugarman-server-test.herokuapp.com/     http://sugarman-server.herokuapp.com
 
   public static final long RETROFIT_TIMEOUT = 20; // secs
@@ -31,7 +31,7 @@ public abstract class Config {
 
   public static final int NUMBER_STROKES_INDICATOR_LINE = 59;
 
-  public static final int MAX_ACTIVE_CREATED_TRACKINGS = 100;
+  public static final int MAX_ACTIVE_CREATED_TRACKINGS = 3;
 
   public static final int MAX_PICTURE_SIZE_SEND_TO_SERVER = 512; // px
 
