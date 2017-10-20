@@ -18,6 +18,7 @@ import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.base.MvpBaseRecyclerAdapter;
 import com.sugarman.myb.listeners.ItemMemberActionListener;
 import com.sugarman.myb.ui.views.CropCircleTransformation;
+import io.realm.Realm;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -144,7 +145,12 @@ public class MembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.ViewHold
 
       if (!friend.isPending() && !friend.isAdded()) {
         boolean isSelected = !friend.isSelected();
-        friend.setSelected(isSelected);
+        Realm.getDefaultInstance().executeTransaction(realm -> {
+          FacebookFriend myObject = friend;
+          myObject.setSelected(isSelected);
+          realm.insertOrUpdate(myObject); // could be copyToRealmOrUpdate
+        });
+        //friend.setSelected(isSelected);
 
         if (isSelected) {
           mSelected.add(friend);

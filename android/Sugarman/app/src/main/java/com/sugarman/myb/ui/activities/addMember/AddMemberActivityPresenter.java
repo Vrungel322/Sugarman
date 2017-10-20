@@ -76,4 +76,9 @@ import rx.Subscription;
       }
     }
   }
+
+  public void cacheFriends(List<FacebookFriend> allFriends) {
+    mDataManager.cacheFriends(allFriends);
+
+  }
 }

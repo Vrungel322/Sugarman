@@ -551,6 +551,8 @@ vApply.setEnabled(true);
     if (networksLoaded == networksToLoad) {
       closeProgressFragment();
       setFriends(allFriends);
+      //Cache friends
+      mPresenter.cacheFriends(allFriends);
     }
   }
 
