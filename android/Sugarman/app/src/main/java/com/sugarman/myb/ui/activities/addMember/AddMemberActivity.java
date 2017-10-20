@@ -26,7 +26,6 @@ import android.util.Pair;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -61,10 +60,9 @@ import com.sugarman.myb.listeners.AsyncSaveBitmapToFileListener;
 import com.sugarman.myb.listeners.OnFBGetFriendsListener;
 import com.sugarman.myb.models.VkFriend;
 import com.sugarman.myb.tasks.SaveBitmapToFileAsyncTask;
-import com.sugarman.myb.ui.activities.editProfile.EditProfileActivity;
 import com.sugarman.myb.ui.activities.base.BaseActivity;
+import com.sugarman.myb.ui.activities.editProfile.EditProfileActivity;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
-import com.sugarman.myb.ui.dialogs.sendVkInvitation.SendVkInvitationDialog;
 import com.sugarman.myb.ui.views.MaskImage;
 import com.sugarman.myb.ui.views.MaskTransformation;
 import com.sugarman.myb.utils.AnalyticsHelper;
@@ -731,7 +729,7 @@ vApply.setEnabled(true);
         } else {
           Timber.e("!mIdsFb.isEmpty()");
           // TODO: 12.10.2017 check Fb invite and create group
-          //checkFilledData();
+          checkFilledData();
         }
 
         if (!mInviteByVk.isEmpty()) {
@@ -1000,28 +998,28 @@ vApply.setEnabled(true);
     }
     if (!facebookElements.isEmpty()) {
       Timber.e("Fb Unique Send");
-      GameRequestDialog tempDialog = new GameRequestDialog(this);
-      tempDialog.registerCallback(fbCallbackManager,
-          new FacebookCallback<GameRequestDialog.Result>() {
-            @Override public void onSuccess(GameRequestDialog.Result result) {
-              finish();
-            }
-
-            @Override public void onCancel() {
-
-            }
-
-            @Override public void onError(FacebookException error) {
-
-            }
-          });
-      GameRequestContent content =
-          new GameRequestContent.Builder().setMessage(getString(R.string.play_with_me))
-              .setRecipients(facebookElements)
-              .build();
-      tempDialog.show(content);
-    }
-    if (!members.isEmpty()) {
+      //GameRequestDialog tempDialog = new GameRequestDialog(this);
+      //tempDialog.registerCallback(fbCallbackManager,
+      //    new FacebookCallback<GameRequestDialog.Result>() {
+      //      @Override public void onSuccess(GameRequestDialog.Result result) {
+      //        finish();
+      //      }
+      //
+      //      @Override public void onCancel() {
+      //
+      //      }
+      //
+      //      @Override public void onError(FacebookException error) {
+      //
+      //      }
+      //    });
+      //GameRequestContent content =
+      //    new GameRequestContent.Builder().setMessage(getString(R.string.play_with_me))
+      //        .setRecipients(facebookElements)
+      //        .build();
+      //tempDialog.show(content);
+    //}
+    //if (!members.isEmpty()) {
       Timber.e("Fb Unique Send , members " + members.size());
       mEditGroupClient.editGroup(trackingId, members, etGroupName.getText().toString(),
           selectedFile);
