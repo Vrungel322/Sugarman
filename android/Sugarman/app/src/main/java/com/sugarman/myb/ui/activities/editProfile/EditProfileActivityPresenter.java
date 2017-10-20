@@ -18,10 +18,12 @@ import rx.Subscription;
 
   public void sendUserDataToServer(String phone, String email, String name, String fbId,
       String vkId, String avatar, File selectedFile) {
+    getViewState().showPb();
     Subscription subscription =
         mDataManager.sendUserDataToServer(phone, email, name, fbId, vkId, avatar, selectedFile)
             .compose(ThreadSchedulers.applySchedulers())
             .subscribe(usersResponse -> {
+              getViewState().hidePb();
               getViewState().finishActivity();
             });
     addToUnsubscription(subscription);

@@ -15,9 +15,11 @@ import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -69,6 +71,7 @@ public class EditProfileActivity extends BasicActivity
   public static final String AVATAR_URL_FROM_SETTINGS = "AVATAR_URL_FROM_SETTINGS";
   @InjectPresenter EditProfileActivityPresenter mPresenter;
   @BindView(R.id.iv_profile_avatar) ImageView profileAvatar;
+  @BindView(R.id.pb_spinner) ProgressBar pb;
   @BindView(R.id.iv_next) ImageView nextButton;
   @BindView(R.id.iv_back) ImageView backButton;
   @BindView(R.id.tv_facebook) TextView tvFb;
@@ -163,7 +166,13 @@ public class EditProfileActivity extends BasicActivity
               SharedPreferenceHelper.saveFbId(accessToken.getUserId());
               cbFb.setChecked(true);
               networkCount++;
-              if (networkTotalCount == networkCount) {
+              Timber.e("Got to fb callback");
+              Timber.e("FB Callback network Count = "
+                  + networkCount
+                  + " network total count = "
+                  + networkTotalCount);
+              if (networkTotalCount >= networkCount) {
+                Timber.e("Networks equal");
                 mPresenter.sendUserDataToServer(etPhone.getText().toString(),
                     etEmail.getText().toString(), etName.getText().toString(),
                     SharedPreferenceHelper.getFbId(), SharedPreferenceHelper.getVkId(),
@@ -316,17 +325,23 @@ public class EditProfileActivity extends BasicActivity
   }
 
   @OnClick(R.id.iv_back) public void ivBackClicked() {
-    if (VKSdk.isLoggedIn() == mBundleUserSettings.getBoolean(IS_VK_LOGGED_IN_FROM_SETTINGS)) {
+    if (VKSdk.isLoggedIn() != mBundleUserSettings.getBoolean(IS_VK_LOGGED_IN_FROM_SETTINGS)) {
       networkTotalCount++;
+      Timber.e(
+          "VK network Count = " + networkCount + " network total count = " + networkTotalCount);
     }
 
     if (SharedPreferenceHelper.getFbId().equals("none") && mBundleUserSettings.getBoolean(
         IS_FB_LOGGED_IN_FROM_SETTINGS)) {
       networkTotalCount++;
+      Timber.e(
+          "FB 1 network Count = " + networkCount + " network total count = " + networkTotalCount);
     }
     if (!SharedPreferenceHelper.getFbId().equals("none") && !mBundleUserSettings.getBoolean(
         IS_FB_LOGGED_IN_FROM_SETTINGS)) {
       networkTotalCount++;
+      Timber.e(
+          "FB 2 network Count = " + networkCount + " network total count = " + networkTotalCount);
     }
     if (isChangeAnything()) {
       DialogHelper.createSimpleDialog("ok", "not ok", "title", "save?", this,
@@ -334,6 +349,7 @@ public class EditProfileActivity extends BasicActivity
             SharedPreferenceHelper.savePhoneNumber(etPhone.getText().toString());
             SharedPreferenceHelper.saveEmail(etEmail.getText().toString());
             SharedPreferenceHelper.saveUserName(etName.getText().toString());
+            networkCount++;
 
             mPresenter.sendUserDataToServer(etPhone.getText().toString(),
                 etEmail.getText().toString(), etName.getText().toString(),
@@ -457,8 +473,12 @@ public class EditProfileActivity extends BasicActivity
         SharedPreferenceHelper.saveVkId(res.userId);
         cbVk.setChecked(VKSdk.isLoggedIn());
 
+        Timber.e("VK Callback network Count = "
+            + networkCount
+            + " network total count = "
+            + networkTotalCount);
         networkCount++;
-        if (networkTotalCount == networkCount) {
+        if (networkTotalCount >= networkCount) {
           mPresenter.sendUserDataToServer(etPhone.getText().toString(),
               etEmail.getText().toString(), etName.getText().toString(),
               SharedPreferenceHelper.getFbId(), SharedPreferenceHelper.getVkId(),
@@ -607,6 +627,18 @@ public class EditProfileActivity extends BasicActivity
   }
 
   @Override public void finishActivity() {
-    finish();
+    Timber.e("Finish Activity network Count = "
+        + networkCount
+        + " network total count = "
+        + networkTotalCount);
+    if (networkCount >= networkTotalCount) finish();
+  }
+
+  @Override public void showPb() {
+    pb.setVisibility(View.VISIBLE);
+  }
+
+  @Override public void hidePb() {
+    pb.setVisibility(View.GONE);
   }
 }

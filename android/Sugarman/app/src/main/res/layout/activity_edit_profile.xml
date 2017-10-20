@@ -8,9 +8,11 @@
     tools:context="com.sugarman.myb.ui.activities.editProfile.EditProfileActivity"
     >
   <LinearLayout
+      android:id="@+id/linearLayout2"
       android:layout_width="0dp"
       android:layout_height="0dp"
       android:orientation="vertical"
+      android:visibility="visible"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintLeft_toLeftOf="parent"
       app:layout_constraintRight_toRightOf="parent"
@@ -149,8 +151,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:hint="Andrew Walker"
             android:background="@android:color/transparent"
+            android:hint="Andrew Walker"
             android:maxLines="1"
             />
 
@@ -178,12 +180,12 @@
             android:id="@+id/et_phone_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="+38 095 671 27 16"
-            android:paddingEnd="15dp"
             android:layout_gravity="center"
             android:background="@android:color/transparent"
+            android:hint="+38 095 671 27 16"
             android:inputType="phone"
             android:maxLines="1"
+            android:paddingEnd="15dp"
             />
 
       </LinearLayout>
@@ -211,8 +213,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:hint="walker@sugarman.com"
             android:background="@android:color/transparent"
+            android:hint="walker@sugarman.com"
             android:maxLines="1"
             />
 
@@ -337,4 +339,20 @@
         android:background="#95989A"
         />
   </LinearLayout>
+  <ProgressBar
+      android:id="@+id/pb_spinner"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="8dp"
+      android:layout_marginLeft="8dp"
+      android:layout_marginRight="8dp"
+      android:layout_marginTop="8dp"
+      android:visibility="gone"
+      app:layout_constraintBottom_toBottomOf="@+id/linearLayout2"
+      app:layout_constraintLeft_toLeftOf="@+id/linearLayout2"
+      app:layout_constraintRight_toRightOf="@+id/linearLayout2"
+      app:layout_constraintTop_toTopOf="@+id/linearLayout2"
+      app:layout_constraintVertical_bias="0.5"
+      style="?android:attr/progressBarStyle"
+      />
 </android.support.constraint.ConstraintLayout>
