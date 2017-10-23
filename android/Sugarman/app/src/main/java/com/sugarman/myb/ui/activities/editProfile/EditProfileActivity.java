@@ -351,6 +351,17 @@ public class EditProfileActivity extends BasicActivity
             SharedPreferenceHelper.saveUserName(etName.getText().toString());
             networkCount = networkTotalCount;
 
+
+            //ph
+            if (!mBundleUserSettings.getString(PHONE_FROM_SETTINGS).equals(etPhone.getText().toString())){
+              Intent intent = new Intent(EditProfileActivity.this, ApproveOtpActivity.class);
+              intent.putExtra("otp", otp);
+              intent.putExtra("showSettings", false);
+              intent.putExtra("phone", displayNumber);
+              intent.putExtra("nameParentActivity", EditProfileActivity.class.getName());
+              startActivity(intent);
+            }
+
             mPresenter.sendUserDataToServer(etPhone.getText().toString(),
                 etEmail.getText().toString(), etName.getText().toString(),
                 SharedPreferenceHelper.getFbId(), SharedPreferenceHelper.getVkId(),
