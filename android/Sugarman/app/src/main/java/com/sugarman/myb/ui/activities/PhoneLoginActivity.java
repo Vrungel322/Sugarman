@@ -21,7 +21,6 @@ import com.sugarman.myb.utils.Converters;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,6 +33,13 @@ public class PhoneLoginActivity extends GetUserInfoActivity implements ApiRefres
   String phoneNumber;
   private List<CountryCodeEntity> mCountryCodeEntities;
 
+  public static boolean isPhoneValid(String phone) {
+    String expression = "^[+][0-9]{8,15}$";
+    Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+    Matcher matcher = pattern.matcher(phone);
+    return matcher.matches();
+  }
+
   @Override protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_phone_login);
     super.onCreate(savedInstanceState);
@@ -45,7 +51,6 @@ public class PhoneLoginActivity extends GetUserInfoActivity implements ApiRefres
       public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         etPhoneNumber.setText("+" + mCountryCodeEntities.get(position).getCode());
         etPhoneNumber.setSelection(etPhoneNumber.getText().length());
-
       }
 
       @Override public void onNothingSelected(AdapterView<?> arg0) {
@@ -60,26 +65,16 @@ public class PhoneLoginActivity extends GetUserInfoActivity implements ApiRefres
     nextButton.setEnabled(true);
   }
 
-  public static boolean isPhoneValid(String phone)
-  {
-    String expression = "^[+][0-9]{8,15}$";
-    Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
-    Matcher matcher = pattern.matcher(phone);
-    return matcher.matches();
-  }
-
-      @OnClick(R.id.iv_cart) public void toApproveOtp() {
-        phoneNumber = etPhoneNumber.getText().toString();
-        //SharedPreferenceHelper.savePhoneNumber(phoneNumber);
-        if(isPhoneValid(phoneNumber)) {
-          nextButton.setEnabled(false);
-      refreshUserData("none", "none", "none", phoneNumber, "enter@email.com", phoneNumber, "none", "none", "none");
-    }
-    else
-    {
-      new SugarmanDialog.Builder(this, "Phone").content(getResources().getString(R.string.the_phone_is_not_valid))
-          .build()
-          .show();
+  @OnClick(R.id.iv_cart) public void toApproveOtp() {
+    phoneNumber = etPhoneNumber.getText().toString();
+    //SharedPreferenceHelper.savePhoneNumber(phoneNumber);
+    if (isPhoneValid(phoneNumber)) {
+      nextButton.setEnabled(false);
+      refreshUserData("none", "none", "none", phoneNumber, "enter@email.com", phoneNumber, "none",
+          "none", "none");
+    } else {
+      new SugarmanDialog.Builder(this, "Phone").content(
+          getResources().getString(R.string.the_phone_is_not_valid)).build().show();
     }
   }
 
@@ -89,6 +84,8 @@ public class PhoneLoginActivity extends GetUserInfoActivity implements ApiRefres
     intent.putExtra("otp", response.getResult().getUser().getPhoneOTP());
     intent.putExtra("token", response.getResult().getTokens());
     intent.putExtra("phone", phoneNumber);
+    intent.putExtra("nameParentActivity", PhoneLoginActivity.class.getName());
+
     startActivity(intent);
   }
 
@@ -108,9 +105,7 @@ public class PhoneLoginActivity extends GetUserInfoActivity implements ApiRefres
     etPhoneNumber.setText(mCountryCodeEntities.get(0).getCode());
   }
 
-  @OnClick(R.id.iv_back) public void closeActivity()
-  {
+  @OnClick(R.id.iv_back) public void closeActivity() {
     finish();
   }
-
 }

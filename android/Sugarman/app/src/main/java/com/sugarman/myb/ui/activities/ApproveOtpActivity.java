@@ -37,11 +37,13 @@ public class ApproveOtpActivity extends AppCompatActivity implements ApiApproveO
   String phoneNumberStr;
   private Tokens mTokens;
   private CountDownTimer mTimer;
+  private String nameParentActivity;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_approve_otp);
     otp = getIntent().getStringExtra("otp");
+    nameParentActivity = getIntent().getStringExtra("nameParentActivity");
     ButterKnife.bind(this);
     phoneNumberStr = getIntent().getStringExtra("phone");
     mTokens = getIntent().getParcelableExtra("token");
@@ -63,7 +65,11 @@ public class ApproveOtpActivity extends AppCompatActivity implements ApiApproveO
 
       @Override public void onTick(long l) {
         resendCode.setClickable(false);
-        resendCode.setText(getResources().getString(R.string.resend_in) + " " + l / 1000 + " " + getResources().getString(R.string.seconds));
+        resendCode.setText(getResources().getString(R.string.resend_in)
+            + " "
+            + l / 1000
+            + " "
+            + getResources().getString(R.string.seconds));
       }
 
       @Override public void onFinish() {
@@ -78,8 +84,7 @@ public class ApproveOtpActivity extends AppCompatActivity implements ApiApproveO
             otpEditText.getText().toString()));
   }
 
-  @OnClick(R.id.resend_code) public void startTimer()
-  {
+  @OnClick(R.id.resend_code) public void startTimer() {
     resendCode.setTextColor(ContextCompat.getColor(ApproveOtpActivity.this, R.color.gray));
     resendClient.resendMessage(phoneNumberStr);
     mTimer = new CountDownTimer(60000, 1000) {
@@ -98,9 +103,19 @@ public class ApproveOtpActivity extends AppCompatActivity implements ApiApproveO
   }
 
   @OnClick(R.id.tvChangePhone) public void tvChangePhoneClicked() {
-    Intent intent = new Intent(ApproveOtpActivity.this, PhoneLoginActivity.class);
-    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-    startActivity(intent);
+    if (nameParentActivity.equals(SplashActivity.class.getName())) {
+      Intent intent = new Intent(ApproveOtpActivity.this, LoginActivity.class);
+      intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+      startActivity(intent);
+    }
+    if (nameParentActivity.equals(PhoneLoginActivity.class.getName())) {
+      Intent intent = new Intent(ApproveOtpActivity.this, PhoneLoginActivity.class);
+      intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+      startActivity(intent);
+    }
+    if (nameParentActivity.equals(EditProfileActivity.class.getName())) {
+      finish();
+    }
   }
 
   @OnClick(R.id.iv_back) public void nextActivity() {
@@ -117,27 +132,26 @@ public class ApproveOtpActivity extends AppCompatActivity implements ApiApproveO
 
   @Override public void onApiApproveOtpSuccess(ApproveOtpResponse response) {
     Timber.e("OTP" + otp);
-      if (response.getCode().equals("0")) {
-        Intent intent;
-        if (showSettings) {
-          intent = new Intent(ApproveOtpActivity.this, EditProfileActivity.class);
-          intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        } else {
-          intent = new Intent(ApproveOtpActivity.this, MainActivity.class);
-        }
-        Timber.e("phoneNumberStr " + phoneNumberStr);
-        SharedPreferenceHelper.savePhoneNumber(phoneNumberStr);
-
-        if(mTokens!=null) {
-          SharedPreferenceHelper.saveToken(mTokens);
-        }
-        SharedPreferenceHelper.setOTPStatus(response.getUser().getNeedOTP());
-        startActivity(intent);
-      } else if (response.getCode().equals("1")) {
-        new SugarmanDialog.Builder(this, "Error").content("Please check the code you have entered!")
-            .show();
+    if (response.getCode().equals("0")) {
+      Intent intent;
+      if (showSettings) {
+        intent = new Intent(ApproveOtpActivity.this, EditProfileActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+      } else {
+        intent = new Intent(ApproveOtpActivity.this, MainActivity.class);
       }
+      Timber.e("phoneNumberStr " + phoneNumberStr);
+      SharedPreferenceHelper.savePhoneNumber(phoneNumberStr);
 
+      if (mTokens != null) {
+        SharedPreferenceHelper.saveToken(mTokens);
+      }
+      SharedPreferenceHelper.setOTPStatus(response.getUser().getNeedOTP());
+      startActivity(intent);
+    } else if (response.getCode().equals("1")) {
+      new SugarmanDialog.Builder(this, "Error").content("Please check the code you have entered!")
+          .show();
+    }
   }
 
   @Override public void onApiApproveOtpFailure(String message) {

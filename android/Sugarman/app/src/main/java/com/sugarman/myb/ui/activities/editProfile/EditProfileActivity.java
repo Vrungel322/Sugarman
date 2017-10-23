@@ -620,6 +620,8 @@ public class EditProfileActivity extends BasicActivity
       intent.putExtra("otp", otp);
       intent.putExtra("showSettings", false);
       intent.putExtra("phone", displayNumber);
+      intent.putExtra("nameParentActivity", EditProfileActivity.class.getName());
+
       startActivity(intent);
     } else {
       SharedPreferenceHelper.savePhoneNumber(etPhone.getText().toString());

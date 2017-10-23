@@ -225,7 +225,7 @@ public class SplashActivity extends GetUserInfoActivity
     Intent intent = new Intent(SplashActivity.this, ApproveOtpActivity.class);
     intent.putExtra("showSettings", true);
     intent.putExtra("phone", phoneNumber);
-    Timber.e("phone "+ phoneNumber);
+    intent.putExtra("nameParentActivity", SplashActivity.class.getName());
     startActivity(intent);
     finish();
   }
