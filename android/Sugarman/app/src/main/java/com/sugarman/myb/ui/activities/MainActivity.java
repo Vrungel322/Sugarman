@@ -11,6 +11,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
@@ -598,6 +599,7 @@ public class MainActivity extends GetUserInfoActivity implements View.OnClickLis
 
     int openActivityCode = IntentExtractorHelper.getOpenActivityCode(intent);
     String trackingId = IntentExtractorHelper.getTrackingIdFromFcm(intent);
+    String url = IntentExtractorHelper.getUrlFromFcm(intent);
     switch (openActivityCode) {
       case Constants.OPEN_INVITES_ACTIVITY:
         openInvitesActivity();
@@ -613,6 +615,9 @@ public class MainActivity extends GetUserInfoActivity implements View.OnClickLis
         break;
       case Constants.OPEN_FAILED_ACTIVITY:
         openFailedActivity(trackingId);
+        break;
+      case Constants.OPEN_EXTERNAL_URL:
+        openLink(url);
         break;
       case Constants.OPEN_MAIN_ACTIVITY:
         if (!TextUtils.isEmpty(trackingId)) {
@@ -1204,6 +1209,13 @@ public class MainActivity extends GetUserInfoActivity implements View.OnClickLis
         myRequests.toArray(new Request[myRequests.size()]));
     intent.putExtra(Constants.INTENT_OPEN_ACTIVITY, Constants.OPEN_REQUESTS_ACTIVITY);
     startActivityForResult(intent, Constants.OPEN_PROFILE_ACTIVITY_REQUEST_CODE);
+  }
+
+  public void openLink(String url)
+  {
+    Intent i = new Intent(Intent.ACTION_VIEW);
+    i.setData(Uri.parse(url));
+    startActivity(i);
   }
 
   public void refreshTrackings() {

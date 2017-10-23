@@ -29,6 +29,8 @@ import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.StringHelper;
 import java.util.Map;
 import java.util.Set;
+import org.json.JSONException;
+import org.json.JSONObject;
 import timber.log.Timber;
 
 public class FcmListenerService extends FirebaseMessagingService {
@@ -64,10 +66,40 @@ public class FcmListenerService extends FirebaseMessagingService {
         case Constants.FCM_MESSAGE:
           processMessage(text, notification);
           break;
+        case Constants.FCM_NOTIFICATION:
+          Timber.e("Got in here");
+          String url = "";
+          String msg = "";
+          try {
+            JSONObject resp = new JSONObject(data.get(key).toString());
+            url = resp.getString("url");
+            msg = resp.getString("text");
+
+          } catch (JSONException e) {
+            e.printStackTrace();
+          }
+          processURL(url, msg);
+          break;
         default:
           break;
       }
     }
+  }
+
+  private void processURL(String url, String message) {
+    Timber.e("Process URL " + url + " " + message);
+
+
+    Intent intent = new Intent(this, SplashActivity.class);
+
+    intent.putExtra(Constants.INTENT_OPEN_ACTIVITY, Constants.OPEN_EXTERNAL_URL);
+    intent.putExtra(Constants.INTENT_FCM_URL, url);
+
+    PendingIntent pendingIntent =
+        PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+    sendNotification(message, Constants.FIREBASE_NOTIFICATION_ID, pendingIntent);
+
+    //startActivity(i);
   }
 
   private void sendNotification(String text, int notificationId, PendingIntent pendingIntent) {
