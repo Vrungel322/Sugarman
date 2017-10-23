@@ -109,6 +109,7 @@ public class CreateGroupActivity extends BaseActivity
   boolean isVkLoggedIn = false, isFbLoggedIn = false;
   MaskImage mi;
   @InjectPresenter CreateGroupActivityPresenter mPresenter;
+  View vApply;
   private FriendsAdapter friendsAdapter;
   private RecyclerView rcvFriends;
   private ImageView ivGroupAvatar;
@@ -185,7 +186,6 @@ public class CreateGroupActivity extends BaseActivity
   private File selectedFile;
   private int networksToLoad = 0, networksLoaded = 0;
   private boolean vkPeopleAdd;
-  View vApply;
   private List<Phones> mDistinktorList = new ArrayList<>();
 
   @Override protected void onDestroy() {
@@ -284,6 +284,9 @@ public class CreateGroupActivity extends BaseActivity
         == PackageManager.PERMISSION_GRANTED) {
       networksToLoad++;
 
+      //load friends from DB
+      mPresenter.fillListByCachedData();
+
       AsyncTask.execute(() -> {
         HashMap<String, String> contactList =
             ContactsHelper.getContactList(CreateGroupActivity.this);
@@ -294,12 +297,13 @@ public class CreateGroupActivity extends BaseActivity
               "ph");
           allFriends.add(friend);
           phonesToCheck.add(contactList.get(key).replace(" ", ""));
-        //  Timber.e(contactList.get(key));
+          //  Timber.e(contactList.get(key));
         }
 
         mCheckPhoneClient.checkPhones(phonesToCheck);
 
         Timber.e("Contacts loaded");
+        runOnUiThread(() -> setFriends(allFriends));
       });
     } else {
       phFilter.setAlpha(0.5f);
@@ -526,7 +530,7 @@ public class CreateGroupActivity extends BaseActivity
 
   @Override protected void onResume() {
     super.onResume();
-vApply.setEnabled(true);
+    vApply.setEnabled(true);
     if (!isFriendsFound) {
       getFacebookFriends();
     }
@@ -1037,13 +1041,13 @@ vApply.setEnabled(true);
     //Timber.e("SET INVITABLE 1 " + phones.size());
 
     for (Phones p : phones) {
-     // Timber.e("SET INVITABLE IF 1.5 ");
+      // Timber.e("SET INVITABLE IF 1.5 ");
       for (FacebookFriend friend : allFriends) {
-      //  Timber.e("SET INVITABLE for 2 " + friend.getName());
+        //  Timber.e("SET INVITABLE for 2 " + friend.getName());
         if (friend.getSocialNetwork().equals("ph")) {
-        //  Timber.e("SET INVITABLE IF 3 " + friend.getName());
+          //  Timber.e("SET INVITABLE IF 3 " + friend.getName());
           if (friend.getId().equals(p.getPhone())) {
-        //    Timber.e("SET INVITABLE IF 4 " + friend.getName());
+            //    Timber.e("SET INVITABLE IF 4 " + friend.getName());
             friend.setIsInvitable(FacebookFriend.CODE_NOT_INVITABLE);
           }
         }
@@ -1065,17 +1069,17 @@ vApply.setEnabled(true);
 
   @Override public void onApiCheckVkSuccess(List<String> vks) {
 
-  //  Timber.e("OnApiCheckVkSuccess");
+    //  Timber.e("OnApiCheckVkSuccess");
 
-   // Timber.e("SET INVITABLE IF 1 " + vks.size());
+    // Timber.e("SET INVITABLE IF 1 " + vks.size());
     for (String s : vks) {
-    //Timber.e("SET INVITABLE IF 1.5 ");
+      //Timber.e("SET INVITABLE IF 1.5 ");
       for (FacebookFriend friend : allFriends) {
-     //   Timber.e("SET INVITABLE for 2 " + friend.getName());
+        //   Timber.e("SET INVITABLE for 2 " + friend.getName());
         if (friend.getSocialNetwork().equals("vk")) {
-     //     Timber.e("SET INVITABLE IF 3 " + friend.getName());
+          //     Timber.e("SET INVITABLE IF 3 " + friend.getName());
           if (friend.getId().equals(s)) {
-      //      Timber.e("SET INVITABLE IF 4 " + friend.getName());
+            //      Timber.e("SET INVITABLE IF 4 " + friend.getName());
             friend.setIsInvitable(FacebookFriend.CODE_NOT_INVITABLE);
           }
         }
@@ -1097,7 +1101,18 @@ vApply.setEnabled(true);
   }
 
   @Override public void fillListByCachedData(List<FacebookFriend> facebookFriends) {
-    friendsAdapter.setValue(facebookFriends);
+    List<FacebookFriend> notRealmList = new ArrayList<>();
+    for (int i = 0; i < facebookFriends.size(); i++) {
+      notRealmList.add(new FacebookFriend(facebookFriends.get(i).getSocialNetwork(),
+          facebookFriends.get(i).getPhotoUrl(), facebookFriends.get(i).getId(),
+          facebookFriends.get(i).getName(),
+           facebookFriends.get(i).getIsInvitable(), false, false, false
+          //facebookFriends.get(i).isSelected(),
+          //facebookFriends.get(i).isAdded(),
+          //facebookFriends.get(i).isPending()
+      ));
+    }
+    friendsAdapter.setValue(notRealmList);
   }
 
   @Override public void showProgress() {
