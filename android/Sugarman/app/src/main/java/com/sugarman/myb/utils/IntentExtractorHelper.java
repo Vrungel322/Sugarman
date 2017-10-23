@@ -12,6 +12,7 @@ import com.sugarman.myb.api.models.responses.me.requests.Request;
 import com.sugarman.myb.api.models.responses.me.stats.Stats;
 import com.sugarman.myb.constants.Constants;
 import java.util.Arrays;
+import timber.log.Timber;
 
 public abstract class IntentExtractorHelper {
 
@@ -270,6 +271,19 @@ public abstract class IntentExtractorHelper {
     }
 
     return position;
+  }
+
+  public static String getUrlFromFcm(Intent intent) {
+    String url = "";
+    Timber.e("Got into getURL");
+
+    if (intent != null && intent.hasExtra(Constants.INTENT_FCM_URL)) {
+      url = intent.getStringExtra(Constants.INTENT_FCM_URL);
+    } else {
+      Log.e(TAG, "url from fcm are absent in intent extra");
+    }
+
+    return url;
   }
 }
 

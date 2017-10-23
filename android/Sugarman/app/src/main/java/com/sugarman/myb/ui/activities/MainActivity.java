@@ -105,6 +105,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import org.greenrobot.eventbus.Subscribe;
+import timber.log.Timber;
 
 public class MainActivity extends GetUserInfoActivity implements View.OnClickListener {
 
@@ -617,6 +618,7 @@ public class MainActivity extends GetUserInfoActivity implements View.OnClickLis
         openFailedActivity(trackingId);
         break;
       case Constants.OPEN_EXTERNAL_URL:
+        Timber.e("OPEN EXTERNAL URL");
         openLink(url);
         break;
       case Constants.OPEN_MAIN_ACTIVITY:
@@ -1213,6 +1215,7 @@ public class MainActivity extends GetUserInfoActivity implements View.OnClickLis
 
   public void openLink(String url)
   {
+    Timber.e("FCM URL " + url);
     Intent i = new Intent(Intent.ACTION_VIEW);
     i.setData(Uri.parse(url));
     startActivity(i);

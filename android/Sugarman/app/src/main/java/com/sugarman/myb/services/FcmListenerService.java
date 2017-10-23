@@ -24,6 +24,7 @@ import com.sugarman.myb.eventbus.events.RefreshTrackingsEvent;
 import com.sugarman.myb.eventbus.events.ReportStepsEvent;
 import com.sugarman.myb.eventbus.events.UpdateInvitesEvent;
 import com.sugarman.myb.eventbus.events.UpdateRequestsEvent;
+import com.sugarman.myb.ui.activities.MainActivity;
 import com.sugarman.myb.ui.activities.SplashActivity;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.StringHelper;
@@ -52,33 +53,33 @@ public class FcmListenerService extends FirebaseMessagingService {
     Map data = message.getData();
     String text = (String) data.get(Constants.FCM_MESSAGE);
     String notification = (String) data.get(Constants.FCM_NOTIFICATION);
+    String url="";
+    try {
+      JSONObject notificationJSON = new JSONObject(notification);
+      url = notificationJSON.getString("url");
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
 
     Set keys = data.keySet();
-    for (Object key : keys) {
-      String keyType = key.toString();
-      Log.d(TAG, "key: " + keyType);
-      Log.d(TAG, "val: " + data.get(key));
+          for (Object key : keys) {
+            String keyType = key.toString();
+            Log.d(TAG, "key: " + keyType);
+            Log.d(TAG, "val: " + data.get(key));
 
-      switch (keyType) {
-        case Constants.FCM_REPORT_STEPS_KEY:
-          App.getEventBus().post(new ReportStepsEvent());
-          break;
-        case Constants.FCM_MESSAGE:
-          processMessage(text, notification);
-          break;
-        case Constants.FCM_NOTIFICATION:
-          Timber.e("Got in here");
-          String url = "";
-          String msg = "";
-          try {
-            JSONObject resp = new JSONObject(data.get(key).toString());
-            url = resp.getString("url");
-            msg = resp.getString("text");
+            switch (keyType) {
+              case Constants.FCM_REPORT_STEPS_KEY:
+                App.getEventBus().post(new ReportStepsEvent());
+                break;
+              case Constants.FCM_MESSAGE:
+                Timber.e("Got in message");
+                Timber.e("url " + url);
+          if(url!=null) {
 
-          } catch (JSONException e) {
-            e.printStackTrace();
+            processURL(url, text);
           }
-          processURL(url, msg);
+          else processMessage(text, notification);
+
           break;
         default:
           break;
@@ -90,10 +91,12 @@ public class FcmListenerService extends FirebaseMessagingService {
     Timber.e("Process URL " + url + " " + message);
 
 
-    Intent intent = new Intent(this, SplashActivity.class);
+    Intent intent = new Intent(this, MainActivity.class);
 
     intent.putExtra(Constants.INTENT_OPEN_ACTIVITY, Constants.OPEN_EXTERNAL_URL);
     intent.putExtra(Constants.INTENT_FCM_URL, url);
+
+    Timber.e(intent.getStringExtra(Constants.INTENT_FCM_URL) + " from fcm extra");
 
     PendingIntent pendingIntent =
         PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
