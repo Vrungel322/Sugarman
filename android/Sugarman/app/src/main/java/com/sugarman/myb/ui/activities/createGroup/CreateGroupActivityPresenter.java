@@ -31,10 +31,9 @@ import rx.Subscription;
 
   @Override protected void onFirstViewAttach() {
     super.onFirstViewAttach();
-    fillListByCachedData();
   }
 
-  private void fillListByCachedData() {
+  public void fillListByCachedData() {
     getViewState().showProgress();
     Subscription subscription = mDataManager.getCachedFriends()
         .compose(ThreadSchedulers.applySchedulers())

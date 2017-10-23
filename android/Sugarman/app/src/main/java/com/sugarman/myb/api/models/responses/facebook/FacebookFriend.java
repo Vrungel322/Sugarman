@@ -42,6 +42,19 @@ public class FacebookFriend extends RealmObject implements Parcelable {
   public FacebookFriend() {
   }
 
+  public FacebookFriend(String socialNetwork, String photoUrl, String id, String name,
+      int isInvitable, boolean isSelected, boolean isAdded,
+      boolean isPending) {
+    this.socialNetwork = socialNetwork;
+    this.photoUrl = photoUrl;
+    this.id = id;
+    this.name = name;
+    this.isInvitable = isInvitable;
+    this.isSelected = isSelected;
+    this.isAdded = isAdded;
+    this.isPending = isPending;
+  }
+
   public FacebookFriend(String id, String name, String photoUrl, int isInvitable,
       String socialNetwork) {
     this.id = id;

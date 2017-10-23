@@ -1,36 +1,28 @@
 package com.sugarman.myb.ui.activities.checkout;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.paypal.android.MEP.CheckoutButton;
-import com.paypal.android.MEP.PayPal;
-import com.paypal.android.MEP.PayPalActivity;
-import com.paypal.android.MEP.PayPalInvoiceData;
-import com.paypal.android.MEP.PayPalPayment;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalService;
+import com.squareup.picasso.Picasso;
 import com.sugarman.myb.R;
 import com.sugarman.myb.base.BasicActivity;
 import com.sugarman.myb.constants.Config;
-import com.sugarman.myb.ui.dialogs.SugarmanDialog;
-import java.math.BigDecimal;
-import timber.log.Timber;
+import com.sugarman.myb.ui.views.CropCircleTransformation;
 
 
 /*
@@ -51,7 +43,7 @@ public class CheckoutActivity extends BasicActivity implements ICheckoutActivity
   @BindView(R.id.tvTotalPrice) TextView totalPrice;
   int num = 1;
   int productPrice = 0;
-  int productImageId = 0;
+  String  productImageUrl;
   String productName = "";
   @BindView(R.id.etCountryName) EditText etCountryName;
   @BindView(R.id.etCityName) EditText etCityName;
@@ -73,7 +65,7 @@ public class CheckoutActivity extends BasicActivity implements ICheckoutActivity
     Intent intent = getIntent();
     int type = intent.getIntExtra("checkout", -1);
     productPrice = intent.getIntExtra("productPrice", 0);
-    productImageId = intent.getIntExtra("productImageId", 0);
+    productImageUrl = intent.getStringExtra("productImageId");
     productName = intent.getStringExtra("productName");
     Log.e("checkout", "" + type);
 
@@ -120,7 +112,16 @@ public class CheckoutActivity extends BasicActivity implements ICheckoutActivity
         TextView productNametv = (TextView) v1.findViewById(R.id.firstText);
         productNametv.setText(productName);
 
-        productImage.setImageDrawable(getResources().getDrawable(productImageId));
+        Picasso.with(this)
+            .load(Uri.parse(productImageUrl))
+            .fit()
+            .centerCrop()
+            .placeholder(R.drawable.ic_gray_avatar)
+            .error(R.drawable.ic_red_avatar)
+            .transform(new CropCircleTransformation(0x00ffffff, 4))
+            .into(productImage);
+
+        //productImage.setImageDrawable(getResources().getDrawable(productImageId));
 
         ImageView plusButton = (ImageView) v1.findViewById(R.id.plus);
         plusButton.setOnClickListener(view -> {

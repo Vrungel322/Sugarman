@@ -31,7 +31,7 @@ import rx.Subscription;
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(shopProductEntities -> {
           getViewState().showProducts(shopProductEntities);
-        });
+        },Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 }
