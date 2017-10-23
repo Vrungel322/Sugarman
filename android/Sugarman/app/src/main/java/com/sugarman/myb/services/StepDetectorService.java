@@ -45,10 +45,13 @@ import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.StringHelper;
 import com.sugarman.myb.utils.stepcounter.CustomStepDetector;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import org.greenrobot.eventbus.Subscribe;
+import timber.log.Timber;
 
 public class StepDetectorService extends Service implements OnReportSendListener {
 
@@ -89,6 +92,9 @@ public class StepDetectorService extends Service implements OnReportSendListener
   private final SensorEventListener mStepDetectorListener = new SensorEventListener() {
 
     @Override public void onSensorChanged(SensorEvent event) {
+      DateFormat dfDate = new SimpleDateFormat("yyyy-MM-dd");
+      String date = dfDate.format(Calendar.getInstance().getTime());
+      SharedPreferenceHelper.setTodayDate(date);
       int steps = event.values.length;
       if (steps > 0) {
         refreshNextDays();
@@ -110,6 +116,9 @@ public class StepDetectorService extends Service implements OnReportSendListener
   private final SensorEventListener mStepCounterListener = new SensorEventListener() {
 
     @Override public void onSensorChanged(SensorEvent event) {
+      DateFormat dfDate = new SimpleDateFormat("yyyy-MM-dd");
+      String date = dfDate.format(Calendar.getInstance().getTime());
+      SharedPreferenceHelper.setTodayDate(date);
       if (event.values != null && event.values.length > 0) {
         int steps = (int) event.values[0];
 
@@ -133,6 +142,9 @@ public class StepDetectorService extends Service implements OnReportSendListener
   private final SensorEventListener mCustomStepDetectorListener = new SensorEventListener() {
     @Override public void onSensorChanged(SensorEvent event) {
       if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+        DateFormat dfDate = new SimpleDateFormat("yyyy-MM-dd");
+        String date = dfDate.format(Calendar.getInstance().getTime());
+        SharedPreferenceHelper.setTodayDate(date);
         customStepDetector.updateAccel(event.timestamp, event.values[0], event.values[1],
             event.values[2]);
       }
@@ -703,6 +715,7 @@ public class StepDetectorService extends Service implements OnReportSendListener
       }
       App.appendLog(Constants.TAG_TEST_GO_TO_NEXT_DAY, "refreshNextDays() get stats finish");
       SharedPreferenceHelper.saveUserTodaySteps(todayReportedSteps);
+      Timber.e("Save Showed Steps " + todayReportedSteps);
       SharedPreferenceHelper.saveShowedSteps(todayReportedSteps);
 
       unregisterEventStepDetector();

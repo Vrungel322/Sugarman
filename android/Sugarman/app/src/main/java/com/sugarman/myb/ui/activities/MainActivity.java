@@ -466,11 +466,13 @@ public class MainActivity extends GetUserInfoActivity implements View.OnClickLis
 
     DateFormat dfDate = new SimpleDateFormat("yyyy-MM-dd");
     String date = dfDate.format(Calendar.getInstance().getTime());
+    Timber.e("Date " + date);
+    //SharedPreferenceHelper.setTodayDate(date);
     SharedPreferenceHelper.setTodayDateForShowedSteps(date);
     SharedPreferenceHelper.getTodayDateForShowedSteps();
-
+    Timber.e("Save Showed Steps get today date " + SharedPreferenceHelper.getStepsForTheDate(SharedPreferenceHelper.getTodayDate()));
     SharedPreferenceHelper.saveShowedSteps(
-        SharedPreferenceHelper.getStepsForTheDate(SharedPreferenceHelper.getTodayDate()));
+        SharedPreferenceHelper.getStepsForTheDate(date));
 
     SharedPreferenceHelper.setOnLaunch(true);
 
@@ -479,7 +481,7 @@ public class MainActivity extends GetUserInfoActivity implements View.OnClickLis
         "HOW MANY MILISECONDS TO MIDNIGHT: " + DeviceHelper.howManyMillisecondsToMidnight());
     new Handler().postDelayed(new Runnable() {
       @Override public void run() {
-
+        Timber.e("Save Showed Steps 0");
         SharedPreferenceHelper.saveShowedSteps(0);
         //SharedPreferenceHelper.shiftStatsLocalOnOneDay(SharedPreferenceHelper.getUserId());
         Log.d("Helper local pref", ""
@@ -820,6 +822,7 @@ public class MainActivity extends GetUserInfoActivity implements View.OnClickLis
     super.onStop();
 
     if (animationMan != null) animationMan.stop();
+    Timber.e("Save Showed Steps on stop " + todaySteps);
     SharedPreferenceHelper.saveShowedSteps(todaySteps);
     Log.d("!!!", "save showed: " + todaySteps);
   }
@@ -1478,6 +1481,7 @@ public class MainActivity extends GetUserInfoActivity implements View.OnClickLis
           } else {
             animationTodaySteps = todaySteps;
             updateTodaySteps(todaySteps);
+            Timber.e("Save Showed Steps " + todaySteps);
             SharedPreferenceHelper.saveShowedSteps(todaySteps);
             isAnimationRunned = false;
           }
