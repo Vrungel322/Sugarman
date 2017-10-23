@@ -17,4 +17,8 @@ import com.sugarman.myb.api.models.responses.users.UsersResponse;
   void showPb();
 
   void showSocialProblem(UsersResponse usersResponse);
+
+  void showPhoneProblem();
+
+  void showEmailProblem();
 }

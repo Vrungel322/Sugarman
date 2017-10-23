@@ -5,6 +5,7 @@ import com.sugarman.myb.App;
 import com.sugarman.myb.base.BasicPresenter;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.ThreadSchedulers;
+import com.sugarman.myb.utils.Validator;
 import java.io.File;
 import rx.Subscription;
 
@@ -19,19 +20,31 @@ import rx.Subscription;
 
   public void sendUserDataToServer(String phone, String email, String name, String fbId,
       String vkId, String avatar, File selectedFile) {
-    getViewState().showPb();
-    Subscription subscription =
-        mDataManager.sendUserDataToServer(phone, email, name, fbId, vkId, avatar, selectedFile)
-            .compose(ThreadSchedulers.applySchedulers())
-            .subscribe(usersResponse -> {
-              if (usersResponse.getResult() != null) {
-                SharedPreferenceHelper.setOTPStatus(usersResponse.getUser().getNeedOTP());
-                getViewState().hidePb();
-                getViewState().finishActivity();
-              }else {
-                getViewState().showSocialProblem(usersResponse);
-              }
-            });
-    addToUnsubscription(subscription);
+
+    if (Validator.isEmailValid(email)) {
+      if (phone.equals("")) {
+        phone = "none";
+      }
+      if (Validator.isPhoneValid(phone)) {
+        getViewState().showPb();
+        Subscription subscription =
+            mDataManager.sendUserDataToServer(phone, email, name, fbId, vkId, avatar, selectedFile)
+                .compose(ThreadSchedulers.applySchedulers())
+                .subscribe(usersResponse -> {
+                  if (usersResponse.getResult() != null) {
+                    SharedPreferenceHelper.setOTPStatus(usersResponse.getUser().getNeedOTP());
+                    getViewState().hidePb();
+                    getViewState().finishActivity();
+                  } else {
+                    getViewState().showSocialProblem(usersResponse);
+                  }
+                });
+        addToUnsubscription(subscription);
+      } else {
+        getViewState().showPhoneProblem();
+      }
+    } else {
+      getViewState().showEmailProblem();
+    }
   }
 }

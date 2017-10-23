@@ -662,6 +662,16 @@ public class EditProfileActivity extends BasicActivity
     }
   }
 
+  @Override public void showPhoneProblem() {
+    new SugarmanDialog.Builder(this, "Phone").content(
+        getResources().getString(R.string.the_phone_is_not_valid)).build().show();
+  }
+
+  @Override public void showEmailProblem() {
+    new SugarmanDialog.Builder(this, "Email").content(
+        getResources().getString(R.string.the_email_is_not_valid)).build().show();
+  }
+
   @Override public void hidePb() {
     pb.setVisibility(View.GONE);
   }
