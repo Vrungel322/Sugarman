@@ -35,8 +35,8 @@ public class RestApi {
     return api.refreshRxUserData(request);
   }
 
-  public Observable<Response<Void>> sendPurchaseData(PurchaseDataRequest purchaseDataRequest) {
-    return api.sendPurchaseData(purchaseDataRequest);
+  public Observable<Response<Void>> sendPurchaseData(PurchaseDataRequest purchaseDataRequest,String accessToken) {
+    return api.sendPurchaseData(purchaseDataRequest,accessToken);
   }
 
   public Observable<Response<Void>> addFriendsToShopGroup(String userId,

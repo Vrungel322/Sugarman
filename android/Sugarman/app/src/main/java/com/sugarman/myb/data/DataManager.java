@@ -57,7 +57,8 @@ public class DataManager {
     PurchaseDataRequest purchaseDataRequest =
         new PurchaseDataRequest(SharedPreferenceHelper.getUserId(), countryName, cityName,
             streetName, fullName, phoneNumber, amountPrice, num, productName, zipCode);
-    return mRestApi.sendPurchaseData(purchaseDataRequest);
+    return mRestApi.sendPurchaseData(purchaseDataRequest,
+        Constants.BEARER + SharedPreferenceHelper.getAccessToken());
   }
 
   public Observable<Response<Void>> addFriendsToShopGroup(
@@ -103,12 +104,11 @@ public class DataManager {
     mDbHelper.dropRealmTable(FacebookFriend.class);
     for (int i = 0; i < friends.size(); i++) {
 
-      if(friends.get(i).getPhotoUrl()==null) {
+      if (friends.get(i).getPhotoUrl() == null) {
         friends.get(i).setPhotoUrl("https://sugarman-myb.s3.amazonaws.com/Group_New.png");
       }
       mDbHelper.save(friends.get(i));
     }
-
   }
 
   public Observable<List<FacebookFriend>> getCachedFriends() {

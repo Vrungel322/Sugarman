@@ -26,8 +26,8 @@ public interface ApiRx {
   @POST("v2/users") Observable<UsersResponse> refreshRxUserData(
       @Body RefreshUserDataRequest request);
 
-  @POST("v2/checkouts") Observable<Response<Void>> sendPurchaseData(
-      @Body PurchaseDataRequest purchaseDataRequest);
+  @POST("v3/checkouts") Observable<Response<Void>> sendPurchaseData(
+      @Body PurchaseDataRequest purchaseDataRequest, @Header("Authorization") String accessToken);
 
   //@POST("v2/shop_invite") @FormUrlEncoded Observable<Response<Void>> addFriendsToShopGroup(
   //    @Field("user_id") String userId, @Body List<FacebookFriend> selectedMembers);
