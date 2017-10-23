@@ -28,7 +28,7 @@ import rx.Subscription;
     request.setgToken("none");
     request.setPhoneToken("none");
     request.setPhoneNumber("none");
-    request.setEmail("none");
+    request.setEmail("none@mail.com");
     request.setName("none");
     request.setVkId("none");
     request.setFbId("none");
