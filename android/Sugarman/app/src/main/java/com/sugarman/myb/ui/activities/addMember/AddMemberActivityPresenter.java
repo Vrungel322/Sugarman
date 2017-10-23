@@ -1,6 +1,5 @@
 package com.sugarman.myb.ui.activities.addMember;
 
-import android.util.Log;
 import com.arellomobile.mvp.InjectViewState;
 import com.sugarman.myb.App;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
@@ -8,14 +7,8 @@ import com.sugarman.myb.base.BasicPresenter;
 import com.sugarman.myb.utils.RxBus;
 import com.sugarman.myb.utils.RxBusHelper;
 import com.sugarman.myb.utils.ThreadSchedulers;
-import com.vk.sdk.api.VKApiConst;
-import com.vk.sdk.api.VKError;
-import com.vk.sdk.api.VKParameters;
-import com.vk.sdk.api.VKRequest;
-import com.vk.sdk.api.VKResponse;
 import java.util.List;
 import javax.inject.Inject;
-import org.json.JSONObject;
 import rx.Subscription;
 
 /**
