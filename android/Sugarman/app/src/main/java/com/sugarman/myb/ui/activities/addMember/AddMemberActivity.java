@@ -186,9 +186,11 @@ public class AddMemberActivity extends BaseActivity
 
         @Override public void onCancel() {
           // nothing
+          hideProgress();
         }
 
         @Override public void onError(FacebookException error) {
+          hideProgress();
           if (DeviceHelper.isNetworkConnected()) {
             new SugarmanDialog.Builder(AddMemberActivity.this,
                 DialogConstants.FAILURE_INVITE_FB_FRIENDS_ID).content(error.getMessage()).show();
@@ -865,9 +867,9 @@ vApply.setEnabled(true);
   @Override public void onApiAddMembersFailure(String message) {
     closeProgressFragment();
     if (DeviceHelper.isNetworkConnected()) {
-      //new SugarmanDialog.Builder(this, DialogConstants.API_FAILURE_ADD_MEMBERS_ID)
-      //        .content(message)
-      //        .show();
+      new SugarmanDialog.Builder(this, DialogConstants.API_FAILURE_ADD_MEMBERS_ID)
+              .content(message)
+              .show();
     } else {
       showNoInternetConnectionDialog();
     }
