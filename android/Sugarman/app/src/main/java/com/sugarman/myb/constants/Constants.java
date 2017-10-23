@@ -69,6 +69,8 @@ public abstract class Constants {
 
   public static final int OPEN_FAILED_ACTIVITY = 6;
 
+  public static final int OPEN_EXTERNAL_URL = 7;
+
   public static final String BUNDLE_TRACKING_ITEM = "bundle_tracking_item";
 
   public static final String BUNDLE_TRACKING_POSITION = "bundle_tracking_position";
@@ -97,6 +99,7 @@ public abstract class Constants {
   // Rotations (for camera activities)
   private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
   public static final String READ_PHONE_CONTACTS_PERMISSION = "android.permission.READ_CONTACTS";
+  public static final String INTENT_FCM_URL = "intent_fcm_url";
 
   static {
     ORIENTATIONS.append(Surface.ROTATION_0, 90);

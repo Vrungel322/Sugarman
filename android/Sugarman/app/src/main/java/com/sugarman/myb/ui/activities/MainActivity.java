@@ -11,6 +11,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
@@ -104,6 +105,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import org.greenrobot.eventbus.Subscribe;
+import timber.log.Timber;
 
 public class MainActivity extends GetUserInfoActivity implements View.OnClickListener {
 
@@ -464,11 +466,13 @@ public class MainActivity extends GetUserInfoActivity implements View.OnClickLis
 
     DateFormat dfDate = new SimpleDateFormat("yyyy-MM-dd");
     String date = dfDate.format(Calendar.getInstance().getTime());
+    Timber.e("Date " + date);
+    //SharedPreferenceHelper.setTodayDate(date);
     SharedPreferenceHelper.setTodayDateForShowedSteps(date);
     SharedPreferenceHelper.getTodayDateForShowedSteps();
-
+    Timber.e("Save Showed Steps get today date " + SharedPreferenceHelper.getStepsForTheDate(SharedPreferenceHelper.getTodayDate()));
     SharedPreferenceHelper.saveShowedSteps(
-        SharedPreferenceHelper.getStepsForTheDate(SharedPreferenceHelper.getTodayDate()));
+        SharedPreferenceHelper.getStepsForTheDate(date));
 
     SharedPreferenceHelper.setOnLaunch(true);
 
@@ -477,7 +481,7 @@ public class MainActivity extends GetUserInfoActivity implements View.OnClickLis
         "HOW MANY MILISECONDS TO MIDNIGHT: " + DeviceHelper.howManyMillisecondsToMidnight());
     new Handler().postDelayed(new Runnable() {
       @Override public void run() {
-
+        Timber.e("Save Showed Steps 0");
         SharedPreferenceHelper.saveShowedSteps(0);
         //SharedPreferenceHelper.shiftStatsLocalOnOneDay(SharedPreferenceHelper.getUserId());
         Log.d("Helper local pref", ""
@@ -598,6 +602,7 @@ public class MainActivity extends GetUserInfoActivity implements View.OnClickLis
 
     int openActivityCode = IntentExtractorHelper.getOpenActivityCode(intent);
     String trackingId = IntentExtractorHelper.getTrackingIdFromFcm(intent);
+    String url = IntentExtractorHelper.getUrlFromFcm(intent);
     switch (openActivityCode) {
       case Constants.OPEN_INVITES_ACTIVITY:
         openInvitesActivity();
@@ -613,6 +618,10 @@ public class MainActivity extends GetUserInfoActivity implements View.OnClickLis
         break;
       case Constants.OPEN_FAILED_ACTIVITY:
         openFailedActivity(trackingId);
+        break;
+      case Constants.OPEN_EXTERNAL_URL:
+        Timber.e("OPEN EXTERNAL URL");
+        openLink(url);
         break;
       case Constants.OPEN_MAIN_ACTIVITY:
         if (!TextUtils.isEmpty(trackingId)) {
@@ -813,6 +822,7 @@ public class MainActivity extends GetUserInfoActivity implements View.OnClickLis
     super.onStop();
 
     if (animationMan != null) animationMan.stop();
+    Timber.e("Save Showed Steps on stop " + todaySteps);
     SharedPreferenceHelper.saveShowedSteps(todaySteps);
     Log.d("!!!", "save showed: " + todaySteps);
   }
@@ -1206,6 +1216,14 @@ public class MainActivity extends GetUserInfoActivity implements View.OnClickLis
     startActivityForResult(intent, Constants.OPEN_PROFILE_ACTIVITY_REQUEST_CODE);
   }
 
+  public void openLink(String url)
+  {
+    Timber.e("FCM URL " + url);
+    Intent i = new Intent(Intent.ACTION_VIEW);
+    i.setData(Uri.parse(url));
+    startActivity(i);
+  }
+
   public void refreshTrackings() {
     showProgressFragment();
     mGetMyTrackingsClient.getMyTrackings();
@@ -1463,6 +1481,7 @@ public class MainActivity extends GetUserInfoActivity implements View.OnClickLis
           } else {
             animationTodaySteps = todaySteps;
             updateTodaySteps(todaySteps);
+            Timber.e("Save Showed Steps " + todaySteps);
             SharedPreferenceHelper.saveShowedSteps(todaySteps);
             isAnimationRunned = false;
           }

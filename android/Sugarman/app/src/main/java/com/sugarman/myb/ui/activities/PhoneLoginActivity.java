@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import timber.log.Timber;
 
 public class PhoneLoginActivity extends GetUserInfoActivity implements ApiRefreshUserDataListener {
 
@@ -96,7 +97,8 @@ public class PhoneLoginActivity extends GetUserInfoActivity implements ApiRefres
   private void setUpSpinner() {
     TelephonyManager manager =
         (TelephonyManager) App.getInstance().getSystemService(Context.TELEPHONY_SERVICE);
-    String currentCountry = new Locale("",manager.getSimCountryIso().toUpperCase()).getDisplayCountry();
+    String currentCountry = new Locale("",manager.getSimCountryIso().toUpperCase()).getDisplayCountry(new Locale("en"));
+    Timber.e("COUNTRY " + currentCountry);
     int currentCountryPosition = 0;
 
 

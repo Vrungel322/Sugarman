@@ -37,6 +37,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import org.greenrobot.eventbus.Subscribe;
+import timber.log.Timber;
 
 public class BaseStepDetectorService extends Service implements OnReportSendListener {
 
@@ -137,6 +138,7 @@ public class BaseStepDetectorService extends Service implements OnReportSendList
 
   @Subscribe public void onEvent(DebugRequestStepsEvent event) {
     //debugCalculated = 0;
+
     App.appendLog(Constants.TAG_TEST_GO_TO_NEXT_DAY,
         "Service DebugRequestStepsEvent before startValue " + debugStartValue);
     /*    if (debugStartValue == 0) {
@@ -240,6 +242,7 @@ public class BaseStepDetectorService extends Service implements OnReportSendList
       }
       App.appendLog(Constants.TAG_TEST_GO_TO_NEXT_DAY, "refreshNextDays() get stats finish");
       SharedPreferenceHelper.saveUserTodaySteps(todayReportedSteps);
+      Timber.e("Save Showed Steps " + todayReportedSteps);
       SharedPreferenceHelper.saveShowedSteps(todayReportedSteps);
 
       isSwitchToNextDay = false;

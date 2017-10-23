@@ -178,6 +178,7 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
   }
 
   public static void saveShowedSteps(int steps) {
+    Timber.e("Save Showed Steps " + steps);
     putInt(SharedPreferenceConstants.SHOWED_STEPS, steps);
   }
 
