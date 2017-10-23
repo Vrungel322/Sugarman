@@ -488,9 +488,11 @@ public class EditProfileActivity extends BasicActivity
               SharedPreferenceHelper.getFbId(), SharedPreferenceHelper.getVkId(),
               SharedPreferenceHelper.getAvatar(), selectedFile);
         }
+        hidePb();
       }
 
       @Override public void onError(VKError error) {
+        hidePb();
         logoutVk();
         // ÐŸÑ€Ð¾Ð¸Ð·Ð¾ÑˆÐ»Ð° Ð¾ÑˆÐ¸Ð±ÐºÐ° Ð°Ð²Ñ‚Ð¾Ñ€Ð¸Ð·Ð°Ñ†Ð¸Ð¸ (Ð½Ð°Ð¿Ñ€Ð¸Ð¼ÐµÑ€, Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÑŒ Ð·Ð°Ð¿Ñ€ÐµÑ‚Ð¸Ð» Ð°Ð²Ñ‚Ð¾Ñ€Ð¸Ð·Ð°Ñ†Ð¸ÑŽ)
       }
@@ -653,6 +655,7 @@ public class EditProfileActivity extends BasicActivity
   }
 
   @Override public void showSocialProblem(UsersResponse usersResponse) {
+    hidePb();
     new SugarmanDialog.Builder(this, "soc network").content(usersResponse.getError())
         .build()
         .show();

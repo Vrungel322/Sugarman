@@ -105,7 +105,10 @@ public class PhoneLoginActivity extends GetUserInfoActivity implements ApiRefres
     etPhoneNumber.setText(mCountryCodeEntities.get(0).getCode());
   }
 
-  @OnClick(R.id.iv_back) public void closeActivity() {
-    finish();
+  @OnClick(R.id.iv_back) public void goToLogin() {
+    clearLoginData();
+    Intent intent = new Intent(PhoneLoginActivity.this, LoginActivity.class);
+    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    startActivity(intent);
   }
 }
