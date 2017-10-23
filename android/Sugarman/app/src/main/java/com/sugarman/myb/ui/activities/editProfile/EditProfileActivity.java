@@ -650,6 +650,18 @@ public class EditProfileActivity extends BasicActivity
     pb.setVisibility(View.VISIBLE);
   }
 
+  @Override public void showSocialProblem(UsersResponse usersResponse) {
+    new SugarmanDialog.Builder(this, "soc network").content(usersResponse.getError())
+        .build()
+        .show();
+    if (usersResponse.getError().equals("This Facebook account is already created")) {
+      logoutFacebook();
+    }
+    if (usersResponse.getError().equals("This VK account is already created")) {
+      logoutVk();
+    }
+  }
+
   @Override public void hidePb() {
     pb.setVisibility(View.GONE);
   }

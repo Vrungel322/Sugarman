@@ -24,9 +24,13 @@ import rx.Subscription;
         mDataManager.sendUserDataToServer(phone, email, name, fbId, vkId, avatar, selectedFile)
             .compose(ThreadSchedulers.applySchedulers())
             .subscribe(usersResponse -> {
-              SharedPreferenceHelper.setOTPStatus(usersResponse.getUser().getNeedOTP());
-              getViewState().hidePb();
-              getViewState().finishActivity();
+              if (usersResponse.getResult() != null) {
+                SharedPreferenceHelper.setOTPStatus(usersResponse.getUser().getNeedOTP());
+                getViewState().hidePb();
+                getViewState().finishActivity();
+              }else {
+                getViewState().showSocialProblem(usersResponse);
+              }
             });
     addToUnsubscription(subscription);
   }
