@@ -21,12 +21,10 @@ import rx.Subscription;
   public void sendUserDataToServer(String phone, String email, String name, String fbId,
       String vkId, String avatar, File selectedFile) {
 
-    if (Validator.isEmailValid(email)) {
-      if (phone.equals("")) {
-        phone = "none";
-      }
-      if (Validator.isPhoneValid(phone)) {
-        getViewState().showPb();
+    if (Validator.isEmailValid(email)|| email.equals("")) {
+
+      if(phone.equals(""))
+      {
         Subscription subscription =
             mDataManager.sendUserDataToServer(phone, email, name, fbId, vkId, avatar, selectedFile)
                 .compose(ThreadSchedulers.applySchedulers())
@@ -40,8 +38,26 @@ import rx.Subscription;
                   }
                 },Throwable::printStackTrace);
         addToUnsubscription(subscription);
-      } else {
-        getViewState().showPhoneProblem();
+      }
+      else {
+        if (Validator.isPhoneValid(phone)) {
+          getViewState().showPb();
+          Subscription subscription =
+              mDataManager.sendUserDataToServer(phone, email, name, fbId, vkId, avatar, selectedFile)
+                  .compose(ThreadSchedulers.applySchedulers())
+                  .subscribe(usersResponse -> {
+                    if (usersResponse.getResult() != null) {
+                      SharedPreferenceHelper.setOTPStatus(usersResponse.getUser().getNeedOTP());
+                      getViewState().hidePb();
+                      getViewState().finishActivity();
+                    } else {
+                      getViewState().showSocialProblem(usersResponse);
+                    }
+                  }, Throwable::printStackTrace);
+          addToUnsubscription(subscription);
+        } else {
+          getViewState().showPhoneProblem();
+        }
       }
     } else {
       getViewState().showEmailProblem();

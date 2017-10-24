@@ -430,7 +430,8 @@ public class MainActivity extends GetUserInfoActivity implements View.OnClickLis
     super.onCreate(savedInstanceState);
     Resources resources = getResources();
 
-    ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.READ_CONTACTS }, 1);
+    ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.READ_CONTACTS, Manifest.permission.CAMERA}, 1);
+    //ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, 2);
     //ViewTreeObserver vto = loadingStrip.getViewTreeObserver();
     //vto.addOnGlobalLayoutListener (new ViewTreeObserver.OnGlobalLayoutListener() {
     //    @Override
