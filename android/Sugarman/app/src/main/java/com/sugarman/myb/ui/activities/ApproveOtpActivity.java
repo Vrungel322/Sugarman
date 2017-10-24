@@ -103,6 +103,7 @@ public class ApproveOtpActivity extends AppCompatActivity implements ApiApproveO
   }
 
   @OnClick(R.id.tvChangePhone) public void tvChangePhoneClicked() {
+    Timber.e("Name parent activity " + nameParentActivity );
     if (nameParentActivity.equals(SplashActivity.class.getName())) {
       Intent intent = new Intent(ApproveOtpActivity.this, LoginActivity.class);
       intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

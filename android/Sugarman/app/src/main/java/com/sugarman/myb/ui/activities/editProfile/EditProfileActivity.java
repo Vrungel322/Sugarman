@@ -290,7 +290,7 @@ public class EditProfileActivity extends BasicActivity
     String displayEmail = etEmail.getText().toString();
     displayNumber = etPhone.getText().toString();
 
-    if (isEmailValid(displayEmail)) {
+    if (isEmailValid(displayEmail) || displayEmail.equals("")) {
       if (displayNumber.equals("")) {
         Timber.e("Got in here 1");
         editProfileClient.editUser(displayNumber, displayEmail, displayName,

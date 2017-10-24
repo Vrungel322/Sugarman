@@ -1218,10 +1218,12 @@ public class MainActivity extends GetUserInfoActivity implements View.OnClickLis
 
   public void openLink(String url)
   {
-    Timber.e("FCM URL " + url);
-    Intent i = new Intent(Intent.ACTION_VIEW);
-    i.setData(Uri.parse(url));
-    startActivity(i);
+    if(url!=null && !url.equals("") && !url.equals(" ")) {
+      Timber.e("FCM URL " + url);
+      Intent i = new Intent(Intent.ACTION_VIEW);
+      i.setData(Uri.parse(url));
+      startActivity(i);
+    }
   }
 
   public void refreshTrackings() {

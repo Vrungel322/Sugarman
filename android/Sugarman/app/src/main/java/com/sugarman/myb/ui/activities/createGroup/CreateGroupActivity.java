@@ -526,6 +526,8 @@ public class CreateGroupActivity extends BaseActivity
     mCheckPhoneClient.unregisterListener();
     mCheckVkClient.unregisterListener();
     mi = null;
+    mCheckVkClient.cancelRequest();
+    mCheckPhoneClient.cancelRequest();
   }
 
   @Override protected void onResume() {

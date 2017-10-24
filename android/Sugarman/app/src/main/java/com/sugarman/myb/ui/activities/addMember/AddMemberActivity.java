@@ -379,6 +379,12 @@ public class AddMemberActivity extends BaseActivity
     Timber.e("checkForUnique");
     for (int i = 0; i < allFriends.size(); i++) {
       for (Member member : addedMembers) {
+        if(member.getPhoneNumber()==null)
+          member.setPhoneNumber("");
+        if(member.getFbid()==null)
+          member.setFbid("");
+        if(member.getVkId()==null)
+          member.setVkId("");
         if (TextUtils.equals(member.getName(), allFriends.get(i).getName())
             || member.getFbid()
             .equals(allFriends.get(i).getId())
@@ -391,6 +397,12 @@ public class AddMemberActivity extends BaseActivity
       }
 
       for (Member member : pendingMembers) {
+        if(member.getPhoneNumber()==null)
+          member.setPhoneNumber("");
+        if(member.getFbid()==null)
+          member.setFbid("");
+        if(member.getVkId()==null)
+          member.setVkId("");
         //if (TextUtils.equals(member.getName(), allFriends.get(i).getName())) {
         if (TextUtils.equals(member.getName(), allFriends.get(i).getName())
             || member.getFbid()
@@ -547,6 +559,8 @@ public class AddMemberActivity extends BaseActivity
     mAddMembersClient.unregisterListener();
     mCheckPhoneClient.unregisterListener();
     mCheckVkClient.unregisterListener();
+    mCheckVkClient.cancelRequest();
+    mCheckPhoneClient.cancelRequest();
   }
 
   @Override protected void onResume() {
