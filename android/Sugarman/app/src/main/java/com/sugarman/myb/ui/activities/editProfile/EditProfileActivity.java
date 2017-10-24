@@ -350,9 +350,13 @@ public class EditProfileActivity extends BasicActivity
             SharedPreferenceHelper.saveUserName(etName.getText().toString());
             networkCount = networkTotalCount;
 
-
             //ph
-            if (!etPhone.getText().equals("") && !etPhone.equals(" ") && !etPhone.equals("none") && !mBundleUserSettings.getString(PHONE_FROM_SETTINGS).equals(etPhone.getText().toString())){
+            if (!etPhone.getText().equals("")
+                && !etPhone.equals(" ")
+                && !etPhone.equals("none")
+                && isPhoneValid(etPhone.getText().toString())
+                && !mBundleUserSettings.getString(PHONE_FROM_SETTINGS)
+                .equals(etPhone.getText().toString())) {
               Intent intent = new Intent(EditProfileActivity.this, ApproveOtpActivity.class);
               intent.putExtra("otp", otp);
               intent.putExtra("showSettings", false);
@@ -626,7 +630,8 @@ public class EditProfileActivity extends BasicActivity
 
   private void showNextActivity() {
     Timber.e("Got in here");
-    Timber.e("*"+SharedPreferenceHelper.getPhoneNumber() + "* *" + etPhone.getText().toString()+"*");
+    Timber.e(
+        "*" + SharedPreferenceHelper.getPhoneNumber() + "* *" + etPhone.getText().toString() + "*");
     if ((!SharedPreferenceHelper.getPhoneNumber().equals(etPhone.getText().toString())
         && !etPhone.getText().toString().equals("")) || etPhone.getError() != null) {
       Intent intent = new Intent(EditProfileActivity.this, ApproveOtpActivity.class);
