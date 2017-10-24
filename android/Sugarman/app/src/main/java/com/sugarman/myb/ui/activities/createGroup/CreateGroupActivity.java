@@ -1105,8 +1105,8 @@ public class CreateGroupActivity extends BaseActivity
     for (int i = 0; i < facebookFriends.size(); i++) {
       notRealmList.add(new FacebookFriend(facebookFriends.get(i).getSocialNetwork(),
           facebookFriends.get(i).getPhotoUrl(), facebookFriends.get(i).getId(),
-          facebookFriends.get(i).getName(),
-           facebookFriends.get(i).getIsInvitable(), false, false, false
+          facebookFriends.get(i).getName(), facebookFriends.get(i).getIsInvitable(), false, false,
+          false
           //facebookFriends.get(i).isSelected(),
           //facebookFriends.get(i).isAdded(),
           //facebookFriends.get(i).isPending()

@@ -8,13 +8,11 @@ import com.sugarman.myb.api.models.responses.me.groups.CreateGroupResponse;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.listeners.ApiBaseListener;
 import com.sugarman.myb.listeners.ApiCreateGroupListener;
-import com.sugarman.myb.utils.CountryCodeHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -135,7 +133,6 @@ public class CreateGroupClient extends BaseApiClient {
     String vkTokenStr = SharedPreferenceHelper.getVkToken();
     RequestBody vkToken =
         RequestBody.create(MediaType.parse(Constants.IMAGE_JPEG_TYPE), vkTokenStr);
-
 
     Call<CreateGroupResponse> call = App.getApiInstance()
         .createGroup(filePart, name, fbToken, ids, vkids, phoneNumbers, names, vkNames, phoneNames,

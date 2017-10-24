@@ -21,19 +21,23 @@ public class CheckPhonesClient extends BaseApiClient {
   private static final String TAG = CheckPhonesClient.class.getName();
   Call<CheckPhoneResponse> call;
   boolean isCanceled = false;
+
   @Override public void registerListener(ApiBaseListener listener) {
     clientListener = new WeakReference<>(listener);
   }
 
   private final Callback<CheckPhoneResponse> mCallback = new Callback<CheckPhoneResponse>() {
 
-    @Override public void onResponse(Call<CheckPhoneResponse> call, Response<CheckPhoneResponse> dataResponse) {
+    @Override public void onResponse(Call<CheckPhoneResponse> call,
+        Response<CheckPhoneResponse> dataResponse) {
       Timber.e("Check Phone callback " + isCanceled);
       ResponseBody errorBody = dataResponse.errorBody();
       if (dataResponse != null) {
         Timber.e("SET INVITABLE 0");
-        if(!isCanceled)
-        ((ApiCheckPhoneListener) clientListener.get()).onApiCheckPhoneSuccess(dataResponse.body().getPhones());
+        if (!isCanceled) {
+          ((ApiCheckPhoneListener) clientListener.get()).onApiCheckPhoneSuccess(
+              dataResponse.body().getPhones());
+        }
       } else if (errorBody != null) {
         String errorMessage = parseErrorBody(errorBody);
         responseFailure(TAG, errorMessage);
@@ -48,29 +52,24 @@ public class CheckPhonesClient extends BaseApiClient {
         responseIsNull(TAG);
         ((ApiCheckPhoneListener) clientListener.get()).onApiCheckPhoneFailure(RESPONSE_IS_NULL);
       }
-  }
-
-
+    }
 
     @Override public void onFailure(Call<CheckPhoneResponse> call, Throwable t) {
-        Timber.e("Check phones failure");
+      Timber.e("Check phones failure");
     }
   };
 
-  public boolean isRequestRunning()
-  {
-    return call!=null;
+  public boolean isRequestRunning() {
+    return call != null;
   }
 
-  public void cancelRequest()
-  {
+  public void cancelRequest() {
     Timber.e("Canceled request");
-//    call.cancel();
-    isCanceled=true;
+    //    call.cancel();
+    isCanceled = true;
   }
 
-  public void checkPhones(List<String> phones)
-  {
+  public void checkPhones(List<String> phones) {
 
     Timber.e("Check phones");
 
@@ -79,5 +78,5 @@ public class CheckPhonesClient extends BaseApiClient {
 
     call = App.getApiInstance().checkPhone(request);
     call.enqueue(mCallback);
-}
+  }
 }

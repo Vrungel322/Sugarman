@@ -99,16 +99,18 @@ public class GetUserInfoActivity extends BaseActivity
     Log.e("ApiRefreshUserData", "Called");
     SharedPreferenceHelper.saveUser(response.getUser());
     SharedPreferenceHelper.saveToken(response.getTokens());
-    if(response.getUser().getEmail()!=null && !response.getUser().getEmail().equals(""))
-    {
+    if (response.getUser().getEmail() != null && !response.getUser().getEmail().equals("")) {
       Timber.e("RETURNED EMAIL " + response.getUser().getEmail());
       SharedPreferenceHelper.saveEmail(response.getUser().getEmail());
     }
-    if(response.getUser().getPhoneNumber()!=null && !response.getUser().getPhoneNumber().equals("")) {
+    if (response.getUser().getPhoneNumber() != null && !response.getUser()
+        .getPhoneNumber()
+        .equals("")) {
       Timber.e("RETURNED PHONE " + response.getUser().getPhoneNumber());
       SharedPreferenceHelper.savePhoneNumber(response.getUser().getPhoneNumber());
+    } else {
+      Timber.e("RETURNED PHONE govno");
     }
-    else Timber.e("RETURNED PHONE govno");
     Timber.e("huy" + response.toString());
     Timber.e(response.getTokens().getAccessToken());
 
@@ -132,7 +134,7 @@ public class GetUserInfoActivity extends BaseActivity
     //}
     //App.appendLog(Constants.TAG_TEST_GO_TO_NEXT_DAY,
     //    getClass().getSimpleName() + " received stats finish:");
-      SharedPreferenceHelper.saveStats(allMyInfo.getStats());
+    SharedPreferenceHelper.saveStats(allMyInfo.getStats());
 
     this.actualTrackings = allMyInfo.getTrackings();
 

@@ -38,7 +38,7 @@ import rx.Subscription;
                   } else {
                     getViewState().showSocialProblem(usersResponse);
                   }
-                },Throwable::printStackTrace);
+                }, Throwable::printStackTrace);
         addToUnsubscription(subscription);
       } else {
         getViewState().showPhoneProblem();

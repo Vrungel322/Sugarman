@@ -34,8 +34,7 @@ public class ShopActivity extends BasicActivity implements IShopActivityView, Vi
 
   private ProductsAdapter mProductsAdapter;
 
-  @ProvidePresenter
-  public ShopActivityPresenter providePresenter(){
+  @ProvidePresenter public ShopActivityPresenter providePresenter() {
     List<String> productNames = new ArrayList<>();
     productNames.add(getString(R.string.sugarman_cap));
     productNames.add(getString(R.string.phone_holder));
@@ -52,14 +51,14 @@ public class ShopActivity extends BasicActivity implements IShopActivityView, Vi
 
     mProductsAdapter = new ProductsAdapter();
     mRecyclerViewProducts.setAdapter(mProductsAdapter);
-    mRecyclerViewProducts.setLayoutManager(new GridLayoutManager(this,2));
+    mRecyclerViewProducts.setLayoutManager(new GridLayoutManager(this, 2));
 
-    ItemClickSupport.addTo(mRecyclerViewProducts).setOnItemClickListener((recyclerView, position, v) -> {
-      Intent intent = new Intent(ShopActivity.this, ProductDetailsActivity.class);
-      intent.putExtra(PRODUCT, mProductsAdapter.getItem(position));
-      startActivity(intent);
-    });
-
+    ItemClickSupport.addTo(mRecyclerViewProducts)
+        .setOnItemClickListener((recyclerView, position, v) -> {
+          Intent intent = new Intent(ShopActivity.this, ProductDetailsActivity.class);
+          intent.putExtra(PRODUCT, mProductsAdapter.getItem(position));
+          startActivity(intent);
+        });
 
     backButton.setOnClickListener(this);
 

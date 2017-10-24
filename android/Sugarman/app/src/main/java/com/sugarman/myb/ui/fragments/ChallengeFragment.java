@@ -155,9 +155,9 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
       ImageView bestAvatar = (ImageView) root.findViewById(R.id.iv_best_avatar);
 
       String str = "";
-      str = best.getName()==null?"":best.getName();
-      Timber.e("Best " +best.getName());
-if(str.contains(" "))      str = str.replaceAll("( +)", " ").trim();
+      str = best.getName() == null ? "" : best.getName();
+      Timber.e("Best " + best.getName());
+      if (str.contains(" ")) str = str.replaceAll("( +)", " ").trim();
 
       String name = str;
       if (str.length() > 0 && str.contains(" ")) {
@@ -168,8 +168,10 @@ if(str.contains(" "))      str = str.replaceAll("( +)", " ").trim();
         bestName.setText(str);
       }
       bestSteps.setText(String.format(Locale.US, "%,d", best.getSteps()));
-      if(best.getPictureUrl()==null||best.getPictureUrl().equals(" ")||best.getPictureUrl().equals(""))
+      if (best.getPictureUrl() == null || best.getPictureUrl().equals(" ") || best.getPictureUrl()
+          .equals("")) {
         best.setPictureUrl("https://sugarman-myb.s3.amazonaws.com/Group_New.png");
+      }
 
       Picasso.with(getActivity())
           .load(best.getPictureUrl())
@@ -187,7 +189,9 @@ if(str.contains(" "))      str = str.replaceAll("( +)", " ").trim();
 
       str = laziest.getName();
       str = str.replaceAll("( +)", " ").trim();
-      if (str.length() > 0 && str.contains(" ")) name = str.substring(0, (laziest.getName().indexOf(" ")));
+      if (str.length() > 0 && str.contains(" ")) {
+        name = str.substring(0, (laziest.getName().indexOf(" ")));
+      }
 
       laziestName.setText(name);
       laziestSteps.setText(String.format(Locale.US, "%,d", laziest.getSteps()));

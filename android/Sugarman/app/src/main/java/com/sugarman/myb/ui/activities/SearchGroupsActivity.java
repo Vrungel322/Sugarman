@@ -24,7 +24,6 @@ import com.sugarman.myb.models.SearchTracking;
 import com.sugarman.myb.ui.activities.base.BaseActivity;
 import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
-import com.sugarman.myb.ui.views.CustomFontTextView;
 import com.sugarman.myb.utils.DeviceHelper;
 import java.util.ArrayList;
 import java.util.List;
@@ -87,10 +86,7 @@ public class SearchGroupsActivity extends BaseActivity
     mGetTrackingsClient = new GetTrackingsClient();
     mJoinGroupClient = new JoinGroupClient();
 
-
-    mGetTrackingsClient.getTrackings(
-         GetTrackingsClient.AVAILABLE_TYPE,
-        "");
+    mGetTrackingsClient.getTrackings(GetTrackingsClient.AVAILABLE_TYPE, "");
     //  vNoGroups.setVisibility(View.VISIBLE);
   }
 
@@ -228,7 +224,6 @@ public class SearchGroupsActivity extends BaseActivity
       showNoInternetConnectionDialog();
     }
   }
-
 
   private void updateResult() {
     if (groupsAdapter.getItemCount() > 0) {

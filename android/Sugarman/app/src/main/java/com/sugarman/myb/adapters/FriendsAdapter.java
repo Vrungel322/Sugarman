@@ -66,9 +66,8 @@ public class FriendsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     if (friend != null) {
       friendsHolder = (FriendsHolder) holder;
 
-      if (friend.getPicture() != null
-          && friend.getPicture()!= null
-          && !TextUtils.isEmpty(friend.getPicture())) {
+      if (friend.getPicture() != null && friend.getPicture() != null && !TextUtils.isEmpty(
+          friend.getPicture())) {
 
         String url = friend.getPicture();
         Picasso.with(context)
@@ -91,8 +90,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         friendsHolder.ivIndicatorInvitable.setVisibility(View.VISIBLE);
       }
 
-      switch (friend.getSocialNetwork())
-      {
+      switch (friend.getSocialNetwork()) {
         case "fb":
           friendsHolder.ivSocialNetwork.setBackgroundResource(R.drawable.fb_icon);
           break;
@@ -103,7 +101,6 @@ public class FriendsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
           friendsHolder.ivSocialNetwork.setBackgroundResource(R.drawable.phone_icon);
           break;
       }
-
 
       if (friend.isSelected()) {
         friendsHolder.tvActionBtn.setText(remove);

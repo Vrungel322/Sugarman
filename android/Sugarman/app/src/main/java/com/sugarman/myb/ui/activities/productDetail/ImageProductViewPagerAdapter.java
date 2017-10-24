@@ -1,7 +1,7 @@
 package com.sugarman.myb.ui.activities.productDetail;
+
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
-import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;

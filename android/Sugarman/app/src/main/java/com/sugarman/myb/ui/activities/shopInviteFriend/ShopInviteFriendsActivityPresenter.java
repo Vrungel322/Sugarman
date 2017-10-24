@@ -97,7 +97,7 @@ import timber.log.Timber;
             getViewState().finishShopInviteActivity();
             getViewState().showToast();
           }
-        },Throwable::printStackTrace);
+        }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 

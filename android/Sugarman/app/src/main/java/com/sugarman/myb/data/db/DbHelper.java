@@ -34,11 +34,6 @@ public class DbHelper {
   /**
    * Проверяет есть ли елемент типа #Class с полем #field у которого значение #value в таблице бд
    * (соррян за рус комменты)
-   * @param clazz
-   * @param field
-   * @param value
-   * @param <T>
-   * @return
    */
   public <T extends RealmObject> boolean isExists(Class<T> clazz, String field, String value) {
     Realm realm = Realm.getInstance(mConfiguration);

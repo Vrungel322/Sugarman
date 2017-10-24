@@ -2,11 +2,8 @@ package com.sugarman.myb.api.clients;
 
 import android.util.Log;
 import com.sugarman.myb.App;
-import com.sugarman.myb.api.models.requests.ApproveOtpRequest;
 import com.sugarman.myb.api.models.requests.ResendMessageRequest;
-import com.sugarman.myb.api.models.responses.ApproveOtpResponse;
 import com.sugarman.myb.api.models.responses.ResendMessageResponse;
-import com.sugarman.myb.listeners.ApiApproveOtp;
 import com.sugarman.myb.listeners.ApiBaseListener;
 import com.sugarman.myb.listeners.ApiRefreshUserDataListener;
 import java.lang.ref.WeakReference;
@@ -23,16 +20,14 @@ public class ResendMessageClient extends BaseApiClient {
 
   private final Callback<ResendMessageResponse> mCallback = new Callback<ResendMessageResponse>() {
 
-    @Override
-    public void onResponse(Call<ResendMessageResponse> call, Response<ResendMessageResponse> response) {
+    @Override public void onResponse(Call<ResendMessageResponse> call,
+        Response<ResendMessageResponse> response) {
       ResendMessageResponse dataResponse = response.body();
       ResponseBody errorBody = response.errorBody();
 
       Log.e("Token", "ATLICHNA");
       Timber.e("onResponce");
-
     }
-
 
     @Override public void onFailure(Call<ResendMessageResponse> call, Throwable t) {
       Log.e("Token", "OCHKO" + t.getLocalizedMessage());
@@ -49,7 +44,7 @@ public class ResendMessageClient extends BaseApiClient {
     clientListener = new WeakReference<>(listener);
   }
 
-  public void resendMessage( String phoneNumber) {
+  public void resendMessage(String phoneNumber) {
 
     MultipartBody.Part filePart = null;
 

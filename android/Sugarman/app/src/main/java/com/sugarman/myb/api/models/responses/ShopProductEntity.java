@@ -12,9 +12,9 @@ import java.util.List;
 public class ShopProductEntity implements Parcelable {
   @SerializedName("name") private String productName;
   @SerializedName("desc") private String productDescription;
-  @SerializedName("price")private String productPrice;
-  @SerializedName("images")private List<String> imgDetailUrls;
-  @SerializedName("id") private  String id;
+  @SerializedName("price") private String productPrice;
+  @SerializedName("images") private List<String> imgDetailUrls;
+  @SerializedName("id") private String id;
 
   public ShopProductEntity(String id, String productName, String productDescription,
       String productPrice, List<String> imgDetailUrls) {

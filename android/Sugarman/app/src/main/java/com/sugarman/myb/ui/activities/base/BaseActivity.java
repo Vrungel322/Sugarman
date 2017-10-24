@@ -210,11 +210,9 @@ public abstract class BaseActivity extends BasicActivity
     Timber.e(SharedPreferenceHelper.getFBAccessToken());
     Timber.e(SharedPreferenceHelper.getPhoneNumber());
 
-    if (
-        SharedPreferenceHelper.getFBAccessToken().equals("none")
+    if (SharedPreferenceHelper.getFBAccessToken().equals("none")
         && SharedPreferenceHelper.getVkToken().equals("none")
-        && SharedPreferenceHelper.getPhoneNumber().equals("none")
-        ) {
+        && SharedPreferenceHelper.getPhoneNumber().equals("none")) {
       Timber.e("no tokens no ph");
       logout();
     } else {

@@ -10,7 +10,6 @@ import android.graphics.PathEffect;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
-import android.util.Log;
 
 public class ImageToDraw {
   private Paint mMaskingPaint = new Paint();

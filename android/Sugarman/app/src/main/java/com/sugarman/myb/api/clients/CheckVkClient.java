@@ -1,12 +1,9 @@
 package com.sugarman.myb.api.clients;
 
 import com.sugarman.myb.App;
-import com.sugarman.myb.api.models.requests.CheckPhoneRequest;
 import com.sugarman.myb.api.models.requests.CheckVkRequest;
-import com.sugarman.myb.api.models.responses.CheckPhoneResponse;
 import com.sugarman.myb.api.models.responses.CheckVkResponse;
 import com.sugarman.myb.listeners.ApiBaseListener;
-import com.sugarman.myb.listeners.ApiCheckPhoneListener;
 import com.sugarman.myb.listeners.ApiCheckVkListener;
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -24,18 +21,22 @@ public class CheckVkClient extends BaseApiClient {
   private static final String TAG = CheckVkClient.class.getName();
   Call<CheckVkResponse> call;
   boolean isCanceled = false;
+
   @Override public void registerListener(ApiBaseListener listener) {
     clientListener = new WeakReference<>(listener);
   }
 
   private final Callback<CheckVkResponse> mCallback = new Callback<CheckVkResponse>() {
 
-    @Override public void onResponse(Call<CheckVkResponse> call, Response<CheckVkResponse> dataResponse) {
+    @Override
+    public void onResponse(Call<CheckVkResponse> call, Response<CheckVkResponse> dataResponse) {
       ResponseBody errorBody = dataResponse.errorBody();
       if (dataResponse != null) {
         Timber.e("SET INVITABLE 0");
-        if(!isCanceled)
-        ((ApiCheckVkListener) clientListener.get()).onApiCheckVkSuccess(dataResponse.body().getVks());
+        if (!isCanceled) {
+          ((ApiCheckVkListener) clientListener.get()).onApiCheckVkSuccess(
+              dataResponse.body().getVks());
+        }
       } else if (errorBody != null) {
         String errorMessage = parseErrorBody(errorBody);
         responseFailure(TAG, errorMessage);
@@ -50,28 +51,23 @@ public class CheckVkClient extends BaseApiClient {
         responseIsNull(TAG);
         ((ApiCheckVkListener) clientListener.get()).onApiCheckVkFailure(RESPONSE_IS_NULL);
       }
-  }
-
-
+    }
 
     @Override public void onFailure(Call<CheckVkResponse> call, Throwable t) {
 
     }
   };
 
-  public boolean isRequestRunning()
-  {
-    return call!=null;
+  public boolean isRequestRunning() {
+    return call != null;
   }
 
-  public void cancelRequest()
-  {
+  public void cancelRequest() {
     //call.cancel();
-    isCanceled=true;
+    isCanceled = true;
   }
 
-  public void checkVks(List<String> vks)
-  {
+  public void checkVks(List<String> vks) {
     Timber.e("CHECK VK CALLED");
 
     CheckVkRequest request = new CheckVkRequest();
@@ -79,5 +75,5 @@ public class CheckVkClient extends BaseApiClient {
 
     call = App.getApiInstance().checkVk(request);
     call.enqueue(mCallback);
-}
+  }
 }

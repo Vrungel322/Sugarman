@@ -117,7 +117,8 @@ public class EditProfileClient extends BaseApiClient {
     RequestBody nameReq = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), name);
     RequestBody pictureReq =
         RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), pictureUrl);
-    RequestBody vkReq = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), SharedPreferenceHelper.getVkToken());
+    RequestBody vkReq = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
+        SharedPreferenceHelper.getVkToken());
     RequestBody gReq = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), "none");
 
     Call<UsersResponse> call = App.getApiInstance()

@@ -27,10 +27,10 @@ import timber.log.Timber;
             .compose(ThreadSchedulers.applySchedulers())
             .subscribe(voidResponse -> {
               Timber.e("" + voidResponse.code());
-              if (voidResponse.code() == Constants.SUCCESS_RESPONSE_CODE){
+              if (voidResponse.code() == Constants.SUCCESS_RESPONSE_CODE) {
                 getViewState().startPayPalTransaction(amountPrice);
               }
-            },Throwable::printStackTrace);
+            }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 }

@@ -35,8 +35,9 @@ public class RestApi {
     return api.refreshRxUserData(request);
   }
 
-  public Observable<Response<Void>> sendPurchaseData(PurchaseDataRequest purchaseDataRequest,String accessToken) {
-    return api.sendPurchaseData(purchaseDataRequest,accessToken);
+  public Observable<Response<Void>> sendPurchaseData(PurchaseDataRequest purchaseDataRequest,
+      String accessToken) {
+    return api.sendPurchaseData(purchaseDataRequest, accessToken);
   }
 
   public Observable<Response<Void>> addFriendsToShopGroup(String userId,
@@ -93,8 +94,8 @@ public class RestApi {
     return api.fetchProducts();
   }
 
-  public Observable<UsersResponse> sendUserDataToServer(String phone, String email, String name, String fbId,
-      String vkId, String pictureUrl, File selectedFile,String accessToken) {
+  public Observable<UsersResponse> sendUserDataToServer(String phone, String email, String name,
+      String fbId, String vkId, String pictureUrl, File selectedFile, String accessToken) {
     MultipartBody.Part filePart = null;
 
     if (selectedFile != null && selectedFile.exists() && selectedFile.isFile()) {
@@ -112,16 +113,16 @@ public class RestApi {
     RequestBody fbToken = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
         SharedPreferenceHelper.getFBAccessToken());
     //RequestBody googleIdReq = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), googleId);
-    RequestBody phoneNumReq =
-        RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), phone);
+    RequestBody phoneNumReq = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), phone);
     RequestBody emailReq = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), email);
     RequestBody nameReq = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), name);
     RequestBody pictureReq =
         RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), pictureUrl);
-    RequestBody vkReq = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), SharedPreferenceHelper.getVkToken());
+    RequestBody vkReq = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
+        SharedPreferenceHelper.getVkToken());
     RequestBody gReq = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), "none");
 
-    return api.editUser(filePart, userIdReq, fbIdReq, vkIdReq, phoneNumReq, emailReq, pictureReq, nameReq,
-        fbToken, vkReq, gReq,accessToken);
+    return api.editUser(filePart, userIdReq, fbIdReq, vkIdReq, phoneNumReq, emailReq, pictureReq,
+        nameReq, fbToken, vkReq, gReq, accessToken);
   }
 }

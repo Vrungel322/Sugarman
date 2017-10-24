@@ -23,7 +23,4 @@ public class PreferencesHelper {
   public void clear() {
     mPreferences.edit().clear().apply();
   }
-
-
-
 }

@@ -53,7 +53,7 @@ public class FcmListenerService extends FirebaseMessagingService {
     Map data = message.getData();
     String text = (String) data.get(Constants.FCM_MESSAGE);
     String notification = (String) data.get(Constants.FCM_NOTIFICATION);
-    String url="";
+    String url = "";
     try {
       JSONObject notificationJSON = new JSONObject(notification);
       url = notificationJSON.getString("url");
@@ -62,23 +62,24 @@ public class FcmListenerService extends FirebaseMessagingService {
     }
 
     Set keys = data.keySet();
-          for (Object key : keys) {
-            String keyType = key.toString();
-            Log.d(TAG, "key: " + keyType);
-            Log.d(TAG, "val: " + data.get(key));
+    for (Object key : keys) {
+      String keyType = key.toString();
+      Log.d(TAG, "key: " + keyType);
+      Log.d(TAG, "val: " + data.get(key));
 
-            switch (keyType) {
-              case Constants.FCM_REPORT_STEPS_KEY:
-                App.getEventBus().post(new ReportStepsEvent());
-                break;
-              case Constants.FCM_MESSAGE:
-                Timber.e("Got in message");
-                Timber.e("url " + url);
-          if(url!=null) {
+      switch (keyType) {
+        case Constants.FCM_REPORT_STEPS_KEY:
+          App.getEventBus().post(new ReportStepsEvent());
+          break;
+        case Constants.FCM_MESSAGE:
+          Timber.e("Got in message");
+          Timber.e("url " + url);
+          if (url != null) {
 
             processURL(url, text);
+          } else {
+            processMessage(text, notification);
           }
-          else processMessage(text, notification);
 
           break;
         default:
@@ -89,7 +90,6 @@ public class FcmListenerService extends FirebaseMessagingService {
 
   private void processURL(String url, String message) {
     Timber.e("Process URL " + url + " " + message);
-
 
     Intent intent = new Intent(this, MainActivity.class);
 

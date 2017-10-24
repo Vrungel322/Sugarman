@@ -470,9 +470,9 @@ public class MainActivity extends GetUserInfoActivity implements View.OnClickLis
     //SharedPreferenceHelper.setTodayDate(date);
     SharedPreferenceHelper.setTodayDateForShowedSteps(date);
     SharedPreferenceHelper.getTodayDateForShowedSteps();
-    Timber.e("Save Showed Steps get today date " + SharedPreferenceHelper.getStepsForTheDate(SharedPreferenceHelper.getTodayDate()));
-    SharedPreferenceHelper.saveShowedSteps(
-        SharedPreferenceHelper.getStepsForTheDate(date));
+    Timber.e("Save Showed Steps get today date " + SharedPreferenceHelper.getStepsForTheDate(
+        SharedPreferenceHelper.getTodayDate()));
+    SharedPreferenceHelper.saveShowedSteps(SharedPreferenceHelper.getStepsForTheDate(date));
 
     SharedPreferenceHelper.setOnLaunch(true);
 
@@ -641,8 +641,6 @@ public class MainActivity extends GetUserInfoActivity implements View.OnClickLis
 
     mGetMyInvitesClient.getInvites(true);
     mGetMyRequestsClient.getRequests(true);
-
-
   }
 
   private void updateAnimations(int todaySteps) {
@@ -1216,8 +1214,7 @@ public class MainActivity extends GetUserInfoActivity implements View.OnClickLis
     startActivityForResult(intent, Constants.OPEN_PROFILE_ACTIVITY_REQUEST_CODE);
   }
 
-  public void openLink(String url)
-  {
+  public void openLink(String url) {
     Timber.e("FCM URL " + url);
     Intent i = new Intent(Intent.ACTION_VIEW);
     i.setData(Uri.parse(url));

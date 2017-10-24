@@ -97,10 +97,11 @@ public class PhoneLoginActivity extends GetUserInfoActivity implements ApiRefres
   private void setUpSpinner() {
     TelephonyManager manager =
         (TelephonyManager) App.getInstance().getSystemService(Context.TELEPHONY_SERVICE);
-    String currentCountry = new Locale("",manager.getSimCountryIso().toUpperCase()).getDisplayCountry(new Locale("en"));
+    String currentCountry =
+        new Locale("", manager.getSimCountryIso().toUpperCase()).getDisplayCountry(
+            new Locale("en"));
     Timber.e("COUNTRY " + currentCountry);
     int currentCountryPosition = 0;
-
 
     String myJson = Converters.loadAssetTextAsString(getBaseContext(), "countryCode.json");
     Type listType = new TypeToken<List<CountryCodeEntity>>() {
@@ -109,7 +110,7 @@ public class PhoneLoginActivity extends GetUserInfoActivity implements ApiRefres
     List<String> items = new ArrayList<>();
     for (int i = 0; i < mCountryCodeEntities.size(); i++) {
       items.add(mCountryCodeEntities.get(i).getCountryName());
-      if (mCountryCodeEntities.get(i).getCountryName().contains(currentCountry)){
+      if (mCountryCodeEntities.get(i).getCountryName().contains(currentCountry)) {
         currentCountryPosition = i;
       }
     }

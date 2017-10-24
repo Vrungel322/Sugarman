@@ -551,7 +551,7 @@ public class AddMemberActivity extends BaseActivity
 
   @Override protected void onResume() {
     super.onResume();
-vApply.setEnabled(true);
+    vApply.setEnabled(true);
     if (!isFriendsFound) {
       getFacebookFriends();
     }
@@ -689,7 +689,7 @@ vApply.setEnabled(true);
       case R.id.iv_apply:
         DeviceHelper.hideKeyboard(this);
         //vApply.setEnabled(false);
-        
+
         showProgress();
 
         for (FacebookFriend friend : allFriends) {
@@ -867,9 +867,8 @@ vApply.setEnabled(true);
   @Override public void onApiAddMembersFailure(String message) {
     closeProgressFragment();
     if (DeviceHelper.isNetworkConnected()) {
-      new SugarmanDialog.Builder(this, DialogConstants.API_FAILURE_ADD_MEMBERS_ID)
-              .content(message)
-              .show();
+      new SugarmanDialog.Builder(this, DialogConstants.API_FAILURE_ADD_MEMBERS_ID).content(message)
+          .show();
     } else {
       showNoInternetConnectionDialog();
     }
@@ -879,9 +878,9 @@ vApply.setEnabled(true);
     membersAdapter.clearLists();
     super.onDestroy();
     //if(mCheckPhoneClient.isRequestRunning())
-      mCheckPhoneClient.cancelRequest();
+    mCheckPhoneClient.cancelRequest();
     //if(mCheckVkClient.isRequestRunning())
-      mCheckVkClient.cancelRequest();
+    mCheckVkClient.cancelRequest();
   }
 
   private void tryChooseGroupAvatar() {
@@ -1020,8 +1019,8 @@ vApply.setEnabled(true);
       //        .setRecipients(facebookElements)
       //        .build();
       //tempDialog.show(content);
-    //}
-    //if (!members.isEmpty()) {
+      //}
+      //if (!members.isEmpty()) {
       Timber.e("Fb Unique Send , members " + members.size());
       mEditGroupClient.editGroup(trackingId, members, etGroupName.getText().toString(),
           selectedFile);
@@ -1048,7 +1047,7 @@ vApply.setEnabled(true);
   }
 
   @Override public void fillListByCachedData(List<FacebookFriend> facebookFriends) {
-    Timber.e("SizeOf list AddM "+ facebookFriends.size());
+    Timber.e("SizeOf list AddM " + facebookFriends.size());
     membersAdapter.setValuesClearList(new ArrayList<>(facebookFriends));
   }
 

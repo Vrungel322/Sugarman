@@ -49,12 +49,11 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
 
   public static void saveToken(Tokens tokens) {
     Timber.e("SaveToken called");
-    if(tokens!=null)
-    {
-    if (tokens.getAccessToken().length() > 0 && tokens.getRefreshToken().length() > 0) {
-      putString(SharedPreferenceConstants.ACCESS_TOKEN, tokens.getAccessToken());
-      putString(SharedPreferenceConstants.REFRESH_TOKEN, tokens.getRefreshToken());
-    }
+    if (tokens != null) {
+      if (tokens.getAccessToken().length() > 0 && tokens.getRefreshToken().length() > 0) {
+        putString(SharedPreferenceConstants.ACCESS_TOKEN, tokens.getAccessToken());
+        putString(SharedPreferenceConstants.REFRESH_TOKEN, tokens.getRefreshToken());
+      }
     }
   }
 

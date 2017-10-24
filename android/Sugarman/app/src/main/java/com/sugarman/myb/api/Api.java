@@ -50,10 +50,8 @@ public interface Api {
 
   @POST("/v1/approveotp") Call<ApproveOtpResponse> approveOtp(@Body ApproveOtpRequest request);
 
-  @POST("/v2/count_inviters") Call<CountInvitesResponse> countInvites(@Body
-      CountInvitesRequest request);
-
-
+  @POST("/v2/count_inviters") Call<CountInvitesResponse> countInvites(
+      @Body CountInvitesRequest request);
 
   @Multipart @POST("/v2/editusers") Call<UsersResponse> editUser(@Part MultipartBody.Part filePart,
       @Part("userId") RequestBody userId, @Part("fbid") RequestBody fbId,
@@ -76,8 +74,8 @@ public interface Api {
       @Part("members[][picture_url_phone]") List<RequestBody> picturesPhone,
       @Part("vk_token") RequestBody vkToken);
 
-  @POST("/v2/resend_message") Call<ResendMessageResponse> resendMessage(@Body
-      ResendMessageRequest request);
+  @POST("/v2/resend_message") Call<ResendMessageResponse> resendMessage(
+      @Body ResendMessageRequest request);
 
   @POST("/v1/devices") Call<DevicesResponse> sendFirebaseToken(
       @Body SendFirebaseTokenRequest request);

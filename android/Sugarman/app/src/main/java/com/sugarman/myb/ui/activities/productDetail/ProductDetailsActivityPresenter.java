@@ -16,5 +16,4 @@ import com.sugarman.myb.base.BasicPresenter;
   @Override protected void onFirstViewAttach() {
     super.onFirstViewAttach();
   }
-
 }

@@ -10,8 +10,7 @@ import javax.inject.Inject;
 /**
  * Created by nikita on 26.09.17.
  */
-@InjectViewState
-public class MembersAdapterPresenter extends BasicPresenter<IMembersAdapterView> {
+@InjectViewState public class MembersAdapterPresenter extends BasicPresenter<IMembersAdapterView> {
   @Inject RxBus mRxBus;
 
   @Override protected void inject() {
@@ -24,6 +23,5 @@ public class MembersAdapterPresenter extends BasicPresenter<IMembersAdapterView>
 
   public void postHideAddFriendBtn() {
     mRxBus.post(new RxBusHelper.HideAddFriendBtnEvent());
-
   }
 }

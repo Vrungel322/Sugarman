@@ -1,8 +1,6 @@
 package com.sugarman.myb.api.models.responses;
 
 import com.google.gson.annotations.SerializedName;
-import com.sugarman.myb.api.models.responses.users.Result;
-import com.sugarman.myb.api.models.responses.users.User;
 import java.util.List;
 
 /**

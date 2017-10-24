@@ -248,10 +248,10 @@ public class CheckoutActivity extends BasicActivity
           //String paymentDetails = confirm.toJSONObject().toString(4);
           //Timber.e("paymentExample " + paymentDetails);
 
-            //Starting a new activity for the payment details and also putting the payment details with intent
-            //startActivity(new Intent(this, ConfirmationActivity.class).putExtra("PaymentDetails",
-            //    paymentDetails)
-            //    .putExtra("PaymentAmount", String.valueOf(num * Double.parseDouble(productPrice))));
+          //Starting a new activity for the payment details and also putting the payment details with intent
+          //startActivity(new Intent(this, ConfirmationActivity.class).putExtra("PaymentDetails",
+          //    paymentDetails)
+          //    .putExtra("PaymentAmount", String.valueOf(num * Double.parseDouble(productPrice))));
           //} catch (JSONException e) {
           //  Timber.e("paymentExample " + "an extremely unlikely failure occurred: ", e);
           //}

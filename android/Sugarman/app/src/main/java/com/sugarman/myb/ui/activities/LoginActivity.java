@@ -58,8 +58,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import timber.log.Timber;
 
-public class LoginActivity extends GetUserInfoActivity
-    implements View.OnClickListener {
+public class LoginActivity extends GetUserInfoActivity implements View.OnClickListener {
 
   private static final String TAG = LoginActivity.class.getName();
   private final WebViewClient webViewClient = new WebViewClient() {
@@ -409,7 +408,7 @@ public class LoginActivity extends GetUserInfoActivity
       Timber.e("ApiRefreshMyUserInfoFailure");
       haveTokensAndUserData();
 
-        showFailureDialog(message, DialogConstants.API_GET_MY_USER_FAILURE_ID);
+      showFailureDialog(message, DialogConstants.API_GET_MY_USER_FAILURE_ID);
     } else {
       showNoInternetConnectionDialog();
     }

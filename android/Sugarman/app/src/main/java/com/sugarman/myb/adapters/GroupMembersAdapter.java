@@ -148,10 +148,10 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
           //memberHolder.tvNum.setText(String.valueOf(countMembers - position));
           String str = member.getName();
           str = str.replaceAll("( +)", " ").trim();
-          String name=str;
+          String name = str;
 
-          if(str.length()>0 && str.contains(" ")) {
-             name = str.substring(0, (member.getName().indexOf(" ")));
+          if (str.length() > 0 && str.contains(" ")) {
+            name = str.substring(0, (member.getName().indexOf(" ")));
           }
           memberHolder.tvMemberName.setText(name);
           Log.e("Action", "" + member.getAction());
@@ -297,9 +297,9 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
           str1 = str1.replaceAll("( +)", " ").trim();
 
           String name1 = str1;
-if(member.getName().contains(" ")) {
-   name1 = str1.substring(0, (member.getName().indexOf(" ")));
-}
+          if (member.getName().contains(" ")) {
+            name1 = str1.substring(0, (member.getName().indexOf(" ")));
+          }
           pendingMemberHolder.tvMemberName.setText(name1);
 
           if (TextUtils.isEmpty(url)) {

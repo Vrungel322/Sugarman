@@ -17,7 +17,6 @@ public class ConfirmationActivity extends AppCompatActivity {
     //Getting Intent
     Intent intent = getIntent();
 
-
     try {
       JSONObject jsonDetails = new JSONObject(intent.getStringExtra("PaymentDetails"));
 
@@ -31,12 +30,12 @@ public class ConfirmationActivity extends AppCompatActivity {
   private void showDetails(JSONObject jsonDetails, String paymentAmount) throws JSONException {
     //Views
     TextView textViewId = (TextView) findViewById(R.id.paymentId);
-    TextView textViewStatus= (TextView) findViewById(R.id.paymentStatus);
+    TextView textViewStatus = (TextView) findViewById(R.id.paymentStatus);
     TextView textViewAmount = (TextView) findViewById(R.id.paymentAmount);
 
     //Showing the details from json object
     textViewId.setText(jsonDetails.getString("id"));
     textViewStatus.setText(jsonDetails.getString("state"));
-    textViewAmount.setText(paymentAmount+" USD");
+    textViewAmount.setText(paymentAmount + " USD");
   }
 }

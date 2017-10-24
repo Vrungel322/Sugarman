@@ -234,7 +234,7 @@ public class NotificationsFragment extends BaseFragment
         openRequestsActivity();
         break;
       default:
-        if(item.getUrl()!=null) {
+        if (item.getUrl() != null) {
           Intent i = new Intent(Intent.ACTION_VIEW);
           i.setData(Uri.parse(item.getUrl()));
           startActivity(i);

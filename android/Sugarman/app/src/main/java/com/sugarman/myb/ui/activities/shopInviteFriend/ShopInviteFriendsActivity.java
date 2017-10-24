@@ -51,7 +51,6 @@ import com.sugarman.myb.utils.SharedPreferenceHelper;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import timber.log.Timber;
 
 /*
 LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);

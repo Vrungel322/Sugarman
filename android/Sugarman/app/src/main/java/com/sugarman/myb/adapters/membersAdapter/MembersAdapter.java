@@ -44,8 +44,8 @@ public class MembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.ViewHold
   private final int colorWhite;
   private final int colorRed;
 
-  public MembersAdapter(MvpDelegate<?> parentDelegate,Context context) {
-    super(parentDelegate,"MembersAdapter");
+  public MembersAdapter(MvpDelegate<?> parentDelegate, Context context) {
+    super(parentDelegate, "MembersAdapter");
     this.context = context;
 
     add = context.getString(R.string.add);
@@ -73,9 +73,10 @@ public class MembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.ViewHold
           friend.getPicture())) {
 
         String url = friend.getPicture();
-        Timber.e("URLSTART"+url+"URLEND");
-        if(url == null||url.equals("")||url.equals(" "))
+        Timber.e("URLSTART" + url + "URLEND");
+        if (url == null || url.equals("") || url.equals(" ")) {
           url = "https://sugarman-myb.s3.amazonaws.com/Group_New.png";
+        }
         Picasso.with(context)
             .load(url)
             .placeholder(R.drawable.ic_gray_avatar)
@@ -113,9 +114,9 @@ public class MembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.ViewHold
       boolean isAdded = friend.isAdded();
       boolean isSelected = friend.isSelected();
       if (isPending || isAdded || isSelected) {
-        if(isPending) membersHolder.tvActionBtn.setText(pending);
-        if(isAdded) membersHolder.tvActionBtn.setText(added);
-        if(isSelected) membersHolder.tvActionBtn.setText(remove);
+        if (isPending) membersHolder.tvActionBtn.setText(pending);
+        if (isAdded) membersHolder.tvActionBtn.setText(added);
+        if (isSelected) membersHolder.tvActionBtn.setText(remove);
         //membersHolder.tvActionBtn.setBackgroundResource(R.drawable.gray_double_stroke_background);
         membersHolder.tvActionBtn.setBackgroundResource(R.drawable.remove);
         membersHolder.tvActionBtn.setTextColor(colorRed);
@@ -164,10 +165,9 @@ public class MembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.ViewHold
         Collections.sort(mUnselected, FacebookFriend.BY_NAME_ASC);
       }
     }
-    if (mSelected.size()>0){
+    if (mSelected.size() > 0) {
       mPresenter.postShowAddFriendBtn();
-    }
-    else {
+    } else {
       mPresenter.postHideAddFriendBtn();
     }
 
@@ -210,7 +210,7 @@ public class MembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.ViewHold
     notifyDataSetChanged();
   }
 
-  public void addVkFriends(List<FacebookFriend> values){
+  public void addVkFriends(List<FacebookFriend> values) {
     Collections.sort(values, FacebookFriend.BY_NAME_ASC);
     mUnselected.addAll(values);
     notifyDataSetChanged();
@@ -261,13 +261,13 @@ public class MembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.ViewHold
     notifyDataSetChanged();
   }
 
-  public void clearLists(){
+  public void clearLists() {
     mUnselected.clear();
     mSelected.clear();
   }
 
   public List<FacebookFriend> getAllList() {
-     mSelected.addAll(mUnselected);
+    mSelected.addAll(mUnselected);
     return mSelected;
   }
 
