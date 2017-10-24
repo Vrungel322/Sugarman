@@ -139,6 +139,7 @@ public class ApproveOtpActivity extends AppCompatActivity implements ApiApproveO
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
       } else {
         intent = new Intent(ApproveOtpActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
       }
       Timber.e("phoneNumberStr " + phoneNumberStr);
       SharedPreferenceHelper.savePhoneNumber(phoneNumberStr);

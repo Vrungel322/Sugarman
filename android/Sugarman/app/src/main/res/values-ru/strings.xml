@@ -67,7 +67,7 @@
     <string name="invite_description_flag2">группу</string>
 
     <!-- REQUESTS ACTIVITY -->
-    <string name="approve">Approve</string>
+    <string name="approve">Принять</string>
     <string name="request_description_template">%1$s послал запрос на участие в %2$s.</string>
     <string name="request_description_flag1">послал запрос на участие в</string>
     <string name="request_description_flag2">.</string>

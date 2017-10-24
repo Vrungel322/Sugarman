@@ -38,8 +38,6 @@ public class ImageProductViewPagerAdapter extends PagerAdapter {
         .load(Integer.parseInt(urls.get(position)))
         .fit()
         .centerCrop()
-        .placeholder(
-            AppCompatResources.getDrawable(mContext, R.drawable.ic_our_work_placeholder_130dp))
         .into(imageView);
     container.addView(itemView);
     return itemView;

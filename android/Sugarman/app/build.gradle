@@ -37,8 +37,8 @@ android {
     applicationId "com.sugarman.myb"
     minSdkVersion 19 //min step counter version
     targetSdkVersion 23
-    versionCode 137
-    versionName "1.1.37"
+    versionCode 138
+    versionName "1.1.38"
     multiDexEnabled true
   }
   buildTypes {

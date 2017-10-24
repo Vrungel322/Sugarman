@@ -6,8 +6,8 @@
     android:viewportHeight="95">
 
   <group
-      android:scaleX="0.5"
-      android:scaleY="0.5"
+      android:scaleX="0.1"
+      android:scaleY="0.9"
       android:translateX="30"
       android:translateY="20"
       >
