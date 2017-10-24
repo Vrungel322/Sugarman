@@ -1,5 +1,6 @@
 package com.sugarman.myb.ui.activities.checkout;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -17,12 +18,18 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
+import com.paypal.android.sdk.payments.PayPalPayment;
 import com.paypal.android.sdk.payments.PayPalService;
+import com.paypal.android.sdk.payments.PaymentActivity;
+import com.paypal.android.sdk.payments.PaymentConfirmation;
 import com.squareup.picasso.Picasso;
 import com.sugarman.myb.R;
 import com.sugarman.myb.base.BasicActivity;
 import com.sugarman.myb.constants.Config;
+import com.sugarman.myb.ui.activities.checkout.test_paypal.ConfirmationActivity;
 import com.sugarman.myb.ui.views.CropCircleTransformation;
+import org.json.JSONException;
+import timber.log.Timber;
 
 
 /*
@@ -33,17 +40,18 @@ import com.sugarman.myb.ui.views.CropCircleTransformation;
 
 //эта штука нужна чтоб поставить фокус на EditText по нажатию на другую вьюху
 
-public class CheckoutActivity extends BasicActivity implements ICheckoutActivityView, View.OnClickListener {
-  @InjectPresenter CheckoutActivityPresenter presenter;
-
+public class CheckoutActivity extends BasicActivity
+    implements ICheckoutActivityView, View.OnClickListener {
+  private static final int PAYPAL_REQUEST_CODE = 123;
   private static PayPalConfiguration config;
+  @InjectPresenter CheckoutActivityPresenter presenter;
   @BindView(R.id.iv_back) ImageView backButton;
   @BindView(R.id.purchase_details_tv) TextView purchaseDetailsTV;
   @BindView(R.id.buy_now_for_x) TextView buyButton;
   @BindView(R.id.tvTotalPrice) TextView totalPrice;
   int num = 1;
   int productPrice = 0;
-  String  productImageUrl;
+  String productImageUrl;
   String productName = "";
   @BindView(R.id.etCountryName) EditText etCountryName;
   @BindView(R.id.etCityName) EditText etCityName;
@@ -153,40 +161,69 @@ public class CheckoutActivity extends BasicActivity implements ICheckoutActivity
     }
   }
 
+  @Override protected void onDestroy() {
+    stopService(new Intent(this, PayPalService.class));
+    super.onDestroy();
+  }
+
   @OnClick(R.id.buy_now_for_x) public void bBuyClicked() {
-    if (etCountryName.getText().toString().isEmpty()) {
-      etCountryName.setError(String.format(getString(R.string.empty_field_denied), "Country"));
-    }
-    if (etCityName.getText().toString().isEmpty()) {
-      etCityName.setError(String.format(getString(R.string.empty_field_denied), "City"));
-    }
-    if (etStreetName.getText().toString().isEmpty()) {
-      etStreetName.setError(String.format(getString(R.string.empty_field_denied), "Address"));
-    }
-    if (etZipCode.getText().toString().isEmpty()) {
-      etZipCode.setError(String.format(getString(R.string.empty_field_denied), "Zip Code"));
-    }
-    if (etFullName.getText().toString().isEmpty()) {
-      etFullName.setError(String.format(getString(R.string.empty_field_denied), "Full Name"));
-    }
-    if (etPhoneNumber.getText().toString().isEmpty()) {
-      etPhoneNumber.setError(String.format(getString(R.string.empty_field_denied), "Phone"));
-    }
+    testPayPal();
 
-    if (etCountryName.getText().length() > 0
-        && etCityName.getText().length() > 0
-        && etStreetName.getText().length() > 0
-        && etZipCode.getText().length() > 0
-        && etFullName.getText().length() > 0
-        && etPhoneNumber.getText().length() > 0) {
+    //Закоментировано для теста SANDBOX
+    //if (etCountryName.getText().toString().isEmpty()) {
+    //  etCountryName.setError(String.format(getString(R.string.empty_field_denied), "Country"));
+    //}
+    //if (etCityName.getText().toString().isEmpty()) {
+    //  etCityName.setError(String.format(getString(R.string.empty_field_denied), "City"));
+    //}
+    //if (etStreetName.getText().toString().isEmpty()) {
+    //  etStreetName.setError(String.format(getString(R.string.empty_field_denied), "Address"));
+    //}
+    //if (etZipCode.getText().toString().isEmpty()) {
+    //  etZipCode.setError(String.format(getString(R.string.empty_field_denied), "Zip Code"));
+    //}
+    //if (etFullName.getText().toString().isEmpty()) {
+    //  etFullName.setError(String.format(getString(R.string.empty_field_denied), "Full Name"));
+    //}
+    //if (etPhoneNumber.getText().toString().isEmpty()) {
+    //  etPhoneNumber.setError(String.format(getString(R.string.empty_field_denied), "Phone"));
+    //}
+    //
+    //if (etCountryName.getText().length() > 0
+    //    && etCityName.getText().length() > 0
+    //    && etStreetName.getText().length() > 0
+    //    && etZipCode.getText().length() > 0
+    //    && etFullName.getText().length() > 0
+    //    && etPhoneNumber.getText().length() > 0) {
+    //
+    //  presenter.sendPurchaseData(etCountryName.getText().toString(),
+    //      etCityName.getText().toString(), etStreetName.getText().toString(),
+    //      etZipCode.getText().toString(), etFullName.getText().toString(),
+    //      etPhoneNumber.getText().toString(), num*productPrice,num,productName);
+    //
+    //
+    //}
+  }
 
-      presenter.sendPurchaseData(etCountryName.getText().toString(),
-          etCityName.getText().toString(), etStreetName.getText().toString(),
-          etZipCode.getText().toString(), etFullName.getText().toString(),
-          etPhoneNumber.getText().toString(), num*productPrice,num,productName);
+  private void testPayPal() {
+    //Creating a paypalpayment
+    PayPalPayment payment =
+        new PayPalPayment(new java.math.BigDecimal("1.99"), "USD", "Simplified Coding Fee",
+            PayPalPayment.PAYMENT_INTENT_SALE);
 
+    //Creating Paypal Payment activity intent
+    Intent intent = new Intent(this, PaymentActivity.class);
 
-    }
+    //putting the paypal configuration to the intent
+    intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
+
+    //Puting paypal payment to the intent
+    intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
+
+    //Starting the intent activity for result
+    //the request code will be used on the method onActivityResult
+    startActivityForResult(intent, PAYPAL_REQUEST_CODE);
+
   }
 
   void addSeparator(ViewGroup v, int pos) {
@@ -198,17 +235,46 @@ public class CheckoutActivity extends BasicActivity implements ICheckoutActivity
     v.addView(separator, pos);
   }
 
-
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    //If the result is from paypal
+    if (requestCode == PAYPAL_REQUEST_CODE) {
+
+      //If the result is OK i.e. user has not canceled the payment
+      if (resultCode == Activity.RESULT_OK) {
+        //Getting the payment confirmation
+        PaymentConfirmation confirm = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
+
+        //if confirmation is not null
+        if (confirm != null) {
+          try {
+            //Getting the payment details
+            String paymentDetails = confirm.toJSONObject().toString(4);
+            Timber.e("paymentExample " + paymentDetails);
+
+            //Starting a new activity for the payment details and also putting the payment details with intent
+            startActivity(new Intent(this, ConfirmationActivity.class)
+                .putExtra("PaymentDetails", paymentDetails)
+                .putExtra("PaymentAmount", "1.99"));
+
+          } catch (JSONException e) {
+            Timber.e("paymentExample " + "an extremely unlikely failure occurred: ", e);
+          }
+        }
+      } else if (resultCode == Activity.RESULT_CANCELED) {
+        Timber.e("paymentExample " +  "The user canceled.");
+      } else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID) {
+        Timber.e("paymentExample " + "An invalid Payment or PayPalConfiguration was submitted. Please see the docs.");
+      }
+    }
 
   }
 
-  private void initPayPal()
-  {
-    config = new PayPalConfiguration()
-        .environment(PayPalConfiguration.ENVIRONMENT_NO_NETWORK)
+  private void initPayPal() {
+    //For real pay change ENVIRONMENT_SANDBOX and (may be) PAYPAL_CLIENT_ID
+    config = new PayPalConfiguration().environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
         .clientId(Config.PAYPAL_CLIENT_ID);
   }
+
   @Override public void finishCheckoutActivity() {
     showToastMessage(getString(R.string.purchase_request_send));
     finish();
