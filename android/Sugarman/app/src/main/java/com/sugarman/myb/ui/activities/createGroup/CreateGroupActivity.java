@@ -1113,6 +1113,7 @@ public class CreateGroupActivity extends BaseActivity
       ));
     }
     friendsAdapter.setValue(notRealmList);
+    System.out.println("хуй собачий");
   }
 
   @Override public void showProgress() {

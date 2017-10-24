@@ -13,6 +13,7 @@ import com.sugarman.myb.base.BasicActivity;
 import com.sugarman.myb.ui.activities.checkout.CheckoutActivity;
 import com.sugarman.myb.ui.activities.shop.ShopActivity;
 import com.sugarman.myb.ui.activities.shopInviteFriend.ShopInviteFriendsActivity;
+import timber.log.Timber;
 
 public class ProductDetailsActivity extends BasicActivity implements IProductDetailsActivityView {
   @InjectPresenter ProductDetailsActivityPresenter mPresenter;
@@ -44,6 +45,7 @@ public class ProductDetailsActivity extends BasicActivity implements IProductDet
       intent1.putExtra("productId", mShopProductEntity.getId());
       intent1.putExtra("productName", mShopProductEntity.getProductName());
       intent1.putExtra("productImageId", mShopProductEntity.getImgDetailUrls().get(0));
+      Timber.e(mShopProductEntity.getProductPrice());
       intent1.putExtra("productPrice", mShopProductEntity.getProductPrice());
       startActivity(intent1);
     });

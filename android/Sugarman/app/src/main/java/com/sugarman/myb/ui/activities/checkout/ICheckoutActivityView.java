@@ -9,5 +9,5 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
  */
 @StateStrategyType(AddToEndSingleStrategy.class) public interface ICheckoutActivityView
     extends MvpView {
-  void finishCheckoutActivity();
+  void startPayPalTransaction(String amountPrice);
 }

@@ -78,13 +78,13 @@ public class DataManager {
 
   public Observable<List<ShopProductEntity>> fetchProducts(List<String> productName) {
     ArrayList<ShopProductEntity> entities = new ArrayList<>();
-    entities.add(new ShopProductEntity("0", productName.get(0), "", "",
+    entities.add(new ShopProductEntity("0", productName.get(0), "", "0.99",
         Arrays.asList(String.valueOf(R.drawable.cap1), String.valueOf(R.drawable.cap2),
             String.valueOf(R.drawable.cap3))));
-    entities.add(new ShopProductEntity("1", productName.get(1), "", "",
+    entities.add(new ShopProductEntity("1", productName.get(1), "", "1.99",
         Arrays.asList(String.valueOf(R.drawable.belt1), String.valueOf(R.drawable.belt2),
             String.valueOf(R.drawable.belt3))));
-    entities.add(new ShopProductEntity("2", productName.get(2), "", "",
+    entities.add(new ShopProductEntity("2", productName.get(2), "", "2.99",
         Arrays.asList(String.valueOf(R.drawable.com1), String.valueOf(R.drawable.com2),
             String.valueOf(R.drawable.com3), String.valueOf(R.drawable.com4))));
     return Observable.just(entities);

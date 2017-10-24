@@ -26,9 +26,7 @@ import com.squareup.picasso.Picasso;
 import com.sugarman.myb.R;
 import com.sugarman.myb.base.BasicActivity;
 import com.sugarman.myb.constants.Config;
-import com.sugarman.myb.ui.activities.checkout.test_paypal.ConfirmationActivity;
 import com.sugarman.myb.ui.views.CropCircleTransformation;
-import org.json.JSONException;
 import timber.log.Timber;
 
 
@@ -50,7 +48,7 @@ public class CheckoutActivity extends BasicActivity
   @BindView(R.id.buy_now_for_x) TextView buyButton;
   @BindView(R.id.tvTotalPrice) TextView totalPrice;
   int num = 1;
-  int productPrice = 0;
+  String productPrice;
   String productImageUrl;
   String productName = "";
   @BindView(R.id.etCountryName) EditText etCountryName;
@@ -72,7 +70,7 @@ public class CheckoutActivity extends BasicActivity
 
     Intent intent = getIntent();
     int type = intent.getIntExtra("checkout", -1);
-    productPrice = intent.getIntExtra("productPrice", 0);
+    productPrice = intent.getStringExtra("productPrice");
     productImageUrl = intent.getStringExtra("productImageId");
     productName = intent.getStringExtra("productName");
     Log.e("checkout", "" + type);
@@ -135,7 +133,7 @@ public class CheckoutActivity extends BasicActivity
         plusButton.setOnClickListener(view -> {
           num++;
           numberOfItems.setText(Integer.toString(num));
-          totalPrice.setText(num * productPrice + " $");
+          totalPrice.setText(num * Double.parseDouble(productPrice) + " $");
         });
 
         ImageView minusButton = (ImageView) v1.findViewById(R.id.minus);
@@ -143,7 +141,7 @@ public class CheckoutActivity extends BasicActivity
           if (num > 1) {
             num--;
             numberOfItems.setText(Integer.toString(num));
-            totalPrice.setText(num * productPrice + " $");
+            totalPrice.setText(num * Double.parseDouble(productPrice) + " $");
           }
         });
         addSeparator(verticalLayout, 1);
@@ -167,48 +165,45 @@ public class CheckoutActivity extends BasicActivity
   }
 
   @OnClick(R.id.buy_now_for_x) public void bBuyClicked() {
-    testPayPal();
 
-    //Закоментировано для теста SANDBOX
-    //if (etCountryName.getText().toString().isEmpty()) {
-    //  etCountryName.setError(String.format(getString(R.string.empty_field_denied), "Country"));
-    //}
-    //if (etCityName.getText().toString().isEmpty()) {
-    //  etCityName.setError(String.format(getString(R.string.empty_field_denied), "City"));
-    //}
-    //if (etStreetName.getText().toString().isEmpty()) {
-    //  etStreetName.setError(String.format(getString(R.string.empty_field_denied), "Address"));
-    //}
-    //if (etZipCode.getText().toString().isEmpty()) {
-    //  etZipCode.setError(String.format(getString(R.string.empty_field_denied), "Zip Code"));
-    //}
-    //if (etFullName.getText().toString().isEmpty()) {
-    //  etFullName.setError(String.format(getString(R.string.empty_field_denied), "Full Name"));
-    //}
-    //if (etPhoneNumber.getText().toString().isEmpty()) {
-    //  etPhoneNumber.setError(String.format(getString(R.string.empty_field_denied), "Phone"));
-    //}
-    //
-    //if (etCountryName.getText().length() > 0
-    //    && etCityName.getText().length() > 0
-    //    && etStreetName.getText().length() > 0
-    //    && etZipCode.getText().length() > 0
-    //    && etFullName.getText().length() > 0
-    //    && etPhoneNumber.getText().length() > 0) {
-    //
-    //  presenter.sendPurchaseData(etCountryName.getText().toString(),
-    //      etCityName.getText().toString(), etStreetName.getText().toString(),
-    //      etZipCode.getText().toString(), etFullName.getText().toString(),
-    //      etPhoneNumber.getText().toString(), num*productPrice,num,productName);
-    //
-    //
-    //}
+    if (etCountryName.getText().toString().isEmpty()) {
+      etCountryName.setError(String.format(getString(R.string.empty_field_denied), "Country"));
+    }
+    if (etCityName.getText().toString().isEmpty()) {
+      etCityName.setError(String.format(getString(R.string.empty_field_denied), "City"));
+    }
+    if (etStreetName.getText().toString().isEmpty()) {
+      etStreetName.setError(String.format(getString(R.string.empty_field_denied), "Address"));
+    }
+    if (etZipCode.getText().toString().isEmpty()) {
+      etZipCode.setError(String.format(getString(R.string.empty_field_denied), "Zip Code"));
+    }
+    if (etFullName.getText().toString().isEmpty()) {
+      etFullName.setError(String.format(getString(R.string.empty_field_denied), "Full Name"));
+    }
+    if (etPhoneNumber.getText().toString().isEmpty()) {
+      etPhoneNumber.setError(String.format(getString(R.string.empty_field_denied), "Phone"));
+    }
+
+    if (etCountryName.getText().length() > 0
+        && etCityName.getText().length() > 0
+        && etStreetName.getText().length() > 0
+        && etZipCode.getText().length() > 0
+        && etFullName.getText().length() > 0
+        && etPhoneNumber.getText().length() > 0) {
+
+      presenter.sendPurchaseData(etCountryName.getText().toString(),
+          etCityName.getText().toString(), etStreetName.getText().toString(),
+          etZipCode.getText().toString(), etFullName.getText().toString(),
+          etPhoneNumber.getText().toString(),
+          String.valueOf(num * Double.parseDouble(productPrice)), num, productName);
+    }
   }
 
-  private void testPayPal() {
+  private void getMoneyPayPal(String amountPrice) {
     //Creating a paypalpayment
     PayPalPayment payment =
-        new PayPalPayment(new java.math.BigDecimal("1.99"), "USD", "Simplified Coding Fee",
+        new PayPalPayment(new java.math.BigDecimal(amountPrice), "USD", "Simplified Coding Fee",
             PayPalPayment.PAYMENT_INTENT_SALE);
 
     //Creating Paypal Payment activity intent
@@ -223,7 +218,6 @@ public class CheckoutActivity extends BasicActivity
     //Starting the intent activity for result
     //the request code will be used on the method onActivityResult
     startActivityForResult(intent, PAYPAL_REQUEST_CODE);
-
   }
 
   void addSeparator(ViewGroup v, int pos) {
@@ -242,31 +236,33 @@ public class CheckoutActivity extends BasicActivity
       //If the result is OK i.e. user has not canceled the payment
       if (resultCode == Activity.RESULT_OK) {
         //Getting the payment confirmation
-        PaymentConfirmation confirm = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
+        PaymentConfirmation confirm =
+            data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
 
         //if confirmation is not null
         if (confirm != null) {
-          try {
-            //Getting the payment details
-            String paymentDetails = confirm.toJSONObject().toString(4);
-            Timber.e("paymentExample " + paymentDetails);
+          finish();
+
+          //try {
+          //Getting the payment details
+          //String paymentDetails = confirm.toJSONObject().toString(4);
+          //Timber.e("paymentExample " + paymentDetails);
 
             //Starting a new activity for the payment details and also putting the payment details with intent
-            startActivity(new Intent(this, ConfirmationActivity.class)
-                .putExtra("PaymentDetails", paymentDetails)
-                .putExtra("PaymentAmount", "1.99"));
-
-          } catch (JSONException e) {
-            Timber.e("paymentExample " + "an extremely unlikely failure occurred: ", e);
-          }
+            //startActivity(new Intent(this, ConfirmationActivity.class).putExtra("PaymentDetails",
+            //    paymentDetails)
+            //    .putExtra("PaymentAmount", String.valueOf(num * Double.parseDouble(productPrice))));
+          //} catch (JSONException e) {
+          //  Timber.e("paymentExample " + "an extremely unlikely failure occurred: ", e);
+          //}
         }
       } else if (resultCode == Activity.RESULT_CANCELED) {
-        Timber.e("paymentExample " +  "The user canceled.");
+        Timber.e("paymentExample " + "The user canceled.");
       } else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID) {
-        Timber.e("paymentExample " + "An invalid Payment or PayPalConfiguration was submitted. Please see the docs.");
+        Timber.e("paymentExample "
+            + "An invalid Payment or PayPalConfiguration was submitted. Please see the docs.");
       }
     }
-
   }
 
   private void initPayPal() {
@@ -275,9 +271,9 @@ public class CheckoutActivity extends BasicActivity
         .clientId(Config.PAYPAL_CLIENT_ID);
   }
 
-  @Override public void finishCheckoutActivity() {
+  @Override public void startPayPalTransaction(String amountPrice) {
+    getMoneyPayPal(amountPrice);
     showToastMessage(getString(R.string.purchase_request_send));
-    finish();
   }
 
   @Override public void onClick(View view) {

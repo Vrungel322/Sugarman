@@ -89,6 +89,7 @@ public class ShopActivity extends BasicActivity implements IShopActivityView, Vi
         views.addAll(getTextViews((ViewGroup) v));
       }
     }
+    System.out.println("хуй собачий");
     return views;
   }
 

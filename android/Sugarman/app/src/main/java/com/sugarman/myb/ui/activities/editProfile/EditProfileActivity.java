@@ -361,6 +361,7 @@ public class EditProfileActivity extends BasicActivity
               intent.putExtra("otp", otp);
               intent.putExtra("showSettings", false);
               intent.putExtra("phone", displayNumber);
+              System.out.println("хуй собачий");
               intent.putExtra("nameParentActivity", EditProfileActivity.class.getName());
               startActivity(intent);
             }

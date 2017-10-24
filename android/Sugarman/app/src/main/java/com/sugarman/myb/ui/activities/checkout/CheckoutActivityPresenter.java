@@ -18,16 +18,17 @@ import timber.log.Timber;
   }
 
   public void sendPurchaseData(String countryName, String cityName, String streetName,
-      String zipCode, String fullName, String phoneNumber, int amountPrice, int num,
+      String zipCode, String fullName, String phoneNumber, String amountPrice, int num,
       String productName) {
+    Timber.e(amountPrice);
     Subscription subscription =
         mDataManager.sendPurchaseData(countryName, cityName, streetName, zipCode, fullName,
-            phoneNumber, String.valueOf(amountPrice), String.valueOf(num), productName)
+            phoneNumber, amountPrice, String.valueOf(num), productName)
             .compose(ThreadSchedulers.applySchedulers())
             .subscribe(voidResponse -> {
               Timber.e("" + voidResponse.code());
               if (voidResponse.code() == Constants.SUCCESS_RESPONSE_CODE){
-                getViewState().finishCheckoutActivity();
+                getViewState().startPayPalTransaction(amountPrice);
               }
             },Throwable::printStackTrace);
     addToUnsubscription(subscription);
