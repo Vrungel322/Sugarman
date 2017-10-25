@@ -33,6 +33,7 @@ public interface ApiRx {
   //    @Field("user_id") String userId, @Body List<FacebookFriend> selectedMembers);
 
   @Multipart @POST("v2/shop_invite") Observable<Response<Void>> addFriendsToShopGroup(
+      @Header("Authorization") String accessToken,
       @Part("user_id") RequestBody userId, @Part("members[][fbid]") List<RequestBody> ids,
       @Part("members[][vkid]") List<RequestBody> vkids,
       @Part("members[][phonenumber]") List<RequestBody> phoneNumbers,

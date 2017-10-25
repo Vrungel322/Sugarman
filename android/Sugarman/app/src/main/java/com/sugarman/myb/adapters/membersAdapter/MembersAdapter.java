@@ -73,7 +73,7 @@ public class MembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.ViewHold
           friend.getPicture())) {
 
         String url = friend.getPicture();
-        Timber.e("URLSTART"+url+"URLEND");
+        //Timber.e("URLSTART"+url+"URLEND");
         if(url == null||url.equals("")||url.equals(" "))
           url = "https://sugarman-myb.s3.amazonaws.com/Group_New.png";
         Picasso.with(context)

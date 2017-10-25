@@ -33,6 +33,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+import timber.log.Timber;
 
 public class GroupMembersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     implements ItemGroupMemberListener {
@@ -349,6 +350,9 @@ if(member.getName().contains(" ")) {
   }
 
   @Override public void onClickMemberAvatar(int position) {
+
+    Timber.e("My ID " + SharedPreferenceHelper.getUserId() + ", myPosition = " + myPosition + " user clicked " + mData.get(position).getId());
+
     if (position >= 0 && position < mData.size()) {
       if (actionListener.get() != null) {
         GroupMember member = mData.get(position);
@@ -433,7 +437,14 @@ if(member.getName().contains(" ")) {
 
     GroupMember memberWithMyId = new GroupMember();
     memberWithMyId.setId(userId);
-    myPosition = mData.indexOf(memberWithMyId);
+    for(int i = 0; i<mData.size(); i++) {
+      Timber.e("Position " + i + " mdata " + mData.get(i).getId());
+      if (mData.get(i).getId().equals(userId)) {
+        Timber.e("EUREKA");
+        myPosition = i;
+      }
+    }
+    Timber.e("My position " + myPosition);
     setMySteps(userSteps);
     notifyDataSetChanged();
     isShownActionBackground = true;
