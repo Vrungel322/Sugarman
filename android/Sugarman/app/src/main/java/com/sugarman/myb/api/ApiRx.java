@@ -1,5 +1,6 @@
 package com.sugarman.myb.api;
 
+import com.clover_studio.spikachatmodule.utils.Const;
 import com.sugarman.myb.api.models.requests.CheckPhoneRequest;
 import com.sugarman.myb.api.models.requests.CheckVkRequest;
 import com.sugarman.myb.api.models.requests.PurchaseDataRequest;
@@ -10,6 +11,7 @@ import com.sugarman.myb.api.models.responses.CountInvitesResponse;
 import com.sugarman.myb.api.models.responses.InvitersImgUrls;
 import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
+import com.sugarman.myb.constants.Constants;
 import java.util.List;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -28,16 +30,16 @@ import rx.Observable;
 
 public interface ApiRx {
   @POST("v2/users") Observable<UsersResponse> refreshRxUserData(
-      @Header("Authorization") String accessToken, @Body RefreshUserDataRequest request);
+      @Body RefreshUserDataRequest request);
 
   @POST("v3/checkouts") Observable<Response<Void>> sendPurchaseData(
-      @Body PurchaseDataRequest purchaseDataRequest, @Header("Authorization") String accessToken);
+      @Body PurchaseDataRequest purchaseDataRequest);
 
   //@POST("v2/shop_invite") @FormUrlEncoded Observable<Response<Void>> addFriendsToShopGroup(
   //    @Field("user_id") String userId, @Body List<FacebookFriend> selectedMembers);
 
   @Multipart @POST("v2/shop_invite") Observable<Response<Void>> addFriendsToShopGroup(
-      @Header("Authorization") String accessToken, @Part("user_id") RequestBody userId,
+      @Part("user_id") RequestBody userId,
       @Part("members[][fbid]") List<RequestBody> ids,
       @Part("members[][vkid]") List<RequestBody> vkids,
       @Part("members[][phonenumber]") List<RequestBody> phoneNumbers,
@@ -48,11 +50,9 @@ public interface ApiRx {
       @Part("members[][picture_url_vk]") List<RequestBody> picturesVK,
       @Part("members[][picture_url_phone]") List<RequestBody> picturesPhone);
 
-  @GET("v2/get_inviter_picture") Observable<InvitersImgUrls> loadInvitersImgUrls(
-      @Header("Authorization") String accessToken);
+  @GET("v2/get_inviter_picture") Observable<InvitersImgUrls> loadInvitersImgUrls();
 
-  @GET("v2/count_inviters") Observable<CountInvitesResponse> countInvites(
-      @Header("Authorization") String accessToken);
+  @GET("v2/count_inviters") Observable<CountInvitesResponse> countInvites();
 
   @GET("v3/get_products") Observable<List<ShopProductEntity>> fetchProducts();
 
@@ -64,9 +64,7 @@ public interface ApiRx {
       @Part("token") RequestBody fbToken, @Part("vk_token") RequestBody vkToken,
       @Part("g_token") RequestBody gToken, @Header("Authorization") String accessToken);
 
-  @POST("/v3/check_phone") Observable<CheckPhoneResponse> checkPhone(
-      @Header("Authorization") String accessToken, @Body CheckPhoneRequest phones);
+  @POST("/v3/check_phone") Observable<CheckPhoneResponse> checkPhone(@Body CheckPhoneRequest phones);
 
-  @POST("/v3/check_vk") Observable<CheckVkResponse> checkVk(
-      @Header("Authorization") String accessToken, @Body CheckVkRequest vkRequest);
+  @POST("/v3/check_vk") Observable<CheckVkResponse> checkVk(@Body CheckVkRequest vkRequest);
 }

@@ -35,16 +35,15 @@ public class RestApi {
     this.api = api;
   }
 
-  public Observable<UsersResponse> refreshRxUserData(String accessToken, RefreshUserDataRequest request) {
-    return api.refreshRxUserData(accessToken,request);
+  public Observable<UsersResponse> refreshRxUserData(RefreshUserDataRequest request) {
+    return api.refreshRxUserData(request);
   }
 
-  public Observable<Response<Void>> sendPurchaseData(PurchaseDataRequest purchaseDataRequest,
-      String accessToken) {
-    return api.sendPurchaseData(purchaseDataRequest, accessToken);
+  public Observable<Response<Void>> sendPurchaseData(PurchaseDataRequest purchaseDataRequest) {
+    return api.sendPurchaseData(purchaseDataRequest);
   }
 
-  public Observable<Response<Void>> addFriendsToShopGroup(String accessToken,String userId,
+  public Observable<Response<Void>> addFriendsToShopGroup(String userId,
       ArrayList<FacebookFriend> selectedMembers) {
     RequestBody uId = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), userId);
 
@@ -82,16 +81,16 @@ public class RestApi {
             "https://sugarman-myb.s3.amazonaws.com/Group_New.png"));
       }
     }
-    return api.addFriendsToShopGroup(accessToken,uId, ids, vkids, phoneNumbers, names, vkNames, phoneNames,
+    return api.addFriendsToShopGroup(uId, ids, vkids, phoneNumbers, names, vkNames, phoneNames,
         pictures, vkpictures, phonePictures);
   }
 
   public Observable<InvitersImgUrls> loadInvitersImgUrls(String accessToken) {
-    return api.loadInvitersImgUrls(accessToken);
+    return api.loadInvitersImgUrls();
   }
 
   public Observable<CountInvitesResponse> countInvites(String accessToken) {
-    return api.countInvites(accessToken);
+    return api.countInvites();
   }
 
   public Observable<List<ShopProductEntity>> fetchProducts() {
@@ -131,9 +130,9 @@ public class RestApi {
   }
 
   public Observable<CheckPhoneResponse> checkPhone(String accessToken,CheckPhoneRequest phones){
-    return api.checkPhone(accessToken,phones);
+    return api.checkPhone(phones);
   }
   public Observable<CheckVkResponse> checkVk(String accessToken,CheckVkRequest vkRequest){
-    return api.checkVk(accessToken,vkRequest);
+    return api.checkVk(vkRequest);
   }
 }
