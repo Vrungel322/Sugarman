@@ -24,7 +24,7 @@ import rx.Observable;
 
 public interface ApiRx {
   @POST("v2/users") Observable<UsersResponse> refreshRxUserData(
-      @Body RefreshUserDataRequest request);
+      @Header("Authorization") String accessToken, @Body RefreshUserDataRequest request);
 
   @POST("v3/checkouts") Observable<Response<Void>> sendPurchaseData(
       @Body PurchaseDataRequest purchaseDataRequest, @Header("Authorization") String accessToken);
@@ -33,8 +33,8 @@ public interface ApiRx {
   //    @Field("user_id") String userId, @Body List<FacebookFriend> selectedMembers);
 
   @Multipart @POST("v2/shop_invite") Observable<Response<Void>> addFriendsToShopGroup(
-      @Header("Authorization") String accessToken,
-      @Part("user_id") RequestBody userId, @Part("members[][fbid]") List<RequestBody> ids,
+      @Header("Authorization") String accessToken, @Part("user_id") RequestBody userId,
+      @Part("members[][fbid]") List<RequestBody> ids,
       @Part("members[][vkid]") List<RequestBody> vkids,
       @Part("members[][phonenumber]") List<RequestBody> phoneNumbers,
       @Part("members[][name]") List<RequestBody> names,

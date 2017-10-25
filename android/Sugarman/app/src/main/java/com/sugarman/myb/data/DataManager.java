@@ -47,7 +47,7 @@ public class DataManager {
   // REST
   ///////////////////////////////////////////////////////////////////////////
   public Observable<UsersResponse> refreshRxUserData(RefreshUserDataRequest request) {
-    return mRestApi.refreshRxUserData(request);
+    return mRestApi.refreshRxUserData(Constants.BEARER + SharedPreferenceHelper.getAccessToken(),request);
   }
 
   public Observable<Response<Void>> sendPurchaseData(String countryName, String cityName,
