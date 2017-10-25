@@ -1,5 +1,7 @@
 package com.sugarman.myb.di.modules;
 
+import android.text.TextUtils;
+import android.util.Log;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -12,6 +14,7 @@ import com.sugarman.myb.utils.IgnoreRequestUtils;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import dagger.Module;
 import dagger.Provides;
+import java.io.IOException;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Named;
@@ -52,10 +55,11 @@ import timber.log.Timber;
         .create();
   }
 
-  @Provides @AppScope OkHttpClient provideOkClient(
+  @Provides @AppScope OkHttpClient provideOkClient(HttpLoggingInterceptor httpLoggingInterceptor,
       @Named("HeaderInterceptor") Interceptor headerInterceptor) {
     return new OkHttpClient.Builder().readTimeout(10, TimeUnit.SECONDS)
-        .addNetworkInterceptor(headerInterceptor)
+        .addInterceptor(headerInterceptor)
+        .addInterceptor(httpLoggingInterceptor)
         .build();
   }
 
@@ -81,19 +85,30 @@ import timber.log.Timber;
   //}
   //
   @Provides @AppScope @Named("HeaderInterceptor") Interceptor provideHeaderInterceptor() {
-    return chain -> {
-      Request request = chain.request();
-      Response response = chain.proceed(chain.request());
+    Timber.e("Got into interceptor");
+    okhttp3.Interceptor requestInterceptor = new okhttp3.Interceptor() {
+      @Override public Response intercept(Chain chain) throws IOException {
+        Request original = chain.request();
+        Request request;
 
-      String token = SharedPreferenceHelper.getAccessToken();
-      response = response.newBuilder().
-          header(Constants.AUTHORIZATION, Constants.BEARER + token).
-          header(Constants.TIMEZONE, TimeZone.getDefault().getID()).
-          header(Constants.TIMESTAMP, System.currentTimeMillis() + "").
-          header(Constants.VERSION, DeviceHelper.getAppVersionName()).build();
+        String token = SharedPreferenceHelper.getAccessToken();
+        Log.e("APP", "Token = " + token);
+        Request.Builder requestBuilder = original.newBuilder();
+        // .header("content-type", "application/json");
 
-      return response;
+        if (!TextUtils.isEmpty(token)) {
+          requestBuilder.header(Constants.AUTHORIZATION, Constants.BEARER + token);
+          requestBuilder.header(Constants.TIMEZONE, TimeZone.getDefault().getID());
+          requestBuilder.header(Constants.TIMESTAMP, System.currentTimeMillis() + "");
+          requestBuilder.header(Constants.VERSION, DeviceHelper.getAppVersionName());
+        }
+
+        request = requestBuilder.build();
+
+        return chain.proceed(request);
+      }
     };
+    return requestInterceptor;
   }
   //
   //@Provides @AppScope @Named("OfflineCacheInterceptor") Interceptor provideOfflineCacheInterceptor(
