@@ -13,4 +13,11 @@ public class CheckPhoneRequest {
   public void setPhones(List<String> phones) {
     this.phones = phones;
   }
+
+  public CheckPhoneRequest() {
+  }
+
+  public CheckPhoneRequest(List<String> phones) {
+    this.phones = phones;
+  }
 }

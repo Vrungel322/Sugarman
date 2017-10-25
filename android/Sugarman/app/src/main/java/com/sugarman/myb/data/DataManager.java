@@ -3,8 +3,12 @@ package com.sugarman.myb.data;
 import android.content.ContentResolver;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.RestApi;
+import com.sugarman.myb.api.models.requests.CheckPhoneRequest;
+import com.sugarman.myb.api.models.requests.CheckVkRequest;
 import com.sugarman.myb.api.models.requests.PurchaseDataRequest;
 import com.sugarman.myb.api.models.requests.RefreshUserDataRequest;
+import com.sugarman.myb.api.models.responses.CheckPhoneResponse;
+import com.sugarman.myb.api.models.responses.CheckVkResponse;
 import com.sugarman.myb.api.models.responses.CountInvitesResponse;
 import com.sugarman.myb.api.models.responses.InvitersImgUrls;
 import com.sugarman.myb.api.models.responses.ShopProductEntity;
@@ -47,7 +51,8 @@ public class DataManager {
   // REST
   ///////////////////////////////////////////////////////////////////////////
   public Observable<UsersResponse> refreshRxUserData(RefreshUserDataRequest request) {
-    return mRestApi.refreshRxUserData(Constants.BEARER + SharedPreferenceHelper.getAccessToken(),request);
+    return mRestApi.refreshRxUserData(Constants.BEARER + SharedPreferenceHelper.getAccessToken(),
+        request);
   }
 
   public Observable<Response<Void>> sendPurchaseData(String countryName, String cityName,
@@ -128,10 +133,20 @@ public class DataManager {
             "https://sugarman-myb.s3.amazonaws.com/Group_New.png", FacebookFriend.CODE_INVITABLE,
             "ph");
         allFriends.add(friend);
-        subscriber.onNext(allFriends);
-        subscriber.onCompleted();
       }
+      subscriber.onNext(allFriends);
+      subscriber.onCompleted();
     });
+  }
+
+  public Observable<CheckPhoneResponse> checkPhone(List<String> phones) {
+    return mRestApi.checkPhone(Constants.BEARER + SharedPreferenceHelper.getAccessToken(),
+        new CheckPhoneRequest(phones));
+  }
+
+  public Observable<CheckVkResponse> checkVk(List<String> vkIds) {
+    return mRestApi.checkVk(Constants.BEARER + SharedPreferenceHelper.getAccessToken(),
+        new CheckVkRequest(vkIds));
   }
 }
 

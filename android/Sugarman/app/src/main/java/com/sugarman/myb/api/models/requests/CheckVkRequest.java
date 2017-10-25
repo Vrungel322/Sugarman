@@ -13,4 +13,11 @@ public class CheckVkRequest {
   public void setVks(List<String> vks) {
     this.vks = vks;
   }
+
+  public CheckVkRequest() {
+  }
+
+  public CheckVkRequest(List<String> vks) {
+    this.vks = vks;
+  }
 }

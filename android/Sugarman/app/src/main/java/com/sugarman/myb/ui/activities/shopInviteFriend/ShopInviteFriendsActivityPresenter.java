@@ -3,6 +3,7 @@ package com.sugarman.myb.ui.activities.shopInviteFriend;
 import android.util.Log;
 import com.arellomobile.mvp.InjectViewState;
 import com.sugarman.myb.App;
+import com.sugarman.myb.api.models.responses.Phones;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.base.BasicPresenter;
 import com.sugarman.myb.constants.Constants;
@@ -67,7 +68,32 @@ import timber.log.Timber;
   }
 
   private void loadPhoneNumbersContacts() {
+    List<FacebookFriend> friendsFromPhone = new ArrayList<>();
     Subscription subscription = mDataManager.loadContactsFromContactBook()
+        .concatMap(friends -> {
+          friendsFromPhone.addAll(friends);
+          return Observable.just(friends);
+        })
+        .concatMap(Observable::from)
+        .concatMap(facebookFriend -> Observable.just(facebookFriend.getId()))
+        .toList()
+        .concatMap(
+            phones -> mDataManager.checkPhone(phones).compose(ThreadSchedulers.applySchedulers()))
+        .concatMap(checkPhoneResponse -> {
+          for (Phones p : checkPhoneResponse.getPhones()) {
+            for (FacebookFriend friend : friendsFromPhone) {
+              if (friend.getSocialNetwork().equals("ph")) {
+                if (friend.getId().equals(p.getPhone())) {
+                  friend.setIsInvitable(FacebookFriend.CODE_NOT_INVITABLE);
+                }
+              }
+            }
+          }
+          return Observable.just(friendsFromPhone);
+        })
+        .concatMap(Observable::from)
+        .filter(friend -> friend.getIsInvitable() != FacebookFriend.CODE_NOT_INVITABLE)
+        .toList()
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(facebookFriends -> {
           getViewState().addPhoneContact(facebookFriends);
@@ -103,6 +129,7 @@ import timber.log.Timber;
   }
 
   public void loadVkFriends() {
+    List<FacebookFriend> friendsVk = new ArrayList<FacebookFriend>();
     VKRequest request = new VKRequest("friends.get",
         VKParameters.from(VKApiConst.FIELDS, "photo_100", "order", "name"));
     request.executeWithListener(new VKRequest.VKRequestListener() {
@@ -111,7 +138,6 @@ import timber.log.Timber;
         JSONObject resp = response.json;
         try {
           JSONArray items = resp.getJSONObject("response").getJSONArray("items");
-          List<FacebookFriend> friendsVk = new ArrayList<FacebookFriend>();
           for (int i = 0; i < items.length(); i++) {
 
             JSONObject item = items.getJSONObject(i);
@@ -125,9 +151,10 @@ import timber.log.Timber;
                 new FacebookFriend(Integer.toString(id), firstName + " " + lastName, photoUrl,
                     FacebookFriend.CODE_INVITABLE, "vk");
             friendsVk.add(friend);
+            checkVkFriends(friendsVk);
           }
-          getViewState().hideLoader();
-          getViewState().addVkFriends(friendsVk);
+          //getViewState().hideLoader();
+          //getViewState().addVkFriends(friendsVk);
         } catch (JSONException e) {
           e.printStackTrace();
         }
@@ -141,14 +168,41 @@ import timber.log.Timber;
     });
   }
 
+  private void checkVkFriends(List<FacebookFriend> friendsVk) {
+    Subscription subscription = Observable.from(friendsVk)
+        .concatMap(facebookFriend -> Observable.just(facebookFriend.getId()))
+        .toList()
+        .concatMap(vkIds -> mDataManager.checkVk(vkIds).compose(ThreadSchedulers.applySchedulers()))
+        .concatMap(checkVkResponse -> {
+          for (String s : checkVkResponse.getVks()) {
+            for (FacebookFriend friend : friendsVk) {
+              if (friend.getSocialNetwork().equals("vk")) {
+                if (friend.getId().equals(s)) {
+                  friend.setIsInvitable(FacebookFriend.CODE_NOT_INVITABLE);
+                }
+              }
+            }
+          }
+          return Observable.just(friendsVk);
+        })
+        .concatMap(Observable::from)
+        .filter(friend -> friend.getIsInvitable() != FacebookFriend.CODE_NOT_INVITABLE)
+        .toList()
+        .compose(ThreadSchedulers.applySchedulers())
+        .subscribe(facebookFriends -> {
+          getViewState().hideLoader();
+          getViewState().addVkFriends(friendsVk);
+        }, Throwable::printStackTrace);
+    addToUnsubscription(subscription);
+  }
+
   public void filterFriends(String s, List<FacebookFriend> friendsToFilter) {
     Subscription subscription;
     if (!s.isEmpty()) {
       subscription = Observable.from(friendsToFilter)
           .filter(facebookFriend -> facebookFriend.getName().toLowerCase().contains(s.trim()))
           .toList()
-          .subscribe(friends -> getViewState().updateRvFriends(friends),
-              Timber::e);
+          .subscribe(friends -> getViewState().updateRvFriends(friends), Timber::e);
 
       addToUnsubscription(subscription);
     } else {

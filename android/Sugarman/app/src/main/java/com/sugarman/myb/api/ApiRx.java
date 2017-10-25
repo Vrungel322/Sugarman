@@ -1,7 +1,11 @@
 package com.sugarman.myb.api;
 
+import com.sugarman.myb.api.models.requests.CheckPhoneRequest;
+import com.sugarman.myb.api.models.requests.CheckVkRequest;
 import com.sugarman.myb.api.models.requests.PurchaseDataRequest;
 import com.sugarman.myb.api.models.requests.RefreshUserDataRequest;
+import com.sugarman.myb.api.models.responses.CheckPhoneResponse;
+import com.sugarman.myb.api.models.responses.CheckVkResponse;
 import com.sugarman.myb.api.models.responses.CountInvitesResponse;
 import com.sugarman.myb.api.models.responses.InvitersImgUrls;
 import com.sugarman.myb.api.models.responses.ShopProductEntity;
@@ -59,4 +63,10 @@ public interface ApiRx {
       @Part("picture_url") RequestBody pictureUrl, @Part("name") RequestBody name,
       @Part("token") RequestBody fbToken, @Part("vk_token") RequestBody vkToken,
       @Part("g_token") RequestBody gToken, @Header("Authorization") String accessToken);
+
+  @POST("/v3/check_phone") Observable<CheckPhoneResponse> checkPhone(
+      @Header("Authorization") String accessToken, @Body CheckPhoneRequest phones);
+
+  @POST("/v3/check_vk") Observable<CheckVkResponse> checkVk(
+      @Header("Authorization") String accessToken, @Body CheckVkRequest vkRequest);
 }
