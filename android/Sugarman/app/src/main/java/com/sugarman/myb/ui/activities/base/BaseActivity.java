@@ -217,7 +217,7 @@ public abstract class BaseActivity extends BasicActivity
       logout();
     } else {
       presenter.refreshToken(SharedPreferenceHelper.getFBAccessToken(),
-          SharedPreferenceHelper.getVkToken());
+          SharedPreferenceHelper.getVkToken(), SharedPreferenceHelper.getPhoneNumber());
     }
     Timber.e("rrrrrrrrr");
     mRefreshUserDataClient.registerListener(this);
