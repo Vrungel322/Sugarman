@@ -185,7 +185,7 @@ public class ShopInviteFriendsActivity extends BasicActivity
     rcvMembers.setLayoutManager(new LinearLayoutManager(this));
     rcvMembers.setAdapter(membersAdapter);
 
-    rcvMembers.setNestedScrollingEnabled(false);
+    //rcvMembers.setNestedScrollingEnabled(false);
     AnalyticsHelper.reportInvite();
 
     allTexts = getTextViews(mainLayout);

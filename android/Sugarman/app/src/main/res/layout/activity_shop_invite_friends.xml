@@ -93,7 +93,7 @@
                 android:layout_centerInParent="true"
                 />
         </RelativeLayout>
-        <android.support.v4.widget.NestedScrollView
+        <ScrollView
             android:id="@+id/nsv_friends"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -262,7 +262,7 @@
                     android:visibility="visible"
                     />
             </LinearLayout>
-        </android.support.v4.widget.NestedScrollView>
+        </ScrollView>
     </LinearLayout>
 
 
