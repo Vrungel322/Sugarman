@@ -3,6 +3,7 @@ package com.sugarman.myb.ui.activities.shopInviteFriend;
 import android.util.Log;
 import com.arellomobile.mvp.InjectViewState;
 import com.sugarman.myb.App;
+import com.sugarman.myb.api.models.responses.Phones;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.base.BasicPresenter;
 import com.sugarman.myb.constants.Constants;
@@ -67,7 +68,32 @@ import timber.log.Timber;
   }
 
   private void loadPhoneNumbersContacts() {
+    List<FacebookFriend> friendsFromPhone = new ArrayList<>();
     Subscription subscription = mDataManager.loadContactsFromContactBook()
+        .concatMap(friends -> {
+          friendsFromPhone.addAll(friends);
+          return Observable.just(friends);
+        })
+        .concatMap(Observable::from)
+        .concatMap(facebookFriend -> Observable.just(facebookFriend.getId()))
+        .toList()
+        .concatMap(
+            phones -> mDataManager.checkPhone(phones).compose(ThreadSchedulers.applySchedulers()))
+        .concatMap(checkPhoneResponse -> {
+          for (Phones p : checkPhoneResponse.getPhones()) {
+            for (FacebookFriend friend : friendsFromPhone) {
+              if (friend.getSocialNetwork().equals("ph")) {
+                if (friend.getId().equals(p.getPhone())) {
+                  friend.setIsInvitable(FacebookFriend.CODE_NOT_INVITABLE);
+                }
+              }
+            }
+          }
+          return Observable.just(friendsFromPhone);
+        })
+        .concatMap(Observable::from)
+        .filter(friend -> friend.getIsInvitable() != FacebookFriend.CODE_NOT_INVITABLE)
+        .toList()
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(facebookFriends -> {
           getViewState().addPhoneContact(facebookFriends);
@@ -147,8 +173,7 @@ import timber.log.Timber;
       subscription = Observable.from(friendsToFilter)
           .filter(facebookFriend -> facebookFriend.getName().toLowerCase().contains(s.trim()))
           .toList()
-          .subscribe(friends -> getViewState().updateRvFriends(friends),
-              Timber::e);
+          .subscribe(friends -> getViewState().updateRvFriends(friends), Timber::e);
 
       addToUnsubscription(subscription);
     } else {

@@ -1,8 +1,10 @@
 package com.sugarman.myb.api;
 
 import android.util.Log;
+import com.sugarman.myb.api.models.requests.CheckPhoneRequest;
 import com.sugarman.myb.api.models.requests.PurchaseDataRequest;
 import com.sugarman.myb.api.models.requests.RefreshUserDataRequest;
+import com.sugarman.myb.api.models.responses.CheckPhoneResponse;
 import com.sugarman.myb.api.models.responses.CountInvitesResponse;
 import com.sugarman.myb.api.models.responses.InvitersImgUrls;
 import com.sugarman.myb.api.models.responses.ShopProductEntity;
@@ -125,4 +127,8 @@ public class RestApi {
     return api.editUser(filePart, userIdReq, fbIdReq, vkIdReq, phoneNumReq, emailReq, pictureReq,
         nameReq, fbToken, vkReq, gReq, accessToken);
   }
+
+  public Observable<CheckPhoneResponse> checkPhone(String accessToken,CheckPhoneRequest phones){
+    return api.checkPhone(accessToken,phones);
+  };
 }
