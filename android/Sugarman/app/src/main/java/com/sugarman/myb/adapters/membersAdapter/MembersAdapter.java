@@ -246,7 +246,7 @@ public class MembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.ViewHold
   public void setFilteredValue(List<FacebookFriend> filtered) {
     mUnselected.clear();
     mSelected.clear();
-    Timber.e("setFilteredValue");
+    Timber.e("setFilteredValue " + filtered.size());
 
     for (FacebookFriend friend : filtered) {
       if (friend.isSelected()) {
