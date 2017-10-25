@@ -55,7 +55,7 @@ public class RestApi {
     List<RequestBody> phonePictures = new ArrayList<>();
 
     for (FacebookFriend friend : selectedMembers) {
-      friend.setSocialNetwork("fb");
+      //friend.setSocialNetwork("fb");
       if (friend.getSocialNetwork().equals("fb")) {
         Timber.e("FB FRIEND = " + friend.getId());
         ids.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getId()));

@@ -139,7 +139,9 @@ public class FacebookFriend extends RealmObject implements Parcelable {
 
   public String getPicture() {
     if (picture != null) return picture.getData().getUrl();
+    if(photoUrl!=null)
     return photoUrl;
+    return "https://sugarman-myb.s3.amazonaws.com/Group_New.png";
   }
 
   public void setPicture(FacebookPicture picture) {

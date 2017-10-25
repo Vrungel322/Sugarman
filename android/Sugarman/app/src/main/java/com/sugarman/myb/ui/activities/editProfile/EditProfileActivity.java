@@ -155,6 +155,7 @@ public class EditProfileActivity extends BasicActivity
           .into(profileAvatar);
     }
 
+
     LoginManager.getInstance()
         .registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
           @Override public void onSuccess(LoginResult loginResult) {
