@@ -159,19 +159,21 @@ public class MembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.ViewHold
           mSelected.remove(friend);
           mUnselected.add(friend);
         }
-
+        Timber.e("huesos");
         Collections.sort(mSelected, FacebookFriend.BY_NAME_ASC);
         Collections.sort(mUnselected, FacebookFriend.BY_NAME_ASC);
+        Timber.e("chmoshnik");
       }
     }
     if (mSelected.size()>0){
-      mPresenter.postShowAddFriendBtn();
+      //mPresenter.postShowAddFriendBtn();
     }
     else {
-      mPresenter.postHideAddFriendBtn();
+      //mPresenter.postHideAddFriendBtn();
     }
-
+    Timber.e("mraz");
     notifyDataSetChanged();
+    Timber.e("skotina");
   }
 
   public void setValue(List<FacebookFriend> values) {
@@ -303,7 +305,9 @@ public class MembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.ViewHold
       switch (id) {
         case R.id.tv_remove_add:
           if (mActionItemListener.get() != null) {
+            Timber.e("uebok");
             mActionItemListener.get().onClickMemberManage(position);
+            Timber.e("svinomat");
           }
           break;
         default:
