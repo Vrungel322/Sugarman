@@ -146,6 +146,7 @@ public class ShopInviteFriendsActivity extends BasicActivity
   private List<String> mInviteByFbIds;
   private ArrayList<FacebookFriend> mIntiteByVk;
   private ArrayList<FacebookFriend> mIntiteByPh;
+  private List<FacebookFriend> toFilterList = new ArrayList<>();
 
   @Override protected void onCreate(Bundle savedStateInstance) {
     setContentView(R.layout.activity_shop_invite_friends);
@@ -190,8 +191,7 @@ public class ShopInviteFriendsActivity extends BasicActivity
 
       @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         if (charSequence.length() != 0) {
-          mPresenter.filterFriends(mEditTextSearch.getText().toString(),
-              allFriends);
+          mPresenter.filterFriends(mEditTextSearch.getText().toString(), toFilterList);
         }
       }
 
@@ -268,6 +268,7 @@ public class ShopInviteFriendsActivity extends BasicActivity
     allFriends.clear();
     //allFriends.addAll(friends);
     allFriends.addAll(invitable);
+    toFilterList.addAll(invitable);
 
     for (FacebookFriend friend : allFriends) {
       friend.setSocialNetwork("fb");
@@ -389,7 +390,7 @@ public class ShopInviteFriendsActivity extends BasicActivity
       if (friend.getSocialNetwork().equals("vk")) {
         mIntiteByVk.add(friend);
       }
-      if (friend.getSocialNetwork().equals("ph")){
+      if (friend.getSocialNetwork().equals("ph")) {
         mIntiteByPh.add(friend);
       }
     }
@@ -407,7 +408,7 @@ public class ShopInviteFriendsActivity extends BasicActivity
               .build();
       fbInviteDialog.show(content);
     }
-    if (!mIntiteByPh.isEmpty()){
+    if (!mIntiteByPh.isEmpty()) {
       Timber.e("Ph here " + mIntiteByPh.size());
       mPresenter.addFriendsToShopGroup(new ArrayList<>(mIntiteByPh));
       mIntiteByPh.clear();
@@ -482,6 +483,7 @@ public class ShopInviteFriendsActivity extends BasicActivity
   }
 
   @Override public void addPhoneContact(List<FacebookFriend> facebookFriends) {
+    toFilterList.addAll(facebookFriends);
     membersAdapter.addPhoneContacts(facebookFriends);
   }
 
@@ -501,6 +503,7 @@ public class ShopInviteFriendsActivity extends BasicActivity
   }
 
   @Override public void addVkFriends(List<FacebookFriend> friends) {
+    toFilterList.addAll(friends);
     membersAdapter.addVkFriends(friends);
   }
 
