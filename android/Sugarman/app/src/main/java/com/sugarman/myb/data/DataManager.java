@@ -47,7 +47,7 @@ public class DataManager {
   // REST
   ///////////////////////////////////////////////////////////////////////////
   public Observable<UsersResponse> refreshRxUserData(RefreshUserDataRequest request) {
-    return mRestApi.refreshRxUserData(request);
+    return mRestApi.refreshRxUserData(Constants.BEARER + SharedPreferenceHelper.getAccessToken(),request);
   }
 
   public Observable<Response<Void>> sendPurchaseData(String countryName, String cityName,
@@ -63,7 +63,9 @@ public class DataManager {
 
   public Observable<Response<Void>> addFriendsToShopGroup(
       ArrayList<FacebookFriend> selectedMembers) {
-    return mRestApi.addFriendsToShopGroup(SharedPreferenceHelper.getUserId(), selectedMembers);
+    return mRestApi.addFriendsToShopGroup(
+        Constants.BEARER + SharedPreferenceHelper.getAccessToken(),
+        SharedPreferenceHelper.getUserId(), selectedMembers);
   }
 
   public Observable<InvitersImgUrls> loadInvitersImgUrls() {

@@ -31,8 +31,8 @@ public class RestApi {
     this.api = api;
   }
 
-  public Observable<UsersResponse> refreshRxUserData(RefreshUserDataRequest request) {
-    return api.refreshRxUserData(request);
+  public Observable<UsersResponse> refreshRxUserData(String accessToken, RefreshUserDataRequest request) {
+    return api.refreshRxUserData(accessToken,request);
   }
 
   public Observable<Response<Void>> sendPurchaseData(PurchaseDataRequest purchaseDataRequest,
@@ -40,7 +40,7 @@ public class RestApi {
     return api.sendPurchaseData(purchaseDataRequest, accessToken);
   }
 
-  public Observable<Response<Void>> addFriendsToShopGroup(String userId,
+  public Observable<Response<Void>> addFriendsToShopGroup(String accessToken,String userId,
       ArrayList<FacebookFriend> selectedMembers) {
     RequestBody uId = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), userId);
 
@@ -78,7 +78,7 @@ public class RestApi {
             "https://sugarman-myb.s3.amazonaws.com/Group_New.png"));
       }
     }
-    return api.addFriendsToShopGroup(SharedPreferenceHelper.getAccessToken(),uId, ids, vkids, phoneNumbers, names, vkNames, phoneNames,
+    return api.addFriendsToShopGroup(accessToken,uId, ids, vkids, phoneNumbers, names, vkNames, phoneNames,
         pictures, vkpictures, phonePictures);
   }
 
