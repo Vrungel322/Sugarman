@@ -151,8 +151,8 @@ import timber.log.Timber;
                 new FacebookFriend(Integer.toString(id), firstName + " " + lastName, photoUrl,
                     FacebookFriend.CODE_INVITABLE, "vk");
             friendsVk.add(friend);
-            checkVkFriends(friendsVk);
           }
+          checkVkFriends(friendsVk);
           //getViewState().hideLoader();
           //getViewState().addVkFriends(friendsVk);
         } catch (JSONException e) {
@@ -169,29 +169,39 @@ import timber.log.Timber;
   }
 
   private void checkVkFriends(List<FacebookFriend> friendsVk) {
-    Subscription subscription = Observable.from(friendsVk)
+    List<FacebookFriend> friendsFromVk = new ArrayList<>();
+    friendsFromVk.addAll(friendsVk);
+    Subscription subscription = Observable.from(friendsFromVk)
         .concatMap(facebookFriend -> Observable.just(facebookFriend.getId()))
         .toList()
         .concatMap(vkIds -> mDataManager.checkVk(vkIds).compose(ThreadSchedulers.applySchedulers()))
         .concatMap(checkVkResponse -> {
           for (String s : checkVkResponse.getVks()) {
-            for (FacebookFriend friend : friendsVk) {
+            Timber.e("VK ids " + s);
+
+            for (FacebookFriend friend : friendsFromVk) {
               if (friend.getSocialNetwork().equals("vk")) {
+                Timber.e("checkVkFriends " + friend.getName() + " " + friend.getIsInvitable());
                 if (friend.getId().equals(s)) {
+                  Timber.e(
+                      "CODE_NOT_INVITABLE " + friend.getName() + " " + friend.getIsInvitable());
+
                   friend.setIsInvitable(FacebookFriend.CODE_NOT_INVITABLE);
                 }
               }
             }
           }
-          return Observable.just(friendsVk);
+          return Observable.just(friendsFromVk);
         })
         .concatMap(Observable::from)
         .filter(friend -> friend.getIsInvitable() != FacebookFriend.CODE_NOT_INVITABLE)
         .toList()
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(facebookFriends -> {
+          Timber.e("subscribe " + facebookFriends.size());
+
           getViewState().hideLoader();
-          getViewState().addVkFriends(friendsVk);
+          getViewState().addVkFriends(facebookFriends);
         }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
