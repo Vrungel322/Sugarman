@@ -193,6 +193,29 @@
 
                 </RelativeLayout>
 
+                <com.sugarman.myb.ui.views.CustomFontEditText
+                    android:id="@+id/cfetSearchFriends"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/create_group_padding"
+                    android:layout_weight="1"
+                    android:background="@drawable/gray_stroke_background"
+                    android:drawablePadding="@dimen/create_group_et_padding_horizontal"
+                    android:drawableStart="@drawable/ic_search_light"
+                    android:gravity="center_vertical"
+                    android:hint="@string/search"
+                    android:inputType="textVisiblePassword"
+                    android:maxLines="1"
+                    android:paddingBottom="@dimen/create_group_et_padding_vertical"
+                    android:paddingEnd="@dimen/create_group_et_padding_horizontal"
+                    android:paddingStart="@dimen/create_group_et_padding_horizontal"
+                    android:paddingTop="@dimen/create_group_et_padding_vertical"
+                    android:singleLine="true"
+                    android:textColor="@color/dark_gray"
+                    android:textColorHint="@color/gray"
+                    android:textSize="@dimen/create_group_et_text_size"
+                    app:font="@string/font_roboto_regular"
+                    />
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rcv_friends"
                     android:layout_width="match_parent"

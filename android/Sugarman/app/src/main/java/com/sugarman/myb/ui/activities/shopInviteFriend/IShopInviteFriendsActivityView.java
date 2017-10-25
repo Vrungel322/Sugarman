@@ -26,4 +26,6 @@ import java.util.List;
   void loadInviterImgUrls(List<String> imgUrls);
 
   void hideLoader();
+
+  void updateRvFriends(List<FacebookFriend> friends);
 }

@@ -21,6 +21,7 @@ import javax.inject.Inject;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import rx.Observable;
 import rx.Subscription;
 import timber.log.Timber;
 
@@ -138,6 +139,21 @@ import timber.log.Timber;
         //Log.e("VK", error.errorMessage);
       }
     });
+  }
+
+  public void filterFriends(String s, List<FacebookFriend> friendsToFilter) {
+    Subscription subscription;
+    if (!s.isEmpty()) {
+      subscription = Observable.from(friendsToFilter)
+          .filter(facebookFriend -> facebookFriend.getName().toLowerCase().contains(s.trim()))
+          .toList()
+          .subscribe(friends -> getViewState().updateRvFriends(friends),
+              Timber::e);
+
+      addToUnsubscription(subscription);
+    } else {
+      getViewState().updateRvFriends(friendsToFilter);
+    }
   }
 
   public void sendInvitationInVk(List<FacebookFriend> selectedFriends, String inviteMsg) {

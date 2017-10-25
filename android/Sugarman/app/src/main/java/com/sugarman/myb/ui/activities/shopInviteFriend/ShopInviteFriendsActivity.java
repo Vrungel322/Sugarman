@@ -44,6 +44,7 @@ import com.sugarman.myb.listeners.OnFBGetFriendsListener;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.ui.dialogs.sendVkInvitation.SendVkInvitationDialog;
 import com.sugarman.myb.ui.views.CropCircleTransformation;
+import com.sugarman.myb.ui.views.CustomFontEditText;
 import com.sugarman.myb.utils.AnalyticsHelper;
 import com.sugarman.myb.utils.DeviceHelper;
 import com.sugarman.myb.utils.IntentExtractorHelper;
@@ -84,6 +85,7 @@ public class ShopInviteFriendsActivity extends BasicActivity
 
     @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
       // nothing
+
     }
 
     @Override public void afterTextChanged(Editable s) {
@@ -93,6 +95,7 @@ public class ShopInviteFriendsActivity extends BasicActivity
   };
   @InjectPresenter ShopInviteFriendsActivityPresenter mPresenter;
   @BindView(R.id.bAddFriends) ImageView bAddFriends;
+  @BindView(R.id.cfetSearchFriends) CustomFontEditText mEditTextSearch;
   @BindViews({
       R.id.avatar_invites_1, R.id.avatar_invites_2, R.id.avatar_invites_3, R.id.avatar_invites_4,
       R.id.avatar_invites_5,
@@ -175,6 +178,24 @@ public class ShopInviteFriendsActivity extends BasicActivity
 
     for (TextView v : allTexts)
       v.setTypeface(tfDin);
+
+    //filtering
+    mEditTextSearch.addTextChangedListener(new TextWatcher() {
+      @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+      }
+
+      @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        if (charSequence.length() != 0) {
+          mPresenter.filterFriends(mEditTextSearch.getText().toString(),
+              allFriends);
+        }
+      }
+
+      @Override public void afterTextChanged(Editable editable) {
+
+      }
+    });
   }
 
   @Override protected void onStart() {
@@ -295,6 +316,10 @@ public class ShopInviteFriendsActivity extends BasicActivity
   @Override public void hideLoader() {
     findViewById(R.id.nsv_friends).setVisibility(View.VISIBLE);
     findViewById(R.id.progressBarLayout).setVisibility(View.GONE);
+  }
+
+  @Override public void updateRvFriends(List<FacebookFriend> friends) {
+    membersAdapter.setValuesClearList(friends);
   }
 
   private void tryChooseGroupAvatar() {
