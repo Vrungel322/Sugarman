@@ -42,6 +42,7 @@ import com.sugarman.myb.listeners.ApiBaseListener;
 import com.sugarman.myb.listeners.ApiRefreshUserDataListener;
 import com.sugarman.myb.ui.activities.ApproveOtpActivity;
 import com.sugarman.myb.ui.activities.IntroActivity;
+import com.sugarman.myb.ui.activities.MainActivity;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.ui.views.MaskImage;
 import com.sugarman.myb.ui.views.MaskTransformation;
@@ -290,7 +291,7 @@ public class EditProfileActivity extends BasicActivity
     String displayEmail = etEmail.getText().toString();
     displayNumber = etPhone.getText().toString();
 
-    if (isEmailValid(displayEmail)) {
+    if (isEmailValid(displayEmail) || displayEmail.equals("")) {
       if (displayNumber.equals("")) {
         Timber.e("Got in here 1");
         editProfileClient.editUser(displayNumber, displayEmail, displayName,
@@ -645,7 +646,10 @@ public class EditProfileActivity extends BasicActivity
     } else {
       SharedPreferenceHelper.savePhoneNumber(etPhone.getText().toString());
       if (SharedPreferenceHelper.introIsShown()) {
-        finish();
+        Intent intent = new Intent(EditProfileActivity.this, MainActivity.class);
+        //intent.putExtra(IntroActivity.CODE_IS_OPEN_LOGIN_ACTIVITY, true);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
       } else {
         Intent intent = new Intent(EditProfileActivity.this, IntroActivity.class);
         intent.putExtra(IntroActivity.CODE_IS_OPEN_LOGIN_ACTIVITY, true);

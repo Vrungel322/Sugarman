@@ -430,7 +430,8 @@ public class MainActivity extends GetUserInfoActivity implements View.OnClickLis
     super.onCreate(savedInstanceState);
     Resources resources = getResources();
 
-    ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.READ_CONTACTS }, 1);
+    ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.READ_CONTACTS, Manifest.permission.CAMERA}, 1);
+    //ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, 2);
     //ViewTreeObserver vto = loadingStrip.getViewTreeObserver();
     //vto.addOnGlobalLayoutListener (new ViewTreeObserver.OnGlobalLayoutListener() {
     //    @Override
@@ -470,9 +471,9 @@ public class MainActivity extends GetUserInfoActivity implements View.OnClickLis
     //SharedPreferenceHelper.setTodayDate(date);
     SharedPreferenceHelper.setTodayDateForShowedSteps(date);
     SharedPreferenceHelper.getTodayDateForShowedSteps();
-    Timber.e("Save Showed Steps get today date " + SharedPreferenceHelper.getStepsForTheDate(
-        SharedPreferenceHelper.getTodayDate()));
-    SharedPreferenceHelper.saveShowedSteps(SharedPreferenceHelper.getStepsForTheDate(date));
+    Timber.e("Save Showed Steps get today date " + SharedPreferenceHelper.getStepsForTheDate(SharedPreferenceHelper.getTodayDate()));
+    SharedPreferenceHelper.saveShowedSteps(
+        SharedPreferenceHelper.getStepsForTheDate(date));
 
     SharedPreferenceHelper.setOnLaunch(true);
 
@@ -641,6 +642,8 @@ public class MainActivity extends GetUserInfoActivity implements View.OnClickLis
 
     mGetMyInvitesClient.getInvites(true);
     mGetMyRequestsClient.getRequests(true);
+
+
   }
 
   private void updateAnimations(int todaySteps) {
@@ -1214,11 +1217,14 @@ public class MainActivity extends GetUserInfoActivity implements View.OnClickLis
     startActivityForResult(intent, Constants.OPEN_PROFILE_ACTIVITY_REQUEST_CODE);
   }
 
-  public void openLink(String url) {
-    Timber.e("FCM URL " + url);
-    Intent i = new Intent(Intent.ACTION_VIEW);
-    i.setData(Uri.parse(url));
-    startActivity(i);
+  public void openLink(String url)
+  {
+    if(url!=null && !url.equals("") && !url.equals(" ")) {
+      Timber.e("FCM URL " + url);
+      Intent i = new Intent(Intent.ACTION_VIEW);
+      i.setData(Uri.parse(url));
+      startActivity(i);
+    }
   }
 
   public void refreshTrackings() {

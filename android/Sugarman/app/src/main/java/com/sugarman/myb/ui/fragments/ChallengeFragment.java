@@ -195,6 +195,8 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
 
       laziestName.setText(name);
       laziestSteps.setText(String.format(Locale.US, "%,d", laziest.getSteps()));
+      if(laziest.getPictureUrl()==null||laziest.getPictureUrl().equals("") || laziest.getPictureUrl().equals(" "))
+        laziest.setPictureUrl("https://sugarman-myb.s3.amazonaws.com/Group_New.png");
       Picasso.with(getActivity())
           .load(laziest.getPictureUrl())
           //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)

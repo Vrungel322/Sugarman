@@ -78,7 +78,7 @@ public class RestApi {
             "https://sugarman-myb.s3.amazonaws.com/Group_New.png"));
       }
     }
-    return api.addFriendsToShopGroup(uId, ids, vkids, phoneNumbers, names, vkNames, phoneNames,
+    return api.addFriendsToShopGroup(SharedPreferenceHelper.getAccessToken(),uId, ids, vkids, phoneNumbers, names, vkNames, phoneNames,
         pictures, vkpictures, phonePictures);
   }
 

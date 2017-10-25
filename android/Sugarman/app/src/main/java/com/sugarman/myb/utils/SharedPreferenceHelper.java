@@ -282,7 +282,7 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
   }
 
   public static String getEmail() {
-    return getString("email", "none@none.com");
+    return getString("email", "");
   }
 
   public static void saveEmail(String email) {
