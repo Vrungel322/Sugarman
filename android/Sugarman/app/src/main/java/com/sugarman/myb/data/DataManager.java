@@ -63,7 +63,9 @@ public class DataManager {
 
   public Observable<Response<Void>> addFriendsToShopGroup(
       ArrayList<FacebookFriend> selectedMembers) {
-    return mRestApi.addFriendsToShopGroup(SharedPreferenceHelper.getUserId(), selectedMembers);
+    return mRestApi.addFriendsToShopGroup(
+        Constants.BEARER + SharedPreferenceHelper.getAccessToken(),
+        SharedPreferenceHelper.getUserId(), selectedMembers);
   }
 
   public Observable<InvitersImgUrls> loadInvitersImgUrls() {

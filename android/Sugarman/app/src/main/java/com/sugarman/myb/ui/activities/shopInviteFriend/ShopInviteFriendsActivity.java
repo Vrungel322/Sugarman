@@ -42,7 +42,6 @@ import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.constants.DialogConstants;
 import com.sugarman.myb.listeners.OnFBGetFriendsListener;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
-import com.sugarman.myb.ui.dialogs.sendVkInvitation.SendVkInvitationDialog;
 import com.sugarman.myb.ui.views.CropCircleTransformation;
 import com.sugarman.myb.ui.views.CustomFontEditText;
 import com.sugarman.myb.utils.AnalyticsHelper;
@@ -52,6 +51,7 @@ import com.sugarman.myb.utils.SharedPreferenceHelper;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import timber.log.Timber;
 
 /*
 LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -143,6 +143,9 @@ public class ShopInviteFriendsActivity extends BasicActivity
   private CallbackManager fbCallbackManager;
   private GameRequestDialog fbInviteDialog;
   private String trackingId;
+  private List<String> mInviteByFbIds;
+  private ArrayList<FacebookFriend> mIntiteByVk;
+  private ArrayList<FacebookFriend> mIntiteByPh;
 
   @Override protected void onCreate(Bundle savedStateInstance) {
     setContentView(R.layout.activity_shop_invite_friends);
@@ -302,6 +305,7 @@ public class ShopInviteFriendsActivity extends BasicActivity
   @Override public void onGetFriendInfoSuccess(List<FacebookFriend> convertedFriends) {
     members.addAll(convertedFriends);
     addMembers(members);
+    mInviteByFbIds.clear();
     mPresenter.addFriendsToShopGroup(new ArrayList<>(convertedFriends));
   }
 
@@ -372,30 +376,41 @@ public class ShopInviteFriendsActivity extends BasicActivity
 
   private void sendInvitation() {
 
-    List<String> ids = new ArrayList<>();
-    ArrayList<FacebookFriend> intiteByVk = new ArrayList<>();
+    mInviteByFbIds = new ArrayList<>();
+    mIntiteByVk = new ArrayList<>();
+    mIntiteByPh = new ArrayList<>();
     String id;
     for (FacebookFriend friend : membersAdapter.getSelectedMembers()) {
 
       id = friend.getId();
       if (friend.getSocialNetwork().equals("fb")) {
-        ids.add(id);
+        mInviteByFbIds.add(id);
       }
       if (friend.getSocialNetwork().equals("vk")) {
-        intiteByVk.add(friend);
+        mIntiteByVk.add(friend);
+      }
+      if (friend.getSocialNetwork().equals("ph")){
+        mIntiteByPh.add(friend);
       }
     }
-    if (!intiteByVk.isEmpty()) {
-      SendVkInvitationDialog.newInstance(intiteByVk)
-          .show(getFragmentManager(), "SendVkInvitationDialog");
+
+    if (!mIntiteByVk.isEmpty()) {
+      Timber.e("Vk here " + mIntiteByPh.size());
+      mPresenter.addFriendsToShopGroup(new ArrayList<>(mIntiteByPh));
+      mIntiteByPh.clear();
     }
 
-    if (!ids.isEmpty()) {
+    if (!mInviteByFbIds.isEmpty()) {
       GameRequestContent content =
           new GameRequestContent.Builder().setMessage(getString(R.string.play_with_me))
-              .setRecipients(ids)
+              .setRecipients(mInviteByFbIds)
               .build();
       fbInviteDialog.show(content);
+    }
+    if (!mIntiteByPh.isEmpty()){
+      Timber.e("Ph here " + mIntiteByPh.size());
+      mPresenter.addFriendsToShopGroup(new ArrayList<>(mIntiteByPh));
+      mIntiteByPh.clear();
     }
   }
 
@@ -472,7 +487,9 @@ public class ShopInviteFriendsActivity extends BasicActivity
 
   @Override public void finishShopInviteActivity() {
     bAddFriends.setVisibility(View.GONE);
-    finish();
+    if (mIntiteByPh.isEmpty() && mInviteByFbIds.isEmpty() && mIntiteByVk.isEmpty()) {
+      finish();
+    }
   }
 
   @Override public void hideAddFriendButton() {
