@@ -44,6 +44,8 @@ public class User {
 
   @SerializedName("level") private int level;
 
+  @SerializedName("need_to_do_OTP") private Boolean needOTP;
+
   private Date createUTCDate;
 
   private Date currentDayUTCDate;
@@ -96,6 +98,14 @@ public class User {
     }
 
     return currentDayUTCDate;
+  }
+
+  public Boolean getNeedOTP() {
+    return needOTP;
+  }
+
+  public void setNeedOTP(Boolean needOTP) {
+    this.needOTP = needOTP;
   }
 
   public int getCompletedChallengesCount() {
@@ -243,7 +253,11 @@ public class User {
         + ", currentDayUTCDate="
         + currentDayUTCDate
         + ", updatedAtUTCDate="
-        + updatedAtUTCDate + ", phoneOTP=" + phoneOTP + ", phone=" + phoneNumber+ ", isPending=" + isPending
+        + updatedAtUTCDate
+        + ", phoneOTP="
+        + phoneOTP
+        + ", isPending="
+        + isPending
         + '}';
   }
 }

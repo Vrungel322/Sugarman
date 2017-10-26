@@ -6,13 +6,11 @@ import com.sugarman.myb.api.models.responses.me.EditGroupResponse;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.listeners.ApiBaseListener;
 import com.sugarman.myb.listeners.ApiEditGroupListener;
-import com.sugarman.myb.utils.CountryCodeHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -98,41 +96,37 @@ public class EditGroupClient extends BaseApiClient {
         SharedPreferenceHelper.getFBAccessToken());
 
     for (FacebookFriend friend : members) {
-      if(friend.getSocialNetwork().equals("fb")) {
+      if (friend.getSocialNetwork().equals("fb")) {
         Timber.e("FB FRIEND = " + friend.getName());
         ids.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getId()));
         names.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getName()));
-        pictures.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
-            friend.getPicture()));
-      }
-else if (friend.getSocialNetwork().equals("vk")) {
+        pictures.add(
+            RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getPicture()));
+      } else if (friend.getSocialNetwork().equals("vk")) {
         Timber.e("VK FRIEND = " + friend.getName());
         vkids.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getId()));
-        vkNames.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getName()));
-        vkpictures.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
-            friend.getPicture()));
+        vkNames.add(
+            RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getName()));
+        vkpictures.add(
+            RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getPicture()));
+      } else {
+
+        phoneNumbers.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
+            friend.getId().replace(" ", "")));
+        phoneNames.add(
+            RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getName()));
+        phonePictures.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
+            "https://sugarman-myb.s3.amazonaws.com/Group_New.png"));
       }
-      else
-      {
-        if (friend.getId().contains("+")){
-          phoneNumbers.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),friend.getId().replace(" ", "")));
-        }
-        else {
-          phoneNumbers.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
-              (CountryCodeHelper.getCountryZipCode() + friend.getId()).replace(" ", "")));
-          Timber.e((CountryCodeHelper.getCountryZipCode() + friend.getId()).replace(" ", ""));
-
-        }
-        phoneNames.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), "Walker " + new Random().nextInt(9000)));
-          phonePictures.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
-              "https://sugarman-myb.s3.amazonaws.com/Group_New.png"));
-
-      }
-
     }
 
-    Call<EditGroupResponse> call =
-        App.getApiInstance().editGroup(trackingId, filePart, name, ids, vkids, phoneNumbers, names, vkNames, phoneNames, pictures, vkpictures, phonePictures);
+    String vkTokenStr = SharedPreferenceHelper.getVkToken();
+    RequestBody vkToken =
+        RequestBody.create(MediaType.parse(Constants.IMAGE_JPEG_TYPE), vkTokenStr);
+
+    Call<EditGroupResponse> call = App.getApiInstance()
+        .editGroup(trackingId, filePart, name, ids, vkids, phoneNumbers, names, vkNames, phoneNames,
+            pictures, vkpictures, phonePictures, vkToken);
     Timber.e("Called editGroup");
     call.enqueue(mCallback);
   }

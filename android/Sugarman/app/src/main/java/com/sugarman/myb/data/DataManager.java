@@ -94,4 +94,3 @@ public class DataManager {
     return mRestApi.fetchCompletedTasks(Constants.BEARER + SharedPreferenceHelper.getAccessToken());
   }
 }
-

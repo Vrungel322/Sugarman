@@ -15,8 +15,9 @@ public abstract class Config {
 
   public static final String PRIVACY_POLICY = "http://www.sugarman.eu/privacy-policy/";
 
-  //public static final String SERVER_URL = "http://sugarman-server.herokuapp.com/";
-  public static final String SERVER_URL = "http://sugarman-server-test.herokuapp.com/";
+  public static final String SERVER_URL = "http://sugarman-server.herokuapp.com/";
+  //public static final String SERVER_URL = "http://sugarman-server-test.herokuapp.com/";
+  //http://sugarman-server-test.herokuapp.com/     http://sugarman-server.herokuapp.com
 
   public static final long RETROFIT_TIMEOUT = 20; // secs
 
@@ -75,6 +76,8 @@ public abstract class Config {
   private static final int RED_MEMBERS_FIRST_COUNT = 1;
   private static final int RED_MEMBERS_SECOND_COUNT = 2;
   private static final int RED_MEMBERS_THIRD_COUNT = 3;
+  public static final String PAYPAL_CLIENT_ID =
+      "AadX9C07qYD8AfEc_BpU30El-IMg3_jSZQJRKVPLuxIAF2EiqudSUENYTcF62DFHr-wRRhXbUINE9plI";
 
   public static int getCountRedMembers(int totalMembers) {
     int countRedMembers;

@@ -2,6 +2,8 @@ package com.sugarman.myb.api;
 
 import com.sugarman.myb.api.models.requests.AddMembersRequest;
 import com.sugarman.myb.api.models.requests.ApproveOtpRequest;
+import com.sugarman.myb.api.models.requests.CheckPhoneRequest;
+import com.sugarman.myb.api.models.requests.CheckVkRequest;
 import com.sugarman.myb.api.models.requests.CountInvitesRequest;
 import com.sugarman.myb.api.models.requests.JoinGroupRequest;
 import com.sugarman.myb.api.models.requests.PokeRequest;
@@ -11,6 +13,8 @@ import com.sugarman.myb.api.models.requests.SendFirebaseTokenRequest;
 import com.sugarman.myb.api.models.requests.StatsRequest;
 import com.sugarman.myb.api.models.responses.AllMyUserDataResponse;
 import com.sugarman.myb.api.models.responses.ApproveOtpResponse;
+import com.sugarman.myb.api.models.responses.CheckPhoneResponse;
+import com.sugarman.myb.api.models.responses.CheckVkResponse;
 import com.sugarman.myb.api.models.responses.CountInvitesResponse;
 import com.sugarman.myb.api.models.responses.ResendMessageResponse;
 import com.sugarman.myb.api.models.responses.devices.DevicesResponse;
@@ -23,7 +27,6 @@ import com.sugarman.myb.api.models.responses.me.requests.RequestsResponse;
 import com.sugarman.myb.api.models.responses.me.score.HighScoreResponse;
 import com.sugarman.myb.api.models.responses.me.stats.StatsResponse;
 import com.sugarman.myb.api.models.responses.me.trackings.MyTrackingsResponse;
-import com.sugarman.myb.api.models.responses.me.user.MyUserResponse;
 import com.sugarman.myb.api.models.responses.trackings.TrackingInfoResponse;
 import com.sugarman.myb.api.models.responses.trackings.TrackingStatsResponse;
 import com.sugarman.myb.api.models.responses.trackings.TrackingsResponse;
@@ -47,10 +50,8 @@ public interface Api {
 
   @POST("/v1/approveotp") Call<ApproveOtpResponse> approveOtp(@Body ApproveOtpRequest request);
 
-  @POST("/v2/count_inviters") Call<CountInvitesResponse> countInvites(@Body
-      CountInvitesRequest request);
-
-
+  @POST("/v2/count_inviters") Call<CountInvitesResponse> countInvites(
+      @Body CountInvitesRequest request);
 
   @Multipart @POST("/v2/editusers") Call<UsersResponse> editUser(@Part MultipartBody.Part filePart,
       @Part("userId") RequestBody userId, @Part("fbid") RequestBody fbId,
@@ -70,17 +71,18 @@ public interface Api {
       @Part("members[][phonename]") List<RequestBody> phoneNames,
       @Part("members[][picture_url]") List<RequestBody> pictures,
       @Part("members[][picture_url_vk]") List<RequestBody> picturesVK,
-      @Part("members[][picture_url_phone]") List<RequestBody> picturesPhone);
+      @Part("members[][picture_url_phone]") List<RequestBody> picturesPhone,
+      @Part("vk_token") RequestBody vkToken);
 
-  @POST("/v2/resend_message") Call<ResendMessageResponse> resendMessage(@Body
-      ResendMessageRequest request);
+  @POST("/v2/resend_message") Call<ResendMessageResponse> resendMessage(
+      @Body ResendMessageRequest request);
 
   @POST("/v1/devices") Call<DevicesResponse> sendFirebaseToken(
       @Body SendFirebaseTokenRequest request);
 
   @GET("/v1/me/trackings") Call<MyTrackingsResponse> getMyTrackings();
 
-  @GET("/v1/me") Call<MyUserResponse> getMyUser();
+  //@GET("/v1/me") Call<MyUserResponse> getMyUser();
 
   @GET("/v1/me/invites") Call<InvitesResponse> getMyInvites();
 
@@ -131,7 +133,8 @@ public interface Api {
       @Part("members[][phonename]") List<RequestBody> phoneNames,
       @Part("members[][picture_url]") List<RequestBody> pictures,
       @Part("members[][picture_url_vk]") List<RequestBody> picturesVK,
-      @Part("members[][picture_url_phone]") List<RequestBody> picturesPhone);
+      @Part("members[][picture_url_phone]") List<RequestBody> picturesPhone,
+      @Part("vk_token") RequestBody vkToken);
 
   @POST("/v1/pokes") Call<Object> poke(@Body PokeRequest request);
 
@@ -148,4 +151,8 @@ public interface Api {
       @Path("tracking_id") String trackingId);
 
   @POST("/v1/stats/day") Call<Void> reportStats(@Body StatsRequest requst);
+
+  @POST("/v3/check_phone") Call<CheckPhoneResponse> checkPhone(@Body CheckPhoneRequest phones);
+
+  @POST("/v3/check_vk") Call<CheckVkResponse> checkVk(@Body CheckVkRequest phones);
 }

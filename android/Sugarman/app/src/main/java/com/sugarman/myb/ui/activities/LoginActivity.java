@@ -59,8 +59,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import timber.log.Timber;
 
-public class LoginActivity extends GetUserInfoActivity
-    implements View.OnClickListener {
+public class LoginActivity extends GetUserInfoActivity implements View.OnClickListener {
 
   private static final String TAG = LoginActivity.class.getName();
   private final WebViewClient webViewClient = new WebViewClient() {

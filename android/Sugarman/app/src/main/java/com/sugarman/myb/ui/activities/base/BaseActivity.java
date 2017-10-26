@@ -210,16 +210,14 @@ public abstract class BaseActivity extends BasicActivity
     Timber.e(SharedPreferenceHelper.getFBAccessToken());
     Timber.e(SharedPreferenceHelper.getPhoneNumber());
 
-    if (
-        SharedPreferenceHelper.getFBAccessToken().equals("none")
+    if (SharedPreferenceHelper.getFBAccessToken().equals("none")
         && SharedPreferenceHelper.getVkToken().equals("none")
-        && SharedPreferenceHelper.getPhoneNumber().equals("none")
-        ) {
+        && SharedPreferenceHelper.getPhoneNumber().equals("none")) {
       Timber.e("no tokens no ph");
       logout();
     } else {
       presenter.refreshToken(SharedPreferenceHelper.getFBAccessToken(),
-          SharedPreferenceHelper.getVkToken());
+          SharedPreferenceHelper.getVkToken(), SharedPreferenceHelper.getPhoneNumber());
     }
     Timber.e("rrrrrrrrr");
     mRefreshUserDataClient.registerListener(this);
@@ -243,7 +241,7 @@ public abstract class BaseActivity extends BasicActivity
         dialog.dismiss();
 
         setResult(RESULT_CANCELED);
-        finish();
+        //finish();
         break;
       default:
         Log.d(TAG, "not processed click dialog with id: " + id);

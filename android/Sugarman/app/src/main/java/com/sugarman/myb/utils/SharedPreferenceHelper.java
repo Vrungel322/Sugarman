@@ -60,19 +60,19 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
 
   public static void saveToken(Tokens tokens) {
     Timber.e("SaveToken called");
-    if (tokens.getAccessToken().length() > 0 && tokens.getRefreshToken().length() > 0) {
-      putString(SharedPreferenceConstants.ACCESS_TOKEN, tokens.getAccessToken());
-      putString(SharedPreferenceConstants.REFRESH_TOKEN, tokens.getRefreshToken());
+    if (tokens != null) {
+      if (tokens.getAccessToken().length() > 0 && tokens.getRefreshToken().length() > 0) {
+        putString(SharedPreferenceConstants.ACCESS_TOKEN, tokens.getAccessToken());
+        putString(SharedPreferenceConstants.REFRESH_TOKEN, tokens.getRefreshToken());
+      }
     }
   }
 
-  public static void savePhoneNumber(String phoneNumber)
-  {
+  public static void savePhoneNumber(String phoneNumber) {
     putString("phone_number", phoneNumber);
   }
 
-  public static String getPhoneNumber()
-  {
+  public static String getPhoneNumber() {
     return getString("phone_number", "none");
   }
 
@@ -143,12 +143,12 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     return getInt(SharedPreferenceConstants.COMPLETED_DAYS_COUNT, 0);
   }
 
-  public static void setOnLaunch(boolean onLaunch) {
-    putBoolean("onLaunch", onLaunch);
-  }
-
   public static boolean getOnLaunch() {
     return getBoolean("onLaunch", true);
+  }
+
+  public static void setOnLaunch(boolean onLaunch) {
+    putBoolean("onLaunch", onLaunch);
   }
 
   public static String getUserId() {
@@ -188,6 +188,7 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
   }
 
   public static void saveShowedSteps(int steps) {
+    Timber.e("Save Showed Steps " + steps);
     putInt(SharedPreferenceConstants.SHOWED_STEPS, steps);
   }
 
@@ -292,7 +293,7 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
   }
 
   public static String getEmail() {
-    return getString("email", "none@none.com");
+    return getString("email", "");
   }
 
   public static void saveEmail(String email) {
@@ -365,22 +366,22 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     putBoolean(SharedPreferenceConstants.IS_FIRST_LOGIN, isFirst);
   }
 
-  public static void setTodayDate(String date) {
-    putString("todayDate", date);
-  }
-
   public static String getTodayDate() {
     String date = getString("todayDate", "0");
     return date;
   }
 
-  public static void setTodayDateForShowedSteps(String date) {
-    putString("todayDateForShowedSteps", date);
+  public static void setTodayDate(String date) {
+    putString("todayDate", date);
   }
 
   public static String getTodayDateForShowedSteps() {
     String date = getString("todayDateForShowedSteps", "0");
     return date;
+  }
+
+  public static void setTodayDateForShowedSteps(String date) {
+    putString("todayDateForShowedSteps", date);
   }
 
   public static boolean isFirstLaunchOfTheDay(String userId) {
@@ -458,7 +459,7 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     String userId = SharedPreferenceHelper.getUserId();
     Arrays.sort(reportStats, ReportStats.BY_DATE_DESC);
     for (int i = 0; i < Constants.REPORTED_DAYS; i++) {
-      if (i<reportStats.length){
+      if (i < reportStats.length) {
         SharedPreferenceHelper.saveStatsLocal(i, userId, reportStats[i]);
       }
     }
@@ -511,5 +512,13 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
 
   public final static long getTimestampLastStepCounterValue() {
     return getLong(SharedPreferenceConstants.STEP_COUNTER_TIMESTAMP_LAST_VALUE, 0);
+  }
+
+  public static boolean getOTPStatus() {
+    return getBoolean(SharedPreferenceConstants.OTP_STATUS, false);
+  }
+
+  public static void setOTPStatus(Boolean otpStatus) {
+    putBoolean(SharedPreferenceConstants.OTP_STATUS, otpStatus);
   }
 }

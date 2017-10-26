@@ -23,62 +23,50 @@ public class Member implements Parcelable {
     }
   };
 
-  public static final Creator<Member> CREATOR = new Creator<Member>() {
-    @Override public Member createFromParcel(Parcel in) {
-      return new Member(in);
-    }
-
-    @Override public Member[] newArray(int size) {
-      return new Member[size];
-    }
-  };
-
-  @SerializedName("action") private int action;
-
-  @SerializedName("ass_kick_count") private int kickCount;
-
-  @SerializedName("fbid") private String fbid;
-
-  @SerializedName("id") private String id;
-
-  @SerializedName("name") private String name;
-
-  @SerializedName("picture_url") private String pictureUrl;
-
   @SerializedName("steps") public int steps;
-
+  @SerializedName("action") private int action;
+  @SerializedName("ass_kick_count") private int kickCount;
+  @SerializedName("fbid") private String fbid;
+  @SerializedName("id") private String id;
+  @SerializedName("name") private String name;
+  @SerializedName("picture_url") private String pictureUrl;
   @SerializedName("status") private String status;
+  @SerializedName("phone_number") private String phoneNumber;
+  @SerializedName("vkid") private String vkId;
 
   public Member() {
 
   }
 
-  private Member(Parcel in) {
-    action = in.readInt();
-    kickCount = in.readInt();
-    fbid = in.readString();
-    //vkid = in.readString();
-    //phoneNumber = in.readString();
-    id = in.readString();
-    name = in.readString();
-    pictureUrl = in.readString();
-    steps = in.readInt();
-    status = in.readString();
+  public int getSteps() {
+    return steps;
+  }
+
+  public void setSteps(int steps) {
+    this.steps = steps;
   }
 
   public int getAction() {
     return action;
   }
 
-  protected void setAction(int action) {
+  public void setAction(int action) {
     this.action = action;
+  }
+
+  public int getKickCount() {
+    return kickCount;
+  }
+
+  public void setKickCount(int kickCount) {
+    this.kickCount = kickCount;
   }
 
   public String getFbid() {
     return fbid;
   }
 
-  protected void setFbid(String fbid) {
+  public void setFbid(String fbid) {
     this.fbid = fbid;
   }
 
@@ -94,7 +82,7 @@ public class Member implements Parcelable {
     return name;
   }
 
-  protected void setName(String name) {
+  public void setName(String name) {
     this.name = name;
   }
 
@@ -102,59 +90,71 @@ public class Member implements Parcelable {
     return pictureUrl;
   }
 
-  protected void setPictureUrl(String pictureUrl) {
+  public void setPictureUrl(String pictureUrl) {
     this.pictureUrl = pictureUrl;
-  }
-
-  public int getSteps() {
-    return steps;
-  }
-
-  public void setSteps(int steps) {
-    this.steps = steps;
   }
 
   public String getStatus() {
     return status;
   }
 
-  protected void setStatus(String status) {
+  public void setStatus(String status) {
     this.status = status;
   }
 
-  public int getKickCount() {
-    return kickCount;
+  public String getPhoneNumber() {
+    return phoneNumber;
   }
 
-  protected void setKickCount(int kickCount) {
-    this.kickCount = kickCount;
+  public void setPhoneNumber(String phoneNumber) {
+    this.phoneNumber = phoneNumber;
   }
 
-  @Override public int describeContents() {
-    return 0;
+  public String getVkId() {
+    return vkId;
+  }
+
+  public void setVkId(String vkId) {
+    this.vkId = vkId;
+  }
+
+  protected Member(Parcel in) {
+    steps = in.readInt();
+    action = in.readInt();
+    kickCount = in.readInt();
+    fbid = in.readString();
+    id = in.readString();
+    name = in.readString();
+    pictureUrl = in.readString();
+    status = in.readString();
+    phoneNumber = in.readString();
+    vkId = in.readString();
   }
 
   @Override public void writeToParcel(Parcel dest, int flags) {
+    dest.writeInt(steps);
     dest.writeInt(action);
     dest.writeInt(kickCount);
     dest.writeString(fbid);
     dest.writeString(id);
     dest.writeString(name);
     dest.writeString(pictureUrl);
-    dest.writeInt(steps);
     dest.writeString(status);
+    dest.writeString(phoneNumber);
+    dest.writeString(vkId);
   }
 
-  @Override public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-
-    Member member = (Member) o;
-
-    return this.id.equals(member.getId());
+  @Override public int describeContents() {
+    return 0;
   }
 
-  @Override public int hashCode() {
-    return this.id.hashCode();
-  }
+  public static final Creator<Member> CREATOR = new Creator<Member>() {
+    @Override public Member createFromParcel(Parcel in) {
+      return new Member(in);
+    }
+
+    @Override public Member[] newArray(int size) {
+      return new Member[size];
+    }
+  };
 }

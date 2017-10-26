@@ -18,6 +18,7 @@ import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.base.MvpBaseRecyclerAdapter;
 import com.sugarman.myb.listeners.ItemMemberActionListener;
 import com.sugarman.myb.ui.views.CropCircleTransformation;
+import io.realm.Realm;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -72,6 +73,9 @@ public class MembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.ViewHold
           friend.getPicture())) {
 
         String url = friend.getPicture();
+        //Timber.e("URLSTART"+url+"URLEND");
+        if(url == null||url.equals("")||url.equals(" "))
+          url = "https://sugarman-myb.s3.amazonaws.com/Group_New.png";
         Picasso.with(context)
             .load(url)
             .placeholder(R.drawable.ic_gray_avatar)
@@ -107,13 +111,16 @@ public class MembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.ViewHold
 
       boolean isPending = friend.isPending();
       boolean isAdded = friend.isAdded();
-      if (isPending || isAdded) {
-        membersHolder.tvActionBtn.setText(isPending ? pending : added);
+      boolean isSelected = friend.isSelected();
+      if (isPending || isAdded || isSelected) {
+        if(isPending) membersHolder.tvActionBtn.setText(pending);
+        if(isAdded) membersHolder.tvActionBtn.setText(added);
+        if(isSelected) membersHolder.tvActionBtn.setText(remove);
         //membersHolder.tvActionBtn.setBackgroundResource(R.drawable.gray_double_stroke_background);
         membersHolder.tvActionBtn.setBackgroundResource(R.drawable.remove);
         membersHolder.tvActionBtn.setTextColor(colorRed);
       } else {
-        membersHolder.tvActionBtn.setText(friend.isSelected() ? remove : add);
+        membersHolder.tvActionBtn.setText(add);
         //membersHolder.tvActionBtn.setBackgroundResource(R.drawable.dark_gray_double_stroke_background);
         membersHolder.tvActionBtn.setBackgroundResource(R.drawable.add_and_remove);
         membersHolder.tvActionBtn.setTextColor(colorWhite);
@@ -134,9 +141,16 @@ public class MembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.ViewHold
         friend = mUnselected.get(position - mSelected.size());
       }
 
+      Timber.e("Friend network " + friend.getSocialNetwork());
+
       if (!friend.isPending() && !friend.isAdded()) {
         boolean isSelected = !friend.isSelected();
-        friend.setSelected(isSelected);
+        Realm.getDefaultInstance().executeTransaction(realm -> {
+          FacebookFriend myObject = friend;
+          myObject.setSelected(isSelected);
+          realm.insertOrUpdate(myObject); // could be copyToRealmOrUpdate
+        });
+        //friend.setSelected(isSelected);
 
         if (isSelected) {
           mSelected.add(friend);
@@ -145,7 +159,6 @@ public class MembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.ViewHold
           mSelected.remove(friend);
           mUnselected.add(friend);
         }
-
         Collections.sort(mSelected, FacebookFriend.BY_NAME_ASC);
         Collections.sort(mUnselected, FacebookFriend.BY_NAME_ASC);
       }
@@ -156,13 +169,30 @@ public class MembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.ViewHold
     else {
       mPresenter.postHideAddFriendBtn();
     }
-
     notifyDataSetChanged();
   }
 
   public void setValue(List<FacebookFriend> values) {
     //mUnselected.clear();
     //mSelected.clear();
+    Timber.e("setFilteredValue");
+
+    for (FacebookFriend friend : values) {
+      if (friend.isSelected()) {
+        mSelected.add(friend);
+      } else {
+        mUnselected.add(friend);
+      }
+    }
+
+    Collections.sort(mSelected, FacebookFriend.BY_NAME_ASC);
+    Collections.sort(mUnselected, FacebookFriend.BY_NAME_ASC);
+    notifyItemRangeChanged(0, values.size());
+  }
+
+  public void setValuesClearList(List<FacebookFriend> values) {
+    mUnselected.clear();
+    mSelected.clear();
     Timber.e("setFilteredValue");
 
     for (FacebookFriend friend : values) {
@@ -214,7 +244,7 @@ public class MembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.ViewHold
   public void setFilteredValue(List<FacebookFriend> filtered) {
     mUnselected.clear();
     mSelected.clear();
-    Timber.e("setFilteredValue");
+    Timber.e("setFilteredValue " + filtered.size());
 
     for (FacebookFriend friend : filtered) {
       if (friend.isSelected()) {
@@ -232,6 +262,11 @@ public class MembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.ViewHold
   public void clearLists(){
     mUnselected.clear();
     mSelected.clear();
+  }
+
+  public List<FacebookFriend> getAllList() {
+     mSelected.addAll(mUnselected);
+    return mSelected;
   }
 
   private static class MembersHolder extends RecyclerView.ViewHolder

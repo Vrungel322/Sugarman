@@ -23,7 +23,7 @@ public class CountryCodeHelper {
     for (int i = 0; i < rl.length; i++) {
       String[] g = rl[i].split(",");
       if (g[1].trim().equals(CountryID.trim())) {
-        CountryZipCode = "+"+g[0];
+        CountryZipCode = "+" + g[0];
         break;
       }
     }

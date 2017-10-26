@@ -1,4 +1,4 @@
-package com.sugarman.myb.ui.activities;
+package com.sugarman.myb.ui.activities.editProfile;
 
 import android.Manifest;
 import android.content.ClipData;
@@ -7,18 +7,24 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Pair;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
+import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.clover_studio.spikachatmodule.utils.Const;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -34,13 +40,15 @@ import com.sugarman.myb.base.BasicActivity;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.listeners.ApiBaseListener;
 import com.sugarman.myb.listeners.ApiRefreshUserDataListener;
-import com.sugarman.myb.ui.activities.base.BaseActivity;
-import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
+import com.sugarman.myb.ui.activities.ApproveOtpActivity;
+import com.sugarman.myb.ui.activities.IntroActivity;
+import com.sugarman.myb.ui.activities.MainActivity;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.ui.views.MaskImage;
 import com.sugarman.myb.ui.views.MaskTransformation;
 import com.sugarman.myb.utils.AnalyticsHelper;
 import com.sugarman.myb.utils.DeviceHelper;
+import com.sugarman.myb.utils.DialogHelper;
 import com.sugarman.myb.utils.SaveFileHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.vk.sdk.VKAccessToken;
@@ -53,15 +61,26 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import timber.log.Timber;
 
-public class EditProfileActivity extends BaseActivity
-    implements ApiBaseListener, ApiRefreshUserDataListener {
+public class EditProfileActivity extends BasicActivity
+    implements ApiBaseListener, ApiRefreshUserDataListener, IEditProfileActivityView {
+  public static final String NAME_FROM_SETTINGS = "NAME_FROM_SETTINGS";
+  public static final String PHONE_FROM_SETTINGS = "PHONE_FROM_SETTINGS";
+  public static final String EMAIL_FROM_SETTINGS = "EMAIL_FROM_SETTINGS";
+  public static final String IS_FB_LOGGED_IN_FROM_SETTINGS = "IS_FB_LOGGED_IN_FROM_SETTINGS";
+  public static final String IS_VK_LOGGED_IN_FROM_SETTINGS = "IS_VK_LOGGED_IN_FROM_SETTINGS";
+  public static final String IS_PH_LOGGED_IN_FROM_SETTINGS = "IS_PH_LOGGED_IN_FROM_SETTINGS";
+  public static final String AVATAR_URL_FROM_SETTINGS = "AVATAR_URL_FROM_SETTINGS";
+  @InjectPresenter EditProfileActivityPresenter mPresenter;
   @BindView(R.id.iv_profile_avatar) ImageView profileAvatar;
+  @BindView(R.id.pb_spinner) ProgressBar pb;
   @BindView(R.id.iv_next) ImageView nextButton;
   @BindView(R.id.iv_back) ImageView backButton;
   @BindView(R.id.tv_facebook) TextView tvFb;
   @BindView(R.id.tv_vk) TextView tvVk;
+  @BindView(R.id.tv_ph) TextView tvPh;
   @BindView(R.id.cb_facebook) CheckBox cbFb;
   @BindView(R.id.cb_vk) CheckBox cbVk;
+  @BindView(R.id.cb_ph) CheckBox cbPh;
   EditProfileClient editProfileClient;
   String displayNumber;
   String otp;
@@ -71,7 +90,9 @@ public class EditProfileActivity extends BaseActivity
   @BindView(R.id.et_email) EditText etEmail;
   private CallbackManager callbackManager;
   private RefreshUserDataClient mRefreshUserDataClient;
-
+  private Bundle mBundleUserSettings;
+  private int networkTotalCount;
+  private int networkCount;
 
   public static boolean isEmailValid(String email) {
     String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
@@ -80,13 +101,11 @@ public class EditProfileActivity extends BaseActivity
     return matcher.matches();
   }
 
-  public static boolean isPhoneValid(String phone)
-  {
-    String expression = "^[+][0-9]{10,13}$";
+  public static boolean isPhoneValid(String phone) {
+    String expression = "^[+][0-9]{8,15}$";
     Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
     Matcher matcher = pattern.matcher(phone);
     return matcher.matches();
-
   }
 
   @Override protected void onCreate(Bundle savedInstanceState) {
@@ -99,18 +118,22 @@ public class EditProfileActivity extends BaseActivity
       }, 5500);
     }
 
-
     editProfileClient = new EditProfileClient();
     editProfileClient.registerListener(this);
 
     etName.setText(SharedPreferenceHelper.getUserName());
-    etPhone.setText(SharedPreferenceHelper.getPhoneNumber().equals("none")?"":SharedPreferenceHelper.getPhoneNumber());
+    etPhone.setText(SharedPreferenceHelper.getPhoneNumber().equals("none") ? ""
+        : SharedPreferenceHelper.getPhoneNumber());
     etEmail.setText(SharedPreferenceHelper.getEmail());
 
     mRefreshUserDataClient = new RefreshUserDataClient();
     mRefreshUserDataClient.registerListener(this);
 
     selectedFile = null;
+
+    if (SharedPreferenceHelper.getOTPStatus()) {
+      etPhone.setError(String.format(getString(R.string.approve_phone_pls)));
+    }
 
     callbackManager = CallbackManager.Factory.create();
     Log.e("FBAccess", "GOVNO" + SharedPreferenceHelper.getFBAccessToken());
@@ -132,6 +155,7 @@ public class EditProfileActivity extends BaseActivity
           .into(profileAvatar);
     }
 
+
     LoginManager.getInstance()
         .registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
           @Override public void onSuccess(LoginResult loginResult) {
@@ -143,6 +167,19 @@ public class EditProfileActivity extends BaseActivity
               SharedPreferenceHelper.saveFBAccessToken(accessToken.getToken());
               SharedPreferenceHelper.saveFbId(accessToken.getUserId());
               cbFb.setChecked(true);
+              networkCount++;
+              Timber.e("Got to fb callback");
+              Timber.e("FB Callback network Count = "
+                  + networkCount
+                  + " network total count = "
+                  + networkTotalCount);
+              if (networkTotalCount >= networkCount) {
+                Timber.e("Networks equal");
+                mPresenter.sendUserDataToServer(etPhone.getText().toString(),
+                    etEmail.getText().toString(), etName.getText().toString(),
+                    SharedPreferenceHelper.getFbId(), SharedPreferenceHelper.getVkId(),
+                    SharedPreferenceHelper.getAvatar(), selectedFile);
+              }
             } else {
               Log.e("Facebook", "token from facebook is null");
               onError(null);
@@ -157,6 +194,26 @@ public class EditProfileActivity extends BaseActivity
             Log.e("Facebook token", "Error " + e.getMessage());
           }
         });
+
+    if (checkCallingOrSelfPermission(Constants.READ_PHONE_CONTACTS_PERMISSION)
+        != PackageManager.PERMISSION_GRANTED) {
+      cbPh.setChecked(false);
+    } else {
+      cbPh.setChecked(true);
+    }
+
+    putDataIntoBundle();
+  }
+
+  private void putDataIntoBundle() {
+    mBundleUserSettings = new Bundle();
+    mBundleUserSettings.putString(NAME_FROM_SETTINGS, etName.getText().toString());
+    mBundleUserSettings.putString(PHONE_FROM_SETTINGS, etPhone.getText().toString());
+    mBundleUserSettings.putString(EMAIL_FROM_SETTINGS, etEmail.getText().toString());
+    mBundleUserSettings.putString(AVATAR_URL_FROM_SETTINGS, SharedPreferenceHelper.getAvatar());
+    mBundleUserSettings.putBoolean(IS_FB_LOGGED_IN_FROM_SETTINGS, cbFb.isChecked());
+    mBundleUserSettings.putBoolean(IS_VK_LOGGED_IN_FROM_SETTINGS, cbVk.isChecked());
+    mBundleUserSettings.putBoolean(IS_PH_LOGGED_IN_FROM_SETTINGS, cbPh.isChecked());
   }
 
   @OnClick(R.id.cb_facebook) public void cbFacebookClicked() {
@@ -196,66 +253,179 @@ public class EditProfileActivity extends BaseActivity
     cbVk.setChecked(VKSdk.isLoggedIn());
   }
 
+  @OnClick(R.id.cb_ph) public void cbPhClicked() {
+    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      Intent intent = new Intent();
+      intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+      Uri uri = Uri.fromParts("package", getPackageName(), null);
+      intent.setData(uri);
+      startActivity(intent);
+    } else {
+      ActivityCompat.requestPermissions(EditProfileActivity.this,
+          new String[] { Manifest.permission.READ_CONTACTS }, Const.PermissionCode.READ_CONTACTS);
+    }
+  }
+
+  @OnClick(R.id.tv_ph) public void tvPhClicked() {
+
+    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      Intent intent = new Intent();
+      intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+      Uri uri = Uri.fromParts("package", getPackageName(), null);
+      intent.setData(uri);
+      startActivity(intent);
+    } else {
+      ActivityCompat.requestPermissions(EditProfileActivity.this,
+          new String[] { Manifest.permission.READ_CONTACTS }, Const.PermissionCode.READ_CONTACTS);
+    }
+  }
+
   @OnClick(R.id.iv_next) public void ivNextClicked() {
-    //SharedPreferenceHelper.saveUserName("Test name");
 
     editProfile();
   }
 
-  private void editProfile()
-  {
+  private void editProfile() {
     String displayName = etName.getText().toString();
     Log.e("display name", displayName);
     SharedPreferenceHelper.saveUserName(displayName);
     String displayEmail = etEmail.getText().toString();
     displayNumber = etPhone.getText().toString();
 
-    if (isEmailValid(displayEmail)) {
-      if(displayNumber.equals("")) {
-        displayNumber = "none";
+    if (isEmailValid(displayEmail) || displayEmail.equals("")) {
+      if (displayNumber.equals("")) {
         Timber.e("Got in here 1");
         editProfileClient.editUser(displayNumber, displayEmail, displayName,
             SharedPreferenceHelper.getFbId(), SharedPreferenceHelper.getVkId(),
             SharedPreferenceHelper.getAvatar(), selectedFile); //brand.png
         SharedPreferenceHelper.saveEmail(displayEmail);
-        nextButton.setEnabled(false);
-        backButton.setEnabled(false);
+        //nextButton.setEnabled(false);
         //showNextActivity();
-      }
-      else
-      {
-        if(isPhoneValid(displayNumber))
-        {
+      } else {
+        if (isPhoneValid(displayNumber)) {
           Timber.e("Got in here 2");
           editProfileClient.editUser(displayNumber, displayEmail, displayName,
               SharedPreferenceHelper.getFbId(), SharedPreferenceHelper.getVkId(),
               SharedPreferenceHelper.getAvatar(), selectedFile); //brand.png
           SharedPreferenceHelper.saveEmail(displayEmail);
-          nextButton.setEnabled(false);
-          backButton.setEnabled(false);
+          Timber.e(displayNumber);
+          //nextButton.setEnabled(false);
           //showNextActivity();
-        }
-        else
-        {
-          new SugarmanDialog.Builder(this, "Phone").content(getResources().getString(R.string.the_phone_is_not_valid))
-              .build()
-              .show();
+        } else {
+          new SugarmanDialog.Builder(this, "Phone").content(
+              getResources().getString(R.string.the_phone_is_not_valid)).build().show();
         }
       }
-
-
-
     } else {
-      new SugarmanDialog.Builder(this, "Email").content(getResources().getString(R.string.the_email_is_not_valid))
-          .build()
-          .show();
+      new SugarmanDialog.Builder(this, "Email").content(
+          getResources().getString(R.string.the_email_is_not_valid)).build().show();
     }
     Log.e("EDIT PROFILE", "PRESSED");
-showProgressFragment();
   }
 
   @OnClick(R.id.iv_back) public void ivBackClicked() {
-    editProfile();
+    if (VKSdk.isLoggedIn() != mBundleUserSettings.getBoolean(IS_VK_LOGGED_IN_FROM_SETTINGS)) {
+      networkTotalCount++;
+      Timber.e(
+          "VK network Count = " + networkCount + " network total count = " + networkTotalCount);
+    }
+
+    if (SharedPreferenceHelper.getFbId().equals("none") && mBundleUserSettings.getBoolean(
+        IS_FB_LOGGED_IN_FROM_SETTINGS)) {
+      networkTotalCount++;
+      Timber.e(
+          "FB 1 network Count = " + networkCount + " network total count = " + networkTotalCount);
+    }
+    if (!SharedPreferenceHelper.getFbId().equals("none") && !mBundleUserSettings.getBoolean(
+        IS_FB_LOGGED_IN_FROM_SETTINGS)) {
+      networkTotalCount++;
+      Timber.e(
+          "FB 2 network Count = " + networkCount + " network total count = " + networkTotalCount);
+    }
+    if (isChangeAnything()) {
+      DialogHelper.createSimpleDialog(getResources().getString(R.string.save),
+          getResources().getString(R.string.discard),
+          getResources().getString(R.string.save_changes),
+          getResources().getString(R.string.changes_have_been_made), this, (dialogInterface, i) -> {
+            SharedPreferenceHelper.savePhoneNumber(etPhone.getText().toString());
+            SharedPreferenceHelper.saveEmail(etEmail.getText().toString());
+            SharedPreferenceHelper.saveUserName(etName.getText().toString());
+            networkCount = networkTotalCount;
+
+            //ph
+            if (!etPhone.getText().equals("")
+                && !etPhone.equals(" ")
+                && !etPhone.equals("none")
+                && isPhoneValid(etPhone.getText().toString())
+                && !mBundleUserSettings.getString(PHONE_FROM_SETTINGS)
+                .equals(etPhone.getText().toString())) {
+              Intent intent = new Intent(EditProfileActivity.this, ApproveOtpActivity.class);
+              intent.putExtra("otp", otp);
+              intent.putExtra("showSettings", false);
+              intent.putExtra("phone", displayNumber);
+              System.out.println("хуй собачий");
+              intent.putExtra("nameParentActivity", EditProfileActivity.class.getName());
+              startActivity(intent);
+            }
+
+            mPresenter.sendUserDataToServer(etPhone.getText().toString(),
+                etEmail.getText().toString(), etName.getText().toString(),
+                SharedPreferenceHelper.getFbId(), SharedPreferenceHelper.getVkId(),
+                SharedPreferenceHelper.getAvatar(), selectedFile);
+          }, (dialogInterface, i) -> {
+
+            //VK
+            if (VKSdk.isLoggedIn()) {
+              if (!mBundleUserSettings.getBoolean(IS_VK_LOGGED_IN_FROM_SETTINGS)) {
+                logoutVk();
+              }
+            }
+            if (!VKSdk.isLoggedIn()) {
+              if (mBundleUserSettings.getBoolean(IS_VK_LOGGED_IN_FROM_SETTINGS)) {
+                VKSdk.login(this, "friends, messages, email");
+              }
+            }
+
+            //FB
+            if (SharedPreferenceHelper.getFbId().equals("none")) {
+              if (mBundleUserSettings.getBoolean(IS_FB_LOGGED_IN_FROM_SETTINGS)) {
+                LoginManager.getInstance()
+                    .logInWithReadPermissions(EditProfileActivity.this,
+                        Arrays.asList("public_profile", "user_friends", "email",
+                            "read_custom_friendlists"));
+              }
+            }
+            if (!SharedPreferenceHelper.getFbId().equals("none")) {
+              if (!mBundleUserSettings.getBoolean(IS_FB_LOGGED_IN_FROM_SETTINGS)) {
+                LoginManager.getInstance().logOut();
+                SharedPreferenceHelper.clearFBDate();
+              }
+            }
+
+            mPresenter.sendUserDataToServer(mBundleUserSettings.getString(PHONE_FROM_SETTINGS),
+                mBundleUserSettings.getString(EMAIL_FROM_SETTINGS),
+                mBundleUserSettings.getString(NAME_FROM_SETTINGS), SharedPreferenceHelper.getFbId(),
+                SharedPreferenceHelper.getVkId(),
+                mBundleUserSettings.getString(AVATAR_URL_FROM_SETTINGS), selectedFile);
+          }).create().show();
+    } else {
+      finish();
+    }
+  }
+
+  private boolean isChangeAnything() {
+    if (mBundleUserSettings.getString(NAME_FROM_SETTINGS).equals(etName.getText().toString())
+        && mBundleUserSettings.getString(PHONE_FROM_SETTINGS).equals(etPhone.getText().toString())
+        && mBundleUserSettings.getString(EMAIL_FROM_SETTINGS).equals(etEmail.getText().toString())
+        && mBundleUserSettings.getString(AVATAR_URL_FROM_SETTINGS)
+        .equals(SharedPreferenceHelper.getAvatar())
+        && VKSdk.isLoggedIn() == mBundleUserSettings.getBoolean(IS_VK_LOGGED_IN_FROM_SETTINGS)
+        && !SharedPreferenceHelper.getFbId().equals("none") == mBundleUserSettings.getBoolean(
+        IS_FB_LOGGED_IN_FROM_SETTINGS)) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   @Override public void onBackPressed() {
@@ -301,6 +471,19 @@ showProgressFragment();
 
   }
 
+  @Override protected void onResume() {
+    super.onResume();
+    if (SharedPreferenceHelper.getOTPStatus()) {
+      etPhone.setError(String.format(getString(R.string.approve_phone_pls)));
+    }
+    if (checkCallingOrSelfPermission(Constants.READ_PHONE_CONTACTS_PERMISSION)
+        != PackageManager.PERMISSION_GRANTED) {
+      cbPh.setChecked(false);
+    } else {
+      cbPh.setChecked(true);
+    }
+  }
+
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
     callbackManager.onActivityResult(requestCode, resultCode, data);
@@ -310,9 +493,24 @@ showProgressFragment();
         SharedPreferenceHelper.saveVkToken(res.accessToken);
         SharedPreferenceHelper.saveVkId(res.userId);
         cbVk.setChecked(VKSdk.isLoggedIn());
+
+        Timber.e("VK Callback network Count = "
+            + networkCount
+            + " network total count = "
+            + networkTotalCount);
+        networkCount++;
+        if (networkTotalCount >= networkCount) {
+          mPresenter.sendUserDataToServer(etPhone.getText().toString(),
+              etEmail.getText().toString(), etName.getText().toString(),
+              SharedPreferenceHelper.getFbId(), SharedPreferenceHelper.getVkId(),
+              SharedPreferenceHelper.getAvatar(), selectedFile);
+        }
+        hidePb();
       }
 
       @Override public void onError(VKError error) {
+        hidePb();
+        logoutVk();
         // ÐŸÑ€Ð¾Ð¸Ð·Ð¾ÑˆÐ»Ð° Ð¾ÑˆÐ¸Ð±ÐºÐ° Ð°Ð²Ñ‚Ð¾Ñ€Ð¸Ð·Ð°Ñ†Ð¸Ð¸ (Ð½Ð°Ð¿Ñ€Ð¸Ð¼ÐµÑ€, Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÑŒ Ð·Ð°Ð¿Ñ€ÐµÑ‚Ð¸Ð» Ð°Ð²Ñ‚Ð¾Ñ€Ð¸Ð·Ð°Ñ†Ð¸ÑŽ)
       }
     })) {
@@ -405,6 +603,9 @@ showProgressFragment();
   }
 
   @Override public void onApiRefreshUserDataSuccess(UsersResponse response) {
+    if (SharedPreferenceHelper.getOTPStatus()) {
+      etPhone.setError(String.format(getString(R.string.approve_phone_pls)));
+    }
     if (response.getResult() != null) {
       AnalyticsHelper.reportLogin(true);
       Log.e("ApiRefreshUserData", "Called");
@@ -417,11 +618,10 @@ showProgressFragment();
 
     {
       new SugarmanDialog.Builder(this, "soc network").content(response.getError()).build().show();
-      if(response.getError().equals("This Facebook account is already created")) {
+      if (response.getError().equals("This Facebook account is already created")) {
         logoutFacebook();
       }
-      if(response.getError().equals("This VK account is already created"))
-      {
+      if (response.getError().equals("This VK account is already created")) {
         logoutVk();
       }
     }
@@ -432,18 +632,23 @@ showProgressFragment();
   }
 
   private void showNextActivity() {
-    Timber.e(SharedPreferenceHelper.getPhoneNumber() + " " + (etPhone.getText().toString()));
-    if (!SharedPreferenceHelper.getPhoneNumber().equals(etPhone.getText().toString())
-        && !etPhone.getText().toString().equals("")) {
+    Timber.e("Got in here");
+    Timber.e(
+        "*" + SharedPreferenceHelper.getPhoneNumber() + "* *" + etPhone.getText().toString() + "*");
+    if ((!SharedPreferenceHelper.getPhoneNumber().equals(etPhone.getText().toString())
+        && !etPhone.getText().toString().equals("")) || etPhone.getError() != null) {
       Intent intent = new Intent(EditProfileActivity.this, ApproveOtpActivity.class);
       intent.putExtra("otp", otp);
       intent.putExtra("showSettings", false);
       intent.putExtra("phone", displayNumber);
+      intent.putExtra("nameParentActivity", EditProfileActivity.class.getName());
+
       startActivity(intent);
     } else {
       SharedPreferenceHelper.savePhoneNumber(etPhone.getText().toString());
       if (SharedPreferenceHelper.introIsShown()) {
         Intent intent = new Intent(EditProfileActivity.this, MainActivity.class);
+        //intent.putExtra(IntroActivity.CODE_IS_OPEN_LOGIN_ACTIVITY, true);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
       } else {
@@ -453,5 +658,48 @@ showProgressFragment();
         startActivity(intent);
       }
     }
+  }
+
+  @Override public void finishActivity() {
+    Timber.e("Finish Activity network Count = "
+        + networkCount
+        + " network total count = "
+        + networkTotalCount);
+
+    if (SharedPreferenceHelper.getOTPStatus()) {
+      etPhone.setError(String.format(getString(R.string.approve_phone_pls)));
+    }
+    if (networkCount >= networkTotalCount) finish();
+  }
+
+  @Override public void showPb() {
+    pb.setVisibility(View.VISIBLE);
+  }
+
+  @Override public void showSocialProblem(UsersResponse usersResponse) {
+    hidePb();
+    new SugarmanDialog.Builder(this, "soc network").content(usersResponse.getError())
+        .build()
+        .show();
+    if (usersResponse.getError().equals("This Facebook account is already created")) {
+      logoutFacebook();
+    }
+    if (usersResponse.getError().equals("This VK account is already created")) {
+      logoutVk();
+    }
+  }
+
+  @Override public void showPhoneProblem() {
+    new SugarmanDialog.Builder(this, "Phone").content(
+        getResources().getString(R.string.the_phone_is_not_valid)).build().show();
+  }
+
+  @Override public void showEmailProblem() {
+    new SugarmanDialog.Builder(this, "Email").content(
+        getResources().getString(R.string.the_email_is_not_valid)).build().show();
+  }
+
+  @Override public void hidePb() {
+    pb.setVisibility(View.GONE);
   }
 }

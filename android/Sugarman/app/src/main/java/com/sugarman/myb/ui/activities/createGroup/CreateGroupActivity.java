@@ -29,9 +29,11 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.clover_studio.spikachatmodule.utils.Const;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -40,9 +42,12 @@ import com.facebook.share.widget.GameRequestDialog;
 import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.adapters.FriendsAdapter;
+import com.sugarman.myb.api.clients.CheckPhonesClient;
+import com.sugarman.myb.api.clients.CheckVkClient;
 import com.sugarman.myb.api.clients.CreateGroupClient;
 import com.sugarman.myb.api.clients.FBApiClient;
 import com.sugarman.myb.api.clients.JoinGroupClient;
+import com.sugarman.myb.api.models.responses.Phones;
 import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.api.models.responses.me.groups.CreatedGroup;
@@ -50,16 +55,17 @@ import com.sugarman.myb.constants.Config;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.constants.DialogConstants;
 import com.sugarman.myb.eventbus.events.ReportStepsEvent;
+import com.sugarman.myb.listeners.ApiCheckPhoneListener;
+import com.sugarman.myb.listeners.ApiCheckVkListener;
 import com.sugarman.myb.listeners.ApiCreateGroupListener;
 import com.sugarman.myb.listeners.ApiJoinGroupListener;
 import com.sugarman.myb.listeners.AsyncSaveBitmapToFileListener;
 import com.sugarman.myb.listeners.OnFBGetFriendsListener;
 import com.sugarman.myb.tasks.SaveBitmapToFileAsyncTask;
-import com.sugarman.myb.ui.activities.EditProfileActivity;
 import com.sugarman.myb.ui.activities.base.BaseActivity;
+import com.sugarman.myb.ui.activities.editProfile.EditProfileActivity;
 import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
-import com.sugarman.myb.ui.dialogs.sendVkInvitation.SendVkInvitationDialog;
 import com.sugarman.myb.ui.views.MaskImage;
 import com.sugarman.myb.utils.AnalyticsHelper;
 import com.sugarman.myb.utils.BitmapUtils;
@@ -86,20 +92,24 @@ import static com.sugarman.myb.utils.ImageHelper.scaleCenterCrop;
 public class CreateGroupActivity extends BaseActivity
     implements View.OnClickListener, OnFBGetFriendsListener, ApiCreateGroupListener,
     ApiJoinGroupListener, AsyncSaveBitmapToFileListener, View.OnFocusChangeListener,
-    ICreateGroupActivityView {
+    ICreateGroupActivityView, ApiCheckPhoneListener, ApiCheckVkListener {
 
   private static final String TAG = CreateGroupActivity.class.getName();
   private final List<FacebookFriend> filtered = new ArrayList<>();
   private final List<FacebookFriend> allFriends = new ArrayList<>();
   private final List<FacebookFriend> invitable = new ArrayList<>();
   private final List<FacebookFriend> members = new ArrayList<>();
+  public CheckPhonesClient mCheckPhoneClient;
+  public CheckVkClient mCheckVkClient;
   @BindView(R.id.fb_filter) ImageView fbFilter;
   @BindView(R.id.vk_filter) ImageView vkFilter;
   @BindView(R.id.ph_filter) ImageView phFilter;
+  @BindView(R.id.pb_spinner) RelativeLayout pb;
   String currentFilter = "";
   boolean isVkLoggedIn = false, isFbLoggedIn = false;
   MaskImage mi;
   @InjectPresenter CreateGroupActivityPresenter mPresenter;
+  View vApply;
   private FriendsAdapter friendsAdapter;
   private RecyclerView rcvFriends;
   private ImageView ivGroupAvatar;
@@ -175,12 +185,28 @@ public class CreateGroupActivity extends BaseActivity
   private GameRequestDialog fbInviteDialog;
   private boolean isFriendsFound = false;
   private File selectedFile;
-  private int networksToLoad = 1, networksLoaded = 0;
+  private int networksToLoad = 0, networksLoaded = 0;
   private boolean vkPeopleAdd;
+  private List<Phones> mDistinktorList = new ArrayList<>();
+
+  @Override protected void onDestroy() {
+    super.onDestroy();
+    //if(mCheckPhoneClient.isRequestRunning())
+    mCheckPhoneClient.cancelRequest();
+    //if(mCheckVkClient.isRequestRunning())
+    mCheckVkClient.cancelRequest();
+  }
 
   @Override protected void onCreate(Bundle savedStateInstance) {
     setContentView(R.layout.activity_create_group);
     super.onCreate(savedStateInstance);
+    pb.setVisibility(View.GONE);
+    pb.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View view) {
+
+      }
+    });
+    Timber.e("VK TOKEN " + SharedPreferenceHelper.getVkToken());
 
     if (!SharedPreferenceHelper.getFacebookId().equals("none")) {
       networksToLoad++;
@@ -211,6 +237,8 @@ public class CreateGroupActivity extends BaseActivity
     fbApiClient = new FBApiClient();
     mCreateGroupClient = new CreateGroupClient();
     mJoinGroupClient = new JoinGroupClient();
+    mCheckPhoneClient = new CheckPhonesClient();
+    mCheckVkClient = new CheckVkClient();
 
     friendsAdapter = new FriendsAdapter(this);
 
@@ -227,7 +255,7 @@ public class CreateGroupActivity extends BaseActivity
     vClearGroupName = findViewById(R.id.iv_clear_group_name_input);
     vClearMembersFilter = findViewById(R.id.iv_clear_member_filter_input);
     View vCross = findViewById(R.id.iv_cross);
-    View vApply = findViewById(R.id.iv_apply);
+    vApply = findViewById(R.id.iv_apply);
 
     rcvFriends.setLayoutManager(new LinearLayoutManager(this));
     rcvFriends.setAdapter(friendsAdapter);
@@ -253,27 +281,34 @@ public class CreateGroupActivity extends BaseActivity
     bitmap = mi.transform(bitmap);
     ivGroupAvatar.setImageBitmap(bitmap);
 
-    AsyncTask.execute(new Runnable() {
-      @Override public void run() {
+    if (checkCallingOrSelfPermission(Constants.READ_PHONE_CONTACTS_PERMISSION)
+        == PackageManager.PERMISSION_GRANTED) {
+      networksToLoad++;
+
+      //load friends from DB
+      mPresenter.fillListByCachedData();
+
+      AsyncTask.execute(() -> {
         HashMap<String, String> contactList =
             ContactsHelper.getContactList(CreateGroupActivity.this);
-
+        List<String> phonesToCheck = new ArrayList<String>();
         for (String key : contactList.keySet()) {
-            FacebookFriend friend = new FacebookFriend(contactList.get(key), key,
-                "https://sugarman-myb.s3.amazonaws.com/Group_New.png",
-                FacebookFriend.CODE_INVITABLE, "ph");
-            allFriends.add(friend);
+          FacebookFriend friend = new FacebookFriend(contactList.get(key).replace(" ", ""), key,
+              "https://sugarman-myb.s3.amazonaws.com/Group_New.png", FacebookFriend.CODE_INVITABLE,
+              "ph");
+          allFriends.add(friend);
+          phonesToCheck.add(contactList.get(key).replace(" ", ""));
+          //  Timber.e(contactList.get(key));
         }
-        networksLoaded++;
+
+        mCheckPhoneClient.checkPhones(phonesToCheck);
+
         Timber.e("Contacts loaded");
-        runOnUiThread(new Runnable() {
-          @Override public void run() {
-            setFriends(allFriends);
-          }
-        });
-        checkNetworksLoaded();
-      }
-    });
+        runOnUiThread(() -> setFriends(allFriends));
+      });
+    } else {
+      phFilter.setAlpha(0.5f);
+    }
 
     final View contentView = findViewById(android.R.id.content);
     contentView.getViewTreeObserver()
@@ -306,6 +341,7 @@ public class CreateGroupActivity extends BaseActivity
         super.onComplete(response);
         JSONObject resp = response.json;
         Log.e("VK response", response.responseString);
+        List<String> vkToCheck = new ArrayList<String>();
         try {
           JSONArray items = resp.getJSONObject("response").getJSONArray("items");
           for (int i = 0; i < items.length(); i++) {
@@ -322,10 +358,12 @@ public class CreateGroupActivity extends BaseActivity
                     FacebookFriend.CODE_INVITABLE, "vk");
 
             allFriends.add(friend);
+            vkToCheck.add(friend.getId());
           }
-          networksLoaded++;
+
+          mCheckVkClient.checkVks(vkToCheck);
+
           Timber.e("VK LOADED");
-          checkNetworksLoaded();
           //setFriends(allFriends);
         } catch (JSONException e) {
           e.printStackTrace();
@@ -365,7 +403,8 @@ public class CreateGroupActivity extends BaseActivity
       }
     } else {
       AlertDialog.Builder builder = new AlertDialog.Builder(CreateGroupActivity.this);
-      builder.setMessage(getResources().getString(R.string.log_in_to_fb)).setTitle(getResources().getString(R.string.not_logged_in));
+      builder.setMessage(getResources().getString(R.string.log_in_to_fb))
+          .setTitle(getResources().getString(R.string.not_logged_in));
       builder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
         public void onClick(DialogInterface dialog, int id) {
           Intent intent = new Intent(CreateGroupActivity.this, EditProfileActivity.class);
@@ -409,7 +448,8 @@ public class CreateGroupActivity extends BaseActivity
       }
     } else {
       AlertDialog.Builder builder = new AlertDialog.Builder(CreateGroupActivity.this);
-      builder.setMessage(getResources().getString(R.string.log_in_to_vk)).setTitle(getResources().getString(R.string.not_logged_in));
+      builder.setMessage(getResources().getString(R.string.log_in_to_vk))
+          .setTitle(getResources().getString(R.string.not_logged_in));
       builder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
         public void onClick(DialogInterface dialog, int id) {
           Intent intent = new Intent(CreateGroupActivity.this, EditProfileActivity.class);
@@ -439,6 +479,11 @@ public class CreateGroupActivity extends BaseActivity
       }
 
       setFriends(filtered);
+      if (checkCallingOrSelfPermission(Constants.READ_PHONE_CONTACTS_PERMISSION)
+          != PackageManager.PERMISSION_GRANTED) {
+        ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.READ_CONTACTS },
+            Const.PermissionCode.READ_CONTACTS);
+      }
       currentFilter = "ph";
       fbFilter.setAlpha(0.5f);
       vkFilter.setAlpha(0.5f);
@@ -452,8 +497,15 @@ public class CreateGroupActivity extends BaseActivity
   }
 
   private void checkNetworksLoaded() {
-    Timber.e(networksLoaded + " out of " + networksToLoad);
-    if (networksLoaded == networksToLoad) closeProgressFragment();
+    Timber.e(
+        networksLoaded + " out of " + networksToLoad + "allFriends side is " + allFriends.size());
+    if (networksLoaded == networksToLoad) {
+      Timber.e(
+          networksLoaded + " out of " + networksToLoad + "allFriends side is " + allFriends.size());
+      closeProgressFragment();
+      //Cache friends
+      mPresenter.cacheFriends(allFriends);
+    }
   }
 
   @Override protected void onStart() {
@@ -462,6 +514,8 @@ public class CreateGroupActivity extends BaseActivity
     fbApiClient.registerListener(this);
     mCreateGroupClient.registerListener(this);
     mJoinGroupClient.registerListener(this);
+    mCheckPhoneClient.registerListener(this);
+    mCheckVkClient.registerListener(this);
   }
 
   @Override protected void onStop() {
@@ -470,12 +524,16 @@ public class CreateGroupActivity extends BaseActivity
     fbApiClient.unregisterListener();
     mCreateGroupClient.unregisterListener();
     mJoinGroupClient.unregisterListener();
+    mCheckPhoneClient.unregisterListener();
+    mCheckVkClient.unregisterListener();
     mi = null;
+    mCheckVkClient.cancelRequest();
+    mCheckPhoneClient.cancelRequest();
   }
 
   @Override protected void onResume() {
     super.onResume();
-
+    vApply.setEnabled(true);
     if (!isFriendsFound) {
       getFacebookFriends();
     }
@@ -659,7 +717,7 @@ public class CreateGroupActivity extends BaseActivity
 
   @Override public void onApiCreateGroupSuccess(CreatedGroup createdGroup) {
     mJoinGroupClient.joinGroup(createdGroup.getId());
-
+    hideProgress();
   }
 
   @Override public void onApiCreateGroupFailure(String message) {
@@ -695,9 +753,15 @@ public class CreateGroupActivity extends BaseActivity
         intiteByVk.add(friend);
       }
     }
-    if (!intiteByVk.isEmpty()){
-      SendVkInvitationDialog.newInstance(intiteByVk)
-          .show(getFragmentManager(), "SendVkInvitationDialog");
+    if (!intiteByVk.isEmpty()) {
+      finish();
+      //SendVkInvitationDialog.newInstance(intiteByVk)
+      //    .show(getFragmentManager(), "SendVkInvitationDialog");
+    } else {
+      finish();
+    }
+    if (intiteByVk.isEmpty() && idsFb.isEmpty()) {
+      finish();
     }
     else {
       finish();
@@ -821,7 +885,7 @@ public class CreateGroupActivity extends BaseActivity
 
   private void getFacebookFriends() {
     if (DeviceHelper.isNetworkConnected()) {
-      showProgressFragmentTemp();
+      //showProgressFragmentTemp();
       fbApiClient.searchFriends();
     } else {
       showNoInternetConnectionDialog();
@@ -830,6 +894,7 @@ public class CreateGroupActivity extends BaseActivity
 
   private void checkFilledData() {
 
+    showProgress();
     filtered.clear();
     filtered.addAll(allFriends);
     setFriends(filtered);
@@ -837,7 +902,6 @@ public class CreateGroupActivity extends BaseActivity
     String groupName = etGroupName.getText().toString();
     List<FacebookFriend> selectedFriends = friendsAdapter.getSelectedFriends();
     members.clear();
-
 
     if (TextUtils.isEmpty(groupName.replace(" ", ""))) {
       new SugarmanDialog.Builder(this, DialogConstants.GROUP_NAME_IS_EMPTY_ID).content(
@@ -851,7 +915,7 @@ public class CreateGroupActivity extends BaseActivity
       for (FacebookFriend friend : selectedFriends) {
         if (invitable.contains(friend)) {
           id = friend.getId();
-          Timber.e("Invitable: " + friend.getName());
+          //Timber.e("Invitable: " + friend.getName());
           ids.add(id);
         } else {
           members.add(friend);
@@ -872,6 +936,43 @@ public class CreateGroupActivity extends BaseActivity
 
   private void createGroup(List<FacebookFriend> members) {
     showProgressFragmentTemp();
+    vApply.setEnabled(false);
+    List<String> facebookElements = new ArrayList<>();
+    List<FacebookFriend> vkElements = new ArrayList<>();
+
+    //chech if some of members are present in mDistinktorList, if yes -> send him msg in social nenwork , else by sms
+    //______________________________________________________________________________________________
+    for (int i = 0; i < members.size(); i++) {
+      for (int j = 0; j < mDistinktorList.size(); j++) {
+        if (!members.isEmpty() && mDistinktorList.get(j).getFbid() != null && mDistinktorList.get(j)
+            .getFbid()
+            .equals(members.get(i).getId())) {
+          facebookElements.add(members.get(i).getId());
+          members.remove(i);
+        }
+      }
+    }
+    for (int i = 0; i < members.size(); i++) {
+      for (int j = 0; j < mDistinktorList.size(); j++) {
+        if (!members.isEmpty() && mDistinktorList.get(j).getVkid() != null && mDistinktorList.get(j)
+            .getVkid()
+            .equals(members.get(i).getId())) {
+          vkElements.add(members.get(i));
+          members.remove(i);
+        }
+      }
+    }
+    if (!vkElements.isEmpty()) {
+      mPresenter.sendInvitationInVk(vkElements, getString(R.string.invite_message));
+    }
+    if (!facebookElements.isEmpty()) {
+      GameRequestContent content =
+          new GameRequestContent.Builder().setMessage(getString(R.string.play_with_me))
+              .setRecipients(facebookElements)
+              .build();
+      fbInviteDialog.show(content);
+    }
+    //______________________________________________________________________________________________
     String groupName = etGroupName.getText().toString();
     mCreateGroupClient.createGroup(members, groupName, selectedFile, CreateGroupActivity.this);
   }
@@ -884,7 +985,7 @@ public class CreateGroupActivity extends BaseActivity
       //vNoFriends.setVisibility(View.VISIBLE);
     } else {
       rcvFriends.setVisibility(View.VISIBLE);
-     // vNoFriends.setVisibility(View.GONE);
+      // vNoFriends.setVisibility(View.GONE);
     }
   }
 
@@ -938,5 +1039,96 @@ public class CreateGroupActivity extends BaseActivity
     } else {
       Log.e(TAG, "file isn't exists: " + (file == null ? null : file.getAbsolutePath()));
     }
+  }
+
+  @Override public void onApiCheckPhoneSuccess(List<Phones> phones) {
+    mDistinktorList = phones;
+
+    //Timber.e("Check phones " + mDistinktorList.size());
+
+    //Timber.e("SET INVITABLE 1 " + phones.size());
+
+    for (Phones p : phones) {
+      // Timber.e("SET INVITABLE IF 1.5 ");
+      for (FacebookFriend friend : allFriends) {
+        //  Timber.e("SET INVITABLE for 2 " + friend.getName());
+        if (friend.getSocialNetwork().equals("ph")) {
+          //  Timber.e("SET INVITABLE IF 3 " + friend.getName());
+          if (friend.getId().equals(p.getPhone())) {
+            //    Timber.e("SET INVITABLE IF 4 " + friend.getName());
+            friend.setIsInvitable(FacebookFriend.CODE_NOT_INVITABLE);
+          }
+        }
+      }
+    }
+
+    runOnUiThread(() -> {
+      //setFriends(allFriends);
+      friendsAdapter.notifyItemRangeChanged(0, allFriends.size());
+    });
+    networksLoaded++;
+    Timber.e("Check phones " + networksLoaded);
+    checkNetworksLoaded();
+  }
+
+  @Override public void onApiCheckPhoneFailure(String message) {
+    Timber.e("Govno check phone");
+  }
+
+  @Override public void onApiCheckVkSuccess(List<String> vks) {
+
+    //  Timber.e("OnApiCheckVkSuccess");
+
+    // Timber.e("SET INVITABLE IF 1 " + vks.size());
+    for (String s : vks) {
+      //Timber.e("SET INVITABLE IF 1.5 ");
+      for (FacebookFriend friend : allFriends) {
+        //   Timber.e("SET INVITABLE for 2 " + friend.getName());
+        if (friend.getSocialNetwork().equals("vk")) {
+          //     Timber.e("SET INVITABLE IF 3 " + friend.getName());
+          if (friend.getId().equals(s)) {
+            //      Timber.e("SET INVITABLE IF 4 " + friend.getName());
+            friend.setIsInvitable(FacebookFriend.CODE_NOT_INVITABLE);
+          }
+        }
+      }
+    }
+
+    runOnUiThread(new Runnable() {
+      @Override public void run() {
+        setFriends(allFriends);
+      }
+    });
+    networksLoaded++;
+    Timber.e("networkds loaded checkvk " + networksLoaded);
+    checkNetworksLoaded();
+  }
+
+  @Override public void onApiCheckVkFailure(String message) {
+
+  }
+
+  @Override public void fillListByCachedData(List<FacebookFriend> facebookFriends) {
+    List<FacebookFriend> notRealmList = new ArrayList<>();
+    for (int i = 0; i < facebookFriends.size(); i++) {
+      notRealmList.add(new FacebookFriend(facebookFriends.get(i).getSocialNetwork(),
+          facebookFriends.get(i).getPhotoUrl(), facebookFriends.get(i).getId(),
+          facebookFriends.get(i).getName(), facebookFriends.get(i).getIsInvitable(), false, false,
+          false
+          //facebookFriends.get(i).isSelected(),
+          //facebookFriends.get(i).isAdded(),
+          //facebookFriends.get(i).isPending()
+      ));
+    }
+    friendsAdapter.setValue(notRealmList);
+    System.out.println("хуй собачий");
+  }
+
+  @Override public void showProgress() {
+    pb.setVisibility(View.VISIBLE);
+  }
+
+  @Override public void hideProgress() {
+    pb.setVisibility(View.GONE);
   }
 }

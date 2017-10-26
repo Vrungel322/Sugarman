@@ -37,8 +37,8 @@ android {
     applicationId "com.sugarman.myb"
     minSdkVersion 19 //min step counter version
     targetSdkVersion 23
-    versionCode 134
-    versionName "1.1.34"
+    versionCode 141
+    versionName "1.1.41"
     multiDexEnabled true
   }
   buildTypes {
@@ -115,7 +115,19 @@ dependencies {
   annotationProcessor 'com.arello-mobile:moxy-compiler:1.5.3'
   //Timber
   compile 'com.jakewharton.timber:timber:4.5.1'
+
+  //PayPal
   compile files('libs/PayPal_MPL.jar')
+  compile 'com.paypal.sdk:paypal-android-sdk:2.15.3'
+
+  //ZGallery
+  compile ('com.github.mzelzoghbi:zgallery:0.3')
+      {
+        exclude group: 'com.github.chrisbanes', module: 'PhotoView'
+      }
+
+  //realm adaprer
+  compile 'io.realm:android-adapters:1.4.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

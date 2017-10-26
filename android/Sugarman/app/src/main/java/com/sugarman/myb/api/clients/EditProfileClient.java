@@ -34,6 +34,9 @@ public class EditProfileClient extends BaseApiClient {
       if (clientListener.get() != null) {
         if (dataResponse != null) {
           Log.e("Token", "ATLICHNA 2");
+          if(dataResponse.getResult()!=null)
+          SharedPreferenceHelper.setOTPStatus(dataResponse.getUser().getNeedOTP());
+
           ((ApiRefreshUserDataListener) clientListener.get()).onApiRefreshUserDataSuccess(
               dataResponse);
         } else if (errorBody != null) {
@@ -115,7 +118,8 @@ public class EditProfileClient extends BaseApiClient {
     RequestBody nameReq = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), name);
     RequestBody pictureReq =
         RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), pictureUrl);
-    RequestBody vkReq = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), SharedPreferenceHelper.getVkToken());
+    RequestBody vkReq = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
+        SharedPreferenceHelper.getVkToken());
     RequestBody gReq = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), "none");
 
     Call<UsersResponse> call = App.getApiInstance()

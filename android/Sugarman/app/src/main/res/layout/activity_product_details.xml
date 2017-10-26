@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.sugarman.myb.ui.activities.ProductDetailsActivity"
+    tools:context="com.sugarman.myb.ui.activities.productDetail.ProductDetailsActivity"
     >
 
   <LinearLayout
@@ -16,11 +16,11 @@
       android:layout_marginTop="0dp"
       android:orientation="vertical"
       app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintHorizontal_bias="0.5"
+      app:layout_constraintHorizontal_bias="0.0"
       app:layout_constraintLeft_toLeftOf="parent"
       app:layout_constraintRight_toRightOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintVertical_bias="0.5"
+      app:layout_constraintVertical_bias="0.0"
       >
     <RelativeLayout
         android:layout_width="match_parent"
@@ -123,27 +123,19 @@
         android:textColor="#ff0000"
         android:textSize="22sp"
         />
-    <android.support.v7.widget.CardView
+    <com.mzelzoghbi.zgallery.CustomViewPager
+        android:id="@+id/viewPagerImages"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="7dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="7dp"
-        android:layout_weight="1"
-        android:background="#ccc"
-        app:cardCornerRadius="9dp"
-        app:cardElevation="5dp"
-        >
-      <ImageView
-          android:id="@+id/product_image"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:adjustViewBounds="true"
-          android:scaleType="centerCrop"
-          android:src="@drawable/shop_hat"
-          />
-    </android.support.v7.widget.CardView>
+        android:layout_height="360dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="3dp"
+        android:clipToPadding="false"
+        android:paddingEnd="30dp"
+        android:paddingStart="30dp"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -166,6 +158,7 @@
           android:gravity="center"
           android:text="@string/coming_soon"
           android:textColor="@color/white"
+          android:visibility="gone"
           android:textSize="19sp"
           />
       <View

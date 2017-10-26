@@ -44,6 +44,7 @@ import com.sugarman.myb.ui.activities.MyStatsActivity;
 import com.sugarman.myb.ui.activities.RequestsActivity;
 import com.sugarman.myb.ui.activities.SettingsActivity;
 import com.sugarman.myb.ui.activities.base.BaseActivity;
+import com.sugarman.myb.ui.activities.editProfile.EditProfileActivity;
 import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.ui.views.MaskTransformation;
@@ -167,8 +168,7 @@ public class ProfileActivity extends BaseActivity implements View.OnTouchListene
         //canvas.drawLine(50, height / 2, width - 50, height / 2, p);
         p.setColor(0xffFA2928);
         int drawto = ((width - 100) / 21) * days;
-        if(days>0)
-        canvas.drawLine(50, height / 2, drawto, height / 2, p);
+        if (days > 0) canvas.drawLine(50, height / 2, drawto, height / 2, p);
 
         loadingStrip.setImageBitmap(bmp);
       }

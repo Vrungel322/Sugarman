@@ -11,6 +11,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:orientation="vertical"
+      android:id="@+id/linearLayout"
       >
     <RelativeLayout
         android:layout_width="match_parent"
@@ -146,7 +147,7 @@
         android:id="@+id/resend_code"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Resend Code"
+        android:text="@string/resend_code"
         android:textColor="@color/red"
         android:textSize="22sp"
         android:gravity="center"
@@ -161,6 +162,14 @@
         android:layout_marginBottom="10dp"
         android:background="@color/gray"/>
   </LinearLayout>
+  <TextView
+      android:id="@+id/tvChangePhone"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/linearLayout"
+      android:layout_centerHorizontal="true"
+      android:text="@string/changePhone"
+      />
 
 
 </RelativeLayout>

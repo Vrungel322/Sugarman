@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 import com.sugarman.myb.api.ApiRx;
 import com.sugarman.myb.api.RestApi;
 import com.sugarman.myb.data.DataManager;
-import com.sugarman.myb.data.local.DbHelper;
+import com.sugarman.myb.data.db.DbHelper;
 import com.sugarman.myb.data.local.PreferencesHelper;
 import com.sugarman.myb.di.scopes.AppScope;
 import dagger.Module;

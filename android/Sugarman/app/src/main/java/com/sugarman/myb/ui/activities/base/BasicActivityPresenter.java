@@ -21,14 +21,14 @@ import rx.Subscription;
     App.getAppComponent().inject(this);
   }
 
-  public void refreshToken(String fbAccessToken, String vkToken) {
+  public void refreshToken(String fbAccessToken, String vkToken, String phoneNumber) {
     RefreshUserDataRequest request = new RefreshUserDataRequest();
     request.setToken(fbAccessToken);
     request.setVkToken(vkToken);
     request.setgToken("none");
-    request.setPhoneToken("none");
-    request.setPhoneNumber("none");
-    request.setEmail("none");
+    request.setPhoneToken(phoneNumber);
+    request.setPhoneNumber(phoneNumber);
+    request.setEmail("none@mail.com");
     request.setName("none");
     request.setVkId("none");
     request.setFbId("none");

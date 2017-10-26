@@ -24,11 +24,15 @@ import com.sugarman.myb.eventbus.events.RefreshTrackingsEvent;
 import com.sugarman.myb.eventbus.events.ReportStepsEvent;
 import com.sugarman.myb.eventbus.events.UpdateInvitesEvent;
 import com.sugarman.myb.eventbus.events.UpdateRequestsEvent;
+import com.sugarman.myb.ui.activities.MainActivity;
 import com.sugarman.myb.ui.activities.SplashActivity;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.StringHelper;
 import java.util.Map;
 import java.util.Set;
+import org.json.JSONException;
+import org.json.JSONObject;
+import timber.log.Timber;
 
 public class FcmListenerService extends FirebaseMessagingService {
 
@@ -49,6 +53,13 @@ public class FcmListenerService extends FirebaseMessagingService {
     Map data = message.getData();
     String text = (String) data.get(Constants.FCM_MESSAGE);
     String notification = (String) data.get(Constants.FCM_NOTIFICATION);
+    String url = "";
+    try {
+      JSONObject notificationJSON = new JSONObject(notification);
+      url = notificationJSON.getString("url");
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
 
     Set keys = data.keySet();
     for (Object key : keys) {
@@ -61,12 +72,37 @@ public class FcmListenerService extends FirebaseMessagingService {
           App.getEventBus().post(new ReportStepsEvent());
           break;
         case Constants.FCM_MESSAGE:
-          processMessage(text, notification);
+          Timber.e("Got in message");
+          Timber.e("url " + url);
+          if (url != null) {
+
+            processURL(url, text);
+          } else {
+            processMessage(text, notification);
+          }
+
           break;
         default:
           break;
       }
     }
+  }
+
+  private void processURL(String url, String message) {
+    Timber.e("Process URL " + url + " " + message);
+
+    Intent intent = new Intent(this, MainActivity.class);
+
+    intent.putExtra(Constants.INTENT_OPEN_ACTIVITY, Constants.OPEN_EXTERNAL_URL);
+    intent.putExtra(Constants.INTENT_FCM_URL, url);
+
+    Timber.e(intent.getStringExtra(Constants.INTENT_FCM_URL) + " from fcm extra");
+
+    PendingIntent pendingIntent =
+        PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+    sendNotification(message, Constants.FIREBASE_NOTIFICATION_ID, pendingIntent);
+
+    //startActivity(i);
   }
 
   private void sendNotification(String text, int notificationId, PendingIntent pendingIntent) {
@@ -96,6 +132,7 @@ public class FcmListenerService extends FirebaseMessagingService {
     int type = StringHelper.getNotificationMessageType(flags, text);
     Intent intent = new Intent(this, SplashActivity.class);
     String trackingId = getTrackingId(notification);
+    Timber.e("Message" + type);
 
     switch (type) {
       case NotificationMessageType.GROUP_NAME_GOOD_LUCK:

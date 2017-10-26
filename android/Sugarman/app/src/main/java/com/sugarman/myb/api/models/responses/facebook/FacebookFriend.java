@@ -4,9 +4,12 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 import com.google.gson.annotations.SerializedName;
+import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
+import io.realm.annotations.PrimaryKey;
 import java.util.Comparator;
 
-public class FacebookFriend implements Parcelable {
+public class FacebookFriend extends RealmObject implements Parcelable {
 
   public final static int CODE_INVITABLE = 1;
   public final static int CODE_NOT_INVITABLE = 0;
@@ -16,16 +19,40 @@ public class FacebookFriend implements Parcelable {
       return o1.name.compareTo(o2.name);
     }
   };
-  String photoUrl;
-  @SerializedName("id") private String id;
-  @SerializedName("name") private String name;
-  @SerializedName("picture") private FacebookPicture picture;
+  public static final Creator<FacebookFriend> CREATOR = new Creator<FacebookFriend>() {
+    @Override public FacebookFriend createFromParcel(Parcel in) {
+      return new FacebookFriend(in);
+    }
+
+    @Override public FacebookFriend[] newArray(int size) {
+      return new FacebookFriend[size];
+    }
+  };
   //private String socialNetwork = new String("fb");
-   public String socialNetwork;
+  public String socialNetwork;
+  @Ignore String photoUrl;
+  @PrimaryKey @SerializedName("id") private String id;
+  @SerializedName("name") private String name;
+  @Ignore @SerializedName("picture") private FacebookPicture picture;
   private int isInvitable;
   private boolean isSelected;
   private boolean isAdded;
   private boolean isPending;
+
+  public FacebookFriend() {
+  }
+
+  public FacebookFriend(String socialNetwork, String photoUrl, String id, String name,
+      int isInvitable, boolean isSelected, boolean isAdded, boolean isPending) {
+    this.socialNetwork = socialNetwork;
+    this.photoUrl = photoUrl;
+    this.id = id;
+    this.name = name;
+    this.isInvitable = isInvitable;
+    this.isSelected = isSelected;
+    this.isAdded = isAdded;
+    this.isPending = isPending;
+  }
 
   public FacebookFriend(String id, String name, String photoUrl, int isInvitable,
       String socialNetwork) {
@@ -62,16 +89,6 @@ public class FacebookFriend implements Parcelable {
     return 0;
   }
 
-  public static final Creator<FacebookFriend> CREATOR = new Creator<FacebookFriend>() {
-    @Override public FacebookFriend createFromParcel(Parcel in) {
-      return new FacebookFriend(in);
-    }
-
-    @Override public FacebookFriend[] newArray(int size) {
-      return new FacebookFriend[size];
-    }
-  };
-
   public String getPhotoUrl() {
     return photoUrl;
   }
@@ -96,10 +113,6 @@ public class FacebookFriend implements Parcelable {
     this.name = name;
   }
 
-  public void setPicture(FacebookPicture picture) {
-    this.picture = picture;
-  }
-
   public String getSocialNetwork() {
     return socialNetwork;
   }
@@ -116,10 +129,6 @@ public class FacebookFriend implements Parcelable {
     this.isInvitable = isInvitable;
   }
 
-  public void setSelected(boolean selected) {
-    isSelected = selected;
-  }
-
   public boolean isAdded() {
     return isAdded;
   }
@@ -128,26 +137,32 @@ public class FacebookFriend implements Parcelable {
     isAdded = added;
   }
 
-  public void setPending(boolean pending) {
-    isPending = pending;
-  }
-
   public String getPicture() {
     if (picture != null) return picture.getData().getUrl();
+    if(photoUrl!=null)
     return photoUrl;
+    return "https://sugarman-myb.s3.amazonaws.com/Group_New.png";
   }
 
+  public void setPicture(FacebookPicture picture) {
+    this.picture = picture;
+  }
 
   public boolean isSelected() {
     return isSelected;
   }
 
-
+  public void setSelected(boolean selected) {
+    isSelected = selected;
+  }
 
   public boolean isPending() {
     return isPending;
   }
 
+  public void setPending(boolean pending) {
+    isPending = pending;
+  }
 
   @Override public boolean equals(Object o) {
     if (this == o) {

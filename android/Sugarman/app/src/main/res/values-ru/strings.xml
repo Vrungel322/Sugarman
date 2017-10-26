@@ -68,7 +68,7 @@
     <string name="invite_description_flag2">группу</string>
 
     <!-- REQUESTS ACTIVITY -->
-    <string name="approve">Approve</string>
+    <string name="approve">Принять</string>
     <string name="request_description_template">%1$s послал запрос на участие в %2$s.</string>
     <string name="request_description_flag1">послал запрос на участие в</string>
     <string name="request_description_flag2">.</string>
@@ -212,6 +212,14 @@
     <string name="already_installed">Уже установили по Вашей ссылке</string>
 
 
+    <string name="save_changes">Сохранить изменения?</string>
+    <string name="changes_have_been_made">Были сделаны изменения. Вы хотите сохранить или отменить их?</string>
+    <string name="save">Сохранить</string>
+    <string name="discard">Отменить</string>
+
+    <string name="resend_in">Повтор через</string>
+    <string name="seconds">секунд</string>
+    <string name="changePhone">Изменить номер</string>
 
     <!-- LANGUAGE SETTINGS -->
     <array name="pref_language_array">
@@ -263,7 +271,8 @@
     <string name="city">Город</string>
     <string name="country">Страна</string>
     <string name="delivery_information">Информация о доставке</string>
-    <string name="free_for">Бесплатно за %1$s друзей</string>
+    <string name="free_for">Бесплатно за 5 друзей</string>
+    <!--<string name="free_for">Бесплатно за %1$s друзей</string>-->
     <string name="full_name">Полное имя</string>
     <string name="invite_friends_and_get_gift">Пригласите друзей в MYB и получите этот продукт бесплатно за 5 установок</string>
     <string name="phone_holder">Держатель телефона</string>
@@ -493,6 +502,11 @@
         <item>260,ZM</item>
         <item>263,ZW</item>
     </string-array>
+    <string name="the_phone_is_not_valid">Проверьте номер телефона</string>
+  <string name="approve_phone_pls">You need to approve phone number</string>
+    <string name="resend_code">Повторить</string>
+    <string name="wait_for">Resend in</string>
+  <string name="contacts_book">Контакты</string>
 
     <string name="the_phone_is_not_valid">Проверьте номер телефона</string>
   <string name="tap_to_see">Нажми и узнай, что делать дальше</string>

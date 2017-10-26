@@ -65,15 +65,12 @@ public class App extends MultiDexApplication {
     return sAppComponent;
   }
 
-
-
   private final static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
   private static App sInstance;
   private static final Interceptor requestInterceptor = new Interceptor() {
     @Override public Response intercept(Chain chain) throws IOException {
       Request original = chain.request();
       Request request;
-
 
       String token = SharedPreferenceHelper.getAccessToken();
       Log.e("APP", "Token = " + token);
@@ -314,6 +311,7 @@ public class App extends MultiDexApplication {
 
     FacebookSdk.sdkInitialize(this);
     AppEventsLogger.activateApp(this);
+    Realm.init(this);
   }
 
   private synchronized Tracker getDefaultTracker() {

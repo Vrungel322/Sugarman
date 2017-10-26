@@ -55,7 +55,6 @@ public class SplashActivity extends GetUserInfoActivity
   private CompositeSubscription mCompositeSubscription = new CompositeSubscription();
   private boolean done;
 
-
   @Override protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_splash);
     super.onCreate(savedInstanceState);
@@ -180,10 +179,10 @@ public class SplashActivity extends GetUserInfoActivity
   }
 
   @Override public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
-    if (!done){
+    if (!done) {
       Timber.e("onLoadComplete");
       getUserDataWithDelay(Constants.SPLASH_UPDATE_TIMEOUT);
-      done= true;
+      done = true;
     }
   }
 
@@ -220,6 +219,15 @@ public class SplashActivity extends GetUserInfoActivity
         return false;
       }
     }
+  }
+
+  @Override public void onApiGetMyAllUserInfoNeedApproveOTP(String phoneNumber) {
+    Intent intent = new Intent(SplashActivity.this, ApproveOtpActivity.class);
+    intent.putExtra("showSettings", true);
+    intent.putExtra("phone", phoneNumber);
+    intent.putExtra("nameParentActivity", SplashActivity.class.getName());
+    startActivity(intent);
+    finish();
   }
 
   private void openLoginActivity() {

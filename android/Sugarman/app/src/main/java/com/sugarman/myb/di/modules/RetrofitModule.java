@@ -1,15 +1,27 @@
 package com.sugarman.myb.di.modules;
 
+import android.text.TextUtils;
+import android.util.Log;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sugarman.myb.BuildConfig;
 import com.sugarman.myb.constants.Config;
+import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.di.scopes.AppScope;
+import com.sugarman.myb.utils.DeviceHelper;
+import com.sugarman.myb.utils.IgnoreRequestUtils;
+import com.sugarman.myb.utils.SharedPreferenceHelper;
 import dagger.Module;
 import dagger.Provides;
+import java.io.IOException;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
+import javax.inject.Named;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
@@ -43,23 +55,19 @@ import timber.log.Timber;
         .create();
   }
 
-  @Provides @AppScope OkHttpClient provideOkClient(HttpLoggingInterceptor httpLoggingInterceptor
-      /*,
-      Cache cache, @Named("CacheInterceptor") Interceptor cacheInterceptor,
-      @Named("OfflineCacheInterceptor") Interceptor offlineCacheInterceptor*/) {
+  @Provides @AppScope OkHttpClient provideOkClient(HttpLoggingInterceptor httpLoggingInterceptor,
+      @Named("HeaderInterceptor") Interceptor headerInterceptor) {
     return new OkHttpClient.Builder().readTimeout(10, TimeUnit.SECONDS)
+        .addInterceptor(headerInterceptor)
         .addInterceptor(httpLoggingInterceptor)
-        //.addInterceptor(offlineCacheInterceptor)
-        //.addNetworkInterceptor(cacheInterceptor)
-        //.cache(cache)
         .build();
   }
 
   @Provides @AppScope HttpLoggingInterceptor provideHttpLoggingInterceptor() {
     HttpLoggingInterceptor interceptor =
         new HttpLoggingInterceptor(message -> Timber.tag("response").d(message));
-    interceptor.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY
-        : HttpLoggingInterceptor.Level.BODY);
+    interceptor.setLevel(
+        BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.BODY);
     return interceptor;
   }
 
@@ -76,31 +84,32 @@ import timber.log.Timber;
   //  return cache;
   //}
   //
-  //@Provides @AppScope @Named("CacheInterceptor") Interceptor provideCacheInterceptor() {
-  //  return chain -> {
-  //    Request request = chain.request();
-  //    Response response = chain.proceed(chain.request());
-  //
-  //    if (IgnoreRequestUtils.ignoreRequests(request, "GET",
-  //        Constants.Remote.BASE_URL + "api/v1/masters",
-  //        Constants.Remote.BASE_URL + "api/v1/services",
-  //        Constants.Remote.BASE_URL + "api/v1/categories",
-  //        //all below cache to realm
-  //        Constants.Remote.BASE_URL + "api/v1/pages", Constants.Remote.BASE_URL + "api/v1/products",
-  //        Constants.Remote.BASE_URL + "api/v1/galleries",
-  //        Constants.Remote.BASE_URL + "api/v1/users/me/bonuses_history",
-  //        Constants.Remote.BASE_URL + "api/v1/users/me/bonuses",
-  //        Constants.Remote.BASE_URL + "api/v1/texts",
-  //        Constants.Remote.BASE_URL + "api/v1/partners")) {
-  //      CacheControl cacheControl = new CacheControl.Builder().build();
-  //      response = response.newBuilder()
-  //          .removeHeader("Pragma")
-  //          .header("Cache-Control", cacheControl.toString())
-  //          .build();
-  //    }
-  //    return response;
-  //  };
-  //}
+  @Provides @AppScope @Named("HeaderInterceptor") Interceptor provideHeaderInterceptor() {
+    Timber.e("Got into interceptor");
+    okhttp3.Interceptor requestInterceptor = new okhttp3.Interceptor() {
+      @Override public Response intercept(Chain chain) throws IOException {
+        Request original = chain.request();
+        Request request;
+
+        String token = SharedPreferenceHelper.getAccessToken();
+        Log.e("APP", "Token = " + token);
+        Request.Builder requestBuilder = original.newBuilder();
+        // .header("content-type", "application/json");
+
+        if (!TextUtils.isEmpty(token)) {
+          requestBuilder.header(Constants.AUTHORIZATION, Constants.BEARER + token);
+          requestBuilder.header(Constants.TIMEZONE, TimeZone.getDefault().getID());
+          requestBuilder.header(Constants.TIMESTAMP, System.currentTimeMillis() + "");
+          requestBuilder.header(Constants.VERSION, DeviceHelper.getAppVersionName());
+        }
+
+        request = requestBuilder.build();
+
+        return chain.proceed(request);
+      }
+    };
+    return requestInterceptor;
+  }
   //
   //@Provides @AppScope @Named("OfflineCacheInterceptor") Interceptor provideOfflineCacheInterceptor(
   //    Context context) {

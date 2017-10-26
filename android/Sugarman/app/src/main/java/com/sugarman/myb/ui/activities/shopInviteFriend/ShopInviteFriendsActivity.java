@@ -1,6 +1,7 @@
 package com.sugarman.myb.ui.activities.shopInviteFriend;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
@@ -11,6 +12,7 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -26,6 +28,7 @@ import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.OnClick;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.clover_studio.spikachatmodule.utils.Const;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -41,9 +44,10 @@ import com.sugarman.myb.base.BasicActivity;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.constants.DialogConstants;
 import com.sugarman.myb.listeners.OnFBGetFriendsListener;
+import com.sugarman.myb.ui.activities.editProfile.EditProfileActivity;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
-import com.sugarman.myb.ui.dialogs.sendVkInvitation.SendVkInvitationDialog;
 import com.sugarman.myb.ui.views.CropCircleTransformation;
+import com.sugarman.myb.ui.views.CustomFontEditText;
 import com.sugarman.myb.utils.AnalyticsHelper;
 import com.sugarman.myb.utils.DeviceHelper;
 import com.sugarman.myb.utils.IntentExtractorHelper;
@@ -85,6 +89,7 @@ public class ShopInviteFriendsActivity extends BasicActivity
 
     @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
       // nothing
+
     }
 
     @Override public void afterTextChanged(Editable s) {
@@ -94,6 +99,10 @@ public class ShopInviteFriendsActivity extends BasicActivity
   };
   @InjectPresenter ShopInviteFriendsActivityPresenter mPresenter;
   @BindView(R.id.bAddFriends) ImageView bAddFriends;
+  @BindView(R.id.cfetSearchFriends) CustomFontEditText mEditTextSearch;
+  @BindView(R.id.fb_filter) ImageView fbFilter;
+  @BindView(R.id.vk_filter) ImageView vkFilter;
+  @BindView(R.id.ph_filter) ImageView phFilter;
   @BindViews({
       R.id.avatar_invites_1, R.id.avatar_invites_2, R.id.avatar_invites_3, R.id.avatar_invites_4,
       R.id.avatar_invites_5,
@@ -141,10 +150,18 @@ public class ShopInviteFriendsActivity extends BasicActivity
   private CallbackManager fbCallbackManager;
   private GameRequestDialog fbInviteDialog;
   private String trackingId;
+  private List<String> mInviteByFbIds;
+  private ArrayList<FacebookFriend> mIntiteByVk;
+  private ArrayList<FacebookFriend> mIntiteByPh;
+  private List<FacebookFriend> toFilterList = new ArrayList<>();
+  private boolean isVkLoggedIn;
+  private boolean isFbLoggedIn;
+  private String currentFilter = "";
 
   @Override protected void onCreate(Bundle savedStateInstance) {
     setContentView(R.layout.activity_shop_invite_friends);
     super.onCreate(savedStateInstance);
+    bAddFriends.setEnabled(true);
     ConstraintLayout mainLayout = (ConstraintLayout) findViewById(R.id.mainLayout);
 
     //getWindow().setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.background));
@@ -168,13 +185,39 @@ public class ShopInviteFriendsActivity extends BasicActivity
     rcvMembers.setLayoutManager(new LinearLayoutManager(this));
     rcvMembers.setAdapter(membersAdapter);
 
-    rcvMembers.setNestedScrollingEnabled(false);
+    //rcvMembers.setNestedScrollingEnabled(false);
     AnalyticsHelper.reportInvite();
 
     allTexts = getTextViews(mainLayout);
 
     for (TextView v : allTexts)
       v.setTypeface(tfDin);
+
+    //filtering
+    mEditTextSearch.addTextChangedListener(new TextWatcher() {
+      @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+      }
+
+      @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        if (charSequence.length() != 0) {
+          mPresenter.filterFriends(mEditTextSearch.getText().toString(), toFilterList);
+        }
+      }
+
+      @Override public void afterTextChanged(Editable editable) {
+
+      }
+    });
+
+    if (!SharedPreferenceHelper.getFbId().equals("none")) {
+      isFbLoggedIn = true;
+      fbFilter.setAlpha(1.0f);
+    }
+    if (!SharedPreferenceHelper.getVkId().equals("none")) {
+      isVkLoggedIn = true;
+      vkFilter.setAlpha(1.0f);
+    }
   }
 
   @Override protected void onStart() {
@@ -197,6 +240,130 @@ public class ShopInviteFriendsActivity extends BasicActivity
     if (!isFriendsFound) {
       getFacebookFriends();
     }
+  }
+
+  @OnClick(R.id.fb_filter) public void showFbFriends() {
+    //addMembersFromPreviousAdapter();
+    if (isFbLoggedIn) {
+      if (!currentFilter.equals("fb")) {
+        filtered.clear();
+
+        for (FacebookFriend friend : allFriends) {
+          if (friend.getSocialNetwork().equals("fb")) {
+            filtered.add(friend);
+          }
+        }
+
+        Timber.e("showFbFriends");
+        setFilteredFriends(filtered);
+        currentFilter = "fb";
+        phFilter.setAlpha(0.5f);
+        vkFilter.setAlpha(0.5f);
+        fbFilter.setAlpha(1.0f);
+      } else {
+        setFilteredFriends(allFriends);
+        currentFilter = "";
+        phFilter.setAlpha(1.0f);
+        if (isVkLoggedIn) vkFilter.setAlpha(1.0f);
+      }
+    } else {
+      AlertDialog.Builder builder = new AlertDialog.Builder(ShopInviteFriendsActivity.this);
+      builder.setMessage(getResources().getString(R.string.log_in_to_fb))
+          .setTitle(getResources().getString(R.string.not_logged_in));
+      builder.setPositiveButton(R.string.OK, (dialog, id) -> {
+        Intent intent = new Intent(ShopInviteFriendsActivity.this, EditProfileActivity.class);
+        startActivity(intent);
+      });
+      builder.setNegativeButton(R.string.cancel, (dialog, id) -> {
+        // User cancelled the dialog
+      });
+
+      // Create the AlertDialog
+      AlertDialog dialog = builder.create();
+      dialog.show();
+    }
+  }
+
+  @OnClick(R.id.vk_filter) public void showVkFriends() {
+    //addMembersFromPreviousAdapter();
+    if (isVkLoggedIn) {
+      if (!currentFilter.equals("vk")) {
+        filtered.clear();
+
+        for (FacebookFriend friend : allFriends) {
+          if (friend.getSocialNetwork().equals("vk")) {
+            filtered.add(friend);
+          }
+        }
+        Timber.e(String.valueOf(filtered.size()));
+
+        setFilteredFriends(filtered);
+        currentFilter = "vk";
+        fbFilter.setAlpha(0.5f);
+        phFilter.setAlpha(0.5f);
+        vkFilter.setAlpha(1.0f);
+      } else {
+        setFilteredFriends(allFriends);
+        currentFilter = "";
+        if (isFbLoggedIn) fbFilter.setAlpha(1.0f);
+        phFilter.setAlpha(1.0f);
+      }
+    } else {
+      AlertDialog.Builder builder = new AlertDialog.Builder(ShopInviteFriendsActivity.this);
+      builder.setMessage(getResources().getString(R.string.log_in_to_vk))
+          .setTitle(getResources().getString(R.string.not_logged_in));
+      builder.setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
+        public void onClick(DialogInterface dialog, int id) {
+          Intent intent = new Intent(ShopInviteFriendsActivity.this, EditProfileActivity.class);
+          startActivity(intent);
+        }
+      });
+      builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+        public void onClick(DialogInterface dialog, int id) {
+          // User cancelled the dialog
+        }
+      });
+
+      // Create the AlertDialog
+      AlertDialog dialog = builder.create();
+      dialog.show();
+    }
+  }
+
+  @OnClick(R.id.ph_filter) public void showPhFriends() {
+    //addMembersFromPreviousAdapter();
+    Timber.e("allFriends " + allFriends);
+
+    if (!currentFilter.equals("ph")) {
+      filtered.clear();
+
+      for (FacebookFriend friend : allFriends) {
+        if (friend.getSocialNetwork().equals("ph")) {
+          filtered.add(friend);
+        }
+      }
+
+      setFilteredFriends(filtered);
+      if (checkCallingOrSelfPermission(Constants.READ_PHONE_CONTACTS_PERMISSION)
+          != PackageManager.PERMISSION_GRANTED) {
+        ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.READ_CONTACTS },
+            Const.PermissionCode.READ_CONTACTS);
+      }
+      currentFilter = "ph";
+      fbFilter.setAlpha(0.5f);
+      vkFilter.setAlpha(0.5f);
+      phFilter.setAlpha(1.0f);
+    } else {
+      setFilteredFriends(allFriends);
+      currentFilter = "";
+      if (isFbLoggedIn) fbFilter.setAlpha(1.0f);
+      if (isVkLoggedIn) vkFilter.setAlpha(1.0f);
+    }
+    Timber.e("currentFilter " + currentFilter);
+  }
+
+  private void setFilteredFriends(List<FacebookFriend> filtered) {
+    membersAdapter.setFilteredValue(filtered);
   }
 
   @Override
@@ -244,6 +411,7 @@ public class ShopInviteFriendsActivity extends BasicActivity
     allFriends.clear();
     //allFriends.addAll(friends);
     allFriends.addAll(invitable);
+    toFilterList.addAll(invitable);
 
     for (FacebookFriend friend : allFriends) {
       friend.setSocialNetwork("fb");
@@ -281,6 +449,7 @@ public class ShopInviteFriendsActivity extends BasicActivity
   @Override public void onGetFriendInfoSuccess(List<FacebookFriend> convertedFriends) {
     members.addAll(convertedFriends);
     addMembers(members);
+    mInviteByFbIds.clear();
     mPresenter.addFriendsToShopGroup(new ArrayList<>(convertedFriends));
   }
 
@@ -295,6 +464,10 @@ public class ShopInviteFriendsActivity extends BasicActivity
   @Override public void hideLoader() {
     findViewById(R.id.nsv_friends).setVisibility(View.VISIBLE);
     findViewById(R.id.progressBarLayout).setVisibility(View.GONE);
+  }
+
+  @Override public void updateRvFriends(List<FacebookFriend> friends) {
+    membersAdapter.setValuesClearList(friends);
   }
 
   private void tryChooseGroupAvatar() {
@@ -347,30 +520,41 @@ public class ShopInviteFriendsActivity extends BasicActivity
 
   private void sendInvitation() {
 
-    List<String> ids = new ArrayList<>();
-    ArrayList<FacebookFriend> intiteByVk = new ArrayList<>();
+    mInviteByFbIds = new ArrayList<>();
+    mIntiteByVk = new ArrayList<>();
+    mIntiteByPh = new ArrayList<>();
     String id;
     for (FacebookFriend friend : membersAdapter.getSelectedMembers()) {
 
       id = friend.getId();
       if (friend.getSocialNetwork().equals("fb")) {
-        ids.add(id);
+        mInviteByFbIds.add(id);
       }
       if (friend.getSocialNetwork().equals("vk")) {
-        intiteByVk.add(friend);
+        mIntiteByVk.add(friend);
+      }
+      if (friend.getSocialNetwork().equals("ph")) {
+        mIntiteByPh.add(friend);
       }
     }
-    if (!intiteByVk.isEmpty()) {
-      SendVkInvitationDialog.newInstance(intiteByVk)
-          .show(getFragmentManager(), "SendVkInvitationDialog");
+
+    if (!mIntiteByVk.isEmpty()) {
+      Timber.e("Vk here " + mIntiteByPh.size());
+      mPresenter.addFriendsToShopGroup(new ArrayList<>(mIntiteByPh));
+      mIntiteByPh.clear();
     }
 
-    if (!ids.isEmpty()) {
+    if (!mInviteByFbIds.isEmpty()) {
       GameRequestContent content =
           new GameRequestContent.Builder().setMessage(getString(R.string.play_with_me))
-              .setRecipients(ids)
+              .setRecipients(mInviteByFbIds)
               .build();
       fbInviteDialog.show(content);
+    }
+    if (!mIntiteByPh.isEmpty()) {
+      Timber.e("Ph here " + mIntiteByPh.size());
+      mPresenter.addFriendsToShopGroup(new ArrayList<>(mIntiteByPh));
+      mIntiteByPh.clear();
     }
   }
 
@@ -433,6 +617,7 @@ public class ShopInviteFriendsActivity extends BasicActivity
   }
 
   @OnClick(R.id.bAddFriends) public void bAddFriendsClicked() {
+    bAddFriends.setEnabled(false);
     sendInvitation();
   }
 
@@ -441,13 +626,16 @@ public class ShopInviteFriendsActivity extends BasicActivity
   }
 
   @Override public void addPhoneContact(List<FacebookFriend> facebookFriends) {
-    Timber.e(String.valueOf(facebookFriends.size()));
+    allFriends.addAll(facebookFriends);
+    toFilterList.addAll(facebookFriends);
     membersAdapter.addPhoneContacts(facebookFriends);
   }
 
   @Override public void finishShopInviteActivity() {
     bAddFriends.setVisibility(View.GONE);
-    finish();
+    if (mIntiteByPh.isEmpty() && mInviteByFbIds.isEmpty() && mIntiteByVk.isEmpty()) {
+      finish();
+    }
   }
 
   @Override public void hideAddFriendButton() {
@@ -459,7 +647,8 @@ public class ShopInviteFriendsActivity extends BasicActivity
   }
 
   @Override public void addVkFriends(List<FacebookFriend> friends) {
-    Timber.e("addVkFriends");
+    allFriends.addAll(friends);
+    toFilterList.addAll(friends);
     membersAdapter.addVkFriends(friends);
   }
 
@@ -469,7 +658,6 @@ public class ShopInviteFriendsActivity extends BasicActivity
 
   @Override public void loadInviterImgUrls(List<String> imgUrls) {
     for (int i = 0; i < imgUrls.size(); i++) {
-      Timber.e(imgUrls.get(i));
       Picasso.with(this)
           .load(Uri.parse(imgUrls.get(i)))
           .fit()

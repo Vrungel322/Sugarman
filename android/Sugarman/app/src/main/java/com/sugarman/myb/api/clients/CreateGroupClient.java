@@ -8,13 +8,11 @@ import com.sugarman.myb.api.models.responses.me.groups.CreateGroupResponse;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.listeners.ApiBaseListener;
 import com.sugarman.myb.listeners.ApiCreateGroupListener;
-import com.sugarman.myb.utils.CountryCodeHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -116,28 +114,29 @@ public class CreateGroupClient extends BaseApiClient {
       } else {
 
         Timber.e("Phone contact " + friend.getName());
-        if (friend.getId().contains("+")) {
-          phoneNumbers.add(
-              RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getId().replace(" ","")));
-        } else {
-          phoneNumbers.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
-              (CountryCodeHelper.getCountryZipCode() + friend.getId()).replace(" ", "")));
-          Timber.e(CountryCodeHelper.getCountryZipCode() + friend.getId());
-        }
 
-        phoneNames.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
-            "Walker " + new Random().nextInt(9000)));
+        phoneNumbers.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
+            friend.getId().replace(" ", "")));
+        phoneNames.add(
+            RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getName()));
         phonePictures.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
             "https://sugarman-myb.s3.amazonaws.com/Group_New.png"));
-        Timber.e("pictures phone: " + phonePictures.size()+ " names phone: " + phoneNames.size() + " ids phone: " + phoneNumbers.size() );
+        Timber.e("pictures phone: "
+            + phonePictures.size()
+            + " names phone: "
+            + phoneNames.size()
+            + " ids phone: "
+            + phoneNumbers.size());
       }
     }
 
-
+    String vkTokenStr = SharedPreferenceHelper.getVkToken();
+    RequestBody vkToken =
+        RequestBody.create(MediaType.parse(Constants.IMAGE_JPEG_TYPE), vkTokenStr);
 
     Call<CreateGroupResponse> call = App.getApiInstance()
         .createGroup(filePart, name, fbToken, ids, vkids, phoneNumbers, names, vkNames, phoneNames,
-            pictures, vkpictures, phonePictures);
+            pictures, vkpictures, phonePictures, vkToken);
     call.enqueue(mCallback);
   }
 }

@@ -203,8 +203,6 @@
   <string name="pref_language">English</string>
 
 
-
-
   <!-- SHOP ACTIVITY -->
 
   <string name="products_for_true_walkers">Products for true walkers</string>
@@ -213,14 +211,14 @@
 
   <string name="buy_now_for">Buy now for</string>
 
-  <string name="free_for">Free for %1$s friends</string>
+  <string name="free_for">Free for 5 friends</string>
+  <!--<string name="free_for">Free for %1$s friends</string>-->
 
   <string name="sugarman_cap">Sugarman cap</string>
 
   <string name="phone_holder">Phone holder</string>
 
   <string name="sugarman_comics">Sugarman comics</string>
-
 
 
   <string name="purchase_details">Purchase details</string>
@@ -246,9 +244,6 @@
   <string name="already_installed_by_your_link">Already installed by your link</string>
 
 
-
-
-
   <!-- PHONE LOGIN -->
 
   <string name="your_phone_number">Your phone number</string>
@@ -258,7 +253,6 @@
   <string name="we_have_sent_you">We have sent you an SMS with a code\nto the number above</string>
 
   <string name="to_complete">To complete your phone number verification\nplease enter the 5-digit activation code</string>
-
 
 
   <!-- PROFILE SETTINGS ACTIVITY -->
@@ -282,6 +276,14 @@
   <string name="invite_friends_to_the_MYB">Invite friends to the MYB\nand get this product for FREE\nafter 5 installations</string>
   <string name="already_installed">Already installed by your link</string>
 
+  <string name="save_changes">Save changes?</string>
+  <string name="changes_have_been_made">Changes have been made. Do you want to save or discard?</string>
+  <string name="save">Save</string>
+  <string name="discard">Discard</string>
+
+  <string name="resend_in">Resend in</string>
+  <string name="seconds">Seconds</string>
+  <string name="changePhone">Change phone number</string>
 
   <!-- LANGUAGE SETTINGS -->
   <array name="pref_language_array">
@@ -319,9 +321,13 @@
   <string name="empty_field_denied">%1$s can not be empty</string>
   <string name="purchase_request_send">We hope you will enjoy your purchase.</string>
   <string name="choooseCountry">Choose country</string>
+  <string name="resend_code">Resend Code</string>
+  <string name="wait_for">Resend in</string>
+  <string name="approve_phone_pls">You need to approve phone number</string>
+  <string name="contacts_book">Contacts book</string>
 
   <!-- Country Codes -->
-  <string-array name="CountryCodes" >
+  <string-array name="CountryCodes">
     <item>93,AF</item>
     <item>355,AL</item>
     <item>213,DZ</item>

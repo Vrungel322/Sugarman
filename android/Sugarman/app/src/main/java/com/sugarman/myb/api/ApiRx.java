@@ -1,12 +1,20 @@
 package com.sugarman.myb.api;
 
+import com.clover_studio.spikachatmodule.utils.Const;
+import com.sugarman.myb.api.models.requests.CheckPhoneRequest;
+import com.sugarman.myb.api.models.requests.CheckVkRequest;
 import com.sugarman.myb.api.models.requests.PurchaseDataRequest;
 import com.sugarman.myb.api.models.requests.RefreshUserDataRequest;
+import com.sugarman.myb.api.models.responses.CheckPhoneResponse;
+import com.sugarman.myb.api.models.responses.CheckVkResponse;
 import com.sugarman.myb.api.models.responses.CountInvitesResponse;
 import com.sugarman.myb.api.models.responses.InvitersImgUrls;
+import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.levelSystem.TaskEntity;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
+import com.sugarman.myb.constants.Constants;
 import java.util.List;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Response;
 import retrofit2.http.Body;
@@ -25,34 +33,35 @@ public interface ApiRx {
   @POST("v2/users") Observable<UsersResponse> refreshRxUserData(
       @Body RefreshUserDataRequest request);
 
-  @POST("v2/checkouts") Observable<Response<Void>> sendPurchaseData(
+  @POST("v3/checkouts") Observable<Response<Void>> sendPurchaseData(
       @Body PurchaseDataRequest purchaseDataRequest);
 
   //@POST("v2/shop_invite") @FormUrlEncoded Observable<Response<Void>> addFriendsToShopGroup(
   //    @Field("user_id") String userId, @Body List<FacebookFriend> selectedMembers);
 
   @Multipart @POST("v2/shop_invite") Observable<Response<Void>> addFriendsToShopGroup(
-      @Part("user_id") RequestBody userId, @Part("members[][fbid]") List<RequestBody> ids,
+      @Part("user_id") RequestBody userId,
+      @Part("members[][fbid]") List<RequestBody> ids,
       @Part("members[][vkid]") List<RequestBody> vkids,
-      @Part("members[][phonenumber]") List<RequestBody> phoneNumbers,
+      @Part("members[][phone_number]") List<RequestBody> phoneNumbers,
       @Part("members[][name]") List<RequestBody> names,
       @Part("members[][vkname]") List<RequestBody> vknames,
-      @Part("members[][phonename]") List<RequestBody> phoneNames,
+      @Part("members[][phone_name]") List<RequestBody> phoneNames,
       @Part("members[][picture_url]") List<RequestBody> pictures,
       @Part("members[][picture_url_vk]") List<RequestBody> picturesVK,
       @Part("members[][picture_url_phone]") List<RequestBody> picturesPhone);
 
-  @GET("v2/get_inviter_picture") Observable<InvitersImgUrls> loadInvitersImgUrls(
-      @Header("Authorization") String accessToken);
+  @GET("v2/get_inviter_picture") Observable<InvitersImgUrls> loadInvitersImgUrls();
 
-  @GET("v2/count_inviters") Observable<CountInvitesResponse> countInvites(
-      @Header("Authorization") String accessToken);
+  @GET("v2/count_inviters") Observable<CountInvitesResponse> countInvites();
 
   @GET("v3/get_all_tasks")
   Observable<TaskEntity> fetchTasks();
 
   @GET("v3/get_completed_tasks")
-  Observable<List<String>> fetchCompletedTasks(@Header("Authorization") String accessToken);
+      @Part("g_token") RequestBody gToken, @Header("Authorization") String accessToken);
 
+  @POST("/v3/check_phone") Observable<CheckPhoneResponse> checkPhone(@Body CheckPhoneRequest phones);
 
+  @POST("/v3/check_vk") Observable<CheckVkResponse> checkVk(@Body CheckVkRequest vkRequest);
 }

@@ -3,30 +3,30 @@ package com.sugarman.myb.ui.activities.checkout;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.paypal.android.MEP.CheckoutButton;
-import com.paypal.android.MEP.PayPal;
-import com.paypal.android.MEP.PayPalActivity;
-import com.paypal.android.MEP.PayPalInvoiceData;
-import com.paypal.android.MEP.PayPalPayment;
+import com.paypal.android.sdk.payments.PayPalConfiguration;
+import com.paypal.android.sdk.payments.PayPalPayment;
+import com.paypal.android.sdk.payments.PayPalService;
+import com.paypal.android.sdk.payments.PaymentActivity;
+import com.paypal.android.sdk.payments.PaymentConfirmation;
+import com.squareup.picasso.Picasso;
 import com.sugarman.myb.R;
 import com.sugarman.myb.base.BasicActivity;
-import com.sugarman.myb.ui.dialogs.SugarmanDialog;
-import java.math.BigDecimal;
+import com.sugarman.myb.constants.Config;
+import com.sugarman.myb.ui.views.CropCircleTransformation;
 import timber.log.Timber;
 
 
@@ -38,16 +38,18 @@ import timber.log.Timber;
 
 //эта штука нужна чтоб поставить фокус на EditText по нажатию на другую вьюху
 
-public class CheckoutActivity extends BasicActivity implements ICheckoutActivityView, View.OnClickListener {
+public class CheckoutActivity extends BasicActivity
+    implements ICheckoutActivityView, View.OnClickListener {
+  private static final int PAYPAL_REQUEST_CODE = 123;
+  private static PayPalConfiguration config;
   @InjectPresenter CheckoutActivityPresenter presenter;
-
   @BindView(R.id.iv_back) ImageView backButton;
   @BindView(R.id.purchase_details_tv) TextView purchaseDetailsTV;
   @BindView(R.id.buy_now_for_x) TextView buyButton;
   @BindView(R.id.tvTotalPrice) TextView totalPrice;
   int num = 1;
-  int productPrice = 0;
-  int productImageId = 0;
+  String productPrice;
+  String productImageUrl;
   String productName = "";
   @BindView(R.id.etCountryName) EditText etCountryName;
   @BindView(R.id.etCityName) EditText etCityName;
@@ -60,12 +62,16 @@ public class CheckoutActivity extends BasicActivity implements ICheckoutActivity
     setContentView(R.layout.activity_checkout);
     super.onCreate(savedInstanceState);
 
-    showPayPalButton();
+    initPayPal();
+
+    Intent intentPayPal = new Intent(this, PayPalService.class);
+    intentPayPal.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
+    startService(intentPayPal);
 
     Intent intent = getIntent();
     int type = intent.getIntExtra("checkout", -1);
-    productPrice = intent.getIntExtra("productPrice", 0);
-    productImageId = intent.getIntExtra("productImageId", 0);
+    productPrice = intent.getStringExtra("productPrice");
+    productImageUrl = intent.getStringExtra("productImageId");
     productName = intent.getStringExtra("productName");
     Log.e("checkout", "" + type);
 
@@ -112,13 +118,22 @@ public class CheckoutActivity extends BasicActivity implements ICheckoutActivity
         TextView productNametv = (TextView) v1.findViewById(R.id.firstText);
         productNametv.setText(productName);
 
-        productImage.setImageDrawable(getResources().getDrawable(productImageId));
+        Picasso.with(this)
+            .load(Uri.parse(productImageUrl))
+            .fit()
+            .centerCrop()
+            .placeholder(R.drawable.ic_gray_avatar)
+            .error(R.drawable.ic_red_avatar)
+            .transform(new CropCircleTransformation(0x00ffffff, 4))
+            .into(productImage);
+
+        //productImage.setImageDrawable(getResources().getDrawable(productImageId));
 
         ImageView plusButton = (ImageView) v1.findViewById(R.id.plus);
         plusButton.setOnClickListener(view -> {
           num++;
           numberOfItems.setText(Integer.toString(num));
-          totalPrice.setText(num * productPrice + " $");
+          totalPrice.setText(num * Double.parseDouble(productPrice) + " $");
         });
 
         ImageView minusButton = (ImageView) v1.findViewById(R.id.minus);
@@ -126,7 +141,7 @@ public class CheckoutActivity extends BasicActivity implements ICheckoutActivity
           if (num > 1) {
             num--;
             numberOfItems.setText(Integer.toString(num));
-            totalPrice.setText(num * productPrice + " $");
+            totalPrice.setText(num * Double.parseDouble(productPrice) + " $");
           }
         });
         addSeparator(verticalLayout, 1);
@@ -144,7 +159,13 @@ public class CheckoutActivity extends BasicActivity implements ICheckoutActivity
     }
   }
 
+  @Override protected void onDestroy() {
+    stopService(new Intent(this, PayPalService.class));
+    super.onDestroy();
+  }
+
   @OnClick(R.id.buy_now_for_x) public void bBuyClicked() {
+
     if (etCountryName.getText().toString().isEmpty()) {
       etCountryName.setError(String.format(getString(R.string.empty_field_denied), "Country"));
     }
@@ -170,17 +191,33 @@ public class CheckoutActivity extends BasicActivity implements ICheckoutActivity
         && etZipCode.getText().length() > 0
         && etFullName.getText().length() > 0
         && etPhoneNumber.getText().length() > 0) {
-      PayPalPayment newPayment = new
-          PayPalPayment();
-      newPayment.setSubtotal(new BigDecimal(10));
-      newPayment.setCurrencyType("USD");
-      newPayment.setRecipient("my@email.com");
-      newPayment.setMerchantName("My Company");
-      Intent paypalIntent = PayPal.getInstance().checkout(newPayment, this);
-      this.startActivityForResult(paypalIntent, 1);
 
-
+      presenter.sendPurchaseData(etCountryName.getText().toString(),
+          etCityName.getText().toString(), etStreetName.getText().toString(),
+          etZipCode.getText().toString(), etFullName.getText().toString(),
+          etPhoneNumber.getText().toString(),
+          String.valueOf(num * Double.parseDouble(productPrice)), num, productName);
     }
+  }
+
+  private void getMoneyPayPal(String amountPrice) {
+    //Creating a paypalpayment
+    PayPalPayment payment =
+        new PayPalPayment(new java.math.BigDecimal(amountPrice), "USD", "Simplified Coding Fee",
+            PayPalPayment.PAYMENT_INTENT_SALE);
+
+    //Creating Paypal Payment activity intent
+    Intent intent = new Intent(this, PaymentActivity.class);
+
+    //putting the paypal configuration to the intent
+    intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
+
+    //Puting paypal payment to the intent
+    intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
+
+    //Starting the intent activity for result
+    //the request code will be used on the method onActivityResult
+    startActivityForResult(intent, PAYPAL_REQUEST_CODE);
   }
 
   void addSeparator(ViewGroup v, int pos) {
@@ -192,76 +229,54 @@ public class CheckoutActivity extends BasicActivity implements ICheckoutActivity
     v.addView(separator, pos);
   }
 
-
   protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    PayPalActivityResult(requestCode,resultCode, data);
-  }
+    //If the result is from paypal
+    if (requestCode == PAYPAL_REQUEST_CODE) {
 
-  public void PayPalActivityResult(int requestCode, int resultCode, Intent data) {
-    switch (resultCode) {
-      // The payment succeeded
-      case Activity.RESULT_OK:
-        //String payKey = intent.getStringExtra(PayPalActivity.EXTRA_PAY_KEY);
-        String payKey =
-            data.getStringExtra(PayPalActivity.EXTRA_PAY_KEY);
-        Timber.e("Payment Succeed " + payKey);
+      //If the result is OK i.e. user has not canceled the payment
+      if (resultCode == Activity.RESULT_OK) {
+        //Getting the payment confirmation
+        PaymentConfirmation confirm =
+            data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
 
-        presenter.sendPurchaseData(etCountryName.getText().toString(),
-            etCityName.getText().toString(), etStreetName.getText().toString(),
-            etZipCode.getText().toString(), etFullName.getText().toString(),
-            etPhoneNumber.getText().toString(), num*productPrice,num,productName);
+        //if confirmation is not null
+        if (confirm != null) {
+          finish();
 
+          //try {
+          //Getting the payment details
+          //String paymentDetails = confirm.toJSONObject().toString(4);
+          //Timber.e("paymentExample " + paymentDetails);
 
-        break;
-
-      // The payment was canceled
-      case Activity.RESULT_CANCELED:
-        Timber.e("Payment Cancelled");
-        break;
-
-      // The payment failed, get the error from the EXTRA_ERROR_ID and EXTRA_ERROR_MESSAGE
-      case PayPalActivity.RESULT_FAILURE:
-        String errorID =
-            data.getStringExtra(PayPalActivity.EXTRA_ERROR_ID);
-        String errorMessage =
-            data.getStringExtra(PayPalActivity.EXTRA_ERROR_MESSAGE);
-        Timber.e("Payment Failed " + errorMessage);
-        new SugarmanDialog.Builder(CheckoutActivity.this,"PayPal").content(errorMessage).build().show();
-
+          //Starting a new activity for the payment details and also putting the payment details with intent
+          //startActivity(new Intent(this, ConfirmationActivity.class).putExtra("PaymentDetails",
+          //    paymentDetails)
+          //    .putExtra("PaymentAmount", String.valueOf(num * Double.parseDouble(productPrice))));
+          //} catch (JSONException e) {
+          //  Timber.e("paymentExample " + "an extremely unlikely failure occurred: ", e);
+          //}
+        }
+      } else if (resultCode == Activity.RESULT_CANCELED) {
+        Timber.e("paymentExample " + "The user canceled.");
+      } else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID) {
+        Timber.e("paymentExample "
+            + "An invalid Payment or PayPalConfiguration was submitted. Please see the docs.");
+      }
     }
   }
-  private void showPayPalButton() {
-    PayPal ppObj = PayPal.getInstance();
 
-   // CheckoutButton launchPayPalButton =
-   //     ppObj.getCheckoutButton(this, PayPal.BUTTON_278x43,
-   //         CheckoutButton.TEXT_PAY);
-   // RelativeLayout.LayoutParams params = new
-   //     RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-   //     RelativeLayout.LayoutParams.WRAP_CONTENT);
-   // params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-   // params.bottomMargin = 10;
-   // launchPayPalButton.setLayoutParams(params);
-   // launchPayPalButton.setOnClickListener(this);
-   // ((RelativeLayout)findViewById(R.id.rl_buy_buttons)).addView(launchPayPalButton);
+  private void initPayPal() {
+    //For real pay change ENVIRONMENT_SANDBOX and (may be) PAYPAL_CLIENT_ID
+    config = new PayPalConfiguration().environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
+        .clientId(Config.PAYPAL_CLIENT_ID);
   }
 
-  @Override public void finishCheckoutActivity() {
+  @Override public void startPayPalTransaction(String amountPrice) {
+    getMoneyPayPal(amountPrice);
     showToastMessage(getString(R.string.purchase_request_send));
-    finish();
   }
 
   @Override public void onClick(View view) {
-
-    PayPalPayment newPayment = new
-        PayPalPayment();
-    newPayment.setSubtotal(new BigDecimal(num*productPrice));
-    newPayment.setCurrencyType("USD");
-    newPayment.setRecipient("my@email.com");
-    newPayment.setMerchantName("Sugarman");
-    Intent paypalIntent = PayPal.getInstance().checkout(newPayment, this);
-    this.startActivityForResult(paypalIntent, 1);
-
 
   }
 }
