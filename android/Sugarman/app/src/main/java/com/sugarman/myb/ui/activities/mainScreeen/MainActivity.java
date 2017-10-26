@@ -83,10 +83,9 @@ import com.sugarman.myb.ui.activities.FailedActivity;
 import com.sugarman.myb.ui.activities.GetUserInfoActivity;
 import com.sugarman.myb.ui.activities.GroupDetailsActivity;
 import com.sugarman.myb.ui.activities.SearchGroupsActivity;
-import com.sugarman.myb.ui.activities.ShopActivity;
+import com.sugarman.myb.ui.activities.shop.ShopActivity;
 import com.sugarman.myb.ui.activities.StatsTrackingActivity;
 import com.sugarman.myb.ui.activities.createGroup.CreateGroupActivity;
-import com.sugarman.myb.ui.activities.shop.ShopActivity;
 import com.sugarman.myb.ui.activities.profile.ProfileActivity;
 import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
@@ -115,6 +114,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import org.greenrobot.eventbus.Subscribe;
+import timber.log.Timber;
 
 public class MainActivity extends GetUserInfoActivity implements View.OnClickListener,IMainActivityView {
   @InjectPresenter MainActivityPresenter mPresenter;

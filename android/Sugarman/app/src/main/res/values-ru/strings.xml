@@ -507,8 +507,6 @@
     <string name="resend_code">Повторить</string>
     <string name="wait_for">Resend in</string>
   <string name="contacts_book">Контакты</string>
-
-    <string name="the_phone_is_not_valid">Проверьте номер телефона</string>
   <string name="tap_to_see">Нажми и узнай, что делать дальше</string>
 
 </resources>

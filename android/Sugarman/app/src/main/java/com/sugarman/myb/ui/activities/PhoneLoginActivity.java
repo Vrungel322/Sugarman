@@ -70,15 +70,6 @@ public class PhoneLoginActivity extends GetUserInfoActivity implements ApiRefres
     nextButton.setEnabled(true);
   }
 
-  public static boolean isPhoneValid(String phone)
-  {
-    String expression = "^[+][0-9]{10,13}$";
-    Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
-    Matcher matcher = pattern.matcher(phone);
-    return matcher.matches();
-
-  }
-
   @OnClick(R.id.iv_cart) public void toApproveOtp() {
     phoneNumber = etPhoneNumber.getText().toString();
     //SharedPreferenceHelper.savePhoneNumber(phoneNumber);

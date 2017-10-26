@@ -58,8 +58,18 @@ public interface ApiRx {
   @GET("v3/get_all_tasks")
   Observable<TaskEntity> fetchTasks();
 
-  @GET("v3/get_completed_tasks")
+  @Multipart @POST("/v2/editusers") Observable<UsersResponse> editUser(
+      @Part MultipartBody.Part filePart, @Part("userId") RequestBody userId,
+      @Part("fbid") RequestBody fbId, @Part("vkid") RequestBody vkId,
+      @Part("phone_number") RequestBody phoneNumber, @Part("email") RequestBody email,
+      @Part("picture_url") RequestBody pictureUrl, @Part("name") RequestBody name,
+      @Part("token") RequestBody fbToken, @Part("vk_token") RequestBody vkToken,
       @Part("g_token") RequestBody gToken, @Header("Authorization") String accessToken);
+
+  @GET("v3/get_products") Observable<List<ShopProductEntity>> fetchProducts();
+
+  @GET("v3/get_completed_tasks")
+  Observable<List<String>> fetchCompletedTasks(@Header("Authorization") String accessToken);
 
   @POST("/v3/check_phone") Observable<CheckPhoneResponse> checkPhone(@Body CheckPhoneRequest phones);
 

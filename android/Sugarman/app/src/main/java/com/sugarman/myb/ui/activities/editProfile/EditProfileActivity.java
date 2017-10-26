@@ -42,7 +42,7 @@ import com.sugarman.myb.listeners.ApiBaseListener;
 import com.sugarman.myb.listeners.ApiRefreshUserDataListener;
 import com.sugarman.myb.ui.activities.ApproveOtpActivity;
 import com.sugarman.myb.ui.activities.IntroActivity;
-import com.sugarman.myb.ui.activities.MainActivity;
+import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.ui.views.MaskImage;
 import com.sugarman.myb.ui.views.MaskTransformation;

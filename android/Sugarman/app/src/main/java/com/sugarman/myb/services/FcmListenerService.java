@@ -24,7 +24,7 @@ import com.sugarman.myb.eventbus.events.RefreshTrackingsEvent;
 import com.sugarman.myb.eventbus.events.ReportStepsEvent;
 import com.sugarman.myb.eventbus.events.UpdateInvitesEvent;
 import com.sugarman.myb.eventbus.events.UpdateRequestsEvent;
-import com.sugarman.myb.ui.activities.MainActivity;
+import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
 import com.sugarman.myb.ui.activities.SplashActivity;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.StringHelper;
