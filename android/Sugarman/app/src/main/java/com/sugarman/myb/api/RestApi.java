@@ -73,6 +73,7 @@ public class RestApi {
         vkpictures.add(
             RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getPicture()));
       } else {
+        Timber.e("PH FRIEND = " + friend.getName() + " " + friend.getId());
         phoneNumbers.add(
             RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getId()));
         phoneNames.add(
