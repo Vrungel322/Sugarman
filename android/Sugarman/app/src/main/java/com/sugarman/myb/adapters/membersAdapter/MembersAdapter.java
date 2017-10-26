@@ -166,10 +166,10 @@ public class MembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.ViewHold
       }
     }
     if (mSelected.size()>0){
-      //mPresenter.postShowAddFriendBtn();
+      mPresenter.postShowAddFriendBtn();
     }
     else {
-      //mPresenter.postHideAddFriendBtn();
+      mPresenter.postHideAddFriendBtn();
     }
     Timber.e("mraz");
     notifyDataSetChanged();
