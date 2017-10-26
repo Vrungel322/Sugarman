@@ -10,15 +10,15 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import com.arellomobile.mvp.MvpAppCompatFragment;
 import com.sugarman.myb.App;
+import com.sugarman.myb.ui.fragments.BaseChallengeFragment;
 import javax.inject.Inject;
 
 /**
  * Created by John on 27.01.2017.
  */
 
-public abstract class BasicFragment extends MvpAppCompatFragment {
+public abstract class BasicFragment extends BaseChallengeFragment {
 
   private final int mLayoutId;
   @Inject protected Context mContext;

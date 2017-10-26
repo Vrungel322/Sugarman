@@ -14,6 +14,7 @@ import com.sugarman.myb.ui.fragments.BaseFragment;
 import com.sugarman.myb.ui.fragments.NoChallengesFragment;
 import com.sugarman.myb.ui.fragments.StartedChallengeFragment;
 import com.sugarman.myb.ui.fragments.WillStartChallengeFragment;
+import com.sugarman.myb.ui.fragments.mentors_challenge.MentorsChallengeFragment;
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -51,6 +52,14 @@ public class TrackingsPagerAdapter extends FragmentStatePagerAdapter {
           break;
         case NO_CHALLENGES:
           requestedFragment = NoChallengesFragment.newInstance(position);
+          break;
+
+        case MENTORS_CHALLENGE:
+          requestedFragment = MentorsChallengeFragment.newInstance();
+
+          break;
+
+        case MENTORS_CHALLENGE_WILL_START:
           break;
         default:
           Log.e(TAG, "not supported type: " + type);
