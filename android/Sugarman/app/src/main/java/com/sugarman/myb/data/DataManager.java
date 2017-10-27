@@ -123,7 +123,7 @@ public class DataManager {
     for (int i = 0; i < 9; i++) {
       mentorEntities.add(new MentorEntity(String.valueOf(i),
           "https://pi.tedcdn.com/r/pe.tedcdn.com/images/ted/0ef62e4df27b4ba7294de889fdbc33e476a08ec9_254x191.jpg?",
-          "Name " + i, "3", String.valueOf(i), " Description " + i, mentorsSkillses,
+          "Name " + i, 3.5f, String.valueOf(i), " Description " + i, mentorsSkillses,
           membersOfMentorsGroup));
     }
     return Observable.just(mentorEntities);
