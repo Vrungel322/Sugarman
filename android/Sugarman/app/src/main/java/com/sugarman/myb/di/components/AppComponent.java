@@ -11,6 +11,7 @@ import com.sugarman.myb.ui.activities.checkout.CheckoutActivityPresenter;
 import com.sugarman.myb.ui.activities.createGroup.CreateGroupActivityPresenter;
 import com.sugarman.myb.ui.activities.editProfile.EditProfileActivityPresenter;
 import com.sugarman.myb.ui.activities.mainScreeen.MainActivityPresenter;
+import com.sugarman.myb.ui.activities.mentorList.MentorListActivityPresenter;
 import com.sugarman.myb.ui.activities.productDetail.ProductDetailsActivityPresenter;
 import com.sugarman.myb.ui.activities.profile.ProfileActivityPresenter;
 import com.sugarman.myb.ui.activities.shop.ShopActivityPresenter;
@@ -56,4 +57,6 @@ import dagger.Component;
   void inject(MentorsChallengeFragmentPresenter presenter);
 
   void inject(NoMentorsChallengeFragmentPresenter presenter);
+
+  void inject(MentorListActivityPresenter mentorListActivityPresenter);
 }
