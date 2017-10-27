@@ -84,6 +84,7 @@ import com.sugarman.myb.ui.activities.FailedActivity;
 import com.sugarman.myb.ui.activities.GetUserInfoActivity;
 import com.sugarman.myb.ui.activities.GroupDetailsActivity;
 import com.sugarman.myb.ui.activities.SearchGroupsActivity;
+import com.sugarman.myb.ui.activities.mentorList.MentorListActivity;
 import com.sugarman.myb.ui.activities.shop.ShopActivity;
 import com.sugarman.myb.ui.activities.StatsTrackingActivity;
 import com.sugarman.myb.ui.activities.createGroup.CreateGroupActivity;
@@ -1184,6 +1185,12 @@ public class MainActivity extends GetUserInfoActivity implements View.OnClickLis
   public void openCreateGroupActivity() {
     Intent intent = new Intent(this, CreateGroupActivity.class);
     startActivityForResult(intent, Constants.CREATE_GROUP_ACTIVITY_REQUEST_CODE);
+  }
+
+  public void openMentorScreenActivity()
+  {
+    Intent intent = new Intent(this, MentorListActivity.class);
+    startActivity(intent);
   }
 
   public void openGroupDetailsActivity(String trackingId) {

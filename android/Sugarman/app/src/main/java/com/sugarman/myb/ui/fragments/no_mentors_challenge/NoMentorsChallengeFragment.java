@@ -58,7 +58,7 @@ public class NoMentorsChallengeFragment extends BasicFragment
     if (activity != null
         && activity instanceof MainActivity
         && ((MainActivity) activity).isReady()) {
-      ((MainActivity) activity).openCreateGroupActivity();
+      ((MainActivity) activity).openMentorScreenActivity();
     }
   }
 }
