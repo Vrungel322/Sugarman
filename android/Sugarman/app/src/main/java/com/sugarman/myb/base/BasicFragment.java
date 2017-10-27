@@ -15,7 +15,7 @@ import com.sugarman.myb.ui.fragments.BaseChallengeFragment;
 import javax.inject.Inject;
 
 /**
- * Created by John on 27.01.2017.
+ * Created by nikita on 26.10.2017.
  */
 
 public abstract class BasicFragment extends BaseChallengeFragment {

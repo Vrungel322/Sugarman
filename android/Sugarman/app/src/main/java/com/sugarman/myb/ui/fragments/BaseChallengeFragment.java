@@ -2,7 +2,7 @@ package com.sugarman.myb.ui.fragments;
 
 public class BaseChallengeFragment extends BaseFragment {
 
-  int position;
+  public int position;
 
   int totalItems;
 

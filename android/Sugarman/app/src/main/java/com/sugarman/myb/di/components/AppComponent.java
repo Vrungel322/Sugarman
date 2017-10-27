@@ -17,6 +17,7 @@ import com.sugarman.myb.ui.activities.shop.ShopActivityPresenter;
 import com.sugarman.myb.ui.activities.shopInviteFriend.ShopInviteFriendsActivityPresenter;
 import com.sugarman.myb.ui.dialogs.sendVkInvitation.SendVkInvitationDialogPresenter;
 import com.sugarman.myb.ui.fragments.mentors_challenge.MentorsChallengeFragmentPresenter;
+import com.sugarman.myb.ui.fragments.no_mentors_challenge.NoMentorsChallengeFragmentPresenter;
 import dagger.Component;
 
 /**
@@ -53,4 +54,6 @@ import dagger.Component;
   void inject(MainActivityPresenter presenter);
 
   void inject(MentorsChallengeFragmentPresenter presenter);
+
+  void inject(NoMentorsChallengeFragmentPresenter presenter);
 }

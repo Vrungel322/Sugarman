@@ -1,6 +1,614 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="10dp">
 
+  <android.support.v7.widget.CardView
+      android:id="@+id/cv_challenge_container"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_marginLeft="@dimen/challenge_padding"
+      android:layout_marginRight="@dimen/challenge_padding"
+      android:layout_marginTop="@dimen/challenge_margin_top_bottom"
+      app:cardBackgroundColor="@android:color/white"
+      app:cardElevation="@dimen/challenge_elevation"
+      >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+      <LinearLayout
+          android:layout_weight="17"
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_weight="8"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+
+          <ImageView
+              android:id="@+id/group_avatar"
+              android:padding="10dp"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:src="@drawable/ic_gray_avatar"/>
+
+
+          <com.sugarman.myb.ui.views.CustomFontTextView
+              android:id="@+id/tv_avatar_events"
+              android:layout_width="20dp"
+              android:layout_height="20dp"
+              android:background="@drawable/circle_events"
+              android:layout_alignTop="@id/group_avatar"
+              android:layout_alignRight="@id/group_avatar"
+              android:layout_alignEnd="@id/group_avatar"
+              android:layout_marginRight="18dp"
+              android:layout_marginTop="7dp"
+              android:gravity="center"
+              android:textColor="@android:color/white"
+              android:textSize="12sp"
+              android:visibility="gone"
+              app:font="@string/font_roboto_medium"
+              tools:text="12" />
+        </RelativeLayout>
+
+        <!-- maxLines not working on some devices. use deprecated singleLines -->
+        <com.sugarman.myb.ui.views.CustomFontTextView
+            android:id="@+id/tv_group_name"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="14"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:gravity="center"
+            android:textColor="@color/dark_gray"
+            android:textSize="18sp"
+            app:font="@string/font_roboto_regular"
+            tools:text="Little Monkeys" />
+
+        <RelativeLayout
+            android:layout_weight="6"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:background="@drawable/days_frame">
+
+
+          <RelativeLayout
+              android:layout_width="match_parent"
+              android:layout_height="40dp"
+              >
+            <com.sugarman.myb.ui.views.CustomFontTextView
+                android:id="@+id/tv_day"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginBottom="5dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"
+                android:gravity="center"
+                android:textColor="#AFAEAE"
+                android:textSize="16sp"
+                app:font="@string/font_roboto_regular"
+                android:text="@string/day"
+                tools:text="Day 4 of 21" />
+            <com.sugarman.myb.ui.views.CustomFontTextView
+                android:id="@+id/tv_day_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/tv_day"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:textColor="#FF0000"
+                android:textSize="14sp"
+                android:text="of 21"
+                app:font="@string/font_roboto_regular"
+                tools:text="Day 4 of 21" />
+          </RelativeLayout>
+        </RelativeLayout>
+      </LinearLayout>
+      <ImageView
+          android:id="@+id/days_strip"
+          android:layout_width="match_parent"
+          android:layout_height="10px"
+          />
+      <RelativeLayout
+          android:layout_weight="30"
+          android:background="#FAFAFA"
+          android:layout_width="match_parent"
+          android:layout_height="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+          <!--BEST-->
+
+          <LinearLayout
+              android:layout_width="0dp"
+              android:layout_weight="1"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:gravity="center_horizontal">
+            <TextView
+                android:id="@+id/best_name"
+                android:layout_weight="1"
+                android:textColor="#7ECC10"
+                android:maxLines="1"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:textSize="11sp"
+                android:fontFamily="@string/font_roboto_regular"
+                android:text="name"/>
+            <TextView
+                android:id="@+id/best_steps"
+                android:layout_weight="1"
+                android:textColor="#7ECC10"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:textSize="13sp"
+                android:fontFamily="@string/font_roboto_regular"
+                android:text="name"/>
+            <RelativeLayout
+                android:layout_weight="4"
+
+                android:layout_width="match_parent"
+                android:gravity="center_vertical"
+                android:layout_height="0dp">
+              <ImageView
+                  android:id="@+id/iv_best_avatar"
+                  android:layout_width="match_parent"
+                  android:paddingBottom="15dp"
+                  android:layout_height="match_parent"
+                  android:src="@drawable/ic_red_avatar"
+                  android:visibility="visible"
+                  tools:visibility="visible" />
+              <ImageView
+                  android:id="@+id/indicator_best"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:paddingTop="10dp"
+                  android:layout_alignParentBottom="true"
+                  android:layout_centerHorizontal="true"
+                  android:src="@drawable/best"/>
+            </RelativeLayout>
+            <TextView
+                android:layout_weight="1"
+                android:textColor="#959595"
+                android:textSize="10sp"
+                android:fontFamily="@string/font_roboto_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/best"/>
+          </LinearLayout>
+
+          <!--FASTEST-->
+
+          <LinearLayout
+              android:layout_width="0dp"
+              android:layout_weight="1"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:gravity="center_horizontal">
+            <TextView
+                android:id="@+id/fastest_name"
+                android:layout_weight="1"
+                android:textColor="#ffbb00"
+                android:maxLines="1"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:textSize="11sp"
+                android:fontFamily="@string/font_roboto_regular"
+                android:text="name"/>
+            <TextView
+                android:id="@+id/fastest_steps"
+                android:layout_weight="1"
+                android:textColor="#ffbb00"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:textSize="13sp"
+                android:fontFamily="@string/font_roboto_regular"
+                android:text="name"/>
+            <RelativeLayout
+                android:layout_weight="4"
+
+                android:layout_width="match_parent"
+                android:gravity="center_vertical"
+                android:layout_height="0dp">
+              <ImageView
+                  android:id="@+id/iv_fastest_avatar"
+                  android:layout_width="match_parent"
+                  android:paddingBottom="15dp"
+                  android:layout_height="match_parent"
+                  android:src="@drawable/ic_red_avatar"
+                  android:visibility="visible"
+                  tools:visibility="visible" />
+              <ImageView
+                  android:id="@+id/indicator_fastest"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:paddingTop="10dp"
+                  android:layout_alignParentBottom="true"
+                  android:layout_centerHorizontal="true"
+                  android:src="@drawable/fastest"/>
+            </RelativeLayout>
+            <TextView
+                android:layout_weight="1"
+                android:textColor="#959595"
+                android:textSize="9sp"
+                android:fontFamily="@string/font_roboto_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="DAILY SUGARMAN"/>
+          </LinearLayout>
+
+          <!--LAZIEST-->
+
+          <LinearLayout
+              android:layout_width="0dp"
+              android:layout_weight="1"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:gravity="center_horizontal">
+            <TextView
+                android:id="@+id/laziest_name"
+                android:layout_weight="1"
+                android:textColor="#ff0000"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:maxLines="1"
+                android:textSize="11sp"
+                android:fontFamily="@string/font_roboto_regular"
+                android:text="name"/>
+            <TextView
+                android:id="@+id/laziest_steps"
+                android:layout_weight="1"
+                android:textColor="#ff0000"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:textSize="13sp"
+                android:fontFamily="@string/font_roboto_regular"
+                android:text="name"/>
+            <RelativeLayout
+                android:layout_weight="4"
+
+                android:layout_width="match_parent"
+                android:gravity="center_vertical"
+                android:layout_height="0dp">
+              <ImageView
+                  android:id="@+id/iv_laziest_avatar"
+                  android:layout_width="match_parent"
+                  android:paddingBottom="15dp"
+                  android:layout_height="match_parent"
+                  android:src="@drawable/ic_red_avatar"
+                  android:visibility="visible"
+                  tools:visibility="visible" />
+              <ImageView
+                  android:id="@+id/indicator_laziest"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:paddingTop="10dp"
+                  android:layout_alignParentBottom="true"
+                  android:layout_centerHorizontal="true"
+                  android:src="@drawable/laziest"/>
+            </RelativeLayout>
+            <TextView
+                android:layout_weight="1"
+                android:textColor="#959595"
+                android:textSize="10sp"
+                android:fontFamily="@string/font_roboto_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/laziest"/>
+          </LinearLayout>
+
+          <!--ALL HEROES-->
+
+          <LinearLayout
+              android:layout_width="0dp"
+              android:layout_weight="1"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:gravity="center_horizontal">
+            <TextView
+                android:id="@+id/all_name"
+                android:layout_weight="1"
+                android:textColor="#959595"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textSize="11sp"
+                android:fontFamily="@string/font_roboto_regular"
+                android:text="name"/>
+            <TextView
+                android:id="@+id/all_steps"
+                android:layout_weight="1"
+                android:textColor="#959595"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:textSize="13sp"
+                android:fontFamily="@string/font_roboto_regular"
+                android:text="name"/>
+            <RelativeLayout
+                android:layout_weight="4"
+
+                android:layout_width="match_parent"
+                android:gravity="center_vertical"
+                android:layout_height="0dp">
+              <ImageView
+                  android:id="@+id/iv_all_avatar"
+                  android:layout_width="match_parent"
+                  android:paddingBottom="15dp"
+                  android:layout_height="match_parent"
+                  android:src="@color/white"
+                  android:visibility="visible"
+                  tools:visibility="visible" />
+              <ImageView
+                  android:id="@+id/indicator_all"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:paddingTop="10dp"
+                  android:layout_alignParentBottom="true"
+                  android:layout_centerHorizontal="true"
+                  android:src="@drawable/sugars"/>
+              <TextView
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:paddingBottom="15dp"
+                  android:layout_centerInParent="true"
+                  android:textSize="13sp"
+                  android:textColor="#ff0000"
+                  android:text="VIEW"
+                  />
+            </RelativeLayout>
+            <TextView
+                android:layout_weight="1"
+                android:textColor="#959595"
+                android:textSize="10sp"
+                android:fontFamily="@string/font_roboto_regular"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/all_heroes"/>
+          </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+          <ImageView
+              android:id="@+id/iv_broken_avatar_first"
+              android:layout_width="@dimen/challenge_laziest_avatar_size"
+              android:layout_height="@dimen/challenge_laziest_avatar_size"
+              android:contentDescription="@string/content_description"
+              android:scaleType="centerCrop"
+              android:src="@drawable/ic_kicked_user"
+              android:visibility="gone"
+              tools:visibility="visible" />
+
+          <View
+              android:id="@+id/v_divider_broken_first"
+              android:layout_width="0dp"
+              android:layout_height="0dp"
+              android:layout_weight="1" />
+
+          <ImageView
+              android:id="@+id/iv_broken_avatar_second"
+              android:layout_width="@dimen/challenge_laziest_avatar_size"
+              android:layout_height="@dimen/challenge_laziest_avatar_size"
+              android:contentDescription="@string/content_description"
+              android:scaleType="centerCrop"
+              android:src="@drawable/ic_kicked_user"
+              android:visibility="gone"
+              tools:visibility="visible" />
+
+          <View
+              android:id="@+id/v_divider_broken_second"
+              android:layout_width="0dp"
+              android:layout_height="0dp"
+              android:layout_weight="1" />
+
+          <ImageView
+              android:id="@+id/iv_broken_avatar_third"
+              android:layout_width="@dimen/challenge_laziest_avatar_size"
+              android:layout_height="@dimen/challenge_laziest_avatar_size"
+              android:contentDescription="@string/content_description"
+              android:scaleType="centerCrop"
+              android:src="@drawable/ic_kicked_user"
+              android:visibility="gone"
+              tools:visibility="visible" />
+
+          <View
+              android:id="@+id/v_divider_broken_third"
+              android:layout_width="0dp"
+              android:layout_height="0dp"
+              android:layout_weight="1"
+              tools:visibility="gone" />
+
+          <ImageView
+              android:id="@+id/iv_broken_avatar_fourth"
+              android:layout_width="@dimen/challenge_laziest_avatar_size"
+              android:layout_height="@dimen/challenge_laziest_avatar_size"
+              android:contentDescription="@string/content_description"
+              android:scaleType="centerCrop"
+              android:src="@drawable/ic_kicked_user"
+              android:visibility="gone"
+              tools:visibility="gone" />
+
+          <View
+              android:id="@+id/v_divider_broken_fourth"
+              android:layout_width="0dp"
+              android:layout_height="0dp"
+              android:layout_weight="1" />
+        </LinearLayout>
+      </RelativeLayout>
+      <ImageView
+          android:id="@+id/progress_strip"
+          android:layout_width="match_parent"
+          android:layout_height="10px"
+          />
+
+      <LinearLayout
+          android:layout_weight="12"
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:layout_marginTop="@dimen/challenge_laziest_margin"
+          android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/group_steps_today"
+            android:textColor="#95989A"
+            android:textSize="12sp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:fontFamily="@string/font_roboto_light"/>
+        <TextView
+            android:id="@+id/steps_total"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#FF0000"
+            android:textSize="16sp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:fontFamily="@string/font_roboto_regular"/>
+
+      </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_will_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:gravity="center_horizontal"
+        android:paddingTop="10dp"
+        android:orientation="vertical"
+        tools:visibility="gone">
+
+      <!-- maxLines not working on some devices. use deprecated singleLines -->
+      <com.sugarman.myb.ui.views.CustomFontTextView
+          android:id="@+id/tv_will_group_name"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:maxLines="1"
+          android:singleLine="true"
+          android:textColor="@color/dark_gray"
+          android:textSize="@dimen/challenge_will_start_group_name_text_size"
+          app:font="@string/font_roboto_regular"
+          tools:text="Little Monkeys" />
+
+      <com.sugarman.myb.ui.views.CustomFontTextView
+          android:id="@+id/tv_will_members"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="4dp"
+          android:textColor="#95989A"
+          android:textSize="13sp"
+          app:font="@string/font_roboto_light"
+          tools:text="16 members" />
+
+      <LinearLayout
+          android:id="@+id/images"
+          android:layout_weight="1"
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:orientation="horizontal"
+          android:layout_gravity="center"
+          android:gravity="center">
+
+        <ImageView
+            android:id="@+id/image1"
+            android:layout_width="30dp"
+            android:layout_height="30dp"/>
+        <ImageView
+            android:id="@+id/image2"
+            android:layout_width="35dp"
+            android:layout_height="35dp"/>
+        <ImageView
+            android:id="@+id/image3"
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
+
+        <ImageView
+            android:id="@+id/my_picture"
+            android:layout_width="50dp"
+            android:layout_height="50dp"/>
+
+        <ImageView
+            android:id="@+id/image4"
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
+        <ImageView
+            android:id="@+id/image5"
+            android:layout_width="35dp"
+            android:layout_height="35dp"/>
+        <ImageView
+            android:id="@+id/image6"
+            android:layout_width="30dp"
+            android:layout_height="30dp"/>
+      </LinearLayout>
+
+      <RelativeLayout
+          android:id="@+id/time_container"
+          android:layout_marginBottom="15dp"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:gravity="center"
+            android:orientation="vertical">
+          <com.sugarman.myb.ui.views.CustomFontTextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/this_challenge_will_start_in"
+              android:textColor="#FF0000"
+              app:font="@string/font_roboto_light"
+              android:textSize="15sp" />
+
+          <com.sugarman.myb.ui.views.CustomFontTextView
+              android:id="@+id/tv_time"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:textColor="#FF0000"
+              android:textSize="25sp"
+              tools:text="-12:45:59" />
+        </LinearLayout>
+      </RelativeLayout>
+    </LinearLayout>
+  </android.support.v7.widget.CardView>
 </LinearLayout>

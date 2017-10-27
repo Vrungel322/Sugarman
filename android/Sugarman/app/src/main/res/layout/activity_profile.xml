@@ -102,6 +102,7 @@
             android:textColor="#FC0107"
             android:text="LEVEL 0"
             android:textSize="18sp"
+            android:visibility="gone"
             />
 
         <com.sugarman.myb.ui.views.CustomFontTextView
@@ -115,6 +116,7 @@
             android:textColor="#80333333"
             android:text="@string/tap_to_see"
             android:textSize="12sp"
+            android:visibility="gone"
             app:font="@string/font_roboto_light"
             tools:text="Walked 10k for 34 days" />
         <View

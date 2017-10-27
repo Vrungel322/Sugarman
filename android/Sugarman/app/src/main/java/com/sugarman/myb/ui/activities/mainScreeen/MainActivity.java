@@ -76,6 +76,7 @@ import com.sugarman.myb.models.BaseChallengeItem;
 import com.sugarman.myb.models.ChallengeItem;
 import com.sugarman.myb.models.ChallengeWillStartItem;
 import com.sugarman.myb.models.NoChallengeItem;
+import com.sugarman.myb.models.NoMentorsChallengeItem;
 import com.sugarman.myb.services.MasterStepDetectorService;
 import com.sugarman.myb.ui.activities.CongratulationsActivity;
 import com.sugarman.myb.ui.activities.DailyActivity;
@@ -1550,8 +1551,9 @@ public class MainActivity extends GetUserInfoActivity implements View.OnClickLis
       vpTrackings.setPadding(vpTrackingPadding, 0, 0, 0);
     }
     Log.e("MainActivity", "zalooooopa" + converted.size());
+    // TODO: 10/27/17 Random position for noMentorsChallenge
+    converted.add(0,new NoMentorsChallengeItem());
     trackingsAdapter.setItems(converted);
-
     spiChallenges.setMaxIndicatorCircles(5);
     spiChallenges.setViewPager(vpTrackings);
     spiChallenges.requestLayout();
