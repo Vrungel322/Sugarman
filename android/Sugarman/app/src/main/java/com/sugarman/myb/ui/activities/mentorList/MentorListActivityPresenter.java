@@ -17,6 +17,7 @@ import rx.Subscription;
 
   @Override protected void onFirstViewAttach() {
     super.onFirstViewAttach();
+    getViewState().setUpUI();
     fetchMentors();
   }
 

@@ -12,4 +12,6 @@ import java.util.List;
 @StateStrategyType(AddToEndSingleStrategy.class) public interface IMentorListActivityView
     extends MvpView {
   void fillMentorsList(List<MentorEntity> mentorEntities);
+
+  void setUpUI();
 }

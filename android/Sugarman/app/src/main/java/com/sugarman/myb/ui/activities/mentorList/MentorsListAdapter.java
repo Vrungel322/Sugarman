@@ -57,6 +57,10 @@ public class MentorsListAdapter extends RecyclerView.Adapter<MentorsListAdapter.
     return mMentorEntities.size();
   }
 
+  public MentorEntity getItem(int position) {
+    return mMentorEntities.get(position);
+  }
+
   static class MentorViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.iv_avatar) ImageView mImageViewAvatar;
     @BindView(R.id.tv_name) TextView mTextViewName;
