@@ -1,5 +1,6 @@
 package com.sugarman.myb.models.mentor;
 
+import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 /**
@@ -7,14 +8,14 @@ import java.util.List;
  */
 
 public class MentorEntity {
-  private String mentorId;
-  private String mentorImgUrl;
-  private String mentorName;
-  private String mentorRating;
-  private String mentorNumComments;
-  private String mentorDescription;
-  private List<MentorsSkills> mentorSkills;
-  private List<MemberOfMentorsGroup> membersOfMentorsGroup;
+  @SerializedName("id")private String mentorId;
+  @SerializedName("picture_url") private String mentorImgUrl;
+  @SerializedName("name")private String mentorName;
+  @SerializedName("rating")private String mentorRating;
+  @SerializedName("mentor_num_comments") private String mentorNumComments;
+  @SerializedName("description")private String mentorDescription;
+  @SerializedName("skills")private List<MentorsSkills> mentorSkills;
+  @SerializedName("members_statuses")private List<MemberOfMentorsGroup> membersOfMentorsGroup;
 
   public MentorEntity(String mentorId, String mentorImgUrl, String mentorName, String mentorRating,
       String mentorNumComments, String mentorDescription, List<MentorsSkills> mentorSkills,

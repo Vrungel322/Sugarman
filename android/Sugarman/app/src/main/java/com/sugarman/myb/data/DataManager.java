@@ -20,6 +20,7 @@ import com.sugarman.myb.data.db.DbHelper;
 import com.sugarman.myb.data.local.PreferencesHelper;
 import com.sugarman.myb.models.mentor.MemberOfMentorsGroup;
 import com.sugarman.myb.models.mentor.MentorEntity;
+import com.sugarman.myb.models.mentor.MentorStupidAbstraction;
 import com.sugarman.myb.models.mentor.MentorsSkills;
 import com.sugarman.myb.utils.ContactsHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
@@ -104,7 +105,7 @@ public class DataManager {
         Constants.BEARER + SharedPreferenceHelper.getAccessToken());
   }
 
-  public Observable<List<MentorEntity>> fetchMentors() {
+  public Observable<MentorStupidAbstraction> fetchMentors() {
     List<MentorsSkills> mentorsSkillses = new ArrayList<>();
     List<MemberOfMentorsGroup> membersOfMentorsGroup = new ArrayList<>();
     List<MentorEntity> mentorEntities = new ArrayList<>();
@@ -131,7 +132,7 @@ public class DataManager {
           "Name " + i, "2.2", String.valueOf(i), " Description " + i, mentorsSkillses,
           membersOfMentorsGroup));
     }
-    return Observable.just(mentorEntities);
+    return Observable.just(new MentorStupidAbstraction(mentorEntities));
 
     //return mRestApi.fetchMentors();
   }
