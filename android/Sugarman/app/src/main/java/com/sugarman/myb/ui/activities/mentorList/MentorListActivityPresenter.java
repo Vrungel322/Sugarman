@@ -26,7 +26,7 @@ import rx.Subscription;
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(mentorEntities -> {
           getViewState().fillMentorsList(mentorEntities);
-        });
+        },Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 }
