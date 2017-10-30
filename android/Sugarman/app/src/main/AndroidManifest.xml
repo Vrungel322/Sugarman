@@ -232,6 +232,8 @@
     <activity android:name=".ui.activities.checkout.test_paypal.ConfirmationActivity"/>
     <activity android:name=".ui.activities.mentorList.MentorListActivity">
     </activity>
+    <activity android:name=".ui.activities.mentorDetail.MentorDetailActivity">
+    </activity>
   </application>
 
 </manifest>
