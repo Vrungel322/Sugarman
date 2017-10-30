@@ -10,7 +10,6 @@ import com.sugarman.myb.constants.Config;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.di.scopes.AppScope;
 import com.sugarman.myb.utils.DeviceHelper;
-import com.sugarman.myb.utils.IgnoreRequestUtils;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import dagger.Module;
 import dagger.Provides;
@@ -101,6 +100,7 @@ import timber.log.Timber;
           requestBuilder.header(Constants.TIMEZONE, TimeZone.getDefault().getID());
           requestBuilder.header(Constants.TIMESTAMP, System.currentTimeMillis() + "");
           requestBuilder.header(Constants.VERSION, DeviceHelper.getAppVersionName());
+          requestBuilder.header(Constants.IMEI, SharedPreferenceHelper.getIMEI());
         }
 
         request = requestBuilder.build();

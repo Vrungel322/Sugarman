@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,6 +17,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -84,11 +86,11 @@ import com.sugarman.myb.ui.activities.FailedActivity;
 import com.sugarman.myb.ui.activities.GetUserInfoActivity;
 import com.sugarman.myb.ui.activities.GroupDetailsActivity;
 import com.sugarman.myb.ui.activities.SearchGroupsActivity;
-import com.sugarman.myb.ui.activities.mentorList.MentorListActivity;
-import com.sugarman.myb.ui.activities.shop.ShopActivity;
 import com.sugarman.myb.ui.activities.StatsTrackingActivity;
 import com.sugarman.myb.ui.activities.createGroup.CreateGroupActivity;
+import com.sugarman.myb.ui.activities.mentorList.MentorListActivity;
 import com.sugarman.myb.ui.activities.profile.ProfileActivity;
+import com.sugarman.myb.ui.activities.shop.ShopActivity;
 import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.ui.fragments.BaseFragment;
@@ -118,9 +120,9 @@ import java.util.Set;
 import org.greenrobot.eventbus.Subscribe;
 import timber.log.Timber;
 
-public class MainActivity extends GetUserInfoActivity implements View.OnClickListener,IMainActivityView {
-  @InjectPresenter MainActivityPresenter mPresenter;
-
+public class MainActivity extends GetUserInfoActivity
+    implements View.OnClickListener, IMainActivityView {
+  private static final int REQUEST_READ_PHONE_STATE = 322;
   private static final String TAG = MainActivity.class.getName();
   private final List<Notification> myNotifications = new ArrayList<>(0);
   private final List<Invite> myInvites = new ArrayList<>(0);
@@ -168,6 +170,7 @@ public class MainActivity extends GetUserInfoActivity implements View.OnClickLis
           showUpdateOldVersionDialog();
         }
       };
+  @InjectPresenter MainActivityPresenter mPresenter;
   float angle;
   ImageToDraw img;
   Bitmap bmp;
@@ -442,8 +445,18 @@ public class MainActivity extends GetUserInfoActivity implements View.OnClickLis
     super.onCreate(savedInstanceState);
     Resources resources = getResources();
 
+    ////Get IMEI
+    //int permissionCheck =
+    //    ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
+    //if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+    //  ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.READ_PHONE_STATE },
+    //      REQUEST_READ_PHONE_STATE);
+    //} else {
+    //  saveIMEI();
+    //}
 
-    ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.READ_CONTACTS, Manifest.permission.CAMERA}, 1);
+    ActivityCompat.requestPermissions(this,
+        new String[] { Manifest.permission.READ_CONTACTS, Manifest.permission.CAMERA,Manifest.permission.READ_PHONE_STATE  }, 1);
     //ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, 2);
     //ViewTreeObserver vto = loadingStrip.getViewTreeObserver();
     //vto.addOnGlobalLayoutListener (new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -484,9 +497,9 @@ public class MainActivity extends GetUserInfoActivity implements View.OnClickLis
     //SharedPreferenceHelper.setTodayDate(date);
     SharedPreferenceHelper.setTodayDateForShowedSteps(date);
     SharedPreferenceHelper.getTodayDateForShowedSteps();
-    Timber.e("Save Showed Steps get today date " + SharedPreferenceHelper.getStepsForTheDate(SharedPreferenceHelper.getTodayDate()));
-    SharedPreferenceHelper.saveShowedSteps(
-        SharedPreferenceHelper.getStepsForTheDate(date));
+    Timber.e("Save Showed Steps get today date " + SharedPreferenceHelper.getStepsForTheDate(
+        SharedPreferenceHelper.getTodayDate()));
+    SharedPreferenceHelper.saveShowedSteps(SharedPreferenceHelper.getStepsForTheDate(date));
 
     SharedPreferenceHelper.setOnLaunch(true);
 
@@ -655,8 +668,26 @@ public class MainActivity extends GetUserInfoActivity implements View.OnClickLis
 
     mGetMyInvitesClient.getInvites(true);
     mGetMyRequestsClient.getRequests(true);
+  }
 
+  @Override public void onRequestPermissionsResult(int requestCode, String permissions[],
+      int[] grantResults) {
+    switch (requestCode) {
+      case 1:
+        if ((grantResults.length > 0) && (grantResults[2] == PackageManager.PERMISSION_GRANTED)) {
+          saveIMEI();
+        }
+        break;
 
+      default:
+        break;
+    }
+  }
+
+  private void saveIMEI() {
+    TelephonyManager telephonyManager =
+        (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+    SharedPreferenceHelper.setIMEI(telephonyManager.getDeviceId());
   }
 
   private void updateAnimations(int todaySteps) {
@@ -1188,8 +1219,7 @@ public class MainActivity extends GetUserInfoActivity implements View.OnClickLis
     startActivityForResult(intent, Constants.CREATE_GROUP_ACTIVITY_REQUEST_CODE);
   }
 
-  public void openMentorScreenActivity()
-  {
+  public void openMentorScreenActivity() {
     Intent intent = new Intent(this, MentorListActivity.class);
     startActivity(intent);
   }
@@ -1236,9 +1266,8 @@ public class MainActivity extends GetUserInfoActivity implements View.OnClickLis
     startActivityForResult(intent, Constants.OPEN_PROFILE_ACTIVITY_REQUEST_CODE);
   }
 
-  public void openLink(String url)
-  {
-    if(url!=null && !url.equals("") && !url.equals(" ")) {
+  public void openLink(String url) {
+    if (url != null && !url.equals("") && !url.equals(" ")) {
       Timber.e("FCM URL " + url);
       Intent i = new Intent(Intent.ACTION_VIEW);
       i.setData(Uri.parse(url));
@@ -1560,7 +1589,7 @@ public class MainActivity extends GetUserInfoActivity implements View.OnClickLis
     }
     Log.e("MainActivity", "zalooooopa" + converted.size());
     // TODO: 10/27/17 Random position for noMentorsChallenge
-    converted.add(0,new NoMentorsChallengeItem());
+    converted.add(0, new NoMentorsChallengeItem());
     trackingsAdapter.setItems(converted);
     spiChallenges.setMaxIndicatorCircles(5);
     spiChallenges.setViewPager(vpTrackings);
