@@ -100,6 +100,7 @@ public abstract class Constants {
   private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
   public static final String READ_PHONE_CONTACTS_PERMISSION = "android.permission.READ_CONTACTS";
   public static final String INTENT_FCM_URL = "intent_fcm_url";
+  public static final String IMEI = "IMEI";
 
   static {
     ORIENTATIONS.append(Surface.ROTATION_0, 90);

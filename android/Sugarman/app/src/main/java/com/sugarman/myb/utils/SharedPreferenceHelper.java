@@ -521,4 +521,13 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
   public static void setOTPStatus(Boolean otpStatus) {
     putBoolean(SharedPreferenceConstants.OTP_STATUS, otpStatus);
   }
+
+  public static void setIMEI(String deviceId) {
+    putString(SharedPreferenceConstants.IMEI, deviceId);
+  }
+
+  public static String getIMEI() {
+    Timber.e(getString(SharedPreferenceConstants.IMEI,"No IMEI"));
+    return getString(SharedPreferenceConstants.IMEI,"No IMEI");
+  }
 }
