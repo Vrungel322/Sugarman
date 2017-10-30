@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.ImageView;
 import butterknife.BindView;
+import butterknife.OnClick;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.sugarman.myb.R;
 import com.sugarman.myb.base.BasicActivity;
@@ -17,6 +19,7 @@ import timber.log.Timber;
 public class MentorListActivity extends BasicActivity implements IMentorListActivityView {
   @InjectPresenter MentorListActivityPresenter mPresenter;
   @BindView(R.id.rvMentors) RecyclerView mRecyclerViewMentors;
+  @BindView(R.id.iv_back) ImageView ivBack;
   private MentorsListAdapter mMentorsListAdapter;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +37,11 @@ public class MentorListActivity extends BasicActivity implements IMentorListActi
           intent.putExtra(MentorEntity.MENTOR_ENTITY,mMentorsListAdapter.getItem(position));
           startActivity(intent);
         });
+  }
+
+  @OnClick (R.id.iv_back) public void onClickBack()
+  {
+    finish();
   }
 
   @Override public void fillMentorsList(List<MentorEntity> mentorEntities) {
