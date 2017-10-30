@@ -14,7 +14,7 @@ import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.constants.Constants;
-import com.sugarman.myb.models.mentor.MentorStupidAbstraction;
+import com.sugarman.myb.models.mentor.MentorEntity;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import java.io.File;
 import java.util.ArrayList;
@@ -147,7 +147,7 @@ public class RestApi {
     return api.fetchCompletedTasks(accessToken);
   }
 
-  public Observable<MentorStupidAbstraction> fetchMentors() {
+  public Observable<List<MentorEntity>> fetchMentors() {
     return api.fetchMentors();
   }
 }

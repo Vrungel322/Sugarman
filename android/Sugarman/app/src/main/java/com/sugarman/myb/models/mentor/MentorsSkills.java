@@ -1,5 +1,6 @@
 package com.sugarman.myb.models.mentor;
 
+import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 /**
@@ -7,10 +8,10 @@ import java.util.List;
  */
 
 public class MentorsSkills {
-  private String skillTitle;
-  private List<String> skills;
-  private String skillLeftIcon;
-  private String skillRightIcon;
+  @SerializedName("title")private String skillTitle;
+  @SerializedName("skills")private List<String> skills;
+  @SerializedName("skill_left_icon")private String skillLeftIcon;
+  @SerializedName("skill_right_icon")private String skillRightIcon;
 
   public MentorsSkills(String skillTitle, List<String> skills, String skillLeftIcon,
       String skillRightIcon) {

@@ -11,7 +11,7 @@ import com.sugarman.myb.api.models.responses.CountInvitesResponse;
 import com.sugarman.myb.api.models.responses.InvitersImgUrls;
 import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
-import com.sugarman.myb.models.mentor.MentorStupidAbstraction;
+import com.sugarman.myb.models.mentor.MentorEntity;
 import java.util.List;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -72,5 +72,5 @@ public interface ApiRx {
 
   @POST("v3/check_vk") Observable<CheckVkResponse> checkVk(@Body CheckVkRequest vkRequest);
 
-  @GET("get_mentors") Observable<MentorStupidAbstraction> fetchMentors();
+  @GET("get_mentors") Observable<List<MentorEntity>> fetchMentors();
 }
