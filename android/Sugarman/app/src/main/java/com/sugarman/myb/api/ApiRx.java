@@ -39,8 +39,7 @@ public interface ApiRx {
   //    @Field("user_id") String userId, @Body List<FacebookFriend> selectedMembers);
 
   @Multipart @POST("v2/shop_invite") Observable<Response<Void>> addFriendsToShopGroup(
-      @Part("user_id") RequestBody userId,
-      @Part("members[][fbid]") List<RequestBody> ids,
+      @Part("user_id") RequestBody userId, @Part("members[][fbid]") List<RequestBody> ids,
       @Part("members[][vkid]") List<RequestBody> vkids,
       @Part("members[][phone_number]") List<RequestBody> phoneNumbers,
       @Part("members[][name]") List<RequestBody> names,
@@ -54,8 +53,7 @@ public interface ApiRx {
 
   @GET("v2/count_inviters") Observable<CountInvitesResponse> countInvites();
 
-  @GET("v3/get_all_tasks")
-  Observable<TaskEntity> fetchTasks();
+  @GET("v3/get_all_tasks") Observable<TaskEntity> fetchTasks();
 
   @Multipart @POST("/v2/editusers") Observable<UsersResponse> editUser(
       @Part MultipartBody.Part filePart, @Part("userId") RequestBody userId,
@@ -67,13 +65,12 @@ public interface ApiRx {
 
   @GET("v3/get_products") Observable<List<ShopProductEntity>> fetchProducts();
 
-  @GET("v3/get_completed_tasks")
-  Observable<List<String>> fetchCompletedTasks(@Header("Authorization") String accessToken);
+  @GET("v3/get_completed_tasks") Observable<List<String>> fetchCompletedTasks(
+      @Header("Authorization") String accessToken);
 
-  @POST("/v3/check_phone") Observable<CheckPhoneResponse> checkPhone(@Body CheckPhoneRequest phones);
+  @POST("v3/check_phone") Observable<CheckPhoneResponse> checkPhone(@Body CheckPhoneRequest phones);
 
-  @POST("/v3/check_vk") Observable<CheckVkResponse> checkVk(@Body CheckVkRequest vkRequest);
+  @POST("v3/check_vk") Observable<CheckVkResponse> checkVk(@Body CheckVkRequest vkRequest);
 
-  @GET("")
-  Observable<List<MentorEntity>> fetchMentors();
+  @GET("get_mentors") Observable<List<MentorEntity>> fetchMentors();
 }

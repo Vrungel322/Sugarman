@@ -117,7 +117,8 @@ public class DataManager {
 
     for (int i = 0; i < 33; i++) {
       membersOfMentorsGroup.add(new MemberOfMentorsGroup("John" + i,
-          "https://pi.tedcdn.com/r/pe.tedcdn.com/images/ted/0ef62e4df27b4ba7294de889fdbc33e476a08ec9_254x191.jpg?"));
+          "https://pi.tedcdn.com/r/pe.tedcdn.com/images/ted/0ef62e4df27b4ba7294de889fdbc33e476a08ec9_254x191.jpg?",
+          i + ""));
     }
 
     for (int i = 0; i < 9; i++) {
@@ -131,9 +132,9 @@ public class DataManager {
           "Name " + i, "2.2", String.valueOf(i), " Description " + i, mentorsSkillses,
           membersOfMentorsGroup));
     }
-    return Observable.just(mentorEntities);
+    //return Observable.just(mentorEntities);
 
-    //return mRestApi.fetchMentors();
+    return mRestApi.fetchMentors();
   }
 
   ///////////////////////////////////////////////////////////////////////////

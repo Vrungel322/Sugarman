@@ -1,16 +1,19 @@
 package com.sugarman.myb.models.mentor;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 /**
  * Created by nikita on 27.10.2017.
  */
 
-public class MentorsSkills {
-  private String skillTitle;
-  private List<String> skills;
-  private String skillLeftIcon;
-  private String skillRightIcon;
+public class MentorsSkills implements Parcelable {
+  @SerializedName("title")private String skillTitle;
+  @SerializedName("skills")private List<String> skills;
+  @SerializedName("skill_left_icon")private String skillLeftIcon;
+  @SerializedName("skill_right_icon")private String skillRightIcon;
 
   public MentorsSkills(String skillTitle, List<String> skills, String skillLeftIcon,
       String skillRightIcon) {
@@ -19,6 +22,34 @@ public class MentorsSkills {
     this.skillLeftIcon = skillLeftIcon;
     this.skillRightIcon = skillRightIcon;
   }
+
+  protected MentorsSkills(Parcel in) {
+    skillTitle = in.readString();
+    skills = in.createStringArrayList();
+    skillLeftIcon = in.readString();
+    skillRightIcon = in.readString();
+  }
+
+  @Override public void writeToParcel(Parcel dest, int flags) {
+    dest.writeString(skillTitle);
+    dest.writeStringList(skills);
+    dest.writeString(skillLeftIcon);
+    dest.writeString(skillRightIcon);
+  }
+
+  @Override public int describeContents() {
+    return 0;
+  }
+
+  public static final Creator<MentorsSkills> CREATOR = new Creator<MentorsSkills>() {
+    @Override public MentorsSkills createFromParcel(Parcel in) {
+      return new MentorsSkills(in);
+    }
+
+    @Override public MentorsSkills[] newArray(int size) {
+      return new MentorsSkills[size];
+    }
+  };
 
   public String getSkillTitle() {
     return skillTitle;
