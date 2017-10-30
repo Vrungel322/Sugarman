@@ -71,7 +71,7 @@
                     android:id="@+id/btn_fb_share"
                     style="@style/FacebookButton"
                     android:layout_width="@dimen/fb_btn_width"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:layout_centerHorizontal="true"
                     android:theme="@style/FacebookButton" />
 
