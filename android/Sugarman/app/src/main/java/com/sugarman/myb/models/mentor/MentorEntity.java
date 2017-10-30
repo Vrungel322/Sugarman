@@ -10,6 +10,7 @@ import java.util.List;
  */
 
 public class MentorEntity implements Parcelable {
+  public static final String MENTOR_ENTITY = "MENTOR_ENTITY";
   public static final Creator<MentorEntity> CREATOR = new Creator<MentorEntity>() {
     @Override public MentorEntity createFromParcel(Parcel in) {
       return new MentorEntity(in);

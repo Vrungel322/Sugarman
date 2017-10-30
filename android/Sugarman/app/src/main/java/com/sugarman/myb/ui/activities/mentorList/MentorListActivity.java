@@ -1,5 +1,6 @@
 package com.sugarman.myb.ui.activities.mentorList;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +9,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.sugarman.myb.R;
 import com.sugarman.myb.base.BasicActivity;
 import com.sugarman.myb.models.mentor.MentorEntity;
+import com.sugarman.myb.ui.activities.mentorDetail.MentorDetailActivity;
 import com.sugarman.myb.utils.ItemClickSupport;
 import java.util.List;
 import timber.log.Timber;
@@ -28,12 +30,13 @@ public class MentorListActivity extends BasicActivity implements IMentorListActi
     mRecyclerViewMentors.setAdapter(mMentorsListAdapter);
     ItemClickSupport.addTo(mRecyclerViewMentors)
         .setOnItemClickListener((recyclerView, position, v) -> {
-      Timber.e("RV Clicked" + position+ mMentorsListAdapter.getItem(position).getMentorName());
+          Intent intent = new Intent(MentorListActivity.this, MentorDetailActivity.class);
+          intent.putExtra(MentorEntity.MENTOR_ENTITY,mMentorsListAdapter.getItem(position));
+          startActivity(intent);
         });
   }
 
   @Override public void fillMentorsList(List<MentorEntity> mentorEntities) {
-    Timber.e(String.valueOf(mentorEntities.size()));
     mMentorsListAdapter.setMentorEntity(mentorEntities);
   }
 }
