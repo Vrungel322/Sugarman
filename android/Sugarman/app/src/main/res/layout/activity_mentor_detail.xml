@@ -119,6 +119,13 @@
         >
 
     </LinearLayout>
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="50dp"
+        android:src="@drawable/mentor_screen_medal"
+        />
   </LinearLayout>
+
 </ScrollView>
 </android.support.constraint.ConstraintLayout>
