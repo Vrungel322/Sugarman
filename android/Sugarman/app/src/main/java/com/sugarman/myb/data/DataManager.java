@@ -132,9 +132,9 @@ public class DataManager {
           "Name " + i, "2.2", String.valueOf(i), " Description " + i, mentorsSkillses,
           membersOfMentorsGroup));
     }
-    //return Observable.just(mentorEntities);
+    return Observable.just(mentorEntities);
 
-    return mRestApi.fetchMentors();
+    //return mRestApi.fetchMentors();
   }
 
   ///////////////////////////////////////////////////////////////////////////
