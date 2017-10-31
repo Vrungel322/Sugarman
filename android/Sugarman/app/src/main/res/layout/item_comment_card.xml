@@ -21,6 +21,7 @@
       android:orientation="horizontal"
       >
     <ImageView
+        android:id="@+id/ivCommentAuthor"
         android:layout_width="86dp"
         android:layout_height="86dp"
         android:layout_margin="8dp"
@@ -31,23 +32,24 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         >
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:text="zaloopa chmo"
-        android:layout_weight="8"
-        android:textSize="17sp"
-        android:textColor="#000"
-        android:textStyle="bold"
-        />
+      <TextView
+          android:id="@+id/tvAuthorName"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginLeft="16dp"
+          android:layout_marginStart="16dp"
+          android:layout_marginTop="8dp"
+          android:layout_weight="8"
+          android:text="zaloopa chmo"
+          android:textColor="#000"
+          android:textSize="17sp"
+          android:textStyle="bold"
+          />
       <View android:layout_width="match_parent"
           android:layout_height="0dp"
           android:layout_weight="1"/>
       <android.support.v7.widget.AppCompatRatingBar
-          android:id="@+id/appCompatRatingBar"
+          android:id="@+id/acrbAuthorsRating"
           android:layout_weight="8"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -64,11 +66,12 @@
     </LinearLayout>
   </LinearLayout>
   <TextView
+      android:id="@+id/tvCommentText"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_gravity="center"
-      android:gravity="left"
       android:layout_margin="8dp"
+      android:gravity="left"
       android:text="Certified coach guide you through every exercise with timed step-by-step audio, photo, and video instruction. It's just like having a personal trainer in your pocket!"
       />
 </LinearLayout>

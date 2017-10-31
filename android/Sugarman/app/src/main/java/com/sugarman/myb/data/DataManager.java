@@ -20,6 +20,7 @@ import com.sugarman.myb.data.db.DbHelper;
 import com.sugarman.myb.data.local.PreferencesHelper;
 import com.sugarman.myb.models.mentor.MemberOfMentorsGroup;
 import com.sugarman.myb.models.mentor.MentorEntity;
+import com.sugarman.myb.models.mentor.MentorsCommentsEntity;
 import com.sugarman.myb.models.mentor.MentorsSkills;
 import com.sugarman.myb.utils.ContactsHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
@@ -132,9 +133,20 @@ public class DataManager {
           "Name " + i, "2.2", String.valueOf(i), " Description " + i, mentorsSkillses,
           membersOfMentorsGroup));
     }
-    //return Observable.just(mentorEntities);
+    return Observable.just(mentorEntities);
 
-    return mRestApi.fetchMentors();
+    //return mRestApi.fetchMentors();
+  }
+
+  public Observable<List<MentorsCommentsEntity>> fetchComments(String mentorId) {
+    List<MentorsCommentsEntity> mentorsCommentsEntities = new ArrayList<>();
+    for (int i = 0; i < 33; i++) {
+      mentorsCommentsEntities.add(new MentorsCommentsEntity("Name Name " + i,
+          "https://pi.tedcdn.com/r/pe.tedcdn.com/images/ted/0ef62e4df27b4ba7294de889fdbc33e476a08ec9_254x191.jpg?",
+          "3.4", "A lot Of stupid text"));
+    }
+    return Observable.just(mentorsCommentsEntities);
+    //return mRestApi.fetchComments(mentorId);
   }
 
   ///////////////////////////////////////////////////////////////////////////

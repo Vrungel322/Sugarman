@@ -15,6 +15,7 @@ import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.models.mentor.MentorEntity;
+import com.sugarman.myb.models.mentor.MentorsCommentsEntity;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import java.io.File;
 import java.util.ArrayList;
@@ -132,10 +133,11 @@ public class RestApi {
         nameReq, fbToken, vkReq, gReq, accessToken);
   }
 
-  public Observable<CheckPhoneResponse> checkPhone(String accessToken,CheckPhoneRequest phones){
+  public Observable<CheckPhoneResponse> checkPhone(String accessToken, CheckPhoneRequest phones) {
     return api.checkPhone(phones);
   }
-  public Observable<CheckVkResponse> checkVk(String accessToken,CheckVkRequest vkRequest){
+
+  public Observable<CheckVkResponse> checkVk(String accessToken, CheckVkRequest vkRequest) {
     return api.checkVk(vkRequest);
   }
 
@@ -149,5 +151,9 @@ public class RestApi {
 
   public Observable<List<MentorEntity>> fetchMentors() {
     return api.fetchMentors();
+  }
+
+  public Observable<List<MentorsCommentsEntity>> fetchComments(String mentorId) {
+    return api.fetchComments(mentorId);
   }
 }
