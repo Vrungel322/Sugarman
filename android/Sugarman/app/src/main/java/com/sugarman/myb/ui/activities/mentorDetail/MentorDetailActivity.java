@@ -66,9 +66,9 @@ public class MentorDetailActivity extends BasicActivity {
         linearLayoutContainer.addView(v);
       }
     }
-    View v = vi.inflate(R.layout.item_mentor_skill_header, null);
-    ((TextView)(v.findViewById(R.id.tv_skill_name))).setText("Friends in the group");
-    linearLayoutContainer.addView(v);
+    //View v = vi.inflate(R.layout.item_mentor_skill_header, null);
+    //((TextView)(v.findViewById(R.id.tv_skill_name))).setText("Friends in the group");
+    //linearLayoutContainer.addView(v);
   }
 
   @Override protected void onResume() {
