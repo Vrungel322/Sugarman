@@ -14,8 +14,8 @@ import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.constants.Constants;
-import com.sugarman.myb.models.mentor.MentorEntity;
-import com.sugarman.myb.models.mentor.MentorsCommentsEntity;
+import com.sugarman.myb.models.mentor.MentorStupidAbstraction;
+import com.sugarman.myb.models.mentor.MentorsCommentsStupidAbstraction;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import java.io.File;
 import java.util.ArrayList;
@@ -149,11 +149,11 @@ public class RestApi {
     return api.fetchCompletedTasks(accessToken);
   }
 
-  public Observable<List<MentorEntity>> fetchMentors() {
+  public Observable<MentorStupidAbstraction> fetchMentors() {
     return api.fetchMentors();
   }
 
-  public Observable<List<MentorsCommentsEntity>> fetchComments(String mentorId) {
+  public Observable<MentorsCommentsStupidAbstraction> fetchComments(String mentorId) {
     return api.fetchComments(mentorId);
   }
 }

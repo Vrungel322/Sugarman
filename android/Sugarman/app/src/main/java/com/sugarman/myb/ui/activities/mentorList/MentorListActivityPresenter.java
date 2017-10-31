@@ -24,8 +24,8 @@ import rx.Subscription;
   private void fetchMentors() {
     Subscription subscription = mDataManager.fetchMentors()
         .compose(ThreadSchedulers.applySchedulers())
-        .subscribe(mentorEntities -> {
-          getViewState().fillMentorsList(mentorEntities);
+        .subscribe(mentorStupidAbstraction -> {
+          getViewState().fillMentorsList(mentorStupidAbstraction.getMentorEntities());
         },Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }

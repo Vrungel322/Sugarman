@@ -27,8 +27,9 @@ import timber.log.Timber;
   public void fetchComments(String mentorId) {
     Subscription subscription = mDataManager.fetchComments(mentorId)
         .compose(ThreadSchedulers.applySchedulers())
-        .subscribe(mentorsCommentsEntities -> {
-          getViewState().fillCommentsList(mentorsCommentsEntities);
+        .subscribe(mentorsCommentsStupidAbstraction -> {
+          getViewState().fillCommentsList(
+              mentorsCommentsStupidAbstraction.getMMentorsCommentsEntities());
         }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }

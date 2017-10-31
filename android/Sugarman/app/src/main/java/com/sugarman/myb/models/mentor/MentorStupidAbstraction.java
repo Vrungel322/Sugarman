@@ -11,5 +11,5 @@ import lombok.Setter;
  * Created by nikita on 27.10.2017.
  */
 @AllArgsConstructor(access = AccessLevel.PUBLIC) public class MentorStupidAbstraction {
-  @Getter @Setter @SerializedName("response") private List<MentorEntity> mentorEntities;
+  @Getter @Setter @SerializedName("result") private List<MentorEntity> mentorEntities;
 }

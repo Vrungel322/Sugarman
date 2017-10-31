@@ -82,6 +82,7 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
           .into(ivAvatar);
     }
 
+    //Animate avatar
     Animation animation =
         AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_scale_up);
     Animation animation2 =
@@ -90,32 +91,20 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
         AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_scale_up);
 
     new Thread(() -> {
-      runOnUiThread(new Runnable() {
-        @Override public void run() {
-          wave1.startAnimation(animation);
-        }
-      });
+      runOnUiThread(() -> wave1.startAnimation(animation));
 
       try {
         Thread.currentThread().sleep(700);
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
-      runOnUiThread(new Runnable() {
-        @Override public void run() {
-          wave2.startAnimation(animation2);
-        }
-      });
+      runOnUiThread(() -> wave2.startAnimation(animation2));
       try {
         Thread.currentThread().sleep(700);
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
-      runOnUiThread(new Runnable() {
-        @Override public void run() {
-          wave3.startAnimation(animation3);
-        }
-      });
+      runOnUiThread(() -> wave3.startAnimation(animation3));
     }).start();
   }
 

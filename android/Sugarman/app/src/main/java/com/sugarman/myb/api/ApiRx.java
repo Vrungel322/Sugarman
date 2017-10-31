@@ -11,8 +11,8 @@ import com.sugarman.myb.api.models.responses.CountInvitesResponse;
 import com.sugarman.myb.api.models.responses.InvitersImgUrls;
 import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
-import com.sugarman.myb.models.mentor.MentorEntity;
-import com.sugarman.myb.models.mentor.MentorsCommentsEntity;
+import com.sugarman.myb.models.mentor.MentorStupidAbstraction;
+import com.sugarman.myb.models.mentor.MentorsCommentsStupidAbstraction;
 import java.util.List;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -23,6 +23,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
 import rx.Observable;
 
 /**
@@ -73,8 +74,8 @@ public interface ApiRx {
 
   @POST("v3/check_vk") Observable<CheckVkResponse> checkVk(@Body CheckVkRequest vkRequest);
 
-  @GET("get_mentors") Observable<List<MentorEntity>> fetchMentors();
+  @GET("v1/get_mentors") Observable<MentorStupidAbstraction> fetchMentors();
 
-  @GET("")
-  Observable<List<MentorsCommentsEntity>> fetchComments(String mentorId);
+  @GET("/v1/get_comments/{mentorId}")
+  Observable<MentorsCommentsStupidAbstraction> fetchComments(@Path("mentorId") String mentorId);
 }
