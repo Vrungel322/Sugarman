@@ -19,7 +19,7 @@ public class MentorsChallengeFragment extends BasicFragment
   @InjectPresenter NoMentorsChallengeFragmentPresenter mPresenter;
 
   public MentorsChallengeFragment() {
-    super(R.layout.mentors_challenge_fragment);
+    super(R.layout.fragment_mentor_challenge);
   }
 
   public static MentorsChallengeFragment newInstance() {

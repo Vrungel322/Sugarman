@@ -12,7 +12,7 @@
       android:layout_marginLeft="@dimen/challenge_padding"
       android:layout_marginRight="@dimen/challenge_padding"
       android:layout_marginTop="@dimen/challenge_margin_top_bottom"
-      app:cardBackgroundColor="@android:color/white"
+      app:cardBackgroundColor="@color/red"
       app:cardElevation="@dimen/challenge_elevation"
       >
 
@@ -582,6 +582,7 @@
       </LinearLayout>
 
       <RelativeLayout
+          android:visibility="gone"
           android:id="@+id/time_container"
           android:layout_marginBottom="15dp"
           android:layout_width="wrap_content"

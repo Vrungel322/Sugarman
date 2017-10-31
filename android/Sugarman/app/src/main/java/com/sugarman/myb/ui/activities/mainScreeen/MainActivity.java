@@ -77,6 +77,7 @@ import com.sugarman.myb.listeners.ApiSendFirebaseTokenListener;
 import com.sugarman.myb.models.BaseChallengeItem;
 import com.sugarman.myb.models.ChallengeItem;
 import com.sugarman.myb.models.ChallengeWillStartItem;
+import com.sugarman.myb.models.MentorsChallengeItem;
 import com.sugarman.myb.models.NoChallengeItem;
 import com.sugarman.myb.models.NoMentorsChallengeItem;
 import com.sugarman.myb.services.MasterStepDetectorService;
@@ -1590,6 +1591,7 @@ public class MainActivity extends GetUserInfoActivity
     Log.e("MainActivity", "zalooooopa" + converted.size());
     // TODO: 10/27/17 Random position for noMentorsChallenge
     converted.add(0, new NoMentorsChallengeItem());
+    converted.add(0,new MentorsChallengeItem());
     trackingsAdapter.setItems(converted);
     spiChallenges.setMaxIndicatorCircles(5);
     spiChallenges.setViewPager(vpTrackings);
