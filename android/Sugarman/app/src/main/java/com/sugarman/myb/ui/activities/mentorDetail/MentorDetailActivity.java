@@ -20,8 +20,10 @@ import com.squareup.picasso.Picasso;
 import com.sugarman.myb.R;
 import com.sugarman.myb.base.BasicActivity;
 import com.sugarman.myb.models.mentor.MentorEntity;
+import com.sugarman.myb.models.mentor.MentorsCommentsEntity;
 import com.sugarman.myb.models.mentor.MentorsSkills;
 import com.sugarman.myb.ui.views.MaskTransformation;
+import java.util.List;
 
 public class MentorDetailActivity extends BasicActivity implements IMentorDetailActivityView {
 
@@ -35,8 +37,10 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   @BindView(R.id.appCompatRatingBar) RatingBar ratingBar;
   @BindView(R.id.ll_container_layout) LinearLayout linearLayoutContainer;
   @BindView(R.id.rvFriends) RecyclerView mRecyclerViewFriends;
+  @BindView(R.id.rcv_comments) RecyclerView mRecyclerViewComments;
   private MentorEntity mMentorEntity;
   private MentorsFriendAdapter mMentorsFriendAdapter;
+  private MentorsCommentsAdapter mMentorsCommentsAdapter;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_mentor_detail);
@@ -58,6 +62,7 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
         linearLayoutContainer.addView(v);
       }
     }
+    mPresenter.fetchComments(mMentorEntity.getMentorId());
   }
 
   @Override protected void onResume() {
@@ -115,9 +120,21 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   }
 
   @Override public void setUpUI() {
-    mRecyclerViewFriends.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+    //mentors comments
+    mRecyclerViewComments.setLayoutManager(
+        new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+    mMentorsCommentsAdapter = new MentorsCommentsAdapter();
+    mRecyclerViewComments.setAdapter(mMentorsCommentsAdapter);
+
+    //mentors members
+    mRecyclerViewFriends.setLayoutManager(
+        new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
     mMentorsFriendAdapter = new MentorsFriendAdapter();
     mRecyclerViewFriends.setAdapter(mMentorsFriendAdapter);
+  }
+
+  @Override public void fillCommentsList(List<MentorsCommentsEntity> mentorsCommentsEntities) {
+    mMentorsCommentsAdapter.setMentorsCommentsEntities(mentorsCommentsEntities);
   }
 
   @Override public void fillMentorsFriendsList() {

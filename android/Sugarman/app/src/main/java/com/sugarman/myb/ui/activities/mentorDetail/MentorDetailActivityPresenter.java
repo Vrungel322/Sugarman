@@ -3,6 +3,8 @@ package com.sugarman.myb.ui.activities.mentorDetail;
 import com.arellomobile.mvp.InjectViewState;
 import com.sugarman.myb.App;
 import com.sugarman.myb.base.BasicPresenter;
+import com.sugarman.myb.utils.ThreadSchedulers;
+import rx.Subscription;
 import timber.log.Timber;
 
 /**
@@ -20,5 +22,14 @@ import timber.log.Timber;
 
     getViewState().setUpUI();
     getViewState().fillMentorsFriendsList();
+  }
+
+  public void fetchComments(String mentorId) {
+    Subscription subscription = mDataManager.fetchComments(mentorId)
+        .compose(ThreadSchedulers.applySchedulers())
+        .subscribe(mentorsCommentsEntities -> {
+          getViewState().fillCommentsList(mentorsCommentsEntities);
+        }, Throwable::printStackTrace);
+    addToUnsubscription(subscription);
   }
 }
