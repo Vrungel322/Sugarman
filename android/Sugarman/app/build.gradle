@@ -128,7 +128,7 @@ dependencies {
   //realm adaprer
   compile 'io.realm:android-adapters:1.4.0'
 
-  //lombook
+  //lombok
   compile "org.projectlombok:lombok:1.16.18"
   annotationProcessor "org.projectlombok:lombok:1.16.10"
 }
