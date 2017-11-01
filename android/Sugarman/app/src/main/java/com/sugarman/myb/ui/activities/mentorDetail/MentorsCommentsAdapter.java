@@ -6,12 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.squareup.picasso.Picasso;
 import com.sugarman.myb.R;
 import com.sugarman.myb.models.mentor.MentorsCommentsEntity;
+import com.sugarman.myb.ui.views.CropCircleTransformation;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +45,7 @@ public class MentorsCommentsAdapter
         .centerCrop()
         .placeholder(R.drawable.ic_gray_avatar)
         .error(R.drawable.ic_red_avatar)
-        //.transform(new CropCircleTransformation(0xfff, 4))
+        .transform(new CropCircleTransformation(0xff0, 4))
         .into(holder.mImageViewCommentAuthor);
 
     holder.mTextViewAuthotName.setText(mMentorsCommentsEntities.get(position).getAuthorsName());

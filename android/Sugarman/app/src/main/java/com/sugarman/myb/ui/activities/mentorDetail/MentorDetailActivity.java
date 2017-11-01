@@ -38,6 +38,7 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   @BindView(R.id.ll_container_layout) LinearLayout linearLayoutContainer;
   @BindView(R.id.rvFriends) RecyclerView mRecyclerViewFriends;
   @BindView(R.id.rcv_comments) RecyclerView mRecyclerViewComments;
+  @BindView(R.id.llCommentsContainer) LinearLayout mCommentsContainer;
   private MentorEntity mMentorEntity;
   private MentorsFriendAdapter mMentorsFriendAdapter;
   private MentorsCommentsAdapter mMentorsCommentsAdapter;
@@ -123,6 +124,8 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   }
 
   @Override public void fillCommentsList(List<MentorsCommentsEntity> mentorsCommentsEntities) {
+    if(mentorsCommentsEntities.size()>0)
+    mCommentsContainer.setVisibility(View.VISIBLE);
     mMentorsCommentsAdapter.setMentorsCommentsEntities(mentorsCommentsEntities);
   }
 

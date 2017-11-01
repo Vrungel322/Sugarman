@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -10,7 +11,7 @@
     app:cardBackgroundColor="#fff"
     >
 
-<LinearLayout
+<android.support.constraint.ConstraintLayout
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -19,61 +20,82 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:orientation="horizontal"
+      android:id="@+id/linearLayout4"
+      app:layout_constraintTop_toTopOf="parent"
+      android:layout_marginTop="8dp"
+      android:layout_marginLeft="8dp"
+      app:layout_constraintLeft_toLeftOf="parent"
+      android:layout_marginRight="8dp"
+      app:layout_constraintRight_toRightOf="parent"
       >
     <ImageView
         android:id="@+id/ivCommentAuthor"
-        android:layout_width="86dp"
-        android:layout_height="86dp"
-        android:layout_margin="8dp"
+        android:layout_width="78dp"
+        android:layout_height="78dp"
+        android:layout_margin="16dp"
         android:src="@drawable/ic_gray_avatar"
         />
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:orientation="vertical"
         >
       <TextView
           android:id="@+id/tvAuthorName"
-          android:layout_width="match_parent"
+          android:layout_width="0dp"
           android:layout_height="wrap_content"
-          android:layout_marginLeft="16dp"
-          android:layout_marginStart="16dp"
-          android:layout_marginTop="8dp"
-          android:layout_weight="8"
           android:text="zaloopa chmo"
           android:textColor="#000"
           android:textSize="17sp"
           android:textStyle="bold"
+          app:layout_constraintTop_toTopOf="parent"
+          android:layout_marginTop="16dp"
+          android:layout_marginLeft="16dp"
+          app:layout_constraintLeft_toLeftOf="parent"
+          android:layout_marginRight="8dp"
+          app:layout_constraintRight_toRightOf="parent"
+          android:layout_marginStart="16dp"
+          android:layout_marginEnd="8dp"
           />
-      <View android:layout_width="match_parent"
-          android:layout_height="0dp"
-          android:layout_weight="1"/>
+
       <android.support.v7.widget.AppCompatRatingBar
           android:id="@+id/acrbAuthorsRating"
-          android:layout_weight="8"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginEnd="8dp"
-          android:layout_marginLeft="8dp"
-          android:layout_marginRight="8dp"
-          android:layout_marginStart="8dp"
           android:isIndicator="true"
-          android:layout_gravity="center"
+          android:layout_gravity="bottom"
           android:numStars="5"
           android:stepSize="0.5"
           style="?android:attr/ratingBarStyleIndicator"
+          android:layout_marginRight="8dp"
+          android:layout_marginEnd="8dp"
+          app:layout_constraintTop_toBottomOf="@+id/tvAuthorName"
+          app:layout_constraintBottom_toBottomOf="parent"
+          android:layout_marginBottom="8dp"
+          app:layout_constraintLeft_toLeftOf="parent"
+          app:layout_constraintRight_toRightOf="parent"
           />
-    </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
   </LinearLayout>
   <TextView
       android:id="@+id/tvCommentText"
-      android:layout_width="match_parent"
+      android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_gravity="center"
       android:layout_margin="8dp"
       android:gravity="left"
-      android:text="Certified coach guide you through every exercise with timed step-by-step audio, photo, and video instruction. It's just like having a personal trainer in your pocket!"
+      android:maxLines="3"
+      android:text=""
+      android:layout_marginTop="8dp"
+      app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
+      app:layout_constraintBottom_toBottomOf="parent"
+      android:layout_marginBottom="8dp"
+      android:layout_marginLeft="8dp"
+      app:layout_constraintLeft_toLeftOf="parent"
+      app:layout_constraintVertical_bias="0.0"
+      android:layout_marginRight="8dp"
+      app:layout_constraintRight_toRightOf="parent"
       />
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>
 
 </android.support.v7.widget.CardView>
