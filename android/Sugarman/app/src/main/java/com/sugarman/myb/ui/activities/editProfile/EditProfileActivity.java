@@ -131,7 +131,7 @@ public class EditProfileActivity extends BasicActivity
 
     selectedFile = null;
 
-    if (SharedPreferenceHelper.getOTPStatus()) {
+    if (SharedPreferenceHelper.getOTPStatus() && !etPhone.getText().toString().isEmpty()) {
       etPhone.setError(String.format(getString(R.string.approve_phone_pls)));
     }
 
@@ -154,7 +154,6 @@ public class EditProfileActivity extends BasicActivity
           .transform(new MaskTransformation(this, R.drawable.mask, false, 0x00ffffff))
           .into(profileAvatar);
     }
-
 
     LoginManager.getInstance()
         .registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -302,7 +301,7 @@ public class EditProfileActivity extends BasicActivity
         //nextButton.setEnabled(false);
         //showNextActivity();
       } else {
-        if (isPhoneValid(displayNumber)) {
+        if (isPhoneValid(displayNumber)&& !etPhone.getText().toString().isEmpty()) {
           Timber.e("Got in here 2");
           editProfileClient.editUser(displayNumber, displayEmail, displayName,
               SharedPreferenceHelper.getFbId(), SharedPreferenceHelper.getVkId(),
@@ -353,17 +352,14 @@ public class EditProfileActivity extends BasicActivity
             networkCount = networkTotalCount;
 
             //ph
-            if (!etPhone.getText().equals("")
-                && !etPhone.equals(" ")
-                && !etPhone.equals("none")
-                && isPhoneValid(etPhone.getText().toString())
-                && !mBundleUserSettings.getString(PHONE_FROM_SETTINGS)
+            if (!etPhone.getText().equals("") && !etPhone.getText().toString().isEmpty() && !etPhone
+                .equals(" ") && !etPhone.equals("none") && isPhoneValid(
+                etPhone.getText().toString()) && !mBundleUserSettings.getString(PHONE_FROM_SETTINGS)
                 .equals(etPhone.getText().toString())) {
               Intent intent = new Intent(EditProfileActivity.this, ApproveOtpActivity.class);
               intent.putExtra("otp", otp);
               intent.putExtra("showSettings", false);
               intent.putExtra("phone", displayNumber);
-              System.out.println("хуй собачий");
               intent.putExtra("nameParentActivity", EditProfileActivity.class.getName());
               startActivity(intent);
             }
@@ -603,17 +599,14 @@ public class EditProfileActivity extends BasicActivity
   }
 
   @Override public void onApiRefreshUserDataSuccess(UsersResponse response) {
-    if (SharedPreferenceHelper.getOTPStatus()) {
+    if (SharedPreferenceHelper.getOTPStatus()&& !etPhone.getText().toString().isEmpty()) {
       etPhone.setError(String.format(getString(R.string.approve_phone_pls)));
     }
     if (response.getResult() != null) {
       AnalyticsHelper.reportLogin(true);
-      Log.e("ApiRefreshUserData", "Called");
       SharedPreferenceHelper.saveUser(response.getUser());
       otp = response.getResult().getUser().getPhoneOTP();
-      Timber.e("OTP Rewritten");
       showNextActivity();
-      Log.e("Token", "huy" + response.toString());
     } else
 
     {
