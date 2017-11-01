@@ -590,6 +590,7 @@ public class GroupDetailsActivity extends BaseActivity
   private BroadcastReceiverImplementation broadcastReceiverImplementation =
       new BroadcastReceiverImplementation();
   private Uri imageUri;
+  private boolean isMentorGroup;
 
   @Override protected void onCreate(Bundle savedStateInstance) {
     setContentView(R.layout.activity_group_details);
@@ -692,6 +693,7 @@ public class GroupDetailsActivity extends BaseActivity
     vEdit.setOnClickListener(this);
 
     trackingId = IntentExtractorHelper.getTrackingId(getIntent());
+    isMentorGroup = getIntent().getBooleanExtra("isMentorGroup",false);
     showProgressFragment();
 
     pathToSerialize = new File(getFilesDir() + "/" + trackingId);
@@ -847,9 +849,6 @@ public class GroupDetailsActivity extends BaseActivity
   void hideTabsAndSteps() {
 
     tvSteps.setVisibility(View.GONE);
-
-    //tvInfoTab.setVisibility(View.INVISIBLE);
-    //tvChatTab.setVisibility(View.INVISIBLE);
   }
 
   void hideSoftKeyboard(Activity activity) {
@@ -864,19 +863,6 @@ public class GroupDetailsActivity extends BaseActivity
   }
 
   protected void socketFailedDialog() {
-    //this.runOnUiThread(new Runnable() {
-    //    @Override
-    //    public void run() {
-    //        NotifyDialog dialog = NotifyDialog.startInfo(GroupDetailsActivity.this, getString(com.clover_studio.spikachatmodule.R.string.socket_error_title), getString(com.clover_studio.spikachatmodule.R.string.socket_error_connect_failed));
-    //        dialog.setOneButtonListener(new NotifyDialog.OneButtonDialogListener() {
-    //            @Override
-    //            public void onOkClicked(NotifyDialog dialog) {
-    //                dialog.dismiss();
-    //                finish();
-    //            }
-    //        });
-    //    }
-    //});
   }
 
   private void generateTypingString() {

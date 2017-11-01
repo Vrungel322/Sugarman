@@ -1228,6 +1228,7 @@ public class MainActivity extends GetUserInfoActivity
   public void openGroupDetailsActivity(String trackingId, boolean isMentorGroup) {
     Intent intent = new Intent(this, GroupDetailsActivity.class);
     intent.putExtra(Constants.INTENT_TRACKING_ID, trackingId);
+    intent.putExtra("isMentorGroup", isMentorGroup);
     startActivityForResult(intent, Constants.GROUP_DETAILS_ACTIVITY_REQUEST_CODE);
   }
 

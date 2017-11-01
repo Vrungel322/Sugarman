@@ -490,6 +490,7 @@ if (str1.contains(" "))               name1 = str1.substring(0,(message.user.nam
               //  messageTV.setText(text);
             }
             else {
+                // TODO: 11/1/17  
                 messageTV.setText(message.message);
             }
 

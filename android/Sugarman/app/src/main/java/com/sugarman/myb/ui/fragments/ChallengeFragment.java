@@ -516,9 +516,11 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
   @Override public void onClick(View v) {
     int id = v.getId();
     switch (id) {
+      case R.id.cv_mentor_challenge_container:
+        openGroupDetailsActivity(true);
       case R.id.ll_will_container:
       case R.id.cv_challenge_container:
-        openGroupDetailsActivity();
+        openGroupDetailsActivity(false);
         break;
       default:
         Log.d(TAG,
@@ -573,12 +575,12 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
     }
   }
 
-  private void openGroupDetailsActivity() {
+  private void openGroupDetailsActivity(boolean isMentorGroup) {
     Activity activity = getActivity();
     if (activity != null
         && activity instanceof MainActivity
         && ((MainActivity) activity).isReady()) {
-      ((MainActivity) activity).openGroupDetailsActivity(tracking.getId(), false);
+      ((MainActivity) activity).openGroupDetailsActivity(tracking.getId(), isMentorGroup);
     }
   }
 
