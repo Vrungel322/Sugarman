@@ -56,7 +56,7 @@ public class TrackingsPagerAdapter extends FragmentStatePagerAdapter {
           break;
 
         case MENTORS_CHALLENGE:
-          requestedFragment = MentorsChallengeFragment.newInstance();
+          requestedFragment = MentorsChallengeFragment.newInstance((ChallengeItem) item);
 
           break;
 

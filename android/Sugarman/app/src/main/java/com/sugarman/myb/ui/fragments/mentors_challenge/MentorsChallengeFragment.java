@@ -2,15 +2,14 @@ package com.sugarman.myb.ui.fragments.mentors_challenge;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.sugarman.myb.R;
 import com.sugarman.myb.base.BasicFragment;
+import com.sugarman.myb.models.ChallengeItem;
 import com.sugarman.myb.ui.fragments.no_mentors_challenge.NoMentorsChallengeFragmentPresenter;
 
 /**
@@ -19,6 +18,7 @@ import com.sugarman.myb.ui.fragments.no_mentors_challenge.NoMentorsChallengeFrag
 
 public class MentorsChallengeFragment extends BasicFragment
     implements IMentorsChallengeFragmentView {
+  private static final String MENTOR_CHALLENGE = "MENTOR_CHALLENGE";
   @InjectPresenter NoMentorsChallengeFragmentPresenter mPresenter;
 
   @BindView(R.id.group_avatar) ImageView mImageViewGroupAvatar;
@@ -46,21 +46,22 @@ public class MentorsChallengeFragment extends BasicFragment
   @BindView(R.id.iv_broken_avatar_fourth) ImageView mImageViewBrocenAvatarFourth;
   @BindView(R.id.progress_strip) ImageView mImageViewProgressStripe;
   @BindView(R.id.steps_total) TextView mTextViewTotalSteps;
+  private ChallengeItem mChallengeItem;
 
   public MentorsChallengeFragment() {
     super(R.layout.fragment_mentor_challenge);
   }
 
-  public static MentorsChallengeFragment newInstance() {
+  public static MentorsChallengeFragment newInstance(ChallengeItem item) {
     Bundle args = new Bundle();
+    args.putParcelable(MENTOR_CHALLENGE, item);
     MentorsChallengeFragment fragment = new MentorsChallengeFragment();
     fragment.setArguments(args);
     return fragment;
   }
 
-  @Nullable @Override
-  public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
-      @Nullable Bundle savedInstanceState) {
-    return super.onCreateView(inflater, container, savedInstanceState);
+  @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+    mChallengeItem = getArguments().getParcelable(MENTOR_CHALLENGE);
   }
 }
