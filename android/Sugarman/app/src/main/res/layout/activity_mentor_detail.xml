@@ -250,12 +250,36 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+      <ImageView
+          android:layout_width="match_parent"
+          android:layout_height="70dp"
+          android:layout_centerInParent="true"
+          android:src="@drawable/buy_mentor"
+          />
+      <TextView
+          android:id="@+id/tvMentorPrice"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_centerInParent="true"
+          android:textColor="@color/red"
+          android:textSize="18sp"
+          android:textStyle="bold"
+          android:text="Apply now for "
+          />
+    </RelativeLayout>
     <ImageView
         android:layout_width="50dp"
         android:layout_gravity="center_horizontal"
         android:layout_height="50dp"
         android:src="@drawable/mentor_screen_medal"
         />
+
+
+
   </LinearLayout>
 
 </ScrollView>

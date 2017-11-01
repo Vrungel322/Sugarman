@@ -12,12 +12,11 @@
         android:layout_marginLeft="@dimen/challenge_padding"
         android:layout_marginRight="@dimen/challenge_padding"
         android:layout_marginTop="@dimen/challenge_margin_top_bottom"
-        app:cardBackgroundColor="@color/red"
         app:cardElevation="@dimen/challenge_elevation"
         >
 
         <LinearLayout
-
+            android:background="@color/red_transparent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
@@ -81,9 +80,17 @@
 <ImageView
     android:id="@+id/days_strip"
     android:layout_width="match_parent"
+    android:layout_marginLeft="1dp"
+    android:layout_marginStart="1dp"
+    android:layout_marginRight="1dp"
+    android:layout_marginEnd="1dp"
     android:layout_height="10px"
     />
             <RelativeLayout
+                android:layout_marginRight="1dp"
+                android:layout_marginEnd="1dp"
+                android:layout_marginLeft="1dp"
+                android:layout_marginStart="1dp"
                 android:layout_weight="30"
                 android:background="#FAFAFA"
                 android:layout_width="match_parent"
@@ -439,6 +446,10 @@
                 android:background="@color/white"
                 android:id="@+id/progress_strip"
                 android:layout_width="match_parent"
+                android:layout_marginLeft="1dp"
+                android:layout_marginStart="1dp"
+                android:layout_marginRight="1dp"
+                android:layout_marginEnd="1dp"
                 android:layout_height="10px"
                 />
 
@@ -447,6 +458,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:background="@color/white"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:layout_marginStart="1dp"
+                android:layout_marginEnd="1dp"
                 android:orientation="vertical">
 
                 <TextView

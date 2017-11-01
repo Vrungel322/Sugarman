@@ -39,6 +39,7 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   @BindView(R.id.rvFriends) RecyclerView mRecyclerViewFriends;
   @BindView(R.id.rcv_comments) RecyclerView mRecyclerViewComments;
   @BindView(R.id.llCommentsContainer) LinearLayout mCommentsContainer;
+  @BindView(R.id.tvMentorPrice) TextView mentorPrice;
   private MentorEntity mMentorEntity;
   private MentorsFriendAdapter mMentorsFriendAdapter;
   private MentorsCommentsAdapter mMentorsCommentsAdapter;
@@ -49,6 +50,8 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
     mMentorEntity = getIntent().getExtras().getParcelable(MentorEntity.MENTOR_ENTITY);
     ratingBar.setRating(Float.valueOf(mMentorEntity.getMentorRating()));
     mentorName.setText(mMentorEntity.getMentorName());
+    mentorPrice.setText("Apply now for " + "2$");
+
 
     LayoutInflater vi =
         (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);

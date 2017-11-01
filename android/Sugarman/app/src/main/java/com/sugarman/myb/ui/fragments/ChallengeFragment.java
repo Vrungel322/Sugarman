@@ -578,7 +578,7 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
     if (activity != null
         && activity instanceof MainActivity
         && ((MainActivity) activity).isReady()) {
-      ((MainActivity) activity).openGroupDetailsActivity(tracking.getId());
+      ((MainActivity) activity).openGroupDetailsActivity(tracking.getId(), false);
     }
   }
 
