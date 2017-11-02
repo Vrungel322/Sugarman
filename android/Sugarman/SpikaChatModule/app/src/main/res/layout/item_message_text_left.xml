@@ -103,6 +103,7 @@
             android:layout_toRightOf="@id/avatar"
             android:layout_toEndOf="@id/avatar">
             <FrameLayout
+                android:id="@+id/flMessageContainer"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_width="wrap_content"

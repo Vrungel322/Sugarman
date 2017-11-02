@@ -89,6 +89,7 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
   TextView stepsTotal;
 
   ImageView daysStrip, progressStrip;
+  private String groupOwnerId;
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
@@ -383,6 +384,8 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
         .transform(new MaskTransformation(getActivity(), R.drawable.group_avatar, false, 0xfff))
         .into(ivGroupAvatar);
 
+    groupOwnerId = group.getOwner().getId();
+
     getMessages(lastMessageId);
     return root;
   }
@@ -514,11 +517,17 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
   }
 
   @Override public void onClick(View v) {
+    Timber.e("Challenge click");
     int id = v.getId();
     switch (id) {
+      case R.id.cv_mentor_challenge_container:
+        openGroupDetailsActivity(true);
+        Timber.e("Open MENTOR");
+        break;
       case R.id.ll_will_container:
       case R.id.cv_challenge_container:
-        openGroupDetailsActivity();
+        openGroupDetailsActivity(false); // TODO: 11/2/17 set to false
+        Timber.e("Open NOT MENTOR");
         break;
       default:
         Log.d(TAG,
@@ -573,12 +582,12 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
     }
   }
 
-  private void openGroupDetailsActivity() {
+  private void openGroupDetailsActivity(boolean isMentorGroup) {
     Activity activity = getActivity();
     if (activity != null
         && activity instanceof MainActivity
         && ((MainActivity) activity).isReady()) {
-      ((MainActivity) activity).openGroupDetailsActivity(tracking.getId(), false);
+      ((MainActivity) activity).openGroupDetailsActivity(tracking.getId(), isMentorGroup, groupOwnerId);
     }
   }
 

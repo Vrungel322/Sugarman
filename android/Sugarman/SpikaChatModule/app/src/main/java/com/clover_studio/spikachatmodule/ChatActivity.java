@@ -280,7 +280,7 @@ public class ChatActivity extends BaseActivity {
 
         tvTyping.setText(activeUser.userID);
 
-        rvMessages.setAdapter(new MessageRecyclerViewAdapter(new ArrayList<Message>(), activeUser));
+        //rvMessages.setAdapter(new MessageRecyclerViewAdapter(new ArrayList<Message>(), activeUser));
         ((MessageRecyclerViewAdapter) rvMessages.getAdapter()).setLastItemListener(onLastItemAndClickItemListener);
 
         setToolbarTitle(activeUser.roomID);

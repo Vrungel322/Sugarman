@@ -590,6 +590,8 @@ public class GroupDetailsActivity extends BaseActivity
   private BroadcastReceiverImplementation broadcastReceiverImplementation =
       new BroadcastReceiverImplementation();
   private Uri imageUri;
+  private boolean isMentorGroup;
+  private String mentorId;
 
   @Override protected void onCreate(Bundle savedStateInstance) {
     setContentView(R.layout.activity_group_details);
@@ -692,6 +694,13 @@ public class GroupDetailsActivity extends BaseActivity
     vEdit.setOnClickListener(this);
 
     trackingId = IntentExtractorHelper.getTrackingId(getIntent());
+    isMentorGroup = getIntent().getBooleanExtra("isMentorGroup",false);
+    if(isMentorGroup)
+    mentorId = getIntent().getStringExtra("mentorId");
+    else
+      mentorId = "";
+
+    Timber.e("Mentor " + isMentorGroup + " " + mentorId);
     showProgressFragment();
 
     pathToSerialize = new File(getFilesDir() + "/" + trackingId);
@@ -798,7 +807,8 @@ public class GroupDetailsActivity extends BaseActivity
     LocalBroadcastManager.getInstance(this)
         .registerReceiver(broadcastReceiverImplementation, intentFilter);
 
-    rvMessages.setAdapter(new MessageRecyclerViewAdapter(new ArrayList<Message>(), activeUser));
+
+    rvMessages.setAdapter(new MessageRecyclerViewAdapter(new ArrayList<Message>(), activeUser, mentorId));
 
     try {
       FileInputStream fis = openFileInput(pathToSerialize.getName());
@@ -847,9 +857,6 @@ public class GroupDetailsActivity extends BaseActivity
   void hideTabsAndSteps() {
 
     tvSteps.setVisibility(View.GONE);
-
-    //tvInfoTab.setVisibility(View.INVISIBLE);
-    //tvChatTab.setVisibility(View.INVISIBLE);
   }
 
   void hideSoftKeyboard(Activity activity) {
@@ -864,19 +871,6 @@ public class GroupDetailsActivity extends BaseActivity
   }
 
   protected void socketFailedDialog() {
-    //this.runOnUiThread(new Runnable() {
-    //    @Override
-    //    public void run() {
-    //        NotifyDialog dialog = NotifyDialog.startInfo(GroupDetailsActivity.this, getString(com.clover_studio.spikachatmodule.R.string.socket_error_title), getString(com.clover_studio.spikachatmodule.R.string.socket_error_connect_failed));
-    //        dialog.setOneButtonListener(new NotifyDialog.OneButtonDialogListener() {
-    //            @Override
-    //            public void onOkClicked(NotifyDialog dialog) {
-    //                dialog.dismiss();
-    //                finish();
-    //            }
-    //        });
-    //    }
-    //});
   }
 
   private void generateTypingString() {
@@ -1862,6 +1856,7 @@ public class GroupDetailsActivity extends BaseActivity
       groupStepsWithoutMe = tracking.getGroupStepsCountWithoutMe();
       setGroupSteps();
       membersAdapter.setMySteps(todaySteps);
+
 
       groupPictureUrl = group.getPictureUrl();
       if (TextUtils.isEmpty(groupPictureUrl)) {
