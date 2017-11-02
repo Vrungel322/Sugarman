@@ -28,7 +28,7 @@ public class GetMyTrackingsClient extends BaseApiClient {
       if (clientListener.get() != null) {
         if (dataResponse != null) {
           Tracking[] result = dataResponse.getResult();
-          ((ApiGetMyTrackingsListener) clientListener.get()).onApiGetMyTrackingSuccess(result,
+          ((ApiGetMyTrackingsListener) clientListener.get()).onApiGetMyTrackingSuccess(result, dataResponse.getMentorsGroup(),
               isRefreshNotification);
           //MainActivity.onApiTrackingSuccess();
         } else if (errorBody != null) {

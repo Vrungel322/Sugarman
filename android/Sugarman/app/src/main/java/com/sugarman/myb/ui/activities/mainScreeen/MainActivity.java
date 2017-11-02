@@ -76,8 +76,8 @@ import com.sugarman.myb.listeners.ApiMarkNotificationListener;
 import com.sugarman.myb.listeners.ApiSendFirebaseTokenListener;
 import com.sugarman.myb.models.BaseChallengeItem;
 import com.sugarman.myb.models.ChallengeItem;
+import com.sugarman.myb.models.ChallengeMentorItem;
 import com.sugarman.myb.models.ChallengeWillStartItem;
-import com.sugarman.myb.models.MentorsChallengeItem;
 import com.sugarman.myb.models.NoChallengeItem;
 import com.sugarman.myb.models.NoMentorsChallengeItem;
 import com.sugarman.myb.services.MasterStepDetectorService;
@@ -318,11 +318,14 @@ public class MainActivity extends GetUserInfoActivity
       closeProgressFragment();
     }
   };
+  private List<Tracking> mMentorsGroups = new ArrayList<>();
   private final ApiGetMyTrackingsListener apiGetMyTrackingsListener =
       new ApiGetMyTrackingsListener() {
-        @Override public void onApiGetMyTrackingSuccess(Tracking[] trackings,
+        @Override
+        public void onApiGetMyTrackingSuccess(Tracking[] trackings, List<Tracking> mentorsGroup,
             boolean isRefreshNotifications) {
           myTrackings = trackings;
+          mMentorsGroups = mentorsGroup;
           List<BaseChallengeItem> converted = prepareTrackingItems();
 
           updatePagerTrackings();
@@ -456,8 +459,10 @@ public class MainActivity extends GetUserInfoActivity
     //  saveIMEI();
     //}
 
-    ActivityCompat.requestPermissions(this,
-        new String[] { Manifest.permission.READ_CONTACTS, Manifest.permission.CAMERA,Manifest.permission.READ_PHONE_STATE  }, 1);
+    ActivityCompat.requestPermissions(this, new String[] {
+        Manifest.permission.READ_CONTACTS, Manifest.permission.CAMERA,
+        Manifest.permission.READ_PHONE_STATE
+    }, 1);
     //ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, 2);
     //ViewTreeObserver vto = loadingStrip.getViewTreeObserver();
     //vto.addOnGlobalLayoutListener (new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -1400,8 +1405,15 @@ public class MainActivity extends GetUserInfoActivity
       }
     }
 
+    for (Tracking mentorsGroup : mMentorsGroups) {
+      ChallengeMentorItem item = new ChallengeMentorItem();
+      item.setTracking(mentorsGroup);
+      items.add(item);
+    }
+
+
     return items;
-  }
+}
 
   private void updateEventsCount() {
     int countEvents = myInvites.size() + myRequests.size();
@@ -1593,7 +1605,6 @@ public class MainActivity extends GetUserInfoActivity
     Log.e("MainActivity", "zalooooopa" + converted.size());
     // TODO: 10/27/17 Random position for noMentorsChallenge
     converted.add(0, new NoMentorsChallengeItem());
-    converted.add(0,new MentorsChallengeItem());
     trackingsAdapter.setItems(converted);
     spiChallenges.setMaxIndicatorCircles(5);
     spiChallenges.setViewPager(vpTrackings);

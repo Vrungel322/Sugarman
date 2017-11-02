@@ -8,6 +8,7 @@ import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.models.BaseChallengeItem;
 import com.sugarman.myb.models.ChallengeItem;
 import com.sugarman.myb.models.ChallengeItemType;
+import com.sugarman.myb.models.ChallengeMentorItem;
 import com.sugarman.myb.models.ChallengeWillStartItem;
 import com.sugarman.myb.ui.fragments.BaseChallengeFragment;
 import com.sugarman.myb.ui.fragments.BaseFragment;
@@ -56,7 +57,7 @@ public class TrackingsPagerAdapter extends FragmentStatePagerAdapter {
           break;
 
         case MENTORS_CHALLENGE:
-          requestedFragment = MentorsChallengeFragment.newInstance();
+          requestedFragment = MentorsChallengeFragment.newInstance((ChallengeMentorItem) item);
 
           break;
 
