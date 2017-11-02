@@ -1,12 +1,14 @@
 package com.sugarman.myb;
 
 import android.app.Activity;
+import android.content.Context;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Build;
 import android.os.Handler;
 import android.support.multidex.MultiDexApplication;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import com.clover_studio.spikachatmodule.base.SingletonLikeApp;
@@ -67,6 +69,7 @@ public class App extends MultiDexApplication {
 
   private final static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
   private static App sInstance;
+  private static Context context;
   private static final Interceptor requestInterceptor = new Interceptor() {
     @Override public Response intercept(Chain chain) throws IOException {
       Request original = chain.request();
@@ -76,12 +79,16 @@ public class App extends MultiDexApplication {
       Log.e("APP", "Token = " + token);
       Request.Builder requestBuilder = original.newBuilder();
       // .header("content-type", "application/json");
+      TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+      Timber.e("IMEI" + telephonyManager.getDeviceId());
+      SharedPreferenceHelper.setIMEI(telephonyManager.getDeviceId());
 
       if (!TextUtils.isEmpty(token)) {
         requestBuilder.header(Constants.AUTHORIZATION, Constants.BEARER + token);
         requestBuilder.header(Constants.TIMEZONE, TimeZone.getDefault().getID());
         requestBuilder.header(Constants.TIMESTAMP, System.currentTimeMillis() + "");
         requestBuilder.header(Constants.VERSION, DeviceHelper.getAppVersionName());
+        requestBuilder.header(Constants.IMEI, SharedPreferenceHelper.getIMEI());
       }
 
       request = requestBuilder.build();
@@ -270,6 +277,8 @@ public class App extends MultiDexApplication {
 
   @Override public void onCreate() {
     super.onCreate();
+
+    context = getApplicationContext();
 
     sAppComponent = DaggerAppComponent.builder().appModule(new AppModule(this)).build();
     PayPal ppObj = PayPal.initWithAppID(this, "APP-80W284485P519543T", PayPal.ENV_LIVE);

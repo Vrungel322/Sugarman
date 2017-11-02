@@ -22,6 +22,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -161,6 +162,10 @@ public class GroupDetailsActivity extends BaseActivity
   private static final int TAKE_PICTURE = 12;
   private final int DELAY_REFRESH_GROUP_INFO = 5000;
   private final Handler handler = App.getHandlerInstance();
+  private RelativeLayout rlComments;
+  private CardView cvCommentContainer;
+  private TextView tvCancel, tvOk;
+  private ImageView ivMentorAvatar;
   protected boolean doNotHideProgressNow = false;
   protected boolean doNotShowProgressNow = false;
   protected Retrofit client;
@@ -177,11 +182,11 @@ public class GroupDetailsActivity extends BaseActivity
   FrameLayout parentLayout;
   View borderline;
   int[] location;
-  LinearLayout hiddenContentContainer;
+  //LinearLayout hiddenContentContainer;
   int[] brokenGlassIds;
   File pathToSerialize;
   boolean amIInGroup = false;
-  TextView sneekPeakTextView;
+  //TextView sneekPeakTextView;
   TextView tvMySteps;
   boolean showChat = true;
   boolean blockChat = false;
@@ -600,6 +605,40 @@ public class GroupDetailsActivity extends BaseActivity
     Clear.clearCache(Picasso.with(this));
     brokenGlassIds = SharedPreferenceHelper.getBrokenGlassIds();
 
+    ivMentorAvatar = (ImageView) findViewById(R.id.ivMentorAvatar);
+
+    tvOk = (TextView) findViewById(R.id.tvOk);
+
+    tvOk.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View view) {
+        // TODO: 11/2/17 SEND REQUEST TO COMMENT
+      }
+    });
+
+    tvCancel = (TextView) findViewById(R.id.tvCancel);
+
+    tvCancel.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View view) {
+        hideCommentsPanel();
+      }
+    });
+
+    rlComments = (RelativeLayout) findViewById(R.id.rlCommentScreen);
+    cvCommentContainer = (CardView) findViewById(R.id.cvCommentContainer);
+
+    rlComments.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View view) {
+        hideCommentsPanel();
+      }
+    });
+    cvCommentContainer.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View view) {
+
+      }
+    });
+
+
+
     attachButton = (ImageView) findViewById(R.id.attach_file);
     attachButton.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
@@ -623,7 +662,7 @@ public class GroupDetailsActivity extends BaseActivity
     });
     tvTimer = (TextView) findViewById(R.id.tv_timer);
 
-    sneekPeakTextView = (TextView) findViewById(R.id.sneekPeakTextView);
+    //sneekPeakTextView = (TextView) findViewById(R.id.sneekPeakTextView);
 
     client = new Retrofit.Builder().baseUrl(
         SingletonLikeApp.getInstance().getConfig(GroupDetailsActivity.this).apiBaseUrl)
@@ -638,9 +677,9 @@ public class GroupDetailsActivity extends BaseActivity
     setupUI(parentLayout, GroupDetailsActivity.this);
 
     borderline = findViewById(R.id.borderline);
-    hiddenContentContainer = (LinearLayout) findViewById(R.id.hiddenContentContainer);
+    //hiddenContentContainer = (LinearLayout) findViewById(R.id.hiddenContentContainer);
     //if(!SharedPreferenceHelper.isChatEnabled())
-    hiddenContentContainer.setVisibility(View.GONE);
+    //hiddenContentContainer.setVisibility(View.GONE);
     location = new int[2];
 
     parentLayout.getViewTreeObserver()
@@ -661,8 +700,6 @@ public class GroupDetailsActivity extends BaseActivity
 
             borderline.getLocationOnScreen(location);
             Log.e("BORDERLINE", "" + location[1]);
-            hiddenContentContainer.requestLayout();
-            hiddenContentContainer.getLayoutParams().height = height - location[1];
           }
         });
 
@@ -833,6 +870,10 @@ public class GroupDetailsActivity extends BaseActivity
     //END CHAT ************************************************************************************************************
   }
 
+  private void hideCommentsPanel() {
+    rlComments.setVisibility(View.GONE);
+  }
+
   public void setupUI(View view, final Activity activity) {
 
     // Set up touch listener for non-text box views to hide keyboard.
@@ -954,7 +995,6 @@ public class GroupDetailsActivity extends BaseActivity
     this.runOnUiThread(new Runnable() {
       @Override public void run() {
         lastVisibleItem = rvMessages.getAdapter().getItemCount();
-        sneekPeakTextView.setBackgroundColor(getResources().getColor(R.color.dark_red));
       }
     });
   }
@@ -1157,9 +1197,6 @@ public class GroupDetailsActivity extends BaseActivity
 
         List<String> unReadMessages =
             SeenByUtils.getUnSeenMessages(response.body().data.messages, activeUser);
-        if (unReadMessages.size() > 0) {
-          sneekPeakTextView.setBackgroundColor(getResources().getColor(R.color.dark_red));
-        }
         sendOpenMessage(unReadMessages);
       }
     });
@@ -1867,7 +1904,7 @@ public class GroupDetailsActivity extends BaseActivity
             .placeholder(R.drawable.ic_gray_avatar)
             .error(R.drawable.ic_group)
             .transform(new CropSquareTransformation())
-            .transform(new MaskTransformation(this, R.drawable.group_avatar, false, 0xffffffff))
+            .transform(new MaskTransformation(this, R.drawable.profile_mask, false, 0xffffffff))
             .into(ivGroupAvatar, new Callback() {
               @Override public void onSuccess() {
 
@@ -1880,11 +1917,32 @@ public class GroupDetailsActivity extends BaseActivity
 
               }
             });
+
+        Picasso.with(this)
+            .load(groupPictureUrl)
+            .placeholder(R.drawable.ic_gray_avatar)
+            .error(R.drawable.ic_group)
+            .transform(new CropSquareTransformation())
+            .transform(new MaskTransformation(this, R.drawable.profile_mask, false, 0xffffffff))
+            .into(ivMentorAvatar);
       }
 
+      ivGroupAvatar.setOnClickListener(new View.OnClickListener() {
+        @Override public void onClick(View view) {
+
+          if(isMentorGroup)
+          {
+            openCommentDialog();
+          }
+        }
+      });
       closeProgressFragment();
       handler.postDelayed(runnable, DELAY_REFRESH_GROUP_INFO);
     }
+  }
+
+  private void openCommentDialog() {
+    rlComments.setVisibility(View.VISIBLE);
   }
 
   @Override public void onApiGetTrackingInfoFailure(String message) {

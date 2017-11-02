@@ -351,7 +351,7 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
   @Override public void onClickMemberAvatar(int position) {
 
-    Timber.e("My ID " + SharedPreferenceHelper.getUserId() + ", myPosition = " + myPosition + " user clicked " + mData.get(position).getId());
+//    Timber.e("My ID " + SharedPreferenceHelper.getUserId() + ", myPosition = " + myPosition + " user clicked " + mData.get(position).getId());
 
     if (position >= 0 && position < mData.size()) {
       if (actionListener.get() != null) {
