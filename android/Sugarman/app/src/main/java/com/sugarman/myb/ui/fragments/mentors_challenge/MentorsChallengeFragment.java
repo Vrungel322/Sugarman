@@ -1,11 +1,14 @@
 package com.sugarman.myb.ui.fragments.mentors_challenge;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
+import butterknife.OnClick;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.squareup.picasso.Picasso;
 import com.sugarman.myb.R;
@@ -13,11 +16,13 @@ import com.sugarman.myb.api.models.responses.Member;
 import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.base.BasicFragment;
 import com.sugarman.myb.models.ChallengeMentorItem;
+import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
 import com.sugarman.myb.ui.fragments.no_mentors_challenge.NoMentorsChallengeFragmentPresenter;
 import com.sugarman.myb.ui.views.CropCircleTransformation;
 import com.sugarman.myb.ui.views.CropSquareTransformation;
 import com.sugarman.myb.ui.views.MaskTransformation;
 import java.util.Arrays;
+import java.util.Locale;
 import timber.log.Timber;
 
 /**
@@ -58,6 +63,7 @@ public class MentorsChallengeFragment extends BasicFragment
   private Tracking mTracking;
   private Member[] mMembers;
   private int mAllSteps;
+  CardView vChallengeContainer;
 
   public MentorsChallengeFragment() {
     super(R.layout.fragment_mentor_challenge);
@@ -76,6 +82,8 @@ public class MentorsChallengeFragment extends BasicFragment
     mChallengeItem = getArguments().getParcelable(MENTOR_CHALLENGE);
     mTracking = mChallengeItem.getTracking();
     Timber.e(mChallengeItem.getTracking().getChallengeName());
+    vChallengeContainer = (CardView) view.findViewById(R.id.cv_mentor_challenge_container);
+
 
     Picasso.with(getActivity())
         .load(mTracking.getGroup().getPictureUrl())
@@ -91,25 +99,48 @@ public class MentorsChallengeFragment extends BasicFragment
     Arrays.sort(mTracking.getMembers(), Member.BY_STEPS_ASC);
     mMembers = mTracking.getMembers();
     Member best = mMembers[mMembers.length - 1];
-    mTextViewBestName.setText(best.getName());
+
+
+    String str = "";
+    str = best.getName() == null ? "" : best.getName();
+    Timber.e("Best " + best.getName());
+    if (str.contains(" ")) str = str.replaceAll("( +)", " ").trim();
+
+    String name = str;
+    if (str.length() > 0 && str.contains(" ")) {
+      name = str.substring(0, (best.getName().indexOf(" ")));
+    } else {
+      name = str;
+    }
+
+
+    mTextViewBestName.setText(name);
+    mTextViewBestSteps.setText(String.format(Locale.US, "%,d",best.getSteps()));
+
     Picasso.with(getActivity())
         .load(best.getPictureUrl())
         .placeholder(R.drawable.ic_gray_avatar)
         .error(R.drawable.ic_red_avatar)
         .transform(new CropSquareTransformation())
-        .transform(new MaskTransformation(getActivity(), R.drawable.group_avatar, false, 0xfff))
+        .transform(new CropCircleTransformation(0xffff0000, 1))
         .into(mImageViewBestAvatar);
 
     //set up fastest
     if (mTracking.hasDailyWinner()) {
-      mTextViewFastestName.setText(mTracking.getDailySugarman().getUser().getName());
-      mTextViewFastestSteps.setText(mTracking.getDailySugarman().getUser().getSteps());
+       str = mTracking.getDailySugarman().getUser().getName();
+       name = "";
+      str = str.replaceAll("( +)", " ").trim();
+      if (str.length() > 0) name = str.substring(0, (mTracking.getDailySugarman().getUser().getName().indexOf(" ")));
+      else name = str;
+
+      mTextViewFastestName.setText(name);
+      mTextViewFastestSteps.setText(String.format(Locale.US, "%,d",mTracking.getDailySugarman().getUser().getSteps()));
       Picasso.with(getActivity())
           .load(mTracking.getDailySugarman().getUser().getPictureUrl())
           .placeholder(R.drawable.ic_gray_avatar)
           .error(R.drawable.ic_red_avatar)
           .transform(new CropSquareTransformation())
-          .transform(new MaskTransformation(getActivity(), R.drawable.group_avatar, false, 0xfff))
+          .transform(new CropCircleTransformation(0xffff0000, 1))
           .into(mImageViewFastestAvatar);
     } else {
       mTextViewFastestName.setText(getResources().getString(R.string.sugarman_is));
@@ -124,14 +155,22 @@ public class MentorsChallengeFragment extends BasicFragment
     }
 
     //set up laziest
-    mTextViewLaziestName.setText(mMembers[0].getName());
-    mTextViewLaziestSteps.setText(String.valueOf(mMembers[0].getSteps()));
+
+    Member laziest = mMembers[0];
+    str = laziest.getName();
+    str = str.replaceAll("( +)", " ").trim();
+    if (str.length() > 0 && str.contains(" ")) {
+      name = str.substring(0, (laziest.getName().indexOf(" ")));
+    }
+    else name = str;
+    mTextViewLaziestName.setText(name);
+    mTextViewLaziestSteps.setText(String.format(Locale.US, "%,d",mMembers[0].getSteps()));
     Picasso.with(getActivity())
         .load(mMembers[0].getPictureUrl())
         .placeholder(R.drawable.ic_gray_avatar)
         .error(R.drawable.ic_red_avatar)
         .transform(new CropSquareTransformation())
-        .transform(new MaskTransformation(getActivity(), R.drawable.group_avatar, false, 0xfff))
+        .transform(new CropCircleTransformation(0xffff0000, 1))
         .into(mImageViewLaziestAvatar);
 
     //set up all
@@ -182,6 +221,15 @@ public class MentorsChallengeFragment extends BasicFragment
     //    });
   }
 
+  @OnClick(R.id.cv_mentor_challenge_container) public void cvMentorChallengeClicked() {
+    Activity activity = getActivity();
+    if (activity != null
+        && activity instanceof MainActivity
+        && ((MainActivity) activity).isReady()) {
+      ((MainActivity) activity).openGroupDetailsActivity(mTracking.getId(),true,mTracking.getGroupOwnerId());
+    }
+  }
+
   private void setToUiAllSteps() {
     mTextViewAllName.setText(
         String.valueOf(mMembers.length) + " " + getResources().getString(R.string.users));
@@ -189,6 +237,7 @@ public class MentorsChallengeFragment extends BasicFragment
     for (int i = 0; i < mMembers.length; i++) {
       mAllSteps += mMembers[i].getSteps();
     }
-    mTextViewAllSteps.setText(String.valueOf(mAllSteps));
+    mTextViewAllSteps.setText(String.format(Locale.US, "%,d",mAllSteps));
   }
+
 }

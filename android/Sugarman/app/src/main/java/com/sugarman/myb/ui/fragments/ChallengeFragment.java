@@ -193,6 +193,7 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
       if (str.length() > 0 && str.contains(" ")) {
         name = str.substring(0, (laziest.getName().indexOf(" ")));
       }
+      else name = str;
 
       laziestName.setText(name);
       laziestSteps.setText(String.format(Locale.US, "%,d", laziest.getSteps()));

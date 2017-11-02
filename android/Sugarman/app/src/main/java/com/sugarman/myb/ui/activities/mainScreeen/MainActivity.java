@@ -1379,6 +1379,12 @@ public class MainActivity extends GetUserInfoActivity
 
     Log.e("MainActivity", "convertTrackingsToItems() called " + myTrackings.length);
 
+    for (Tracking mentorsGroup : mMentorsGroups) {
+      ChallengeMentorItem item = new ChallengeMentorItem();
+      item.setTracking(mentorsGroup);
+      items.add(item);
+    }
+
     for (Tracking tracking : myTrackings) {
       if (!SharedPreferenceHelper.getTrackingSeenDailySugarman(tracking.getId())
           && tracking.hasDailyWinner()) {
@@ -1404,13 +1410,6 @@ public class MainActivity extends GetUserInfoActivity
         }
       }
     }
-
-    for (Tracking mentorsGroup : mMentorsGroups) {
-      ChallengeMentorItem item = new ChallengeMentorItem();
-      item.setTracking(mentorsGroup);
-      items.add(item);
-    }
-
 
     return items;
 }
@@ -1604,7 +1603,9 @@ public class MainActivity extends GetUserInfoActivity
     }
     Log.e("MainActivity", "zalooooopa" + converted.size());
     // TODO: 10/27/17 Random position for noMentorsChallenge
-    converted.add(0, new NoMentorsChallengeItem());
+    if(mMentorsGroups.size()<=0) {
+      converted.add(new Random().nextInt(converted.size()), new NoMentorsChallengeItem());
+    }
     trackingsAdapter.setItems(converted);
     spiChallenges.setMaxIndicatorCircles(5);
     spiChallenges.setViewPager(vpTrackings);
