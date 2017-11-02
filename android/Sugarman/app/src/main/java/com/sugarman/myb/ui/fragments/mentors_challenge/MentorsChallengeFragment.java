@@ -9,8 +9,9 @@ import butterknife.BindView;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.sugarman.myb.R;
 import com.sugarman.myb.base.BasicFragment;
-import com.sugarman.myb.models.ChallengeItem;
+import com.sugarman.myb.models.ChallengeMentorItem;
 import com.sugarman.myb.ui.fragments.no_mentors_challenge.NoMentorsChallengeFragmentPresenter;
+import timber.log.Timber;
 
 /**
  * Created by nikita on 26.10.2017.
@@ -46,13 +47,13 @@ public class MentorsChallengeFragment extends BasicFragment
   @BindView(R.id.iv_broken_avatar_fourth) ImageView mImageViewBrocenAvatarFourth;
   @BindView(R.id.progress_strip) ImageView mImageViewProgressStripe;
   @BindView(R.id.steps_total) TextView mTextViewTotalSteps;
-  private ChallengeItem mChallengeItem;
+  private ChallengeMentorItem mChallengeItem;
 
   public MentorsChallengeFragment() {
     super(R.layout.fragment_mentor_challenge);
   }
 
-  public static MentorsChallengeFragment newInstance(ChallengeItem item) {
+  public static MentorsChallengeFragment newInstance(ChallengeMentorItem item) {
     Bundle args = new Bundle();
     args.putParcelable(MENTOR_CHALLENGE, item);
     MentorsChallengeFragment fragment = new MentorsChallengeFragment();
@@ -63,5 +64,6 @@ public class MentorsChallengeFragment extends BasicFragment
   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     mChallengeItem = getArguments().getParcelable(MENTOR_CHALLENGE);
+    Timber.e(mChallengeItem.getTracking().getChallengeName());
   }
 }

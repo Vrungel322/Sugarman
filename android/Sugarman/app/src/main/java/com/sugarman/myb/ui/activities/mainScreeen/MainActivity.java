@@ -78,10 +78,8 @@ import com.sugarman.myb.models.BaseChallengeItem;
 import com.sugarman.myb.models.ChallengeItem;
 import com.sugarman.myb.models.ChallengeMentorItem;
 import com.sugarman.myb.models.ChallengeWillStartItem;
-import com.sugarman.myb.models.MentorsChallengeItem;
 import com.sugarman.myb.models.NoChallengeItem;
 import com.sugarman.myb.models.NoMentorsChallengeItem;
-import com.sugarman.myb.models.mentors_group.MentorsGroup;
 import com.sugarman.myb.services.MasterStepDetectorService;
 import com.sugarman.myb.ui.activities.CongratulationsActivity;
 import com.sugarman.myb.ui.activities.DailyActivity;
@@ -320,11 +318,11 @@ public class MainActivity extends GetUserInfoActivity
       closeProgressFragment();
     }
   };
-  private List<MentorsGroup> mMentorsGroups = new ArrayList<>();
+  private List<Tracking> mMentorsGroups = new ArrayList<>();
   private final ApiGetMyTrackingsListener apiGetMyTrackingsListener =
       new ApiGetMyTrackingsListener() {
         @Override
-        public void onApiGetMyTrackingSuccess(Tracking[] trackings, List<MentorsGroup> mentorsGroup,
+        public void onApiGetMyTrackingSuccess(Tracking[] trackings, List<Tracking> mentorsGroup,
             boolean isRefreshNotifications) {
           myTrackings = trackings;
           mMentorsGroups = mentorsGroup;
@@ -1405,7 +1403,7 @@ public class MainActivity extends GetUserInfoActivity
       }
     }
 
-    for (MentorsGroup mentorsGroup : mMentorsGroups) {
+    for (Tracking mentorsGroup : mMentorsGroups) {
       ChallengeMentorItem item = new ChallengeMentorItem();
       item.setTracking(mentorsGroup);
       items.add(item);
@@ -1605,7 +1603,6 @@ public class MainActivity extends GetUserInfoActivity
     Log.e("MainActivity", "zalooooopa" + converted.size());
     // TODO: 10/27/17 Random position for noMentorsChallenge
     converted.add(0, new NoMentorsChallengeItem());
-    converted.add(0, new MentorsChallengeItem());
     trackingsAdapter.setItems(converted);
     spiChallenges.setMaxIndicatorCircles(5);
     spiChallenges.setViewPager(vpTrackings);

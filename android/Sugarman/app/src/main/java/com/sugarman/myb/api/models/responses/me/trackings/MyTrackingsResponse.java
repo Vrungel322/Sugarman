@@ -9,7 +9,7 @@ import lombok.Getter;
 public class MyTrackingsResponse {
 
   @SerializedName("result") private Tracking[] result;
-  @Getter @SerializedName("result_mentors") private List<MentorsGroup> mentorsGroup;
+  @Getter @SerializedName("result_mentors") private List<Tracking> mentorsGroup;
 
   public Tracking[] getResult() {
     return result;
