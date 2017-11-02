@@ -8,10 +8,12 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.clover_studio.spikachatmodule.MaskTransformation;
 import com.clover_studio.spikachatmodule.R;
 import com.clover_studio.spikachatmodule.models.Message;
 import com.clover_studio.spikachatmodule.models.User;
@@ -22,6 +24,7 @@ import com.clover_studio.spikachatmodule.utils.UtilsImage;
 import com.clover_studio.spikachatmodule.utils.VCardParser;
 import com.clover_studio.spikachatmodule.view.roundimage.RoundedImageView;
 
+import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -35,10 +38,12 @@ public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecy
     private List<Message> data;
     private User myUser;
     private OnLastItemAndOnClickListener lastItemListener;
+    private String mMentorId="";
 
-    public MessageRecyclerViewAdapter (List<Message> data, User myUser){
+    public MessageRecyclerViewAdapter (List<Message> data, User myUser, String mentorId){
         this.data = data;
         this.myUser = myUser;
+        mMentorId = mentorId;
     }
 
     /**
@@ -464,12 +469,17 @@ if (str1.contains(" "))               name1 = str1.substring(0,(message.user.nam
     public class TextViewHolder extends BaseViewHolder {
 
         TextView messageTV;
+        TextView timeTV,nameTV;
+        FrameLayout flContainer;
         boolean isLongActivated;
 
         public TextViewHolder(View itemView) {
             super(itemView);
 
+            flContainer = (FrameLayout) itemView.findViewById(R.id.flMessageContainer);
             messageTV = (TextView) itemView.findViewById(R.id.message);
+            timeTV = (TextView) itemView.findViewById(R.id.time);
+            nameTV = (TextView) itemView.findViewById(R.id.name);
             isLongActivated = false;
         }
 
@@ -490,7 +500,19 @@ if (str1.contains(" "))               name1 = str1.substring(0,(message.user.nam
               //  messageTV.setText(text);
             }
             else {
-                // TODO: 11/1/17  
+                if(message.userID.equals(mMentorId)) {
+                    flContainer.setBackgroundResource(R.drawable.mentor_message_background_drawable);
+                    nameTV.setTextColor(0xff4141);
+                    timeTV.setTextColor(0xff4141);
+                    messageTV.setTextColor(0xffffffff);
+                    Picasso.with(context)
+                        .load(message.user.avatarURL)
+                        .fit()
+                        .centerCrop()
+                        .transform(new MaskTransformation(context, R.drawable.profile_mask, false, 0xffff0000))
+                        .into(avatar);
+
+                }
                 messageTV.setText(message.message);
             }
 

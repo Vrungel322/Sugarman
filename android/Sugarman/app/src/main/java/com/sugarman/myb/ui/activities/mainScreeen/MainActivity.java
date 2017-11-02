@@ -1225,10 +1225,11 @@ public class MainActivity extends GetUserInfoActivity
     startActivity(intent);
   }
 
-  public void openGroupDetailsActivity(String trackingId, boolean isMentorGroup) {
+  public void openGroupDetailsActivity(String trackingId, boolean isMentorGroup, String groupOwnerId) {
     Intent intent = new Intent(this, GroupDetailsActivity.class);
     intent.putExtra(Constants.INTENT_TRACKING_ID, trackingId);
     intent.putExtra("isMentorGroup", isMentorGroup);
+    intent.putExtra("mentorId", groupOwnerId);
     startActivityForResult(intent, Constants.GROUP_DETAILS_ACTIVITY_REQUEST_CODE);
   }
 

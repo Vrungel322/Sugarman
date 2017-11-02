@@ -591,6 +591,7 @@ public class GroupDetailsActivity extends BaseActivity
       new BroadcastReceiverImplementation();
   private Uri imageUri;
   private boolean isMentorGroup;
+  private String mentorId;
 
   @Override protected void onCreate(Bundle savedStateInstance) {
     setContentView(R.layout.activity_group_details);
@@ -694,6 +695,12 @@ public class GroupDetailsActivity extends BaseActivity
 
     trackingId = IntentExtractorHelper.getTrackingId(getIntent());
     isMentorGroup = getIntent().getBooleanExtra("isMentorGroup",false);
+    if(isMentorGroup)
+    mentorId = getIntent().getStringExtra("mentorId");
+    else
+      mentorId = "";
+
+    Timber.e("Mentor " + isMentorGroup + " " + mentorId);
     showProgressFragment();
 
     pathToSerialize = new File(getFilesDir() + "/" + trackingId);
@@ -800,7 +807,8 @@ public class GroupDetailsActivity extends BaseActivity
     LocalBroadcastManager.getInstance(this)
         .registerReceiver(broadcastReceiverImplementation, intentFilter);
 
-    rvMessages.setAdapter(new MessageRecyclerViewAdapter(new ArrayList<Message>(), activeUser));
+
+    rvMessages.setAdapter(new MessageRecyclerViewAdapter(new ArrayList<Message>(), activeUser, mentorId));
 
     try {
       FileInputStream fis = openFileInput(pathToSerialize.getName());
@@ -1848,6 +1856,7 @@ public class GroupDetailsActivity extends BaseActivity
       groupStepsWithoutMe = tracking.getGroupStepsCountWithoutMe();
       setGroupSteps();
       membersAdapter.setMySteps(todaySteps);
+
 
       groupPictureUrl = group.getPictureUrl();
       if (TextUtils.isEmpty(groupPictureUrl)) {
