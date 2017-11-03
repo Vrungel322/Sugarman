@@ -27,8 +27,10 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
+import butterknife.BindView;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.facebook.FacebookException;
+import com.mzelzoghbi.zgallery.CustomViewPager;
 import com.squareup.picasso.Picasso;
 import com.sugarman.myb.App;
 import com.sugarman.myb.BuildConfig;
@@ -188,7 +190,7 @@ public class MainActivity extends GetUserInfoActivity
   private TextView tvStartValue;
   private TextView tvCalculated;
   private TextView tvCache;
-  private ViewPager vpTrackings;
+  @BindView(R.id.vp_challenges) CustomViewPager vpTrackings;
   private SquarePagerIndicatorArrows spiChallenges;
   private View vCircleContainer;
   private View vOpenStats;
@@ -566,7 +568,7 @@ public class MainActivity extends GetUserInfoActivity
     tvStartValue = (TextView) findViewById(R.id.tv_start_value);
     tvEvents = (TextView) findViewById(R.id.tv_avatar_events);
     civMain = (CircleIndicatorView) findViewById(R.id.civ_main);
-    vpTrackings = (ViewPager) findViewById(R.id.vp_challenges);
+    //vpTrackings = (ViewPager) findViewById(R.id.vp_challenges);
     //ivLeftPagerScroll = (ImageView) findViewById(R.id.iv_left_pager_scroll);
     //ivRightPagerScroll = (ImageView) findViewById(R.id.iv_right_pager_scroll);
     spiChallenges = (SquarePagerIndicatorArrows) findViewById(R.id.spi_challenges);
@@ -1230,7 +1232,8 @@ public class MainActivity extends GetUserInfoActivity
     startActivity(intent);
   }
 
-  public void openGroupDetailsActivity(String trackingId, boolean isMentorGroup, String groupOwnerId) {
+  public void openGroupDetailsActivity(String trackingId, boolean isMentorGroup,
+      String groupOwnerId) {
     Intent intent = new Intent(this, GroupDetailsActivity.class);
     intent.putExtra(Constants.INTENT_TRACKING_ID, trackingId);
     intent.putExtra("isMentorGroup", isMentorGroup);
@@ -1412,7 +1415,7 @@ public class MainActivity extends GetUserInfoActivity
     }
 
     return items;
-}
+  }
 
   private void updateEventsCount() {
     int countEvents = myInvites.size() + myRequests.size();
@@ -1599,11 +1602,11 @@ public class MainActivity extends GetUserInfoActivity
     if (converted.size() == 1) {
       vpTrackings.setPadding(0, 0, 0, 0);
     } else {
-      vpTrackings.setPadding(vpTrackingPadding, 0, 0, 0);
+      //vpTrackings.setPadding(vpTrackingPadding, 0, 0, 0);
     }
     Log.e("MainActivity", "zalooooopa" + converted.size());
     // TODO: 10/27/17 Random position for noMentorsChallenge
-    if(mMentorsGroups.size()<=0) {
+    if (mMentorsGroups.size() <= 0) {
       converted.add(new Random().nextInt(converted.size()), new NoMentorsChallengeItem());
     }
     trackingsAdapter.setItems(converted);
