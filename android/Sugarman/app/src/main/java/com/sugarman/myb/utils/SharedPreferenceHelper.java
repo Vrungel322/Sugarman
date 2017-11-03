@@ -36,6 +36,14 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
       putString(SharedPreferenceConstants.UPDATED_AT, user.getUpdatedAt());
       putInt(SharedPreferenceConstants.COMPLETED_DAYS_COUNT, user.getCompletedDaysCount());
       putInt(SharedPreferenceConstants.TODAY_STEPS_COUNT, user.getTodayStepsCount());
+
+      if(user.getIsMentor()!=null) {
+        setIsMentor(user.getIsMentor());
+        Timber.e("Mentor set to " + user.getIsMentor());
+      }
+      if(user.getNeedOTP()!=null)
+      setOTPStatus(user.getNeedOTP());
+      else setOTPStatus(false);
       putInt("level", user.getLevel());
     }
   }
@@ -518,7 +526,7 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     return getBoolean(SharedPreferenceConstants.OTP_STATUS, false);
   }
 
-  public static void setOTPStatus(Boolean otpStatus) {
+  public static void setOTPStatus(boolean otpStatus) {
     putBoolean(SharedPreferenceConstants.OTP_STATUS, otpStatus);
   }
 
@@ -529,5 +537,14 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
   public static String getIMEI() {
     Timber.e(getString(SharedPreferenceConstants.IMEI,"No IMEI"));
     return getString(SharedPreferenceConstants.IMEI,"No IMEI");
+  }
+
+  public static void setIsMentor(boolean isMentor) {
+    putBoolean("isMentor", isMentor);
+  }
+
+  public static boolean getIsMentor()
+  {
+    return getBoolean("isMentor",false);
   }
 }

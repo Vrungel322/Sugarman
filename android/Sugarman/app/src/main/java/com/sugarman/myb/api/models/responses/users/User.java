@@ -3,6 +3,8 @@ package com.sugarman.myb.api.models.responses.users;
 import com.google.gson.annotations.SerializedName;
 import com.sugarman.myb.utils.StringHelper;
 import java.util.Date;
+import lombok.Getter;
+import lombok.Setter;
 
 public class User {
 
@@ -11,6 +13,8 @@ public class User {
   @SerializedName("completed_challenges_count") private int completedChallengesCount;
 
   @SerializedName("created_at") private String createdAt;
+
+  @Getter @Setter @SerializedName("is_mentor") private Boolean isMentor;
 
   @SerializedName("current_day") private String currentDay;
 
