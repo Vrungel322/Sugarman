@@ -21,6 +21,7 @@ public class WalkDataViewPagerAdapter extends PagerAdapter {
   private String mTodaySteps;
   private int steps;
   private LayoutInflater mLayoutInflater;
+  private final int MAX_VALUE = 3;
 
   public WalkDataViewPagerAdapter(Context context) {
     this.mContext = context;
@@ -33,28 +34,30 @@ public class WalkDataViewPagerAdapter extends PagerAdapter {
     notifyDataSetChanged();
   }
 
+
   @Override public int getCount() {
-    return 3;
+    return Integer.MAX_VALUE; // INFINITE SCROLLING
   }
 
   @Override public Object instantiateItem(ViewGroup container, int position) {
     View itemView = mLayoutInflater.inflate(R.layout.item_walk_data, container, false);
     final TextView tvData1 = (TextView) itemView.findViewById(R.id.tvData1);
     final TextView tvData2 = (TextView) itemView.findViewById(R.id.tvData2);
-    switch (position) {
+    int virtualPosition = position % MAX_VALUE;                               //INFINITE SCROLLING
+    switch (virtualPosition) {
       case 0:
       tvData1.setText(mTodaySteps);
-      tvData2.setText("TODAY STEPS");
+      tvData2.setText("STEPS");
         break;
       case 1:
         tvData1.setText(String.format("%.2f",steps*0.000762f) + " km");
         tvData1.setTextSize(TypedValue.COMPLEX_UNIT_SP,34);
-        tvData2.setText("TODAY DISTANCE");
+        tvData2.setText("DISTANCE");
         break;
       case 2:
         tvData1.setText(Integer.toString((int)(steps*0.0435f)) + " kcal");
         tvData1.setTextSize(TypedValue.COMPLEX_UNIT_SP,30);
-        tvData2.setText("TODAY CALORIES");
+        tvData2.setText("CALORIES");
         break;
     }
     container.addView(itemView);
@@ -64,6 +67,7 @@ public class WalkDataViewPagerAdapter extends PagerAdapter {
   @Override public void destroyItem(ViewGroup container, int position, Object object) {
     container.removeView((ConstraintLayout) object);
   }
+
 
   public int getItemPosition(Object object) {
     return POSITION_NONE;

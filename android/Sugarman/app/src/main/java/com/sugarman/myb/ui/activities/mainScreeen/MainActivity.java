@@ -193,6 +193,7 @@ public class MainActivity extends GetUserInfoActivity
   private TextView tvCalculated;
   private TextView tvCache;
   private SquarePagerIndicatorArrows spiChallenges;
+  private SquarePagerIndicatorArrows spiWalkData;
   private View vCircleContainer;
   private View vOpenStats;
   private View vSearchGroup;
@@ -570,6 +571,7 @@ public class MainActivity extends GetUserInfoActivity
     //ivLeftPagerScroll = (ImageView) findViewById(R.id.iv_left_pager_scroll);
     //ivRightPagerScroll = (ImageView) findViewById(R.id.iv_right_pager_scroll);
     spiChallenges = (SquarePagerIndicatorArrows) findViewById(R.id.spi_challenges);
+    spiWalkData = (SquarePagerIndicatorArrows) findViewById(R.id.spiWalkData);
     civMain.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
     tvBlinkTitle = (CustomFontTextView) findViewById(R.id.tv_blink_title);
     ivColoredStrip = (ImageView) findViewById(R.id.colored_strip);
@@ -678,6 +680,15 @@ public class MainActivity extends GetUserInfoActivity
     // pager adapter
     mWalkDataViewPagerAdapter = new WalkDataViewPagerAdapter(this);
     vpWalkData.setAdapter(mWalkDataViewPagerAdapter);
+
+    int positionToSet = Integer.MAX_VALUE/2;
+
+    vpWalkData.setCurrentItem(positionToSet);
+    spiWalkData.showArrows(false);
+    spiWalkData.setMaxIndicatorCircles(3);
+    spiWalkData.setViewPager(vpWalkData);
+    spiWalkData.requestLayout();
+    spiWalkData.setVisibility(View.GONE);
   }
 
   @Override public void onRequestPermissionsResult(int requestCode, String permissions[],

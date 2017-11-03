@@ -24,6 +24,7 @@ public class SquarePagerIndicatorArrows extends View implements PageIndicator {
   private final Paint mPaintSelected = new Paint(Paint.ANTI_ALIAS_FLAG);
   private final Paint mPaintArrow = new Paint(Paint.ANTI_ALIAS_FLAG);
   private ViewPager mViewPager;
+  private boolean needToShowArrows = true;
   private ViewPager.OnPageChangeListener mListener;
   private int mCurrentPage;
   private boolean mCentered;
@@ -74,6 +75,11 @@ public class SquarePagerIndicatorArrows extends View implements PageIndicator {
       final ViewConfiguration configuration = ViewConfiguration.get(context);
       mTouchSlop = configuration.getScaledPagingTouchSlop();
     }
+  }
+
+  public void showArrows(boolean show)
+  {
+    needToShowArrows = show;
   }
 
   @Override protected void onDraw(Canvas canvas) {
@@ -129,7 +135,7 @@ public class SquarePagerIndicatorArrows extends View implements PageIndicator {
         }
       }
 
-      if (mCurrentPage >= maxIndicatorCircles) {
+      if (mCurrentPage >= maxIndicatorCircles && needToShowArrows) {
         Path pathCursor = new Path();
         pathCursor.reset();
         pathCursor.moveTo(mLineWidth + mLineWidth / 2, verticalOffset - mLineWidth / 2);
@@ -139,7 +145,7 @@ public class SquarePagerIndicatorArrows extends View implements PageIndicator {
         pathCursor.close();
         canvas.drawPath(pathCursor, mPaintArrow);
       }
-      if (mCurrentPage < count - 1) {
+      if (mCurrentPage < count - 1 && needToShowArrows) {
         Path pathCursor = new Path();
         pathCursor.reset();
         pathCursor.moveTo(canvas.getWidth() - mLineWidth - mLineWidth / 2,

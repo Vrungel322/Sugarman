@@ -192,6 +192,12 @@
                                     android:layout_width="150dp"
                                     android:layout_height="1px"
                                     android:background="#C9C9C9"/>
+                                <com.sugarman.myb.ui.views.SquarePagerIndicatorArrows
+                                    android:id="@+id/spiWalkData"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="15dp"
+                                    android:layout_gravity="center"
+                                    android:gravity="center" />
                                 <com.mzelzoghbi.zgallery.CustomViewPager
                                     android:id="@+id/vpWalkData"
                                     android:layout_width="150dp"
@@ -239,6 +245,7 @@
                                     android:textSize="10sp"
                                     android:visibility="gone" />
                             </LinearLayout>
+
 
                         </RelativeLayout>
 
