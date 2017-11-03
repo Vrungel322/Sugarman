@@ -605,6 +605,7 @@ public class GroupDetailsActivity extends BaseActivity
   private Uri imageUri;
   private boolean isMentorGroup;
   private String mentorId;
+  private Tracking mTracking;
 
   @Override protected void onCreate(Bundle savedStateInstance) {
     setContentView(R.layout.activity_group_details);
@@ -1792,6 +1793,7 @@ public class GroupDetailsActivity extends BaseActivity
 
   @Override public void onApiGetTrackingInfoSuccess(Tracking tracking) {
     if (tracking != null) {
+      mTracking= tracking;
       Group group = tracking.getGroup();
       members = tracking.getMembers();
       pendings = tracking.getPending();
@@ -1944,6 +1946,7 @@ public class GroupDetailsActivity extends BaseActivity
   }
 
   private void openCommentDialog() {
+    // TODO: 03.11.2017 check if comments already exist for this mentor  
     rlComments.setVisibility(View.VISIBLE);
   }
 
