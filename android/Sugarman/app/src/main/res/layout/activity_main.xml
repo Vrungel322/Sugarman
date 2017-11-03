@@ -277,14 +277,15 @@
                     android:layout_height="0dp"
                     android:layout_weight="6">
 
-                    <android.support.v4.view.ViewPager
+                    <com.mzelzoghbi.zgallery.CustomViewPager
                         android:id="@+id/vp_challenges"
                         android:layout_width="match_parent"
                         android:layout_alignParentBottom="true"
                         android:layout_height="wrap_content"
                         android:clipToPadding="false"
-                        android:paddingEnd="0dp"
-                        android:paddingStart="@dimen/main_padding" />
+                        app:paddingStart="30dp"
+                        app:paddingEnd="30dp"
+                        />
 
                 </RelativeLayout>
 

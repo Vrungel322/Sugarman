@@ -39,6 +39,7 @@ public class ShopActivity extends BasicActivity implements IShopActivityView, Vi
     productNames.add(getString(R.string.sugarman_cap));
     productNames.add(getString(R.string.phone_holder));
     productNames.add(getString(R.string.sugarman_comics));
+    productNames.add(getString(R.string.mentorship));
     return new ShopActivityPresenter(productNames);
   }
 

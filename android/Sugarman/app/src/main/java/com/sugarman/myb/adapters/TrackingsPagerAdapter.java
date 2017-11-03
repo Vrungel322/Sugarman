@@ -4,7 +4,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.Log;
 import com.sugarman.myb.api.models.responses.Tracking;
-import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.models.BaseChallengeItem;
 import com.sugarman.myb.models.ChallengeItem;
 import com.sugarman.myb.models.ChallengeItemType;
@@ -86,13 +85,16 @@ public class TrackingsPagerAdapter extends FragmentStatePagerAdapter {
     return position;
   }
 
-  @Override public float getPageWidth(int position) {
-    if (position == getCount() - 1) {
-      return Constants.CHALLENGES_PAGER_OUTSIDE_POSITION_OFFSET;
-    } else {
-      return Constants.CHALLENGES_PAGER_POSITION_OFFSET;
-    }
-  }
+  //@Override public float getPageWidth(int position) {
+  //  if (position == getCount() - 1) {
+  //    //return 1f;
+  //    return Constants.CHALLENGES_PAGER_OUTSIDE_POSITION_OFFSET;
+  //  } else {
+  //    return Constants.CHALLENGES_PAGER_POSITION_OFFSET;
+  //    //return 1f;
+  //
+  //  }
+  //}
 
   public void setItems(List<BaseChallengeItem> items) {
     mData.clear();

@@ -97,6 +97,9 @@ public class DataManager {
     entities.add(new ShopProductEntity("2", productName.get(2), "", "2.99",
         Arrays.asList(String.valueOf(R.drawable.com1), String.valueOf(R.drawable.com2),
             String.valueOf(R.drawable.com3), String.valueOf(R.drawable.com4))));
+    entities.add(new ShopProductEntity("3", productName.get(3), "", "2.99",
+        Arrays.asList(String.valueOf(R.drawable.com1), String.valueOf(R.drawable.com2),
+            String.valueOf(R.drawable.com3), String.valueOf(R.drawable.com4))));
     return Observable.just(entities);
     //return mRestApi.fetchProducts();
   }
