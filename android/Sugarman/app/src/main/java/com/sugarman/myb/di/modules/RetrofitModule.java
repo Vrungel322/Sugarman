@@ -100,7 +100,7 @@ import timber.log.Timber;
           requestBuilder.header(Constants.TIMEZONE, TimeZone.getDefault().getID());
           requestBuilder.header(Constants.TIMESTAMP, System.currentTimeMillis() + "");
           requestBuilder.header(Constants.VERSION, DeviceHelper.getAppVersionName());
-          requestBuilder.header(Constants.IMEI, SharedPreferenceHelper.getIMEI());
+          //requestBuilder.header(Constants.IMEI, SharedPreferenceHelper.getIMEI());
         }
 
         request = requestBuilder.build();

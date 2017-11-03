@@ -1,11 +1,13 @@
 package com.sugarman.myb.api.clients;
 
+import android.os.Build;
 import android.util.Log;
 import com.sugarman.myb.App;
 import com.sugarman.myb.api.models.requests.RefreshUserDataRequest;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.listeners.ApiBaseListener;
 import com.sugarman.myb.listeners.ApiRefreshUserDataListener;
+import com.sugarman.myb.utils.SharedPreferenceHelper;
 import java.lang.ref.WeakReference;
 import java.util.TimeZone;
 import okhttp3.ResponseBody;
@@ -82,6 +84,8 @@ public class RefreshUserDataClient extends BaseApiClient {
     request.setFbId(fbId);
     request.setPictureUrl(pictureUrl);
     request.setTimezone(TimeZone.getDefault().getID());
+    request.setVOS(Build.VERSION.RELEASE);
+    request.setImei(SharedPreferenceHelper.getIMEI());
     Log.e("Request", request.toString());
     Log.e("token", "refreshUserData rabotaem");
 
