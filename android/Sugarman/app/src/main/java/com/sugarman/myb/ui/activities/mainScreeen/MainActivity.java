@@ -1377,9 +1377,8 @@ public class MainActivity extends GetUserInfoActivity
     tvCounter.setShadowLayer(12, 0, 10, color);
     Log.d("!!!", "set in main: " + todaySteps);
     updateAnimations(todaySteps);
-    mWalkDataViewPagerAdapter.setWalkData(
-        Arrays.asList(String.valueOf(todaySteps), String.valueOf(todaySteps),
-            String.valueOf(todaySteps)));
+    mWalkDataViewPagerAdapter.setWalkData(String.valueOf(todaySteps));
+    mWalkDataViewPagerAdapter.notifyDataSetChanged();
   }
 
   private List<BaseChallengeItem> convertTrackingsToItems() {

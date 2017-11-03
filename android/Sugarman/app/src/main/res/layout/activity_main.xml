@@ -195,8 +195,7 @@
                                 <com.mzelzoghbi.zgallery.CustomViewPager
                                     android:id="@+id/vpWalkData"
                                     android:layout_width="150dp"
-                                    android:background="#ae0"
-                                    android:layout_height="50dp"
+                                    android:layout_height="80dp"
                                     />
                                 <com.sugarman.myb.ui.views.CustomFontTextView
                                     android:id="@+id/tv_counter"
@@ -212,6 +211,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="@string/steps_today_caps"
                                     android:textColor="@color/gray"
+                                    android:visibility="gone"
                                     android:textSize="@dimen/main_steps_caps_text_size"
                                     app:font="@string/font_roboto_medium" />
 

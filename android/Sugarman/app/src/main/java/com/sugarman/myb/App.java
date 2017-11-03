@@ -80,15 +80,15 @@ public class App extends MultiDexApplication {
       Request.Builder requestBuilder = original.newBuilder();
       // .header("content-type", "application/json");
       TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-      Timber.e("IMEI" + telephonyManager.getDeviceId());
-      SharedPreferenceHelper.setIMEI(telephonyManager.getDeviceId());
+      //Timber.e("IMEI" + telephonyManager.getDeviceId());
+      //SharedPreferenceHelper.setIMEI(telephonyManager.getDeviceId());
 
       if (!TextUtils.isEmpty(token)) {
         requestBuilder.header(Constants.AUTHORIZATION, Constants.BEARER + token);
         requestBuilder.header(Constants.TIMEZONE, TimeZone.getDefault().getID());
         requestBuilder.header(Constants.TIMESTAMP, System.currentTimeMillis() + "");
         requestBuilder.header(Constants.VERSION, DeviceHelper.getAppVersionName());
-        requestBuilder.header(Constants.IMEI, SharedPreferenceHelper.getIMEI());
+        //requestBuilder.header(Constants.IMEI, SharedPreferenceHelper.getIMEI());
       }
 
       request = requestBuilder.build();
