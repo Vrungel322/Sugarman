@@ -1,6 +1,8 @@
 package com.sugarman.myb.api.models.requests;
 
 import com.google.gson.annotations.SerializedName;
+import lombok.Getter;
+import lombok.Setter;
 
 public class RefreshUserDataRequest {
 
@@ -31,6 +33,10 @@ public class RefreshUserDataRequest {
   @SerializedName("vk_link") private String vkLink;
 
   @SerializedName("picture") private String pictureUrl;
+
+  @Getter @Setter @SerializedName("vOS") private String vOS;
+
+  @Getter @Setter @SerializedName("IMEI") private String imei;
 
   public void setPhoneToken(String phoneToken) {
     this.phoneToken = phoneToken;
@@ -92,12 +98,12 @@ public class RefreshUserDataRequest {
     return vkToken;
   }
 
-  public void setgToken(String gToken) {
-    this.gToken = gToken;
-  }
-
   public String getgToken() {
     return gToken;
+  }
+
+  public void setgToken(String gToken) {
+    this.gToken = gToken;
   }
 
   public String getTimezone() {
