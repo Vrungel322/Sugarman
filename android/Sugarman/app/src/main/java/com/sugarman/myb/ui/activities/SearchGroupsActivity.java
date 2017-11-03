@@ -22,6 +22,7 @@ import com.sugarman.myb.listeners.ApiJoinGroupListener;
 import com.sugarman.myb.listeners.OnGroupsActionListener;
 import com.sugarman.myb.models.SearchTracking;
 import com.sugarman.myb.ui.activities.base.BaseActivity;
+import com.sugarman.myb.ui.activities.groupDetails.GroupDetailsActivity;
 import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.utils.DeviceHelper;

@@ -1,6 +1,7 @@
 package com.sugarman.myb.models.mentor;
 
 import com.google.gson.annotations.SerializedName;
+import com.sugarman.myb.models.mentor.comments.MentorsCommentsEntity;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

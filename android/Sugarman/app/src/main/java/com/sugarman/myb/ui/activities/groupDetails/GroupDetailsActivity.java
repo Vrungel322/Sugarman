@@ -1,4 +1,4 @@
-package com.sugarman.myb.ui.activities;
+package com.sugarman.myb.ui.activities.groupDetails;
 
 import android.Manifest;
 import android.animation.Animator;
@@ -22,6 +22,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.widget.AppCompatRatingBar;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -47,6 +48,9 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import butterknife.BindView;
+import butterknife.OnClick;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.clover_studio.spikachatmodule.CameraPhotoPreviewActivity;
 import com.clover_studio.spikachatmodule.ChatActivity;
 import com.clover_studio.spikachatmodule.LocationActivity;
@@ -157,15 +161,11 @@ import timber.log.Timber;
 
 public class GroupDetailsActivity extends BaseActivity
     implements View.OnClickListener, ApiPokeListener, OnStepMembersActionListener,
-    ApiGetTrackingInfoListener {
+    ApiGetTrackingInfoListener, IGroupDetailsActivityView {
   private static final String TAG = GroupDetailsActivity.class.getName();
   private static final int TAKE_PICTURE = 12;
   private final int DELAY_REFRESH_GROUP_INFO = 5000;
   private final Handler handler = App.getHandlerInstance();
-  private RelativeLayout rlComments;
-  private CardView cvCommentContainer;
-  private TextView tvCancel, tvOk;
-  private ImageView ivMentorAvatar;
   protected boolean doNotHideProgressNow = false;
   protected boolean doNotShowProgressNow = false;
   protected Retrofit client;
@@ -178,6 +178,10 @@ public class GroupDetailsActivity extends BaseActivity
   protected List<Message> lastDataFromServer = new ArrayList<>();
   //for scroll when keyboard opens
   protected int lastVisibleItem = 0;
+  @InjectPresenter GroupDetailsActivityPresenter mPresenter;
+  @BindView(R.id.tvOk) TextView tvOk;
+  @BindView(R.id.rbMentor) AppCompatRatingBar mAppCompatRatingBarMentor;
+  @BindView(R.id.etCommentBody) EditText mEditTextCommentBody;
   Thread thread = new Thread();
   FrameLayout parentLayout;
   View borderline;
@@ -196,6 +200,10 @@ public class GroupDetailsActivity extends BaseActivity
   RelativeLayout rlChat, rlInfo;
   ImageView attachButton;
   String timeFormatted;
+  private RelativeLayout rlComments;
+  private CardView cvCommentContainer;
+  private TextView tvCancel;
+  private ImageView ivMentorAvatar;
   private List<Member> lessThanYou = new ArrayList<>();
   private String trackingId;
   private String groupPictureUrl;
@@ -607,14 +615,6 @@ public class GroupDetailsActivity extends BaseActivity
 
     ivMentorAvatar = (ImageView) findViewById(R.id.ivMentorAvatar);
 
-    tvOk = (TextView) findViewById(R.id.tvOk);
-
-    tvOk.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View view) {
-        // TODO: 11/2/17 SEND REQUEST TO COMMENT
-      }
-    });
-
     tvCancel = (TextView) findViewById(R.id.tvCancel);
 
     tvCancel.setOnClickListener(new View.OnClickListener() {
@@ -636,8 +636,6 @@ public class GroupDetailsActivity extends BaseActivity
 
       }
     });
-
-
 
     attachButton = (ImageView) findViewById(R.id.attach_file);
     attachButton.setOnClickListener(new View.OnClickListener() {
@@ -731,11 +729,12 @@ public class GroupDetailsActivity extends BaseActivity
     vEdit.setOnClickListener(this);
 
     trackingId = IntentExtractorHelper.getTrackingId(getIntent());
-    isMentorGroup = getIntent().getBooleanExtra("isMentorGroup",false);
-    if(isMentorGroup)
-    mentorId = getIntent().getStringExtra("mentorId");
-    else
+    isMentorGroup = getIntent().getBooleanExtra("isMentorGroup", false);
+    if (isMentorGroup) {
+      mentorId = getIntent().getStringExtra("mentorId");
+    } else {
       mentorId = "";
+    }
 
     Timber.e("Mentor " + isMentorGroup + " " + mentorId);
     showProgressFragment();
@@ -844,8 +843,8 @@ public class GroupDetailsActivity extends BaseActivity
     LocalBroadcastManager.getInstance(this)
         .registerReceiver(broadcastReceiverImplementation, intentFilter);
 
-
-    rvMessages.setAdapter(new MessageRecyclerViewAdapter(new ArrayList<Message>(), activeUser, mentorId));
+    rvMessages.setAdapter(
+        new MessageRecyclerViewAdapter(new ArrayList<Message>(), activeUser, mentorId));
 
     try {
       FileInputStream fis = openFileInput(pathToSerialize.getName());
@@ -868,6 +867,11 @@ public class GroupDetailsActivity extends BaseActivity
       e.printStackTrace();
     }
     //END CHAT ************************************************************************************************************
+  }
+
+  @OnClick(R.id.tvOk) public void tvOkClicked() {
+    mPresenter.sendComment(mentorId,mAppCompatRatingBarMentor.getRating(),
+        mEditTextCommentBody.getText().toString());
   }
 
   private void hideCommentsPanel() {
@@ -1894,7 +1898,6 @@ public class GroupDetailsActivity extends BaseActivity
       setGroupSteps();
       membersAdapter.setMySteps(todaySteps);
 
-
       groupPictureUrl = group.getPictureUrl();
       if (TextUtils.isEmpty(groupPictureUrl)) {
         ivGroupAvatar.setImageResource(R.drawable.ic_group);
@@ -1930,8 +1933,7 @@ public class GroupDetailsActivity extends BaseActivity
       ivGroupAvatar.setOnClickListener(new View.OnClickListener() {
         @Override public void onClick(View view) {
 
-          if(isMentorGroup)
-          {
+          if (isMentorGroup) {
             openCommentDialog();
           }
         }
@@ -2080,6 +2082,10 @@ public class GroupDetailsActivity extends BaseActivity
     intent.putExtra(Constants.INTENT_GROUP_NAME, groupName);
     intent.putExtra(Constants.INTENT_GROUP_PICTURE, groupPictureUrl);
     startActivityForResult(intent, Constants.ADD_MEMBER_ACTIVITY_REQUEST_CODE);
+  }
+
+  @Override public void closeDialog() {
+    hideCommentsPanel();
   }
 
   public enum ButtonType {

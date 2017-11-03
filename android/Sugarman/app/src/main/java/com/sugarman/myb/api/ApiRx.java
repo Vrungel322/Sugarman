@@ -13,6 +13,7 @@ import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.models.mentor.MentorStupidAbstraction;
 import com.sugarman.myb.models.mentor.MentorsCommentsStupidAbstraction;
+import com.sugarman.myb.models.mentor.comments.CommentEntity;
 import java.util.List;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -76,6 +77,9 @@ public interface ApiRx {
 
   @GET("v1/get_mentors") Observable<MentorStupidAbstraction> fetchMentors();
 
-  @GET("/v1/get_comments/{mentorId}")
-  Observable<MentorsCommentsStupidAbstraction> fetchComments(@Path("mentorId") String mentorId);
+  @GET("/v1/get_comments/{mentorId}") Observable<MentorsCommentsStupidAbstraction> fetchComments(
+      @Path("mentorId") String mentorId);
+
+  @POST("/v1/add_comment/{id_mentor}") Observable<Response<Void>> sendComment(
+      @Path("id_mentor") String mentorId, @Body CommentEntity commentEntity);
 }

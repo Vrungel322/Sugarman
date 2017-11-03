@@ -140,7 +140,7 @@
         android:screenOrientation="portrait"
         android:theme="@style/SugarmanBackgroundActivityTheme"/>
     <activity
-        android:name=".ui.activities.GroupDetailsActivity"
+        android:name=".ui.activities.groupDetails.GroupDetailsActivity"
         android:screenOrientation="portrait"
         android:theme="@style/SugarmanBackgroundActivityTheme"
         android:windowSoftInputMode="adjustPan"/>

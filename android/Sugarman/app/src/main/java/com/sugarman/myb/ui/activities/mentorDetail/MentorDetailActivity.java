@@ -20,7 +20,7 @@ import com.squareup.picasso.Picasso;
 import com.sugarman.myb.R;
 import com.sugarman.myb.base.BasicActivity;
 import com.sugarman.myb.models.mentor.MentorEntity;
-import com.sugarman.myb.models.mentor.MentorsCommentsEntity;
+import com.sugarman.myb.models.mentor.comments.MentorsCommentsEntity;
 import com.sugarman.myb.models.mentor.MentorsSkills;
 import com.sugarman.myb.ui.views.MaskTransformation;
 import java.util.List;

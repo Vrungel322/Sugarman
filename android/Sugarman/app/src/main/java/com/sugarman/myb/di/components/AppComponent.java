@@ -10,6 +10,7 @@ import com.sugarman.myb.ui.activities.base.BasicActivityPresenter;
 import com.sugarman.myb.ui.activities.checkout.CheckoutActivityPresenter;
 import com.sugarman.myb.ui.activities.createGroup.CreateGroupActivityPresenter;
 import com.sugarman.myb.ui.activities.editProfile.EditProfileActivityPresenter;
+import com.sugarman.myb.ui.activities.groupDetails.GroupDetailsActivityPresenter;
 import com.sugarman.myb.ui.activities.mainScreeen.MainActivityPresenter;
 import com.sugarman.myb.ui.activities.mentorDetail.MentorDetailActivityPresenter;
 import com.sugarman.myb.ui.activities.mentorList.MentorListActivityPresenter;
@@ -59,7 +60,9 @@ import dagger.Component;
 
   void inject(NoMentorsChallengeFragmentPresenter presenter);
 
-  void inject(MentorListActivityPresenter mentorListActivityPresenter);
+  void inject(MentorListActivityPresenter presenter);
 
-  void inject(MentorDetailActivityPresenter mentorDetailActivityPresenter);
+  void inject(MentorDetailActivityPresenter presenter);
+
+  void inject(GroupDetailsActivityPresenter presenter);
 }

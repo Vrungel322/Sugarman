@@ -16,6 +16,7 @@ import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.models.mentor.MentorStupidAbstraction;
 import com.sugarman.myb.models.mentor.MentorsCommentsStupidAbstraction;
+import com.sugarman.myb.models.mentor.comments.CommentEntity;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import java.io.File;
 import java.util.ArrayList;
@@ -155,5 +156,9 @@ public class RestApi {
 
   public Observable<MentorsCommentsStupidAbstraction> fetchComments(String mentorId) {
     return api.fetchComments(mentorId);
+  }
+
+  public Observable<Response<Void>> sendComment(String mentorId, CommentEntity commentEntity) {
+    return api.sendComment(mentorId, commentEntity);
   }
 }

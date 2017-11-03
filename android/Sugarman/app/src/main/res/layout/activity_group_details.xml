@@ -524,6 +524,7 @@
                         />
 
                     <EditText
+                        android:id="@+id/etCommentBody"
                         android:layout_width="0dp"
                         android:layout_height="120dp"
                         android:background="@drawable/et_background_gray"

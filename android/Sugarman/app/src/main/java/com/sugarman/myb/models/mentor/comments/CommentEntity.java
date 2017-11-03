@@ -1,4 +1,4 @@
-package com.sugarman.myb.models.mentor;
+package com.sugarman.myb.models.mentor.comments;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;
@@ -7,11 +7,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Created by nikita on 31.10.2017.
+ * Created by nikita on 03.11.2017.
  */
-@AllArgsConstructor @NoArgsConstructor public class MentorsCommentsEntity {
-  @SerializedName("name") @Getter @Setter private String authorsName;
-  @SerializedName("img_url") @Getter @Setter private String authorsImg;
+@AllArgsConstructor @NoArgsConstructor
+public class CommentEntity {
   @SerializedName("rating")@Getter @Setter private String authorsRating;
   @SerializedName("comment") @Getter @Setter private String authorsComment;
 }

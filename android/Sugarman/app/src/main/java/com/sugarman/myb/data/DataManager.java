@@ -21,9 +21,10 @@ import com.sugarman.myb.data.local.PreferencesHelper;
 import com.sugarman.myb.models.mentor.MemberOfMentorsGroup;
 import com.sugarman.myb.models.mentor.MentorEntity;
 import com.sugarman.myb.models.mentor.MentorStupidAbstraction;
-import com.sugarman.myb.models.mentor.MentorsCommentsEntity;
 import com.sugarman.myb.models.mentor.MentorsCommentsStupidAbstraction;
 import com.sugarman.myb.models.mentor.MentorsSkills;
+import com.sugarman.myb.models.mentor.comments.CommentEntity;
+import com.sugarman.myb.models.mentor.comments.MentorsCommentsEntity;
 import com.sugarman.myb.utils.ContactsHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import java.io.File;
@@ -206,5 +207,10 @@ public class DataManager {
   public Observable<CheckVkResponse> checkVk(List<String> vkIds) {
     return mRestApi.checkVk(Constants.BEARER + SharedPreferenceHelper.getAccessToken(),
         new CheckVkRequest(vkIds));
+  }
+
+  public Observable<Response<Void>> sendComment(String mentorsId, String rating,
+      String commentBody) {
+    return mRestApi.sendComment(mentorsId, new CommentEntity(rating, commentBody));
   }
 }
