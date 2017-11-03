@@ -87,10 +87,10 @@ import com.sugarman.myb.ui.activities.CongratulationsActivity;
 import com.sugarman.myb.ui.activities.DailyActivity;
 import com.sugarman.myb.ui.activities.FailedActivity;
 import com.sugarman.myb.ui.activities.GetUserInfoActivity;
-import com.sugarman.myb.ui.activities.groupDetails.GroupDetailsActivity;
 import com.sugarman.myb.ui.activities.SearchGroupsActivity;
 import com.sugarman.myb.ui.activities.StatsTrackingActivity;
 import com.sugarman.myb.ui.activities.createGroup.CreateGroupActivity;
+import com.sugarman.myb.ui.activities.groupDetails.GroupDetailsActivity;
 import com.sugarman.myb.ui.activities.mentorList.MentorListActivity;
 import com.sugarman.myb.ui.activities.profile.ProfileActivity;
 import com.sugarman.myb.ui.activities.shop.ShopActivity;
@@ -180,6 +180,8 @@ public class MainActivity extends GetUserInfoActivity
   ImageView ivAnimatedMan;
   ImageView ivAvatar;
   boolean isUpdating = false;
+  @BindView(R.id.vp_challenges) CustomViewPager vpTrackings;
+  @BindView(R.id.vpWalkData) CustomViewPager vpWalkData;
   private CircleIndicatorView civMain;
   private ImageView ivColoredStrip;
   private ImageView ivLeftPagerScroll;
@@ -190,7 +192,6 @@ public class MainActivity extends GetUserInfoActivity
   private TextView tvStartValue;
   private TextView tvCalculated;
   private TextView tvCache;
-  @BindView(R.id.vp_challenges) CustomViewPager vpTrackings;
   private SquarePagerIndicatorArrows spiChallenges;
   private View vCircleContainer;
   private View vOpenStats;
@@ -445,6 +446,7 @@ public class MainActivity extends GetUserInfoActivity
           showUpdateOldVersionDialog();
         }
       };
+  private WalkDataViewPagerAdapter mWalkDataViewPagerAdapter;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_main);
@@ -492,11 +494,9 @@ public class MainActivity extends GetUserInfoActivity
     //});
 
     vShopButton = findViewById(R.id.iv_shop);
-    vShopButton.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View view) {
-        Intent intent = new Intent(MainActivity.this, ShopActivity.class);
-        startActivity(intent);
-      }
+    vShopButton.setOnClickListener(view -> {
+      Intent intent = new Intent(MainActivity.this, ShopActivity.class);
+      startActivity(intent);
     });
 
     DateFormat dfDate = new SimpleDateFormat("yyyy-MM-dd");
@@ -514,28 +514,26 @@ public class MainActivity extends GetUserInfoActivity
     //refreshUserData(AccessToken.getCurrentAccessToken());
     System.out.println(
         "HOW MANY MILISECONDS TO MIDNIGHT: " + DeviceHelper.howManyMillisecondsToMidnight());
-    new Handler().postDelayed(new Runnable() {
-      @Override public void run() {
-        Timber.e("Save Showed Steps 0");
-        SharedPreferenceHelper.saveShowedSteps(0);
-        //SharedPreferenceHelper.shiftStatsLocalOnOneDay(SharedPreferenceHelper.getUserId());
-        Log.d("Helper local pref", ""
-            + SharedPreferenceHelper.getReportStatsLocal(userId)[0].getDate()
-            + " - "
-            + SharedPreferenceHelper.getReportStatsLocal(userId)[0].getStepsCount());
-        //SharedPreferenceHelper.shiftStatsOnOneDay(SharedPreferenceHelper.getUserId());
+    new Handler().postDelayed(() -> {
+      Timber.e("Save Showed Steps 0");
+      SharedPreferenceHelper.saveShowedSteps(0);
+      //SharedPreferenceHelper.shiftStatsLocalOnOneDay(SharedPreferenceHelper.getUserId());
+      Log.d("Helper local pref", ""
+          + SharedPreferenceHelper.getReportStatsLocal(userId)[0].getDate()
+          + " - "
+          + SharedPreferenceHelper.getReportStatsLocal(userId)[0].getStepsCount());
+      //SharedPreferenceHelper.shiftStatsOnOneDay(SharedPreferenceHelper.getUserId());
 
-        //      refreshUserData(AccessToken.getCurrentAccessToken());
-        todaySteps = SharedPreferenceHelper.getReportStatsLocal(
-            SharedPreferenceHelper.getUserId())[0].getStepsCount();
-        Calendar c = Calendar.getInstance();
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        todaySteps = SharedPreferenceHelper.getStepsForTheDate(df.format(c.getTime()));
-        System.out.println(todaySteps);
-        updateTodaySteps(todaySteps);
-        System.out.println("Refreshed data on midnight");
-        //doesn't work
-      }
+      //      refreshUserData(AccessToken.getCurrentAccessToken());
+      todaySteps = SharedPreferenceHelper.getReportStatsLocal(SharedPreferenceHelper.getUserId())[0]
+          .getStepsCount();
+      Calendar c = Calendar.getInstance();
+      DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+      todaySteps = SharedPreferenceHelper.getStepsForTheDate(df.format(c.getTime()));
+      System.out.println(todaySteps);
+      updateTodaySteps(todaySteps);
+      System.out.println("Refreshed data on midnight");
+      //doesn't work
     }, DeviceHelper.howManyMillisecondsToMidnight());
 
     notificationsFlags = resources.getStringArray(R.array.notifications_types);
@@ -676,6 +674,10 @@ public class MainActivity extends GetUserInfoActivity
 
     mGetMyInvitesClient.getInvites(true);
     mGetMyRequestsClient.getRequests(true);
+
+    // pager adapter
+    mWalkDataViewPagerAdapter = new WalkDataViewPagerAdapter(this);
+    vpWalkData.setAdapter(mWalkDataViewPagerAdapter);
   }
 
   @Override public void onRequestPermissionsResult(int requestCode, String permissions[],
@@ -1375,6 +1377,9 @@ public class MainActivity extends GetUserInfoActivity
     tvCounter.setShadowLayer(12, 0, 10, color);
     Log.d("!!!", "set in main: " + todaySteps);
     updateAnimations(todaySteps);
+    mWalkDataViewPagerAdapter.setWalkData(
+        Arrays.asList(String.valueOf(todaySteps), String.valueOf(todaySteps),
+            String.valueOf(todaySteps)));
   }
 
   private List<BaseChallengeItem> convertTrackingsToItems() {
@@ -1382,7 +1387,7 @@ public class MainActivity extends GetUserInfoActivity
 
     Log.e("MainActivity", "convertTrackingsToItems() called " + myTrackings.length);
 
-    if(mMentorsGroups!=null) {
+    if (mMentorsGroups != null) {
       for (Tracking mentorsGroup : mMentorsGroups) {
         ChallengeMentorItem item = new ChallengeMentorItem();
         item.setTracking(mentorsGroup);
@@ -1608,7 +1613,7 @@ public class MainActivity extends GetUserInfoActivity
     }
     Log.e("MainActivity", "zalooooopa" + converted.size());
     // TODO: 10/27/17 Random position for noMentorsChallenge
-    if(mMentorsGroups==null || mMentorsGroups.size()<=0) {
+    if (mMentorsGroups == null || mMentorsGroups.size() <= 0) {
       converted.add(new Random().nextInt(converted.size()), new NoMentorsChallengeItem());
     }
     trackingsAdapter.setItems(converted);

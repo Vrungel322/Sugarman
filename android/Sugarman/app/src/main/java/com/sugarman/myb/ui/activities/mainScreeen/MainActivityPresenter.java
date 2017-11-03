@@ -21,22 +21,20 @@ import timber.log.Timber;
     fetchCompletedTasks();
   }
 
-
   private void fetchTasks() {
     Subscription subscription = mDataManager.fetchTasks()
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(taskEntities -> {
           Timber.e("All tasks " + String.valueOf(taskEntities.getTasks().size()));
-        },Throwable::printStackTrace);
+        }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 
-  private void fetchCompletedTasks()
-  {
+  private void fetchCompletedTasks() {
     Subscription subscription = mDataManager.fetchCompletedTasks()
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(ids -> {
-          Timber.e("Completed tasks " +String.valueOf(ids.size()));
+          Timber.e("Completed tasks " + String.valueOf(ids.size()));
         }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
