@@ -165,6 +165,12 @@ public class EditProfileActivity extends BasicActivity
               SharedPreferenceHelper.saveFBExipredTokenDate(accessToken.getExpires());
               SharedPreferenceHelper.saveFBAccessToken(accessToken.getToken());
               SharedPreferenceHelper.saveFbId(accessToken.getUserId());
+
+              if(etPhone.getText().toString().equals(etName.getText().toString())){
+                etName.setText(SharedPreferenceHelper.getUserName());
+                etPhone.setText(SharedPreferenceHelper.getPhoneNumber());
+              }
+
               cbFb.setChecked(true);
               networkCount++;
               Timber.e("Got to fb callback");
