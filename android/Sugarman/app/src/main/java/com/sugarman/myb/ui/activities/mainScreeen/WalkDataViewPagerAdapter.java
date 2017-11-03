@@ -34,7 +34,7 @@ public class WalkDataViewPagerAdapter extends PagerAdapter {
   }
 
   @Override public int getCount() {
-    return 4;
+    return 3;
   }
 
   @Override public Object instantiateItem(ViewGroup container, int position) {
