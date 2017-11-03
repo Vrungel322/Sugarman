@@ -1382,10 +1382,12 @@ public class MainActivity extends GetUserInfoActivity
 
     Log.e("MainActivity", "convertTrackingsToItems() called " + myTrackings.length);
 
-    for (Tracking mentorsGroup : mMentorsGroups) {
-      ChallengeMentorItem item = new ChallengeMentorItem();
-      item.setTracking(mentorsGroup);
-      items.add(item);
+    if(mMentorsGroups!=null) {
+      for (Tracking mentorsGroup : mMentorsGroups) {
+        ChallengeMentorItem item = new ChallengeMentorItem();
+        item.setTracking(mentorsGroup);
+        items.add(item);
+      }
     }
 
     for (Tracking tracking : myTrackings) {
@@ -1606,7 +1608,7 @@ public class MainActivity extends GetUserInfoActivity
     }
     Log.e("MainActivity", "zalooooopa" + converted.size());
     // TODO: 10/27/17 Random position for noMentorsChallenge
-    if (mMentorsGroups.size() <= 0) {
+    if(mMentorsGroups==null || mMentorsGroups.size()<=0) {
       converted.add(new Random().nextInt(converted.size()), new NoMentorsChallengeItem());
     }
     trackingsAdapter.setItems(converted);
