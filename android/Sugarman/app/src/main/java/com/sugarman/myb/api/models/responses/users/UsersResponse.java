@@ -1,6 +1,8 @@
 package com.sugarman.myb.api.models.responses.users;
 
 import com.google.gson.annotations.SerializedName;
+import lombok.Getter;
+import lombok.Setter;
 
 public class UsersResponse {
 
@@ -11,6 +13,8 @@ public class UsersResponse {
   @SerializedName("user") private User user;
 
   @SerializedName("error") private String error;
+
+  @Getter @Setter @SerializedName("status") private String baseUrl;
 
   public String getError() {
     return error;

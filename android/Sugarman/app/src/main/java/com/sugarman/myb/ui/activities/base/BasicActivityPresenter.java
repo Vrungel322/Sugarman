@@ -37,6 +37,8 @@ import rx.Subscription;
     Subscription subscriptions = mDataManager.refreshRxUserData(request)
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(usersResponseCall -> {
+          //SharedPreferenceHelper.saveBaseUrl(usersResponseCall.getBaseUrl());
+
           SharedPreferenceHelper.saveToken(usersResponseCall.getTokens());
           getViewState().startSplashActivity();
         }, Throwable::printStackTrace);

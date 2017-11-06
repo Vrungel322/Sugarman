@@ -73,6 +73,7 @@ public abstract class SharedPreferenceConstants {
 
   public static final String OTP_STATUS = "OTP_STATUS";
   public static final String IMEI = "IMEI";
+  public static final String BASE_URL = "BASE_URL";
 
   private SharedPreferenceConstants() {
     // only static methods and fields

@@ -225,6 +225,7 @@ public class App extends MultiDexApplication {
     OkHttpClient okHttpClient = okHttpBuilder.build();
 
     Retrofit retrofit = new Retrofit.Builder().baseUrl(Config.SERVER_URL)
+    //Retrofit retrofit = new Retrofit.Builder().baseUrl(SharedPreferenceHelper.getBaseUrl())
         .addConverterFactory(GsonConverterFactory.create(getGsonInstance()))
         .client(okHttpClient)
         .build();
