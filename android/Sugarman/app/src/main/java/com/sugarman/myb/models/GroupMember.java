@@ -1,6 +1,6 @@
 package com.sugarman.myb.models;
 
-import com.sugarman.myb.adapters.GroupMembersAdapter;
+import com.sugarman.myb.ui.activities.groupDetails.adapter.GroupMembersAdapter;
 import com.sugarman.myb.api.models.responses.Member;
 
 public class GroupMember extends Member {

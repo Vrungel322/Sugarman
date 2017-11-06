@@ -106,7 +106,6 @@ import com.squareup.picasso.Clear;
 import com.squareup.picasso.Picasso;
 import com.sugarman.myb.App;
 import com.sugarman.myb.R;
-import com.sugarman.myb.adapters.GroupMembersAdapter;
 import com.sugarman.myb.api.clients.GetTrackingInfoClient;
 import com.sugarman.myb.api.clients.PokeClient;
 import com.sugarman.myb.api.models.responses.Group;
@@ -125,6 +124,7 @@ import com.sugarman.myb.models.GroupMember;
 import com.sugarman.myb.models.mentor.comments.MentorsCommentsEntity;
 import com.sugarman.myb.ui.activities.addMember.AddMemberActivity;
 import com.sugarman.myb.ui.activities.base.BaseActivity;
+import com.sugarman.myb.ui.activities.groupDetails.adapter.GroupMembersAdapter;
 import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.ui.views.CropSquareTransformation;
@@ -740,7 +740,7 @@ public class GroupDetailsActivity extends BaseActivity
       mentorId = "";
     }
 
-    membersAdapter = new GroupMembersAdapter(this, this, amIMentor);
+    membersAdapter = new GroupMembersAdapter(getMvpDelegate(),this, this, amIMentor);
     rcvMembers.setLayoutManager(
         new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
     rcvMembers.setAdapter(membersAdapter);

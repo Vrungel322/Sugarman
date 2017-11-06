@@ -1,4 +1,4 @@
-package com.sugarman.myb.adapters;
+package com.sugarman.myb.ui.activities.groupDetails.adapter;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -14,11 +14,14 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.arellomobile.mvp.MvpDelegate;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.Member;
+import com.sugarman.myb.base.MvpBaseRecyclerAdapter;
 import com.sugarman.myb.constants.Config;
 import com.sugarman.myb.listeners.ItemGroupMemberListener;
 import com.sugarman.myb.listeners.OnStepMembersActionListener;
@@ -35,8 +38,10 @@ import java.util.Locale;
 import java.util.Random;
 import timber.log.Timber;
 
-public class GroupMembersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
-    implements ItemGroupMemberListener {
+public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.ViewHolder>
+    implements ItemGroupMemberListener,IGroupMembersAdapterView {
+
+  @InjectPresenter GroupMembersAdapterPresenter mAdapterPresenter;
 
   private static final String TAG = GroupMembersAdapter.class.getName();
 
@@ -75,7 +80,8 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
   private final Handler handler;
 
-  public GroupMembersAdapter(Context context, OnStepMembersActionListener listener, boolean isMentor) {
+  public GroupMembersAdapter(MvpDelegate<?> parentDelegate,Context context, OnStepMembersActionListener listener, boolean isMentor) {
+    super(parentDelegate, "GroupMembersAdapter");
     this.context = context;
     amIMentor = isMentor;
     connectingAnimation = AnimationUtils.loadAnimation(context, R.anim.scale);
@@ -353,8 +359,9 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
   }
 
   @Override public void onClickMemberAvatar(int position) {
+    mAdapterPresenter.test();
 
-//    Timber.e("My ID " + SharedPreferenceHelper.getUserId() + ", myPosition = " + myPosition + " user clicked " + mData.get(position).getId());
+    Timber.e("My ID " + SharedPreferenceHelper.getUserId() + ", myPosition = " + myPosition + " user clicked " + mData.get(position).getId());
 
     if(amIMentor)
     {
@@ -500,6 +507,10 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
   }
 
+  @Override public void showTest(String s) {
+    Timber.e(s);
+  }
+
   private static class MemberHolder extends RecyclerView.ViewHolder
       implements View.OnClickListener {
 
@@ -536,6 +547,8 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
       switch (id) {
         case R.id.ll_group_member_container:
+          Timber.e("My ID " );
+
           if (mActionItemListener.get() != null) {
             mActionItemListener.get().onClickMemberAvatar(position);
           }
