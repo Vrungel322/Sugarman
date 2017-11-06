@@ -5,6 +5,7 @@ import com.sugarman.myb.api.models.requests.ReportStats;
 import com.sugarman.myb.api.models.responses.me.stats.Stats;
 import com.sugarman.myb.api.models.responses.users.Tokens;
 import com.sugarman.myb.api.models.responses.users.User;
+import com.sugarman.myb.constants.Config;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.constants.SharedPreferenceConstants;
 import java.text.DateFormat;
@@ -546,5 +547,16 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
   public static boolean getIsMentor()
   {
     return getBoolean("isMentor",false);
+  }
+
+  public static String getBaseUrl() {
+    Timber.e("getBaseUrl" + getString(SharedPreferenceConstants.BASE_URL, Config.SERVER_URL));
+
+    return getString(SharedPreferenceConstants.BASE_URL, Config.SERVER_URL);
+  }
+
+  public static void saveBaseUrl(String url) {
+    Timber.e("saveBaseUrl" + url);
+    putString(SharedPreferenceConstants.BASE_URL, url);
   }
 }
