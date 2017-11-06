@@ -19,6 +19,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Response;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
@@ -79,6 +80,9 @@ public interface ApiRx {
 
   @GET("/v1/get_comments/{mentorId}") Observable<MentorsCommentsStupidAbstraction> fetchComments(
       @Path("mentorId") String mentorId);
+
+  @DELETE("/v1/me/trackings/{tracking_id}/delete_user") Observable<Response<Void>> deleteUser(
+      @Path("tracking_id") String trackingId, @Body String userId);
 
   @POST("/v1/add_comment/{id_mentor}") Observable<Response<Void>> sendComment(
       @Path("id_mentor") String mentorId, @Body CommentEntity commentEntity);

@@ -12,8 +12,10 @@ import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.Group;
 import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.listeners.ApiGetTrackingInfoListener;
+import com.sugarman.myb.models.mentor.comments.MentorsCommentsEntity;
 import com.sugarman.myb.ui.views.CustomFontSpan;
 import com.sugarman.myb.ui.views.StrokeImage;
+import java.util.List;
 
 public class CongratulationsActivity extends NotificationFullScreenActivity
     implements ApiGetTrackingInfoListener {
@@ -51,7 +53,7 @@ public class CongratulationsActivity extends NotificationFullScreenActivity
     }
   }
 
-  @Override public void onApiGetTrackingInfoSuccess(Tracking tracking) {
+  @Override public void onApiGetTrackingInfoSuccess(Tracking tracking, List<MentorsCommentsEntity> commentsEntities) {
     Group group = tracking.getGroup();
 
     String description =

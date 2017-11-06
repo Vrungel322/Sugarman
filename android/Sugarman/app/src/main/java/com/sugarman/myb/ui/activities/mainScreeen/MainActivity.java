@@ -1293,6 +1293,10 @@ public class MainActivity extends GetUserInfoActivity
   public void openLink(String url) {
     if (url != null && !url.equals("") && !url.equals(" ")) {
       Timber.e("FCM URL " + url);
+      if(!url.contains("://"))
+      {
+        url = new String("http://" + url);
+      }
       Intent i = new Intent(Intent.ACTION_VIEW);
       i.setData(Uri.parse(url));
       startActivity(i);

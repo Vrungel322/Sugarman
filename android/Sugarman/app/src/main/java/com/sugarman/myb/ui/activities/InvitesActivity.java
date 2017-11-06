@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.greenrobot.eventbus.Subscribe;
+import timber.log.Timber;
 
 public class InvitesActivity extends BaseActivity
     implements View.OnClickListener, OnInvitesActionListener, ApiManageInvitesListener {
@@ -128,8 +129,9 @@ public class InvitesActivity extends BaseActivity
   @Override public void onDeclineInvite(Invite invite, int position) {
     Tracking tracking = invite.getTracking();
     long startTimestamp = tracking.getStartUTCDate().getTime();
-    if (System.currentTimeMillis() - startTimestamp > Config.INVITE_TIME_LIVE) {
+    if (System.currentTimeMillis() - startTimestamp > Config.INVITE_TIME_LIVE && !tracking.isMentors()) {
       String groupName = tracking.getGroup().getName();
+      Timber.e("MENTORS" + tracking.isMentors());
       showInviteUnavailableDialog(groupName);
       invitesAdapter.removeItem(position);
     } else {
@@ -142,7 +144,8 @@ public class InvitesActivity extends BaseActivity
   @Override public void onAcceptInvite(Invite invite, int position) {
     Tracking tracking = invite.getTracking();
     long startTimestamp = tracking.getStartUTCDate().getTime();
-    if (System.currentTimeMillis() - startTimestamp > Config.INVITE_TIME_LIVE) {
+    if (System.currentTimeMillis() - startTimestamp > Config.INVITE_TIME_LIVE && !tracking.isMentors()) {
+      Timber.e("MENTORS" + tracking.isMentors());
       String groupName = tracking.getGroup().getName();
       showInviteUnavailableDialog(groupName);
       invitesAdapter.removeItem(position);

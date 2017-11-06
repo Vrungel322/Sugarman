@@ -10,4 +10,6 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 @StateStrategyType(AddToEndSingleStrategy.class) public interface IGroupDetailsActivityView
     extends MvpView {
   void closeDialog();
+
+  void removeUser();
 }

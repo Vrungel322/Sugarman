@@ -21,6 +21,7 @@ import com.sugarman.myb.api.models.responses.Member;
 import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.constants.Config;
 import com.sugarman.myb.listeners.ApiRecreateGroupListener;
+import com.sugarman.myb.models.mentor.comments.MentorsCommentsEntity;
 import com.sugarman.myb.ui.views.CustomFontSpan;
 import com.sugarman.myb.ui.views.CustomFontTextView;
 import com.sugarman.myb.ui.views.StrokeImage;
@@ -134,7 +135,7 @@ public class FailedActivity extends NotificationFullScreenActivity
     }
   }
 
-  @Override public void onApiGetTrackingInfoSuccess(Tracking tracking) {
+  @Override public void onApiGetTrackingInfoSuccess(Tracking tracking, List<MentorsCommentsEntity> commentsEntities) {
     Group group = tracking.getGroup();
     List<Member> members = new ArrayList<>(Arrays.asList(tracking.getFailingMembers()));
     List<Member> notFailingMembers =

@@ -17,6 +17,7 @@ import com.arellomobile.mvp.presenter.ProvidePresenter;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.base.BasicActivity;
+import com.sugarman.myb.ui.activities.mentorList.MentorListActivity;
 import com.sugarman.myb.ui.activities.productDetail.ProductDetailsActivity;
 import com.sugarman.myb.utils.ItemClickSupport;
 import java.util.ArrayList;
@@ -56,8 +57,14 @@ public class ShopActivity extends BasicActivity implements IShopActivityView, Vi
 
     ItemClickSupport.addTo(mRecyclerViewProducts)
         .setOnItemClickListener((recyclerView, position, v) -> {
-          Intent intent = new Intent(ShopActivity.this, ProductDetailsActivity.class);
-          intent.putExtra(PRODUCT, mProductsAdapter.getItem(position));
+          Intent intent;
+          if(position==3) {
+            intent = new Intent(ShopActivity.this, MentorListActivity.class);
+          }
+                else {
+            intent = new Intent(ShopActivity.this, ProductDetailsActivity.class);
+            intent.putExtra(PRODUCT, mProductsAdapter.getItem(position));
+          }
           startActivity(intent);
         });
 

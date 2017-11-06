@@ -235,8 +235,13 @@ public class NotificationsFragment extends BaseFragment
         break;
       default:
         if (item.getUrl() != null) {
+          String url = item.getUrl();
           Intent i = new Intent(Intent.ACTION_VIEW);
-          i.setData(Uri.parse(item.getUrl()));
+          if(!url.contains("://"))
+          {
+            url = new String("http://" + url);
+          }
+          i.setData(Uri.parse(url));
           startActivity(i);
         }
         Log.e(TAG, "not processed notification type: " + type);

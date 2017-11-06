@@ -13,9 +13,11 @@ import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.DailySugarman;
 import com.sugarman.myb.api.models.responses.Group;
 import com.sugarman.myb.api.models.responses.Tracking;
+import com.sugarman.myb.models.mentor.comments.MentorsCommentsEntity;
 import com.sugarman.myb.ui.views.CustomFontSpan;
 import com.sugarman.myb.ui.views.StrokeImage;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
+import java.util.List;
 import timber.log.Timber;
 
 public class DailyActivity extends NotificationFullScreenActivity {
@@ -55,7 +57,7 @@ public class DailyActivity extends NotificationFullScreenActivity {
     }
   }
 
-  @Override public void onApiGetTrackingInfoSuccess(Tracking tracking) {
+  @Override public void onApiGetTrackingInfoSuccess(Tracking tracking, List<MentorsCommentsEntity> commentsEntities) {
     DailySugarman sugarman = tracking.getDailySugarman();
     Group group = tracking.getGroup();
 

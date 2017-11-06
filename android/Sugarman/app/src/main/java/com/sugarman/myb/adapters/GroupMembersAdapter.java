@@ -62,6 +62,8 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
   private int countMembers = 0;
   private int myPosition = 0;
 
+  private boolean amIMentor = false;
+
   private final List<GroupMember> mData = new ArrayList<>();
 
   private final String userId;
@@ -73,8 +75,9 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
   private final Handler handler;
 
-  public GroupMembersAdapter(Context context, OnStepMembersActionListener listener) {
+  public GroupMembersAdapter(Context context, OnStepMembersActionListener listener, boolean isMentor) {
     this.context = context;
+    amIMentor = isMentor;
     connectingAnimation = AnimationUtils.loadAnimation(context, R.anim.scale);
     userId = SharedPreferenceHelper.getUserId();
     brokenGlassIds = SharedPreferenceHelper.getBrokenGlassIds();
@@ -353,28 +356,38 @@ public class GroupMembersAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 //    Timber.e("My ID " + SharedPreferenceHelper.getUserId() + ", myPosition = " + myPosition + " user clicked " + mData.get(position).getId());
 
-    if (position >= 0 && position < mData.size()) {
-      if (actionListener.get() != null) {
-        GroupMember member = mData.get(position);
-        int memberSteps = member.getSteps();
-        if (myPosition == -1) {
-          actionListener.get().onPokeInForeignGroup();
-        } else if (TextUtils.equals(member.getId(), userId)) {
-          actionListener.get().onPokeSelf();
-        } else if (memberSteps >= Config.MAX_STEPS_PER_DAY) {
-          actionListener.get().onPokeCompletedDaily();
-        } else if (memberSteps >= userSteps) {
-          actionListener.get().onPokeMoreThatSelf();
-        } else {
-          member.setBroken(true);
-          notifyItemChanged(position);
-          actionListener.get().onPokeMember(member);
-        }
-      }
-
+    if(amIMentor)
+    {
+      GroupMember member = mData.get(position);
+      member.setBroken(true);
       notifyItemChanged(position);
-    } else {
-      notifyDataSetChanged();
+      actionListener.get().onPokeMember(member);
+    }
+
+    else {
+      if (position >= 0 && position < mData.size()) {
+        if (actionListener.get() != null) {
+          GroupMember member = mData.get(position);
+          int memberSteps = member.getSteps();
+          if (myPosition == -1) {
+            actionListener.get().onPokeInForeignGroup();
+          } else if (TextUtils.equals(member.getId(), userId)) {
+            actionListener.get().onPokeSelf();
+          } else if (memberSteps >= Config.MAX_STEPS_PER_DAY) {
+            actionListener.get().onPokeCompletedDaily();
+          } else if (memberSteps >= userSteps) {
+            actionListener.get().onPokeMoreThatSelf();
+          } else {
+            member.setBroken(true);
+            notifyItemChanged(position);
+            actionListener.get().onPokeMember(member);
+          }
+        }
+
+        notifyItemChanged(position);
+      } else {
+        notifyDataSetChanged();
+      }
     }
   }
 

@@ -7,6 +7,8 @@ import com.sugarman.myb.utils.StringHelper;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.TimeZone;
+import lombok.Getter;
+import lombok.Setter;
 
 public class Tracking implements Parcelable {
 
@@ -27,6 +29,7 @@ public class Tracking implements Parcelable {
       return new Tracking[size];
     }
   };
+
 
   @SerializedName("challenge_name") private String challengeName;
 
@@ -51,6 +54,8 @@ public class Tracking implements Parcelable {
   @SerializedName("id") private String id;
 
   @SerializedName("members") private Member[] members;
+
+  @Getter @Setter @SerializedName("is_mentors") boolean isMentors;
 
   public Member[] getNotFailingMembers() {
     return notFailingMembers;

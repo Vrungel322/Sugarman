@@ -158,6 +158,11 @@ public class RestApi {
     return api.fetchComments(mentorId);
   }
 
+  public Observable<Response<Void>> deleteUser (String trackingId, String userId)
+  {
+    return api.deleteUser(trackingId, userId);
+  }
+
   public Observable<Response<Void>> sendComment(String mentorId, CommentEntity commentEntity) {
     return api.sendComment(mentorId, commentEntity);
   }

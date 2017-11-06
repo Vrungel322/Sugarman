@@ -20,10 +20,21 @@ import rx.Subscription;
         mDataManager.sendComment(mentorsId, String.valueOf(rating), commentBody)
             .compose(ThreadSchedulers.applySchedulers())
             .subscribe(voidResponse -> {
-              if (voidResponse.code() == 200){
+              if (voidResponse.code() == 200) {
                 getViewState().closeDialog();
               }
             }, Throwable::printStackTrace);
+    addToUnsubscription(subscription);
+  }
+
+  public void deleteUser(String trackingId, String userId) {
+    Subscription subscription = mDataManager.deleteUser(trackingId, userId)
+        .compose(ThreadSchedulers.applySchedulers())
+        .subscribe(voidResponse -> {
+          if (voidResponse.code() == 200) {
+            getViewState().removeUser();
+          }
+        }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 }

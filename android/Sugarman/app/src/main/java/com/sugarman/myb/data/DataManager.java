@@ -213,4 +213,9 @@ public class DataManager {
       String commentBody) {
     return mRestApi.sendComment(mentorsId, new CommentEntity(rating, commentBody));
   }
+
+  public Observable<Response<Void>> deleteUser(String trackingId, String userId)
+  {
+    return mRestApi.deleteUser(trackingId, userId);
+  }
 }
