@@ -20,16 +20,6 @@ public class Tracking implements Parcelable {
         }
       };
 
-  public static final Creator<Tracking> CREATOR = new Creator<Tracking>() {
-    @Override public Tracking createFromParcel(Parcel in) {
-      return new Tracking(in);
-    }
-
-    @Override public Tracking[] newArray(int size) {
-      return new Tracking[size];
-    }
-  };
-
 
   @SerializedName("challenge_name") private String challengeName;
 
@@ -56,6 +46,38 @@ public class Tracking implements Parcelable {
   @SerializedName("members") private Member[] members;
 
   @Getter @Setter @SerializedName("is_mentors") boolean isMentors;
+
+  protected Tracking(Parcel in) {
+    challengeName = in.readString();
+    createdAt = in.readString();
+    dailySugarman = in.readParcelable(DailySugarman.class.getClassLoader());
+    endDate = in.readString();
+    failingMembers = in.createTypedArray(Member.CREATOR);
+    group = in.readParcelable(Group.class.getClassLoader());
+    groupOwnerId = in.readString();
+    groupOnwerName = in.readString();
+    groupStepsCount = in.readInt();
+    groupStepsCountWithoutMe = in.readInt();
+    id = in.readString();
+    members = in.createTypedArray(Member.CREATOR);
+    isMentors = in.readByte() != 0;
+    notFailingMembers = in.createTypedArray(Member.CREATOR);
+    pending = in.createTypedArray(Member.CREATOR);
+    startDate = in.readString();
+    status = in.readString();
+    timezone = in.readString();
+    updatedAt = in.readString();
+  }
+
+  public static final Creator<Tracking> CREATOR = new Creator<Tracking>() {
+    @Override public Tracking createFromParcel(Parcel in) {
+      return new Tracking(in);
+    }
+
+    @Override public Tracking[] newArray(int size) {
+      return new Tracking[size];
+    }
+  };
 
   public Member[] getNotFailingMembers() {
     return notFailingMembers;
@@ -89,25 +111,6 @@ public class Tracking implements Parcelable {
 
   }
 
-  protected Tracking(Parcel in) {
-    createdAt = in.readString();
-    dailySugarman = in.readParcelable(DailySugarman.class.getClassLoader());
-    endDate = in.readString();
-    startDate = in.readString();
-    updatedAt = in.readString();
-    challengeName = in.readString();
-    failingMembers = in.createTypedArray(Member.CREATOR);
-    group = in.readParcelable(Group.class.getClassLoader());
-    groupOwnerId = in.readString();
-    groupOnwerName = in.readString();
-    groupStepsCount = in.readInt();
-    id = in.readString();
-    members = in.createTypedArray(Member.CREATOR);
-    notFailingMembers = in.createTypedArray(Member.CREATOR);
-    pending = in.createTypedArray(Member.CREATOR);
-    status = in.readString();
-    timezone = in.readString();
-  }
 
   public String getChallengeName() {
     return challengeName;
@@ -268,29 +271,6 @@ public class Tracking implements Parcelable {
     return dailySugarman;
   }
 
-  @Override public int describeContents() {
-    return 0;
-  }
-
-  @Override public void writeToParcel(Parcel dest, int flags) {
-    dest.writeString(createdAt);
-    dest.writeParcelable(dailySugarman, flags);
-    dest.writeString(endDate);
-    dest.writeString(startDate);
-    dest.writeString(updatedAt);
-    dest.writeString(challengeName);
-    dest.writeTypedArray(failingMembers, flags);
-    dest.writeParcelable(group, flags);
-    dest.writeString(groupOwnerId);
-    dest.writeString(groupOnwerName);
-    dest.writeInt(groupStepsCount);
-    dest.writeString(id);
-    dest.writeTypedArray(members, flags);
-    dest.writeTypedArray(notFailingMembers, flags);
-    dest.writeTypedArray(pending, flags);
-    dest.writeString(status);
-    dest.writeString(timezone);
-  }
 
   public int getGroupStepsCountWithoutMe() {
     return groupStepsCountWithoutMe;
@@ -298,5 +278,31 @@ public class Tracking implements Parcelable {
 
   public void setGroupStepsCountWithoutMe(int groupStepsCountWithoutMe) {
     this.groupStepsCountWithoutMe = groupStepsCountWithoutMe;
+  }
+
+  @Override public int describeContents() {
+    return 0;
+  }
+
+  @Override public void writeToParcel(Parcel parcel, int i) {
+    parcel.writeString(challengeName);
+    parcel.writeString(createdAt);
+    parcel.writeParcelable(dailySugarman, i);
+    parcel.writeString(endDate);
+    parcel.writeTypedArray(failingMembers, i);
+    parcel.writeParcelable(group, i);
+    parcel.writeString(groupOwnerId);
+    parcel.writeString(groupOnwerName);
+    parcel.writeInt(groupStepsCount);
+    parcel.writeInt(groupStepsCountWithoutMe);
+    parcel.writeString(id);
+    parcel.writeTypedArray(members, i);
+    parcel.writeByte((byte) (isMentors ? 1 : 0));
+    parcel.writeTypedArray(notFailingMembers, i);
+    parcel.writeTypedArray(pending, i);
+    parcel.writeString(startDate);
+    parcel.writeString(status);
+    parcel.writeString(timezone);
+    parcel.writeString(updatedAt);
   }
 }

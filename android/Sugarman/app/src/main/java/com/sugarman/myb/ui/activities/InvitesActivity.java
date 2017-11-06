@@ -68,6 +68,7 @@ public class InvitesActivity extends BaseActivity
       if (!TextUtils.equals(status, Constants.STATUS_FAILED) && !TextUtils.equals(status,
           Constants.STATUS_COMPLETED)) {
         actualInvites.add(invite);
+        Timber.e("Mentors " + invite.getTracking().isMentors());
       } else {
         App.getEventBus().post(new InviteRemovedEvent(invite.getId()));
       }

@@ -212,6 +212,7 @@ public class MainActivity extends GetUserInfoActivity
       List<Invite> actualInvites = new ArrayList<>(invites.length);
       for (Invite invite : invites) {
         String status = invite.getTracking().getStatus();
+        Timber.e("IS MENTOR GROUP " + invite.getTracking().isMentors());
         if (!TextUtils.equals(status, Constants.STATUS_FAILED) && !TextUtils.equals(status,
             Constants.STATUS_COMPLETED)) {
           actualInvites.add(invite);
