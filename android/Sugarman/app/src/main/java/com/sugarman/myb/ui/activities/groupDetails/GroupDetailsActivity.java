@@ -168,7 +168,6 @@ public class GroupDetailsActivity extends BaseActivity
   private static final int TAKE_PICTURE = 12;
   private final int DELAY_REFRESH_GROUP_INFO = 5000;
   private final Handler handler = App.getHandlerInstance();
-  private boolean amIMentor = false;
   protected boolean doNotHideProgressNow = false;
   protected boolean doNotShowProgressNow = false;
   protected Retrofit client;
@@ -203,6 +202,7 @@ public class GroupDetailsActivity extends BaseActivity
   RelativeLayout rlChat, rlInfo;
   ImageView attachButton;
   String timeFormatted;
+  private boolean amIMentor = false;
   private RelativeLayout rlComments;
   private CardView cvCommentContainer;
   private TextView tvCancel;
@@ -725,8 +725,6 @@ public class GroupDetailsActivity extends BaseActivity
 
     activeUser = user;
 
-
-
     vCross.setOnClickListener(this);
     vEdit.setOnClickListener(this);
 
@@ -734,13 +732,12 @@ public class GroupDetailsActivity extends BaseActivity
     isMentorGroup = getIntent().getBooleanExtra("isMentorGroup", false);
     if (isMentorGroup) {
       mentorId = getIntent().getStringExtra("mentorId");
-      if(mentorId.equals(SharedPreferenceHelper.getUserId()))
-        amIMentor = true;
+      if (mentorId.equals(SharedPreferenceHelper.getUserId())) amIMentor = true;
     } else {
       mentorId = "";
     }
 
-    membersAdapter = new GroupMembersAdapter(getMvpDelegate(),this, this, amIMentor);
+    membersAdapter = new GroupMembersAdapter(getMvpDelegate(), this, this, amIMentor);
     rcvMembers.setLayoutManager(
         new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
     rcvMembers.setAdapter(membersAdapter);
@@ -878,7 +875,7 @@ public class GroupDetailsActivity extends BaseActivity
   }
 
   @OnClick(R.id.tvOk) public void tvOkClicked() {
-    mPresenter.sendComment(mentorId,mAppCompatRatingBarMentor.getRating(),
+    mPresenter.sendComment(mentorId, mAppCompatRatingBarMentor.getRating(),
         mEditTextCommentBody.getText().toString());
   }
 
@@ -898,7 +895,6 @@ public class GroupDetailsActivity extends BaseActivity
     }).start();
   }
 
-
   private void openCommentDialog() {
     // TODO: 03.11.2017 check if comments already exist for this mentor
     AlphaAnimation animation1 = new AlphaAnimation(0.0f, 1.0f);
@@ -907,7 +903,6 @@ public class GroupDetailsActivity extends BaseActivity
     rlComments.setAlpha(1.0f);
     rlComments.startAnimation(animation1);
     rlComments.setVisibility(View.VISIBLE);
-
   }
 
   public void setupUI(View view, final Activity activity) {
@@ -1786,11 +1781,9 @@ public class GroupDetailsActivity extends BaseActivity
   }
 
   @Override public void onBackPressed() {
-    if(rlComments.getVisibility() == View.VISIBLE)
-    {
+    if (rlComments.getVisibility() == View.VISIBLE) {
       hideCommentsPanel();
-    }
-    else {
+    } else {
       Intent data = new Intent();
       data.putExtra(Constants.INTENT_TRACKING_ID, trackingId);
       setResult(RESULT_OK, data);
@@ -1828,11 +1821,13 @@ public class GroupDetailsActivity extends BaseActivity
     }
   }
 
-  @Override public void onApiGetTrackingInfoSuccess(Tracking tracking, List<MentorsCommentsEntity> commentsEntities) {
+  @Override public void onApiGetTrackingInfoSuccess(Tracking tracking,
+      List<MentorsCommentsEntity> commentsEntities) {
     if (tracking != null) {
-      mTracking= tracking;
-      if(commentsEntities.size()>0)
-      mComment = commentsEntities.get(0);
+      mTracking = tracking;
+      if (commentsEntities != null && commentsEntities.size() > 0) {
+        mComment = commentsEntities.get(0);
+      }
       Group group = tracking.getGroup();
       members = tracking.getMembers();
       pendings = tracking.getPending();
@@ -1844,12 +1839,10 @@ public class GroupDetailsActivity extends BaseActivity
         thread.start();
       }
 
-      if(mComment!=null && rlComments.getVisibility()==View.GONE)
-      {
+      if (mComment != null && rlComments.getVisibility() == View.GONE) {
         mEditTextCommentBody.setText(mComment.getAuthorsComment());
         mAppCompatRatingBarMentor.setRating(Float.valueOf(mComment.getAuthorsRating()));
       }
-
 
       lessThanYou.clear();
       for (Member member : members) {
@@ -1990,7 +1983,6 @@ public class GroupDetailsActivity extends BaseActivity
       handler.postDelayed(runnable, DELAY_REFRESH_GROUP_INFO);
     }
   }
-
 
   @Override public void onApiGetTrackingInfoFailure(String message) {
     if (DeviceHelper.isNetworkConnected()) {
