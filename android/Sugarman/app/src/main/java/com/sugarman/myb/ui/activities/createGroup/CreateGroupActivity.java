@@ -66,6 +66,7 @@ import com.sugarman.myb.ui.activities.base.BaseActivity;
 import com.sugarman.myb.ui.activities.editProfile.EditProfileActivity;
 import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
+import com.sugarman.myb.ui.dialogs.sendVkInvitation.SendVkInvitationDialog;
 import com.sugarman.myb.ui.views.MaskImage;
 import com.sugarman.myb.utils.AnalyticsHelper;
 import com.sugarman.myb.utils.BitmapUtils;
@@ -163,7 +164,6 @@ public class CreateGroupActivity extends BaseActivity
 
           List<String> recipients = result.getRequestRecipients();
           fbApiClient.getFriendsInfo(recipients);
-
         }
 
         @Override public void onCancel() {
@@ -754,20 +754,17 @@ public class CreateGroupActivity extends BaseActivity
       }
     }
     if (!intiteByVk.isEmpty()) {
-      finish();
-      //SendVkInvitationDialog.newInstance(intiteByVk)
-      //    .show(getFragmentManager(), "SendVkInvitationDialog");
+      //finish();
+      SendVkInvitationDialog.newInstance(intiteByVk)
+          .show(getFragmentManager(), "SendVkInvitationDialog");
     } else {
+      Timber.e("1");
       finish();
     }
     if (intiteByVk.isEmpty() && idsFb.isEmpty()) {
+      Timber.e("2");
       finish();
     }
-    else {
-      finish();
-    }
-    if(intiteByVk.isEmpty() && idsFb.isEmpty())
-    {finish();}
   }
 
   @Override public void onApiJoinGroupFailure(String message) {
@@ -938,7 +935,7 @@ public class CreateGroupActivity extends BaseActivity
     showProgressFragmentTemp();
     vApply.setEnabled(false);
     List<String> facebookElements = new ArrayList<>();
-    List<FacebookFriend> vkElements = new ArrayList<>();
+    ArrayList<FacebookFriend> vkElements = new ArrayList<>();
 
     //chech if some of members are present in mDistinktorList, if yes -> send him msg in social nenwork , else by sms
     //______________________________________________________________________________________________
