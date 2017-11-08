@@ -9,5 +9,6 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
  */
 @StateStrategyType(AddToEndSingleStrategy.class) public interface IGroupMembersAdapterView
     extends MvpView {
-  void showTest(String s);
+
+  void removeUser(int position);
 }

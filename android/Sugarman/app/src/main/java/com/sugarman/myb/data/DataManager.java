@@ -6,6 +6,7 @@ import com.sugarman.myb.api.RestApi;
 import com.sugarman.myb.api.models.levelSystem.TaskEntity;
 import com.sugarman.myb.api.models.requests.CheckPhoneRequest;
 import com.sugarman.myb.api.models.requests.CheckVkRequest;
+import com.sugarman.myb.api.models.requests.DeleteUserRequest;
 import com.sugarman.myb.api.models.requests.PurchaseDataRequest;
 import com.sugarman.myb.api.models.requests.RefreshUserDataRequest;
 import com.sugarman.myb.api.models.responses.CheckPhoneResponse;
@@ -216,6 +217,7 @@ public class DataManager {
 
   public Observable<Response<Void>> deleteUser(String trackingId, String userId)
   {
-    return mRestApi.deleteUser(trackingId, userId);
+    DeleteUserRequest request = new DeleteUserRequest(userId);
+    return mRestApi.deleteUser(trackingId, request);
   }
 }

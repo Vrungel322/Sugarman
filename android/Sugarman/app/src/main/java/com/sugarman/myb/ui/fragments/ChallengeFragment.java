@@ -147,103 +147,105 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
       final Member[] members = getMembers();
       Member[] pendings = getPendingMembers();
 
-      Arrays.sort(members, Member.BY_STEPS_ASC);
+      if(members.length>0) {
+        Arrays.sort(members, Member.BY_STEPS_ASC);
 
-      Member best = members[members.length - 1];
+        Member best = members[members.length - 1];
 
-      TextView bestName = (TextView) (root.findViewById(R.id.best_name));
-      TextView bestSteps = (TextView) root.findViewById(R.id.best_steps);
-      ImageView bestAvatar = (ImageView) root.findViewById(R.id.iv_best_avatar);
+        TextView bestName = (TextView) (root.findViewById(R.id.best_name));
+        TextView bestSteps = (TextView) root.findViewById(R.id.best_steps);
+        ImageView bestAvatar = (ImageView) root.findViewById(R.id.iv_best_avatar);
 
-      String str = "";
-      str = best.getName() == null ? "" : best.getName();
-      Timber.e("Best " + best.getName());
-      if (str.contains(" ")) str = str.replaceAll("( +)", " ").trim();
+        String str = "";
+        str = best.getName() == null ? "" : best.getName();
+        Timber.e("Best " + best.getName());
+        if (str.contains(" ")) str = str.replaceAll("( +)", " ").trim();
 
-      String name = str;
-      if (str.length() > 0 && str.contains(" ")) {
-        name = str.substring(0, (best.getName().indexOf(" ")));
+        String name = str;
+        if (str.length() > 0 && str.contains(" ")) {
+          name = str.substring(0, (best.getName().indexOf(" ")));
 
-        bestName.setText(name);
-      } else {
-        bestName.setText(str);
-      }
-      bestSteps.setText(String.format(Locale.US, "%,d", best.getSteps()));
-      if (best.getPictureUrl() == null || best.getPictureUrl().equals(" ") || best.getPictureUrl()
-          .equals("")) {
-        best.setPictureUrl("https://sugarman-myb.s3.amazonaws.com/Group_New.png");
-      }
+          bestName.setText(name);
+        } else {
+          bestName.setText(str);
+        }
+        bestSteps.setText(String.format(Locale.US, "%,d", best.getSteps()));
+        if (best.getPictureUrl() == null || best.getPictureUrl().equals(" ") || best.getPictureUrl()
+            .equals("")) {
+          best.setPictureUrl("https://sugarman-myb.s3.amazonaws.com/Group_New.png");
+        }
 
-      Picasso.with(getActivity())
-          .load(best.getPictureUrl())
-          //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-          .placeholder(R.drawable.ic_gray_avatar)
-          .error(R.drawable.ic_red_avatar)
-          .transform(new CropCircleTransformation(0xff7ECC10, 1))
-          .into(bestAvatar);
+        Picasso.with(getActivity())
+            .load(best.getPictureUrl())
+            //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+            .placeholder(R.drawable.ic_gray_avatar)
+            .error(R.drawable.ic_red_avatar)
+            .transform(new CropCircleTransformation(0xff7ECC10, 1))
+            .into(bestAvatar);
 
-      Member laziest = members[0];
+        Member laziest = members[0];
 
-      TextView laziestName = (TextView) (root.findViewById(R.id.laziest_name));
-      TextView laziestSteps = (TextView) root.findViewById(R.id.laziest_steps);
-      ImageView laziestAvatar = (ImageView) root.findViewById(R.id.iv_laziest_avatar);
+        TextView laziestName = (TextView) (root.findViewById(R.id.laziest_name));
+        TextView laziestSteps = (TextView) root.findViewById(R.id.laziest_steps);
+        ImageView laziestAvatar = (ImageView) root.findViewById(R.id.iv_laziest_avatar);
 
-      str = laziest.getName();
-      str = str.replaceAll("( +)", " ").trim();
-      if (str.length() > 0 && str.contains(" ")) {
-        name = str.substring(0, (laziest.getName().indexOf(" ")));
-      }
-      else name = str;
-
-      laziestName.setText(name);
-      laziestSteps.setText(String.format(Locale.US, "%,d", laziest.getSteps()));
-      if(laziest.getPictureUrl()==null||laziest.getPictureUrl().equals("") || laziest.getPictureUrl().equals(" "))
-        laziest.setPictureUrl("https://sugarman-myb.s3.amazonaws.com/Group_New.png");
-      Picasso.with(getActivity())
-          .load(laziest.getPictureUrl())
-          //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-          .placeholder(R.drawable.ic_gray_avatar)
-          .error(R.drawable.ic_red_avatar)
-          .transform(new CropCircleTransformation(0xffff0000, 1))
-          .into(laziestAvatar);
-      TextView fastestName = (TextView) (root.findViewById(R.id.fastest_name));
-      TextView fastestSteps = (TextView) root.findViewById(R.id.fastest_steps);
-      ImageView fastestAvatar = (ImageView) root.findViewById(R.id.iv_fastest_avatar);
-      if (tracking.hasDailyWinner()) {
-        Member fastest = tracking.getDailySugarman().getUser();
-
-        str = fastest.getName();
+        str = laziest.getName();
         str = str.replaceAll("( +)", " ").trim();
-        if (str.length() > 0) name = str.substring(0, (fastest.getName().indexOf(" ")));
+        if (str.length() > 0 && str.contains(" ")) {
+          name = str.substring(0, (laziest.getName().indexOf(" ")));
+        } else name = str;
 
-        fastestName.setText(name);
-        fastestSteps.setText(String.format(Locale.US, "%,d", fastest.getSteps()));
+        laziestName.setText(name);
+        laziestSteps.setText(String.format(Locale.US, "%,d", laziest.getSteps()));
+        if (laziest.getPictureUrl() == null || laziest.getPictureUrl().equals("") || laziest.getPictureUrl().equals(" "))
+          laziest.setPictureUrl("https://sugarman-myb.s3.amazonaws.com/Group_New.png");
         Picasso.with(getActivity())
-            .load(fastest.getPictureUrl())
+            .load(laziest.getPictureUrl())
             //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
             .placeholder(R.drawable.ic_gray_avatar)
             .error(R.drawable.ic_red_avatar)
             .transform(new CropCircleTransformation(0xffff0000, 1))
-            .into(fastestAvatar);
-      } else {
-        fastestName.setText(getResources().getString(R.string.sugarman_is));
-        fastestSteps.setText(getResources().getString(R.string.todays_fastest));
-        Picasso.with(getActivity())
-            .load(R.drawable.sugar_next)
-            //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-            .placeholder(R.drawable.ic_gray_avatar)
-            .error(R.drawable.ic_red_avatar)
-            .transform(new CropCircleTransformation(0xffff0000, 1))
-            .into(fastestAvatar);
+            .into(laziestAvatar);
+        TextView fastestName = (TextView) (root.findViewById(R.id.fastest_name));
+        TextView fastestSteps = (TextView) root.findViewById(R.id.fastest_steps);
+        ImageView fastestAvatar = (ImageView) root.findViewById(R.id.iv_fastest_avatar);
+        if (tracking.hasDailyWinner()) {
+          Member fastest = tracking.getDailySugarman().getUser();
+
+          str = fastest.getName();
+          str = str.replaceAll("( +)", " ").trim();
+          if (str.length() > 0) name = str.substring(0, (fastest.getName().indexOf(" ")));
+
+          fastestName.setText(name);
+          fastestSteps.setText(String.format(Locale.US, "%,d", fastest.getSteps()));
+          Picasso.with(getActivity())
+              .load(fastest.getPictureUrl())
+              //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+              .placeholder(R.drawable.ic_gray_avatar)
+              .error(R.drawable.ic_red_avatar)
+              .transform(new CropCircleTransformation(0xffff0000, 1))
+              .into(fastestAvatar);
+        } else {
+          fastestName.setText(getResources().getString(R.string.sugarman_is));
+          fastestSteps.setText(getResources().getString(R.string.todays_fastest));
+          Picasso.with(getActivity())
+              .load(R.drawable.sugar_next)
+              //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+              .placeholder(R.drawable.ic_gray_avatar)
+              .error(R.drawable.ic_red_avatar)
+              .transform(new CropCircleTransformation(0xffff0000, 1))
+              .into(fastestAvatar);
+        }
       }
 
       TextView allName = (TextView) (root.findViewById(R.id.all_name));
       final TextView tv_allSteps = (TextView) root.findViewById(R.id.all_steps);
       ImageView allAvatar = (ImageView) root.findViewById(R.id.iv_all_avatar);
-      str = Integer.toString(tracking.getMembers().length) + " " + getResources().getString(
+      String str = Integer.toString(tracking.getMembers().length) + " " + getResources().getString(
           R.string.users);
 
       allName.setText(str);
+
       Picasso.with(getActivity())
           .load(R.drawable.white_bg)
           //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)

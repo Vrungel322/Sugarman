@@ -4,6 +4,7 @@ import android.util.Log;
 import com.sugarman.myb.api.models.levelSystem.TaskEntity;
 import com.sugarman.myb.api.models.requests.CheckPhoneRequest;
 import com.sugarman.myb.api.models.requests.CheckVkRequest;
+import com.sugarman.myb.api.models.requests.DeleteUserRequest;
 import com.sugarman.myb.api.models.requests.PurchaseDataRequest;
 import com.sugarman.myb.api.models.requests.RefreshUserDataRequest;
 import com.sugarman.myb.api.models.responses.CheckPhoneResponse;
@@ -158,7 +159,7 @@ public class RestApi {
     return api.fetchComments(mentorId);
   }
 
-  public Observable<Response<Void>> deleteUser (String trackingId, String userId)
+  public Observable<Response<Void>> deleteUser (String trackingId, DeleteUserRequest userId)
   {
     return api.deleteUser(trackingId, userId);
   }

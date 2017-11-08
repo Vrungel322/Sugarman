@@ -3,6 +3,7 @@ package com.sugarman.myb.api;
 import com.sugarman.myb.api.models.levelSystem.TaskEntity;
 import com.sugarman.myb.api.models.requests.CheckPhoneRequest;
 import com.sugarman.myb.api.models.requests.CheckVkRequest;
+import com.sugarman.myb.api.models.requests.DeleteUserRequest;
 import com.sugarman.myb.api.models.requests.PurchaseDataRequest;
 import com.sugarman.myb.api.models.requests.RefreshUserDataRequest;
 import com.sugarman.myb.api.models.responses.CheckPhoneResponse;
@@ -81,8 +82,8 @@ public interface ApiRx {
   @GET("/v1/get_comments/{mentorId}") Observable<MentorsCommentsStupidAbstraction> fetchComments(
       @Path("mentorId") String mentorId);
 
-  @DELETE("/v1/me/trackings/{tracking_id}/delete_user") Observable<Response<Void>> deleteUser(
-      @Path("tracking_id") String trackingId, @Body String userId);
+  @POST("/v1/me/trackings/{tracking_id}/delete_user") Observable<Response<Void>> deleteUser(
+      @Path("tracking_id") String trackingId, @Body DeleteUserRequest userId);
 
   @POST("/v1/add_comment/{id_mentor}") Observable<Response<Void>> sendComment(
       @Path("id_mentor") String mentorId, @Body CommentEntity commentEntity);

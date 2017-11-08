@@ -68,6 +68,17 @@
                     </RelativeLayout>
 
                     <ImageView
+                        android:id="@+id/ivEditMentor"
+                        android:layout_width="47dp"
+                        android:layout_height="47dp"
+                        android:padding="9dp"
+                        android:layout_gravity="center"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_settings"
+                        android:visibility="gone"
+                        tools:visibility="gone"
+                        />
+                    <ImageView
                         android:id="@+id/iv_edit"
                         android:layout_width="47dp"
                         android:layout_height="47dp"

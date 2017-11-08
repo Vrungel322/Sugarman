@@ -184,6 +184,7 @@ public class GroupDetailsActivity extends BaseActivity
   @BindView(R.id.tvOk) TextView tvOk;
   @BindView(R.id.rbMentor) AppCompatRatingBar mAppCompatRatingBarMentor;
   @BindView(R.id.etCommentBody) EditText mEditTextCommentBody;
+  @BindView(R.id.ivEditMentor) ImageView ivEditMentor;
   Thread thread = new Thread();
   FrameLayout parentLayout;
   View borderline;
@@ -565,6 +566,7 @@ public class GroupDetailsActivity extends BaseActivity
               });
         }
       };
+
   private SocketManagerListener socketListener = new SocketManagerListener() {
     @Override public void onConnect() {
       LogCS.w("LOG", "CONNECTED TO SOCKET");
@@ -609,7 +611,17 @@ public class GroupDetailsActivity extends BaseActivity
   private boolean isMentorGroup;
   private String mentorId;
   private Tracking mTracking;
+  private boolean editMode = false;
   private MentorsCommentsEntity mComment;
+
+
+  @OnClick (R.id.ivEditMentor) public void editMentorClicked()
+  {
+    editMode = !editMode;
+    Timber.e("clicked edit " + editMode);
+    membersAdapter.setEditMode(editMode);
+  }
+
 
   @Override protected void onCreate(Bundle savedStateInstance) {
     setContentView(R.layout.activity_group_details);
@@ -732,12 +744,15 @@ public class GroupDetailsActivity extends BaseActivity
     isMentorGroup = getIntent().getBooleanExtra("isMentorGroup", false);
     if (isMentorGroup) {
       mentorId = getIntent().getStringExtra("mentorId");
-      if (mentorId.equals(SharedPreferenceHelper.getUserId())) amIMentor = true;
+      if (mentorId.equals(SharedPreferenceHelper.getUserId())) {
+        amIMentor = true;
+        ivEditMentor.setVisibility(View.VISIBLE);
+      }
     } else {
       mentorId = "";
     }
 
-    membersAdapter = new GroupMembersAdapter(getMvpDelegate(), this, this, amIMentor);
+    membersAdapter = new GroupMembersAdapter(getMvpDelegate(), this, this, trackingId, amIMentor);
     rcvMembers.setLayoutManager(
         new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
     rcvMembers.setAdapter(membersAdapter);
