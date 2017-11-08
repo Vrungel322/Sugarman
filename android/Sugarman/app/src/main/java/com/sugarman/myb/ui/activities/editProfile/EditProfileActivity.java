@@ -365,7 +365,7 @@ public class EditProfileActivity extends BasicActivity
               Intent intent = new Intent(EditProfileActivity.this, ApproveOtpActivity.class);
               intent.putExtra("otp", otp);
               intent.putExtra("showSettings", false);
-              intent.putExtra("phone", displayNumber);
+              intent.putExtra("phone", etPhone.getText().toString());
               intent.putExtra("nameParentActivity", EditProfileActivity.class.getName());
               startActivity(intent);
             }
