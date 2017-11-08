@@ -16,9 +16,6 @@ public class GroupMembersAdapterPresenter extends BasicPresenter<IGroupMembersAd
     App.getAppComponent().inject(this);
   }
 
-  public void test() {
-    addToUnsubscription(Observable.just("stroka").subscribe(s -> getViewState().showTest(s)));
-  }
 
   public void deleteUser(String trackingId, String userId, int position) {
     Subscription subscription = mDataManager.deleteUser(trackingId, userId)

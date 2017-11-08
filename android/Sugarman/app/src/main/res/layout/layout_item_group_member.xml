@@ -46,6 +46,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_gray_avatar" />
+                <ImageView
+                    android:id="@+id/ivKickOverlay"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone"
+                    android:alpha="0.5"
+                    android:src="@drawable/ic_s"
+                    />
 
                 <ImageView
                     android:id="@+id/iv_broken_avatar"
