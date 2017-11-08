@@ -66,4 +66,9 @@ public class SendVkInvitationDialog extends MvpDialogFragment
   @Override public void doAction() {
     mIVkResponse.action(getDialog());
   }
+
+  @Override public void onDestroyView() {
+    mIVkResponse = null;
+    super.onDestroyView();
+  }
 }
