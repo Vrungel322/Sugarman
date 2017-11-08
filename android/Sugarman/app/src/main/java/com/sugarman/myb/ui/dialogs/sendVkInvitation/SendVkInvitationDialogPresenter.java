@@ -39,7 +39,7 @@ import org.json.JSONObject;
           @Override public void onComplete(VKResponse response) {
             super.onComplete(response);
             JSONObject resp = response.json;
-            getViewState().hideDialog();
+            getViewState().doAction();
             Log.e("VK response", response.responseString);
           }
 

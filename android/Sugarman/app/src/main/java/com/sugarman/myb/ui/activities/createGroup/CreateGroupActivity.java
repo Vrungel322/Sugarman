@@ -2,6 +2,7 @@ package com.sugarman.myb.ui.activities.createGroup;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -755,8 +756,12 @@ public class CreateGroupActivity extends BaseActivity
     }
     if (!intiteByVk.isEmpty()) {
       //finish();
-      SendVkInvitationDialog.newInstance(intiteByVk)
-          .show(getFragmentManager(), "SendVkInvitationDialog");
+      SendVkInvitationDialog sendVkInvitationDialog =
+          SendVkInvitationDialog.newInstance(intiteByVk, (Dialog dialog) -> {
+            dialog.dismiss();
+            finish();
+          });
+      sendVkInvitationDialog.show(getFragmentManager(), "SendVkInvitationDialog");
     } else {
       Timber.e("1");
       finish();
