@@ -51,6 +51,7 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
   private static final int PENDING_MEMBER_TYPE = 1;
   public static final int PENDING_LABEL_TYPE = 2;
 
+  private String mTrackingId;
   private int countRedMembers;
   private boolean animationStarted = false;
   private final int red;
@@ -80,8 +81,10 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
 
   private final Handler handler;
 
-  public GroupMembersAdapter(MvpDelegate<?> parentDelegate,Context context, OnStepMembersActionListener listener, boolean isMentor) {
+  public GroupMembersAdapter(MvpDelegate<?> parentDelegate,Context context, OnStepMembersActionListener listener, String trackingId, boolean isMentor) {
     super(parentDelegate, "GroupMembersAdapter");
+
+    mTrackingId = trackingId;
     this.context = context;
     amIMentor = isMentor;
     connectingAnimation = AnimationUtils.loadAnimation(context, R.anim.scale);
@@ -360,6 +363,8 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
 
   @Override public void onClickMemberAvatar(int position) {
     mAdapterPresenter.test();
+    GroupMember toDelete = mData.get(position);
+    mAdapterPresenter.deleteUser(mTrackingId,toDelete.getId(), position);
 
     Timber.e("My ID " + SharedPreferenceHelper.getUserId() + ", myPosition = " + myPosition + " user clicked " + mData.get(position).getId());
 
@@ -509,6 +514,21 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
 
   @Override public void showTest(String s) {
     Timber.e(s);
+  }
+
+  @Override public void removeUser(int position) {
+
+    mData.remove(position);
+    notifyItemRemoved(position);
+    for(int i = 0; i<mData.size(); i++) {
+      Timber.e("Position " + i + " mdata " + mData.get(i).getId());
+      if (mData.get(i).getId().equals(userId)) {
+        Timber.e("EUREKA");
+        myPosition = i;
+      }
+    }
+    Timber.e("SUCCESS");
+
   }
 
   private static class MemberHolder extends RecyclerView.ViewHolder

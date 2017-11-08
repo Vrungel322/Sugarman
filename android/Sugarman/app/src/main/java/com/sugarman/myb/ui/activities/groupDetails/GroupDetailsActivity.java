@@ -737,7 +737,7 @@ public class GroupDetailsActivity extends BaseActivity
       mentorId = "";
     }
 
-    membersAdapter = new GroupMembersAdapter(getMvpDelegate(), this, this, amIMentor);
+    membersAdapter = new GroupMembersAdapter(getMvpDelegate(), this, this, trackingId, amIMentor);
     rcvMembers.setLayoutManager(
         new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
     rcvMembers.setAdapter(membersAdapter);
