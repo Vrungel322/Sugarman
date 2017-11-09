@@ -134,6 +134,9 @@ dependencies {
 
   //play billing library
   compile 'com.android.billingclient:billing:1.0'
+
+  //pie chart
+  compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -22,9 +22,11 @@
       android:orientation="vertical"
       >
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         >
       <ImageView
           android:id="@+id/iv_back"
@@ -82,6 +84,33 @@
           />
     </RelativeLayout>
 
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      >
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/piechartSuccessRate"
+        android:layout_width="76dp"
+        android:layout_height="76dp"
+        android:layout_marginLeft="35dp"
+        android:layout_gravity="center_vertical|right"
+        />
+    <RelativeLayout
+        android:layout_width="@dimen/high_group_icon_size"
+        android:layout_height="100dp"
+        android:layout_weight="5"
+        android:layout_gravity="center"
+        android:gravity="center"
+        >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
     <TextView
         android:id="@+id/tv_mentor_name"
         android:layout_width="wrap_content"
@@ -110,6 +139,9 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_name"
         style="?android:attr/ratingBarStyleIndicator"
         />
+    </LinearLayout>
+    </RelativeLayout>
+    </LinearLayout>
     <LinearLayout
         android:layout_marginTop="10dp"
         android:id="@+id/ll_container_layout"

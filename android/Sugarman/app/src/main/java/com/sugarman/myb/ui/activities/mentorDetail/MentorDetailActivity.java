@@ -16,6 +16,11 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.squareup.picasso.Picasso;
 import com.sugarman.myb.R;
 import com.sugarman.myb.base.BasicActivity;
@@ -23,6 +28,7 @@ import com.sugarman.myb.models.mentor.MentorEntity;
 import com.sugarman.myb.models.mentor.comments.MentorsCommentsEntity;
 import com.sugarman.myb.models.mentor.MentorsSkills;
 import com.sugarman.myb.ui.views.MaskTransformation;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MentorDetailActivity extends BasicActivity implements IMentorDetailActivityView {
@@ -40,6 +46,7 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   @BindView(R.id.rcv_comments) RecyclerView mRecyclerViewComments;
   @BindView(R.id.llCommentsContainer) LinearLayout mCommentsContainer;
   @BindView(R.id.tvMentorPrice) TextView mentorPrice;
+  @BindView(R.id.piechartSuccessRate) PieChart successRate;
   private MentorEntity mMentorEntity;
   private MentorsFriendAdapter mMentorsFriendAdapter;
   private MentorsCommentsAdapter mMentorsCommentsAdapter;
@@ -51,6 +58,27 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
     ratingBar.setRating(Float.valueOf(mMentorEntity.getMentorRating()));
     mentorName.setText(mMentorEntity.getMentorName());
     mentorPrice.setText("Apply now for " + "2$");
+    List<PieEntry> entries = new ArrayList<>();
+
+    entries.add(new PieEntry(100 - 18.5f, ""));
+    entries.add(new PieEntry(18.5f, ""));
+
+
+    PieDataSet set = new PieDataSet(entries, "");
+    set.setColors(new int[]{0xffdc0c0c, 0xffffffff});
+    set.setValueTextColor(0x00000000);
+    PieData data = new PieData(set);
+    successRate.getLegend().setEnabled(false);
+    successRate.setDrawEntryLabels(false);
+    successRate.setDrawSliceText(false);
+    successRate.setDrawHoleEnabled(true);
+    successRate.getDescription().setText("");
+    successRate.setCenterTextSize(9);
+    successRate.setDrawCenterText(true);
+    successRate.setCenterText("" + (100-18.5f) + "%");
+    //successRate
+    successRate.setData(data);
+    successRate.invalidate(); // refresh
 
 
     LayoutInflater vi =

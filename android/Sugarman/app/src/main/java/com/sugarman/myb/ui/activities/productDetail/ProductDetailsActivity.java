@@ -46,6 +46,8 @@ public class ProductDetailsActivity extends BasicActivity implements IProductDet
             // Handle failure
           } else {
             mHelper.consumeAsync(inventory.getPurchase(ITEM_SKU), mConsumeFinishedListener);
+            Timber.e(result.getMessage());
+            Timber.e(inventory.getSkuDetails(ITEM_SKU).getTitle());
           }
         }
       };
@@ -57,6 +59,10 @@ public class ProductDetailsActivity extends BasicActivity implements IProductDet
             return;
           } else if (purchase.getSku().equals(ITEM_SKU)) {
             consumeItem();
+          }
+          else
+          {
+            Timber.e(result.getMessage());
           }
         }
       };
@@ -111,7 +117,7 @@ public class ProductDetailsActivity extends BasicActivity implements IProductDet
 
 
 
-      mHelper.launchPurchaseFlow(this, ITEM_SKU, 10001, mPurchaseFinishedListener,
+      mHelper.launchSubscriptionPurchaseFlow(this, ITEM_SKU, 10001, mPurchaseFinishedListener,
           "mypurchasetoken");
     });
   }
