@@ -327,6 +327,8 @@
   <string name="contacts_book">Contacts book</string>
   <string name="comments">comments</string>
   <string name="mentorship">Mentorship</string>
+  <string name="warning">Warning</string>
+  <string name="delete_user_from_group">Do you really want to delete user?</string>
 
   <!-- Country Codes -->
   <string-array name="CountryCodes">
