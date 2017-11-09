@@ -38,24 +38,24 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
       putInt(SharedPreferenceConstants.COMPLETED_DAYS_COUNT, user.getCompletedDaysCount());
       putInt(SharedPreferenceConstants.TODAY_STEPS_COUNT, user.getTodayStepsCount());
 
-      if(user.getIsMentor()!=null) {
+      if (user.getIsMentor() != null) {
         setIsMentor(user.getIsMentor());
         Timber.e("Mentor set to " + user.getIsMentor());
       }
-      if(user.getNeedOTP()!=null)
-      setOTPStatus(user.getNeedOTP());
-      else setOTPStatus(false);
+      if (user.getNeedOTP() != null) {
+        setOTPStatus(user.getNeedOTP());
+      } else {
+        setOTPStatus(false);
+      }
       putInt("level", user.getLevel());
     }
   }
 
-  public static int getLevel()
-  {
+  public static int getLevel() {
     return getInt("level", 0);
   }
 
-  public static void setLevel(int level)
-  {
+  public static void setLevel(int level) {
     putInt("level", level);
   }
 
@@ -531,22 +531,21 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     putBoolean(SharedPreferenceConstants.OTP_STATUS, otpStatus);
   }
 
+  public static String getIMEI() {
+    Timber.e(getString(SharedPreferenceConstants.IMEI, "No IMEI"));
+    return getString(SharedPreferenceConstants.IMEI, "No IMEI");
+  }
+
   public static void setIMEI(String deviceId) {
     putString(SharedPreferenceConstants.IMEI, deviceId);
   }
 
-  public static String getIMEI() {
-    Timber.e(getString(SharedPreferenceConstants.IMEI,"No IMEI"));
-    return getString(SharedPreferenceConstants.IMEI,"No IMEI");
+  public static boolean getIsMentor() {
+    return getBoolean("isMentor", false);
   }
 
   public static void setIsMentor(boolean isMentor) {
     putBoolean("isMentor", isMentor);
-  }
-
-  public static boolean getIsMentor()
-  {
-    return getBoolean("isMentor",false);
   }
 
   public static String getBaseUrl() {
@@ -556,7 +555,9 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
   }
 
   public static void saveBaseUrl(String url) {
-    Timber.e("saveBaseUrl" + url);
-    putString(SharedPreferenceConstants.BASE_URL, url);
+    if (!url.isEmpty()) {
+      Timber.e("saveBaseUrl" + url);
+      putString(SharedPreferenceConstants.BASE_URL, url);
+    }
   }
 }
