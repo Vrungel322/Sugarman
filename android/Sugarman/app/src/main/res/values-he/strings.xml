@@ -547,5 +547,11 @@
   <string name="resend_code">שלח קוד בשנית</string>
   <string name="wait_for">Resend in</string>
   <string name="contacts_book">Contacts book</string>
+  <string name="comments">comments</string>
+  <string name="delete_user_from_group">Do you really want to delete user?</string>
+  <string name="level">LEVEL %1$d</string>
+  <string name="mentorship">Mentorship</string>
+  <string name="tap_to_see">Tap to see what to do next</string>
+  <string name="warning">Warning</string>
 
 </resources>

@@ -37,8 +37,8 @@ android {
     applicationId "com.sugarman.myb"
     minSdkVersion 19 //min step counter version
     targetSdkVersion 23
-    versionCode 141
-    versionName "1.1.41"
+    versionCode 142
+    versionName "2.0"
     multiDexEnabled true
   }
   buildTypes {
@@ -131,6 +131,9 @@ dependencies {
   //lombok
   compile "org.projectlombok:lombok:1.16.18"
   annotationProcessor "org.projectlombok:lombok:1.16.10"
+
+  //play billing library
+  compile 'com.android.billingclient:billing:1.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
