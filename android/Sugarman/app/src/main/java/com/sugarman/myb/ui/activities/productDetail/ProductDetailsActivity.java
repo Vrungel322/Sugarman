@@ -103,15 +103,15 @@ public class ProductDetailsActivity extends BasicActivity implements IProductDet
         }
       }
     });
+    mHelper.enableDebugLogging(true);
+
 
     freeForFriends.setOnClickListener(view -> {
       //Intent intent1 = new Intent(ProductDetailsActivity.this, ShopInviteFriendsActivity.class);
       //intent1.putExtra("productId", mShopProductEntity.getId());
       //startActivity(intent1);
 
-
-
-      mHelper.launchPurchaseFlow(this, ITEM_SKU, 10001, mPurchaseFinishedListener,
+      mHelper.launchSubscriptionPurchaseFlow(this, ITEM_SKU, 10001, mPurchaseFinishedListener,
           "mypurchasetoken");
     });
   }

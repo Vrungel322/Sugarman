@@ -252,7 +252,7 @@ public class App extends MultiDexApplication {
   }
 
   public static void appendLog(String tag, String text) {
-    Log.d(tag, text);
+    //Log.d(tag, text);
     //if (BuildConfig.SAVE_LOGS) {
     //    File logFile = new File("sdcard/suga_log.txt");
     //    if (!logFile.exists()) {

@@ -110,8 +110,8 @@ public class MasterStepDetectorService extends Service implements OnReportSendLi
       if (event.values != null && event.values.length > 0) {
         int steps = (int) event.values[0];
 
-        Log.d("MASTERSTEPDETECTOR",
-            "Is first launch " + SharedPreferenceHelper.isFirstLaunchOfTheDay(userId));
+        //Log.d("MASTERSTEPDETECTOR",
+        //    "Is first launch " + SharedPreferenceHelper.isFirstLaunchOfTheDay(userId));
         if (SharedPreferenceHelper.getOnLaunch() == true) {
           if (SharedPreferenceHelper.isFirstLaunch()) {
             SharedPreferenceHelper.setFirstLaunch(false);
@@ -120,19 +120,19 @@ public class MasterStepDetectorService extends Service implements OnReportSendLi
 
               // Log.d("MASTERSTEPDETECTOR" , "Is first launch " + SharedPreferenceHelper.isFirstLaunchOfTheDay(userId));
               int delta = (int) event.values[0] - SharedPreferenceHelper.getBaseline();
-              Log.e("baseline", "called not first launch");
-              Log.d("baseline", "values " + event.values[0]);
-              Log.d("baseline", "baseline " + SharedPreferenceHelper.getBaseline());
-              Log.d("baseline", "delta " + delta);
+              //Log.e("baseline", "called not first launch");
+              //Log.d("baseline", "values " + event.values[0]);
+              //Log.d("baseline", "baseline " + SharedPreferenceHelper.getBaseline());
+              //Log.d("baseline", "delta " + delta);
               if (delta > 0) {
                 addAndSaveSteps(delta);
-                Log.d("BASELINE ", "BASELINE ADDED " + delta + " steps");
+                //Log.d("BASELINE ", "BASELINE ADDED " + delta + " steps");
                 SharedPreferenceHelper.setOnLaunch(false);
               }
 
               SharedPreferenceHelper.setFirstLaunchOfTheDay(false);
             } else {
-              Log.e("baseline", "called first launch");
+              //Log.e("baseline", "called first launch");
               SharedPreferenceHelper.saveBaseline(steps);
               SharedPreferenceHelper.setFirstLaunchOfTheDay(false);
             }
@@ -154,17 +154,17 @@ public class MasterStepDetectorService extends Service implements OnReportSendLi
         DateFormat dfDate = new SimpleDateFormat("yyyy-MM-dd");
         String date = dfDate.format(Calendar.getInstance().getTime());
         SharedPreferenceHelper.setTodayDate(date);
-        Log.d("PEDOMETER IN SETTINGS", "" + SharedPreferenceHelper.getBaseline());
-        Log.e("USER ID", "LENGTH " + SharedPreferenceHelper.getUserId().length());
-        Log.d("baseline", "called save baseline step");
+        //Log.d("PEDOMETER IN SETTINGS", "" + SharedPreferenceHelper.getBaseline());
+        //Log.e("USER ID", "LENGTH " + SharedPreferenceHelper.getUserId().length());
+        //Log.d("baseline", "called save baseline step");
         SharedPreferenceHelper.saveBaseline(
             steps); // Baseline is set each step to provide info on app relaunching.
         // It will help covering the steps that were made during the time that the service wasn't working
-        Log.d("UPD PEDO IN SETTINGS", "" + SharedPreferenceHelper.getBaseline());
+        //Log.d("UPD PEDO IN SETTINGS", "" + SharedPreferenceHelper.getBaseline());
 
-        Log.d("PEDOMETER FROM SENSOR", "" + steps);
+        //Log.d("PEDOMETER FROM SENSOR", "" + steps);
 
-        Log.d("###", "step counter: steps: " + steps + " counterSteps: " + counterSteps);
+        //Log.d("###", "step counter: steps: " + steps + " counterSteps: " + counterSteps);
       }
     }
 
@@ -190,7 +190,7 @@ public class MasterStepDetectorService extends Service implements OnReportSendLi
     @Override public void step(long timeNs) {
       refreshNextDays();
       numStepsCustomDetector++;
-      Log.d(TAG, "custom detector steps " + numStepsCustomDetector);
+      //Log.d(TAG, "custom detector steps " + numStepsCustomDetector);
       addAndSaveSteps(1);
       sendReport(false);
       App.getEventBus().post(new DebugRealStepAddedEvent(stats[0].getStepsCount()));
@@ -215,7 +215,7 @@ public class MasterStepDetectorService extends Service implements OnReportSendLi
   private final BroadcastReceiver mScreenOnReceiver = new BroadcastReceiver() {
     @Override public void onReceive(Context context, Intent intent) {
       if (TextUtils.equals(intent.getAction(), Intent.ACTION_SCREEN_ON)) {
-        Log.d("@@@", "SCREEN_ON");
+        //Log.d("@@@", "SCREEN_ON");
         App.appendLog(Constants.TAG_TEST_GO_TO_NEXT_DAY, "screenOn receiver");
         addAndSaveSteps(counterSteps);
         sendReport(false);
@@ -289,7 +289,7 @@ public class MasterStepDetectorService extends Service implements OnReportSendLi
 
   @Override public int onStartCommand(Intent intent, int flags, int startId) {
     PowerManager.WakeLock wl = wakeLockAcquire(false);
-    Log.d(TAG, "onStartCommand intent " + intent + " flag " + flags);
+    //Log.d(TAG, "onStartCommand intent " + intent + " flag " + flags);
     //   App.appendLog(Constants.TAG_TEST_GO_TO_NEXT_DAY, "service onStartCommand()  startValue " + debugStartValue);
     Context context = getApplicationContext();
 
@@ -348,7 +348,7 @@ public class MasterStepDetectorService extends Service implements OnReportSendLi
   @Override public void onDestroy() {
     super.onDestroy();
     App.appendLog(Constants.TAG_TEST_GO_TO_NEXT_DAY, "service onDestroy()  ");
-    Log.d(TAG, "destroy start ");
+    //Log.d(TAG, "destroy start ");
     PowerManager.WakeLock wl = wakeLockAcquire(false);
 
     final Context context = getApplicationContext();
@@ -381,8 +381,8 @@ public class MasterStepDetectorService extends Service implements OnReportSendLi
   }
 
   @Override public void onApiReportSendSuccess(int todaySteps, int addedSteps, int sendReportDay) {
-    Log.d("!!!", "added steps: " + addedSteps);
-    Log.d("!!!", "saved today: " + todaySteps);
+    //Log.d("!!!", "added steps: " + addedSteps);
+    //Log.d("!!!", "saved today: " + todaySteps);
     SharedPreferenceHelper.saveReportStatsLocal(stats);
 
     App.appendLog(Constants.TAG_TEST_GO_TO_NEXT_DAY, "service succed send report");

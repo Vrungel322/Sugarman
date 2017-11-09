@@ -397,13 +397,13 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     DateFormat dfDate = new SimpleDateFormat("yyyy-MM-dd");
     String date = dfDate.format(Calendar.getInstance().getTime());
     if (getTodayDate().equals(date)) {
-      System.out.println("DAAAAAATE IN SETTINGS" + getTodayDate());
-      System.out.println("DAAAAAATE FALSE" + date);
-      Log.d("IS FIRST LAUNCH TODAY", "NO" + false);
+      //System.out.println("DAAAAAATE IN SETTINGS" + getTodayDate());
+      //System.out.println("DAAAAAATE FALSE" + date);
+      //Log.d("IS FIRST LAUNCH TODAY", "NO" + false);
       return false;
     }
-    Log.d("IS FIRST LAUNCH TODAY", "YES" + true);
-    System.out.println("DAAAAAATE TRUE" + date);
+    //Log.d("IS FIRST LAUNCH TODAY", "YES" + true);
+    //System.out.println("DAAAAAATE TRUE" + date);
     setFirstLaunchOfTheDay(true);
     return true;
   }
