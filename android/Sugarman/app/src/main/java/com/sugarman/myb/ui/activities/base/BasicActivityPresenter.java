@@ -10,6 +10,7 @@ import com.sugarman.myb.utils.ThreadSchedulers;
 import java.util.TimeZone;
 import javax.inject.Inject;
 import rx.Subscription;
+import timber.log.Timber;
 
 /**
  * Created by nikita on 19.09.17.
@@ -37,7 +38,8 @@ import rx.Subscription;
     Subscription subscriptions = mDataManager.refreshRxUserData(request)
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(usersResponseCall -> {
-          //SharedPreferenceHelper.saveBaseUrl(usersResponseCall.getBaseUrl());
+          Timber.e(usersResponseCall.getBaseUrl());
+          SharedPreferenceHelper.saveBaseUrl(usersResponseCall.getBaseUrl());
 
           SharedPreferenceHelper.saveToken(usersResponseCall.getTokens());
           getViewState().startSplashActivity();
