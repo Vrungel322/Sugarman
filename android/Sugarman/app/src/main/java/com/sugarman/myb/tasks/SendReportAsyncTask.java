@@ -51,7 +51,7 @@ public class SendReportAsyncTask extends AsyncTask<Void, Void, Void> {
       URL url = null;
       try {
         url = new URL(Config.SERVER_URL + Constants.REPORT_ENDPOINT);
-        //url = new URL(SharedPreferenceHelper.getBaseUrl() + Constants.REPORT_ENDPOINT);
+        url = new URL(SharedPreferenceHelper.getBaseUrl() + Constants.REPORT_ENDPOINT);
       } catch (MalformedURLException e) {
         Log.e(TAG, "failure parse url", e);
       }

@@ -14,6 +14,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import timber.log.Timber;
 
 public class RefreshUserDataClient extends BaseApiClient {
 
@@ -32,7 +33,8 @@ public class RefreshUserDataClient extends BaseApiClient {
           Log.e("Token", "ATLICHNA 2");
           ((ApiRefreshUserDataListener) clientListener.get()).onApiRefreshUserDataSuccess(
               dataResponse);
-          //SharedPreferenceHelper.saveBaseUrl(response.body().getBaseUrl());
+          Timber.e(response.body().getBaseUrl());
+          SharedPreferenceHelper.saveBaseUrl(response.body().getBaseUrl());
         } else if (errorBody != null) {
           String errorMessage = parseErrorBody(errorBody);
           responseFailure(TAG, errorMessage);

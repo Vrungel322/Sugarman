@@ -185,6 +185,7 @@ public class GetUserInfoActivity extends BaseActivity
 
   public void refreshUserData(String accessToken, String vkToken, String gToken, String phoneNumber,
       String email, String name, String vkId, String fbId, String pictureUrl) {
+    Timber.e("refreshUserData");
     SharedPreferenceHelper.saveFBAccessToken(accessToken);
     mRefreshUserDataClient.refreshUserData(accessToken, vkToken, gToken, phoneNumber, email, name,
         vkId, fbId, pictureUrl); //test

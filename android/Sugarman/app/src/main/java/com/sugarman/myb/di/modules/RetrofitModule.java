@@ -6,7 +6,6 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sugarman.myb.BuildConfig;
-import com.sugarman.myb.constants.Config;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.di.scopes.AppScope;
 import com.sugarman.myb.utils.DeviceHelper;
@@ -36,8 +35,8 @@ import timber.log.Timber;
 
   @Provides @AppScope Retrofit provideRetrofit(Converter.Factory converterFactory,
       OkHttpClient okClient) {
-    //return new Retrofit.Builder().baseUrl(SharedPreferenceHelper.getBaseUrl())
-    return new Retrofit.Builder().baseUrl(Config.SERVER_URL)
+    return new Retrofit.Builder().baseUrl(SharedPreferenceHelper.getBaseUrl())
+    //return new Retrofit.Builder().baseUrl(Config.SERVER_URL)
         .client(okClient)
         .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
         .addConverterFactory(converterFactory)
