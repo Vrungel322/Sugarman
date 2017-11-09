@@ -26,15 +26,4 @@ import rx.Subscription;
             }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
-
-  public void deleteUser(String trackingId, String userId) {
-    Subscription subscription = mDataManager.deleteUser(trackingId, userId)
-        .compose(ThreadSchedulers.applySchedulers())
-        .subscribe(voidResponse -> {
-          if (voidResponse.code() == 200) {
-            getViewState().removeUser();
-          }
-        }, Throwable::printStackTrace);
-    addToUnsubscription(subscription);
-  }
 }
