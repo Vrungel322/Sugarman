@@ -23,13 +23,15 @@ import java.util.ArrayList;
 public class SendVkInvitationDialog extends MvpDialogFragment
     implements ISendVkInvitationDialogView {
   private static final String LIST_TO_INVITE = "LIST_TO_INVITE";
+  private static IVkResponse mIVkResponse;
   @InjectPresenter SendVkInvitationDialogPresenter mPresenter;
   @BindView(R.id.etMessage) EditText mEditTextMessage;
   @BindView(R.id.bSend) Button mButtonSend;
   @BindView(R.id.bDismiss) Button mButtonDismiss;
   private ArrayList<FacebookFriend> friends;
 
-  public static SendVkInvitationDialog newInstance(ArrayList<FacebookFriend> selectedFriends) {
+  public static SendVkInvitationDialog newInstance(ArrayList<FacebookFriend> selectedFriends,IVkResponse iVkResponse) {
+    mIVkResponse = iVkResponse;
     Bundle args = new Bundle();
     args.putParcelableArrayList(LIST_TO_INVITE, selectedFriends);
     SendVkInvitationDialog fragment = new SendVkInvitationDialog();
@@ -61,8 +63,12 @@ public class SendVkInvitationDialog extends MvpDialogFragment
     dismiss();
   }
 
-  @Override public void hideDialog() {
-    dismiss();
-    getActivity().finish();
+  @Override public void doAction() {
+    mIVkResponse.action(getDialog());
+  }
+
+  @Override public void onDestroyView() {
+    mIVkResponse = null;
+    super.onDestroyView();
   }
 }

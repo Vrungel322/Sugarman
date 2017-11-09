@@ -1,6 +1,7 @@
 package com.sugarman.myb.ui.activities.shopInviteFriend;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -46,6 +47,7 @@ import com.sugarman.myb.constants.DialogConstants;
 import com.sugarman.myb.listeners.OnFBGetFriendsListener;
 import com.sugarman.myb.ui.activities.editProfile.EditProfileActivity;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
+import com.sugarman.myb.ui.dialogs.sendVkInvitation.SendVkInvitationDialog;
 import com.sugarman.myb.ui.views.CropCircleTransformation;
 import com.sugarman.myb.ui.views.CustomFontEditText;
 import com.sugarman.myb.utils.AnalyticsHelper;
@@ -539,9 +541,15 @@ public class ShopInviteFriendsActivity extends BasicActivity
     }
 
     if (!mIntiteByVk.isEmpty()) {
-      Timber.e("Vk here " + mIntiteByPh.size());
-      mPresenter.addFriendsToShopGroup(new ArrayList<>(mIntiteByPh));
-      mIntiteByPh.clear();
+      Timber.e("Vk here " + mIntiteByVk.size());
+      SendVkInvitationDialog sendVkInvitationDialog =
+          SendVkInvitationDialog.newInstance(mIntiteByVk, (Dialog dialog) -> {
+            dialog.dismiss();
+            mPresenter.addFriendsToShopGroup(new ArrayList<>(mIntiteByVk));
+            mIntiteByPh.clear();
+          });
+      sendVkInvitationDialog.show(getFragmentManager(), "SendVkInvitationDialog");
+
     }
 
     if (!mInviteByFbIds.isEmpty()) {

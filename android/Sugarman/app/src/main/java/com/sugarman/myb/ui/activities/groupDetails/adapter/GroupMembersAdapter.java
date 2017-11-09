@@ -14,7 +14,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
-import butterknife.BindView;
 import com.arellomobile.mvp.MvpDelegate;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.squareup.picasso.NetworkPolicy;
@@ -29,6 +28,7 @@ import com.sugarman.myb.listeners.OnStepMembersActionListener;
 import com.sugarman.myb.models.GroupMember;
 import com.sugarman.myb.ui.views.CropCircleTransformation;
 import com.sugarman.myb.ui.views.MaskTransformation;
+import com.sugarman.myb.utils.DialogHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.SoundHelper;
 import java.lang.ref.WeakReference;
@@ -38,61 +38,42 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 import lombok.Getter;
-import lombok.Setter;
 import timber.log.Timber;
 
 public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.ViewHolder>
-    implements ItemGroupMemberListener,IGroupMembersAdapterView {
-
-  @InjectPresenter GroupMembersAdapterPresenter mAdapterPresenter;
-
-  @Getter boolean editMode;
-
-  private static final String TAG = GroupMembersAdapter.class.getName();
-
-  private final WeakReference<OnStepMembersActionListener> actionListener;
+    implements ItemGroupMemberListener, IGroupMembersAdapterView {
 
   public static final int MEMBER_TYPE = 0;
-  private static final int PENDING_MEMBER_TYPE = 1;
   public static final int PENDING_LABEL_TYPE = 2;
-
-  private String mTrackingId;
-  private int countRedMembers;
-  private boolean animationStarted = false;
+  private static final String TAG = GroupMembersAdapter.class.getName();
+  private static final int PENDING_MEMBER_TYPE = 1;
+  private final WeakReference<OnStepMembersActionListener> actionListener;
   private final int red;
   private final int darkGray;
-  private int userSteps;
   private final int walkBackgroundColor;
-  PendingMemberHolder pendingMemberHolder;
-  Animation connectingAnimation;
-
-  private boolean isShownActionBackground;
-
   private final int[] brokenGlassIds;
-
-  private int countMembers = 0;
-  private int myPosition = 0;
-
-  private boolean amIMentor = false;
-
   private final List<GroupMember> mData = new ArrayList<>();
-
   private final String userId;
   private final String lazy;
   private final String walk;
   private final String run;
-
   private final Context context;
-
   private final Handler handler;
+  @InjectPresenter GroupMembersAdapterPresenter mAdapterPresenter;
+  @Getter boolean editMode;
+  PendingMemberHolder pendingMemberHolder;
+  Animation connectingAnimation;
+  private String mTrackingId;
+  private int countRedMembers;
+  private boolean animationStarted = false;
+  private int userSteps;
+  private boolean isShownActionBackground;
+  private int countMembers = 0;
+  private int myPosition = 0;
+  private boolean amIMentor = false;
 
-  public void setEditMode(boolean editMode)
-  {
-    this.editMode = editMode;
-    notifyDataSetChanged();
-  }
-
-  public GroupMembersAdapter(MvpDelegate<?> parentDelegate,Context context, OnStepMembersActionListener listener, String trackingId, boolean isMentor) {
+  public GroupMembersAdapter(MvpDelegate<?> parentDelegate, Context context,
+      OnStepMembersActionListener listener, String trackingId, boolean isMentor) {
     super(parentDelegate, "GroupMembersAdapter");
 
     mTrackingId = trackingId;
@@ -115,6 +96,11 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
     lazy = context.getString(R.string.lazy);
     walk = context.getString(R.string.walk);
     run = context.getString(R.string.run);
+  }
+
+  public void setEditMode(boolean editMode) {
+    this.editMode = editMode;
+    notifyDataSetChanged();
   }
 
   @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -167,10 +153,9 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
       switch (type) {
         case MEMBER_TYPE:
           final MemberHolder memberHolder = (MemberHolder) holder;
-          if(isEditMode()) {
+          if (isEditMode()) {
             ((MemberHolder) holder).ivKick.setVisibility(View.VISIBLE);
-          }
-          else {
+          } else {
             ((MemberHolder) holder).ivKick.setVisibility(View.GONE);
           }
 
@@ -379,26 +364,35 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
   }
 
   @Override public void onClickMemberAvatar(int position) {
-    if(amIMentor && isEditMode()) {
+    if (amIMentor && isEditMode()) {
       GroupMember toDelete = mData.get(position);
-      if(!toDelete.getId().equals(SharedPreferenceHelper.getUserId())) {
-        mAdapterPresenter.deleteUser(mTrackingId, toDelete.getId(), position);
+      if (!toDelete.getId().equals(SharedPreferenceHelper.getUserId())) {
+        DialogHelper.createSimpleDialog(context.getString(R.string.okay),
+            context.getString(R.string.discard), context.getString(R.string.warning),
+            context.getString(R.string.delete_user_from_group), context, (dialogInterface, i) -> {
+              mAdapterPresenter.deleteUser(mTrackingId, toDelete.getId(), position);
+            }, (dialogInterface, i) -> {
+              dialogInterface.dismiss();
+            }).create().show();
       }
     }
-    Timber.e("My ID " + SharedPreferenceHelper.getUserId() + ", myPosition = " + myPosition + " user clicked " + mData.get(position).getId());
+    Timber.e("My ID "
+        + SharedPreferenceHelper.getUserId()
+        + ", myPosition = "
+        + myPosition
+        + " user clicked "
+        + mData.get(position).getId());
 
-    if(amIMentor)
-    {
+    if (amIMentor) {
       GroupMember member = mData.get(position);
       member.setBroken(true);
       notifyItemChanged(position);
       if (TextUtils.equals(member.getId(), userId)) {
         actionListener.get().onPokeSelf();
+      } else {
+        actionListener.get().onPokeMember(member);
       }
-      else actionListener.get().onPokeMember(member);
-    }
-
-    else {
+    } else {
       if (position >= 0 && position < mData.size()) {
         if (actionListener.get() != null) {
           GroupMember member = mData.get(position);
@@ -484,7 +478,7 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
 
     GroupMember memberWithMyId = new GroupMember();
     memberWithMyId.setId(userId);
-    for(int i = 0; i<mData.size(); i++) {
+    for (int i = 0; i < mData.size(); i++) {
       Timber.e("Position " + i + " mdata " + mData.get(i).getId());
       if (mData.get(i).getId().equals(userId)) {
         Timber.e("EUREKA");
@@ -538,7 +532,7 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
 
     mData.remove(position);
     notifyItemRemoved(position);
-    for(int i = 0; i<mData.size(); i++) {
+    for (int i = 0; i < mData.size(); i++) {
       Timber.e("Position " + i + " mdata " + mData.get(i).getId());
       if (mData.get(i).getId().equals(userId)) {
         Timber.e("EUREKA");
@@ -546,7 +540,6 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
       }
     }
     Timber.e("SUCCESS");
-
   }
 
   private static class MemberHolder extends RecyclerView.ViewHolder
@@ -556,12 +549,12 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
 
     private final TextView tvMemberName;
     private final TextView tvSteps;
-    //private final TextView tvNum;
-    private ImageView ivAvatar;
     private final View ivBroken;
     private final TextView tvAction;
     //private final ImageView ivBad;
     public ImageView ivKick;
+    //private final TextView tvNum;
+    private ImageView ivAvatar;
 
     MemberHolder(View itemView, ItemGroupMemberListener listener) {
       super(itemView);
@@ -588,7 +581,7 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
 
       switch (id) {
         case R.id.ll_group_member_container:
-          Timber.e("My ID " );
+          Timber.e("My ID ");
 
           if (mActionItemListener.get() != null) {
             mActionItemListener.get().onClickMemberAvatar(position);

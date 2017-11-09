@@ -2,6 +2,7 @@ package com.sugarman.myb.ui.activities.addMember;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -63,6 +64,7 @@ import com.sugarman.myb.tasks.SaveBitmapToFileAsyncTask;
 import com.sugarman.myb.ui.activities.base.BaseActivity;
 import com.sugarman.myb.ui.activities.editProfile.EditProfileActivity;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
+import com.sugarman.myb.ui.dialogs.sendVkInvitation.SendVkInvitationDialog;
 import com.sugarman.myb.ui.views.MaskImage;
 import com.sugarman.myb.ui.views.MaskTransformation;
 import com.sugarman.myb.utils.AnalyticsHelper;
@@ -749,9 +751,16 @@ public class AddMemberActivity extends BaseActivity
         }
 
         if (!mInviteByVk.isEmpty()) {
-          mPresenter.sendInvitationInVk(mInviteByVk,
-              getResources().getString(R.string.invite_message));
           Timber.e("vk here");
+
+          SendVkInvitationDialog sendVkInvitationDialog =
+              SendVkInvitationDialog.newInstance(mInviteByVk, (Dialog dialog) -> {
+                dialog.dismiss();
+                addMembersVk(mInviteByVk);
+              });
+          sendVkInvitationDialog.show(getFragmentManager(), "SendVkInvitationDialog");
+          //mPresenter.sendInvitationInVk(mInviteByVk,
+          //    getResources().getString(R.string.invite_message));
           vkIntitationSend = true;
         }
         break;
@@ -999,6 +1008,7 @@ public class AddMemberActivity extends BaseActivity
   }
 
   private void addMembersPh(List<FacebookFriend> members) {
+    mInviteByPh.clear();
     Timber.e("addMembersPh " + members.size());
     List<String> facebookElements = new ArrayList<>();
     List<FacebookFriend> vkElements = new ArrayList<>();
@@ -1040,7 +1050,7 @@ public class AddMemberActivity extends BaseActivity
           selectedFile);
       mAddMembersClient.registerListener(new ApiAddMembersListener() {
         @Override public void onApiAddMembersSuccess() {
-          finish();
+          //finish();
         }
 
         @Override public void onApiAddMembersFailure(String message) {
@@ -1109,7 +1119,7 @@ public class AddMemberActivity extends BaseActivity
     Timber.e("onApiEditGroupSuccess");
 
     hideProgress();
-    finish();
+    //finish();
   }
 
   @Override public void onApiEditGroupFailure(String message) {
@@ -1134,10 +1144,10 @@ public class AddMemberActivity extends BaseActivity
 
   private void addMembersVk(List<FacebookFriend> members) {
     showProgressFragment();
-    Timber.e("addMembersVk" + members.get(0).getSocialNetwork());
+    //Timber.e("addMembersVk" + members.get(0).getSocialNetwork());
 
     // TODO: 03.10.2017 uznat pochemu ne dobavlyaetsya na ui chelovek iz VK
-    //mInviteByVk.clear();
+    mInviteByVk.clear();
 
     mEditGroupClient.editGroup(trackingId, members, etGroupName.getText().toString(), selectedFile);
     mAddMembersClient.addMembers(trackingId, members);

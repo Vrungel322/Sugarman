@@ -66,7 +66,7 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
         linearLayoutContainer.addView(v);
       }
     }
-    mPresenter.fetchComments(mMentorEntity.getMentorId());
+    mPresenter.fetchComments(mMentorEntity.getUserId());
   }
 
   @Override protected void onResume() {
