@@ -14,6 +14,8 @@ import java.util.List;
     MvpView {
   void fillMentorsFriendsList();
 
+  void fillMentorsVideosList();
+
   void setUpUI();
 
   void fillCommentsList(List<MentorsCommentsEntity> mentorsCommentsEntities);

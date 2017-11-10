@@ -132,9 +132,6 @@ dependencies {
   compile "org.projectlombok:lombok:1.16.18"
   annotationProcessor "org.projectlombok:lombok:1.16.10"
 
-  //play billing library
-  compile 'com.android.billingclient:billing:1.0'
-
   //pie chart
   compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
 }
