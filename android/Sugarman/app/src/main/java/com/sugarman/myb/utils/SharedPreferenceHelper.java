@@ -550,8 +550,11 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
 
   public static String getBaseUrl() {
     Timber.e("getBaseUrl" + getString(SharedPreferenceConstants.BASE_URL, Config.SERVER_URL));
-
-    return getString(SharedPreferenceConstants.BASE_URL, Config.SERVER_URL);
+    if (getString(SharedPreferenceConstants.BASE_URL, Config.SERVER_URL).isEmpty()) {
+      return Config.SERVER_URL;
+    } else {
+      return getString(SharedPreferenceConstants.BASE_URL, Config.SERVER_URL);
+    }
   }
 
   public static void saveBaseUrl(String url) {

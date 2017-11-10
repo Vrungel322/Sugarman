@@ -26,6 +26,7 @@ import com.squareup.picasso.Picasso;
 import com.sugarman.myb.R;
 import com.sugarman.myb.base.BasicActivity;
 import com.sugarman.myb.constants.Config;
+import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.ui.views.CropCircleTransformation;
 import timber.log.Timber;
 
@@ -196,7 +197,8 @@ public class CheckoutActivity extends BasicActivity
           etCityName.getText().toString(), etStreetName.getText().toString(),
           etZipCode.getText().toString(), etFullName.getText().toString(),
           etPhoneNumber.getText().toString(),
-          String.valueOf(num * Double.parseDouble(productPrice)), num, productName);
+          String.valueOf(num * Double.parseDouble(productPrice)), num, productName,productPrice,
+          Constants.PAY_PAL_PAYMENT_TYPE);
     }
   }
 
