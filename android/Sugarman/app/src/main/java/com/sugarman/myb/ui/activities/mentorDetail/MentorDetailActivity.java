@@ -1,6 +1,9 @@
 package com.sugarman.myb.ui.activities.mentorDetail;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,9 +30,12 @@ import com.sugarman.myb.base.BasicActivity;
 import com.sugarman.myb.models.mentor.MentorEntity;
 import com.sugarman.myb.models.mentor.comments.MentorsCommentsEntity;
 import com.sugarman.myb.models.mentor.MentorsSkills;
+import com.sugarman.myb.ui.activities.mentorList.MentorListActivity;
 import com.sugarman.myb.ui.views.MaskTransformation;
+import com.sugarman.myb.utils.ItemClickSupport;
 import java.util.ArrayList;
 import java.util.List;
+import timber.log.Timber;
 
 public class MentorDetailActivity extends BasicActivity implements IMentorDetailActivityView {
 
@@ -47,27 +53,48 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   @BindView(R.id.llCommentsContainer) LinearLayout mCommentsContainer;
   @BindView(R.id.tvMentorPrice) TextView mentorPrice;
   @BindView(R.id.piechartSuccessRate) PieChart successRate;
+  @BindView(R.id.llVideos) LinearLayout llVideos;
+  @BindView(R.id.rvVideos) RecyclerView mRecyclerViewVideos;
   private MentorEntity mMentorEntity;
   private MentorsFriendAdapter mMentorsFriendAdapter;
   private MentorsCommentsAdapter mMentorsCommentsAdapter;
+  private MentorsVideosAdapter mMentorsVideosAdapter;
+  private float successRateToday, successRateWeek, successRateMonth;
+  private List<String> youtubeVideos;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_mentor_detail);
     super.onCreate(savedInstanceState);
     mMentorEntity = getIntent().getExtras().getParcelable(MentorEntity.MENTOR_ENTITY);
+    youtubeVideos = mMentorEntity.getYoutubeVideos();
+    if(youtubeVideos.size()>0) {
+      llVideos.setVisibility(View.VISIBLE);
+    }
+
+    for(String s : youtubeVideos)
+    {
+      Timber.e("youtube link " + s);
+    }
+
+
+
     ratingBar.setRating(Float.valueOf(mMentorEntity.getMentorRating()));
     mentorName.setText(mMentorEntity.getMentorName());
     mentorPrice.setText("Apply now for " + "2$");
+
+    successRateToday = 87.6f;
+
     List<PieEntry> entries = new ArrayList<>();
 
-    entries.add(new PieEntry(100 - 18.5f, ""));
-    entries.add(new PieEntry(18.5f, ""));
+    entries.add(new PieEntry(successRateToday, ""));
+    entries.add(new PieEntry(100 - successRateToday, ""));
 
 
     PieDataSet set = new PieDataSet(entries, "");
-    set.setColors(new int[]{0xffdc0c0c, 0xffffffff});
+    set.setColors(new int[]{0xffdc0c0c, 0x00000000});
     set.setValueTextColor(0x00000000);
     PieData data = new PieData(set);
+    successRate.setOnTouchListener(null);
     successRate.getLegend().setEnabled(false);
     successRate.setDrawEntryLabels(false);
     successRate.setDrawSliceText(false);
@@ -75,7 +102,7 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
     successRate.getDescription().setText("");
     successRate.setCenterTextSize(9);
     successRate.setDrawCenterText(true);
-    successRate.setCenterText("" + (100-18.5f) + "%");
+    successRate.setCenterText("" + successRateToday + "%");
     //successRate
     successRate.setData(data);
     successRate.invalidate(); // refresh
@@ -152,6 +179,12 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
         new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
     mMentorsFriendAdapter = new MentorsFriendAdapter();
     mRecyclerViewFriends.setAdapter(mMentorsFriendAdapter);
+
+    //mentors videos
+    mRecyclerViewVideos.setLayoutManager(
+        new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+    mMentorsVideosAdapter = new MentorsVideosAdapter();
+    mRecyclerViewVideos.setAdapter(mMentorsVideosAdapter);
   }
 
   @Override public void fillCommentsList(List<MentorsCommentsEntity> mentorsCommentsEntities) {
@@ -162,6 +195,24 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
 
   @Override public void fillMentorsFriendsList() {
     mMentorsFriendAdapter.setMemberOfMentorsGroupEntity(mMentorEntity.getMembersOfMentorsGroup());
+
+  }
+
+  @Override public void fillMentorsVideosList() {
+    mMentorsVideosAdapter.setMentorsVideosEntities(youtubeVideos);
+    ItemClickSupport.addTo(mRecyclerViewVideos)
+        .setOnItemClickListener((recyclerView, position, v) -> {
+
+          String videoID = Uri.parse(youtubeVideos.get(position)).getQueryParameter("v");
+          Intent applicationIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + videoID));
+          Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+              Uri.parse("http://www.youtube.com/watch?v=" + videoID));
+          try {
+            startActivity(applicationIntent);
+          } catch (ActivityNotFoundException ex) {
+            startActivity(browserIntent);
+          }
+        });
   }
 
   @OnClick(R.id.iv_back) public void onBackPressed() {

@@ -22,6 +22,7 @@ import timber.log.Timber;
 
     getViewState().setUpUI();
     getViewState().fillMentorsFriendsList();
+    getViewState().fillMentorsVideosList();
   }
 
   public void fetchComments(String mentorId) {

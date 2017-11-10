@@ -33,7 +33,7 @@ public class RefreshUserDataClient extends BaseApiClient {
           Log.e("Token", "ATLICHNA 2");
           ((ApiRefreshUserDataListener) clientListener.get()).onApiRefreshUserDataSuccess(
               dataResponse);
-          Timber.e(response.body().getBaseUrl());
+          Timber.e("Base url " + response.body().getBaseUrl());
           SharedPreferenceHelper.saveBaseUrl(response.body().getBaseUrl());
         } else if (errorBody != null) {
           String errorMessage = parseErrorBody(errorBody);

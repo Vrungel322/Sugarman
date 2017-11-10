@@ -39,7 +39,7 @@ import timber.log.Timber;
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(usersResponseCall -> {
           Timber.e(usersResponseCall.getBaseUrl());
-          //SharedPreferenceHelper.saveBaseUrl(usersResponseCall.getBaseUrl());
+          SharedPreferenceHelper.saveBaseUrl(usersResponseCall.getBaseUrl());
 
           SharedPreferenceHelper.saveToken(usersResponseCall.getTokens());
           getViewState().startSplashActivity();

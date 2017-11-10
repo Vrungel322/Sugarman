@@ -551,7 +551,9 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
   public static String getBaseUrl() {
     Timber.e("getBaseUrl" + getString(SharedPreferenceConstants.BASE_URL, Config.SERVER_URL));
 
+    if(!getString(SharedPreferenceConstants.BASE_URL, Config.SERVER_URL).isEmpty())
     return getString(SharedPreferenceConstants.BASE_URL, Config.SERVER_URL);
+    else return "http://sugarman-server.herokuapp.com/";
   }
 
   public static void saveBaseUrl(String url) {

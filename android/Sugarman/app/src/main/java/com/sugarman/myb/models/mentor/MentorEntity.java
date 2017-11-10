@@ -24,6 +24,7 @@ public class MentorEntity implements Parcelable {
   @Getter @Setter @SerializedName("description") private String mentorDescription;
   @Getter @Setter @SerializedName("skills") private List<MentorsSkills> mentorSkills;
   @Getter @Setter @SerializedName("members_statuses") private List<MemberOfMentorsGroup> membersOfMentorsGroup;
+  @Getter @Setter @SerializedName("youtube_videos") private List<String> youtubeVideos;
 
   protected MentorEntity(Parcel in) {
     mentorId = in.readString();
@@ -35,6 +36,7 @@ public class MentorEntity implements Parcelable {
     mentorDescription = in.readString();
     mentorSkills = in.createTypedArrayList(MentorsSkills.CREATOR);
     membersOfMentorsGroup = in.createTypedArrayList(MemberOfMentorsGroup.CREATOR);
+    youtubeVideos = in.createStringArrayList();
   }
 
   public static final Creator<MentorEntity> CREATOR = new Creator<MentorEntity>() {
@@ -61,5 +63,6 @@ public class MentorEntity implements Parcelable {
     parcel.writeString(mentorDescription);
     parcel.writeTypedList(mentorSkills);
     parcel.writeTypedList(membersOfMentorsGroup);
+    parcel.writeStringList(youtubeVideos);
   }
 }
