@@ -62,11 +62,11 @@ public class DataManager {
 
   public Observable<Response<Void>> sendPurchaseData(String countryName, String cityName,
       String streetName, String zipCode, String fullName, String phoneNumber, String amountPrice,
-      String num, String productName) {
+      String num, String productName, String paymentType, String productPrice) {
 
     PurchaseDataRequest purchaseDataRequest =
-        new PurchaseDataRequest(SharedPreferenceHelper.getUserId(), countryName, cityName,
-            streetName, fullName, phoneNumber, amountPrice, num, productName, zipCode);
+        new PurchaseDataRequest(countryName, cityName, streetName, zipCode, fullName, amountPrice,
+            productName, num, productPrice, paymentType, phoneNumber);
     return mRestApi.sendPurchaseData(purchaseDataRequest);
   }
 
@@ -110,33 +110,33 @@ public class DataManager {
   }
 
   public Observable<MentorStupidAbstraction> fetchMentors() {
-  //  List<MentorsSkills> mentorsSkillses = new ArrayList<>();
-  //  List<MemberOfMentorsGroup> membersOfMentorsGroup = new ArrayList<>();
-  //  List<MentorEntity> mentorEntities = new ArrayList<>();
-  //  for (int i = 0; i < 7; i++) {
-  //    mentorsSkillses.add(
-  //        new MentorsSkills("Title " + i, Arrays.asList("Skill 1", "Skill 2", "Skill 3", "Skill 4"),
-  //            "https://pi.tedcdn.com/r/pe.tedcdn.com/images/ted/0ef62e4df27b4ba7294de889fdbc33e476a08ec9_254x191.jpg?",
-  //            "https://pi.tedcdn.com/r/pe.tedcdn.com/images/ted/0ef62e4df27b4ba7294de889fdbc33e476a08ec9_254x191.jpg?"));
-  //  }
-  //
-  //  for (int i = 0; i < 33; i++) {
-  //    membersOfMentorsGroup.add(new MemberOfMentorsGroup("John" + i,
-  //        "https://pi.tedcdn.com/r/pe.tedcdn.com/images/ted/0ef62e4df27b4ba7294de889fdbc33e476a08ec9_254x191.jpg?",
-  //        i + ""));
-  //  }
-  //
-  //  for (int i = 0; i < 9; i++) {
-  //    mentorEntities.add(new MentorEntity(String.valueOf(i),
-  //        "https://pi.tedcdn.com/r/pe.tedcdn.com/images/ted/0ef62e4df27b4ba7294de889fdbc33e476a08ec9_254x191.jpg?",
-  //        "Name " + i, "2.8", String.valueOf(i), " Description " + i, mentorsSkillses,
-  //        membersOfMentorsGroup));
-  //
-  //    mentorEntities.add(new MentorEntity(String.valueOf(i),
-  //        "https://pi.tedcdn.com/r/pe.tedcdn.com/images/ted/0ef62e4df27b4ba7294de889fdbc33e476a08ec9_254x191.jpg?",
-  //        "Name " + i, "2.2", String.valueOf(i), " Description " + i, mentorsSkillses,
-  //        membersOfMentorsGroup));
-  //  }
+    //  List<MentorsSkills> mentorsSkillses = new ArrayList<>();
+    //  List<MemberOfMentorsGroup> membersOfMentorsGroup = new ArrayList<>();
+    //  List<MentorEntity> mentorEntities = new ArrayList<>();
+    //  for (int i = 0; i < 7; i++) {
+    //    mentorsSkillses.add(
+    //        new MentorsSkills("Title " + i, Arrays.asList("Skill 1", "Skill 2", "Skill 3", "Skill 4"),
+    //            "https://pi.tedcdn.com/r/pe.tedcdn.com/images/ted/0ef62e4df27b4ba7294de889fdbc33e476a08ec9_254x191.jpg?",
+    //            "https://pi.tedcdn.com/r/pe.tedcdn.com/images/ted/0ef62e4df27b4ba7294de889fdbc33e476a08ec9_254x191.jpg?"));
+    //  }
+    //
+    //  for (int i = 0; i < 33; i++) {
+    //    membersOfMentorsGroup.add(new MemberOfMentorsGroup("John" + i,
+    //        "https://pi.tedcdn.com/r/pe.tedcdn.com/images/ted/0ef62e4df27b4ba7294de889fdbc33e476a08ec9_254x191.jpg?",
+    //        i + ""));
+    //  }
+    //
+    //  for (int i = 0; i < 9; i++) {
+    //    mentorEntities.add(new MentorEntity(String.valueOf(i),
+    //        "https://pi.tedcdn.com/r/pe.tedcdn.com/images/ted/0ef62e4df27b4ba7294de889fdbc33e476a08ec9_254x191.jpg?",
+    //        "Name " + i, "2.8", String.valueOf(i), " Description " + i, mentorsSkillses,
+    //        membersOfMentorsGroup));
+    //
+    //    mentorEntities.add(new MentorEntity(String.valueOf(i),
+    //        "https://pi.tedcdn.com/r/pe.tedcdn.com/images/ted/0ef62e4df27b4ba7294de889fdbc33e476a08ec9_254x191.jpg?",
+    //        "Name " + i, "2.2", String.valueOf(i), " Description " + i, mentorsSkillses,
+    //        membersOfMentorsGroup));
+    //  }
     //return Observable.just(mentorEntities);
 
     return mRestApi.fetchMentors();
@@ -212,8 +212,7 @@ public class DataManager {
     return mRestApi.sendComment(mentorsId, new CommentEntity(rating, commentBody));
   }
 
-  public Observable<Response<Void>> deleteUser(String trackingId, String userId)
-  {
+  public Observable<Response<Void>> deleteUser(String trackingId, String userId) {
     DeleteUserRequest request = new DeleteUserRequest(userId);
     return mRestApi.deleteUser(trackingId, request);
   }
