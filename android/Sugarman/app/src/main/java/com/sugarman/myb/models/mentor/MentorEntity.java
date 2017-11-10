@@ -25,6 +25,9 @@ public class MentorEntity implements Parcelable {
   @Getter @Setter @SerializedName("skills") private List<MentorsSkills> mentorSkills;
   @Getter @Setter @SerializedName("members_statuses") private List<MemberOfMentorsGroup> membersOfMentorsGroup;
   @Getter @Setter @SerializedName("youtube_videos") private List<String> youtubeVideos;
+  @Getter @Setter @SerializedName("assessment_of_day") private float dailySuccessRate;
+  @Getter @Setter @SerializedName("assessment_of_week") private float weeklySuccessRate;
+  @Getter @Setter @SerializedName("assessment_of_month") private float monthlySuccessRate;
 
   protected MentorEntity(Parcel in) {
     mentorId = in.readString();
@@ -37,6 +40,9 @@ public class MentorEntity implements Parcelable {
     mentorSkills = in.createTypedArrayList(MentorsSkills.CREATOR);
     membersOfMentorsGroup = in.createTypedArrayList(MemberOfMentorsGroup.CREATOR);
     youtubeVideos = in.createStringArrayList();
+    dailySuccessRate = in.readFloat();
+    weeklySuccessRate = in.readFloat();
+    monthlySuccessRate = in.readFloat();
   }
 
   public static final Creator<MentorEntity> CREATOR = new Creator<MentorEntity>() {
@@ -64,5 +70,8 @@ public class MentorEntity implements Parcelable {
     parcel.writeTypedList(mentorSkills);
     parcel.writeTypedList(membersOfMentorsGroup);
     parcel.writeStringList(youtubeVideos);
+    parcel.writeFloat(dailySuccessRate);
+    parcel.writeFloat(weeklySuccessRate);
+    parcel.writeFloat(monthlySuccessRate);
   }
 }

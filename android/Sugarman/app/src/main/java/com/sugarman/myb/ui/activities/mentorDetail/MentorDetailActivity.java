@@ -59,13 +59,14 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   private MentorsFriendAdapter mMentorsFriendAdapter;
   private MentorsCommentsAdapter mMentorsCommentsAdapter;
   private MentorsVideosAdapter mMentorsVideosAdapter;
-  private float successRateToday, successRateWeek, successRateMonth;
   private List<String> youtubeVideos;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_mentor_detail);
     super.onCreate(savedInstanceState);
     mMentorEntity = getIntent().getExtras().getParcelable(MentorEntity.MENTOR_ENTITY);
+    Timber.e("daily rate " + mMentorEntity.getDailySuccessRate());
+
     youtubeVideos = mMentorEntity.getYoutubeVideos();
     if(youtubeVideos.size()>0) {
       llVideos.setVisibility(View.VISIBLE);
@@ -82,12 +83,10 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
     mentorName.setText(mMentorEntity.getMentorName());
     mentorPrice.setText("Apply now for " + "2$");
 
-    successRateToday = 87.6f;
-
     List<PieEntry> entries = new ArrayList<>();
 
-    entries.add(new PieEntry(successRateToday, ""));
-    entries.add(new PieEntry(100 - successRateToday, ""));
+    entries.add(new PieEntry(mMentorEntity.getDailySuccessRate()*100f, ""));
+    entries.add(new PieEntry(100 - mMentorEntity.getDailySuccessRate()*100f, ""));
 
 
     PieDataSet set = new PieDataSet(entries, "");
@@ -102,7 +101,7 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
     successRate.getDescription().setText("");
     successRate.setCenterTextSize(9);
     successRate.setDrawCenterText(true);
-    successRate.setCenterText("" + successRateToday + "%");
+    successRate.setCenterText("" + mMentorEntity.getDailySuccessRate()*100f + "%");
     //successRate
     successRate.setData(data);
     successRate.invalidate(); // refresh
