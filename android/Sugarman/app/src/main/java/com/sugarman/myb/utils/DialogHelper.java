@@ -20,4 +20,13 @@ public class DialogHelper {
 
     return builder;
   }
+
+  public static AlertDialog.Builder createSimpleInfoDialog(String positiveBtnMsg, String title,
+      String msg, Context context, DialogInterface.OnClickListener positivBtnCallback) {
+    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+    builder.setMessage(msg).setTitle(title);
+    builder.setPositiveButton(positiveBtnMsg, positivBtnCallback);
+
+    return builder;
+  }
 }
