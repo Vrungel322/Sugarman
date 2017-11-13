@@ -19,4 +19,6 @@ import java.util.List;
   void setUpUI();
 
   void fillCommentsList(List<MentorsCommentsEntity> mentorsCommentsEntities);
+
+  void moveToMainActivity();
 }
