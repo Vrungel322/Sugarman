@@ -155,6 +155,201 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:id="@+id/llSuccessRateContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+      <LinearLayout
+          android:orientation="horizontal"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_weight="5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="12dp"
+            >
+          <ImageView
+              android:layout_width="match_parent"
+              android:layout_height="50dp"
+              android:src="@drawable/skill_border"
+              android:adjustViewBounds="true"
+              android:scaleType="fitCenter"
+              />
+          <TextView
+              android:id="@+id/tvSuccessRateHeader"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Success Rate"
+              android:layout_centerInParent="true"
+              android:textColor="#FA3E3D"
+              android:textStyle="bold"
+              android:textSize="16sp"
+              />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            >
+          <ImageView
+              android:layout_width="match_parent"
+              android:layout_height="50dp"
+              android:paddingTop="5dp"
+              android:paddingBottom="5dp"
+              android:src="@drawable/skill_icon"
+              />
+          <ImageView
+              android:layout_width="match_parent"
+              android:layout_height="45dp"
+              android:paddingLeft="12dp"
+              android:paddingEnd="10dp"
+              android:paddingTop="10dp"
+              android:paddingBottom="10dp"
+              android:layout_centerInParent="true"
+              android:adjustViewBounds="true"
+              android:scaleType="fitCenter"
+              android:src="@drawable/muscle"
+              />
+        </RelativeLayout>
+
+      </LinearLayout>
+
+      <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+          android:orientation="horizontal"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_weight="2"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginRight="12dp"
+            >
+          <com.github.mikephil.charting.charts.PieChart
+              android:id="@+id/pcSuccessRateToday"
+              android:layout_width="wrap_content"
+              android:layout_height="50dp"
+              android:src="@drawable/muscle"
+              android:layout_centerVertical="true"
+              android:layout_alignParentRight="true"
+              />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_weight="7"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="12dp"
+            >
+          <TextView
+              android:id="@+id/tvSuccessRateToday"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Success Rate Today"
+              android:layout_alignParentStart="true"
+              android:layout_centerVertical="true"
+              android:textColor="#000"
+              android:textSize="16sp"
+              />
+        </RelativeLayout>
+
+
+      </LinearLayout>
+
+      <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+          android:orientation="horizontal"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_weight="2"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginRight="12dp"
+            >
+          <com.github.mikephil.charting.charts.PieChart
+              android:id="@+id/pcSuccessRateWeekly"
+              android:layout_width="wrap_content"
+              android:layout_height="50dp"
+              android:src="@drawable/muscle"
+              android:layout_centerVertical="true"
+              android:layout_alignParentRight="true"
+              />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_weight="7"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="12dp"
+            >
+          <TextView
+              android:id="@+id/tvSuccessRateWeekly"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Success Rate Weekly"
+              android:layout_alignParentStart="true"
+              android:layout_centerVertical="true"
+              android:textColor="#000"
+              android:textSize="16sp"
+              />
+        </RelativeLayout>
+
+
+      </LinearLayout>
+
+      <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+          android:orientation="horizontal"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_weight="2"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginRight="12dp"
+            >
+          <com.github.mikephil.charting.charts.PieChart
+              android:id="@+id/pcSuccessRateMonthly"
+              android:layout_width="wrap_content"
+              android:layout_height="50dp"
+              android:src="@drawable/muscle"
+              android:layout_centerVertical="true"
+              android:layout_alignParentRight="true"
+              />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_weight="7"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="12dp"
+            >
+          <TextView
+              android:id="@+id/tvSuccessRateMonthly"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="Success Rate Monthly"
+              android:layout_alignParentStart="true"
+              android:layout_centerVertical="true"
+              android:textColor="#000"
+              android:textSize="16sp"
+              />
+        </RelativeLayout>
+
+
+      </LinearLayout>
+
+
+
+    </LinearLayout>
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/llCommentsContainer"
         android:visibility="gone"

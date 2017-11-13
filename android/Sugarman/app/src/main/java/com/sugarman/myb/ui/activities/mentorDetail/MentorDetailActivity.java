@@ -56,6 +56,12 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   @BindView(R.id.llCommentsContainer) LinearLayout mCommentsContainer;
   @BindView(R.id.tvMentorPrice) TextView mentorPrice;
   @BindView(R.id.piechartSuccessRate) PieChart successRate;
+  @BindView(R.id.pcSuccessRateToday) PieChart successRateToday;
+  @BindView(R.id.pcSuccessRateWeekly) PieChart successRateWeekly;
+  @BindView(R.id.pcSuccessRateMonthly) PieChart successRateMonthly;
+  @BindView(R.id.tvSuccessRateToday) TextView tvSuccessRateToday;
+  @BindView(R.id.tvSuccessRateWeekly) TextView tvSuccessRateWeek;
+  @BindView(R.id.tvSuccessRateMonthly) TextView tvSuccessRateMonth;
   IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = (purchase, result) -> {
     if (result.isSuccess()) {
     } else {
@@ -133,9 +139,12 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
     successRate.setCenterTextSize(9);
     successRate.setDrawCenterText(true);
     successRate.setCenterText("" + mMentorEntity.getDailySuccessRate()*100f + "%");
-    //successRate
     successRate.setData(data);
     successRate.invalidate(); // refresh
+
+    setSuccessRateData(successRateToday,mMentorEntity.getDailySuccessRate(), tvSuccessRateToday);
+    setSuccessRateData(successRateWeekly,mMentorEntity.getWeeklySuccessRate(), tvSuccessRateWeek);
+    setSuccessRateData(successRateMonthly,mMentorEntity.getMonthlySuccessRate(), tvSuccessRateMonth);
 
     LayoutInflater vi =
         (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -153,6 +162,35 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
     mPresenter.fetchComments(mMentorEntity.getUserId());
 
     setupInAppPurchase();
+  }
+
+  private void setSuccessRateData(PieChart pieChart, float successRate, TextView tvIndicator)
+    {
+
+      List<PieEntry> entries = new ArrayList<>();
+
+      entries.add(new PieEntry(successRate*100f, ""));
+      entries.add(new PieEntry(100 - successRate*100f, ""));
+
+      PieDataSet set = new PieDataSet(entries, "");
+
+      set.setColors(new int[] { 0xffdc0c0c, 0x00000000 });
+      set.setValueTextColor(0x00000000);
+      PieData data = new PieData(set);
+
+      pieChart.setOnTouchListener(null);
+      pieChart.getLegend().setEnabled(false);
+      pieChart.setDrawEntryLabels(false);
+      pieChart.setDrawSliceText(false);
+      pieChart.setDrawHoleEnabled(false);
+      pieChart.getDescription().setText("");
+      pieChart.setCenterTextSize(9);
+      pieChart.setDrawCenterText(false);
+      pieChart.setCenterText("" + successRate*100f + "%");
+    pieChart.setData(data);
+    pieChart.invalidate();
+
+      tvIndicator.setText(tvIndicator.getText() + " - " + + successRate*100f + "%");
   }
 
   private void setupInAppPurchase() {
