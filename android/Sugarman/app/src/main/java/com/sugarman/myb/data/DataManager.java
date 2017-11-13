@@ -19,6 +19,7 @@ import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.data.db.DbHelper;
 import com.sugarman.myb.data.local.PreferencesHelper;
+import com.sugarman.myb.models.iab.InAppBilling;
 import com.sugarman.myb.models.mentor.MentorStupidAbstraction;
 import com.sugarman.myb.models.mentor.MentorsCommentsStupidAbstraction;
 import com.sugarman.myb.models.mentor.comments.CommentEntity;
@@ -151,6 +152,10 @@ public class DataManager {
     }
     //return Observable.just(mentorsCommentsEntities);
     return mRestApi.fetchComments(mentorId);
+  }
+
+  public Observable<Response<Void>> checkInAppBilling(InAppBilling inAppBilling) {
+    return mRestApi.checkInAppBilling(inAppBilling);
   }
 
   ///////////////////////////////////////////////////////////////////////////

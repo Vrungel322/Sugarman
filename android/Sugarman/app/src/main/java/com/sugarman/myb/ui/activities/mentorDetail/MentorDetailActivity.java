@@ -26,9 +26,11 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.squareup.picasso.Picasso;
 import com.sugarman.myb.R;
 import com.sugarman.myb.base.BasicActivity;
+import com.sugarman.myb.models.iab.InAppBilling;
 import com.sugarman.myb.models.mentor.MentorEntity;
 import com.sugarman.myb.models.mentor.MentorsSkills;
 import com.sugarman.myb.models.mentor.comments.MentorsCommentsEntity;
+import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
 import com.sugarman.myb.ui.views.MaskTransformation;
 import com.sugarman.myb.utils.ItemClickSupport;
 import com.sugarman.myb.utils.inapp.IabHelper;
@@ -88,6 +90,8 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
       return;
     } else if (purchase.getSku().equals(ITEM_SKU)) {
       consumeItem();
+      mPresenter.checkInAppBilling(purchase,mHelper.getMDataSignature());
+      Timber.e(mHelper.getMDataSignature());
     } else {
       Timber.e(result.getMessage());
     }
@@ -277,6 +281,13 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   @Override public void fillCommentsList(List<MentorsCommentsEntity> mentorsCommentsEntities) {
     if (mentorsCommentsEntities.size() > 0) mCommentsContainer.setVisibility(View.VISIBLE);
     mMentorsCommentsAdapter.setMentorsCommentsEntities(mentorsCommentsEntities);
+  }
+
+  @Override public void moveToMainActivity() {
+    Intent intent = new Intent(MentorDetailActivity.this, MainActivity.class);
+    //intent.putExtra(IntroActivity.CODE_IS_OPEN_LOGIN_ACTIVITY, true);
+    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+    startActivity(intent);
   }
 
   @Override public void fillMentorsFriendsList() {

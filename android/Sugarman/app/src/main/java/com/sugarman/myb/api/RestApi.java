@@ -15,6 +15,7 @@ import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.constants.Constants;
+import com.sugarman.myb.models.iab.InAppBilling;
 import com.sugarman.myb.models.mentor.MentorStupidAbstraction;
 import com.sugarman.myb.models.mentor.MentorsCommentsStupidAbstraction;
 import com.sugarman.myb.models.mentor.comments.CommentEntity;
@@ -166,5 +167,9 @@ public class RestApi {
 
   public Observable<Response<Void>> sendComment(String mentorId, CommentEntity commentEntity) {
     return api.sendComment(mentorId, commentEntity);
+  }
+
+  public Observable<Response<Void>> checkInAppBilling(InAppBilling inAppBilling) {
+    return api.checkInAppBilling(inAppBilling);
   }
 }
