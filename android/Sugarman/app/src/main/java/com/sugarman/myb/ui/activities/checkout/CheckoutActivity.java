@@ -31,14 +31,6 @@ import com.sugarman.myb.ui.views.CropCircleTransformation;
 import timber.log.Timber;
 
 
-/*
-        EditText editText = (EditText) findViewById(R.id.myTextViewId);
-        editText.requestFocus();
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);*/
-
-//эта штука нужна чтоб поставить фокус на EditText по нажатию на другую вьюху
-
 public class CheckoutActivity extends BasicActivity
     implements ICheckoutActivityView, View.OnClickListener {
   private static final int PAYPAL_REQUEST_CODE = 123;
@@ -268,9 +260,9 @@ public class CheckoutActivity extends BasicActivity
   }
 
   private void initPayPal() {
-    //For real pay change ENVIRONMENT_SANDBOX and (may be) PAYPAL_CLIENT_ID
+    //For real pay change ENVIRONMENT_SANDBOX and PAYPAL_CLIENT_ID
     config = new PayPalConfiguration().environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
-        .clientId(Config.PAYPAL_CLIENT_ID);
+        .clientId(Config.PAYPAL_CLIENT_ID).acceptCreditCards(false);
   }
 
   @Override public void startPayPalTransaction(String amountPrice) {
