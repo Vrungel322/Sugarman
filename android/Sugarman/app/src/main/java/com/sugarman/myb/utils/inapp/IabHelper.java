@@ -31,6 +31,7 @@ import android.util.Log;
 import com.android.vending.billing.IInAppBillingService;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.Getter;
 import org.json.JSONException;
 
 /**
@@ -144,6 +145,8 @@ public class IabHelper {
     // some fields on the getSkuDetails response bundle
     public static final String GET_SKU_DETAILS_ITEM_LIST = "ITEM_ID_LIST";
     public static final String GET_SKU_DETAILS_ITEM_TYPE_LIST = "ITEM_TYPE_LIST";
+    @Getter private String mDataSignature;
+    @Getter private String mPurchaseData;
 
     /**
      * Creates an instance. After creation, it will not yet be ready to use. You must perform
@@ -448,17 +451,17 @@ public class IabHelper {
         }
 
         int responseCode = getResponseCodeFromIntent(data);
-        String purchaseData = data.getStringExtra(RESPONSE_INAPP_PURCHASE_DATA);
-        String dataSignature = data.getStringExtra(RESPONSE_INAPP_SIGNATURE);
+        mPurchaseData = data.getStringExtra(RESPONSE_INAPP_PURCHASE_DATA);
+        mDataSignature = data.getStringExtra(RESPONSE_INAPP_SIGNATURE);
 
         if (resultCode == Activity.RESULT_OK && responseCode == BILLING_RESPONSE_RESULT_OK) {
             logDebug("Successful resultcode from purchase activity.");
-            logDebug("Purchase data: " + purchaseData);
-            logDebug("Data signature: " + dataSignature);
+            logDebug("Purchase data: " + mPurchaseData);
+            logDebug("Data signature: " + mDataSignature);
             logDebug("Extras: " + data.getExtras());
             logDebug("Expected item type: " + mPurchasingItemType);
 
-            if (purchaseData == null || dataSignature == null) {
+            if (mPurchaseData == null || mDataSignature == null) {
                 logError("BUG: either purchaseData or dataSignature is null.");
                 logDebug("Extras: " + data.getExtras().toString());
                 result = new IabResult(IABHELPER_UNKNOWN_ERROR, "IAB returned null purchaseData or dataSignature");
@@ -468,11 +471,11 @@ public class IabHelper {
 
             Purchase purchase = null;
             try {
-                purchase = new Purchase(mPurchasingItemType, purchaseData, dataSignature);
+                purchase = new Purchase(mPurchasingItemType, mPurchaseData, mDataSignature);
                 String sku = purchase.getSku();
 
                 // Verify signature
-                if (!Security.verifyPurchase(mSignatureBase64, purchaseData, dataSignature)) {
+                if (!Security.verifyPurchase(mSignatureBase64, mPurchaseData, mDataSignature)) {
                     logError("Purchase signature verification FAILED for sku " + sku);
                     result = new IabResult(IABHELPER_VERIFICATION_FAILED, "Signature verification failed for sku " + sku);
                     if (mPurchaseListener != null) mPurchaseListener.onIabPurchaseFinished(result, purchase);
