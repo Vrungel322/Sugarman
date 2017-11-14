@@ -50,6 +50,8 @@ public class User {
 
   @SerializedName("need_to_do_OTP") private Boolean needOTP;
 
+  @SerializedName("groups_limit") @Getter @Setter private String groupsLimit;
+
   private Date createUTCDate;
 
   private Date currentDayUTCDate;

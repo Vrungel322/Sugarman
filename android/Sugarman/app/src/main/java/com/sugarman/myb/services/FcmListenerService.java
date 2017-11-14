@@ -56,6 +56,7 @@ public class FcmListenerService extends FirebaseMessagingService {
     String url = "";
     try {
       JSONObject notificationJSON = new JSONObject(notification);
+      Timber.e(notificationJSON.toString());
       url = notificationJSON.getString("url");
     } catch (JSONException e) {
       e.printStackTrace();
@@ -74,7 +75,8 @@ public class FcmListenerService extends FirebaseMessagingService {
         case Constants.FCM_MESSAGE:
           Timber.e("Got in message");
           Timber.e("url " + url);
-          if (url != null) {
+          //if (url != null) {
+          if (!url.isEmpty()) {
 
             processURL(url, text);
           } else {
@@ -155,6 +157,7 @@ public class FcmListenerService extends FirebaseMessagingService {
         break;
       case NotificationMessageType.USER_NAME_INVITED:
         App.getEventBus().post(new UpdateInvitesEvent());
+        Timber.e("UpdateInvitesEvent");
         intent.putExtra(Constants.INTENT_OPEN_ACTIVITY, Constants.OPEN_INVITES_ACTIVITY);
         break;
       case NotificationMessageType.CONGRATS:
