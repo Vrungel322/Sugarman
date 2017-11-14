@@ -18,7 +18,7 @@
   <string name="group_name_is_empty">Please enter group name</string>
   <string name="members_list_is_empty">In order to create group you need to choose members</string>
   <string name="play_with_me">Come play this level with me</string>
-  <string name="max_active_groups">Sorry, you can only have up to 3 active groups</string>
+  <string name="max_active_groups">Sorry, you can only have up to %1$s active groups</string>
   <string name="this_user_has_completed_daily">This user has completed his daily steps!</string>
   <string name="you_cant_kick_self">You can\'t kick your own ass</string>
   <string name="editing_your_group_is_possible_on_warm_up">Editing your group is possible only on warm up day</string>

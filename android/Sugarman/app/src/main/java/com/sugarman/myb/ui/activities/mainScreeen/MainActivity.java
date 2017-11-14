@@ -972,12 +972,14 @@ public class MainActivity extends GetUserInfoActivity
         openProfileActivity();
         break;
       case R.id.iv_create_group:
-        if (SharedPreferenceHelper.getActiveTrackingsCreated()
-            < Config.MAX_ACTIVE_CREATED_TRACKINGS) {
+        //if (SharedPreferenceHelper.getActiveTrackingsCreated()
+        //    < Config.MAX_ACTIVE_CREATED_TRACKINGS) {
+        if (SharedPreferenceHelper.getActiveTrackingsCreated() < Integer.parseInt(
+            SharedPreferenceHelper.getGroupsLimit())) {
           openCreateGroupActivity();
         } else {
           new SugarmanDialog.Builder(this, DialogConstants.MAX_ACTIVE_CREATED_TRACKINS_ID).content(
-              R.string.max_active_groups).show();
+              String.format(getString(R.string.max_active_groups), SharedPreferenceHelper.getGroupsLimit())).show();
         }
         break;
       case R.id.ll_search_container:

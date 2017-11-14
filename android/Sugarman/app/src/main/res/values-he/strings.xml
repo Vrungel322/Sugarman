@@ -17,7 +17,7 @@
   <string name="invite_friends">הזמן חברים</string>
   <string name="members_list_is_empty">אנא בחר משתתפים בקבוצה לשם יצירה</string>
   <string name="play_with_me">בוא לשחק ברמה הזו איתי</string>
-  <string name="max_active_groups">המערכת מאפשרת ליצור עד 3 קבוצות פעילות למשתמש</string>
+  <string name="max_active_groups">המערכת מאפשרת ליצור עד %1$s קבוצות פעילות למשתמש</string>
   <string name="this_user_has_completed_daily">המשמתש הזה סיים את האתגר היומי שלו</string>
   <string name="you_cant_kick_self">אתה לא יכול לבעוט בעצמך!!</string>
   <string name="editing_your_group_is_possible_on_warm_up">עדכון קבוצה אפשרי רק ביום החימום</string>

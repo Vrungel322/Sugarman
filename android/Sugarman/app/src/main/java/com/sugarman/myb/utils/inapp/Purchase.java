@@ -17,6 +17,7 @@ package com.sugarman.myb.utils.inapp;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import timber.log.Timber;
 
 /**
  * Represents an in-app billing purchase.
@@ -36,6 +37,7 @@ public class Purchase {
     public Purchase(String itemType, String jsonPurchaseInfo, String signature) throws JSONException {
         mItemType = itemType;
         mOriginalJson = jsonPurchaseInfo;
+        Timber.e(jsonPurchaseInfo);
         JSONObject o = new JSONObject(mOriginalJson);
         mOrderId = o.optString("orderId");
         mPackageName = o.optString("packageName");

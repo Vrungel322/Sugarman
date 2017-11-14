@@ -26,6 +26,8 @@ public class GetMyAllUserDataClient extends BaseApiClient {
 
       if (clientListener.get() != null) {
         if (dataResponse != null) {
+          Timber.e("limitGMAUDC "+response.body().getUser().getGroupsLimit());
+          SharedPreferenceHelper.saveGroupsLimit(response.body().getUser().getGroupsLimit());
           if (response.code() == Constants.RESPONSE_228) {
             SharedPreferenceHelper.setOTPStatus(dataResponse.getUser().getNeedOTP());
             ((ApiGetMyAllUserInfoListener) clientListener.get()).onApiGetMyAllUserInfoNeedApproveOTP(
