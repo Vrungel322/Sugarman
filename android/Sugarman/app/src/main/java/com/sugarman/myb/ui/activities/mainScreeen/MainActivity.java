@@ -209,6 +209,7 @@ public class MainActivity extends GetUserInfoActivity
   private GetMyTrackingsClient mGetMyTrackingsClient;
   private final ApiGetMyInvitesListener apiGetMyInvitesListener = new ApiGetMyInvitesListener() {
     @Override public void onApiGetMyInvitesSuccess(Invite[] invites, boolean isRefreshTrackings) {
+      Timber.e("invites lendth " + invites.length);
       List<Invite> actualInvites = new ArrayList<>(invites.length);
       for (Invite invite : invites) {
         String status = invite.getTracking().getStatus();
@@ -220,6 +221,7 @@ public class MainActivity extends GetUserInfoActivity
       }
 
       App.getEventBus().post(new InvitesUpdatedEvent(actualInvites));
+
       myInvites.clear();
       myInvites.addAll(actualInvites);
       updateEventsCount();
@@ -335,7 +337,6 @@ public class MainActivity extends GetUserInfoActivity
 
           updatePagerTrackings();
           updateAnimations(todaySteps);
-          //   Log.e("ZALOOPA", "" +myTrackings.length);
 
           if (swipedTracking != null) {
             ChallengeWillStartItem item = new ChallengeWillStartItem();
@@ -639,6 +640,7 @@ public class MainActivity extends GetUserInfoActivity
     int openActivityCode = IntentExtractorHelper.getOpenActivityCode(intent);
     String trackingId = IntentExtractorHelper.getTrackingIdFromFcm(intent);
     String url = IntentExtractorHelper.getUrlFromFcm(intent);
+    Timber.e("openActivityCode " + openActivityCode);
     switch (openActivityCode) {
       case Constants.OPEN_INVITES_ACTIVITY:
         openInvitesActivity();
@@ -682,7 +684,7 @@ public class MainActivity extends GetUserInfoActivity
     mWalkDataViewPagerAdapter = new WalkDataViewPagerAdapter(this);
     vpWalkData.setAdapter(mWalkDataViewPagerAdapter);
 
-    int positionToSet = Integer.MAX_VALUE/2;
+    int positionToSet = Integer.MAX_VALUE / 2;
 
     vpWalkData.setCurrentItem(positionToSet);
     spiWalkData.showArrows(false);
@@ -1063,6 +1065,7 @@ public class MainActivity extends GetUserInfoActivity
   }
 
   @Subscribe public void onEvent(UpdateInvitesEvent event) {
+    Timber.e("UpdateInvitesEvent");
     showProgressFragment();
     mGetMyInvitesClient.getInvites(true);
   }
@@ -1294,8 +1297,7 @@ public class MainActivity extends GetUserInfoActivity
   public void openLink(String url) {
     if (url != null && !url.equals("") && !url.equals(" ")) {
       Timber.e("FCM URL " + url);
-      if(!url.contains("://"))
-      {
+      if (!url.contains("://")) {
         url = new String("http://" + url);
       }
       Intent i = new Intent(Intent.ACTION_VIEW);
@@ -1391,7 +1393,6 @@ public class MainActivity extends GetUserInfoActivity
     tvCounter.setTextColor(color);
     color = color - 0xaa000000;
     tvCounter.setShadowLayer(12, 0, 10, color);
-    Log.d("!!!", "set in main: " + todaySteps);
     updateAnimations(todaySteps);
     mWalkDataViewPagerAdapter.setWalkData(String.valueOf(todaySteps));
     mWalkDataViewPagerAdapter.notifyDataSetChanged();
@@ -1399,8 +1400,6 @@ public class MainActivity extends GetUserInfoActivity
 
   private List<BaseChallengeItem> convertTrackingsToItems() {
     List<BaseChallengeItem> items = new ArrayList<>(myTrackings.length);
-
-    Log.e("MainActivity", "convertTrackingsToItems() called " + myTrackings.length);
 
     if (mMentorsGroups != null) {
       for (Tracking mentorsGroup : mMentorsGroups) {
@@ -1619,14 +1618,12 @@ public class MainActivity extends GetUserInfoActivity
   }
 
   private void updatePagerTrackings() {
-    Log.e("MainActivity", "updatePagerTrackings() called");
     List<BaseChallengeItem> converted = prepareTrackingItems();
     if (converted.size() == 1) {
       vpTrackings.setPadding(0, 0, 0, 0);
     } else {
       //vpTrackings.setPadding(vpTrackingPadding, 0, 0, 0);
     }
-    Log.e("MainActivity", "zalooooopa" + converted.size());
     // TODO: 10/27/17 Random position for noMentorsChallenge
     if (mMentorsGroups == null || mMentorsGroups.size() <= 0) {
       converted.add(new Random().nextInt(converted.size()), new NoMentorsChallengeItem());
