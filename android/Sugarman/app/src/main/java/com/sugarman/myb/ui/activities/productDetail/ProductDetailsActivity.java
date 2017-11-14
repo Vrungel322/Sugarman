@@ -5,14 +5,19 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
+import com.appsflyer.AFInAppEventParameterName;
+import com.appsflyer.AppsFlyerLib;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.mzelzoghbi.zgallery.CustomViewPager;
+import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.base.BasicActivity;
 import com.sugarman.myb.ui.activities.checkout.CheckoutActivity;
 import com.sugarman.myb.ui.activities.shop.ShopActivity;
 import com.sugarman.myb.ui.activities.shopInviteFriend.ShopInviteFriendsActivity;
+import java.util.HashMap;
+import java.util.Map;
 import timber.log.Timber;
 
 public class ProductDetailsActivity extends BasicActivity implements IProductDetailsActivityView {
@@ -29,6 +34,12 @@ public class ProductDetailsActivity extends BasicActivity implements IProductDet
   @Override protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_product_details);
     super.onCreate(savedInstanceState);
+
+    Map<String, Object> eventValue = new HashMap<>();
+    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+    eventValue.put(AFInAppEventParameterName.SCORE, 100);
+    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_product_details", eventValue);
+
     mShopProductEntity = getIntent().getParcelableExtra(ShopActivity.PRODUCT);
 
     // pager adapter

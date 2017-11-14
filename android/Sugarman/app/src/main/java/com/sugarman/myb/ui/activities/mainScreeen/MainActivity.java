@@ -28,6 +28,8 @@ import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
+import com.appsflyer.AFInAppEventParameterName;
+import com.appsflyer.AppsFlyerLib;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.facebook.FacebookException;
 import com.mzelzoghbi.zgallery.CustomViewPager;
@@ -456,6 +458,11 @@ public class MainActivity extends GetUserInfoActivity
     super.onCreate(savedInstanceState);
     Resources resources = getResources();
 
+    Map<String, Object> eventValue = new HashMap<>();
+    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+    eventValue.put(AFInAppEventParameterName.SCORE, 100);
+    AppsFlyerLib.getInstance().trackEvent(getApplicationContext(), "af_launch_main", eventValue);
+
     ////Get IMEI
     //int permissionCheck =
     //    ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
@@ -498,6 +505,12 @@ public class MainActivity extends GetUserInfoActivity
 
     vShopButton = findViewById(R.id.iv_shop);
     vShopButton.setOnClickListener(view -> {
+
+      Map<String, Object> eventValues = new HashMap<>();
+      eventValues.put(AFInAppEventParameterName.LEVEL, 9);
+      eventValues.put(AFInAppEventParameterName.SCORE, 100);
+      AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_open_shop", eventValues);
+
       Intent intent = new Intent(MainActivity.this, ShopActivity.class);
       startActivity(intent);
     });
@@ -1242,6 +1255,12 @@ public class MainActivity extends GetUserInfoActivity
   }
 
   public void openCreateGroupActivity() {
+
+    Map<String, Object> eventValue = new HashMap<>();
+    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+    eventValue.put(AFInAppEventParameterName.SCORE, 100);
+    AppsFlyerLib.getInstance().trackEvent(getApplicationContext(), "af_create_group", eventValue);
+
     Intent intent = new Intent(this, CreateGroupActivity.class);
     startActivityForResult(intent, Constants.CREATE_GROUP_ACTIVITY_REQUEST_CODE);
   }
@@ -1314,6 +1333,12 @@ public class MainActivity extends GetUserInfoActivity
   }
 
   private void openProfileActivity() {
+
+    Map<String, Object> eventValue = new HashMap<>();
+    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+    eventValue.put(AFInAppEventParameterName.SCORE, 100);
+    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_go_to_menu", eventValue);
+
     Intent intent = new Intent(this, ProfileActivity.class);
     intent.putExtra(Constants.INTENT_MY_INVITES, myInvites.toArray(new Invite[myInvites.size()]));
     intent.putExtra(Constants.INTENT_MY_REQUESTS,
@@ -1322,6 +1347,10 @@ public class MainActivity extends GetUserInfoActivity
   }
 
   private void openSearchGroupActivity() {
+    Map<String, Object> eventValue = new HashMap<>();
+    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+    eventValue.put(AFInAppEventParameterName.SCORE, 100);
+    AppsFlyerLib.getInstance().trackEvent(getApplicationContext(), "af_group_search", eventValue);
     Intent intent = new Intent(this, SearchGroupsActivity.class);
     startActivity(intent);
   }

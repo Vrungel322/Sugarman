@@ -16,6 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
+import com.appsflyer.AFInAppEventParameterName;
+import com.appsflyer.AppsFlyerLib;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalPayment;
@@ -23,11 +25,14 @@ import com.paypal.android.sdk.payments.PayPalService;
 import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
 import com.squareup.picasso.Picasso;
+import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.base.BasicActivity;
 import com.sugarman.myb.constants.Config;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.ui.views.CropCircleTransformation;
+import java.util.HashMap;
+import java.util.Map;
 import timber.log.Timber;
 
 
@@ -54,6 +59,11 @@ public class CheckoutActivity extends BasicActivity
   @Override protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_checkout);
     super.onCreate(savedInstanceState);
+
+    Map<String, Object> eventValue = new HashMap<>();
+    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+    eventValue.put(AFInAppEventParameterName.SCORE, 100);
+    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_tap_buy_for_money", eventValue);
 
     initPayPal();
 
@@ -184,6 +194,11 @@ public class CheckoutActivity extends BasicActivity
         && etZipCode.getText().length() > 0
         && etFullName.getText().length() > 0
         && etPhoneNumber.getText().length() > 0) {
+
+      Map<String, Object> eventValue = new HashMap<>();
+      eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+      eventValue.put(AFInAppEventParameterName.SCORE, 100);
+      AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_tap_buy_checkout", eventValue);
 
       presenter.sendPurchaseData(etCountryName.getText().toString(),
           etCityName.getText().toString(), etStreetName.getText().toString(),

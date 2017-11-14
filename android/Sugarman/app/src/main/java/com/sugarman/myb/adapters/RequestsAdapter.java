@@ -11,7 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import com.appsflyer.AFInAppEventParameterName;
+import com.appsflyer.AppsFlyerLib;
 import com.squareup.picasso.Picasso;
+import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.api.models.responses.me.requests.Request;
@@ -22,7 +25,9 @@ import com.sugarman.myb.ui.views.StrokeImage;
 import com.sugarman.myb.utils.StringHelper;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     implements ItemRequestsActionListener {
@@ -96,6 +101,12 @@ public class RequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
   }
 
   @Override public void onClickApprove(int position) {
+
+    Map<String, Object> eventValue = new HashMap<>();
+    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+    eventValue.put(AFInAppEventParameterName.SCORE, 100);
+    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_accept_request", eventValue);
+
     if (position >= 0 && position < mData.size()) {
       if (mActionListener.get() != null) {
         mActionListener.get().onApproveRequest(mData.get(position), position);
@@ -106,6 +117,13 @@ public class RequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
   }
 
   @Override public void onClickDecline(int position) {
+
+
+    Map<String, Object> eventValue = new HashMap<>();
+    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+    eventValue.put(AFInAppEventParameterName.SCORE, 100);
+    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_decline_request", eventValue);
+
     if (position >= 0 && position < mData.size()) {
       if (mActionListener.get() != null) {
         mActionListener.get().onDeclineRequest(mData.get(position), position);

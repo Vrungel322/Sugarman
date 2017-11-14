@@ -18,12 +18,15 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
+import com.appsflyer.AFInAppEventParameterName;
+import com.appsflyer.AppsFlyerLib;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.squareup.picasso.Picasso;
+import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.base.BasicActivity;
 import com.sugarman.myb.models.iab.InAppBilling;
@@ -37,7 +40,9 @@ import com.sugarman.myb.utils.inapp.IabHelper;
 import com.sugarman.myb.utils.inapp.IabResult;
 import com.sugarman.myb.utils.inapp.Inventory;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import timber.log.Timber;
 
 public class MentorDetailActivity extends BasicActivity implements IMentorDetailActivityView {
@@ -108,6 +113,13 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   @Override protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_mentor_detail);
     super.onCreate(savedInstanceState);
+
+    Map<String, Object> eventValue = new HashMap<>();
+    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+    eventValue.put(AFInAppEventParameterName.SCORE, 100);
+    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_open_mentor_detail", eventValue);
+
+
     mMentorEntity = getIntent().getExtras().getParcelable(MentorEntity.MENTOR_ENTITY);
     Timber.e("daily rate " + mMentorEntity.getDailySuccessRate());
 
@@ -313,6 +325,12 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   }
 
   @OnClick(R.id.ivSubscribeMentor) public void ivSubscribeMentorClicked() {
+
+    Map<String, Object> eventValue = new HashMap<>();
+    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+    eventValue.put(AFInAppEventParameterName.SCORE, 100);
+    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_tap_apply_for_mentor", eventValue);
+
     mHelper.launchSubscriptionPurchaseFlow(this, ITEM_SKU, 10001, mPurchaseFinishedListener,
         "mypurchasetoken");
   }

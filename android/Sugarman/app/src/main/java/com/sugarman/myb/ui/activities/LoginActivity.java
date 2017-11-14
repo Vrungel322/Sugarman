@@ -21,6 +21,8 @@ import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import com.appsflyer.AFInAppEventParameterName;
+import com.appsflyer.AppsFlyerLib;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -34,6 +36,7 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.SignInButton;
+import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.requests.ReportStats;
 import com.sugarman.myb.constants.Config;
@@ -54,6 +57,8 @@ import com.vk.sdk.api.VKParameters;
 import com.vk.sdk.api.VKRequest;
 import com.vk.sdk.api.VKResponse;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import jp.wasabeef.blurry.Blurry;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -157,6 +162,12 @@ public class LoginActivity extends GetUserInfoActivity implements View.OnClickLi
 
     rlphone.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
+
+        Map<String, Object> eventValue = new HashMap<>();
+        eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+        eventValue.put(AFInAppEventParameterName.SCORE, 100);
+        AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_login_with_phone", eventValue);
+
         Intent intent = new Intent(LoginActivity.this, PhoneLoginActivity.class);
         startActivity(intent);
       }
@@ -204,6 +215,12 @@ public class LoginActivity extends GetUserInfoActivity implements View.OnClickLi
     rlvk.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
         //showSugarmanProgressFragment();
+
+        Map<String, Object> eventValue = new HashMap<>();
+        eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+        eventValue.put(AFInAppEventParameterName.SCORE, 100);
+        AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_login_with_vk", eventValue);
+
         VKSdk.login(LoginActivity.this, "friends,email,messages");
       }
     });
@@ -269,6 +286,12 @@ public class LoginActivity extends GetUserInfoActivity implements View.OnClickLi
           }
         });
     rlfb.setOnClickListener(view -> {
+
+      Map<String, Object> eventValue = new HashMap<>();
+      eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+      eventValue.put(AFInAppEventParameterName.SCORE, 100);
+      AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_login_with_fb", eventValue);
+
       LoginManager.getInstance()
           .logInWithReadPermissions(this,
               Arrays.asList("public_profile", "user_friends", "email", "read_custom_friendlists"));

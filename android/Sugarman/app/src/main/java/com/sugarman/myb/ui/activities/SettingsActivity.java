@@ -5,9 +5,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.PreferenceActivity;
+import com.appsflyer.AFInAppEventParameterName;
+import com.appsflyer.AppsFlyerLib;
+import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Y500 on 15.06.2017.
@@ -39,6 +44,12 @@ public class SettingsActivity extends PreferenceActivity
   @Override public void onBackPressed() {
     super.onBackPressed();
     if (needsRestart) {
+
+      Map<String, Object> eventValue = new HashMap<>();
+      eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+      eventValue.put(AFInAppEventParameterName.SCORE, 100);
+      AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_change_language", eventValue);
+
       Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
       intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
       startActivity(intent);

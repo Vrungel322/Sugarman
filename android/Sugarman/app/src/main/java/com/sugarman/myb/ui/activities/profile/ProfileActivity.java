@@ -24,8 +24,11 @@ import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
+import com.appsflyer.AFInAppEventParameterName;
+import com.appsflyer.AppsFlyerLib;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.squareup.picasso.Picasso;
+import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.me.invites.Invite;
 import com.sugarman.myb.api.models.responses.me.requests.Request;
@@ -53,10 +56,13 @@ import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.vk.sdk.VKSdk;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.greenrobot.eventbus.Subscribe;
 
-public class ProfileActivity extends BaseActivity implements View.OnTouchListener, IProfileActivityView {
+public class ProfileActivity extends BaseActivity
+    implements View.OnTouchListener, IProfileActivityView {
 
   private static final String TAG = ProfileActivity.class.getName();
 
@@ -159,7 +165,8 @@ public class ProfileActivity extends BaseActivity implements View.OnTouchListene
         paint.setStyle(Paint.Style.STROKE);
         paint.setColor(0xffD9DADB);
         paint.setAntiAlias(true);
-        canvas.drawRoundRect(new RectF(38, height/4-1, width - 38, height-height/4),25,25,paint);
+        canvas.drawRoundRect(new RectF(38, height / 4 - 1, width - 38, height - height / 4), 25, 25,
+            paint);
         Paint p = new Paint();
         p.setStrokeWidth(height / 2);
         p.setStrokeCap(Paint.Cap.ROUND);
@@ -173,7 +180,7 @@ public class ProfileActivity extends BaseActivity implements View.OnTouchListene
       }
     });
 
-    level.setText(String.format(getString(R.string.level),SharedPreferenceHelper.getLevel()));
+    level.setText(String.format(getString(R.string.level), SharedPreferenceHelper.getLevel()));
 
     Typeface tfDin = Typeface.createFromAsset(getAssets(), "din_light.ttf");
     tvTotal.setTypeface(tfDin);
@@ -216,8 +223,6 @@ public class ProfileActivity extends BaseActivity implements View.OnTouchListene
         openRequestsActivity();
         break;
     }
-
-
   }
 
   @Override protected void onPause() {
@@ -244,9 +249,12 @@ public class ProfileActivity extends BaseActivity implements View.OnTouchListene
           .into(ivAvatar);
     }
 
-    Animation animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_scale_up);
-    Animation animation2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_scale_up);
-    Animation animation3 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_scale_up);
+    Animation animation =
+        AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_scale_up);
+    Animation animation2 =
+        AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_scale_up);
+    Animation animation3 =
+        AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_scale_up);
 
     new Thread(new Runnable() {
       @Override public void run() {
@@ -328,11 +336,23 @@ public class ProfileActivity extends BaseActivity implements View.OnTouchListene
 
           case R.id.tv_terms_of_use:
             openInWebView(Config.TERMS_OF_USE_URL);
+            Map<String, Object> eventValue = new HashMap<>();
+            eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+            eventValue.put(AFInAppEventParameterName.SCORE, 100);
+            AppsFlyerLib.getInstance()
+                .trackEvent(App.getInstance().getApplicationContext(), "af_open_terms_of_use",
+                    eventValue);
             break;
           case R.id.ll_settings_container:
             openSettingsActivity();
             break;
           case R.id.tv_privacy_policy:
+            Map<String, Object> eventValues = new HashMap<>();
+            eventValues.put(AFInAppEventParameterName.LEVEL, 9);
+            eventValues.put(AFInAppEventParameterName.SCORE, 100);
+            AppsFlyerLib.getInstance()
+                .trackEvent(App.getInstance().getApplicationContext(), "af_open_private_policy",
+                    eventValues);
             openInWebView(Config.PRIVACY_POLICY);
             break;
           case R.id.ll_invites_container:
@@ -345,6 +365,14 @@ public class ProfileActivity extends BaseActivity implements View.OnTouchListene
             openHighScoreActivity();
             break;
           case R.id.ll_invite_friends_container:
+
+            Map<String, Object> eventValueq = new HashMap<>();
+            eventValueq.put(AFInAppEventParameterName.LEVEL, 9);
+            eventValueq.put(AFInAppEventParameterName.SCORE, 100);
+            AppsFlyerLib.getInstance()
+                .trackEvent(App.getInstance().getApplicationContext(), "af_invite_friends",
+                    eventValueq);
+
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
             sendIntent.putExtra(Intent.EXTRA_TEXT,
@@ -359,6 +387,12 @@ public class ProfileActivity extends BaseActivity implements View.OnTouchListene
             openMyStatsActivity();
             break;
           case R.id.ll_logout_container:
+
+            Map<String, Object> eventValueg = new HashMap<>();
+            eventValueg.put(AFInAppEventParameterName.LEVEL, 9);
+            eventValueg.put(AFInAppEventParameterName.SCORE, 100);
+            AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_log_out", eventValueg);
+
             logout();
             VKSdk.logout();
             break;
@@ -367,6 +401,12 @@ public class ProfileActivity extends BaseActivity implements View.OnTouchListene
             closeActivity();
             break;
           case R.id.ll_edit_profile_container:
+            Map<String, Object> eventValuew = new HashMap<>();
+            eventValuew.put(AFInAppEventParameterName.LEVEL, 9);
+            eventValuew.put(AFInAppEventParameterName.SCORE, 100);
+            AppsFlyerLib.getInstance()
+                .trackEvent(App.getInstance().getApplicationContext(), "af_go_to_profile_settings",
+                    eventValuew);
             Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
             startActivity(intent);
             break;
@@ -480,28 +520,64 @@ public class ProfileActivity extends BaseActivity implements View.OnTouchListene
   }
 
   private void openHighScoreActivity() {
+    Map<String, Object> eventValue = new HashMap<>();
+    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+    eventValue.put(AFInAppEventParameterName.SCORE, 100);
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_open_high_score", eventValue);
     Intent intent = new Intent(ProfileActivity.this, HighScoreActivity.class);
     startActivity(intent);
   }
 
   private void openInvitesActivity() {
+
+    Map<String, Object> eventValue = new HashMap<>();
+    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+    eventValue.put(AFInAppEventParameterName.SCORE, 100);
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_open_invites_screen",
+            eventValue);
+
     Intent intent = new Intent(ProfileActivity.this, InvitesActivity.class);
     intent.putExtra(Constants.INTENT_MY_INVITES, invites.toArray(new Invite[invites.size()]));
     startActivityForResult(intent, Constants.OPEN_INVITES_ACTIVITY_REQUEST_CODE);
   }
 
   private void openIntroActivity() {
+
+    Map<String, Object> eventValue = new HashMap<>();
+    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+    eventValue.put(AFInAppEventParameterName.SCORE, 100);
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_open_tutorial_from_menu",
+            eventValue);
+
     Intent intent = new Intent(ProfileActivity.this, IntroActivity.class);
     intent.putExtra(IntroActivity.CODE_IS_OPEN_LOGIN_ACTIVITY, false);
     startActivity(intent);
   }
 
   private void openSettingsActivity() {
+
+    Map<String, Object> eventValue = new HashMap<>();
+    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+    eventValue.put(AFInAppEventParameterName.SCORE, 100);
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_open_settings", eventValue);
+
     Intent intent = new Intent(ProfileActivity.this, SettingsActivity.class);
     startActivity(intent);
   }
 
   private void openRequestsActivity() {
+
+    Map<String, Object> eventValue = new HashMap<>();
+    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+    eventValue.put(AFInAppEventParameterName.SCORE, 100);
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_open_requests_screen",
+            eventValue);
+
     Intent intent = new Intent(ProfileActivity.this, RequestsActivity.class);
     intent.putExtra(Constants.INTENT_MY_REQUESTS, requests.toArray(new Request[requests.size()]));
     startActivityForResult(intent, Constants.OPEN_REQUESTS_ACTIVITY_REQUEST_CODE);
@@ -516,6 +592,13 @@ public class ProfileActivity extends BaseActivity implements View.OnTouchListene
   }
 
   private void openMyStatsActivity() {
+
+    Map<String, Object> eventValue = new HashMap<>();
+    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+    eventValue.put(AFInAppEventParameterName.SCORE, 100);
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_open_my_stats", eventValue);
+
     Intent intent = new Intent(ProfileActivity.this, MyStatsActivity.class);
     startActivity(intent);
   }
