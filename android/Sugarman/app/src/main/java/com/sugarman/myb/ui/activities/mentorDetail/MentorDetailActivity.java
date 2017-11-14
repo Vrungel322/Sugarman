@@ -178,7 +178,7 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
 
       PieDataSet set = new PieDataSet(entries, "");
 
-      set.setColors(new int[] { 0xffdc0c0c, 0x00000000 });
+      set.setColors(new int[] { 0xffdc0c0c, 0xffffffff });
       set.setValueTextColor(0x00000000);
       PieData data = new PieData(set);
 
