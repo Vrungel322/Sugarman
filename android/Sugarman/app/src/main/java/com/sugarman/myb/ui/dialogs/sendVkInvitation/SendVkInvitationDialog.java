@@ -61,6 +61,7 @@ public class SendVkInvitationDialog extends MvpDialogFragment
 
   @OnClick(R.id.bDismiss) public void bDismissClicked() {
     dismiss();
+    getActivity().finish();
   }
 
   @Override public void doAction() {
