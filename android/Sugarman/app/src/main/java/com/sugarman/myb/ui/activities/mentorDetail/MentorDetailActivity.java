@@ -29,7 +29,6 @@ import com.squareup.picasso.Picasso;
 import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.base.BasicActivity;
-import com.sugarman.myb.models.iab.InAppBilling;
 import com.sugarman.myb.models.mentor.MentorEntity;
 import com.sugarman.myb.models.mentor.MentorsSkills;
 import com.sugarman.myb.models.mentor.comments.MentorsCommentsEntity;
@@ -69,13 +68,13 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   @BindView(R.id.tvSuccessRateToday) TextView tvSuccessRateToday;
   @BindView(R.id.tvSuccessRateWeekly) TextView tvSuccessRateWeek;
   @BindView(R.id.tvSuccessRateMonthly) TextView tvSuccessRateMonth;
+  IabHelper mHelper;
   IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = (purchase, result) -> {
     if (result.isSuccess()) {
     } else {
       // handle error
     }
   };
-  IabHelper mHelper;
   IabHelper.QueryInventoryFinishedListener mReceivedInventoryListener =
       new IabHelper.QueryInventoryFinishedListener() {
         public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
@@ -86,6 +85,9 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
             mHelper.consumeAsync(inventory.getPurchase(ITEM_SKU), mConsumeFinishedListener);
             Timber.e(result.getMessage());
             Timber.e(inventory.getSkuDetails(ITEM_SKU).getTitle());
+
+            mPresenter.checkInAppBilling(inventory.getPurchase(ITEM_SKU),
+                mHelper.getMDataSignature(),inventory.getSkuDetails(ITEM_SKU).getTitle());
           }
         }
       };
@@ -95,7 +97,6 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
       return;
     } else if (purchase.getSku().equals(ITEM_SKU)) {
       consumeItem();
-      mPresenter.checkInAppBilling(purchase,mHelper.getMDataSignature());
       Timber.e(mHelper.getMDataSignature());
     } else {
       Timber.e(result.getMessage());
