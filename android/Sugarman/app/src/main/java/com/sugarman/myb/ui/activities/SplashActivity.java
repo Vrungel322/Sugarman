@@ -64,7 +64,7 @@ public class SplashActivity extends GetUserInfoActivity
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
     eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance().trackEvent(getApplicationContext(), "af_firstlaunch", eventValue);
+    AppsFlyerLib.getInstance().trackEvent(getApplicationContext(), "af_launch_splash", eventValue);
 
     SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
     Sensor accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);

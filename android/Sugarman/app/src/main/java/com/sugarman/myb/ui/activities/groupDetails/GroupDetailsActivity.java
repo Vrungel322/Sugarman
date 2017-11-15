@@ -51,6 +51,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
+import com.appsflyer.AFInAppEventParameterName;
+import com.appsflyer.AppsFlyerLib;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.clover_studio.spikachatmodule.CameraPhotoPreviewActivity;
 import com.clover_studio.spikachatmodule.ChatActivity;
@@ -149,8 +151,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONObject;
@@ -614,14 +618,16 @@ public class GroupDetailsActivity extends BaseActivity
   private boolean editMode = false;
   private MentorsCommentsEntity mComment;
 
-
-  @OnClick (R.id.ivEditMentor) public void editMentorClicked()
-  {
+  @OnClick(R.id.ivEditMentor) public void editMentorClicked() {
+    Map<String, Object> eventValue = new HashMap<>();
+    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+    eventValue.put(AFInAppEventParameterName.SCORE, 100);
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_edit_mode", eventValue);
     editMode = !editMode;
     Timber.e("clicked edit " + editMode);
     membersAdapter.setEditMode(editMode);
   }
-
 
   @Override protected void onCreate(Bundle savedStateInstance) {
     setContentView(R.layout.activity_group_details);
@@ -672,6 +678,11 @@ public class GroupDetailsActivity extends BaseActivity
     tvEditGroup = (TextView) findViewById(R.id.tv_edit_group);
     tvEditGroup.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
+        Map<String, Object> eventValue = new HashMap<>();
+        eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+        eventValue.put(AFInAppEventParameterName.SCORE, 100);
+        AppsFlyerLib.getInstance()
+            .trackEvent(App.getInstance().getApplicationContext(), "af_edit_group", eventValue);
         openAddMembersActivity();
       }
     });
@@ -890,6 +901,10 @@ public class GroupDetailsActivity extends BaseActivity
   }
 
   @OnClick(R.id.tvOk) public void tvOkClicked() {
+    Map<String, Object> eventValue = new HashMap<>();
+    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+    eventValue.put(AFInAppEventParameterName.SCORE, 100);
+    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_send_comment", eventValue);
     mPresenter.sendComment(mentorId, mAppCompatRatingBarMentor.getRating(),
         mEditTextCommentBody.getText().toString());
   }
@@ -901,6 +916,11 @@ public class GroupDetailsActivity extends BaseActivity
     //rlComments.setAlpha(0.0f);
     //rlComments.startAnimation(animation1);
     //rlComments.setVisibility(View.GONE);
+    Map<String, Object> eventValue = new HashMap<>();
+    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+    eventValue.put(AFInAppEventParameterName.SCORE, 100);
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_cancel_comment", eventValue);
     rlComments.animate().alpha(0.0f).setDuration(350).withEndAction(new Runnable() {
       @Override public void run() {
         rlComments.clearAnimation();
@@ -912,6 +932,13 @@ public class GroupDetailsActivity extends BaseActivity
 
   private void openCommentDialog() {
     // TODO: 03.11.2017 check if comments already exist for this mentor
+
+    Map<String, Object> eventValue = new HashMap<>();
+    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+    eventValue.put(AFInAppEventParameterName.SCORE, 100);
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_open_comment_screen",
+            eventValue);
     AlphaAnimation animation1 = new AlphaAnimation(0.0f, 1.0f);
     animation1.setDuration(350);
     animation1.setFillAfter(true);
@@ -2029,6 +2056,13 @@ public class GroupDetailsActivity extends BaseActivity
 
   public void massPokeMember() {
     if (amIInGroup) {
+
+      Map<String, Object> eventValue = new HashMap<>();
+      eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+      eventValue.put(AFInAppEventParameterName.SCORE, 100);
+      AppsFlyerLib.getInstance()
+          .trackEvent(App.getInstance().getApplicationContext(), "af_kick_all", eventValue);
+
       if (lessThanYou.size() > 0) {
         for (Member m : lessThanYou) {
           onPokeMember(new GroupMember(m));

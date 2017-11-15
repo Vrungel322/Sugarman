@@ -59,6 +59,9 @@ public class ShopActivity extends BasicActivity implements IShopActivityView, Vi
         .setOnItemClickListener((recyclerView, position, v) -> {
           Intent intent;
           if(position==3) {
+
+
+
             intent = new Intent(ShopActivity.this, MentorListActivity.class);
           }
                 else {
@@ -96,7 +99,7 @@ public class ShopActivity extends BasicActivity implements IShopActivityView, Vi
         views.addAll(getTextViews((ViewGroup) v));
       }
     }
-    System.out.println("хуй собачий");
+    System.out.println("хуй котячий");
     return views;
   }
 

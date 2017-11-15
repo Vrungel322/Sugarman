@@ -33,6 +33,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import butterknife.BindView;
 import butterknife.OnClick;
+import com.appsflyer.AFInAppEventParameterName;
+import com.appsflyer.AppsFlyerLib;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.clover_studio.spikachatmodule.utils.Const;
 import com.facebook.CallbackManager;
@@ -84,6 +86,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -593,11 +596,19 @@ public class CreateGroupActivity extends BaseActivity
     int id = v.getId();
     switch (id) {
       case R.id.iv_cross:
+        Map<String, Object> eventValue = new HashMap<>();
+        eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+        eventValue.put(AFInAppEventParameterName.SCORE, 100);
+        AppsFlyerLib.getInstance().trackEvent(getApplicationContext(), "af_cancel_group_creation", eventValue);
         setResult(RESULT_CANCELED);
         finish();
         break;
       case R.id.iv_apply:
         DeviceHelper.hideKeyboard(this);
+        Map<String, Object> eventValues = new HashMap<>();
+        eventValues.put(AFInAppEventParameterName.LEVEL, 9);
+        eventValues.put(AFInAppEventParameterName.SCORE, 100);
+        AppsFlyerLib.getInstance().trackEvent(getApplicationContext(), "af_create_group_inside", eventValues);
         checkFilledData();
         break;
       case R.id.ll_add_photo_container:

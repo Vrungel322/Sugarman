@@ -28,6 +28,8 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.OnClick;
+import com.appsflyer.AFInAppEventParameterName;
+import com.appsflyer.AppsFlyerLib;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.clover_studio.spikachatmodule.utils.Const;
 import com.facebook.CallbackManager;
@@ -36,6 +38,7 @@ import com.facebook.FacebookException;
 import com.facebook.share.model.GameRequestContent;
 import com.facebook.share.widget.GameRequestDialog;
 import com.squareup.picasso.Picasso;
+import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.adapters.membersAdapter.MembersAdapter;
 import com.sugarman.myb.api.clients.FBApiClient;
@@ -56,7 +59,9 @@ import com.sugarman.myb.utils.IntentExtractorHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import timber.log.Timber;
 
 /*
@@ -164,6 +169,12 @@ public class ShopInviteFriendsActivity extends BasicActivity
     setContentView(R.layout.activity_shop_invite_friends);
     super.onCreate(savedStateInstance);
     bAddFriends.setEnabled(true);
+
+    Map<String, Object> eventValue = new HashMap<>();
+    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+    eventValue.put(AFInAppEventParameterName.SCORE, 100);
+    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_tap_free_for_invites", eventValue);
+
     ConstraintLayout mainLayout = (ConstraintLayout) findViewById(R.id.mainLayout);
 
     //getWindow().setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.background));

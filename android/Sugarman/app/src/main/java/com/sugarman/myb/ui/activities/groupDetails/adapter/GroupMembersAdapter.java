@@ -14,6 +14,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.appsflyer.AFInAppEventParameterName;
+import com.appsflyer.AppsFlyerLib;
 import com.arellomobile.mvp.MvpDelegate;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.squareup.picasso.NetworkPolicy;
@@ -34,8 +36,10 @@ import com.sugarman.myb.utils.SoundHelper;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 import lombok.Getter;
 import timber.log.Timber;
@@ -371,6 +375,12 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
             context.getString(R.string.discard), context.getString(R.string.warning),
             context.getString(R.string.delete_user_from_group), context, (dialogInterface, i) -> {
               mAdapterPresenter.deleteUser(mTrackingId, toDelete.getId(), position);
+              Map<String, Object> eventValue = new HashMap<>();
+              eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+              eventValue.put(AFInAppEventParameterName.SCORE, 100);
+              AppsFlyerLib.getInstance()
+                  .trackEvent(App.getInstance().getApplicationContext(),
+                      "af_delete_person_from_group", eventValue);
             }, (dialogInterface, i) -> {
               dialogInterface.dismiss();
             }).create().show();
@@ -382,6 +392,11 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
         + myPosition
         + " user clicked "
         + mData.get(position).getId());
+    Map<String, Object> eventValue = new HashMap<>();
+    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+    eventValue.put(AFInAppEventParameterName.SCORE, 100);
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_kick_single_person", eventValue);
 
     if (amIMentor) {
       GroupMember member = mData.get(position);

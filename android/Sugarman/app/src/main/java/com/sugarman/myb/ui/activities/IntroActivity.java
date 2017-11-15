@@ -6,7 +6,10 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.appsflyer.AFInAppEventParameterName;
+import com.appsflyer.AppsFlyerLib;
 import com.rd.PageIndicatorView;
+import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.adapters.IntroPagerAdapter;
 import com.sugarman.myb.constants.Constants;
@@ -14,6 +17,8 @@ import com.sugarman.myb.ui.activities.base.BaseActivity;
 import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
 import com.sugarman.myb.utils.IntentExtractorHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
+import java.util.HashMap;
+import java.util.Map;
 
 public class IntroActivity extends BaseActivity implements View.OnClickListener {
 
@@ -74,6 +79,11 @@ public class IntroActivity extends BaseActivity implements View.OnClickListener 
   public void goToNextScreen() {
     SharedPreferenceHelper.showedIntro();
 
+    Map<String, Object> eventValue = new HashMap<>();
+    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+    eventValue.put(AFInAppEventParameterName.SCORE, 100);
+    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_finish_tutorial", eventValue);
+
     Intent intent = new Intent(IntroActivity.this, MainActivity.class);
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
     intent.putExtra(Constants.INTENT_MY_TRACKINGS, IntentExtractorHelper.getTrackings(this.intent));
@@ -86,6 +96,14 @@ public class IntroActivity extends BaseActivity implements View.OnClickListener 
 
   public void skipOrClose() {
     SharedPreferenceHelper.showedIntro();
+
+
+    Map<String, Object> eventValue = new HashMap<>();
+    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+    eventValue.put(AFInAppEventParameterName.SCORE, 100);
+    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_skip_tutorial", eventValue);
+
+
     if (this.intent != null && intent.getBooleanExtra(CODE_IS_OPEN_LOGIN_ACTIVITY, false)) {
       Intent intent = new Intent(IntroActivity.this, MainActivity.class);
       intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

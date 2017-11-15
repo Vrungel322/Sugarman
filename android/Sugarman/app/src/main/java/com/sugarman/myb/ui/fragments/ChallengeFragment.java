@@ -18,6 +18,8 @@ import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.appsflyer.AFInAppEventParameterName;
+import com.appsflyer.AppsFlyerLib;
 import com.clover_studio.spikachatmodule.api.retrofit.CustomResponse;
 import com.clover_studio.spikachatmodule.api.retrofit.SpikaOSRetroApiInterface;
 import com.clover_studio.spikachatmodule.base.SingletonLikeApp;
@@ -33,6 +35,7 @@ import com.clover_studio.spikachatmodule.utils.EmitJsonCreator;
 import com.clover_studio.spikachatmodule.utils.LogCS;
 import com.clover_studio.spikachatmodule.utils.SeenByUtils;
 import com.squareup.picasso.Picasso;
+import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.Group;
 import com.sugarman.myb.api.models.responses.Member;
@@ -48,8 +51,10 @@ import com.sugarman.myb.utils.IntentExtractorHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import org.json.JSONObject;
@@ -586,6 +591,11 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
   }
 
   private void openGroupDetailsActivity(boolean isMentorGroup) {
+    Map<String, Object> eventValue = new HashMap<>();
+    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+    eventValue.put(AFInAppEventParameterName.SCORE, 100);
+    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_open_group_details_from_main_screen", eventValue);
+
     Activity activity = getActivity();
     if (activity != null
         && activity instanceof MainActivity
