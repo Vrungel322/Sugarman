@@ -345,12 +345,9 @@ public class ShopInviteFriendsActivity extends BasicActivity
 
   @OnClick(R.id.ph_filter) public void showPhFriends() {
     //addMembersFromPreviousAdapter();
-    Timber.e("allFriends " + allFriends);
-
     if (!currentFilter.equals("ph")) {
       filtered.clear();
-
-      for (FacebookFriend friend : allFriends) {
+      for (FacebookFriend friend : toFilterList) {
         if (friend.getSocialNetwork().equals("ph")) {
           filtered.add(friend);
         }
@@ -647,6 +644,7 @@ public class ShopInviteFriendsActivity extends BasicActivity
   @Override public void addPhoneContact(List<FacebookFriend> facebookFriends) {
     allFriends.addAll(facebookFriends);
     toFilterList.addAll(facebookFriends);
+    Timber.e("addPhoneContact " + facebookFriends.size());
     membersAdapter.addPhoneContacts(facebookFriends);
   }
 
