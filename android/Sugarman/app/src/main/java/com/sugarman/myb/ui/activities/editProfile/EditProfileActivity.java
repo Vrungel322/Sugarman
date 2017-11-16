@@ -113,6 +113,13 @@ public class EditProfileActivity extends BasicActivity
     return matcher.matches();
   }
 
+  public static boolean isNameValid(String name){
+    if(name.length()>0 && name.charAt(0)!=' ') {
+      return true;
+    }
+    return false;
+  }
+
   @Override protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_edit_profile);
     super.onCreate(savedInstanceState);
