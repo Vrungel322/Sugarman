@@ -38,11 +38,9 @@ import timber.log.Timber;
     addToUnsubscription(subscription);
   }
 
-  public void checkInAppBilling(Purchase purchase, String signature) {
-    Subscription subscription = mDataManager.checkInAppBilling(new InAppBilling(
-        new PurchaseForServer(purchase.getOrderId(), purchase.getPackageName(), purchase.getSku(),
-            purchase.getPurchaseTime(), purchase.getPurchaseState(), purchase.getDeveloperPayload(),
-            purchase.getToken()), signature))
+  public void checkInAppBilling(Purchase purchase, String signature,String productName) {
+    Subscription subscription = mDataManager.checkInAppBilling(
+        new PurchaseForServer(productName,purchase.getSku(),purchase.getDeveloperPayload()))
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(voidResponse -> {
           Timber.e(String.valueOf(voidResponse.code()));
