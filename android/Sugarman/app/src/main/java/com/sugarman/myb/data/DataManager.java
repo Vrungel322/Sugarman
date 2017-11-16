@@ -96,11 +96,11 @@ public class DataManager {
         Arrays.asList(String.valueOf(R.drawable.belt1), String.valueOf(R.drawable.belt2),
             String.valueOf(R.drawable.belt3))));
     entities.add(new ShopProductEntity("2", productName.get(2), "", "2.99",
-        Arrays.asList(String.valueOf(R.drawable.com1), String.valueOf(R.drawable.com2),
-            String.valueOf(R.drawable.com3), String.valueOf(R.drawable.com4))));
+        Arrays.asList(String.valueOf(R.drawable.com_1), String.valueOf(R.drawable.com_2),
+            String.valueOf(R.drawable.com_3), String.valueOf(R.drawable.com_4))));
     entities.add(new ShopProductEntity("3", productName.get(3), "", "2.99",
-        Arrays.asList(String.valueOf(R.drawable.com1), String.valueOf(R.drawable.com2),
-            String.valueOf(R.drawable.com3), String.valueOf(R.drawable.com4))));
+        Arrays.asList(String.valueOf(R.drawable.com_1), String.valueOf(R.drawable.com_2),
+            String.valueOf(R.drawable.com_3), String.valueOf(R.drawable.com_4))));
     return Observable.just(entities);
     //return mRestApi.fetchProducts();
   }

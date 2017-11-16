@@ -232,6 +232,10 @@
         android:name="com.paypal.android.MEP.PayPalActivity"
         android:configChanges="keyboardHidden|orientation"
         android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+    <activity
+        android:name=".GoogleLoginHiddenActivity"
+        android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+        android:theme="@style/Theme.AppCompat.Translucent" />
     <activity android:name=".ui.activities.checkout.test_paypal.ConfirmationActivity"/>
     <activity android:name=".ui.activities.mentorList.MentorListActivity">
     </activity>
