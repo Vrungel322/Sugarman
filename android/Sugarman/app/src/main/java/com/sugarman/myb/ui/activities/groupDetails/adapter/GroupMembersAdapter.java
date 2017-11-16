@@ -499,7 +499,9 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
       if (mData.get(i).getId().equals(userId)) {
         Timber.e("EUREKA");
         myPosition = i;
+        break;
       }
+      myPosition=-1; // if a person was deleted from group his position becomes -1 again
     }
     Timber.e("My position " + myPosition);
     setMySteps(userSteps);

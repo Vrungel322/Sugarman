@@ -48,6 +48,8 @@ public class MentorsListAdapter extends RecyclerView.Adapter<MentorsListAdapter.
         .into(holder.mImageViewAvatar);
 
     holder.mTextViewName.setText(mMentorEntities.get(position).getMentorName());
+    if(mMentorEntities.get(position).getMentorRating().isEmpty())
+      mMentorEntities.get(position).setMentorRating("0.0");
     holder.mRatingBar.setRating(Float.valueOf(mMentorEntities.get(position).getMentorRating()));
     holder.mTextViewCommentsNumber.setText(mMentorEntities.get(position).getMentorNumComments()
         + " "

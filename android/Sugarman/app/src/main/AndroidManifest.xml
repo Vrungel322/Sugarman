@@ -73,18 +73,6 @@
         android:label="ServiceActivity"
         android:theme="@style/VK.Transparent"/>
     <activity
-        android:name="com.braintreepayments.api.BraintreeBrowserSwitchActivity"
-        android:launchMode="singleTask">
-      <intent-filter>
-        <action android:name="android.intent.action.VIEW"/>
-
-        <category android:name="android.intent.category.DEFAULT"/>
-        <category android:name="android.intent.category.BROWSABLE"/>
-
-        <data android:scheme="${applicationId}.braintree"/>
-      </intent-filter>
-    </activity>
-    <activity
         android:name=".ui.activities.SplashActivity"
         android:screenOrientation="portrait"
         android:theme="@style/SugarmanBackgroundActivityTheme">
@@ -237,9 +225,11 @@
         android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
         android:theme="@style/Theme.AppCompat.Translucent" />
     <activity android:name=".ui.activities.checkout.test_paypal.ConfirmationActivity"/>
-    <activity android:name=".ui.activities.mentorList.MentorListActivity">
+    <activity android:name=".ui.activities.mentorList.MentorListActivity"
+        android:screenOrientation="portrait">
     </activity>
-    <activity android:name=".ui.activities.mentorDetail.MentorDetailActivity">
+    <activity android:name=".ui.activities.mentorDetail.MentorDetailActivity"
+        android:screenOrientation="portrait">
     </activity>
   </application>
 
