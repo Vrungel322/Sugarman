@@ -2016,7 +2016,7 @@ public class GroupDetailsActivity extends BaseActivity
       ivGroupAvatar.setOnClickListener(new View.OnClickListener() {
         @Override public void onClick(View view) {
 
-          if (isMentorGroup) {
+          if (isMentorGroup && !amIMentor) {
             openCommentDialog();
           }
         }

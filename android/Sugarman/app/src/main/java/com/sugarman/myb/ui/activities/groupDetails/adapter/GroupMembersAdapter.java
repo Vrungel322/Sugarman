@@ -73,7 +73,7 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
   private int userSteps;
   private boolean isShownActionBackground;
   private int countMembers = 0;
-  private int myPosition = 0;
+  private int myPosition = -1;
   private boolean amIMentor = false;
 
   public GroupMembersAdapter(MvpDelegate<?> parentDelegate, Context context,
@@ -163,6 +163,7 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
             ((MemberHolder) holder).ivKick.setVisibility(View.GONE);
           }
 
+          if(myPosition!=-1)
           memberHolder.tvSteps.setText(stepsFormatted + " " + context.getString(R.string.steps));
           //memberHolder.tvNum.setText(String.valueOf(countMembers - position));
           String str = member.getName();
