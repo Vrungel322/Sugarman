@@ -47,7 +47,7 @@ import timber.log.Timber;
 
 public class MentorDetailActivity extends BasicActivity implements IMentorDetailActivityView {
   //______________________________________________________________________
-  static final String ITEM_SKU = "com.sugarman.myb.test_sub_1";
+  static final String ITEM_SKU = "mentor_group_1";
   @InjectPresenter MentorDetailActivityPresenter mPresenter;
   @BindView(R.id.iv_back) ImageView ivBack;
   @BindView(R.id.iv_avatar) ImageView ivAvatar;
