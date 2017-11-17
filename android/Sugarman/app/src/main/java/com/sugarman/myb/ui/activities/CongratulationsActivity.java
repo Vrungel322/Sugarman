@@ -53,7 +53,8 @@ public class CongratulationsActivity extends NotificationFullScreenActivity
     }
   }
 
-  @Override public void onApiGetTrackingInfoSuccess(Tracking tracking, List<MentorsCommentsEntity> commentsEntities) {
+  @Override public void onApiGetTrackingInfoSuccess(Tracking tracking,
+      List<MentorsCommentsEntity> commentsEntities) {
     Group group = tracking.getGroup();
 
     String description =

@@ -173,7 +173,9 @@ public class ShopInviteFriendsActivity extends BasicActivity
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
     eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_tap_free_for_invites", eventValue);
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_tap_free_for_invites",
+            eventValue);
 
     ConstraintLayout mainLayout = (ConstraintLayout) findViewById(R.id.mainLayout);
 
@@ -557,7 +559,6 @@ public class ShopInviteFriendsActivity extends BasicActivity
             mIntiteByPh.clear();
           });
       sendVkInvitationDialog.show(getFragmentManager(), "SendVkInvitationDialog");
-
     }
 
     if (!mInviteByFbIds.isEmpty()) {

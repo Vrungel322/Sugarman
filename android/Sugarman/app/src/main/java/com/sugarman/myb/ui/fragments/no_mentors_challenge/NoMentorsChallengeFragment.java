@@ -1,26 +1,16 @@
 package com.sugarman.myb.ui.fragments.no_mentors_challenge;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.text.Html;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.sugarman.myb.R;
 import com.sugarman.myb.base.BasicFragment;
-import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
 import com.sugarman.myb.utils.IntentExtractorHelper;
 

@@ -77,8 +77,7 @@ public class SquarePagerIndicatorArrows extends View implements PageIndicator {
     }
   }
 
-  public void showArrows(boolean show)
-  {
+  public void showArrows(boolean show) {
     needToShowArrows = show;
   }
 

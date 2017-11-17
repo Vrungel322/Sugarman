@@ -4,18 +4,16 @@ import com.arellomobile.mvp.InjectViewState;
 import com.sugarman.myb.App;
 import com.sugarman.myb.base.BasicPresenter;
 import com.sugarman.myb.utils.ThreadSchedulers;
-import rx.Observable;
 import rx.Subscription;
 
 /**
  * Created by nikita on 06.11.2017.
  */
-@InjectViewState
-public class GroupMembersAdapterPresenter extends BasicPresenter<IGroupMembersAdapterView> {
+@InjectViewState public class GroupMembersAdapterPresenter
+    extends BasicPresenter<IGroupMembersAdapterView> {
   @Override protected void inject() {
     App.getAppComponent().inject(this);
   }
-
 
   public void deleteUser(String trackingId, String userId, int position) {
     Subscription subscription = mDataManager.deleteUser(trackingId, userId)

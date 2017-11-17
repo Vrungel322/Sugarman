@@ -48,7 +48,8 @@ public class SettingsActivity extends PreferenceActivity
       Map<String, Object> eventValue = new HashMap<>();
       eventValue.put(AFInAppEventParameterName.LEVEL, 9);
       eventValue.put(AFInAppEventParameterName.SCORE, 100);
-      AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_change_language", eventValue);
+      AppsFlyerLib.getInstance()
+          .trackEvent(App.getInstance().getApplicationContext(), "af_change_language", eventValue);
 
       Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
       intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

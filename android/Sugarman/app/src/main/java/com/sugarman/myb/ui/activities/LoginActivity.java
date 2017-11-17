@@ -166,7 +166,9 @@ public class LoginActivity extends GetUserInfoActivity implements View.OnClickLi
         Map<String, Object> eventValue = new HashMap<>();
         eventValue.put(AFInAppEventParameterName.LEVEL, 9);
         eventValue.put(AFInAppEventParameterName.SCORE, 100);
-        AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_login_with_phone", eventValue);
+        AppsFlyerLib.getInstance()
+            .trackEvent(App.getInstance().getApplicationContext(), "af_login_with_phone",
+                eventValue);
 
         Intent intent = new Intent(LoginActivity.this, PhoneLoginActivity.class);
         startActivity(intent);
@@ -219,7 +221,8 @@ public class LoginActivity extends GetUserInfoActivity implements View.OnClickLi
         Map<String, Object> eventValue = new HashMap<>();
         eventValue.put(AFInAppEventParameterName.LEVEL, 9);
         eventValue.put(AFInAppEventParameterName.SCORE, 100);
-        AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_login_with_vk", eventValue);
+        AppsFlyerLib.getInstance()
+            .trackEvent(App.getInstance().getApplicationContext(), "af_login_with_vk", eventValue);
 
         VKSdk.login(LoginActivity.this, "friends,email,messages");
       }
@@ -290,7 +293,8 @@ public class LoginActivity extends GetUserInfoActivity implements View.OnClickLi
       Map<String, Object> eventValue = new HashMap<>();
       eventValue.put(AFInAppEventParameterName.LEVEL, 9);
       eventValue.put(AFInAppEventParameterName.SCORE, 100);
-      AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_login_with_fb", eventValue);
+      AppsFlyerLib.getInstance()
+          .trackEvent(App.getInstance().getApplicationContext(), "af_login_with_fb", eventValue);
 
       LoginManager.getInstance()
           .logInWithReadPermissions(this,

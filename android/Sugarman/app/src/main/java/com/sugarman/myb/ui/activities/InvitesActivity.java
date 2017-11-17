@@ -130,7 +130,8 @@ public class InvitesActivity extends BaseActivity
   @Override public void onDeclineInvite(Invite invite, int position) {
     Tracking tracking = invite.getTracking();
     long startTimestamp = tracking.getStartUTCDate().getTime();
-    if (System.currentTimeMillis() - startTimestamp > Config.INVITE_TIME_LIVE && !tracking.isMentors()) {
+    if (System.currentTimeMillis() - startTimestamp > Config.INVITE_TIME_LIVE
+        && !tracking.isMentors()) {
       String groupName = tracking.getGroup().getName();
       Timber.e("MENTORS" + tracking.isMentors());
       showInviteUnavailableDialog(groupName);
@@ -145,7 +146,8 @@ public class InvitesActivity extends BaseActivity
   @Override public void onAcceptInvite(Invite invite, int position) {
     Tracking tracking = invite.getTracking();
     long startTimestamp = tracking.getStartUTCDate().getTime();
-    if (System.currentTimeMillis() - startTimestamp > Config.INVITE_TIME_LIVE && !tracking.isMentors()) {
+    if (System.currentTimeMillis() - startTimestamp > Config.INVITE_TIME_LIVE
+        && !tracking.isMentors()) {
       Timber.e("MENTORS" + tracking.isMentors());
       String groupName = tracking.getGroup().getName();
       showInviteUnavailableDialog(groupName);

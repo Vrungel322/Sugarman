@@ -38,7 +38,8 @@ public class ProductDetailsActivity extends BasicActivity implements IProductDet
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
     eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_product_details", eventValue);
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_product_details", eventValue);
 
     mShopProductEntity = getIntent().getParcelableExtra(ShopActivity.PRODUCT);
 

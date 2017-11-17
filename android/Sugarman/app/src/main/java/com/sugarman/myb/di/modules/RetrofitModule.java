@@ -36,7 +36,7 @@ import timber.log.Timber;
   @Provides @AppScope Retrofit provideRetrofit(Converter.Factory converterFactory,
       OkHttpClient okClient) {
     return new Retrofit.Builder().baseUrl(SharedPreferenceHelper.getBaseUrl())
-    //return new Retrofit.Builder().baseUrl(Config.SERVER_URL)
+        //return new Retrofit.Builder().baseUrl(Config.SERVER_URL)
         .client(okClient)
         .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
         .addConverterFactory(converterFactory)

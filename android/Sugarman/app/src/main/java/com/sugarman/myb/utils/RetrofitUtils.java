@@ -5,7 +5,6 @@ import android.util.Log;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.squareup.okhttp.Interceptor;
 import com.sugarman.myb.BuildConfig;
 import com.sugarman.myb.constants.Config;
 import com.sugarman.myb.constants.Constants;
@@ -57,15 +56,14 @@ public class RetrofitUtils {
   }
 
   public static HttpLoggingInterceptor provideHttpLoggingInterceptor() {
-      HttpLoggingInterceptor interceptor =
-          new HttpLoggingInterceptor(message -> Timber.tag("response").d(message));
-      interceptor.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.HEADERS
-          : HttpLoggingInterceptor.Level.NONE);
+    HttpLoggingInterceptor interceptor =
+        new HttpLoggingInterceptor(message -> Timber.tag("response").d(message));
+    interceptor.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.HEADERS
+        : HttpLoggingInterceptor.Level.NONE);
     return interceptor;
   }
 
-  public static okhttp3.Interceptor provideHeaderInterceptor()
-  {
+  public static okhttp3.Interceptor provideHeaderInterceptor() {
     Timber.e("Got into interceptor");
     okhttp3.Interceptor requestInterceptor = new okhttp3.Interceptor() {
       @Override public Response intercept(Chain chain) throws IOException {

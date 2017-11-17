@@ -904,7 +904,8 @@ public class GroupDetailsActivity extends BaseActivity
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
     eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_send_comment", eventValue);
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_send_comment", eventValue);
     mPresenter.sendComment(mentorId, mAppCompatRatingBarMentor.getRating(),
         mEditTextCommentBody.getText().toString());
   }

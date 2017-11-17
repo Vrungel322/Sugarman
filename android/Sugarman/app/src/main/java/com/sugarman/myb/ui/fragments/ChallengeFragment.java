@@ -152,7 +152,7 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
       final Member[] members = getMembers();
       Member[] pendings = getPendingMembers();
 
-      if(members.length>0) {
+      if (members.length > 0) {
         Arrays.sort(members, Member.BY_STEPS_ASC);
 
         Member best = members[members.length - 1];
@@ -198,12 +198,17 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
         str = str.replaceAll("( +)", " ").trim();
         if (str.length() > 0 && str.contains(" ")) {
           name = str.substring(0, (laziest.getName().indexOf(" ")));
-        } else name = str;
+        } else {
+          name = str;
+        }
 
         laziestName.setText(name);
         laziestSteps.setText(String.format(Locale.US, "%,d", laziest.getSteps()));
-        if (laziest.getPictureUrl() == null || laziest.getPictureUrl().equals("") || laziest.getPictureUrl().equals(" "))
+        if (laziest.getPictureUrl() == null
+            || laziest.getPictureUrl().equals("")
+            || laziest.getPictureUrl().equals(" ")) {
           laziest.setPictureUrl("https://sugarman-myb.s3.amazonaws.com/Group_New.png");
+        }
         Picasso.with(getActivity())
             .load(laziest.getPictureUrl())
             //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
@@ -594,13 +599,16 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
     eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_open_group_details_from_main_screen", eventValue);
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(),
+            "af_open_group_details_from_main_screen", eventValue);
 
     Activity activity = getActivity();
     if (activity != null
         && activity instanceof MainActivity
         && ((MainActivity) activity).isReady()) {
-      ((MainActivity) activity).openGroupDetailsActivity(tracking.getId(), isMentorGroup, groupOwnerId);
+      ((MainActivity) activity).openGroupDetailsActivity(tracking.getId(), isMentorGroup,
+          groupOwnerId);
     }
   }
 

@@ -19,7 +19,6 @@ import com.sugarman.myb.utils.ItemClickSupport;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import timber.log.Timber;
 
 public class MentorListActivity extends BasicActivity implements IMentorListActivityView {
   @InjectPresenter MentorListActivityPresenter mPresenter;
@@ -34,8 +33,9 @@ public class MentorListActivity extends BasicActivity implements IMentorListActi
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
     eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_shop_open_mentor_item", eventValue);
-
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_shop_open_mentor_item",
+            eventValue);
   }
 
   @Override public void setUpUI() {
@@ -45,13 +45,12 @@ public class MentorListActivity extends BasicActivity implements IMentorListActi
     ItemClickSupport.addTo(mRecyclerViewMentors)
         .setOnItemClickListener((recyclerView, position, v) -> {
           Intent intent = new Intent(MentorListActivity.this, MentorDetailActivity.class);
-          intent.putExtra(MentorEntity.MENTOR_ENTITY,mMentorsListAdapter.getItem(position));
+          intent.putExtra(MentorEntity.MENTOR_ENTITY, mMentorsListAdapter.getItem(position));
           startActivity(intent);
         });
   }
 
-  @OnClick (R.id.iv_back) public void onClickBack()
-  {
+  @OnClick(R.id.iv_back) public void onClickBack() {
     finish();
   }
 

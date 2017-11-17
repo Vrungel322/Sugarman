@@ -10,10 +10,10 @@ import java.util.List;
  */
 
 public class MentorsSkills implements Parcelable {
-  @SerializedName("title")private String skillTitle;
-  @SerializedName("skills")private List<String> skills;
-  @SerializedName("skill_left_icon")private String skillLeftIcon;
-  @SerializedName("skill_right_icon")private String skillRightIcon;
+  @SerializedName("title") private String skillTitle;
+  @SerializedName("skills") private List<String> skills;
+  @SerializedName("skill_left_icon") private String skillLeftIcon;
+  @SerializedName("skill_right_icon") private String skillRightIcon;
 
   public MentorsSkills(String skillTitle, List<String> skills, String skillLeftIcon,
       String skillRightIcon) {

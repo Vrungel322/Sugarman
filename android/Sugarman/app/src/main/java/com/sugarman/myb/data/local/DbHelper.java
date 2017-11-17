@@ -20,9 +20,7 @@ public class DbHelper {
   public DbHelper() {
     mConfiguration = new RealmConfiguration.Builder().name("com.sugarman.myb")
         //new version
-        .schemaVersion(1)
-        .migration(new RealmMigrations())
-        .build();
+        .schemaVersion(1).migration(new RealmMigrations()).build();
     Realm.setDefaultConfiguration(mConfiguration);
   }
 

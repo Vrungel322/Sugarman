@@ -39,7 +39,6 @@ import com.sugarman.myb.eventbus.events.InviteRemovedEvent;
 import com.sugarman.myb.eventbus.events.InvitesUpdatedEvent;
 import com.sugarman.myb.eventbus.events.RequestsRemovedEvent;
 import com.sugarman.myb.eventbus.events.RequestsUpdatedEvent;
-import com.sugarman.myb.ui.activities.editProfile.EditProfileActivity;
 import com.sugarman.myb.ui.activities.HighScoreActivity;
 import com.sugarman.myb.ui.activities.IntroActivity;
 import com.sugarman.myb.ui.activities.InvitesActivity;
@@ -47,6 +46,7 @@ import com.sugarman.myb.ui.activities.MyStatsActivity;
 import com.sugarman.myb.ui.activities.RequestsActivity;
 import com.sugarman.myb.ui.activities.SettingsActivity;
 import com.sugarman.myb.ui.activities.base.BaseActivity;
+import com.sugarman.myb.ui.activities.editProfile.EditProfileActivity;
 import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.ui.views.MaskTransformation;
@@ -391,7 +391,8 @@ public class ProfileActivity extends BaseActivity
             Map<String, Object> eventValueg = new HashMap<>();
             eventValueg.put(AFInAppEventParameterName.LEVEL, 9);
             eventValueg.put(AFInAppEventParameterName.SCORE, 100);
-            AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_log_out", eventValueg);
+            AppsFlyerLib.getInstance()
+                .trackEvent(App.getInstance().getApplicationContext(), "af_log_out", eventValueg);
 
             logout();
             VKSdk.logout();

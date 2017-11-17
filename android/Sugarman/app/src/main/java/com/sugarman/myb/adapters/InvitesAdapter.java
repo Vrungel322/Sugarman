@@ -113,7 +113,8 @@ public class InvitesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
     eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_accept_invite", eventValue);
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_accept_invite", eventValue);
 
     if (position >= 0 && position < mData.size()) {
       if (mActionListener.get() != null) {
@@ -129,7 +130,8 @@ public class InvitesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
     eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_decline_invite", eventValue);
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_decline_invite", eventValue);
 
     if (position >= 0 && position < mData.size()) {
       if (mActionListener.get() != null) {

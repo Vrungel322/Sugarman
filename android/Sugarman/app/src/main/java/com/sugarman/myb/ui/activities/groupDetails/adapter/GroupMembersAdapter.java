@@ -163,8 +163,9 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
             ((MemberHolder) holder).ivKick.setVisibility(View.GONE);
           }
 
-          if(myPosition!=-1)
-          memberHolder.tvSteps.setText(stepsFormatted + " " + context.getString(R.string.steps));
+          if (myPosition != -1) {
+            memberHolder.tvSteps.setText(stepsFormatted + " " + context.getString(R.string.steps));
+          }
           //memberHolder.tvNum.setText(String.valueOf(countMembers - position));
           String str = member.getName();
           str = str.replaceAll("( +)", " ").trim();
@@ -501,7 +502,7 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
         myPosition = i;
         break;
       }
-      myPosition=-1; // if a person was deleted from group his position becomes -1 again
+      myPosition = -1; // if a person was deleted from group his position becomes -1 again
     }
     Timber.e("My position " + myPosition);
     setMySteps(userSteps);

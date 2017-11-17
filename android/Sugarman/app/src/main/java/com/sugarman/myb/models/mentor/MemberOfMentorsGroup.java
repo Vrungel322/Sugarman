@@ -8,8 +8,8 @@ import com.google.gson.annotations.SerializedName;
  * Created by nikita on 27.10.2017.
  */
 
-public class MemberOfMentorsGroup  implements Parcelable{
-  @SerializedName("name")private String name;
+public class MemberOfMentorsGroup implements Parcelable {
+  @SerializedName("name") private String name;
   @SerializedName("img_url") private String imgUrl;
   @SerializedName("id_member") private String idMember;
 

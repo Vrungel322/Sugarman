@@ -79,7 +79,8 @@ public class App extends MultiDexApplication {
       Log.e("APP", "Token = " + token);
       Request.Builder requestBuilder = original.newBuilder();
       // .header("content-type", "application/json");
-      TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+      TelephonyManager telephonyManager =
+          (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
       //Timber.e("IMEI" + telephonyManager.getDeviceId());
       //SharedPreferenceHelper.setIMEI(telephonyManager.getDeviceId());
 
@@ -292,7 +293,6 @@ public class App extends MultiDexApplication {
     VKSdk.initialize(this);
 
     Realm.init(this);
-
 
     Map<String, String> headers = new HashMap<>();
     headers.put("Referer", SingletonLikeApp.getInstance().getConfig(App.this).apiBaseUrl);

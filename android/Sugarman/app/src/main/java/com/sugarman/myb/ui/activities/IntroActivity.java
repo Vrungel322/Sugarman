@@ -82,7 +82,8 @@ public class IntroActivity extends BaseActivity implements View.OnClickListener 
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
     eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_finish_tutorial", eventValue);
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_finish_tutorial", eventValue);
 
     Intent intent = new Intent(IntroActivity.this, MainActivity.class);
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -97,12 +98,11 @@ public class IntroActivity extends BaseActivity implements View.OnClickListener 
   public void skipOrClose() {
     SharedPreferenceHelper.showedIntro();
 
-
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
     eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_skip_tutorial", eventValue);
-
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_skip_tutorial", eventValue);
 
     if (this.intent != null && intent.getBooleanExtra(CODE_IS_OPEN_LOGIN_ACTIVITY, false)) {
       Intent intent = new Intent(IntroActivity.this, MainActivity.class);

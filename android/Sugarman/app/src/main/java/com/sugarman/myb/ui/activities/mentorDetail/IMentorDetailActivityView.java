@@ -10,8 +10,8 @@ import java.util.List;
  * Created by yegoryeriomin on 10/30/17.
  */
 
-@StateStrategyType(AddToEndSingleStrategy.class) public interface IMentorDetailActivityView extends
-    MvpView {
+@StateStrategyType(AddToEndSingleStrategy.class) public interface IMentorDetailActivityView
+    extends MvpView {
   void fillMentorsFriendsList();
 
   void fillMentorsVideosList();

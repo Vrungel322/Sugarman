@@ -30,7 +30,8 @@ public class SendVkInvitationDialog extends MvpDialogFragment
   @BindView(R.id.bDismiss) Button mButtonDismiss;
   private ArrayList<FacebookFriend> friends;
 
-  public static SendVkInvitationDialog newInstance(ArrayList<FacebookFriend> selectedFriends,IVkResponse iVkResponse) {
+  public static SendVkInvitationDialog newInstance(ArrayList<FacebookFriend> selectedFriends,
+      IVkResponse iVkResponse) {
     mIVkResponse = iVkResponse;
     Bundle args = new Bundle();
     args.putParcelableArrayList(LIST_TO_INVITE, selectedFriends);

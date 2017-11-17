@@ -113,8 +113,8 @@ public class EditProfileActivity extends BasicActivity
     return matcher.matches();
   }
 
-  public static boolean isNameValid(String name){
-    if(name.length()>0 && name.charAt(0)!=' ') {
+  public static boolean isNameValid(String name) {
+    if (name.length() > 0 && name.charAt(0) != ' ') {
       return true;
     }
     return false;
@@ -178,7 +178,7 @@ public class EditProfileActivity extends BasicActivity
               SharedPreferenceHelper.saveFBAccessToken(accessToken.getToken());
               SharedPreferenceHelper.saveFbId(accessToken.getUserId());
 
-              if(etPhone.getText().toString().equals(etName.getText().toString())){
+              if (etPhone.getText().toString().equals(etName.getText().toString())) {
                 etName.setText(SharedPreferenceHelper.getUserName());
                 etPhone.setText(SharedPreferenceHelper.getPhoneNumber());
               }
@@ -239,7 +239,8 @@ public class EditProfileActivity extends BasicActivity
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
     eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_switch_social_fb", eventValue);
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_switch_social_fb", eventValue);
 
     if (!cbFb.isChecked()) {
       logoutFacebook();
@@ -254,7 +255,8 @@ public class EditProfileActivity extends BasicActivity
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
     eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_switch_social_fb", eventValue);
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_switch_social_fb", eventValue);
 
     if (cbFb.isChecked()) {
       logoutFacebook();
@@ -268,7 +270,8 @@ public class EditProfileActivity extends BasicActivity
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
     eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_switch_social_vk", eventValue);
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_switch_social_vk", eventValue);
 
     if (VKSdk.isLoggedIn()) {
       logoutVk();
@@ -282,7 +285,8 @@ public class EditProfileActivity extends BasicActivity
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
     eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_switch_social_vk", eventValue);
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_switch_social_vk", eventValue);
 
     if (VKSdk.isLoggedIn()) {
       logoutVk();
@@ -297,7 +301,8 @@ public class EditProfileActivity extends BasicActivity
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
     eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_switch_phone", eventValue);
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_switch_phone", eventValue);
 
     if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
       Intent intent = new Intent();
@@ -316,7 +321,8 @@ public class EditProfileActivity extends BasicActivity
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
     eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_switch_phone", eventValue);
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_switch_phone", eventValue);
 
     if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
       Intent intent = new Intent();
@@ -335,7 +341,9 @@ public class EditProfileActivity extends BasicActivity
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
     eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_save_settings_changes", eventValue);
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_save_settings_changes",
+            eventValue);
 
     editProfile();
   }
@@ -357,7 +365,7 @@ public class EditProfileActivity extends BasicActivity
         //nextButton.setEnabled(false);
         //showNextActivity();
       } else {
-        if (isPhoneValid(displayNumber)&& !etPhone.getText().toString().isEmpty()) {
+        if (isPhoneValid(displayNumber) && !etPhone.getText().toString().isEmpty()) {
           Timber.e("Got in here 2");
           editProfileClient.editUser(displayNumber, displayEmail, displayName,
               SharedPreferenceHelper.getFbId(), SharedPreferenceHelper.getVkId(),
@@ -383,7 +391,9 @@ public class EditProfileActivity extends BasicActivity
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
     eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_cancel_settings_changes", eventValue);
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_cancel_settings_changes",
+            eventValue);
 
     if (VKSdk.isLoggedIn() != mBundleUserSettings.getBoolean(IS_VK_LOGGED_IN_FROM_SETTINGS)) {
       networkTotalCount++;
@@ -642,7 +652,9 @@ public class EditProfileActivity extends BasicActivity
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
     eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_settings_edit_avatar", eventValue);
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_settings_edit_avatar",
+            eventValue);
 
     Intent galleryIntent = DeviceHelper.getGalleryIntent();
     Pair<String[], Parcelable[]> cameraData = DeviceHelper.getCameraData();
@@ -667,7 +679,7 @@ public class EditProfileActivity extends BasicActivity
   }
 
   @Override public void onApiRefreshUserDataSuccess(UsersResponse response) {
-    if (SharedPreferenceHelper.getOTPStatus()&& !etPhone.getText().toString().isEmpty()) {
+    if (SharedPreferenceHelper.getOTPStatus() && !etPhone.getText().toString().isEmpty()) {
       etPhone.setError(String.format(getString(R.string.approve_phone_pls)));
     }
     if (response.getResult() != null) {

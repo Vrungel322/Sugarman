@@ -58,13 +58,10 @@ public class ShopActivity extends BasicActivity implements IShopActivityView, Vi
     ItemClickSupport.addTo(mRecyclerViewProducts)
         .setOnItemClickListener((recyclerView, position, v) -> {
           Intent intent;
-          if(position==3) {
-
-
+          if (position == 3) {
 
             intent = new Intent(ShopActivity.this, MentorListActivity.class);
-          }
-                else {
+          } else {
             intent = new Intent(ShopActivity.this, ProductDetailsActivity.class);
             intent.putExtra(PRODUCT, mProductsAdapter.getItem(position));
           }

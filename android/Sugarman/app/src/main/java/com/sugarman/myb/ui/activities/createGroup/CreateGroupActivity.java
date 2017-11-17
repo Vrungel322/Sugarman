@@ -599,7 +599,8 @@ public class CreateGroupActivity extends BaseActivity
         Map<String, Object> eventValue = new HashMap<>();
         eventValue.put(AFInAppEventParameterName.LEVEL, 9);
         eventValue.put(AFInAppEventParameterName.SCORE, 100);
-        AppsFlyerLib.getInstance().trackEvent(getApplicationContext(), "af_cancel_group_creation", eventValue);
+        AppsFlyerLib.getInstance()
+            .trackEvent(getApplicationContext(), "af_cancel_group_creation", eventValue);
         setResult(RESULT_CANCELED);
         finish();
         break;
@@ -608,7 +609,8 @@ public class CreateGroupActivity extends BaseActivity
         Map<String, Object> eventValues = new HashMap<>();
         eventValues.put(AFInAppEventParameterName.LEVEL, 9);
         eventValues.put(AFInAppEventParameterName.SCORE, 100);
-        AppsFlyerLib.getInstance().trackEvent(getApplicationContext(), "af_create_group_inside", eventValues);
+        AppsFlyerLib.getInstance()
+            .trackEvent(getApplicationContext(), "af_create_group_inside", eventValues);
         checkFilledData();
         break;
       case R.id.ll_add_photo_container:

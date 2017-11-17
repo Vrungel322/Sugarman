@@ -99,7 +99,7 @@ public class GetUserInfoActivity extends BaseActivity
     Log.e("ApiRefreshUserData", "Called");
     SharedPreferenceHelper.saveUser(response.getUser());
     SharedPreferenceHelper.saveToken(response.getTokens());
-    Timber.e("limitGUIA "+response.getUser().getGroupsLimit());
+    Timber.e("limitGUIA " + response.getUser().getGroupsLimit());
     SharedPreferenceHelper.saveGroupsLimit(response.getUser().getGroupsLimit());
     if (response.getUser().getEmail() != null && !response.getUser().getEmail().equals("")) {
       Timber.e("RETURNED EMAIL " + response.getUser().getEmail());

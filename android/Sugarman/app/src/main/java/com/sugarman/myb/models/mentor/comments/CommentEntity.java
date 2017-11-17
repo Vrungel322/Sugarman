@@ -9,8 +9,7 @@ import lombok.Setter;
 /**
  * Created by nikita on 03.11.2017.
  */
-@AllArgsConstructor @NoArgsConstructor
-public class CommentEntity {
-  @SerializedName("rating")@Getter @Setter private String authorsRating;
+@AllArgsConstructor @NoArgsConstructor public class CommentEntity {
+  @SerializedName("rating") @Getter @Setter private String authorsRating;
   @SerializedName("comment") @Getter @Setter private String authorsComment;
 }

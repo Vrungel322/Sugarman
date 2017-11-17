@@ -15,7 +15,6 @@ import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.constants.Constants;
-import com.sugarman.myb.models.iab.InAppBilling;
 import com.sugarman.myb.models.iab.PurchaseForServer;
 import com.sugarman.myb.models.mentor.MentorStupidAbstraction;
 import com.sugarman.myb.models.mentor.MentorsCommentsStupidAbstraction;
@@ -161,8 +160,7 @@ public class RestApi {
     return api.fetchComments(mentorId);
   }
 
-  public Observable<Response<Void>> deleteUser (String trackingId, DeleteUserRequest userId)
-  {
+  public Observable<Response<Void>> deleteUser(String trackingId, DeleteUserRequest userId) {
     return api.deleteUser(trackingId, userId);
   }
 

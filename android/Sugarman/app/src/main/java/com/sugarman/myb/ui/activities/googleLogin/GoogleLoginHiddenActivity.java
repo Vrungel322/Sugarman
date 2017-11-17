@@ -28,17 +28,17 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.sugarman.myb.models.googleLoginModel.SocialUser;
 import timber.log.Timber;
+
 /**
  * to start login with Google
  *
- Intent intent = new Intent(this, GoogleLoginHiddenActivity.class);
-    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    //https://console.cloud.google.com/apis/credentials?project=googolregistrationsample
-    // need to paste WEB- Client key from that link
-    intent.putExtra(GoogleLoginHiddenActivity.EXTRA_CLIENT_ID, "577365149636-ct63t5ndd1f2dcg0jucm4usfcrmjjbts.apps.googleusercontent.com");
-    startActivity(intent);
-
-*/
+ * Intent intent = new Intent(this, GoogleLoginHiddenActivity.class);
+ * intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+ * //https://console.cloud.google.com/apis/credentials?project=googolregistrationsample
+ * // need to paste WEB- Client key from that link
+ * intent.putExtra(GoogleLoginHiddenActivity.EXTRA_CLIENT_ID, "577365149636-ct63t5ndd1f2dcg0jucm4usfcrmjjbts.apps.googleusercontent.com");
+ * startActivity(intent);
+ */
 
 public class GoogleLoginHiddenActivity extends AppCompatActivity
     implements GoogleApiClient.OnConnectionFailedListener {

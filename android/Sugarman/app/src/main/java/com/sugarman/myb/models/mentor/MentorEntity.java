@@ -11,8 +11,7 @@ import lombok.Setter;
 /**
  * Created by nikita on 27.10.2017.
  */
-@AllArgsConstructor
-public class MentorEntity implements Parcelable {
+@AllArgsConstructor public class MentorEntity implements Parcelable {
   public static final String MENTOR_ENTITY = "MENTOR_ENTITY";
 
   @Getter @Setter @SerializedName("id") private String mentorId;
@@ -23,7 +22,8 @@ public class MentorEntity implements Parcelable {
   @Getter @Setter @SerializedName("mentor_num_comments") private String mentorNumComments;
   @Getter @Setter @SerializedName("description") private String mentorDescription;
   @Getter @Setter @SerializedName("skills") private List<MentorsSkills> mentorSkills;
-  @Getter @Setter @SerializedName("members_statuses") private List<MemberOfMentorsGroup> membersOfMentorsGroup;
+  @Getter @Setter @SerializedName("members_statuses") private List<MemberOfMentorsGroup>
+      membersOfMentorsGroup;
   @Getter @Setter @SerializedName("youtube_videos") private List<String> youtubeVideos;
   @Getter @Setter @SerializedName("assessment_of_day") private float dailySuccessRate;
   @Getter @Setter @SerializedName("assessment_of_week") private float weeklySuccessRate;

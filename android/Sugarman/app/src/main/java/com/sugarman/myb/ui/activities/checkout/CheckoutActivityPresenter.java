@@ -19,11 +19,11 @@ import timber.log.Timber;
 
   public void sendPurchaseData(String countryName, String cityName, String streetName,
       String zipCode, String fullName, String phoneNumber, String amountPrice, int num,
-      String productName, String productPrice,String paymentType) {
+      String productName, String productPrice, String paymentType) {
     Timber.e(amountPrice);
     Subscription subscription =
         mDataManager.sendPurchaseData(countryName, cityName, streetName, zipCode, fullName,
-            phoneNumber, amountPrice, String.valueOf(num), productName,paymentType,productPrice)
+            phoneNumber, amountPrice, String.valueOf(num), productName, paymentType, productPrice)
             .compose(ThreadSchedulers.applySchedulers())
             .subscribe(voidResponse -> {
               Timber.e("" + voidResponse.code());
