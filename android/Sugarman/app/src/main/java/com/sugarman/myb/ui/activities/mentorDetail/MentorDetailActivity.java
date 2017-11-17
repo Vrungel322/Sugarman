@@ -39,6 +39,7 @@ import com.sugarman.myb.utils.inapp.IabHelper;
 import com.sugarman.myb.utils.inapp.IabResult;
 import com.sugarman.myb.utils.inapp.Inventory;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,6 +71,8 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   @BindView(R.id.tvSuccessRateMonthly) TextView tvSuccessRateMonth;
   IabHelper mHelper;
   IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = (purchase, result) -> {
+    Timber.e("mConsumeFinishedListener" + purchase.toString());
+    Timber.e("mConsumeFinishedListener" + result.toString());
     if (result.isSuccess()) {
     } else {
       // handle error
@@ -87,7 +90,7 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
             Timber.e(inventory.getSkuDetails(ITEM_SKU).getTitle());
 
             mPresenter.checkInAppBilling(inventory.getPurchase(ITEM_SKU),
-                mHelper.getMDataSignature(),inventory.getSkuDetails(ITEM_SKU).getTitle());
+                inventory.getSkuDetails(ITEM_SKU).getTitle());
           }
         }
       };
@@ -118,8 +121,8 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
     eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_open_mentor_detail", eventValue);
-
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_open_mentor_detail", eventValue);
 
     mMentorEntity = getIntent().getExtras().getParcelable(MentorEntity.MENTOR_ENTITY);
     Timber.e("daily rate " + mMentorEntity.getDailySuccessRate());
@@ -139,8 +142,8 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
 
     List<PieEntry> entries = new ArrayList<>();
 
-    entries.add(new PieEntry(mMentorEntity.getDailySuccessRate()*100f, ""));
-    entries.add(new PieEntry(100 - mMentorEntity.getDailySuccessRate()*100f, ""));
+    entries.add(new PieEntry(mMentorEntity.getDailySuccessRate() * 100f, ""));
+    entries.add(new PieEntry(100 - mMentorEntity.getDailySuccessRate() * 100f, ""));
 
     PieDataSet set = new PieDataSet(entries, "");
 
@@ -155,13 +158,14 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
     successRate.getDescription().setText("");
     successRate.setCenterTextSize(9);
     successRate.setDrawCenterText(true);
-    successRate.setCenterText("" + mMentorEntity.getDailySuccessRate()*100f + "%");
+    successRate.setCenterText("" + mMentorEntity.getDailySuccessRate() * 100f + "%");
     successRate.setData(data);
     successRate.invalidate(); // refresh
 
-    setSuccessRateData(successRateToday,mMentorEntity.getDailySuccessRate(), tvSuccessRateToday);
-    setSuccessRateData(successRateWeekly,mMentorEntity.getWeeklySuccessRate(), tvSuccessRateWeek);
-    setSuccessRateData(successRateMonthly,mMentorEntity.getMonthlySuccessRate(), tvSuccessRateMonth);
+    setSuccessRateData(successRateToday, mMentorEntity.getDailySuccessRate(), tvSuccessRateToday);
+    setSuccessRateData(successRateWeekly, mMentorEntity.getWeeklySuccessRate(), tvSuccessRateWeek);
+    setSuccessRateData(successRateMonthly, mMentorEntity.getMonthlySuccessRate(),
+        tvSuccessRateMonth);
 
     LayoutInflater vi =
         (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -181,33 +185,32 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
     setupInAppPurchase();
   }
 
-  private void setSuccessRateData(PieChart pieChart, float successRate, TextView tvIndicator)
-    {
+  private void setSuccessRateData(PieChart pieChart, float successRate, TextView tvIndicator) {
 
-      List<PieEntry> entries = new ArrayList<>();
+    List<PieEntry> entries = new ArrayList<>();
 
-      entries.add(new PieEntry(successRate*100f, ""));
-      entries.add(new PieEntry(100 - successRate*100f, ""));
+    entries.add(new PieEntry(successRate * 100f, ""));
+    entries.add(new PieEntry(100 - successRate * 100f, ""));
 
-      PieDataSet set = new PieDataSet(entries, "");
+    PieDataSet set = new PieDataSet(entries, "");
 
-      set.setColors(new int[] { 0xffdc0c0c, 0xffffffff });
-      set.setValueTextColor(0x00000000);
-      PieData data = new PieData(set);
+    set.setColors(new int[] { 0xffdc0c0c, 0xffffffff });
+    set.setValueTextColor(0x00000000);
+    PieData data = new PieData(set);
 
-      pieChart.setOnTouchListener(null);
-      pieChart.getLegend().setEnabled(false);
-      pieChart.setDrawEntryLabels(false);
-      pieChart.setDrawSliceText(false);
-      pieChart.setDrawHoleEnabled(false);
-      pieChart.getDescription().setText("");
-      pieChart.setCenterTextSize(9);
-      pieChart.setDrawCenterText(false);
-      pieChart.setCenterText("" + successRate*100f + "%");
+    pieChart.setOnTouchListener(null);
+    pieChart.getLegend().setEnabled(false);
+    pieChart.setDrawEntryLabels(false);
+    pieChart.setDrawSliceText(false);
+    pieChart.setDrawHoleEnabled(false);
+    pieChart.getDescription().setText("");
+    pieChart.setCenterTextSize(9);
+    pieChart.setDrawCenterText(false);
+    pieChart.setCenterText("" + successRate * 100f + "%");
     pieChart.setData(data);
     pieChart.invalidate();
 
-      tvIndicator.setText(tvIndicator.getText() + " - " + + successRate*100f + "%");
+    tvIndicator.setText(tvIndicator.getText() + " - " + +successRate * 100f + "%");
   }
 
   private void setupInAppPurchase() {
@@ -330,7 +333,9 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
     eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_tap_apply_for_mentor", eventValue);
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_tap_apply_for_mentor",
+            eventValue);
 
     mHelper.launchSubscriptionPurchaseFlow(this, ITEM_SKU, 10001, mPurchaseFinishedListener,
         "mypurchasetoken");
@@ -347,7 +352,9 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   }
 
   public void consumeItem() {
-    mHelper.queryInventoryAsync(mReceivedInventoryListener);
+    mHelper.queryInventoryAsync(true,
+        Arrays.asList(ITEM_SKU, "com.sugarman.myb.test_sub_1", ITEM_SKU),
+        mReceivedInventoryListener);
   }
 
   @Override public void onDestroy() {
