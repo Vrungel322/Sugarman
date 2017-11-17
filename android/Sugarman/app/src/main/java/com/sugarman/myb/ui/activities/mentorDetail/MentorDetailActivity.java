@@ -78,6 +78,10 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
       // handle error
     }
   };
+
+  IabHelper.OnConsumeMultiFinishedListener mOnConsumeMultiFinishedListener = (purchases, results) -> {
+
+  };
   IabHelper.QueryInventoryFinishedListener mReceivedInventoryListener =
       new IabHelper.QueryInventoryFinishedListener() {
         public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
@@ -85,12 +89,13 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
           if (result.isFailure()) {
             // Handle failure
           } else {
-            mHelper.consumeAsync(inventory.getPurchase(ITEM_SKU), mConsumeFinishedListener);
+            //mHelper.consumeAsync(inventory.getPurchase(ITEM_SKU), mConsumeFinishedListener);
+            mHelper.consumeAsync(inventory.getAllPurchases(), mOnConsumeMultiFinishedListener);
             Timber.e(result.getMessage());
             Timber.e(inventory.getSkuDetails(ITEM_SKU).getTitle());
 
             mPresenter.checkInAppBilling(inventory.getPurchase(ITEM_SKU),
-                inventory.getSkuDetails(ITEM_SKU).getTitle());
+                inventory.getSkuDetails(ITEM_SKU).getTitle(),mMentorEntity.getUserId());
           }
         }
       };

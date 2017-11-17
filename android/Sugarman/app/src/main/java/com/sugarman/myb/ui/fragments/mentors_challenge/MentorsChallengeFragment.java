@@ -116,13 +116,13 @@ public class MentorsChallengeFragment extends BasicFragment
       mTextViewBestName.setText(name);
       mTextViewBestSteps.setText(String.format(Locale.US, "%,d", best.getSteps()));
 
-      Picasso.with(getActivity())
-          .load(best.getPictureUrl())
-          .placeholder(R.drawable.ic_gray_avatar)
-          .error(R.drawable.ic_red_avatar)
-          .transform(new CropSquareTransformation())
-          .transform(new CropCircleTransformation(0xffff0000, 1))
-          .into(mImageViewBestAvatar);
+      //Picasso.with(getActivity())
+      //    .load(best.getPictureUrl())
+      //    .placeholder(R.drawable.ic_gray_avatar)
+      //    .error(R.drawable.ic_red_avatar)
+      //    .transform(new CropSquareTransformation())
+      //    .transform(new CropCircleTransformation(0xffff0000, 1))
+      //    .into(mImageViewBestAvatar);
 
       //set up fastest
       if (mTracking.hasDailyWinner()) {
