@@ -21,4 +21,8 @@ import java.util.List;
   void fillCommentsList(List<MentorsCommentsEntity> mentorsCommentsEntities);
 
   void moveToMainActivity();
+
+  void startPurchaseFlow(String freeSku);
+
+  void showAllSlotsNotEmptyDialog();
 }

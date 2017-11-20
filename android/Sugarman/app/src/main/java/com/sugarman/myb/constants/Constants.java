@@ -103,6 +103,7 @@ public abstract class Constants {
   public static final String IMEI = "IMEI";
   public static final String PAY_PAL_PAYMENT_TYPE = "paypal";
   public static final String INVITE_FRIENDS_PAYMENT_TYPE = "friends";
+  public static final int ALL_SLOTS_NOT_EMPTY_ERROR = 222;
 
   static {
     ORIENTATIONS.append(Surface.ROTATION_0, 90);

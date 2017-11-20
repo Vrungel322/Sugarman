@@ -329,6 +329,8 @@
   <string name="mentorship">Mentorship</string>
   <string name="warning">Warning</string>
   <string name="delete_user_from_group">Do you really want to delete user?</string>
+  <string name="slots_error">You can have only 3 mentors</string>
+
   
   <string name="apply_now">Apply now for</string>
   <string name="type_your_comment">Type your comment here...</string>

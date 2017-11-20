@@ -152,7 +152,7 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
       final Member[] members = getMembers();
       Member[] pendings = getPendingMembers();
 
-      if(members.length>0) {
+      if (members.length > 0) {
         Arrays.sort(members, Member.BY_STEPS_ASC);
 
         Member best = members[members.length - 1];
@@ -208,6 +208,7 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
             || laziest.getPictureUrl().equals("")
             || laziest.getPictureUrl().equals(" ")) {
           laziest.setPictureUrl("https://sugarman-myb.s3.amazonaws.com/Group_New.png");
+        }
         CustomPicasso.with(getActivity())
             .load(laziest.getPictureUrl())
             //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)

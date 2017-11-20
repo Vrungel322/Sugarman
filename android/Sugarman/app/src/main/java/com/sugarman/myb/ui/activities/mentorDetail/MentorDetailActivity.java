@@ -34,6 +34,7 @@ import com.sugarman.myb.models.mentor.MentorsSkills;
 import com.sugarman.myb.models.mentor.comments.MentorsCommentsEntity;
 import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
 import com.sugarman.myb.ui.views.MaskTransformation;
+import com.sugarman.myb.utils.DialogHelper;
 import com.sugarman.myb.utils.ItemClickSupport;
 import com.sugarman.myb.utils.inapp.IabHelper;
 import com.sugarman.myb.utils.inapp.IabResult;
@@ -78,42 +79,46 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
       // handle error
     }
   };
-
-  IabHelper.OnConsumeMultiFinishedListener mOnConsumeMultiFinishedListener = (purchases, results) -> {
-
-  };
-  IabHelper.QueryInventoryFinishedListener mReceivedInventoryListener =
-      new IabHelper.QueryInventoryFinishedListener() {
-        public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
-
-          if (result.isFailure()) {
-            // Handle failure
-          } else {
-            //mHelper.consumeAsync(inventory.getPurchase(ITEM_SKU), mConsumeFinishedListener);
-            mHelper.consumeAsync(inventory.getAllPurchases(), mOnConsumeMultiFinishedListener);
-            Timber.e(result.getMessage());
-            Timber.e(inventory.getSkuDetails(ITEM_SKU).getTitle());
-
-            mPresenter.checkInAppBilling(inventory.getPurchase(ITEM_SKU),
-                inventory.getSkuDetails(ITEM_SKU).getTitle(),mMentorEntity.getUserId());
-          }
-        }
-      };
+  //______________________________________________________________________
+  @BindView(R.id.llVideos) LinearLayout llVideos;
+  @BindView(R.id.rvVideos) RecyclerView mRecyclerViewVideos;
+  private String mFreeSku;
   IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = (result, purchase) -> {
+    Timber.e("mFreeSku mPurchaseFinishedListener " + mFreeSku);
+
     if (result.isFailure()) {
       // Handle error
       return;
-    } else if (purchase.getSku().equals(ITEM_SKU)) {
+    } else if (purchase.getSku().equals(mFreeSku)) {
       consumeItem();
       Timber.e(mHelper.getMDataSignature());
     } else {
       Timber.e(result.getMessage());
     }
   };
-  //______________________________________________________________________
-  @BindView(R.id.llVideos) LinearLayout llVideos;
-  @BindView(R.id.rvVideos) RecyclerView mRecyclerViewVideos;
   private MentorEntity mMentorEntity;
+  //IabHelper.OnConsumeMultiFinishedListener mOnConsumeMultiFinishedListener = (purchases, results) -> {
+  //
+  //};
+  IabHelper.QueryInventoryFinishedListener mReceivedInventoryListener =
+      new IabHelper.QueryInventoryFinishedListener() {
+        public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
+          Timber.e("mFreeSku mReceivedInventoryListener " + mFreeSku);
+
+          if (result.isFailure()) {
+            // Handle failure
+          } else {
+            mHelper.consumeAsync(inventory.getPurchase(mFreeSku), mConsumeFinishedListener);
+            //mHelper.consumeAsync(inventory.getAllPurchases(), mOnConsumeMultiFinishedListener);
+            Timber.e(result.getMessage());
+            Timber.e(inventory.getSkuDetails(mFreeSku).getTitle());
+            Timber.e(inventory.getSkuDetails(mFreeSku).getSku());
+
+            mPresenter.checkInAppBilling(inventory.getPurchase(mFreeSku),
+                inventory.getSkuDetails(mFreeSku).getTitle(), mMentorEntity.getUserId(), mFreeSku);
+          }
+        }
+      };
   private MentorsFriendAdapter mMentorsFriendAdapter;
   private MentorsCommentsAdapter mMentorsCommentsAdapter;
   private MentorsVideosAdapter mMentorsVideosAdapter;
@@ -334,7 +339,12 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   }
 
   @OnClick(R.id.ivSubscribeMentor) public void ivSubscribeMentorClicked() {
+    mPresenter.getNextFreeSku();
+  }
 
+  @Override public void startPurchaseFlow(String freeSku) {
+    mFreeSku = freeSku;
+    Timber.e("mFreeSku startPurchaseFlow " + mFreeSku);
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
     eventValue.put(AFInAppEventParameterName.SCORE, 100);
@@ -342,8 +352,15 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
         .trackEvent(App.getInstance().getApplicationContext(), "af_tap_apply_for_mentor",
             eventValue);
 
-    mHelper.launchSubscriptionPurchaseFlow(this, ITEM_SKU, 10001, mPurchaseFinishedListener,
+    mHelper.launchSubscriptionPurchaseFlow(this, freeSku, 10001, mPurchaseFinishedListener,
         "mypurchasetoken");
+  }
+
+  @Override public void showAllSlotsNotEmptyDialog() {
+    DialogHelper.createSimpleInfoDialog(getString(R.string.okay), getString(R.string.error),
+        getString(R.string.slots_error), this, (dialogInterface, i) -> dialogInterface.dismiss())
+        .create()
+        .show();
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -357,9 +374,7 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   }
 
   public void consumeItem() {
-    mHelper.queryInventoryAsync(true,
-        Arrays.asList(ITEM_SKU, "com.sugarman.myb.test_sub_1", ITEM_SKU),
-        mReceivedInventoryListener);
+    mHelper.queryInventoryAsync(true, Arrays.asList(mFreeSku), mReceivedInventoryListener);
   }
 
   @Override public void onDestroy() {

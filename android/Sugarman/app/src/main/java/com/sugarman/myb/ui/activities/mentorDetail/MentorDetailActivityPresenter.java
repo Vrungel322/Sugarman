@@ -3,6 +3,7 @@ package com.sugarman.myb.ui.activities.mentorDetail;
 import com.arellomobile.mvp.InjectViewState;
 import com.sugarman.myb.App;
 import com.sugarman.myb.base.BasicPresenter;
+import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.models.iab.PurchaseForServer;
 import com.sugarman.myb.utils.ThreadSchedulers;
 import com.sugarman.myb.utils.inapp.Purchase;
@@ -37,9 +38,15 @@ import timber.log.Timber;
     addToUnsubscription(subscription);
   }
 
-  public void checkInAppBilling(Purchase purchase, String productName, String userId) {
+  public void checkInAppBilling(Purchase purchase, String productName, String userId,
+      String freeSku) {
+    Timber.e("checkInAppBilling productName" +productName);
+    Timber.e("checkInAppBilling getSku" +purchase.getSku());
+    Timber.e("checkInAppBilling getToken" +purchase.getToken());
+    Timber.e("checkInAppBilling userId" +userId);
+    Timber.e("checkInAppBilling freeSku" +freeSku);
     Subscription subscription = mDataManager.checkInAppBilling(
-        new PurchaseForServer(productName, purchase.getSku(), purchase.getToken(),userId))
+        new PurchaseForServer(productName, purchase.getSku(), purchase.getToken(), userId,freeSku))
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(voidResponse -> {
           Timber.e(String.valueOf(voidResponse.code()));
@@ -47,6 +54,21 @@ import timber.log.Timber;
             getViewState().moveToMainActivity();
           }
         }, Throwable::printStackTrace);
+    addToUnsubscription(subscription);
+  }
+
+  public void getNextFreeSku() {
+    Subscription subscription = mDataManager.getNextFreeSku()
+        .compose(ThreadSchedulers.applySchedulers())
+        .subscribe(nextFreeSkuEntityResponse -> {
+          if (nextFreeSkuEntityResponse.code() == Constants.ALL_SLOTS_NOT_EMPTY_ERROR){
+            getViewState().showAllSlotsNotEmptyDialog();
+          }
+          if (nextFreeSkuEntityResponse.body().getFreeSku() != null
+              && !nextFreeSkuEntityResponse.body().getFreeSku().isEmpty()) {
+            getViewState().startPurchaseFlow(nextFreeSkuEntityResponse.body().getFreeSku());
+          }
+        },Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 }

@@ -15,6 +15,7 @@ import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.constants.Constants;
+import com.sugarman.myb.models.iab.NextFreeSkuEntity;
 import com.sugarman.myb.models.iab.PurchaseForServer;
 import com.sugarman.myb.models.mentor.MentorStupidAbstraction;
 import com.sugarman.myb.models.mentor.MentorsCommentsStupidAbstraction;
@@ -170,5 +171,9 @@ public class RestApi {
 
   public Observable<Response<Void>> checkInAppBilling(PurchaseForServer purchaseForServer) {
     return api.checkInAppBilling(purchaseForServer);
+  }
+
+  public Observable<Response<NextFreeSkuEntity>> getNextFreeSku() {
+    return api.getNextFreeSku("Android");
   }
 }

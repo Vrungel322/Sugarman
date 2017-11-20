@@ -76,54 +76,55 @@ public class MembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.ViewHold
         //Timber.e("URLSTART"+url+"URLEND");
         if (url == null || url.equals("") || url.equals(" ")) {
           url = "https://sugarman-myb.s3.amazonaws.com/Group_New.png";
-        CustomPicasso.with(context)
-            .load(url)
-            .placeholder(R.drawable.ic_gray_avatar)
-            .error(R.drawable.ic_gray_avatar)
-            .transform(new CropCircleTransformation(0x00ffffff, 4))
-            .into(membersHolder.ivAvatar);
-      } else {
-        membersHolder.ivAvatar.setImageResource(R.drawable.ic_gray_avatar);
-      }
+          CustomPicasso.with(context)
+              .load(url)
+              .placeholder(R.drawable.ic_gray_avatar)
+              .error(R.drawable.ic_gray_avatar)
+              .transform(new CropCircleTransformation(0x00ffffff, 4))
+              .into(membersHolder.ivAvatar);
+        } else {
+          membersHolder.ivAvatar.setImageResource(R.drawable.ic_gray_avatar);
+        }
 
-      //Timber.e("Friend " + friend.getName() + " is invitable = " + friend.getId());
+        //Timber.e("Friend " + friend.getName() + " is invitable = " + friend.getId());
 
-      if (friend.getIsInvitable() == FacebookFriend.CODE_INVITABLE) {
-        membersHolder.ivIndicatorInvitable.setVisibility(View.INVISIBLE);
-      } else {
-        membersHolder.ivIndicatorInvitable.setVisibility(View.VISIBLE);
-      }
+        if (friend.getIsInvitable() == FacebookFriend.CODE_INVITABLE) {
+          membersHolder.ivIndicatorInvitable.setVisibility(View.INVISIBLE);
+        } else {
+          membersHolder.ivIndicatorInvitable.setVisibility(View.VISIBLE);
+        }
 
-      switch (friend.getSocialNetwork()) {
-        case "fb":
-          membersHolder.ivSocialNetwork.setBackgroundResource(R.drawable.fb_icon);
-          break;
-        case "vk":
-          membersHolder.ivSocialNetwork.setBackgroundResource(R.drawable.vk_icon);
-          break;
-        default:
-          membersHolder.ivSocialNetwork.setBackgroundResource(R.drawable.phone_icon);
-          break;
-      }
+        switch (friend.getSocialNetwork()) {
+          case "fb":
+            membersHolder.ivSocialNetwork.setBackgroundResource(R.drawable.fb_icon);
+            break;
+          case "vk":
+            membersHolder.ivSocialNetwork.setBackgroundResource(R.drawable.vk_icon);
+            break;
+          default:
+            membersHolder.ivSocialNetwork.setBackgroundResource(R.drawable.phone_icon);
+            break;
+        }
 
-      String name = friend.getName();
-      membersHolder.tvMemberName.setText(name);
+        String name = friend.getName();
+        membersHolder.tvMemberName.setText(name);
 
-      boolean isPending = friend.isPending();
-      boolean isAdded = friend.isAdded();
-      boolean isSelected = friend.isSelected();
-      if (isPending || isAdded || isSelected) {
-        if (isPending) membersHolder.tvActionBtn.setText(pending);
-        if (isAdded) membersHolder.tvActionBtn.setText(added);
-        if (isSelected) membersHolder.tvActionBtn.setText(remove);
-        //membersHolder.tvActionBtn.setBackgroundResource(R.drawable.gray_double_stroke_background);
-        membersHolder.tvActionBtn.setBackgroundResource(R.drawable.remove);
-        membersHolder.tvActionBtn.setTextColor(colorRed);
-      } else {
-        membersHolder.tvActionBtn.setText(add);
-        //membersHolder.tvActionBtn.setBackgroundResource(R.drawable.dark_gray_double_stroke_background);
-        membersHolder.tvActionBtn.setBackgroundResource(R.drawable.add_and_remove);
-        membersHolder.tvActionBtn.setTextColor(colorWhite);
+        boolean isPending = friend.isPending();
+        boolean isAdded = friend.isAdded();
+        boolean isSelected = friend.isSelected();
+        if (isPending || isAdded || isSelected) {
+          if (isPending) membersHolder.tvActionBtn.setText(pending);
+          if (isAdded) membersHolder.tvActionBtn.setText(added);
+          if (isSelected) membersHolder.tvActionBtn.setText(remove);
+          //membersHolder.tvActionBtn.setBackgroundResource(R.drawable.gray_double_stroke_background);
+          membersHolder.tvActionBtn.setBackgroundResource(R.drawable.remove);
+          membersHolder.tvActionBtn.setTextColor(colorRed);
+        } else {
+          membersHolder.tvActionBtn.setText(add);
+          //membersHolder.tvActionBtn.setBackgroundResource(R.drawable.dark_gray_double_stroke_background);
+          membersHolder.tvActionBtn.setBackgroundResource(R.drawable.add_and_remove);
+          membersHolder.tvActionBtn.setTextColor(colorWhite);
+        }
       }
     }
   }
