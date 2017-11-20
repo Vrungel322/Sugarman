@@ -503,14 +503,24 @@
         <item>263,ZW</item>
     </string-array>
     <string name="the_phone_is_not_valid">Проверьте номер телефона</string>
-  <string name="approve_phone_pls">You need to approve phone number</string>
+  <string name="approve_phone_pls">Необходимо подтвердить номер телефона</string>
     <string name="resend_code">Повторить</string>
-    <string name="wait_for">Resend in</string>
+    <string name="wait_for">Повторить через</string>
   <string name="contacts_book">Контакты</string>
   <string name="tap_to_see">Нажми и узнай, что делать дальше</string>
-  <string name="comments">comments</string>
-    <string name="delete_user_from_group">Do you really want to delete user?</string>
-    <string name="mentorship">Mentorship</string>
-    <string name="warning">Warning</string>
+  <string name="comments">комментарии</string>
+    <string name="delete_user_from_group">Удалить пользователя?</string>
+    <string name="mentorship">Группа ментора</string>
+    <string name="warning">Внимание</string>
+    <string name="apply_now">"Присоединиться за "</string>
+    <string name="type_your_comment">Введите свой комментарий...</string>
+    <string name="learn_more">Подробнее</string>
+    <string name="mentors">Менторы</string>
+    <string name="success_rate">Успешность</string>
+    <string name="daily_success_rate">Успешность сегодня</string>
+    <string name="weekly_success_rate">Успешность на этой неделе</string>
+    <string name="monthly_success_rate">Успешность в этом месяце</string>
+    <string name="calories">Калории</string>
+    <string name="distance">Дистанция</string>
 
 </resources>

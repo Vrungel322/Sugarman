@@ -157,7 +157,7 @@
         android:layout_marginTop="0dp"
         android:background="@drawable/mentor_details"
         android:gravity="center"
-        android:text="Learn more"
+        android:text="@string/learn_more"
         android:textColor="#fff"
         android:textSize="17sp"
         android:textStyle="bold"

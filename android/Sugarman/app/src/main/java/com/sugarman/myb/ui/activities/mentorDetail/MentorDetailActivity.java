@@ -143,7 +143,7 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
 
     ratingBar.setRating(Float.valueOf(mMentorEntity.getMentorRating()));
     mentorName.setText(mMentorEntity.getMentorName());
-    mentorPrice.setText("Apply now for " + "2$");
+    mentorPrice.setText(getResources().getString(R.string.apply_now)+ " 2$");
 
     List<PieEntry> entries = new ArrayList<>();
 
