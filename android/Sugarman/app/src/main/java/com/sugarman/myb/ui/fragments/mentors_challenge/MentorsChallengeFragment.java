@@ -11,7 +11,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.squareup.picasso.CustomPicasso;
-import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.Member;
 import com.sugarman.myb.api.models.responses.Tracking;
@@ -245,5 +244,7 @@ public class MentorsChallengeFragment extends BasicFragment
       mAllSteps += mMembers[i].getSteps();
     }
     mTextViewAllSteps.setText(String.format(Locale.US, "%,d", mAllSteps));
+    //steps total
+    mTextViewTotalSteps.setText(String.format(Locale.US, "%,d", mAllSteps));
   }
 }
