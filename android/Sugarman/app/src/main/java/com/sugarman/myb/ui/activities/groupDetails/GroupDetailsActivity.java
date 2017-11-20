@@ -105,7 +105,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Clear;
-import com.squareup.picasso.Picasso;
+import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.clients.GetTrackingInfoClient;
@@ -633,7 +633,7 @@ public class GroupDetailsActivity extends BaseActivity
     setContentView(R.layout.activity_group_details);
     super.onCreate(savedStateInstance);
 
-    Clear.clearCache(Picasso.with(this));
+    Clear.clearCache(CustomPicasso.with(this));
     brokenGlassIds = SharedPreferenceHelper.getBrokenGlassIds();
 
     ivMentorAvatar = (ImageView) findViewById(R.id.ivMentorAvatar);
@@ -1985,7 +1985,7 @@ public class GroupDetailsActivity extends BaseActivity
       if (TextUtils.isEmpty(groupPictureUrl)) {
         ivGroupAvatar.setImageResource(R.drawable.ic_group);
       } else {
-        Picasso.with(this)
+        CustomPicasso.with(this)
             .load(groupPictureUrl)
             .placeholder(R.drawable.ic_gray_avatar)
             .error(R.drawable.ic_group)
@@ -2004,7 +2004,7 @@ public class GroupDetailsActivity extends BaseActivity
               }
             });
 
-        Picasso.with(this)
+        CustomPicasso.with(this)
             .load(groupPictureUrl)
             .placeholder(R.drawable.ic_gray_avatar)
             .error(R.drawable.ic_group)

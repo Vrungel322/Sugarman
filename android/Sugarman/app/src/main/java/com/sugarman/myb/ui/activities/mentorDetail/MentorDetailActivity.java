@@ -25,7 +25,7 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.squareup.picasso.Picasso;
+import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.base.BasicActivity;
@@ -46,7 +46,7 @@ import timber.log.Timber;
 
 public class MentorDetailActivity extends BasicActivity implements IMentorDetailActivityView {
   //______________________________________________________________________
-  static final String ITEM_SKU = "com.sugarman.myb.test_sub_1";
+  static final String ITEM_SKU = "mentor_group_1";
   @InjectPresenter MentorDetailActivityPresenter mPresenter;
   @BindView(R.id.iv_back) ImageView ivBack;
   @BindView(R.id.iv_avatar) ImageView ivAvatar;
@@ -235,7 +235,7 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
     if (TextUtils.isEmpty(urlAvatar)) {
       ivAvatar.setImageResource(R.drawable.ic_red_avatar);
     } else {
-      Picasso.with(this)
+      CustomPicasso.with(this)
           .load(urlAvatar)
           .fit()
           .centerCrop()

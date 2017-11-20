@@ -15,7 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.squareup.picasso.Picasso;
+import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.me.notifications.Notification;
 import com.sugarman.myb.constants.Constants;
@@ -83,7 +83,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
       String pictureUrl = item.getOriginator().getPictureUrl();
 
       if (!TextUtils.isEmpty(pictureUrl)) {
-        Picasso.with(context)
+        CustomPicasso.with(context)
             .load(pictureUrl)
             .fit()
             .centerCrop()

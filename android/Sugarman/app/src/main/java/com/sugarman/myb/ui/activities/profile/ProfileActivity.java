@@ -27,7 +27,7 @@ import butterknife.BindView;
 import com.appsflyer.AFInAppEventParameterName;
 import com.appsflyer.AppsFlyerLib;
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.squareup.picasso.Picasso;
+import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.me.invites.Invite;
@@ -239,7 +239,7 @@ public class ProfileActivity extends BaseActivity
     if (TextUtils.isEmpty(urlAvatar)) {
       ivAvatar.setImageResource(R.drawable.ic_red_avatar);
     } else {
-      Picasso.with(this)
+      CustomPicasso.with(this)
           .load(urlAvatar)
           .fit()
           .centerCrop()

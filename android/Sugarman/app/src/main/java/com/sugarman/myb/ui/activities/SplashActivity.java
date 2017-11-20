@@ -3,12 +3,16 @@ package com.sugarman.myb.ui.activities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.media.SoundPool;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import com.appsflyer.AFInAppEventParameterName;
 import com.appsflyer.AppsFlyerLib;
@@ -31,6 +35,9 @@ import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.utils.AnalyticsHelper;
 import com.sugarman.myb.utils.DeviceHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 import rx.subscriptions.CompositeSubscription;
@@ -58,6 +65,23 @@ public class SplashActivity extends GetUserInfoActivity
   @Override protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_splash);
     super.onCreate(savedInstanceState);
+
+    try {
+      PackageInfo info = getPackageManager().getPackageInfo(
+              "com.sugarman.myb",
+              PackageManager.GET_SIGNATURES);
+      for (Signature signature : info.signatures) {
+        MessageDigest md = MessageDigest.getInstance("SHA");
+        md.update(signature.toByteArray());
+        Log.e("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+      }
+    } catch (PackageManager.NameNotFoundException e) {
+      Timber.e("Govno 1");
+
+    } catch (NoSuchAlgorithmException e) {
+      Timber.e("Govno 2");
+    }
+
 
     AppsFlyerLib.getInstance().trackAppLaunch(getApplicationContext(), "PtjAzTP7TzPLhFZRJW3ouk");
 

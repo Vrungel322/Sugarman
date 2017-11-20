@@ -14,7 +14,7 @@ import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.squareup.picasso.Picasso;
+import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.Group;
@@ -162,7 +162,7 @@ public class WillStartChallengeFragment extends ChallengeFragment {
         int index = 0;
         for (Member m : lst) {
           if (index < 6) {
-            Picasso.with(getActivity())
+            CustomPicasso.with(getActivity())
                 .load(m.getPictureUrl())
                 .fit()
                 .centerCrop()
@@ -174,7 +174,7 @@ public class WillStartChallengeFragment extends ChallengeFragment {
           }
         }
 
-        Picasso.with(getActivity())
+        CustomPicasso.with(getActivity())
             .load(group.getPictureUrl())
             .fit()
             .centerCrop()

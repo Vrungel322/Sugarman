@@ -10,7 +10,8 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.squareup.picasso.Picasso;
+import com.squareup.picasso.CustomPicasso;
+import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.Member;
 import com.sugarman.myb.api.models.responses.Tracking;
@@ -85,7 +86,7 @@ public class MentorsChallengeFragment extends BasicFragment
     vChallengeContainer = (CardView) view.findViewById(R.id.cv_mentor_challenge_container);
 
 
-    Picasso.with(getActivity())
+    CustomPicasso.with(getActivity())
         .load(mTracking.getGroup().getPictureUrl())
         .placeholder(R.drawable.ic_gray_avatar)
         .error(R.drawable.ic_red_avatar)
@@ -117,7 +118,7 @@ public class MentorsChallengeFragment extends BasicFragment
       mTextViewBestName.setText(name);
       mTextViewBestSteps.setText(String.format(Locale.US, "%,d", best.getSteps()));
 
-      Picasso.with(getActivity())
+      CustomPicasso.with(getActivity())
           .load(best.getPictureUrl())
           .placeholder(R.drawable.ic_gray_avatar)
           .error(R.drawable.ic_red_avatar)
@@ -137,7 +138,7 @@ public class MentorsChallengeFragment extends BasicFragment
         mTextViewFastestName.setText(name);
         mTextViewFastestSteps.setText(
             String.format(Locale.US, "%,d", mTracking.getDailySugarman().getUser().getSteps()));
-        Picasso.with(getActivity())
+        CustomPicasso.with(getActivity())
             .load(mTracking.getDailySugarman().getUser().getPictureUrl())
             .placeholder(R.drawable.ic_gray_avatar)
             .error(R.drawable.ic_red_avatar)
@@ -147,7 +148,7 @@ public class MentorsChallengeFragment extends BasicFragment
       } else {
         mTextViewFastestName.setText(getResources().getString(R.string.sugarman_is));
         mTextViewFastestSteps.setText(getResources().getString(R.string.todays_fastest));
-        Picasso.with(getActivity())
+        CustomPicasso.with(getActivity())
             .load(R.drawable.sugar_next)
             //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
             .placeholder(R.drawable.ic_gray_avatar)
@@ -166,7 +167,7 @@ public class MentorsChallengeFragment extends BasicFragment
       } else name = str;
       mTextViewLaziestName.setText(name);
       mTextViewLaziestSteps.setText(String.format(Locale.US, "%,d", mMembers[0].getSteps()));
-      Picasso.with(getActivity())
+      CustomPicasso.with(getActivity())
           .load(mMembers[0].getPictureUrl())
           .placeholder(R.drawable.ic_gray_avatar)
           .error(R.drawable.ic_red_avatar)
@@ -176,7 +177,7 @@ public class MentorsChallengeFragment extends BasicFragment
     }
     //set up all
     setToUiAllSteps();
-    Picasso.with(getActivity())
+    CustomPicasso.with(getActivity())
         .load(R.drawable.white_bg)
         //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
         .placeholder(R.drawable.ic_gray_avatar)

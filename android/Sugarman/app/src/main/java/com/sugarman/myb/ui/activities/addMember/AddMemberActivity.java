@@ -37,7 +37,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.share.model.GameRequestContent;
 import com.facebook.share.widget.GameRequestDialog;
-import com.squareup.picasso.Picasso;
+import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.R;
 import com.sugarman.myb.adapters.VkFriendsAdapter;
 import com.sugarman.myb.adapters.membersAdapter.MembersAdapter;
@@ -277,7 +277,7 @@ public class AddMemberActivity extends BaseActivity
       sivGroupAvatar.setImageBitmap(bm);
       //sivGroupAvatar.setImageResource(R.drawable.ic_group);
     } else {
-      Picasso.with(this)
+      CustomPicasso.with(this)
           .load(groupPictureUrl)
           .fit()
           .centerCrop()

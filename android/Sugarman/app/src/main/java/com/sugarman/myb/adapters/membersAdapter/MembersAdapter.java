@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.arellomobile.mvp.MvpDelegate;
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.squareup.picasso.Picasso;
+import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.base.MvpBaseRecyclerAdapter;
@@ -76,7 +76,7 @@ public class MembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.ViewHold
         //Timber.e("URLSTART"+url+"URLEND");
         if(url == null||url.equals("")||url.equals(" "))
           url = "https://sugarman-myb.s3.amazonaws.com/Group_New.png";
-        Picasso.with(context)
+        CustomPicasso.with(context)
             .load(url)
             .placeholder(R.drawable.ic_gray_avatar)
             .error(R.drawable.ic_gray_avatar)

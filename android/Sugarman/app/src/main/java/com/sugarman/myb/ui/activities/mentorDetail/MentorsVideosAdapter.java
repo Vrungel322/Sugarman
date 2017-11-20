@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.squareup.picasso.Picasso;
+import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.R;
 import com.sugarman.myb.models.mentor.comments.MentorsCommentsEntity;
 import com.sugarman.myb.ui.views.CropCircleTransformation;
@@ -47,7 +47,7 @@ public class MentorsVideosAdapter
 
   @Override public void onBindViewHolder(MentorsVideosViewHolder holder, int position) {
 
-    Picasso.with(holder.mImageViewVideoThumbnail.getContext())
+    CustomPicasso.with(holder.mImageViewVideoThumbnail.getContext())
         .load(getVideoImage(mMentorsVideoLinks.get(position)))
         .fit()
         .centerCrop()

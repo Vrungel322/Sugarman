@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.squareup.picasso.Picasso;
+import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.R;
 import com.sugarman.myb.models.mentor.MemberOfMentorsGroup;
 import com.sugarman.myb.ui.views.CropCircleTransformation;
@@ -36,7 +36,7 @@ public class MentorsFriendAdapter
   }
 
   @Override public void onBindViewHolder(MentorsFriendViewHolder holder, int position) {
-    Picasso.with(holder.mImageViewFriendsAvater.getContext())
+    CustomPicasso.with(holder.mImageViewFriendsAvater.getContext())
         .load(mMemberOfMentorsGroups.get(position).getImgUrl())
         .fit()
         .centerCrop()
