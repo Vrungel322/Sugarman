@@ -37,7 +37,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.share.model.GameRequestContent;
 import com.facebook.share.widget.GameRequestDialog;
-import com.squareup.picasso.Picasso;
+import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.adapters.membersAdapter.MembersAdapter;
@@ -676,7 +676,7 @@ public class ShopInviteFriendsActivity extends BasicActivity
 
   @Override public void loadInviterImgUrls(List<String> imgUrls) {
     for (int i = 0; i < imgUrls.size(); i++) {
-      Picasso.with(this)
+      CustomPicasso.with(this)
           .load(Uri.parse(imgUrls.get(i)))
           .fit()
           .centerCrop()

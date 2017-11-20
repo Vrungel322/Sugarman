@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.squareup.picasso.Picasso;
+import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.R;
 import com.sugarman.myb.listeners.ItemMemberActionListener;
 import com.sugarman.myb.models.VkFriend;
@@ -96,7 +96,7 @@ public class VkFriendsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
       }
 
       String url = friend.getPhotoUrl();
-      Picasso.with(context)
+      CustomPicasso.with(context)
           .load(url)
           .placeholder(R.drawable.ic_gray_avatar)
           .error(R.drawable.ic_gray_avatar)

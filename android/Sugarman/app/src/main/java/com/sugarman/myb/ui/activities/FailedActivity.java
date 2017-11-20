@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.facebook.share.widget.ShareButton;
 import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
+import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.clients.RecreateGroupClient;
 import com.sugarman.myb.api.models.responses.Group;
@@ -178,7 +178,7 @@ public class FailedActivity extends NotificationFullScreenActivity
           avatar.setImageResource(R.drawable.ic_red_avatar);
           loadedImagesCount++;
         } else {
-          Picasso.with(this)
+          CustomPicasso.with(this)
               .load(pictureUrl)
               .fit()
               .centerCrop()

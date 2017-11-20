@@ -33,7 +33,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.squareup.picasso.Picasso;
+import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.clients.EditProfileClient;
@@ -157,7 +157,7 @@ public class EditProfileActivity extends BasicActivity
 
     Log.e("Avatar", "Link " + SharedPreferenceHelper.getAvatar());
     if (!SharedPreferenceHelper.getAvatar().equals("")) {
-      Picasso.with(this)
+      CustomPicasso.with(this)
           .load(SharedPreferenceHelper.getAvatar())
           .placeholder(R.drawable.ic_gray_avatar)
           .fit()

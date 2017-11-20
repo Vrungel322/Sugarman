@@ -24,7 +24,7 @@ import com.paypal.android.sdk.payments.PayPalPayment;
 import com.paypal.android.sdk.payments.PayPalService;
 import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
-import com.squareup.picasso.Picasso;
+import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.base.BasicActivity;
@@ -121,7 +121,7 @@ public class CheckoutActivity extends BasicActivity
         TextView productNametv = (TextView) v1.findViewById(R.id.firstText);
         productNametv.setText(productName);
 
-        Picasso.with(this)
+        CustomPicasso.with(this)
             .load(Uri.parse(productImageUrl))
             .fit()
             .centerCrop()

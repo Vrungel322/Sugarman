@@ -12,7 +12,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.appsflyer.AFInAppEventParameterName;
 import com.appsflyer.AppsFlyerLib;
-import com.squareup.picasso.Picasso;
+import com.squareup.picasso.CustomPicasso;
+import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.Group;
@@ -135,7 +136,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
       if (TextUtils.isEmpty(pictureUrl)) {
         groupsHolder.ivAvatar.setImageResource(R.drawable.ic_group);
       } else {
-        Picasso.with(context)
+        CustomPicasso.with(context)
             .load(pictureUrl)
             .fit()
             .centerCrop()

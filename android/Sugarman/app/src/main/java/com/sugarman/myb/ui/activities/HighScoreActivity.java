@@ -6,7 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
+import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.clients.GetHighScoreClient;
 import com.sugarman.myb.api.models.responses.Group;
@@ -183,7 +183,7 @@ public class HighScoreActivity extends BaseActivity
       if (TextUtils.isEmpty(urlAvatar)) {
         ivGroupAvatarCreated.setImageResource(R.drawable.ic_group);
       } else {
-        Picasso.with(this)
+        CustomPicasso.with(this)
             .load(urlAvatar)
             .fit()
             .centerCrop()
@@ -240,7 +240,7 @@ public class HighScoreActivity extends BaseActivity
       if (TextUtils.isEmpty(urlAvatar)) {
         ivGroupAvatarParticipated.setImageResource(R.drawable.ic_group);
       } else {
-        Picasso.with(this)
+        CustomPicasso.with(this)
             .load(urlAvatar)
             .fit()
             .centerCrop()

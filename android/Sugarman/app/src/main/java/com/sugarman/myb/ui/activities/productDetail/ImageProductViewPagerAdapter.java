@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import com.squareup.picasso.Picasso;
+import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.R;
 import java.util.List;
 
@@ -34,7 +34,7 @@ public class ImageProductViewPagerAdapter extends PagerAdapter {
   @Override public Object instantiateItem(ViewGroup container, int position) {
     View itemView = mLayoutInflater.inflate(R.layout.item_page, container, false);
     final ImageView imageView = (ImageView) itemView.findViewById(R.id.iv);
-    Picasso.with(mContext)
+    CustomPicasso.with(mContext)
         .load(Integer.parseInt(urls.get(position)))
         .fit()
         .centerCrop()

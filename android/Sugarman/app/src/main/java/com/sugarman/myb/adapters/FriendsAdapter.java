@@ -10,7 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.squareup.picasso.Picasso;
+
+import com.squareup.picasso.CustomPicasso;
+import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.listeners.ItemUsersActionListener;
@@ -70,7 +72,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
           friend.getPicture())) {
 
         String url = friend.getPicture();
-        Picasso.with(context)
+        CustomPicasso.with(context)
             .load(url)
             .placeholder(R.drawable.ic_gray_avatar)
             .error(R.drawable.ic_gray_avatar)

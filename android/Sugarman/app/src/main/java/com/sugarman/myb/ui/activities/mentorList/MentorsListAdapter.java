@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.squareup.picasso.Picasso;
+import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.R;
 import com.sugarman.myb.models.mentor.MentorEntity;
 import com.sugarman.myb.ui.views.MaskTransformation;
@@ -36,7 +36,7 @@ public class MentorsListAdapter extends RecyclerView.Adapter<MentorsListAdapter.
 
   @Override public void onBindViewHolder(MentorViewHolder holder, int position) {
 
-    Picasso.with(holder.mImageViewAvatar.getContext())
+    CustomPicasso.with(holder.mImageViewAvatar.getContext())
         .load(mMentorEntities.get(position).getMentorImgUrl())
         .placeholder(R.drawable.ic_gray_avatar)
         .fit()

@@ -19,7 +19,7 @@ import com.appsflyer.AppsFlyerLib;
 import com.arellomobile.mvp.MvpDelegate;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.squareup.picasso.NetworkPolicy;
-import com.squareup.picasso.Picasso;
+import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.Member;
@@ -193,7 +193,7 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
           if (TextUtils.isEmpty(url)) {
             memberHolder.ivAvatar.setImageResource(R.drawable.ic_gray_avatar);
           } else {
-            Picasso.with(context).cancelRequest(memberHolder.ivAvatar);
+            CustomPicasso.with(context).cancelRequest(memberHolder.ivAvatar);
             if (member.getId().equals(SharedPreferenceHelper.getUserId())) {
               int color = 0xff54cc14;
               int steps = member.getSteps();
@@ -207,7 +207,7 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
               Typeface face = Typeface.createFromAsset(context.getAssets(), "sans-serif-medium");
               //memberHolder.tvMemberName.setTypeface(face);
 
-              Picasso.with(context)
+              CustomPicasso.with(context)
                   .load(url)
                   .fit()
                   .centerCrop()
@@ -232,7 +232,7 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
               } else if (steps >= 7500 && steps < 10000) color = 0xffF6B147;
               memberHolder.tvSteps.setTextColor(color);
 
-              Picasso.with(context)
+              CustomPicasso.with(context)
                   .load(url)
                   .fit()
                   .centerCrop()
@@ -326,9 +326,9 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
           if (TextUtils.isEmpty(url)) {
             pendingMemberHolder.ivAvatar.setImageResource(R.drawable.ic_gray_avatar);
           } else {
-            Picasso.with(context).cancelRequest(pendingMemberHolder.ivAvatar);
+            CustomPicasso.with(context).cancelRequest(pendingMemberHolder.ivAvatar);
             if (member.getId().equals(SharedPreferenceHelper.getUserId())) {
-              Picasso.with(context)
+              CustomPicasso.with(context)
                   .load(url)
                   .fit()
                   .centerCrop()
@@ -338,7 +338,7 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
                   .transform(new MaskTransformation(context, R.drawable.mask, true, 0xcccccccc))
                   .into(pendingMemberHolder.ivAvatar);
             } else {
-              Picasso.with(context)
+              CustomPicasso.with(context)
                   .load(url)
                   .fit()
                   .centerCrop()

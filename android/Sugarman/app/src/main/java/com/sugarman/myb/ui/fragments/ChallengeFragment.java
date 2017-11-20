@@ -34,7 +34,7 @@ import com.clover_studio.spikachatmodule.utils.Const;
 import com.clover_studio.spikachatmodule.utils.EmitJsonCreator;
 import com.clover_studio.spikachatmodule.utils.LogCS;
 import com.clover_studio.spikachatmodule.utils.SeenByUtils;
-import com.squareup.picasso.Picasso;
+import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.Group;
@@ -180,7 +180,7 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
           best.setPictureUrl("https://sugarman-myb.s3.amazonaws.com/Group_New.png");
         }
 
-        Picasso.with(getActivity())
+        CustomPicasso.with(getActivity())
             .load(best.getPictureUrl())
             //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
             .placeholder(R.drawable.ic_gray_avatar)
@@ -209,7 +209,7 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
             || laziest.getPictureUrl().equals(" ")) {
           laziest.setPictureUrl("https://sugarman-myb.s3.amazonaws.com/Group_New.png");
         }
-        Picasso.with(getActivity())
+        CustomPicasso.with(getActivity())
             .load(laziest.getPictureUrl())
             //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
             .placeholder(R.drawable.ic_gray_avatar)
@@ -228,7 +228,7 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
 
           fastestName.setText(name);
           fastestSteps.setText(String.format(Locale.US, "%,d", fastest.getSteps()));
-          Picasso.with(getActivity())
+          CustomPicasso.with(getActivity())
               .load(fastest.getPictureUrl())
               //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
               .placeholder(R.drawable.ic_gray_avatar)
@@ -238,7 +238,7 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
         } else {
           fastestName.setText(getResources().getString(R.string.sugarman_is));
           fastestSteps.setText(getResources().getString(R.string.todays_fastest));
-          Picasso.with(getActivity())
+          CustomPicasso.with(getActivity())
               .load(R.drawable.sugar_next)
               //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
               .placeholder(R.drawable.ic_gray_avatar)
@@ -256,7 +256,7 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
 
       allName.setText(str);
 
-      Picasso.with(getActivity())
+      CustomPicasso.with(getActivity())
           .load(R.drawable.white_bg)
           //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
           .placeholder(R.drawable.ic_gray_avatar)
@@ -389,7 +389,7 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
 
     Group group = tracking.getGroup();
 
-    Picasso.with(getActivity())
+    CustomPicasso.with(getActivity())
         .load(group.getPictureUrl())
         .placeholder(R.drawable.ic_gray_avatar)
         .error(R.drawable.ic_red_avatar)

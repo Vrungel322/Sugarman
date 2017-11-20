@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.squareup.picasso.Picasso;
+import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.R;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +42,7 @@ public class MentorsVideosAdapter
 
   @Override public void onBindViewHolder(MentorsVideosViewHolder holder, int position) {
 
-    Picasso.with(holder.mImageViewVideoThumbnail.getContext())
+    CustomPicasso.with(holder.mImageViewVideoThumbnail.getContext())
         .load(getVideoImage(mMentorsVideoLinks.get(position)))
         .fit()
         .centerCrop()

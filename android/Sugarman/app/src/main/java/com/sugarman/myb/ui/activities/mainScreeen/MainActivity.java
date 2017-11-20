@@ -33,7 +33,7 @@ import com.appsflyer.AppsFlyerLib;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.facebook.FacebookException;
 import com.mzelzoghbi.zgallery.CustomViewPager;
-import com.squareup.picasso.Picasso;
+import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.App;
 import com.sugarman.myb.BuildConfig;
 import com.sugarman.myb.R;
@@ -803,7 +803,7 @@ public class MainActivity extends GetUserInfoActivity
     String urlAvatar = SharedPreferenceHelper.getAvatar();
     if (TextUtils.isEmpty(urlAvatar)) {
     } else {
-      Picasso.with(this)
+      CustomPicasso.with(this)
           .load(urlAvatar)
           .fit()
           .centerCrop()

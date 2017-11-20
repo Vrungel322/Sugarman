@@ -7,7 +7,7 @@ import android.text.TextUtils;
 import android.widget.TextView;
 import com.facebook.share.widget.ShareButton;
 import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
+import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.Group;
 import com.sugarman.myb.api.models.responses.Tracking;
@@ -77,7 +77,7 @@ public class CongratulationsActivity extends NotificationFullScreenActivity
     String pictureUrl = group.getPictureUrl();
     boolean isPictureExists = !TextUtils.isEmpty(pictureUrl);
     if (isPictureExists) {
-      Picasso.with(this)
+      CustomPicasso.with(this)
           .load(pictureUrl)
           .fit()
           .centerCrop()
