@@ -19,7 +19,6 @@ import java.io.Serializable;
 
 //по сути SocialUser не нужен , но пример работает с ним - следовательно оставил, если че потом уберем
 
-
 public class SocialUser implements Serializable {
 
   public String userId;

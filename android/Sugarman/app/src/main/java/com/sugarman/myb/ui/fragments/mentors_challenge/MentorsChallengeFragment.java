@@ -100,7 +100,7 @@ public class MentorsChallengeFragment extends BasicFragment
     Arrays.sort(mTracking.getMembers(), Member.BY_STEPS_ASC);
     mMembers = mTracking.getMembers();
     Member best;
-    if(mMembers.length>0) {
+    if (mMembers.length > 0) {
       best = mMembers[mMembers.length - 1];
 
       String str = "";
@@ -131,9 +131,11 @@ public class MentorsChallengeFragment extends BasicFragment
         str = mTracking.getDailySugarman().getUser().getName();
         name = "";
         str = str.replaceAll("( +)", " ").trim();
-        if (str.length() > 0)
+        if (str.length() > 0) {
           name = str.substring(0, (mTracking.getDailySugarman().getUser().getName().indexOf(" ")));
-        else name = str;
+        } else {
+          name = str;
+        }
 
         mTextViewFastestName.setText(name);
         mTextViewFastestSteps.setText(
@@ -164,7 +166,9 @@ public class MentorsChallengeFragment extends BasicFragment
       str = str.replaceAll("( +)", " ").trim();
       if (str.length() > 0 && str.contains(" ")) {
         name = str.substring(0, (laziest.getName().indexOf(" ")));
-      } else name = str;
+      } else {
+        name = str;
+      }
       mTextViewLaziestName.setText(name);
       mTextViewLaziestSteps.setText(String.format(Locale.US, "%,d", mMembers[0].getSteps()));
       CustomPicasso.with(getActivity())
@@ -228,7 +232,8 @@ public class MentorsChallengeFragment extends BasicFragment
     if (activity != null
         && activity instanceof MainActivity
         && ((MainActivity) activity).isReady()) {
-      ((MainActivity) activity).openGroupDetailsActivity(mTracking.getId(),true,mTracking.getGroupOwnerId());
+      ((MainActivity) activity).openGroupDetailsActivity(mTracking.getId(), true,
+          mTracking.getGroupOwnerId());
     }
   }
 
@@ -239,7 +244,6 @@ public class MentorsChallengeFragment extends BasicFragment
     for (int i = 0; i < mMembers.length; i++) {
       mAllSteps += mMembers[i].getSteps();
     }
-    mTextViewAllSteps.setText(String.format(Locale.US, "%,d",mAllSteps));
+    mTextViewAllSteps.setText(String.format(Locale.US, "%,d", mAllSteps));
   }
-
 }

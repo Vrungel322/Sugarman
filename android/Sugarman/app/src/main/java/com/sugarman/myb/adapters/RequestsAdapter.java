@@ -105,7 +105,8 @@ public class RequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
     eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_accept_request", eventValue);
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_accept_request", eventValue);
 
     if (position >= 0 && position < mData.size()) {
       if (mActionListener.get() != null) {
@@ -118,11 +119,11 @@ public class RequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
   @Override public void onClickDecline(int position) {
 
-
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
     eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_decline_request", eventValue);
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_decline_request", eventValue);
 
     if (position >= 0 && position < mData.size()) {
       if (mActionListener.get() != null) {

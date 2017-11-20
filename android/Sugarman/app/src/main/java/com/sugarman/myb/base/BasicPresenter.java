@@ -4,8 +4,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import com.arellomobile.mvp.MvpPresenter;
 import com.arellomobile.mvp.MvpView;
-import com.google.gson.Gson;
-import com.sugarman.myb.api.error.IErrorResponse;
 import com.sugarman.myb.data.DataManager;
 import com.sugarman.myb.utils.RxBus;
 import javax.inject.Inject;

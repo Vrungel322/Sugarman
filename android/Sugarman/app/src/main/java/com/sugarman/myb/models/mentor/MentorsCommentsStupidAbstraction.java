@@ -12,5 +12,6 @@ import lombok.Setter;
  * Created by nikita on 31.10.2017.
  */
 @AllArgsConstructor(access = AccessLevel.PUBLIC) public class MentorsCommentsStupidAbstraction {
-  @Getter @Setter @SerializedName("result") private List<MentorsCommentsEntity> mMentorsCommentsEntities;
+  @Getter @Setter @SerializedName("result") private List<MentorsCommentsEntity>
+      mMentorsCommentsEntities;
 }

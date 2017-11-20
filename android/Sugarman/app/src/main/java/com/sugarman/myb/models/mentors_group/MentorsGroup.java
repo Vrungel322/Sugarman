@@ -5,7 +5,7 @@ import com.sugarman.myb.api.models.responses.Tracking;
 /**
  * Created by nikita on 01.11.2017.
  */
- public class MentorsGroup extends Tracking {
+public class MentorsGroup extends Tracking {
   //@Getter @SerializedName("challenge_name") @Expose private String challengeName;
   //@Getter @SerializedName("created_at") @Expose private String createdAt;
   //@Getter @SerializedName("end_date") @Expose private String endDate;

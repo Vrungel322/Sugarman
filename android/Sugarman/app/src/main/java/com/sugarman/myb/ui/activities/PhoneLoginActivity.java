@@ -75,8 +75,7 @@ public class PhoneLoginActivity extends GetUserInfoActivity implements ApiRefres
     //SharedPreferenceHelper.savePhoneNumber(phoneNumber);
     if (isPhoneValid(phoneNumber)) {
       nextButton.setEnabled(false);
-      refreshUserData("none", "none", "none", phoneNumber, "", phoneNumber, "none",
-          "none", "none");
+      refreshUserData("none", "none", "none", phoneNumber, "", phoneNumber, "none", "none", "none");
     } else {
       new SugarmanDialog.Builder(this, "Phone").content(
           getResources().getString(R.string.the_phone_is_not_valid)).build().show();

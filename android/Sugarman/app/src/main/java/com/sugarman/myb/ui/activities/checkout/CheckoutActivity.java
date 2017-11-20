@@ -35,7 +35,6 @@ import java.util.HashMap;
 import java.util.Map;
 import timber.log.Timber;
 
-
 public class CheckoutActivity extends BasicActivity
     implements ICheckoutActivityView, View.OnClickListener {
   private static final int PAYPAL_REQUEST_CODE = 123;
@@ -63,7 +62,8 @@ public class CheckoutActivity extends BasicActivity
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
     eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_tap_buy_for_money", eventValue);
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_tap_buy_for_money", eventValue);
 
     initPayPal();
 
@@ -198,13 +198,14 @@ public class CheckoutActivity extends BasicActivity
       Map<String, Object> eventValue = new HashMap<>();
       eventValue.put(AFInAppEventParameterName.LEVEL, 9);
       eventValue.put(AFInAppEventParameterName.SCORE, 100);
-      AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_tap_buy_checkout", eventValue);
+      AppsFlyerLib.getInstance()
+          .trackEvent(App.getInstance().getApplicationContext(), "af_tap_buy_checkout", eventValue);
 
       presenter.sendPurchaseData(etCountryName.getText().toString(),
           etCityName.getText().toString(), etStreetName.getText().toString(),
           etZipCode.getText().toString(), etFullName.getText().toString(),
           etPhoneNumber.getText().toString(),
-          String.valueOf(num * Double.parseDouble(productPrice)), num, productName,productPrice,
+          String.valueOf(num * Double.parseDouble(productPrice)), num, productName, productPrice,
           Constants.PAY_PAL_PAYMENT_TYPE);
     }
   }
@@ -277,7 +278,8 @@ public class CheckoutActivity extends BasicActivity
   private void initPayPal() {
     //For real pay change ENVIRONMENT_SANDBOX and PAYPAL_CLIENT_ID
     config = new PayPalConfiguration().environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
-        .clientId(Config.PAYPAL_CLIENT_ID).acceptCreditCards(false);
+        .clientId(Config.PAYPAL_CLIENT_ID)
+        .acceptCreditCards(false);
   }
 
   @Override public void startPayPalTransaction(String amountPrice) {

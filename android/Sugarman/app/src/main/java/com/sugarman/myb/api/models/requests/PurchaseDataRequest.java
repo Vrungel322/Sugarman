@@ -6,8 +6,7 @@ import lombok.AllArgsConstructor;
 /**
  * Created by nikita on 25.09.17.
  */
-@AllArgsConstructor
-public class PurchaseDataRequest {
+@AllArgsConstructor public class PurchaseDataRequest {
   @SerializedName("country") private String country;
   @SerializedName("city") private String city;
   @SerializedName("street") private String street;
@@ -19,6 +18,4 @@ public class PurchaseDataRequest {
   @SerializedName("price") private String productPrice;
   @SerializedName("payment_type") private String paymentType;
   @SerializedName("phone_number") private String phone_number;
-
-
 }

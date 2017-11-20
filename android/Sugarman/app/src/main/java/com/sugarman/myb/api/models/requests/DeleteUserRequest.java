@@ -9,7 +9,6 @@ import lombok.Setter;
  * Created by yegoryeriomin on 11/8/17.
  */
 
-@AllArgsConstructor
-public class DeleteUserRequest {
+@AllArgsConstructor public class DeleteUserRequest {
   @Getter @Setter @SerializedName("member_id") String memberId;
 }

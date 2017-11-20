@@ -12,6 +12,7 @@ import lombok.Setter;
   @Getter @Setter @SerializedName("product_name") String productName;
   @Getter @Setter @SerializedName("product_id") String productId;
   @Getter @Setter @SerializedName("purchase_token") String purchaseToken;
+  @Getter @Setter @SerializedName("mentor_id") String mentorId;
 
   //@Getter @Setter @SerializedName("orderId") String mOrderId;
   //@Getter @Setter@SerializedName("packageName") String mPackageName;

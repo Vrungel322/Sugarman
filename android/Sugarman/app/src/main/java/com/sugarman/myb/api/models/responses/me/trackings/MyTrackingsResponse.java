@@ -2,7 +2,6 @@ package com.sugarman.myb.api.models.responses.me.trackings;
 
 import com.google.gson.annotations.SerializedName;
 import com.sugarman.myb.api.models.responses.Tracking;
-import com.sugarman.myb.models.mentors_group.MentorsGroup;
 import java.util.List;
 import lombok.Getter;
 

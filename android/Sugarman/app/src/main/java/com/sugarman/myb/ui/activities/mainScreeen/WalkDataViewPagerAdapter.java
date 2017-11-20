@@ -9,8 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.sugarman.myb.R;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by nikita on 03.11.2017.
@@ -28,12 +26,11 @@ public class WalkDataViewPagerAdapter extends PagerAdapter {
     mLayoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
   }
 
-  public void setWalkData(String todaySteps){
+  public void setWalkData(String todaySteps) {
     mTodaySteps = todaySteps;
     steps = Integer.parseInt(todaySteps);
     notifyDataSetChanged();
   }
-
 
   @Override public int getCount() {
     return Integer.MAX_VALUE; // INFINITE SCROLLING
@@ -46,17 +43,17 @@ public class WalkDataViewPagerAdapter extends PagerAdapter {
     int virtualPosition = position % MAX_VALUE;                               //INFINITE SCROLLING
     switch (virtualPosition) {
       case 0:
-      tvData1.setText(mTodaySteps);
-      tvData2.setText("STEPS");
+        tvData1.setText(mTodaySteps);
+        tvData2.setText("STEPS");
         break;
       case 1:
-        tvData1.setText(String.format("%.2f",steps*0.000762f) + " km");
-        tvData1.setTextSize(TypedValue.COMPLEX_UNIT_SP,34);
+        tvData1.setText(String.format("%.2f", steps * 0.000762f) + " km");
+        tvData1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 34);
         tvData2.setText("DISTANCE");
         break;
       case 2:
-        tvData1.setText(Integer.toString((int)(steps*0.0435f)) + " kcal");
-        tvData1.setTextSize(TypedValue.COMPLEX_UNIT_SP,30);
+        tvData1.setText(Integer.toString((int) (steps * 0.0435f)) + " kcal");
+        tvData1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
         tvData2.setText("CALORIES");
         break;
     }
@@ -67,7 +64,6 @@ public class WalkDataViewPagerAdapter extends PagerAdapter {
   @Override public void destroyItem(ViewGroup container, int position, Object object) {
     container.removeView((ConstraintLayout) object);
   }
-
 
   public int getItemPosition(Object object) {
     return POSITION_NONE;

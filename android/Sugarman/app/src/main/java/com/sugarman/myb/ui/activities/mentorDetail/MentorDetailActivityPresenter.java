@@ -3,7 +3,6 @@ package com.sugarman.myb.ui.activities.mentorDetail;
 import com.arellomobile.mvp.InjectViewState;
 import com.sugarman.myb.App;
 import com.sugarman.myb.base.BasicPresenter;
-import com.sugarman.myb.models.iab.InAppBilling;
 import com.sugarman.myb.models.iab.PurchaseForServer;
 import com.sugarman.myb.utils.ThreadSchedulers;
 import com.sugarman.myb.utils.inapp.Purchase;
@@ -38,9 +37,9 @@ import timber.log.Timber;
     addToUnsubscription(subscription);
   }
 
-  public void checkInAppBilling(Purchase purchase, String signature,String productName) {
+  public void checkInAppBilling(Purchase purchase, String productName, String userId) {
     Subscription subscription = mDataManager.checkInAppBilling(
-        new PurchaseForServer(productName,purchase.getSku(),purchase.getDeveloperPayload()))
+        new PurchaseForServer(productName, purchase.getSku(), purchase.getToken(),userId))
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(voidResponse -> {
           Timber.e(String.valueOf(voidResponse.code()));

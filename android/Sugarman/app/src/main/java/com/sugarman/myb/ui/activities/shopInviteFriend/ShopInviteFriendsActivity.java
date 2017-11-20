@@ -173,7 +173,9 @@ public class ShopInviteFriendsActivity extends BasicActivity
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
     eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_tap_free_for_invites", eventValue);
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_tap_free_for_invites",
+            eventValue);
 
     ConstraintLayout mainLayout = (ConstraintLayout) findViewById(R.id.mainLayout);
 
@@ -345,12 +347,9 @@ public class ShopInviteFriendsActivity extends BasicActivity
 
   @OnClick(R.id.ph_filter) public void showPhFriends() {
     //addMembersFromPreviousAdapter();
-    Timber.e("allFriends " + allFriends);
-
     if (!currentFilter.equals("ph")) {
       filtered.clear();
-
-      for (FacebookFriend friend : allFriends) {
+      for (FacebookFriend friend : toFilterList) {
         if (friend.getSocialNetwork().equals("ph")) {
           filtered.add(friend);
         }
@@ -560,7 +559,6 @@ public class ShopInviteFriendsActivity extends BasicActivity
             mIntiteByPh.clear();
           });
       sendVkInvitationDialog.show(getFragmentManager(), "SendVkInvitationDialog");
-
     }
 
     if (!mInviteByFbIds.isEmpty()) {
@@ -647,6 +645,7 @@ public class ShopInviteFriendsActivity extends BasicActivity
   @Override public void addPhoneContact(List<FacebookFriend> facebookFriends) {
     allFriends.addAll(facebookFriends);
     toFilterList.addAll(facebookFriends);
+    Timber.e("addPhoneContact " + facebookFriends.size());
     membersAdapter.addPhoneContacts(facebookFriends);
   }
 

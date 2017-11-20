@@ -565,14 +565,14 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
   }
 
   public static void saveGroupsLimit(String groupsLimit) {
-    if (groupsLimit==null || groupsLimit.isEmpty()){
+    if (groupsLimit == null || groupsLimit.isEmpty()) {
       putString(SharedPreferenceConstants.GROUPS_LIMIT, "3");
-    }else {
+    } else {
       putString(SharedPreferenceConstants.GROUPS_LIMIT, groupsLimit);
     }
   }
 
   public static String getGroupsLimit() {
-      return getString(SharedPreferenceConstants.GROUPS_LIMIT, "3");
+    return getString(SharedPreferenceConstants.GROUPS_LIMIT, "3");
   }
 }

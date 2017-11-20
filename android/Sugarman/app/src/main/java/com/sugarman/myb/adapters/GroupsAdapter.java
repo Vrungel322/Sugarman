@@ -169,7 +169,8 @@ public class GroupsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
     eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_join_group", eventValue);
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_join_group", eventValue);
 
     if (position >= 0 && position < mData.size()) {
       if (actionListener.get() != null) {
@@ -189,7 +190,9 @@ public class GroupsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
     eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_open_group_details_from_search", eventValue);
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_open_group_details_from_search",
+            eventValue);
 
     if (position >= 0 && position < mData.size()) {
       if (actionListener.get() != null) {

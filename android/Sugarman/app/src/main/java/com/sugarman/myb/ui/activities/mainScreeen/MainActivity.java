@@ -509,7 +509,8 @@ public class MainActivity extends GetUserInfoActivity
       Map<String, Object> eventValues = new HashMap<>();
       eventValues.put(AFInAppEventParameterName.LEVEL, 9);
       eventValues.put(AFInAppEventParameterName.SCORE, 100);
-      AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_open_shop", eventValues);
+      AppsFlyerLib.getInstance()
+          .trackEvent(App.getInstance().getApplicationContext(), "af_open_shop", eventValues);
 
       Intent intent = new Intent(MainActivity.this, ShopActivity.class);
       startActivity(intent);
@@ -992,7 +993,8 @@ public class MainActivity extends GetUserInfoActivity
           openCreateGroupActivity();
         } else {
           new SugarmanDialog.Builder(this, DialogConstants.MAX_ACTIVE_CREATED_TRACKINS_ID).content(
-              String.format(getString(R.string.max_active_groups), SharedPreferenceHelper.getGroupsLimit())).show();
+              String.format(getString(R.string.max_active_groups),
+                  SharedPreferenceHelper.getGroupsLimit())).show();
         }
         break;
       case R.id.ll_search_container:
@@ -1337,7 +1339,8 @@ public class MainActivity extends GetUserInfoActivity
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
     eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance().trackEvent(App.getInstance().getApplicationContext(), "af_go_to_menu", eventValue);
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_go_to_menu", eventValue);
 
     Intent intent = new Intent(this, ProfileActivity.class);
     intent.putExtra(Constants.INTENT_MY_INVITES, myInvites.toArray(new Invite[myInvites.size()]));

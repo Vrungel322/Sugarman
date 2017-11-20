@@ -26,7 +26,7 @@ import rx.Subscription;
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(mentorStupidAbstraction -> {
           getViewState().fillMentorsList(mentorStupidAbstraction.getMentorEntities());
-        },Throwable::printStackTrace);
+        }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 }

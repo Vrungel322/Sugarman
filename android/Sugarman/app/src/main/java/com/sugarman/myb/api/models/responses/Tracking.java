@@ -20,7 +20,6 @@ public class Tracking implements Parcelable {
         }
       };
 
-
   @SerializedName("challenge_name") private String challengeName;
 
   @SerializedName("created_at") private String createdAt;
@@ -110,7 +109,6 @@ public class Tracking implements Parcelable {
   public Tracking() {
 
   }
-
 
   public String getChallengeName() {
     return challengeName;
@@ -270,7 +268,6 @@ public class Tracking implements Parcelable {
   public DailySugarman getDailySugarman() {
     return dailySugarman;
   }
-
 
   public int getGroupStepsCountWithoutMe() {
     return groupStepsCountWithoutMe;

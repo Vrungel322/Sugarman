@@ -7,5 +7,5 @@ import android.app.Dialog;
  */
 
 public interface IVkResponse {
-   void action(Dialog dialog);
+  void action(Dialog dialog);
 }

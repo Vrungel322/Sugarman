@@ -24,7 +24,6 @@ public class RealmMigrations implements RealmMigration {
       //userSchema.addField("partnersPage", String.class);
       //userSchema.addField("image", String.class);
 
-
       ////schema.create("GoodsCategoryEntity");
       //final RealmObjectSchema userSchema1 = schema.create("GoodsCategoryEntity");
       //userSchema1.addField("id", Integer.class);

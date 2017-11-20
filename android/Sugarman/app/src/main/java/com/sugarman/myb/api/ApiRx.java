@@ -88,6 +88,6 @@ public interface ApiRx {
   @POST("/v1/add_comment/{id_mentor}") Observable<Response<Void>> sendComment(
       @Path("id_mentor") String mentorId, @Body CommentEntity commentEntity);
 
-  @POST("/in_app_purchases")Observable<Response<Void>> checkInAppBilling(
+  @POST("/in_app_purchases") Observable<Response<Void>> checkInAppBilling(
       @Body PurchaseForServer purchaseForServer);
 }

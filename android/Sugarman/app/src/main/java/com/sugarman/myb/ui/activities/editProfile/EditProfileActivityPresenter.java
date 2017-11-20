@@ -21,10 +21,9 @@ import rx.Subscription;
   public void sendUserDataToServer(String phone, String email, String name, String fbId,
       String vkId, String avatar, File selectedFile) {
 
-    if (Validator.isEmailValid(email)|| email.equals("")) {
+    if (Validator.isEmailValid(email) || email.equals("")) {
 
-      if(phone.equals(""))
-      {
+      if (phone.equals("")) {
         Subscription subscription =
             mDataManager.sendUserDataToServer(phone, email, name, fbId, vkId, avatar, selectedFile)
                 .compose(ThreadSchedulers.applySchedulers())
@@ -38,12 +37,12 @@ import rx.Subscription;
                   }
                 }, Throwable::printStackTrace);
         addToUnsubscription(subscription);
-      }
-      else {
+      } else {
         if (Validator.isPhoneValid(phone)) {
           getViewState().showPb();
           Subscription subscription =
-              mDataManager.sendUserDataToServer(phone, email, name, fbId, vkId, avatar, selectedFile)
+              mDataManager.sendUserDataToServer(phone, email, name, fbId, vkId, avatar,
+                  selectedFile)
                   .compose(ThreadSchedulers.applySchedulers())
                   .subscribe(usersResponse -> {
                     if (usersResponse.getResult() != null) {

@@ -5,7 +5,8 @@ import java.util.List;
 
 public interface ApiGetMyTrackingsListener extends ApiBaseListener {
 
-  void onApiGetMyTrackingSuccess(Tracking[] trackings, List<Tracking> mentorsGroup, boolean isRefreshNotification);
+  void onApiGetMyTrackingSuccess(Tracking[] trackings, List<Tracking> mentorsGroup,
+      boolean isRefreshNotification);
 
   void onApiGetMyTrackingsFailure(String message);
 }
