@@ -331,6 +331,20 @@
   <string name="delete_user_from_group">Do you really want to delete user?</string>
   <string name="slots_error">You can have only 3 mentors</string>
 
+  
+  <string name="apply_now">Apply now for</string>
+  <string name="type_your_comment">Type your comment here...</string>
+  <string name="learn_more">Learn more</string>
+  <string name="mentors">Mentors</string>
+  <string name="success_rate">Success rate</string>
+  <string name="daily_success_rate">Success rate today</string>
+  <string name="weekly_success_rate">Success rate this week</string>
+  <string name="monthly_success_rate">Success rate this month</string>
+
+  <string name="calories">CALORIES</string>
+  <string name="distance">DISTANCE</string>
+  <string name="steps_caps">STEPS</string>
+  
   <!-- Country Codes -->
   <string-array name="CountryCodes">
     <item>93,AF</item>

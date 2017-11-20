@@ -44,17 +44,17 @@ public class WalkDataViewPagerAdapter extends PagerAdapter {
     switch (virtualPosition) {
       case 0:
         tvData1.setText(mTodaySteps);
-        tvData2.setText("STEPS");
+        tvData2.setText(tvData2.getContext().getResources().getString(R.string.steps_caps));
         break;
       case 1:
         tvData1.setText(String.format("%.2f", steps * 0.000762f) + " km");
         tvData1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 34);
-        tvData2.setText("DISTANCE");
+        tvData2.setText(tvData2.getContext().getResources().getString(R.string.distance));
         break;
       case 2:
         tvData1.setText(Integer.toString((int) (steps * 0.0435f)) + " kcal");
         tvData1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 30);
-        tvData2.setText("CALORIES");
+        tvData2.setText(tvData2.getContext().getResources().getString(R.string.calories));
         break;
     }
     container.addView(itemView);
