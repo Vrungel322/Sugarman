@@ -69,6 +69,8 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   @BindView(R.id.tvSuccessRateToday) TextView tvSuccessRateToday;
   @BindView(R.id.tvSuccessRateWeekly) TextView tvSuccessRateWeek;
   @BindView(R.id.tvSuccessRateMonthly) TextView tvSuccessRateMonth;
+  private String mFreeSku;
+
   IabHelper mHelper;
   IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = (purchase, result) -> {
     Timber.e("mConsumeFinishedListener" + purchase.toString());
@@ -79,31 +81,36 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
     }
   };
 
-  IabHelper.OnConsumeMultiFinishedListener mOnConsumeMultiFinishedListener = (purchases, results) -> {
-
-  };
+  //IabHelper.OnConsumeMultiFinishedListener mOnConsumeMultiFinishedListener = (purchases, results) -> {
+  //
+  //};
   IabHelper.QueryInventoryFinishedListener mReceivedInventoryListener =
       new IabHelper.QueryInventoryFinishedListener() {
         public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
+          Timber.e("mFreeSku mReceivedInventoryListener "+ mFreeSku);
+
 
           if (result.isFailure()) {
             // Handle failure
           } else {
-            //mHelper.consumeAsync(inventory.getPurchase(ITEM_SKU), mConsumeFinishedListener);
-            mHelper.consumeAsync(inventory.getAllPurchases(), mOnConsumeMultiFinishedListener);
+            mHelper.consumeAsync(inventory.getPurchase(mFreeSku), mConsumeFinishedListener);
+            //mHelper.consumeAsync(inventory.getAllPurchases(), mOnConsumeMultiFinishedListener);
             Timber.e(result.getMessage());
-            Timber.e(inventory.getSkuDetails(ITEM_SKU).getTitle());
+            Timber.e(inventory.getSkuDetails(mFreeSku).getTitle());
+            Timber.e(inventory.getSkuDetails(mFreeSku).getSku());
 
-            mPresenter.checkInAppBilling(inventory.getPurchase(ITEM_SKU),
-                inventory.getSkuDetails(ITEM_SKU).getTitle(),mMentorEntity.getUserId());
+            mPresenter.checkInAppBilling(inventory.getPurchase(mFreeSku),
+                inventory.getSkuDetails(mFreeSku).getTitle(),mMentorEntity.getUserId(),mFreeSku);
           }
         }
       };
   IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = (result, purchase) -> {
+    Timber.e("mFreeSku mPurchaseFinishedListener "+ mFreeSku);
+
     if (result.isFailure()) {
       // Handle error
       return;
-    } else if (purchase.getSku().equals(ITEM_SKU)) {
+    } else if (purchase.getSku().equals(mFreeSku)) {
       consumeItem();
       Timber.e(mHelper.getMDataSignature());
     } else {
@@ -335,6 +342,22 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
 
   @OnClick(R.id.ivSubscribeMentor) public void ivSubscribeMentorClicked() {
 
+    mPresenter.getNextFreeSku();
+    //qqq
+    //Map<String, Object> eventValue = new HashMap<>();
+    //eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+    //eventValue.put(AFInAppEventParameterName.SCORE, 100);
+    //AppsFlyerLib.getInstance()
+    //    .trackEvent(App.getInstance().getApplicationContext(), "af_tap_apply_for_mentor",
+    //        eventValue);
+    //
+    //mHelper.launchSubscriptionPurchaseFlow(this, ITEM_SKU, 10001, mPurchaseFinishedListener,
+    //    "mypurchasetoken");
+  }
+
+  @Override public void startPurchaseFlow(String freeSku) {
+    mFreeSku = freeSku;
+    Timber.e("mFreeSku startPurchaseFlow "+ mFreeSku);
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
     eventValue.put(AFInAppEventParameterName.SCORE, 100);
@@ -342,7 +365,7 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
         .trackEvent(App.getInstance().getApplicationContext(), "af_tap_apply_for_mentor",
             eventValue);
 
-    mHelper.launchSubscriptionPurchaseFlow(this, ITEM_SKU, 10001, mPurchaseFinishedListener,
+    mHelper.launchSubscriptionPurchaseFlow(this, freeSku, 10001, mPurchaseFinishedListener,
         "mypurchasetoken");
   }
 
@@ -358,7 +381,7 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
 
   public void consumeItem() {
     mHelper.queryInventoryAsync(true,
-        Arrays.asList(ITEM_SKU, "com.sugarman.myb.test_sub_1", ITEM_SKU),
+        Arrays.asList(mFreeSku),
         mReceivedInventoryListener);
   }
 

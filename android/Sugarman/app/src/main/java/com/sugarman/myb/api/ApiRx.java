@@ -12,6 +12,7 @@ import com.sugarman.myb.api.models.responses.CountInvitesResponse;
 import com.sugarman.myb.api.models.responses.InvitersImgUrls;
 import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
+import com.sugarman.myb.models.iab.NextFreeSkuEntity;
 import com.sugarman.myb.models.iab.PurchaseForServer;
 import com.sugarman.myb.models.mentor.MentorStupidAbstraction;
 import com.sugarman.myb.models.mentor.MentorsCommentsStupidAbstraction;
@@ -27,6 +28,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -79,15 +81,18 @@ public interface ApiRx {
 
   @GET("v1/get_mentors") Observable<MentorStupidAbstraction> fetchMentors();
 
-  @GET("/v1/get_comments/{mentorId}") Observable<MentorsCommentsStupidAbstraction> fetchComments(
+  @GET("v1/get_comments/{mentorId}") Observable<MentorsCommentsStupidAbstraction> fetchComments(
       @Path("mentorId") String mentorId);
 
-  @POST("/v1/me/trackings/{tracking_id}/delete_user") Observable<Response<Void>> deleteUser(
+  @POST("v1/me/trackings/{tracking_id}/delete_user") Observable<Response<Void>> deleteUser(
       @Path("tracking_id") String trackingId, @Body DeleteUserRequest userId);
 
   @POST("/v1/add_comment/{id_mentor}") Observable<Response<Void>> sendComment(
       @Path("id_mentor") String mentorId, @Body CommentEntity commentEntity);
 
-  @POST("/in_app_purchases") Observable<Response<Void>> checkInAppBilling(
+  @POST("in_app_purchases") Observable<Response<Void>> checkInAppBilling(
       @Body PurchaseForServer purchaseForServer);
+
+  @GET("v1/check_slots") Observable<Response<NextFreeSkuEntity>> getNextFreeSku(
+      @Query("device") String device);
 }

@@ -169,13 +169,13 @@ public class MentorsChallengeFragment extends BasicFragment
       }
       mTextViewLaziestName.setText(name);
       mTextViewLaziestSteps.setText(String.format(Locale.US, "%,d", mMembers[0].getSteps()));
-      Picasso.with(getActivity())
-          .load(mMembers[0].getPictureUrl())
-          .placeholder(R.drawable.ic_gray_avatar)
-          .error(R.drawable.ic_red_avatar)
-          .transform(new CropSquareTransformation())
-          .transform(new CropCircleTransformation(0xffff0000, 1))
-          .into(mImageViewLaziestAvatar);
+      //Picasso.with(getActivity())
+      //    .load(mMembers[0].getPictureUrl())
+      //    .placeholder(R.drawable.ic_gray_avatar)
+      //    .error(R.drawable.ic_red_avatar)
+      //    .transform(new CropSquareTransformation())
+      //    .transform(new CropCircleTransformation(0xffff0000, 1))
+      //    .into(mImageViewLaziestAvatar);
     }
     //set up all
     setToUiAllSteps();

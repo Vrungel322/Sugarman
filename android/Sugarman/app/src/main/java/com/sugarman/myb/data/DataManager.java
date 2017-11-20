@@ -19,6 +19,7 @@ import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.data.db.DbHelper;
 import com.sugarman.myb.data.local.PreferencesHelper;
+import com.sugarman.myb.models.iab.NextFreeSkuEntity;
 import com.sugarman.myb.models.iab.PurchaseForServer;
 import com.sugarman.myb.models.mentor.MentorStupidAbstraction;
 import com.sugarman.myb.models.mentor.MentorsCommentsStupidAbstraction;
@@ -220,5 +221,9 @@ public class DataManager {
   public Observable<Response<Void>> deleteUser(String trackingId, String userId) {
     DeleteUserRequest request = new DeleteUserRequest(userId);
     return mRestApi.deleteUser(trackingId, request);
+  }
+
+  public Observable<Response<NextFreeSkuEntity>> getNextFreeSku() {
+    return mRestApi.getNextFreeSku();
   }
 }
