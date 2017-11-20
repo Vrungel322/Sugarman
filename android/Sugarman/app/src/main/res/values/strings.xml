@@ -329,6 +329,7 @@
   <string name="mentorship">Mentorship</string>
   <string name="warning">Warning</string>
   <string name="delete_user_from_group">Do you really want to delete user?</string>
+  <string name="slots_error">You can have only 3 mentors</string>
 
   <!-- Country Codes -->
   <string-array name="CountryCodes">

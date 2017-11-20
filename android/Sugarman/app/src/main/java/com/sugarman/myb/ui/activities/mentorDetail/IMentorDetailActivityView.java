@@ -23,4 +23,6 @@ import java.util.List;
   void moveToMainActivity();
 
   void startPurchaseFlow(String freeSku);
+
+  void showAllSlotsNotEmptyDialog();
 }

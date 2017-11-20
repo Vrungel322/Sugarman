@@ -3,6 +3,7 @@ package com.sugarman.myb.ui.activities.mentorDetail;
 import com.arellomobile.mvp.InjectViewState;
 import com.sugarman.myb.App;
 import com.sugarman.myb.base.BasicPresenter;
+import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.models.iab.PurchaseForServer;
 import com.sugarman.myb.utils.ThreadSchedulers;
 import com.sugarman.myb.utils.inapp.Purchase;
@@ -60,6 +61,9 @@ import timber.log.Timber;
     Subscription subscription = mDataManager.getNextFreeSku()
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(nextFreeSkuEntityResponse -> {
+          if (nextFreeSkuEntityResponse.code() == Constants.ALL_SLOTS_NOT_EMPTY_ERROR){
+            getViewState().showAllSlotsNotEmptyDialog();
+          }
           if (nextFreeSkuEntityResponse.body().getFreeSku() != null
               && !nextFreeSkuEntityResponse.body().getFreeSku().isEmpty()) {
             getViewState().startPurchaseFlow(nextFreeSkuEntityResponse.body().getFreeSku());
