@@ -109,6 +109,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
         android:text="12 comments"
+        android:visibility="gone"
         android:textColor="#171717"
         android:textSize="10sp"
         app:layout_constraintLeft_toLeftOf="parent"
