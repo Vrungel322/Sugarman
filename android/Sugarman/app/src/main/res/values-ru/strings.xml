@@ -520,7 +520,9 @@
     <string name="daily_success_rate">Успешность сегодня</string>
     <string name="weekly_success_rate">Успешность на этой неделе</string>
     <string name="monthly_success_rate">Успешность в этом месяце</string>
-    <string name="calories">Калории</string>
-    <string name="distance">Дистанция</string>
+    <string name="calories">КАЛОРИИ</string>
+    <string name="distance">ДИСТАНЦИЯ</string>
+    <string name="steps_caps">ШАГИ</string>
+    <string name="slots_error">У вас может быть только 3 ментора</string>
 
 </resources>
