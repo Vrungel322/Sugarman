@@ -524,5 +524,6 @@
     <string name="distance">ДИСТАНЦИЯ</string>
     <string name="steps_caps">ШАГИ</string>
     <string name="slots_error">У вас может быть только 3 ментора</string>
+  <string name="learn_more">Подробнее</string>
 
 </resources>

@@ -554,5 +554,6 @@
     <item>260,ZM</item>
     <item>263,ZW</item>
   </string-array>
+  <string name="learn_more">Learn more</string>
 
 </resources>
