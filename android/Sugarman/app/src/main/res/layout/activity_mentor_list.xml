@@ -67,7 +67,7 @@
           android:gravity="center"
           android:maxLines="1"
           android:singleLine="true"
-          android:text="Mentors"
+          android:text="@string/mentors"
           android:textColor="@color/dark_gray"
           android:textSize="17sp"
           app:font="@string/font_roboto_medium"
