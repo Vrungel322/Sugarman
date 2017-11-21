@@ -1,8 +1,10 @@
 package com.sugarman.myb.api.models.responses.users;
 
 import com.google.gson.annotations.SerializedName;
+import com.sugarman.myb.models.iab.SubscriptionEntity;
 import com.sugarman.myb.utils.StringHelper;
 import java.util.Date;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -51,6 +53,9 @@ public class User {
   @SerializedName("need_to_do_OTP") private Boolean needOTP;
 
   @SerializedName("groups_limit") @Getter @Setter private String groupsLimit;
+
+  @SerializedName("subscriptions") @Getter @Setter private List<SubscriptionEntity>
+      subscriptionEntities;
 
   private Date createUTCDate;
 

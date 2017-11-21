@@ -73,7 +73,7 @@
         android:label="ServiceActivity"
         android:theme="@style/VK.Transparent"/>
     <activity
-        android:name=".ui.activities.SplashActivity"
+        android:name=".ui.activities.splash.SplashActivity"
         android:screenOrientation="portrait"
         android:theme="@style/SugarmanBackgroundActivityTheme">
       <intent-filter>

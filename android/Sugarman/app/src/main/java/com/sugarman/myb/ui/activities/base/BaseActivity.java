@@ -31,7 +31,7 @@ import com.sugarman.myb.listeners.SugarmanDialogListener;
 import com.sugarman.myb.services.MasterStepDetectorService;
 import com.sugarman.myb.tasks.DeleteFCMTokenAsyncTask;
 import com.sugarman.myb.ui.activities.LoginActivity;
-import com.sugarman.myb.ui.activities.SplashActivity;
+import com.sugarman.myb.ui.activities.splash.SplashActivity;
 import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.ui.fragments.BaseFragment;

@@ -39,7 +39,7 @@ import com.sugarman.myb.eventbus.events.SwitchUIToNextDayEvent;
 import com.sugarman.myb.listeners.OnReportSendListener;
 import com.sugarman.myb.listeners.StepListener;
 import com.sugarman.myb.receivers.SwitchToNextDayReceiver;
-import com.sugarman.myb.ui.activities.SplashActivity;
+import com.sugarman.myb.ui.activities.splash.SplashActivity;
 import com.sugarman.myb.utils.DeviceHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.StringHelper;

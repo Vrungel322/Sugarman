@@ -1,4 +1,4 @@
-package com.sugarman.myb.ui.activities;
+package com.sugarman.myb.ui.activities.splash;
 
 import android.app.Activity;
 import android.content.Context;
@@ -16,6 +16,7 @@ import android.util.Base64;
 import android.util.Log;
 import com.appsflyer.AFInAppEventParameterName;
 import com.appsflyer.AppsFlyerLib;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.facebook.FacebookException;
 import com.sugarman.myb.App;
 import com.sugarman.myb.R;
@@ -28,14 +29,18 @@ import com.sugarman.myb.constants.Config;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.constants.DialogConstants;
 import com.sugarman.myb.eventbus.events.NeedOpenSpecificActivityEvent;
+import com.sugarman.myb.models.iab.SubscriptionEntity;
 import com.sugarman.myb.tasks.DeleteFileAsyncTask;
+import com.sugarman.myb.ui.activities.ApproveOtpActivity;
+import com.sugarman.myb.ui.activities.GetUserInfoActivity;
+import com.sugarman.myb.ui.activities.LoginActivity;
 import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
 import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.utils.AnalyticsHelper;
 import com.sugarman.myb.utils.DeviceHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
-
+import com.sugarman.myb.utils.inapp.IabHelper;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -44,19 +49,14 @@ import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
 public class SplashActivity extends GetUserInfoActivity
-    implements SoundPool.OnLoadCompleteListener {
-
+    implements SoundPool.OnLoadCompleteListener, ISplashActivityView {
   private static final String TAG = SplashActivity.class.getName();
-
-  private final Runnable showNotSupported = new Runnable() {
-    @Override public void run() {
-      new SugarmanDialog.Builder(SplashActivity.this,
-          DialogConstants.DEVICE_IS_NOT_SUPPORTED_ID).content(R.string.step_detector_not_supported)
-          .btnCallback(SplashActivity.this)
-          .show();
-    }
-  };
-
+  private final Runnable showNotSupported = () -> new SugarmanDialog.Builder(SplashActivity.this,
+      DialogConstants.DEVICE_IS_NOT_SUPPORTED_ID).content(R.string.step_detector_not_supported)
+      .btnCallback(SplashActivity.this)
+      .show();
+  IabHelper mHelper;
+  @InjectPresenter SplashActivityPresenter mPresenter;
   private int openedActivityCode = -1;
   private String trackingIdFromFcm = "";
   private CompositeSubscription mCompositeSubscription = new CompositeSubscription();
@@ -67,9 +67,8 @@ public class SplashActivity extends GetUserInfoActivity
     super.onCreate(savedInstanceState);
 
     try {
-      PackageInfo info = getPackageManager().getPackageInfo(
-              "com.sugarman.myb",
-              PackageManager.GET_SIGNATURES);
+      PackageInfo info =
+          getPackageManager().getPackageInfo("com.sugarman.myb", PackageManager.GET_SIGNATURES);
       for (Signature signature : info.signatures) {
         MessageDigest md = MessageDigest.getInstance("SHA");
         md.update(signature.toByteArray());
@@ -77,11 +76,9 @@ public class SplashActivity extends GetUserInfoActivity
       }
     } catch (PackageManager.NameNotFoundException e) {
       Timber.e("Govno 1");
-
     } catch (NoSuchAlgorithmException e) {
       Timber.e("Govno 2");
     }
-
 
     AppsFlyerLib.getInstance().trackAppLaunch(getApplicationContext(), "PtjAzTP7TzPLhFZRJW3ouk");
 
@@ -109,6 +106,7 @@ public class SplashActivity extends GetUserInfoActivity
     } else {
       App.getHandlerInstance().postDelayed(showNotSupported, Constants.SPLASH_UPDATE_TIMEOUT);
     }
+    setupInAppPurchase();
   }
 
   @Override protected void onResume() {
@@ -119,8 +117,44 @@ public class SplashActivity extends GetUserInfoActivity
 
   @Override protected void onDestroy() {
     super.onDestroy();
+    if (mHelper != null) mHelper.dispose();
+    mHelper = null;
 
     App.getSoundPoolInstance().setOnLoadCompleteListener(null);
+  }
+
+  private void setupInAppPurchase() {
+    String base64EncodedPublicKey =
+        "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzz5RS18ubNQOXxntshbTr78JtHMuX4JfCJnZizT2YZGD1P/mvEAl1UXuZo3GVnob3RlAl+R9UkIKKoafb7YYL0Rz3cM7fJcfNZdsyYUFzrjwTQy77jtKzr6i+2mZEX14mIPjIvauAngx4cnQ2M35bkTfr+HyGB/kZtwxvGlosoTcPN3nvUH+FLKVVv1p8DkN6BVbmxrHl8NQXqYoFWNNjYHegYpfKBdrh/S89DyPVXx8G2ZcKMjmpq2CC/HiaXgGsL8NmQoBypbsgS7BlEL9Y4RAGjy4dEh1GhIBvD72aQ0TqKIM5ug8j3EY1Ge4uaKViKrgGSh3qyP6ITVZ/hXxxQIDAQAB";
+
+    mHelper = new IabHelper(this, base64EncodedPublicKey);
+
+    mHelper.startSetup(result -> {
+      if (!result.isSuccess()) {
+        Timber.e("In-app Billing setup failed: " + result);
+      } else {
+        Timber.e("In-app Billing is set up OK");
+        consumeItem();
+      }
+    });
+    mHelper.enableDebugLogging(true);
+  }
+
+  public void consumeItem() {
+    mHelper.queryInventoryAsync(true, (result, inventory) -> {
+      Timber.e(result.getMessage());
+      if (SharedPreferenceHelper.getListSubscriptionEntity() != null
+          && SharedPreferenceHelper.getListSubscriptionEntity().size() != 0) {
+        for (SubscriptionEntity subscriptionEntity : SharedPreferenceHelper.getListSubscriptionEntity()) {
+          Timber.e(inventory.getSkuDetails(subscriptionEntity.getSlot()).getTitle());
+          Timber.e(inventory.getSkuDetails(subscriptionEntity.getSlot()).getSku());
+
+          //mPresenter.checkInAppBilling(inventory.getPurchase(subscriptionEntity.getSlot()),
+          //    inventory.getSkuDetails(subscriptionEntity.getSlot()).getTitle(),
+          //    mMentorEntity.getUserId(), subscriptionEntity.getSlot());
+        }
+      }
+    });
   }
 
   @Override public void onClickDialog(SugarmanDialog dialog, DialogButton button) {

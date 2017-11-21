@@ -75,6 +75,7 @@ public abstract class SharedPreferenceConstants {
   public static final String IMEI = "IMEI";
   public static final String BASE_URL = "BASE_URL";
   public static final String GROUPS_LIMIT = "GROUPS_LIMIT";
+  public static final String SUBSCRIPTIONS_JSON = "SUBSCRIPTIONS_JSON";
 
   private SharedPreferenceConstants() {
     // only static methods and fields

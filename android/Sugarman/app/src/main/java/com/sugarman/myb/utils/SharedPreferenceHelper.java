@@ -1,6 +1,8 @@
 package com.sugarman.myb.utils;
 
 import android.util.Log;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.sugarman.myb.api.models.requests.ReportStats;
 import com.sugarman.myb.api.models.responses.me.stats.Stats;
 import com.sugarman.myb.api.models.responses.users.Tokens;
@@ -8,6 +10,8 @@ import com.sugarman.myb.api.models.responses.users.User;
 import com.sugarman.myb.constants.Config;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.constants.SharedPreferenceConstants;
+import com.sugarman.myb.models.iab.SubscriptionEntity;
+import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,6 +41,8 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
       putString(SharedPreferenceConstants.UPDATED_AT, user.getUpdatedAt());
       putInt(SharedPreferenceConstants.COMPLETED_DAYS_COUNT, user.getCompletedDaysCount());
       putInt(SharedPreferenceConstants.TODAY_STEPS_COUNT, user.getTodayStepsCount());
+      putString(SharedPreferenceConstants.SUBSCRIPTIONS_JSON,
+          new Gson().toJson(user.getSubscriptionEntities()));
 
       if (user.getIsMentor() != null) {
         setIsMentor(user.getIsMentor());
@@ -49,6 +55,15 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
       }
       putInt("level", user.getLevel());
     }
+  }
+
+  public static List<SubscriptionEntity> getListSubscriptionEntity() {
+    Type type = new TypeToken<List<SubscriptionEntity>>() {
+    }.getType();
+    Timber.e(
+        "getListSubscriptionEntity json " + getString(SharedPreferenceConstants.SUBSCRIPTIONS_JSON,
+            ""));
+    return new Gson().fromJson(getString(SharedPreferenceConstants.SUBSCRIPTIONS_JSON, ""), type);
   }
 
   public static int getLevel() {
@@ -146,6 +161,7 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     putString(SharedPreferenceConstants.ACCESS_TOKEN, "");
     putString(SharedPreferenceConstants.REFRESH_TOKEN, "");
     putInt(SharedPreferenceConstants.SHOWED_STEPS, 0);
+    putString(SharedPreferenceConstants.SUBSCRIPTIONS_JSON,"");
   }
 
   public static int getCompletedDaysCount() {
