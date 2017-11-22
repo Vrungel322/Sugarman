@@ -556,5 +556,12 @@
   <string name="learn_more">Learn more</string>
   <string name="unsubscribe">Unsubscribe</string>
   <string name="apply_now_for">Apply now for</string>
+  <string name="mentor_s_group">MENTOR\'S GROUP</string>
+  <string name="join_group">JOIN GROUP</string>
+  <string name="no_mentors_text_1">Become a part of a team with</string>
+  <string name="no_mentors_text_2"><![CDATA[Professional Coaches</font>]]></string>
+  <string name="no_mentors_text_3">that will lead</string>
+  <string name="no_mentors_text_4">you to your</string>
+  <string name="no_mentors_text_5">Perfect Body</string>
 
 </resources>

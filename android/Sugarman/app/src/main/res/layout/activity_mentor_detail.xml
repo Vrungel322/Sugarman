@@ -374,7 +374,7 @@
             android:id="@+id/tv_skill_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Comments"
+            android:text="@string/comments"
             android:layout_centerInParent="true"
             android:textColor="#FA3E3D"
             android:textStyle="bold"
@@ -568,7 +568,7 @@
           android:textColor="@color/red"
           android:textSize="18sp"
           android:textStyle="bold"
-          android:text="Apply now for "
+          android:text="@string/apply_now"
           />
     </RelativeLayout>
     <ImageView

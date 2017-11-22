@@ -42,7 +42,7 @@
                 app:layout_constraintRight_toRightOf="@+id/imageView2"
                 android:layout_marginLeft="8dp"
                 android:textSize="18sp"
-                android:text="MENTOR'S GROUP"
+                android:text="@string/mentor_s_group"
                 android:textColor="@color/red"
                 android:textStyle="bold"
 
@@ -81,7 +81,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="20dp"
-                android:text="JOIN GROUP"
+                android:text="@string/join_group"
                 android:textSize="17sp"
                 android:textColor="@color/red"
                 android:gravity="center"

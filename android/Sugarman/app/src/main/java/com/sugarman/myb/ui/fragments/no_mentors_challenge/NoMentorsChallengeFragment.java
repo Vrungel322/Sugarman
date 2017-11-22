@@ -17,10 +17,9 @@ import com.sugarman.myb.utils.IntentExtractorHelper;
 public class NoMentorsChallengeFragment extends BasicFragment
     implements INoMentorsChallengeFragmentView {
 
+  private static final String TAG = NoMentorsChallengeFragment.class.getName();
   @BindView(R.id.card_view_no_mentors_challenge) CardView mCardViewNoMentorsChallenge;
   @BindView(R.id.tv_no_mentors_text) TextView mTextViewNoMentorsText;
-
-  private static final String TAG = NoMentorsChallengeFragment.class.getName();
 
   public NoMentorsChallengeFragment() {
     super(R.layout.fragment_no_mentors_challenge);
@@ -40,7 +39,15 @@ public class NoMentorsChallengeFragment extends BasicFragment
 
     position = IntentExtractorHelper.getTrackingPosition(getArguments());
     mTextViewNoMentorsText.setText(Html.fromHtml(
-        "Become a part of a team with <br> <font color=\'red\'>Professional Coaches</font> that will lead<br>you to your <font color=\'red\'>Perfect Body</font>"));
+        getString(R.string.no_mentors_text_1)
+            + " <br> <font color=\'red\'>"
+            + getString(R.string.no_mentors_text_2)
+            + getString(R.string.no_mentors_text_3)
+            + "<br>"
+            + getString(R.string.no_mentors_text_4)
+            + " <font color=\'red\'>"
+            + getString(R.string.no_mentors_text_5)
+            + "</font>"));
   }
 
   @OnClick(R.id.card_view_no_mentors_challenge) public void cvNoChallengeClicked() {
