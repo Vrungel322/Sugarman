@@ -159,6 +159,10 @@ public class DataManager {
     return mRestApi.checkInAppBilling(purchaseForServer);
   }
 
+  public Observable<Response<Void>> closeSubscription(PurchaseForServer purchaseForServer) {
+    return mRestApi.closeSubscription(purchaseForServer);
+  }
+
   ///////////////////////////////////////////////////////////////////////////
   // DB
   ///////////////////////////////////////////////////////////////////////////

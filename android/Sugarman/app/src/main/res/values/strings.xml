@@ -554,5 +554,7 @@
     <item>263,ZW</item>
   </string-array>
   <string name="learn_more">Learn more</string>
+  <string name="unsubscribe">Unsubscribe</string>
+  <string name="apply_now_for">Apply now for</string>
 
 </resources>
