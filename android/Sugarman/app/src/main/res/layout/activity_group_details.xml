@@ -78,6 +78,21 @@
                         android:visibility="gone"
                         tools:visibility="gone"
                         />
+
+                    <ImageView
+                        android:id="@+id/ivCancelSubscription"
+                        android:layout_width="47dp"
+                        android:layout_height="47dp"
+                        android:padding="9dp"
+                        android:layout_gravity="center"
+                        android:scaleType="fitCenter"
+                        android:tint="@color/red"
+                        android:src="@drawable/ic_cross"
+                        android:visibility="gone"
+                        tools:visibility="gone"
+                        />
+
+
                     <ImageView
                         android:id="@+id/iv_edit"
                         android:layout_width="47dp"
@@ -475,7 +490,7 @@
         android:id="@+id/rlCommentScreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
+        android:visibility="visible"
         >
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -555,13 +570,15 @@
                         />
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:layout_margin="10dp"
-                        app:layout_constraintLeft_toRightOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintRight_toLeftOf="parent"
+                        android:layout_marginLeft="8dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        android:layout_marginRight="8dp"
+                        app:layout_constraintRight_toRightOf="parent"
                         >
                     <TextView
                         android:id="@+id/tvCancel"
