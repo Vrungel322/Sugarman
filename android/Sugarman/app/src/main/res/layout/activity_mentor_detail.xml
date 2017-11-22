@@ -184,7 +184,7 @@
               android:id="@+id/tvSuccessRateHeader"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:text="Success Rate"
+              android:text="@string/success_rate"
               android:layout_centerInParent="true"
               android:textColor="#FA3E3D"
               android:textStyle="bold"

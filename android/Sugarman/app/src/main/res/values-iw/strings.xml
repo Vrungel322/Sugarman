@@ -351,7 +351,6 @@
     <string name="success_rate">אחוז הצלחה</string>
     <string name="daily_success_rate">הישג אתמול</string>
     <string name="weekly_success_rate">הישג שבוע אחרון</string>
-    <string name="monthly_success_rate">Success rate this month</string>
 
     <string name="calories">קלוריות</string>
     <string name="distance">מרחק</string>
@@ -567,16 +566,33 @@
         <item>263,ZW</item>
     </string-array>
   <string name="the_phone_is_not_valid">מספר הטלפון שהזנת אינו חוקי</string>
-  <string name="approve_phone_pls">You need to approve phone number</string>
     <string name="resend_code">שלח קוד בשנית</string>
     <string name="wait_for">Resend in</string>
-  <string name="contacts_book">Contacts book</string>
   <string name="comments">תגובות</string>
     <string name="delete_user_from_group">אתה בטוח שברצונך למחוק את המשתמש?</string>
     <string name="level">LEVEL %1$d</string>
   <string name="tap_to_see">Tap to see what to do next</string>
     <string name="warning">אזהרה</string>
     <string name="mentorship">מנטור</string>
+    <string name="unsubscribe">בטל</string>
+    <string name="type_your_comment_here">הזו תגובתך כאן</string>
+    <string name="social_media">מדיה חברתית</string>
+    <string name="price_total">מחיר</string>
+    <string name="phone">טלפון</string>
+    <string name="no_mentors_text_5">לגוף מושלם</string>
+    <string name="no_mentors_text_4">אותך</string>
+    <string name="no_mentors_text_3">שיוביל</string>
+    <string name="no_mentors_text_2">מנטורים</string>
+    <string name="no_mentors_text_1">\"הצטרף לקבוצה עם \"</string>
+    <string name="monthly_success_rate">אחוזי הצלחה החודש</string>
+    <string name="mentor_s_group">קבוצת מנטור</string>
+    <string name="join_group">הצטרף לקבוצה</string>
+    <string name="error_code_otp">אנא בדוק את הקוד שקיבלת</string>
+    <string name="contacts_book">ספר טלפונים</string>
+    <string name="buy_now">קנה עכשיו</string>
+    <string name="approve_phone_pls">אנא אשר מספר טלפון</string>
+    <string name="address">כתובת</string>
+    <string name="apply_now_for">הצטרף עכשיו עבור</string>
 
 
 </resources>
