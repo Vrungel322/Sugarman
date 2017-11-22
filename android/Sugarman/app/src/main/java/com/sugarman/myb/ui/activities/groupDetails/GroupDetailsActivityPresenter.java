@@ -32,6 +32,11 @@ import timber.log.Timber;
 
   public void cancelSubscription(Purchase purchase, String productName, String groupOwnerId,
       String slot) {
+    Timber.e("checkInAppBilling productName" +productName);
+    Timber.e("checkInAppBilling getSku" +purchase.getSku());
+    Timber.e("checkInAppBilling getToken" +purchase.getToken());
+    Timber.e("checkInAppBilling userId" +groupOwnerId);
+    Timber.e("checkInAppBilling freeSku" +slot);
     Subscription subscription = mDataManager.closeSubscription(
         new PurchaseForServer(productName, purchase.getSku(), purchase.getToken(), groupOwnerId,
             slot)).compose(ThreadSchedulers.applySchedulers()).subscribe(voidResponse -> {
