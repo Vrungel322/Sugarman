@@ -3,7 +3,6 @@ package com.sugarman.myb.ui.activities.checkout;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.util.Log;
@@ -121,11 +120,13 @@ public class CheckoutActivity extends BasicActivity
         TextView productNametv = (TextView) v1.findViewById(R.id.firstText);
         productNametv.setText(productName);
 
+        Timber.e(productImageUrl);
         CustomPicasso.with(this)
-            .load(Uri.parse(productImageUrl))
+            //.load(Uri.parse(productImageUrl))
+            .load(Integer.valueOf(productImageUrl))
             .fit()
             .centerCrop()
-            .placeholder(R.drawable.ic_gray_avatar)
+            .error(R.drawable.ic_gray_avatar)
             .error(R.drawable.ic_red_avatar)
             .transform(new CropCircleTransformation(0x00ffffff, 4))
             .into(productImage);
