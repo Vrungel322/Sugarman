@@ -524,5 +524,19 @@
     <string name="distance">ДИСТАНЦИЯ</string>
     <string name="steps_caps">ШАГИ</string>
     <string name="slots_error">У вас может быть только 3 ментора</string>
+  <string name="address">Адрес</string>
+    <string name="apply_now_for">Купить сейчас за</string>
+    <string name="buy_now">Купить сейчас</string>
+    <string name="error_code_otp">Проверьте введенный код</string>
+    <string name="join_group">Вступить в группу</string>
+    <string name="mentor_s_group">МЕНТОРСКАЯ ГРУППА</string>
+    <string name="no_mentors_text_1">Станьте частью команды с</string>
+    <string name="no_mentors_text_2">"профессиональными тренерами "</string>
+    <string name="no_mentors_text_3">которые поведут</string>
+    <string name="no_mentors_text_4">вас к вашему</string>
+    <string name="no_mentors_text_5">идеальному телу</string>
+    <string name="phone">Телефон</string>
+    <string name="price_total">Итоговая цена</string>
+    <string name="type_your_comment_here">Написать комментарий</string>
 
 </resources>

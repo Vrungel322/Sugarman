@@ -150,7 +150,7 @@ public class CheckoutActivity extends BasicActivity
         });
         addSeparator(verticalLayout, 1);
         //purchaseDetailsTV.setText("Purchase gift details");
-        purchaseDetailsTV.setText("Purchase details");
+        purchaseDetailsTV.setText(R.string.purchase_details);
         break;
       case 2:
         verticalLayout.addView(v, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -171,22 +171,22 @@ public class CheckoutActivity extends BasicActivity
   @OnClick(R.id.buy_now_for_x) public void bBuyClicked() {
 
     if (etCountryName.getText().toString().isEmpty()) {
-      etCountryName.setError(String.format(getString(R.string.empty_field_denied), "Country"));
+      etCountryName.setError(String.format(getString(R.string.empty_field_denied), getString(R.string.country)));
     }
     if (etCityName.getText().toString().isEmpty()) {
-      etCityName.setError(String.format(getString(R.string.empty_field_denied), "City"));
+      etCityName.setError(String.format(getString(R.string.empty_field_denied), getString(R.string.city)));
     }
     if (etStreetName.getText().toString().isEmpty()) {
-      etStreetName.setError(String.format(getString(R.string.empty_field_denied), "Address"));
+      etStreetName.setError(String.format(getString(R.string.empty_field_denied), getString(R.string.address)));
     }
     if (etZipCode.getText().toString().isEmpty()) {
-      etZipCode.setError(String.format(getString(R.string.empty_field_denied), "Zip Code"));
+      etZipCode.setError(String.format(getString(R.string.empty_field_denied), getString(R.string.zip_code)));
     }
     if (etFullName.getText().toString().isEmpty()) {
-      etFullName.setError(String.format(getString(R.string.empty_field_denied), "Full Name"));
+      etFullName.setError(String.format(getString(R.string.empty_field_denied), getString(R.string.full_name)));
     }
     if (etPhoneNumber.getText().toString().isEmpty()) {
-      etPhoneNumber.setError(String.format(getString(R.string.empty_field_denied), "Phone"));
+      etPhoneNumber.setError(String.format(getString(R.string.empty_field_denied), getString(R.string.phone)));
     }
 
     if (etCountryName.getText().length() > 0
