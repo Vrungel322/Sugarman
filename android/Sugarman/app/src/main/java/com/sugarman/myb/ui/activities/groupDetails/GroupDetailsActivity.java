@@ -183,6 +183,7 @@ public class GroupDetailsActivity extends BaseActivity
   protected StickersManager stickersManager;
   protected List<String> sentMessages = new ArrayList<>();
   protected List<User> typingUsers = new ArrayList<>();
+  @BindView(R.id.ivCancelSubscription) ImageView ivCancelSubscription;
   //data from last paging
   protected List<Message> lastDataFromServer = new ArrayList<>();
   //for scroll when keyboard opens
@@ -759,14 +760,19 @@ public class GroupDetailsActivity extends BaseActivity
     trackingId = IntentExtractorHelper.getTrackingId(getIntent());
     isMentorGroup = getIntent().getBooleanExtra("isMentorGroup", false);
     if (isMentorGroup) {
+
       mentorId = getIntent().getStringExtra("mentorId");
       if (mentorId.equals(SharedPreferenceHelper.getUserId())) {
         amIMentor = true;
         ivEditMentor.setVisibility(View.VISIBLE);
       }
+      else {
+        ivCancelSubscription.setVisibility(View.VISIBLE);
+      }
     } else {
       mentorId = "";
     }
+
 
     membersAdapter = new GroupMembersAdapter(getMvpDelegate(), this, this, trackingId, amIMentor);
     rcvMembers.setLayoutManager(
@@ -1155,6 +1161,11 @@ public class GroupDetailsActivity extends BaseActivity
         }
       }
     });
+  }
+
+  @OnClick(R.id.ivCancelSubscription) void cancelSubscription()
+  {
+    startCancelSubscribeFlow();
   }
 
   private void loginWithSocket() {
