@@ -172,8 +172,11 @@ public class RestApi {
   public Observable<Response<Void>> checkInAppBilling(PurchaseForServer purchaseForServer) {
     return api.checkInAppBilling(purchaseForServer);
   }
-
   public Observable<Response<NextFreeSkuEntity>> getNextFreeSku() {
     return api.getNextFreeSku("Android");
+  }
+
+  public Observable<Response<Void>> closeSubscription(PurchaseForServer purchaseForServer) {
+    return api.closeSubscription(purchaseForServer);
   }
 }

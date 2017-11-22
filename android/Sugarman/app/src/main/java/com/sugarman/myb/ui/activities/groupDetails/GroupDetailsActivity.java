@@ -123,10 +123,12 @@ import com.sugarman.myb.listeners.ApiGetTrackingInfoListener;
 import com.sugarman.myb.listeners.ApiPokeListener;
 import com.sugarman.myb.listeners.OnStepMembersActionListener;
 import com.sugarman.myb.models.GroupMember;
+import com.sugarman.myb.models.iab.SubscriptionEntity;
 import com.sugarman.myb.models.mentor.comments.MentorsCommentsEntity;
 import com.sugarman.myb.ui.activities.addMember.AddMemberActivity;
 import com.sugarman.myb.ui.activities.base.BaseActivity;
 import com.sugarman.myb.ui.activities.groupDetails.adapter.GroupMembersAdapter;
+import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
 import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.ui.views.CropSquareTransformation;
@@ -135,6 +137,7 @@ import com.sugarman.myb.utils.DeviceHelper;
 import com.sugarman.myb.utils.IntentExtractorHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.SoundHelper;
+import com.sugarman.myb.utils.inapp.IabHelper;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -617,6 +620,8 @@ public class GroupDetailsActivity extends BaseActivity
   private Tracking mTracking;
   private boolean editMode = false;
   private MentorsCommentsEntity mComment;
+  private IabHelper mHelper;
+  private List<SubscriptionEntity> subscribeList = new ArrayList<>();
 
   @OnClick(R.id.ivEditMentor) public void editMentorClicked() {
     Map<String, Object> eventValue = new HashMap<>();
@@ -898,6 +903,21 @@ public class GroupDetailsActivity extends BaseActivity
       e.printStackTrace();
     }
     //END CHAT ************************************************************************************************************
+
+    setupInAppPurchase();
+  }
+
+  private void setupInAppPurchase() {
+    mHelper = new IabHelper(this, com.sugarman.myb.constants.Config.BASE_64_ENCODED_PUBLIC_KEY);
+
+    mHelper.startSetup(result -> {
+      if (!result.isSuccess()) {
+        Timber.e("In-app Billing setup failed: " + result);
+      } else {
+        Timber.e("In-app Billing is set up OK");
+      }
+    });
+    mHelper.enableDebugLogging(true);
   }
 
   @OnClick(R.id.tvOk) public void tvOkClicked() {
@@ -2177,6 +2197,33 @@ public class GroupDetailsActivity extends BaseActivity
 
   @Override public void removeUser() {
 
+  }
+
+  @Override public void moveToMainActivity() {
+    Intent intent = new Intent(GroupDetailsActivity.this, MainActivity.class);
+    //intent.putExtra(IntroActivity.CODE_IS_OPEN_LOGIN_ACTIVITY, true);
+    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+    startActivity(intent);
+  }
+
+  private void startCancelSubscribeFlow(){
+    subscribeList = SharedPreferenceHelper.getListSubscriptionEntity();
+    String slot = "";
+    for (int i = 0; i < subscribeList.size(); i++) {
+      if (subscribeList.get(i).getMentorId().equals(mTracking.getGroupOwnerId())){
+         slot = subscribeList.get(i).getSlot();
+        Timber.e("startUnSubscribeFlow slot " + slot);
+        String finalSlot = slot;
+        mHelper.queryInventoryAsync(true, (result, inventory) -> {
+          Timber.e(result.getMessage());
+          Timber.e(inventory.getSkuDetails(finalSlot).getTitle());
+          Timber.e(inventory.getSkuDetails(finalSlot).getSku());
+
+          mPresenter.cancelSubscription(inventory.getPurchase(finalSlot),
+              inventory.getSkuDetails(finalSlot).getTitle(), mTracking.getGroupOwnerId(), finalSlot);
+        });
+      }
+    }
   }
 
   public enum ButtonType {

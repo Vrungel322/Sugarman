@@ -29,6 +29,7 @@ import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.base.BasicActivity;
+import com.sugarman.myb.constants.Config;
 import com.sugarman.myb.models.mentor.MentorEntity;
 import com.sugarman.myb.models.mentor.MentorsSkills;
 import com.sugarman.myb.models.mentor.comments.MentorsCommentsEntity;
@@ -224,10 +225,7 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   }
 
   private void setupInAppPurchase() {
-    String base64EncodedPublicKey =
-        "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzz5RS18ubNQOXxntshbTr78JtHMuX4JfCJnZizT2YZGD1P/mvEAl1UXuZo3GVnob3RlAl+R9UkIKKoafb7YYL0Rz3cM7fJcfNZdsyYUFzrjwTQy77jtKzr6i+2mZEX14mIPjIvauAngx4cnQ2M35bkTfr+HyGB/kZtwxvGlosoTcPN3nvUH+FLKVVv1p8DkN6BVbmxrHl8NQXqYoFWNNjYHegYpfKBdrh/S89DyPVXx8G2ZcKMjmpq2CC/HiaXgGsL8NmQoBypbsgS7BlEL9Y4RAGjy4dEh1GhIBvD72aQ0TqKIM5ug8j3EY1Ge4uaKViKrgGSh3qyP6ITVZ/hXxxQIDAQAB";
-
-    mHelper = new IabHelper(this, base64EncodedPublicKey);
+    mHelper = new IabHelper(this, Config.BASE_64_ENCODED_PUBLIC_KEY);
 
     mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
       public void onIabSetupFinished(IabResult result) {
