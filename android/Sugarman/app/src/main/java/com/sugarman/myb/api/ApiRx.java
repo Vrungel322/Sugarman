@@ -14,6 +14,7 @@ import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.models.iab.NextFreeSkuEntity;
 import com.sugarman.myb.models.iab.PurchaseForServer;
+import com.sugarman.myb.models.iab.Subscriptions;
 import com.sugarman.myb.models.mentor.MentorStupidAbstraction;
 import com.sugarman.myb.models.mentor.MentorsCommentsStupidAbstraction;
 import com.sugarman.myb.models.mentor.comments.CommentEntity;
@@ -90,12 +91,12 @@ public interface ApiRx {
   @POST("/v1/add_comment/{id_mentor}") Observable<Response<Void>> sendComment(
       @Path("id_mentor") String mentorId, @Body CommentEntity commentEntity);
 
-  @POST("v1/in_app_purchases") Observable<Response<Void>> checkInAppBilling(
+  @POST("v1/in_app_purchases") Observable<Response<Subscriptions>> checkInAppBilling(
       @Body PurchaseForServer purchaseForServer);
 
   @GET("v1/check_slots") Observable<Response<NextFreeSkuEntity>> getNextFreeSku(
       @Query("device") String device);
 
-  @POST("v1/in_app_purchases/cancel") Observable<Response<Void>> closeSubscription(
+  @POST("v1/in_app_purchases/cancel") Observable<Response<Subscriptions>> closeSubscription(
       @Body PurchaseForServer purchaseForServer);
 }

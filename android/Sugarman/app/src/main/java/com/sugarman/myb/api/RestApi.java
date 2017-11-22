@@ -17,6 +17,7 @@ import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.models.iab.NextFreeSkuEntity;
 import com.sugarman.myb.models.iab.PurchaseForServer;
+import com.sugarman.myb.models.iab.Subscriptions;
 import com.sugarman.myb.models.mentor.MentorStupidAbstraction;
 import com.sugarman.myb.models.mentor.MentorsCommentsStupidAbstraction;
 import com.sugarman.myb.models.mentor.comments.CommentEntity;
@@ -169,14 +170,14 @@ public class RestApi {
     return api.sendComment(mentorId, commentEntity);
   }
 
-  public Observable<Response<Void>> checkInAppBilling(PurchaseForServer purchaseForServer) {
+  public Observable<Response<Subscriptions>> checkInAppBilling(PurchaseForServer purchaseForServer) {
     return api.checkInAppBilling(purchaseForServer);
   }
   public Observable<Response<NextFreeSkuEntity>> getNextFreeSku() {
     return api.getNextFreeSku("Android");
   }
 
-  public Observable<Response<Void>> closeSubscription(PurchaseForServer purchaseForServer) {
+  public Observable<Response<Subscriptions>> closeSubscription(PurchaseForServer purchaseForServer) {
     return api.closeSubscription(purchaseForServer);
   }
 }

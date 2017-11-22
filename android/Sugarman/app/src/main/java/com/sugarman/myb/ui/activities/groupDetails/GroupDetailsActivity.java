@@ -1165,6 +1165,8 @@ public class GroupDetailsActivity extends BaseActivity
 
   @OnClick(R.id.ivCancelSubscription) void cancelSubscription()
   {
+    Timber.e("cancelSubscription");
+
     startCancelSubscribeFlow();
   }
 
@@ -2218,7 +2220,9 @@ public class GroupDetailsActivity extends BaseActivity
   }
 
   private void startCancelSubscribeFlow(){
+
     subscribeList = SharedPreferenceHelper.getListSubscriptionEntity();
+    Timber.e("startUnSubscribeFlow size " + subscribeList.size());
     String slot = "";
     for (int i = 0; i < subscribeList.size(); i++) {
       if (subscribeList.get(i).getMentorId().equals(mTracking.getGroupOwnerId())){
