@@ -593,6 +593,7 @@
     <string name="approve_phone_pls">אנא אשר מספר טלפון</string>
     <string name="address">כתובת</string>
     <string name="apply_now_for">הצטרף עכשיו עבור</string>
+    <string name="cancel_subscription_warning">האם אתה בטוח שברצונך לעזוב אתה הקבוצה? המנוי יבוטל</string>
 
 
 </resources>
