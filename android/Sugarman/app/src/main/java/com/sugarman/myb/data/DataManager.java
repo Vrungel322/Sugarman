@@ -92,17 +92,17 @@ public class DataManager {
 
   public Observable<List<ShopProductEntity>> fetchProducts(List<String> productName) {
     ArrayList<ShopProductEntity> entities = new ArrayList<>();
-    entities.add(new ShopProductEntity("0", productName.get(0), "", "0.99",
+    entities.add(new ShopProductEntity("0", productName.get(0), "", "9.99",
         Arrays.asList(String.valueOf(R.drawable.cap1), String.valueOf(R.drawable.cap2),
             String.valueOf(R.drawable.cap3))));
-    entities.add(new ShopProductEntity("1", productName.get(1), "", "1.99",
+    entities.add(new ShopProductEntity("1", productName.get(1), "", "9.99",
         Arrays.asList(String.valueOf(R.drawable.belt1), String.valueOf(R.drawable.belt2),
             String.valueOf(R.drawable.belt3))));
-    entities.add(new ShopProductEntity("2", productName.get(2), "", "2.99",
+    entities.add(new ShopProductEntity("2", productName.get(2), "", "9.99",
         Arrays.asList(String.valueOf(R.drawable.com_1), String.valueOf(R.drawable.com_2),
             String.valueOf(R.drawable.com_3), String.valueOf(R.drawable.com_4),
             String.valueOf(R.drawable.com_5))));
-    entities.add(new ShopProductEntity("3", productName.get(3), "", "2.99",
+    entities.add(new ShopProductEntity("3", productName.get(3), "", "0.99",
         Arrays.asList(String.valueOf(R.drawable.mentor_shop))));
     return Observable.just(entities);
     //return mRestApi.fetchProducts();
