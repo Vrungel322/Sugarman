@@ -138,6 +138,7 @@ import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.ui.views.CropSquareTransformation;
 import com.sugarman.myb.ui.views.MaskTransformation;
 import com.sugarman.myb.utils.DeviceHelper;
+import com.sugarman.myb.utils.DialogHelper;
 import com.sugarman.myb.utils.IntentExtractorHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.SoundHelper;
@@ -187,11 +188,11 @@ public class GroupDetailsActivity extends BaseActivity
   protected StickersManager stickersManager;
   protected List<String> sentMessages = new ArrayList<>();
   protected List<User> typingUsers = new ArrayList<>();
-  @BindView(R.id.ivCancelSubscription) ImageView ivCancelSubscription;
   //data from last paging
   protected List<Message> lastDataFromServer = new ArrayList<>();
   //for scroll when keyboard opens
   protected int lastVisibleItem = 0;
+  @BindView(R.id.ivCancelSubscription) ImageView ivCancelSubscription;
   @InjectPresenter GroupDetailsActivityPresenter mPresenter;
   @BindView(R.id.tvOk) TextView tvOk;
   @BindView(R.id.pcSuccessRateToday) PieChart pieChart;
@@ -776,8 +777,7 @@ public class GroupDetailsActivity extends BaseActivity
       if (mentorId.equals(SharedPreferenceHelper.getUserId())) {
         amIMentor = true;
         ivEditMentor.setVisibility(View.VISIBLE);
-      }
-      else {
+      } else {
         ivCancelSubscription.setVisibility(View.VISIBLE);
       }
     } else {
@@ -786,7 +786,6 @@ public class GroupDetailsActivity extends BaseActivity
       groupSteps.setVisibility(View.VISIBLE);
       groupSteps.setText(getResources().getString(R.string.total_group_steps));
     }
-
 
     membersAdapter = new GroupMembersAdapter(getMvpDelegate(), this, this, trackingId, amIMentor);
     rcvMembers.setLayoutManager(
@@ -1177,9 +1176,11 @@ public class GroupDetailsActivity extends BaseActivity
     });
   }
 
-  @OnClick(R.id.ivCancelSubscription) void cancelSubscription()
-  {
-    startCancelSubscribeFlow();
+  @OnClick(R.id.ivCancelSubscription) void cancelSubscription() {
+    DialogHelper.createSimpleDialog(getString(R.string.okay), getString(R.string.discard),
+        getString(R.string.warning), getString(R.string.cancel_subscription_warning), this,
+        (dialogInterface, i) -> startCancelSubscribeFlow(),
+        (dialogInterface, i) -> dialogInterface.dismiss()).create().show();
   }
 
   private void loginWithSocket() {
@@ -2259,12 +2260,14 @@ public class GroupDetailsActivity extends BaseActivity
     startActivity(intent);
   }
 
-  private void startCancelSubscribeFlow(){
+  private void startCancelSubscribeFlow() {
+
     subscribeList = SharedPreferenceHelper.getListSubscriptionEntity();
+    Timber.e("startUnSubscribeFlow size " + subscribeList.size());
     String slot = "";
     for (int i = 0; i < subscribeList.size(); i++) {
-      if (subscribeList.get(i).getMentorId().equals(mTracking.getGroupOwnerId())){
-         slot = subscribeList.get(i).getSlot();
+      if (subscribeList.get(i).getMentorId().equals(mTracking.getGroupOwnerId())) {
+        slot = subscribeList.get(i).getSlot();
         Timber.e("startUnSubscribeFlow slot " + slot);
         String finalSlot = slot;
         mHelper.queryInventoryAsync(true, (result, inventory) -> {
@@ -2273,7 +2276,8 @@ public class GroupDetailsActivity extends BaseActivity
           Timber.e(inventory.getSkuDetails(finalSlot).getSku());
 
           mPresenter.cancelSubscription(inventory.getPurchase(finalSlot),
-              inventory.getSkuDetails(finalSlot).getTitle(), mTracking.getGroupOwnerId(), finalSlot);
+              inventory.getSkuDetails(finalSlot).getTitle(), mTracking.getGroupOwnerId(),
+              finalSlot);
         });
       }
     }

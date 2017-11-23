@@ -43,6 +43,7 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
       putInt(SharedPreferenceConstants.TODAY_STEPS_COUNT, user.getTodayStepsCount());
       putString(SharedPreferenceConstants.SUBSCRIPTIONS_JSON,
           new Gson().toJson(user.getSubscriptionEntities()));
+      Timber.e("user json " + new Gson().toJson(user.getSubscriptionEntities()).toString());
 
       if (user.getIsMentor() != null) {
         setIsMentor(user.getIsMentor());
@@ -55,6 +56,13 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
       }
       putInt("level", user.getLevel());
     }
+  }
+
+  public static void saveListSubscriptionEntity(List<SubscriptionEntity> subscriptionEntities) {
+    Timber.e(
+        "saveListSubscriptionEntity json " + new Gson().toJson(subscriptionEntities).toString());
+    putString(SharedPreferenceConstants.SUBSCRIPTIONS_JSON,
+        new Gson().toJson(subscriptionEntities));
   }
 
   public static List<SubscriptionEntity> getListSubscriptionEntity() {
@@ -161,7 +169,7 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     putString(SharedPreferenceConstants.ACCESS_TOKEN, "");
     putString(SharedPreferenceConstants.REFRESH_TOKEN, "");
     putInt(SharedPreferenceConstants.SHOWED_STEPS, 0);
-    putString(SharedPreferenceConstants.SUBSCRIPTIONS_JSON,"");
+    putString(SharedPreferenceConstants.SUBSCRIPTIONS_JSON, "");
   }
 
   public static int getCompletedDaysCount() {

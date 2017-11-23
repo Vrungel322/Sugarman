@@ -563,7 +563,14 @@
   <string name="no_mentors_text_3">that will lead</string>
   <string name="no_mentors_text_4">you to your</string>
   <string name="no_mentors_text_5">Perfect Body</string>
-  <string name="facebook">Facebook</string>
+  <string name="facebook" translatable="false">Facebook</string>
   <string name="social_media">SOCIAL MEDIA</string>
+  <string name="error_code_otp">Please check the code you have entered!</string>
+  <string name="price_total">Price total</string>
+  <string name="address">Address</string>
+  <string name="phone">Phone</string>
+  <string name="buy_now">Buy now</string>
+  <string name="type_your_comment_here">Type your comment here</string>
+  <string name="cancel_subscription_warning">You are about to leave the group. Your subscription will be cancelled. Are you sure?</string>
 
 </resources>

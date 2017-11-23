@@ -1,9 +1,11 @@
 package com.sugarman.myb.ui.activities.splash;
 
 import com.arellomobile.mvp.InjectViewState;
+import com.google.gson.Gson;
 import com.sugarman.myb.App;
 import com.sugarman.myb.base.BasicPresenter;
 import com.sugarman.myb.models.iab.PurchaseForServer;
+import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.ThreadSchedulers;
 import com.sugarman.myb.utils.inapp.Purchase;
 import rx.Subscription;
@@ -27,12 +29,14 @@ public class SplashActivityPresenter  extends BasicPresenter<ISplashActivityView
     Subscription subscription = mDataManager.checkInAppBilling(
         new PurchaseForServer(productName, purchase.getSku(), purchase.getToken(), userId,freeSku))
         .compose(ThreadSchedulers.applySchedulers())
-        .subscribe(voidResponse -> {
-          Timber.e(String.valueOf(voidResponse.code()));
-          if (voidResponse.code() == 229) {
+        .subscribe(subscriptionsResponse -> {
+          Timber.e(String.valueOf(subscriptionsResponse.code()));
+          Timber.e("save json "+String.valueOf(new Gson().toJson(subscriptionsResponse.body().getSubscriptionEntities())));
+          SharedPreferenceHelper.saveListSubscriptionEntity(subscriptionsResponse.body().getSubscriptionEntities());
+          if (subscriptionsResponse.code() == 229) {
             // no money no honey
           }
-          if (voidResponse.code() == 200) {
+          if (subscriptionsResponse.code() == 200) {
           //  getViewState().moveToMainActivity();
           }
         }, Throwable::printStackTrace);

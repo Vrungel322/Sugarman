@@ -571,7 +571,7 @@
                         android:layout_height="120dp"
                         android:background="@drawable/et_background_gray"
                         android:textSize="13sp"
-                        android:hint="Type your comment here"
+                        android:hint="@string/type_your_comment_here"
                         android:gravity="top"
                         android:padding="7dp"
                         app:layout_constraintLeft_toLeftOf="parent"

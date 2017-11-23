@@ -5,6 +5,7 @@ import com.sugarman.myb.App;
 import com.sugarman.myb.base.BasicPresenter;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.models.iab.PurchaseForServer;
+import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.ThreadSchedulers;
 import com.sugarman.myb.utils.inapp.Purchase;
 import rx.Subscription;
@@ -48,9 +49,10 @@ import timber.log.Timber;
     Subscription subscription = mDataManager.checkInAppBilling(
         new PurchaseForServer(productName, purchase.getSku(), purchase.getToken(), userId,freeSku))
         .compose(ThreadSchedulers.applySchedulers())
-        .subscribe(voidResponse -> {
-          Timber.e(String.valueOf(voidResponse.code()));
-          if (voidResponse.code() == 200) {
+        .subscribe(subscriptionsResponse -> {
+          SharedPreferenceHelper.saveListSubscriptionEntity(subscriptionsResponse.body().getSubscriptionEntities());
+          Timber.e(String.valueOf(subscriptionsResponse.code()));
+          if (subscriptionsResponse.code() == 200) {
             getViewState().moveToMainActivity();
           }
         }, Throwable::printStackTrace);

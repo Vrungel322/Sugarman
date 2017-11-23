@@ -87,7 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:text="Purchase details"
+            android:text="@string/purchase_details"
             android:textSize="15sp"
             />
 
@@ -126,7 +126,7 @@
                   android:layout_gravity="start"
 
                   android:paddingLeft="7dp"
-                  android:text="Price total"
+                  android:text="@string/price_total"
                   android:textColor="#000"
                   />
               <View
@@ -154,7 +154,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="7dp"
-            android:text="Delivery information"
+            android:text="@string/delivery_information"
             android:textSize="15sp"
             />
         <android.support.v7.widget.CardView
@@ -191,7 +191,7 @@
                   android:layout_height="wrap_content"
                   android:layout_weight="1"
                   android:paddingLeft="7dp"
-                  android:text="Country"
+                  android:text="@string/country"
                   android:textSize="15sp"
                   />
               <EditText
@@ -231,7 +231,7 @@
                   android:layout_height="wrap_content"
                   android:layout_weight="1"
                   android:paddingLeft="7dp"
-                  android:text="City"
+                  android:text="@string/city"
                   android:textSize="15sp"
                   />
               <EditText
@@ -269,7 +269,7 @@
                   android:layout_height="wrap_content"
                   android:layout_weight="1"
                   android:paddingLeft="7dp"
-                  android:text="Address"
+                  android:text="@string/address"
                   android:textSize="15sp"
                   />
               <EditText
@@ -308,7 +308,7 @@
                   android:layout_height="wrap_content"
                   android:layout_weight="1"
                   android:paddingLeft="7dp"
-                  android:text="ZIP Code"
+                  android:text="@string/zip_code"
                   android:textSize="15sp"
                   />
               <EditText
@@ -347,7 +347,7 @@
                   android:layout_height="wrap_content"
                   android:layout_weight="1"
                   android:paddingLeft="7dp"
-                  android:text="Full Name"
+                  android:text="@string/full_name"
                   android:textSize="15sp"
                   />
               <EditText
@@ -387,7 +387,7 @@
                   android:layout_height="wrap_content"
                   android:layout_weight="1"
                   android:paddingLeft="7dp"
-                  android:text="Phone"
+                  android:text="@string/phone"
                   android:textSize="15sp"
                   />
               <EditText
@@ -442,7 +442,7 @@
             android:layout_weight="7"
             android:background="@drawable/buy_button"
             android:gravity="center"
-            android:text="Buy now"
+            android:text="@string/buy_now"
             android:textColor="@color/white"
             android:textSize="19sp"
             />

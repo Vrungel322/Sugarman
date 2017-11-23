@@ -153,14 +153,14 @@ public class ApproveOtpActivity extends AppCompatActivity implements ApiApproveO
       SharedPreferenceHelper.setOTPStatus(response.getUser().getNeedOTP());
       startActivity(intent);
     } else if (response.getCode().equals("1")) {
-      new SugarmanDialog.Builder(this, "Error").content("Please check the code you have entered!")
+      new SugarmanDialog.Builder(this, "Error").content(R.string.error_code_otp)
           .show();
     }
   }
 
   @Override public void onApiApproveOtpFailure(String message) {
     Timber.e("GOENO");
-    new SugarmanDialog.Builder(this, "Error").content("Please check the code you have entered!")
+    new SugarmanDialog.Builder(this, "Error").content(R.string.error_code_otp)
         .show();
   }
 }
