@@ -13,6 +13,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
@@ -46,6 +47,7 @@ import com.sugarman.myb.api.clients.MarkNotificationClient;
 import com.sugarman.myb.api.clients.SendFirebaseTokenClient;
 import com.sugarman.myb.api.models.requests.ReportStats;
 import com.sugarman.myb.api.models.responses.Tracking;
+import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.api.models.responses.me.invites.Invite;
 import com.sugarman.myb.api.models.responses.me.notifications.Notification;
 import com.sugarman.myb.api.models.responses.me.requests.Request;
@@ -82,6 +84,8 @@ import com.sugarman.myb.models.BaseChallengeItem;
 import com.sugarman.myb.models.ChallengeItem;
 import com.sugarman.myb.models.ChallengeMentorItem;
 import com.sugarman.myb.models.ChallengeWillStartItem;
+import com.sugarman.myb.models.ContactForServer;
+import com.sugarman.myb.models.ContactListForServer;
 import com.sugarman.myb.models.NoChallengeItem;
 import com.sugarman.myb.models.NoMentorsChallengeItem;
 import com.sugarman.myb.services.MasterStepDetectorService;
@@ -91,6 +95,7 @@ import com.sugarman.myb.ui.activities.FailedActivity;
 import com.sugarman.myb.ui.activities.GetUserInfoActivity;
 import com.sugarman.myb.ui.activities.SearchGroupsActivity;
 import com.sugarman.myb.ui.activities.StatsTrackingActivity;
+import com.sugarman.myb.ui.activities.addMember.AddMemberActivity;
 import com.sugarman.myb.ui.activities.createGroup.CreateGroupActivity;
 import com.sugarman.myb.ui.activities.groupDetails.GroupDetailsActivity;
 import com.sugarman.myb.ui.activities.mentorList.MentorListActivity;
@@ -104,6 +109,7 @@ import com.sugarman.myb.ui.views.CircleIndicatorView;
 import com.sugarman.myb.ui.views.CustomFontTextView;
 import com.sugarman.myb.ui.views.MaskTransformation;
 import com.sugarman.myb.ui.views.SquarePagerIndicatorArrows;
+import com.sugarman.myb.utils.ContactsHelper;
 import com.sugarman.myb.utils.DeviceHelper;
 import com.sugarman.myb.utils.ImageToDraw;
 import com.sugarman.myb.utils.IntentExtractorHelper;
@@ -713,6 +719,15 @@ public class MainActivity extends GetUserInfoActivity
     switch (requestCode) {
       case 1:
         if ((grantResults.length > 0) && (grantResults[2] == PackageManager.PERMISSION_GRANTED)) {
+
+          AsyncTask.execute(() -> {
+            List<ContactForServer> contacts = new ArrayList<>();
+            ContactListForServer list = ContactsHelper.getContactListMultipleNumbers(MainActivity.this);
+
+            mPresenter.sendContacts(list);
+          });
+
+
           saveIMEI();
         }
         break;

@@ -10,6 +10,7 @@ import lombok.Setter;
 public class TrackingInfoResponse {
 
   @Getter @Setter @SerializedName("comments") List<MentorsCommentsEntity> mentorsCommentsEntity;
+  @Getter @Setter @SerializedName("success_rate") String successRate;
   @SerializedName("result") private Tracking result;
 
   public Tracking getResult() {
