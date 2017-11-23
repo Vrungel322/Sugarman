@@ -209,7 +209,7 @@
 
   <string name="buy_for">Buy for</string>
 
-  <string name="buy_now_for">Buy now for</string>
+  <string name="buy_now_for">Buy now for </string>
 
   <string name="free_for">Free for 5 friends</string>
   <!--<string name="free_for">Free for %1$s friends</string>-->
