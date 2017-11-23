@@ -87,7 +87,7 @@
                         android:layout_gravity="center"
                         android:scaleType="fitCenter"
                         android:tint="@color/red"
-                        android:src="@drawable/ic_cross"
+                        android:src="@drawable/sub_cancel"
                         android:visibility="gone"
                         tools:visibility="gone"
                         />
@@ -170,25 +170,40 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/llGroupStepsContainer"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:layout_gravity="center"
                             android:gravity="center"
                             android:orientation="vertical">
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                >
                             <com.sugarman.myb.ui.views.CustomFontTextView
-                                android:id="@+id/tv_group_steps"
+                                android:id="@+id/D"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:textColor="#5A5A5A"
-                                android:layout_gravity="center"
-                                android:gravity="center"
+                                android:layout_centerInParent="true"
                                 android:layout_marginTop="6dp"
                                 android:textAlignment="center"
                                 android:textSize="16sp"
                                 android:text="2500"
+                                android:visibility="gone"
                                 app:font="@string/font_roboto_medium" />
+
+                                <com.github.mikephil.charting.charts.PieChart
+                                    android:id="@+id/pcSuccessRateToday"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerInParent="true"
+                                    />
+
+                            </RelativeLayout>
                             <com.sugarman.myb.ui.views.CustomFontTextView
+                                android:id="@+id/tvTotalGroupSteps"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:textColor="#5A5A5A"
@@ -198,6 +213,7 @@
                                 android:textSize="12sp"
                                 android:text="@string/total_group_steps"
                                 app:font="@string/font_roboto_regular" />
+
                             </LinearLayout>
                         <LinearLayout
                             android:layout_width="0dp"
@@ -490,7 +506,7 @@
         android:id="@+id/rlCommentScreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible"
+        android:visibility="gone"
         >
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"

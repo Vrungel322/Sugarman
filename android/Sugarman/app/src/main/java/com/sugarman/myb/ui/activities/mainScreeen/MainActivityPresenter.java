@@ -3,6 +3,8 @@ package com.sugarman.myb.ui.activities.mainScreeen;
 import com.arellomobile.mvp.InjectViewState;
 import com.sugarman.myb.App;
 import com.sugarman.myb.base.BasicPresenter;
+import com.sugarman.myb.models.ContactForServer;
+import com.sugarman.myb.models.ContactListForServer;
 import com.sugarman.myb.utils.ThreadSchedulers;
 import rx.Subscription;
 import timber.log.Timber;
@@ -35,6 +37,16 @@ import timber.log.Timber;
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(ids -> {
           Timber.e("Completed tasks " + String.valueOf(ids.size()));
+        }, Throwable::printStackTrace);
+    addToUnsubscription(subscription);
+  }
+
+  public void sendContacts(ContactListForServer contactForServer)
+  {
+    Subscription subscription = mDataManager.sendContacts(contactForServer)
+        .compose(ThreadSchedulers.applySchedulers())
+        .subscribe(voidResponse -> {
+          Timber.e("Success");
         }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }

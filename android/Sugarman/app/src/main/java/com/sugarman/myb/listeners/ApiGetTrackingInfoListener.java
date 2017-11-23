@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ApiGetTrackingInfoListener extends ApiBaseListener {
 
-  void onApiGetTrackingInfoSuccess(Tracking tracking, List<MentorsCommentsEntity> commentsEntities);
+  void onApiGetTrackingInfoSuccess(Tracking tracking, List<MentorsCommentsEntity> commentsEntities, String successRate);
 
   void onApiGetTrackingInfoFailure(String message);
 }

@@ -101,6 +101,10 @@ import com.clover_studio.spikachatmodule.view.menu.MenuManager;
 import com.clover_studio.spikachatmodule.view.menu.OnMenuButtonsListener;
 import com.clover_studio.spikachatmodule.view.menu.OnMenuManageListener;
 import com.clover_studio.spikachatmodule.view.stickers.StickersManager;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.squareup.picasso.Callback;
@@ -191,9 +195,11 @@ public class GroupDetailsActivity extends BaseActivity
   @BindView(R.id.ivCancelSubscription) ImageView ivCancelSubscription;
   @InjectPresenter GroupDetailsActivityPresenter mPresenter;
   @BindView(R.id.tvOk) TextView tvOk;
+  @BindView(R.id.pcSuccessRateToday) PieChart pieChart;
   @BindView(R.id.rbMentor) AppCompatRatingBar mAppCompatRatingBarMentor;
   @BindView(R.id.etCommentBody) EditText mEditTextCommentBody;
   @BindView(R.id.ivEditMentor) ImageView ivEditMentor;
+  @BindView(R.id.tv_group_steps) TextView groupSteps;
   Thread thread = new Thread();
   FrameLayout parentLayout;
   View borderline;
@@ -624,6 +630,7 @@ public class GroupDetailsActivity extends BaseActivity
   private MentorsCommentsEntity mComment;
   private IabHelper mHelper;
   private List<SubscriptionEntity> subscribeList = new ArrayList<>();
+  private float successRateFloat;
 
   @OnClick(R.id.ivEditMentor) public void editMentorClicked() {
     Map<String, Object> eventValue = new HashMap<>();
@@ -762,6 +769,10 @@ public class GroupDetailsActivity extends BaseActivity
     isMentorGroup = getIntent().getBooleanExtra("isMentorGroup", false);
     if (isMentorGroup) {
 
+      pieChart.setVisibility(View.VISIBLE);
+      groupSteps.setVisibility(View.GONE);
+      groupSteps.setText(getResources().getString(R.string.success_rate));
+
       mentorId = getIntent().getStringExtra("mentorId");
       if (mentorId.equals(SharedPreferenceHelper.getUserId())) {
         amIMentor = true;
@@ -771,6 +782,9 @@ public class GroupDetailsActivity extends BaseActivity
       }
     } else {
       mentorId = "";
+      pieChart.setVisibility(View.GONE);
+      groupSteps.setVisibility(View.VISIBLE);
+      groupSteps.setText(getResources().getString(R.string.total_group_steps));
     }
 
     membersAdapter = new GroupMembersAdapter(getMvpDelegate(), this, this, trackingId, amIMentor);
@@ -1897,12 +1911,40 @@ public class GroupDetailsActivity extends BaseActivity
   }
 
   @Override public void onApiGetTrackingInfoSuccess(Tracking tracking,
-      List<MentorsCommentsEntity> commentsEntities) {
+      List<MentorsCommentsEntity> commentsEntities, String successRate) {
     if (tracking != null) {
       mTracking = tracking;
       if (commentsEntities != null && commentsEntities.size() > 0) {
         mComment = commentsEntities.get(0);
       }
+
+      if(!successRate.isEmpty() && successRate!=null)
+      {
+        successRateFloat = Float.valueOf(successRate);
+
+        List<PieEntry> entries = new ArrayList<>();
+
+        entries.add(new PieEntry(successRateFloat * 100f, ""));
+        entries.add(new PieEntry(100 - successRateFloat * 100f, ""));
+
+        PieDataSet set = new PieDataSet(entries, "");
+
+        set.setColors(new int[] { 0xffdc0c0c, 0xffffffff });
+        set.setValueTextColor(0x00000000);
+        PieData data = new PieData(set);
+
+        pieChart.setOnTouchListener(null);
+        pieChart.getLegend().setEnabled(false);
+        pieChart.setDrawEntryLabels(false);
+        pieChart.setDrawSliceText(false);
+        pieChart.setDrawHoleEnabled(false);
+        pieChart.getDescription().setText("");
+        pieChart.setCenterTextSize(9);
+        pieChart.setDrawCenterText(false);
+        pieChart.setData(data);
+        pieChart.invalidate();
+      }
+
       Group group = tracking.getGroup();
       members = tracking.getMembers();
       pendings = tracking.getPending();

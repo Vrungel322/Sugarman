@@ -136,7 +136,7 @@ public class FailedActivity extends NotificationFullScreenActivity
   }
 
   @Override public void onApiGetTrackingInfoSuccess(Tracking tracking,
-      List<MentorsCommentsEntity> commentsEntities) {
+      List<MentorsCommentsEntity> commentsEntities, String successRate) {
     Group group = tracking.getGroup();
     List<Member> members = new ArrayList<>(Arrays.asList(tracking.getFailingMembers()));
     List<Member> notFailingMembers =

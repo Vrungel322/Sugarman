@@ -58,7 +58,7 @@ public class DailyActivity extends NotificationFullScreenActivity {
   }
 
   @Override public void onApiGetTrackingInfoSuccess(Tracking tracking,
-      List<MentorsCommentsEntity> commentsEntities) {
+      List<MentorsCommentsEntity> commentsEntities, String successRate) {
     DailySugarman sugarman = tracking.getDailySugarman();
     Group group = tracking.getGroup();
 

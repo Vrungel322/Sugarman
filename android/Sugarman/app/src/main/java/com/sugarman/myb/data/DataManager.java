@@ -19,6 +19,8 @@ import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.data.db.DbHelper;
 import com.sugarman.myb.data.local.PreferencesHelper;
+import com.sugarman.myb.models.ContactForServer;
+import com.sugarman.myb.models.ContactListForServer;
 import com.sugarman.myb.models.iab.NextFreeSkuEntity;
 import com.sugarman.myb.models.iab.PurchaseForServer;
 import com.sugarman.myb.models.iab.Subscriptions;
@@ -98,10 +100,10 @@ public class DataManager {
             String.valueOf(R.drawable.belt3))));
     entities.add(new ShopProductEntity("2", productName.get(2), "", "2.99",
         Arrays.asList(String.valueOf(R.drawable.com_1), String.valueOf(R.drawable.com_2),
-            String.valueOf(R.drawable.com_3), String.valueOf(R.drawable.com_4))));
+            String.valueOf(R.drawable.com_3), String.valueOf(R.drawable.com_4),
+            String.valueOf(R.drawable.com_5))));
     entities.add(new ShopProductEntity("3", productName.get(3), "", "2.99",
-        Arrays.asList(String.valueOf(R.drawable.com_1), String.valueOf(R.drawable.com_2),
-            String.valueOf(R.drawable.com_3), String.valueOf(R.drawable.com_4))));
+        Arrays.asList(String.valueOf(R.drawable.mentor_shop))));
     return Observable.just(entities);
     //return mRestApi.fetchProducts();
   }
@@ -158,6 +160,10 @@ public class DataManager {
 
   public Observable<Response<Subscriptions>> checkInAppBilling(PurchaseForServer purchaseForServer) {
     return mRestApi.checkInAppBilling(purchaseForServer);
+  }
+
+  public Observable<Response<Void>> sendContacts(ContactListForServer contactsForServer) {
+    return mRestApi.sendContacts(contactsForServer);
   }
 
   public Observable<Response<Subscriptions>> closeSubscription(PurchaseForServer purchaseForServer) {

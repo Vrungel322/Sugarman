@@ -15,6 +15,8 @@ import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.constants.Constants;
+import com.sugarman.myb.models.ContactForServer;
+import com.sugarman.myb.models.ContactListForServer;
 import com.sugarman.myb.models.iab.NextFreeSkuEntity;
 import com.sugarman.myb.models.iab.PurchaseForServer;
 import com.sugarman.myb.models.iab.Subscriptions;
@@ -179,5 +181,10 @@ public class RestApi {
 
   public Observable<Response<Subscriptions>> closeSubscription(PurchaseForServer purchaseForServer) {
     return api.closeSubscription(purchaseForServer);
+  }
+
+  public Observable<Response<Void>> sendContacts(ContactListForServer contactsForServer)
+  {
+    return api.sendContacts(contactsForServer);
   }
 }

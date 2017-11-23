@@ -25,7 +25,8 @@ public class GetTrackingInfoClient extends BaseApiClient {
       if (clientListener.get() != null) {
         if (dataResponse != null && dataResponse.getResult() != null) {
           ((ApiGetTrackingInfoListener) clientListener.get()).onApiGetTrackingInfoSuccess(
-              dataResponse.getResult(), dataResponse.getMentorsCommentsEntity());
+              dataResponse.getResult(), dataResponse.getMentorsCommentsEntity(),
+              dataResponse.getSuccessRate());
         } else if (errorBody != null) {
           String errorMessage = parseErrorBody(errorBody);
           responseFailure(TAG, errorMessage);
