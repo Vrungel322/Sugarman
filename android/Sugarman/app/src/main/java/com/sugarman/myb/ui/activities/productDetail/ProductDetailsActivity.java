@@ -52,7 +52,7 @@ public class ProductDetailsActivity extends BasicActivity implements IProductDet
 
     backButton.setOnClickListener(view -> finish());
 
-    buyNowFor.setText(buyNowFor.getText() + mShopProductEntity.getProductPrice() + "$");
+    buyNowFor.setText(buyNowFor.getText() + " " + mShopProductEntity.getProductPrice() + "$");
 
     buyNowFor.setOnClickListener(view -> {
       Intent intent1 = new Intent(ProductDetailsActivity.this, CheckoutActivity.class);
