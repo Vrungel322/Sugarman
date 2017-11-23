@@ -166,7 +166,7 @@ public class DataManager {
     return mRestApi.sendContacts(contactsForServer);
   }
 
-  public Observable<Response<Void>> closeSubscription(PurchaseForServer purchaseForServer) {
+  public Observable<Response<Subscriptions>> closeSubscription(PurchaseForServer purchaseForServer) {
     return mRestApi.closeSubscription(purchaseForServer);
   }
 
