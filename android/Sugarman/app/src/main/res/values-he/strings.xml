@@ -586,5 +586,6 @@
   <string name="type_your_comment_here">הזו תגובתך כאן</string>
   <string name="unsubscribe">בטל</string>
   <string name="apply_now_for">הצטרף עכשיו עבור</string>
+  <string name="cancel_subscription_warning">האם אתה בטוח שברצונך לעזוב אתה הקבוצה? המנוי יבוטל</string>
 
 </resources>

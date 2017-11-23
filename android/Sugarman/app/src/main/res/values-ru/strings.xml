@@ -540,5 +540,6 @@
     <string name="type_your_comment_here">Написать комментарий</string>
   <string name="social_media">Соцсети</string>
     <string name="unsubscribe">Отписаться</string>
+  <string name="cancel_subscription_warning">Вы собираетесь выйти из группы. Ваша подписка будет отменена. Вы уверены?</string>
 
 </resources>
