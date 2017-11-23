@@ -571,5 +571,6 @@
   <string name="phone">Phone</string>
   <string name="buy_now">Buy now</string>
   <string name="type_your_comment_here">Type your comment here</string>
+  <string name="cancel_subscription_warning">You are about to leave the group. Your subscription will be cancelled. Are you sure?</string>
 
 </resources>
