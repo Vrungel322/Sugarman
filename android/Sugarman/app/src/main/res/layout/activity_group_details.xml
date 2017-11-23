@@ -182,7 +182,7 @@
                                 android:layout_height="wrap_content"
                                 >
                             <com.sugarman.myb.ui.views.CustomFontTextView
-                                android:id="@+id/D"
+                                android:id="@+id/tv_group_steps"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:textColor="#5A5A5A"
