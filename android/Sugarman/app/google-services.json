@@ -1,27 +1,31 @@
 {
   "project_info": {
-    "project_number": "334092396889",
-    "firebase_url": "https://sugarman-f3e96.firebaseio.com",
-    "project_id": "sugarman-f3e96",
-    "storage_bucket": "sugarman-f3e96.appspot.com"
+    "project_number": "214670354742",
+    "firebase_url": "https://myb-sugarman.firebaseio.com",
+    "project_id": "myb-sugarman",
+    "storage_bucket": "myb-sugarman.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:334092396889:android:1d44068fdf33907b",
+        "mobilesdk_app_id": "1:214670354742:android:1d44068fdf33907b",
         "android_client_info": {
           "package_name": "com.sugarman.myb"
         }
       },
       "oauth_client": [
         {
-          "client_id": "334092396889-gbtt69ktnfhgg5fd1s6fkckcbc8402r8.apps.googleusercontent.com",
+          "client_id": "214670354742-ukahj46me93mssuaui3eeovkqf1987o6.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "214670354742-4s45kqt7cfodadgi2qjr5tja55llm1q3.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAGwdcmge3DaYr2y7PklqtrEkSuib0Kh_M"
+          "current_key": "AIzaSyCdDGrnnPkJBscg4MBVJVsWLh1QnI5Gd_g"
         }
       ],
       "services": {

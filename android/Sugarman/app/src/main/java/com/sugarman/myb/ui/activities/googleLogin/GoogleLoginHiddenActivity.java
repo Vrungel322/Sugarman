@@ -34,9 +34,9 @@ import timber.log.Timber;
  *
  * Intent intent = new Intent(this, GoogleLoginHiddenActivity.class);
  * intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
- * //https://console.cloud.google.com/apis/credentials?project=googolregistrationsample
+ * //https://console.developers.google.com/apis/credentials?project=api-7925429546426385753-346830
  * // need to paste WEB- Client key from that link
- * intent.putExtra(GoogleLoginHiddenActivity.EXTRA_CLIENT_ID, "577365149636-ct63t5ndd1f2dcg0jucm4usfcrmjjbts.apps.googleusercontent.com");
+ * intent.putExtra(GoogleLoginHiddenActivity.EXTRA_CLIENT_ID, "665166717862-sv96md550gqprv1nmak21rmd3rcfl5r7.apps.googleusercontent.com");
  * startActivity(intent);
  */
 
