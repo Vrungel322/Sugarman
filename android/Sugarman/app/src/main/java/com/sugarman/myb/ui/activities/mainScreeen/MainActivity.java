@@ -80,6 +80,7 @@ import com.sugarman.myb.listeners.ApiGetMyTrackingsListener;
 import com.sugarman.myb.listeners.ApiGetNotificationsListener;
 import com.sugarman.myb.listeners.ApiMarkNotificationListener;
 import com.sugarman.myb.listeners.ApiSendFirebaseTokenListener;
+import com.sugarman.myb.listeners.SugarmanDialogListener;
 import com.sugarman.myb.models.BaseChallengeItem;
 import com.sugarman.myb.models.ChallengeItem;
 import com.sugarman.myb.models.ChallengeMentorItem;
@@ -116,6 +117,7 @@ import com.sugarman.myb.utils.IntentExtractorHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.SoundHelper;
 import com.sugarman.myb.utils.StringHelper;
+import com.sugarman.myb.utils.licence.LicenceChecker;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -463,6 +465,19 @@ public class MainActivity extends GetUserInfoActivity
     setContentView(R.layout.activity_main);
     super.onCreate(savedInstanceState);
     Resources resources = getResources();
+
+    if(!LicenceChecker.isStoreVersion(this) && !BuildConfig.DEBUG)
+    {
+      Timber.e("Ochko ebuchee chmo");
+      new SugarmanDialog.Builder(this, "").btnCallback(new SugarmanDialogListener() {
+        @Override public void onClickDialog(SugarmanDialog dialog, DialogButton button) {
+
+        }
+      }).content("Not licenced").build().show();
+
+      finishAffinity();
+      System.exit(0);
+    };
 
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
