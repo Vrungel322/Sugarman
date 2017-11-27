@@ -87,7 +87,7 @@
                         android:layout_gravity="center"
                         android:scaleType="fitCenter"
                         android:tint="@color/red"
-                        android:src="@drawable/sub_cancel"
+                        android:src="@drawable/sub_cancel_min"
                         android:visibility="gone"
                         tools:visibility="gone"
                         />
