@@ -37,26 +37,27 @@ public abstract class BasicActivity extends MvpAppCompatActivity {
 
   protected void doEventAction(CustomUserEvent customEvent,
       @Nullable IActionOnCurrentScreen actionOnCurrentScreen) {
-    switch (customEvent.getType()) {
-      case 0: {
+    switch (customEvent.getStrType()) {
+      case "popup": {
         // event to show simple info dialog
         StringBuilder body = new StringBuilder();
         if (customEvent.getEventExtraStrings() != null && !customEvent.getEventExtraStrings()
             .isEmpty()) {
           customEvent.getEventExtraStrings().forEach(body::append);
         }
+        body.append(customEvent.getEventText());
         DialogHelper.createSimpleInfoDialog("OK", customEvent.getEventName(), body.toString(), this,
             (dialogInterface, i) -> dialogInterface.dismiss()).create().show();
         break;
       }
-      case 1: {
+      case "q": {
         // animation on specific
         if (actionOnCurrentScreen != null) {
           actionOnCurrentScreen.action();
         }
         break;
       }
-      case 2: {
+      case "qq": {
         // event to show some activity
         break;
       }

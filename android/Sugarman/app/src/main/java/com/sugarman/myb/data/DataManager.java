@@ -246,6 +246,7 @@ public class DataManager {
   }
 
   public void saveRules(RuleSet ruleSet) {
+    mDbHelper.dropRealmTable(RuleSet.class);
     mDbHelper.save(ruleSet);
   }
 

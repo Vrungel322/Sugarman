@@ -84,10 +84,10 @@ import com.sugarman.myb.models.BaseChallengeItem;
 import com.sugarman.myb.models.ChallengeItem;
 import com.sugarman.myb.models.ChallengeMentorItem;
 import com.sugarman.myb.models.ChallengeWillStartItem;
-import com.sugarman.myb.models.ContactForServer;
 import com.sugarman.myb.models.ContactListForServer;
 import com.sugarman.myb.models.NoChallengeItem;
 import com.sugarman.myb.models.NoMentorsChallengeItem;
+import com.sugarman.myb.models.custom_events.CustomUserEvent;
 import com.sugarman.myb.services.MasterStepDetectorService;
 import com.sugarman.myb.ui.activities.CongratulationsActivity;
 import com.sugarman.myb.ui.activities.DailyActivity;
@@ -839,6 +839,7 @@ public class MainActivity extends GetUserInfoActivity
 
   @Override protected void onResume() {
     super.onResume();
+    mPresenter.checkIfRuleStepsDone(todaySteps);
     String urlAvatar = SharedPreferenceHelper.getAvatar();
     if (TextUtils.isEmpty(urlAvatar)) {
     } else {
@@ -1706,5 +1707,9 @@ public class MainActivity extends GetUserInfoActivity
     spiChallenges.setViewPager(vpTrackings);
     spiChallenges.requestLayout();
     spiChallenges.invalidate();
+  }
+
+  @Override public void doEventActionResponse(CustomUserEvent customUserEvent) {
+    doEventAction(customUserEvent, null);
   }
 }
