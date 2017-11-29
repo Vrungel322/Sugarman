@@ -15,7 +15,9 @@ public class LicenceChecker {
     try {
       String installer = context.getPackageManager()
           .getInstallerPackageName(context.getPackageName());
-      result = !TextUtils.isEmpty(installer);
+      if(TextUtils.isEmpty(installer)||!installer.equals("com.android.vending"))
+      result = false;
+      else result = true;
     } catch (Throwable e) {
     }
 
