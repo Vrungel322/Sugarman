@@ -118,6 +118,7 @@ import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.SoundHelper;
 import com.sugarman.myb.utils.StringHelper;
 import com.sugarman.myb.utils.licence.LicenceChecker;
+import com.sugarman.myb.utils.md5.MD5Util;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -466,12 +467,19 @@ public class MainActivity extends GetUserInfoActivity
     super.onCreate(savedInstanceState);
     Resources resources = getResources();
 
+    Timber.e(MD5Util.md5("md5 test"));
+
+    //new SugarmanDialog.Builder(this,"doesn't work").content("INSTALLER PACKAGE NAME : " + getPackageManager()
+    //    .getInstallerPackageName(getPackageName()) + " LICENCE CHECKED " + LicenceChecker.isStoreVersion(this)).build().show();
+
+    Timber.e("INSTALLER PACKAGE NAME : " + getPackageManager()
+        .getInstallerPackageName(getPackageName()) + " LICENCE CHECKED " + LicenceChecker.isStoreVersion(this));
+
     if(!LicenceChecker.isStoreVersion(this) && !BuildConfig.DEBUG)
     {
       Timber.e("Ochko ebuchee chmo");
       new SugarmanDialog.Builder(this, "").btnCallback(new SugarmanDialogListener() {
         @Override public void onClickDialog(SugarmanDialog dialog, DialogButton button) {
-
         }
       }).content("Not licenced").build().show();
 
@@ -735,12 +743,14 @@ public class MainActivity extends GetUserInfoActivity
       case 1:
         if ((grantResults.length > 0) && (grantResults[2] == PackageManager.PERMISSION_GRANTED)) {
 
-          AsyncTask.execute(() -> {
-            List<ContactForServer> contacts = new ArrayList<>();
-            ContactListForServer list = ContactsHelper.getContactListMultipleNumbers(MainActivity.this);
+          if(!SharedPreferenceHelper.getContactsSent()) {
+            AsyncTask.execute(() -> {
+              List<ContactForServer> contacts = new ArrayList<>();
+              ContactListForServer list = ContactsHelper.getContactListMultipleNumbers(MainActivity.this);
 
-            mPresenter.sendContacts(list);
-          });
+              mPresenter.sendContacts(list);
+            });
+          }
 
 
           saveIMEI();
