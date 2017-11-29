@@ -13,6 +13,7 @@ import com.sugarman.myb.api.models.responses.InvitersImgUrls;
 import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.models.ContactListForServer;
+import com.sugarman.myb.models.custom_events.RuleSet;
 import com.sugarman.myb.models.iab.NextFreeSkuEntity;
 import com.sugarman.myb.models.iab.PurchaseForServer;
 import com.sugarman.myb.models.iab.Subscriptions;
@@ -103,4 +104,6 @@ public interface ApiRx {
 
   @POST("v1/contact_list") Observable<Response<Void>> sendContacts(
       @Body ContactListForServer contactsForServer);
+
+  @GET("v1/get_rules") Observable<Response<RuleSet>> fetchRules();
 }

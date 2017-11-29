@@ -20,6 +20,8 @@ import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.data.db.DbHelper;
 import com.sugarman.myb.data.local.PreferencesHelper;
 import com.sugarman.myb.models.ContactListForServer;
+import com.sugarman.myb.models.custom_events.Rule;
+import com.sugarman.myb.models.custom_events.RuleSet;
 import com.sugarman.myb.models.iab.NextFreeSkuEntity;
 import com.sugarman.myb.models.iab.PurchaseForServer;
 import com.sugarman.myb.models.iab.Subscriptions;
@@ -237,5 +239,21 @@ public class DataManager {
 
   public Observable<Response<NextFreeSkuEntity>> getNextFreeSku() {
     return mRestApi.getNextFreeSku();
+  }
+
+  public Observable<Response<RuleSet>> fetchRules() {
+    return mRestApi.fetchRules();
+  }
+
+  public void saveRules(RuleSet ruleSet) {
+    mDbHelper.save(ruleSet);
+  }
+
+  public List<RuleSet> getAllRules() {
+    return mDbHelper.getAll(RuleSet.class);
+  }
+
+  public List<Rule> getRuleByName(String name) {
+    return mDbHelper.getElementsFromDBByQuery(Rule.class, "name", name);
   }
 }

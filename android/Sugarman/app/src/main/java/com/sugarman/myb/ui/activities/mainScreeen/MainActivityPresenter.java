@@ -21,6 +21,17 @@ import timber.log.Timber;
     super.onFirstViewAttach();
     fetchTasks();
     fetchCompletedTasks();
+    fetchRules();
+  }
+
+  private void fetchRules() {
+    Subscription subscription = mDataManager.fetchRules()
+        .compose(ThreadSchedulers.applySchedulers())
+        .subscribe(ruleSet -> {
+          Timber.e("!!!"+ruleSet.body().getRules().get(0).getName());
+          mDataManager.saveRules(ruleSet.body());
+        }, Throwable::printStackTrace);
+    addToUnsubscription(subscription);
   }
 
   private void fetchTasks() {
