@@ -5,8 +5,14 @@ import com.sugarman.myb.App;
 import com.sugarman.myb.base.BasicPresenter;
 import com.sugarman.myb.models.ContactForServer;
 import com.sugarman.myb.models.ContactListForServer;
+import com.sugarman.myb.models.animation.ImageModel;
+import com.sugarman.myb.utils.SaveFileHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.ThreadSchedulers;
+import com.sugarman.myb.utils.animation.AnimationHelper;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import rx.Subscription;
 import timber.log.Timber;
 
@@ -49,6 +55,35 @@ import timber.log.Timber;
         .subscribe(voidResponse -> {
           Timber.e("Success");
           SharedPreferenceHelper.setContactsSent(true);
+        }, Throwable::printStackTrace);
+    addToUnsubscription(subscription);
+  }
+
+  public void getAnimations(File filesDir)
+  {
+    Subscription subscription = mDataManager.getAnimations()
+        .compose(ThreadSchedulers.applySchedulers())
+        .subscribe(animations ->
+        {
+Timber.e("Got inside animations");
+          if (!filesDir.exists()) filesDir.mkdirs();
+          List<String> urls = new ArrayList<>();
+
+          List<ImageModel> anims = animations.body().getAnimations();
+          for(int i = 0; i < anims.size(); i++)
+          {
+            urls.add(anims.get(i).getImageUrl());
+            Timber.e(anims.get(i).getImageUrl());
+          }
+          AnimationHelper animationHelper = new AnimationHelper(filesDir, urls);
+          animationHelper.download(new AnimationHelper.Callback() {
+            @Override public void onEach(File image) {
+            }
+
+            @Override public void onDone(File imagesDir) {
+              Timber.e("Everything is downloaded");
+            }
+          });
         }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }

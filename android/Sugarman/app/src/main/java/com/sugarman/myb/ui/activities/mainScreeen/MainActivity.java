@@ -117,8 +117,10 @@ import com.sugarman.myb.utils.IntentExtractorHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.SoundHelper;
 import com.sugarman.myb.utils.StringHelper;
+import com.sugarman.myb.utils.animation.AnimationHelper;
 import com.sugarman.myb.utils.licence.LicenceChecker;
 import com.sugarman.myb.utils.md5.MD5Util;
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -387,6 +389,34 @@ public class MainActivity extends GetUserInfoActivity
           showUpdateOldVersionDialog();
         }
       };
+
+
+  public void download() throws Exception {
+    List<File> results = new ArrayList<>();
+    final int[] done = {0};
+    List<String> urls = new ArrayList<>();
+
+    for (int i = 0; i < 2000; i++) {
+      urls.add(String.valueOf(2000 - i - 1));
+    }
+
+    new AnimationHelper(null, urls).download(new AnimationHelper.Callback() {
+      @Override
+      public void onEach(File image) {
+        results.add(image);
+      }
+
+      @Override
+      public void onDone(File imagesDir) {
+        done[0]++;
+      }
+    });
+
+    while (results.size() < 2000) {
+      Thread.sleep(10);
+    }
+  }
+
   private String userId;
   private int[] brokenGlassSoundIds;
   private final ApiGetNotificationsListener apiGetNotificationsListener =
@@ -468,6 +498,10 @@ public class MainActivity extends GetUserInfoActivity
     Resources resources = getResources();
 
     Timber.e(MD5Util.md5("md5 test"));
+
+    File f3 = new File(getFilesDir() + "/animations/");
+
+    mPresenter.getAnimations(f3);
 
     //new SugarmanDialog.Builder(this,"doesn't work").content("INSTALLER PACKAGE NAME : " + getPackageManager()
     //    .getInstallerPackageName(getPackageName()) + " LICENCE CHECKED " + LicenceChecker.isStoreVersion(this)).build().show();

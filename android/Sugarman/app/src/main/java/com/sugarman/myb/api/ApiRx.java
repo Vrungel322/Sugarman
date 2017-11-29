@@ -11,6 +11,7 @@ import com.sugarman.myb.api.models.responses.CheckVkResponse;
 import com.sugarman.myb.api.models.responses.CountInvitesResponse;
 import com.sugarman.myb.api.models.responses.InvitersImgUrls;
 import com.sugarman.myb.api.models.responses.ShopProductEntity;
+import com.sugarman.myb.api.models.responses.animation.GetAnimationResponse;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.models.ContactForServer;
 import com.sugarman.myb.models.ContactListForServer;
@@ -104,4 +105,6 @@ public interface ApiRx {
 
   @POST("v1/contact_list") Observable<Response<Void>> sendContacts(
       @Body ContactListForServer contactsForServer);
+
+  @GET("v1/get_animation") Observable<Response<GetAnimationResponse>> getAnimations();
 }

@@ -1,4 +1,4 @@
-package com.sugarman.myb.models;
+package com.sugarman.myb.models.animation;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;
@@ -11,8 +11,8 @@ import lombok.Setter;
  */
 
 @AllArgsConstructor @NoArgsConstructor public class ImageModel {
-  @Getter @Setter @SerializedName("image_url") String imageUrl;
+  @Getter @Setter @SerializedName("url") String imageUrl;
   @Getter @Setter @SerializedName("md5") String md5;
-  @Getter @Setter @SerializedName("name") String name;
+  @Getter @Setter @SerializedName("index") String index ;
 
 }

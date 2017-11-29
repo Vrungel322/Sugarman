@@ -27,6 +27,19 @@
                 android:adjustViewBounds="true"
                 android:padding="13dp"/>
 
+            <TextView
+                android:id="@+id/tvTestServer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:text="TEST SERVER"
+                android:layout_margin="15dp"
+                android:textColor="@color/red"
+                android:textStyle="bold"
+                android:visibility="gone"
+                />
+
             <ImageView
                 android:id="@+id/wave1"
                 android:layout_marginTop="40dp"
