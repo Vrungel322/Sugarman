@@ -11,10 +11,10 @@ import lombok.Singular;
 /**
  * Created by nikita on 27.11.2017.
  */
-@AllArgsConstructor @NoArgsConstructor @Builder
-public class CustomUserEvent {
+@AllArgsConstructor @NoArgsConstructor @Builder public class CustomUserEvent {
   @Getter @Setter private int type;                                 // dialog or activity or other
-  @Getter @Setter private Integer numValue;                         // count of smth (groups, days in a row, steps)
+  @Getter @Setter private Integer numValue;
+      // count of smth (groups, days in a row, steps)
   @Getter @Setter private String strValue;                          // poka ne ebu
   @Getter @Setter private String eventName;                         // event title
   @Getter @Setter private String eventImage;                        //event img if needed

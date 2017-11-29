@@ -41,16 +41,17 @@ import timber.log.Timber;
 
   public void checkInAppBilling(Purchase purchase, String productName, String userId,
       String freeSku) {
-    Timber.e("checkInAppBilling productName" +productName);
-    Timber.e("checkInAppBilling getSku" +purchase.getSku());
-    Timber.e("checkInAppBilling getToken" +purchase.getToken());
-    Timber.e("checkInAppBilling userId" +userId);
-    Timber.e("checkInAppBilling freeSku" +freeSku);
+    Timber.e("checkInAppBilling productName" + productName);
+    Timber.e("checkInAppBilling getSku" + purchase.getSku());
+    Timber.e("checkInAppBilling getToken" + purchase.getToken());
+    Timber.e("checkInAppBilling userId" + userId);
+    Timber.e("checkInAppBilling freeSku" + freeSku);
     Subscription subscription = mDataManager.checkInAppBilling(
-        new PurchaseForServer(productName, purchase.getSku(), purchase.getToken(), userId,freeSku))
+        new PurchaseForServer(productName, purchase.getSku(), purchase.getToken(), userId, freeSku))
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(subscriptionsResponse -> {
-          SharedPreferenceHelper.saveListSubscriptionEntity(subscriptionsResponse.body().getSubscriptionEntities());
+          SharedPreferenceHelper.saveListSubscriptionEntity(
+              subscriptionsResponse.body().getSubscriptionEntities());
           Timber.e(String.valueOf(subscriptionsResponse.code()));
           if (subscriptionsResponse.code() == 200) {
             getViewState().moveToMainActivity();
@@ -63,14 +64,14 @@ import timber.log.Timber;
     Subscription subscription = mDataManager.getNextFreeSku()
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(nextFreeSkuEntityResponse -> {
-          if (nextFreeSkuEntityResponse.code() == Constants.ALL_SLOTS_NOT_EMPTY_ERROR){
+          if (nextFreeSkuEntityResponse.code() == Constants.ALL_SLOTS_NOT_EMPTY_ERROR) {
             getViewState().showAllSlotsNotEmptyDialog();
           }
           if (nextFreeSkuEntityResponse.body().getFreeSku() != null
               && !nextFreeSkuEntityResponse.body().getFreeSku().isEmpty()) {
             getViewState().startPurchaseFlow(nextFreeSkuEntityResponse.body().getFreeSku());
           }
-        },Throwable::printStackTrace);
+        }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 }

@@ -35,7 +35,8 @@ public abstract class BasicActivity extends MvpAppCompatActivity {
     Toast.makeText(mContext, id, Toast.LENGTH_SHORT).show();
   }
 
-  protected void doEventAction(CustomUserEvent customEvent, @Nullable IActionOnCurrentScreen actionOnCurrentScreen) {
+  protected void doEventAction(CustomUserEvent customEvent,
+      @Nullable IActionOnCurrentScreen actionOnCurrentScreen) {
     switch (customEvent.getType()) {
       case 0: {
         // event to show simple info dialog
@@ -50,7 +51,7 @@ public abstract class BasicActivity extends MvpAppCompatActivity {
       }
       case 1: {
         // animation on specific
-        if (actionOnCurrentScreen!=null){
+        if (actionOnCurrentScreen != null) {
           actionOnCurrentScreen.action();
         }
         break;

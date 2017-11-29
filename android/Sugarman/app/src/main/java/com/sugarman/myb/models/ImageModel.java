@@ -14,5 +14,4 @@ import lombok.Setter;
   @Getter @Setter @SerializedName("image_url") String imageUrl;
   @Getter @Setter @SerializedName("md5") String md5;
   @Getter @Setter @SerializedName("name") String name;
-
 }

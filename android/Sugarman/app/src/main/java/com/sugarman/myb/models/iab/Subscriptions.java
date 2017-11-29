@@ -11,5 +11,4 @@ import lombok.Setter;
 
 public class Subscriptions {
   @SerializedName("subscriptions") @Getter @Setter List<SubscriptionEntity> subscriptionEntities;
-
 }

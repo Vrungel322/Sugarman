@@ -11,5 +11,4 @@ import lombok.Setter;
 public class SubscriptionEntity {
   @SerializedName("id_mentor") @Getter @Setter String mentorId;
   @SerializedName("android_slot") @Getter @Setter String slot;
-
 }

@@ -74,13 +74,11 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     return new Gson().fromJson(getString(SharedPreferenceConstants.SUBSCRIPTIONS_JSON, ""), type);
   }
 
-  public static boolean getContactsSent()
-  {
+  public static boolean getContactsSent() {
     return getBoolean("contactsSent", false);
   }
 
-  public static void setContactsSent(boolean contactsSent)
-  {
+  public static void setContactsSent(boolean contactsSent) {
     putBoolean("contactsSent", contactsSent);
   }
 

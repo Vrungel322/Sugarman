@@ -1918,8 +1918,7 @@ public class GroupDetailsActivity extends BaseActivity
         mComment = commentsEntities.get(0);
       }
 
-      if(successRate!=null &&!successRate.isEmpty() )
-      {
+      if (successRate != null && !successRate.isEmpty()) {
         successRateFloat = Float.valueOf(successRate);
 
         List<PieEntry> entries = new ArrayList<>();

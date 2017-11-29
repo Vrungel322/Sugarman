@@ -511,8 +511,7 @@ public class LoginActivity extends GetUserInfoActivity implements View.OnClickLi
   }
 }
 
-
-  //Intent intent = new Intent(this, GoogleLoginHiddenActivity.class);
-  //      intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-  //          intent.putExtra(GoogleLoginHiddenActivity.EXTRA_CLIENT_ID, "665166717862-sv96md550gqprv1nmak21rmd3rcfl5r7.apps.googleusercontent.com"/* Web Client*/);
-  //          startActivity(intent);
+//Intent intent = new Intent(this, GoogleLoginHiddenActivity.class);
+//      intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//          intent.putExtra(GoogleLoginHiddenActivity.EXTRA_CLIENT_ID, "665166717862-sv96md550gqprv1nmak21rmd3rcfl5r7.apps.googleusercontent.com"/* Web Client*/);
+//          startActivity(intent);

@@ -187,13 +187,17 @@ public class ContactsHelper {
 
     ContactListForServer contactListForServer = new ContactListForServer(list);
 
-
-    for(ContactForServer contact : list)
-    {
-      Timber.e("BULL SHIT" + contact.getName() + " " + contact.getPhoneNumber() + " " + contact.getPhoneNumber2() + " " + contact.getPhoneNumber3());
+    for (ContactForServer contact : list) {
+      Timber.e("BULL SHIT"
+          + contact.getName()
+          + " "
+          + contact.getPhoneNumber()
+          + " "
+          + contact.getPhoneNumber2()
+          + " "
+          + contact.getPhoneNumber3());
     }
 
     return contactListForServer;
   }
-
 }

@@ -171,22 +171,28 @@ public class CheckoutActivity extends BasicActivity
   @OnClick(R.id.buy_now_for_x) public void bBuyClicked() {
 
     if (etCountryName.getText().toString().isEmpty()) {
-      etCountryName.setError(String.format(getString(R.string.empty_field_denied), getString(R.string.country)));
+      etCountryName.setError(
+          String.format(getString(R.string.empty_field_denied), getString(R.string.country)));
     }
     if (etCityName.getText().toString().isEmpty()) {
-      etCityName.setError(String.format(getString(R.string.empty_field_denied), getString(R.string.city)));
+      etCityName.setError(
+          String.format(getString(R.string.empty_field_denied), getString(R.string.city)));
     }
     if (etStreetName.getText().toString().isEmpty()) {
-      etStreetName.setError(String.format(getString(R.string.empty_field_denied), getString(R.string.address)));
+      etStreetName.setError(
+          String.format(getString(R.string.empty_field_denied), getString(R.string.address)));
     }
     if (etZipCode.getText().toString().isEmpty()) {
-      etZipCode.setError(String.format(getString(R.string.empty_field_denied), getString(R.string.zip_code)));
+      etZipCode.setError(
+          String.format(getString(R.string.empty_field_denied), getString(R.string.zip_code)));
     }
     if (etFullName.getText().toString().isEmpty()) {
-      etFullName.setError(String.format(getString(R.string.empty_field_denied), getString(R.string.full_name)));
+      etFullName.setError(
+          String.format(getString(R.string.empty_field_denied), getString(R.string.full_name)));
     }
     if (etPhoneNumber.getText().toString().isEmpty()) {
-      etPhoneNumber.setError(String.format(getString(R.string.empty_field_denied), getString(R.string.phone)));
+      etPhoneNumber.setError(
+          String.format(getString(R.string.empty_field_denied), getString(R.string.phone)));
     }
 
     if (etCountryName.getText().length() > 0

@@ -84,7 +84,6 @@ public class MentorsChallengeFragment extends BasicFragment
     Timber.e(mChallengeItem.getTracking().getChallengeName());
     vChallengeContainer = (CardView) view.findViewById(R.id.cv_mentor_challenge_container);
 
-
     CustomPicasso.with(getActivity())
         .load(mTracking.getGroup().getPictureUrl())
         .placeholder(R.drawable.ic_gray_avatar)

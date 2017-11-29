@@ -47,7 +47,6 @@ import com.sugarman.myb.api.clients.MarkNotificationClient;
 import com.sugarman.myb.api.clients.SendFirebaseTokenClient;
 import com.sugarman.myb.api.models.requests.ReportStats;
 import com.sugarman.myb.api.models.responses.Tracking;
-import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.api.models.responses.me.invites.Invite;
 import com.sugarman.myb.api.models.responses.me.notifications.Notification;
 import com.sugarman.myb.api.models.responses.me.requests.Request;
@@ -96,7 +95,6 @@ import com.sugarman.myb.ui.activities.FailedActivity;
 import com.sugarman.myb.ui.activities.GetUserInfoActivity;
 import com.sugarman.myb.ui.activities.SearchGroupsActivity;
 import com.sugarman.myb.ui.activities.StatsTrackingActivity;
-import com.sugarman.myb.ui.activities.addMember.AddMemberActivity;
 import com.sugarman.myb.ui.activities.createGroup.CreateGroupActivity;
 import com.sugarman.myb.ui.activities.groupDetails.GroupDetailsActivity;
 import com.sugarman.myb.ui.activities.mentorList.MentorListActivity;
@@ -472,11 +470,12 @@ public class MainActivity extends GetUserInfoActivity
     //new SugarmanDialog.Builder(this,"doesn't work").content("INSTALLER PACKAGE NAME : " + getPackageManager()
     //    .getInstallerPackageName(getPackageName()) + " LICENCE CHECKED " + LicenceChecker.isStoreVersion(this)).build().show();
 
-    Timber.e("INSTALLER PACKAGE NAME : " + getPackageManager()
-        .getInstallerPackageName(getPackageName()) + " LICENCE CHECKED " + LicenceChecker.isStoreVersion(this));
+    Timber.e("INSTALLER PACKAGE NAME : "
+        + getPackageManager().getInstallerPackageName(getPackageName())
+        + " LICENCE CHECKED "
+        + LicenceChecker.isStoreVersion(this));
 
-    if(!LicenceChecker.isStoreVersion(this) && !BuildConfig.DEBUG)
-    {
+    if (!LicenceChecker.isStoreVersion(this) && !BuildConfig.DEBUG) {
       Timber.e("Ochko ebuchee chmo");
       new SugarmanDialog.Builder(this, "").btnCallback(new SugarmanDialogListener() {
         @Override public void onClickDialog(SugarmanDialog dialog, DialogButton button) {
@@ -485,7 +484,8 @@ public class MainActivity extends GetUserInfoActivity
 
       finishAffinity();
       System.exit(0);
-    };
+    }
+    ;
 
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
@@ -743,15 +743,14 @@ public class MainActivity extends GetUserInfoActivity
       case 1:
         if ((grantResults.length > 0) && (grantResults[2] == PackageManager.PERMISSION_GRANTED)) {
 
-          if(!SharedPreferenceHelper.getContactsSent()) {
+          if (!SharedPreferenceHelper.getContactsSent()) {
             AsyncTask.execute(() -> {
-              List<ContactForServer> contacts = new ArrayList<>();
-              ContactListForServer list = ContactsHelper.getContactListMultipleNumbers(MainActivity.this);
+              ContactListForServer list =
+                  ContactsHelper.getContactListMultipleNumbers(MainActivity.this);
 
               mPresenter.sendContacts(list);
             });
           }
-
 
           saveIMEI();
         }

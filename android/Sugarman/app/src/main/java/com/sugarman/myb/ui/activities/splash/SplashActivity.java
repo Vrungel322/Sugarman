@@ -147,8 +147,8 @@ public class SplashActivity extends GetUserInfoActivity
           Timber.e(inventory.getSkuDetails(subscriptionEntity.getSlot()).getSku());
 
           mPresenter.checkInAppBilling(inventory.getPurchase(subscriptionEntity.getSlot()),
-              inventory.getSkuDetails(subscriptionEntity.getSlot()).getTitle(),
-              null, subscriptionEntity.getSlot());
+              inventory.getSkuDetails(subscriptionEntity.getSlot()).getTitle(), null,
+              subscriptionEntity.getSlot());
         }
       }
     });
