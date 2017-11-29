@@ -12,6 +12,7 @@ import com.sugarman.myb.api.models.responses.CheckVkResponse;
 import com.sugarman.myb.api.models.responses.CountInvitesResponse;
 import com.sugarman.myb.api.models.responses.InvitersImgUrls;
 import com.sugarman.myb.api.models.responses.ShopProductEntity;
+import com.sugarman.myb.api.models.responses.animation.GetAnimationResponse;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.constants.Constants;
@@ -192,5 +193,9 @@ public class RestApi {
 
   public Observable<Response<RuleSet>> fetchRules() {
     return api.fetchRules();
+  }
+
+  public Observable<Response<GetAnimationResponse>> getAnimations() {
+    return api.getAnimations();
   }
 }

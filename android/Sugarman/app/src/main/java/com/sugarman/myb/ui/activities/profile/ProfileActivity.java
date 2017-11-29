@@ -75,6 +75,7 @@ public class ProfileActivity extends BaseActivity
   @BindView(R.id.wave2) ImageView wave2;
   @BindView(R.id.wave3) ImageView wave3;
   @BindView(R.id.tv_level) TextView level;
+  @BindView(R.id.tvTestServer) TextView tvTestEnvironment;
   ImageView ivNoInvites, ivNoRequests;
   ImageView ivAvatar;
   int days;
@@ -114,6 +115,14 @@ public class ProfileActivity extends BaseActivity
   protected void onCreate(Bundle savedStateInstance) {
     setContentView(R.layout.activity_profile);
     super.onCreate(savedStateInstance);
+
+    if(SharedPreferenceHelper.getBaseUrl().contains("test"))
+    {
+      tvTestEnvironment.setVisibility(View.VISIBLE);
+    }
+    else {
+      tvTestEnvironment.setVisibility(View.GONE);
+    }
 
     invitesEnabled = true;
 

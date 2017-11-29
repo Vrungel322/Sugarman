@@ -11,6 +11,7 @@ import com.sugarman.myb.api.models.responses.CheckVkResponse;
 import com.sugarman.myb.api.models.responses.CountInvitesResponse;
 import com.sugarman.myb.api.models.responses.InvitersImgUrls;
 import com.sugarman.myb.api.models.responses.ShopProductEntity;
+import com.sugarman.myb.api.models.responses.animation.GetAnimationResponse;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.models.ContactListForServer;
 import com.sugarman.myb.models.custom_events.RuleSet;
@@ -106,4 +107,6 @@ public interface ApiRx {
       @Body ContactListForServer contactsForServer);
 
   @GET("v1/get_rules") Observable<Response<RuleSet>> fetchRules();
+  
+  @GET("v1/get_animation") Observable<Response<GetAnimationResponse>> getAnimations();
 }

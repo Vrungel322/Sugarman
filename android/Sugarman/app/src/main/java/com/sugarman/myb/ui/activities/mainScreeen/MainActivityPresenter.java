@@ -5,10 +5,14 @@ import com.sugarman.myb.App;
 import com.sugarman.myb.base.BasicPresenter;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.models.ContactListForServer;
+import com.sugarman.myb.models.animation.ImageModel;
 import com.sugarman.myb.models.custom_events.CustomUserEvent;
 import com.sugarman.myb.models.custom_events.Rule;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.ThreadSchedulers;
+import com.sugarman.myb.utils.animation.AnimationHelper;
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import rx.Subscription;
 import timber.log.Timber;
@@ -71,7 +75,7 @@ import timber.log.Timber;
 
       Timber.e(
           "rule " + rule.getName() + " todaySteps " + todaySteps + " getCount()" + rule.getCount());
-      if (rule.getCount() <= todaySteps){
+      if (rule.getCount() <= todaySteps) {
         Timber.e("rule true");
         getViewState().doEventActionResponse(CustomUserEvent.builder()
             .strType(rule.getAction())
@@ -79,5 +83,31 @@ import timber.log.Timber;
             .build());
       }
     }
+  }
+
+  public void getAnimations(File filesDir) {
+    Subscription subscription = mDataManager.getAnimations()
+        .compose(ThreadSchedulers.applySchedulers())
+        .subscribe(animations -> {
+          Timber.e("Got inside animations");
+          if (!filesDir.exists()) filesDir.mkdirs();
+          List<String> urls = new ArrayList<>();
+
+          List<ImageModel> anims = animations.body().getAnimations();
+          for (int i = 0; i < anims.size(); i++) {
+            urls.add(anims.get(i).getImageUrl());
+            Timber.e(anims.get(i).getImageUrl());
+          }
+          AnimationHelper animationHelper = new AnimationHelper(filesDir, urls);
+          animationHelper.download(new AnimationHelper.Callback() {
+            @Override public void onEach(File image) {
+            }
+
+            @Override public void onDone(File imagesDir) {
+              Timber.e("Everything is downloaded");
+            }
+          });
+        }, Throwable::printStackTrace);
+    addToUnsubscription(subscription);
   }
 }
