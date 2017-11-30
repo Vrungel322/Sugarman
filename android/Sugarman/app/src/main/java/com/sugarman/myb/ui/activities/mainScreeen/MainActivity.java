@@ -1754,6 +1754,9 @@ public class MainActivity extends GetUserInfoActivity
 
   @Override public void setAnimation(AnimationDrawable animation) {
     Timber.e("Set animation");
-    runOnUiThread(() -> Picasso.with(this).load("1").placeholder(animation).into(ivAnimatedMan));
+    runOnUiThread(() -> {
+      ivAnimatedMan.setBackgroundDrawable(null);
+      Picasso.with(this).load("1").placeholder(animation).into(ivAnimatedMan);
+    });
   }
 }
