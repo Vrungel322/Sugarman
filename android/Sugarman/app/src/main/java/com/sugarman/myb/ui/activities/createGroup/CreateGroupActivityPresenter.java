@@ -5,7 +5,10 @@ import com.arellomobile.mvp.InjectViewState;
 import com.sugarman.myb.App;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.base.BasicPresenter;
+import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.data.DataManager;
+import com.sugarman.myb.models.custom_events.CustomUserEvent;
+import com.sugarman.myb.models.custom_events.Rule;
 import com.sugarman.myb.utils.ThreadSchedulers;
 import com.vk.sdk.api.VKApiConst;
 import com.vk.sdk.api.VKError;
@@ -16,6 +19,7 @@ import java.util.List;
 import javax.inject.Inject;
 import org.json.JSONObject;
 import rx.Subscription;
+import timber.log.Timber;
 
 /**
  * Created by nikita on 02.10.2017.
@@ -68,5 +72,25 @@ import rx.Subscription;
 
   public void cacheFriends(List<FacebookFriend> friends) {
     mDataManager.cacheFriends(friends);
+  }
+
+  public void checkRuleXNewUsersInvite(List<FacebookFriend> members) {
+    int newUsersCount = 0;
+    for (int i = 0; i < members.size(); i++) {
+      if (members.get(i).isPending()){
+        newUsersCount++;
+      }
+    }
+    List<Rule> rules = mDataManager.getRuleByName(Constants.EVENT_X_NEW_USERS_INVITE);
+    if (!rules.isEmpty()) {
+      Rule rule = rules.get(0);
+      if (rule.getCount() <= newUsersCount) {
+        Timber.e("rule true");
+        getViewState().doEventActionResponse(CustomUserEvent.builder()
+            .strType(rule.getAction())
+            .eventText(rule.getMessage())
+            .build());
+      }
+    }
   }
 }
