@@ -2,11 +2,13 @@ package com.sugarman.myb.api;
 
 import android.util.Log;
 import com.sugarman.myb.api.models.levelSystem.TaskEntity;
+import com.sugarman.myb.api.models.requests.ApproveOtpRequest;
 import com.sugarman.myb.api.models.requests.CheckPhoneRequest;
 import com.sugarman.myb.api.models.requests.CheckVkRequest;
 import com.sugarman.myb.api.models.requests.DeleteUserRequest;
 import com.sugarman.myb.api.models.requests.PurchaseDataRequest;
 import com.sugarman.myb.api.models.requests.RefreshUserDataRequest;
+import com.sugarman.myb.api.models.responses.ApproveOtpResponse;
 import com.sugarman.myb.api.models.responses.CheckPhoneResponse;
 import com.sugarman.myb.api.models.responses.CheckVkResponse;
 import com.sugarman.myb.api.models.responses.CountInvitesResponse;
@@ -197,5 +199,9 @@ public class RestApi {
 
   public Observable<Response<GetAnimationResponse>> getAnimations() {
     return api.getAnimations();
+  }
+
+  public Observable<Response<ApproveOtpResponse>> approveOtp(ApproveOtpRequest request) {
+    return api.approveOtp( request);
   }
 }

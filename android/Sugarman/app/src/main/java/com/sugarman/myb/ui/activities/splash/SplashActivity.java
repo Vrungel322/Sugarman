@@ -31,7 +31,7 @@ import com.sugarman.myb.constants.DialogConstants;
 import com.sugarman.myb.eventbus.events.NeedOpenSpecificActivityEvent;
 import com.sugarman.myb.models.iab.SubscriptionEntity;
 import com.sugarman.myb.tasks.DeleteFileAsyncTask;
-import com.sugarman.myb.ui.activities.ApproveOtpActivity;
+import com.sugarman.myb.ui.activities.approveOtp.ApproveOtpActivity;
 import com.sugarman.myb.ui.activities.GetUserInfoActivity;
 import com.sugarman.myb.ui.activities.LoginActivity;
 import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;

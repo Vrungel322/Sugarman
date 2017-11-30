@@ -212,7 +212,7 @@
         android:name=".ui.activities.editProfile.EditProfileActivity"
         android:screenOrientation="portrait"/>
     <activity
-        android:name=".ui.activities.ApproveOtpActivity"
+        android:name=".ui.activities.approveOtp.ApproveOtpActivity"
         android:label="@string/title_activity_approve_otp"
         android:screenOrientation="portrait"
         android:theme="@style/AppTheme"/>

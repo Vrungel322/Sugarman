@@ -1,11 +1,13 @@
 package com.sugarman.myb.api;
 
 import com.sugarman.myb.api.models.levelSystem.TaskEntity;
+import com.sugarman.myb.api.models.requests.ApproveOtpRequest;
 import com.sugarman.myb.api.models.requests.CheckPhoneRequest;
 import com.sugarman.myb.api.models.requests.CheckVkRequest;
 import com.sugarman.myb.api.models.requests.DeleteUserRequest;
 import com.sugarman.myb.api.models.requests.PurchaseDataRequest;
 import com.sugarman.myb.api.models.requests.RefreshUserDataRequest;
+import com.sugarman.myb.api.models.responses.ApproveOtpResponse;
 import com.sugarman.myb.api.models.responses.CheckPhoneResponse;
 import com.sugarman.myb.api.models.responses.CheckVkResponse;
 import com.sugarman.myb.api.models.responses.CountInvitesResponse;
@@ -107,6 +109,9 @@ public interface ApiRx {
       @Body ContactListForServer contactsForServer);
 
   @GET("v1/get_rules") Observable<Response<RuleSet>> fetchRules();
-  
+
   @GET("v1/get_animation") Observable<Response<GetAnimationResponse>> getAnimations();
+
+  @POST("/v1/approveotp") Observable<Response<ApproveOtpResponse>> approveOtp(
+      @Body ApproveOtpRequest request);
 }

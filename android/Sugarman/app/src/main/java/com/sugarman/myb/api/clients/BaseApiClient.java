@@ -12,23 +12,24 @@ import com.sugarman.myb.utils.StringHelper;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import okhttp3.ResponseBody;
+import timber.log.Timber;
 
 public abstract class BaseApiClient {
 
   private static final String TAG = BaseApiClient.class.getName();
 
-  static final String RESPONSE_IS_NULL = "Response is null";
+  public static final String RESPONSE_IS_NULL = "Response is null";
 
-  static final int OLD_VERSION_CODE = 666;
+  public static final int OLD_VERSION_CODE = 666;
 
-  private static final String FAILURE_PARSE_ERROR_RESPONSE = "Failure parse error response";
+  public static final String FAILURE_PARSE_ERROR_RESPONSE = "Failure parse error response";
 
-  private final String DEF_MESSAGE;
+  public static final String DEF_MESSAGE=App.getInstance().getString(R.string.no_internet_connection);
 
   WeakReference<ApiBaseListener> clientListener = new WeakReference<>(null);
 
   BaseApiClient() {
-    DEF_MESSAGE = App.getInstance().getString(R.string.no_internet_connection);
+    //DEF_MESSAGE = App.getInstance().getString(R.string.no_internet_connection);
   }
 
   public void unregisterListener() {
@@ -47,9 +48,9 @@ public abstract class BaseApiClient {
     Log.e(TAG, prefix + " response is failure: " + message);
   }
 
-  String requestFailure(String prefix, Throwable t) {
+  public static String requestFailure(String prefix, Throwable t) {
     String message = BuildConfig.DEBUG ? (t == null ? "" : t.getMessage()) : DEF_MESSAGE;
-    Log.e(TAG, prefix + " request failure: " + message);
+    Timber.e("request failure: " + message);
     return TextUtils.isEmpty(message) ? DEF_MESSAGE : message;
   }
 

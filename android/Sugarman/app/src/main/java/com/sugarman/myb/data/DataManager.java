@@ -1,14 +1,17 @@
 package com.sugarman.myb.data;
 
 import android.content.ContentResolver;
+import android.util.Log;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.RestApi;
 import com.sugarman.myb.api.models.levelSystem.TaskEntity;
+import com.sugarman.myb.api.models.requests.ApproveOtpRequest;
 import com.sugarman.myb.api.models.requests.CheckPhoneRequest;
 import com.sugarman.myb.api.models.requests.CheckVkRequest;
 import com.sugarman.myb.api.models.requests.DeleteUserRequest;
 import com.sugarman.myb.api.models.requests.PurchaseDataRequest;
 import com.sugarman.myb.api.models.requests.RefreshUserDataRequest;
+import com.sugarman.myb.api.models.responses.ApproveOtpResponse;
 import com.sugarman.myb.api.models.responses.CheckPhoneResponse;
 import com.sugarman.myb.api.models.responses.CheckVkResponse;
 import com.sugarman.myb.api.models.responses.CountInvitesResponse;
@@ -37,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import okhttp3.MultipartBody;
 import retrofit2.Response;
 import rx.Observable;
 import timber.log.Timber;
@@ -261,5 +265,17 @@ public class DataManager {
 
   public List<Rule> getRuleByName(String name) {
     return mDbHelper.getElementsFromDBByQuery(Rule.class, "name", name);
+  }
+
+  public Observable<Response<ApproveOtpResponse>> approveOtp(String userId, String phoneNumberStr, String otp) {
+    MultipartBody.Part filePart = null;
+
+    ApproveOtpRequest request = new ApproveOtpRequest();
+    request.setUserId(userId);
+    request.setPhoneNumber(phoneNumberStr);
+    request.setPhoneOtp(otp);
+    Log.e("Request", request.toString());
+    Log.e("token", "editProfileClient rabotaem");
+    return mRestApi.approveOtp(request);
   }
 }

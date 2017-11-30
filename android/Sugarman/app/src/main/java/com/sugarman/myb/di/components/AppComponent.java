@@ -6,6 +6,7 @@ import com.sugarman.myb.base.BasicFragment;
 import com.sugarman.myb.di.modules.AppModule;
 import com.sugarman.myb.di.scopes.AppScope;
 import com.sugarman.myb.ui.activities.addMember.AddMemberActivityPresenter;
+import com.sugarman.myb.ui.activities.approveOtp.ApproveOtpActivityPresenter;
 import com.sugarman.myb.ui.activities.base.BasicActivityPresenter;
 import com.sugarman.myb.ui.activities.checkout.CheckoutActivityPresenter;
 import com.sugarman.myb.ui.activities.createGroup.CreateGroupActivityPresenter;
@@ -71,4 +72,6 @@ import dagger.Component;
   void inject(GroupMembersAdapterPresenter presenter);
 
   void inject(SplashActivityPresenter presenter);
+
+  void inject(ApproveOtpActivityPresenter presenter);
 }

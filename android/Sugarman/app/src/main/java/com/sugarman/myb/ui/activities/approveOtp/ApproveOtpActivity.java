@@ -1,22 +1,23 @@
-package com.sugarman.myb.ui.activities;
+package com.sugarman.myb.ui.activities.approveOtp;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.sugarman.myb.R;
-import com.sugarman.myb.api.clients.ApproveOtpClient;
 import com.sugarman.myb.api.clients.ResendMessageClient;
 import com.sugarman.myb.api.models.responses.ApproveOtpResponse;
 import com.sugarman.myb.api.models.responses.users.Tokens;
-import com.sugarman.myb.listeners.ApiApproveOtp;
+import com.sugarman.myb.base.BasicActivity;
+import com.sugarman.myb.ui.activities.LoginActivity;
+import com.sugarman.myb.ui.activities.PhoneLoginActivity;
 import com.sugarman.myb.ui.activities.editProfile.EditProfileActivity;
 import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
 import com.sugarman.myb.ui.activities.splash.SplashActivity;
@@ -24,9 +25,10 @@ import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import timber.log.Timber;
 
-public class ApproveOtpActivity extends AppCompatActivity implements ApiApproveOtp {
+public class ApproveOtpActivity extends BasicActivity implements IApproveOtpActivityView {
 
-  ApproveOtpClient client;
+  @InjectPresenter ApproveOtpActivityPresenter mPresenter;
+
   ResendMessageClient resendClient;
   boolean showSettings = true;
   @BindView(R.id.tv_phone_number) TextView phoneNumber;
@@ -42,8 +44,8 @@ public class ApproveOtpActivity extends AppCompatActivity implements ApiApproveO
   private String nameParentActivity;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_approve_otp);
+    super.onCreate(savedInstanceState);
     otp = getIntent().getStringExtra("otp");
     nameParentActivity = getIntent().getStringExtra("nameParentActivity");
     ButterKnife.bind(this);
@@ -55,9 +57,6 @@ public class ApproveOtpActivity extends AppCompatActivity implements ApiApproveO
     showSettings = getIntent().getBooleanExtra("showSettings", true);
 
     Timber.e("ApproveOtp " + SharedPreferenceHelper.getAccessToken());
-
-    client = new ApproveOtpClient();
-    client.registerListener(this);
 
     resendClient = new ResendMessageClient();
 
@@ -82,7 +81,7 @@ public class ApproveOtpActivity extends AppCompatActivity implements ApiApproveO
     }.start();
 
     btn.setOnClickListener(
-        view -> client.approveOtp(SharedPreferenceHelper.getUserId(), phoneNumberStr,
+        view -> mPresenter.approveOtp(SharedPreferenceHelper.getUserId(), phoneNumberStr,
             otpEditText.getText().toString()));
   }
 
@@ -133,6 +132,10 @@ public class ApproveOtpActivity extends AppCompatActivity implements ApiApproveO
 
   }
 
+  @Override public void onApiRefreshUserDataFailure(String errorMessage) {
+
+  }
+
   @Override public void onApiApproveOtpSuccess(ApproveOtpResponse response) {
     Timber.e("OTP" + otp);
     if (response.getCode().equals("0")) {
@@ -155,10 +158,5 @@ public class ApproveOtpActivity extends AppCompatActivity implements ApiApproveO
     } else if (response.getCode().equals("1")) {
       new SugarmanDialog.Builder(this, "Error").content(R.string.error_code_otp).show();
     }
-  }
-
-  @Override public void onApiApproveOtpFailure(String message) {
-    Timber.e("GOENO");
-    new SugarmanDialog.Builder(this, "Error").content(R.string.error_code_otp).show();
   }
 }

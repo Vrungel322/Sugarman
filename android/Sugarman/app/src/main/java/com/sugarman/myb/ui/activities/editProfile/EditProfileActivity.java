@@ -43,7 +43,7 @@ import com.sugarman.myb.base.BasicActivity;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.listeners.ApiBaseListener;
 import com.sugarman.myb.listeners.ApiRefreshUserDataListener;
-import com.sugarman.myb.ui.activities.ApproveOtpActivity;
+import com.sugarman.myb.ui.activities.approveOtp.ApproveOtpActivity;
 import com.sugarman.myb.ui.activities.IntroActivity;
 import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
