@@ -1,6 +1,12 @@
 package com.sugarman.myb.utils.animation;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import com.github.nkzawa.socketio.client.Url;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
@@ -61,20 +67,43 @@ public class AnimationHelper {
     };
   }
 
+
+  public static String getFilenameFromURL(URL url) {
+    return new File(url.getPath().toString()).getName();
+  }
+
   /**
    * Download and persist file on disk
    *
    * @return File pointing to downloaded file on disk
    */
   private File doDownload(String url) {
+    URL url1 = null;
+    try {
+      url1 = new URL(url);
+    } catch (MalformedURLException e) {
+      e.printStackTrace();
+    }
+    File f = new File(imagesDir.getAbsolutePath() + "/" + getFilenameFromURL(url1));
     try {
       Thread.sleep(10); //mock request time
+      try {
+        FileOutputStream out = new FileOutputStream(f);
+
+        Bitmap bmp = BitmapFactory.decodeStream(url1.openConnection().getInputStream());
+        bmp.compress(Bitmap.CompressFormat.PNG,80,out);
+        out.flush();
+        out.close();
+
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
     } catch (InterruptedException e) {
       //ignore
     }
 
     System.out.printf("Downloaded %s on thread: %s%n", url, Thread.currentThread().getName());
-    return null; // file pointing to downloaded image on disk
+    return f; // file pointing to downloaded image on disk
   }
 
   public interface Callback {

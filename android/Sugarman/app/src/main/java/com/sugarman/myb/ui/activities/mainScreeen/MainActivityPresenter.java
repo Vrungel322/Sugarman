@@ -1,13 +1,14 @@
 package com.sugarman.myb.ui.activities.mainScreeen;
 
+import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
 import com.arellomobile.mvp.InjectViewState;
 import com.sugarman.myb.App;
 import com.sugarman.myb.base.BasicPresenter;
-import com.sugarman.myb.constants.Constants;
+import com.sugarman.myb.models.ContactForServer;
 import com.sugarman.myb.models.ContactListForServer;
 import com.sugarman.myb.models.animation.ImageModel;
-import com.sugarman.myb.models.custom_events.CustomUserEvent;
-import com.sugarman.myb.models.custom_events.Rule;
+import com.sugarman.myb.utils.SaveFileHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.ThreadSchedulers;
 import com.sugarman.myb.utils.animation.AnimationHelper;
@@ -29,15 +30,6 @@ import timber.log.Timber;
     super.onFirstViewAttach();
     fetchTasks();
     fetchCompletedTasks();
-    fetchRules();
-  }
-
-  private void fetchRules() {
-    Subscription subscription =
-        mDataManager.fetchRules().compose(ThreadSchedulers.applySchedulers()).subscribe(ruleSet -> {
-          mDataManager.saveRules(ruleSet.body());
-        }, Throwable::printStackTrace);
-    addToUnsubscription(subscription);
   }
 
   private void fetchTasks() {
@@ -58,7 +50,8 @@ import timber.log.Timber;
     addToUnsubscription(subscription);
   }
 
-  public void sendContacts(ContactListForServer contactForServer) {
+  public void sendContacts(ContactListForServer contactForServer)
+  {
     Subscription subscription = mDataManager.sendContacts(contactForServer)
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(voidResponse -> {
@@ -68,43 +61,34 @@ import timber.log.Timber;
     addToUnsubscription(subscription);
   }
 
-  public void checkIfRuleStepsDone(int todaySteps) {
-    List<Rule> rules = mDataManager.getRuleByName(Constants.EVENT_X_STEPS_DONE);
-    if (!rules.isEmpty()) {
-      Rule rule = rules.get(0);
-
-      Timber.e(
-          "rule " + rule.getName() + " todaySteps " + todaySteps + " getCount()" + rule.getCount());
-      if (rule.getCount() <= todaySteps) {
-        Timber.e("rule true");
-        getViewState().doEventActionResponse(CustomUserEvent.builder()
-            .strType(rule.getAction())
-            .eventText(rule.getMessage())
-            .build());
-      }
-    }
-  }
-
-  public void getAnimations(File filesDir) {
+  public void getAnimations(File filesDir)
+  {
     Subscription subscription = mDataManager.getAnimations()
         .compose(ThreadSchedulers.applySchedulers())
-        .subscribe(animations -> {
-          Timber.e("Got inside animations");
+        .subscribe(animations ->
+        {
+Timber.e("Got inside animations");
           if (!filesDir.exists()) filesDir.mkdirs();
           List<String> urls = new ArrayList<>();
 
           List<ImageModel> anims = animations.body().getAnimations();
-          for (int i = 0; i < anims.size(); i++) {
-            urls.add(anims.get(i).getImageUrl());
-            Timber.e(anims.get(i).getImageUrl());
+          for(int i = 0; i < anims.size(); i++)
+          {
+            for(int j =0; j<anims.get(i).getImageUrl().size(); j++) {
+              urls.add(anims.get(i).getImageUrl().get(j));
+              Timber.e(anims.get(i).getImageUrl().get(j));
+            }
           }
           AnimationHelper animationHelper = new AnimationHelper(filesDir, urls);
+          AnimationDrawable animationDrawable = new AnimationDrawable();
           animationHelper.download(new AnimationHelper.Callback() {
             @Override public void onEach(File image) {
+              animationDrawable.addFrame(Drawable.createFromPath(image.getAbsolutePath()),400);
             }
 
             @Override public void onDone(File imagesDir) {
               Timber.e("Everything is downloaded");
+              getViewState().setAnimation(animationDrawable);
             }
           });
         }, Throwable::printStackTrace);

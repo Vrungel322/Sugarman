@@ -47,6 +47,7 @@ import com.sugarman.myb.api.clients.MarkNotificationClient;
 import com.sugarman.myb.api.clients.SendFirebaseTokenClient;
 import com.sugarman.myb.api.models.requests.ReportStats;
 import com.sugarman.myb.api.models.responses.Tracking;
+import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.api.models.responses.me.invites.Invite;
 import com.sugarman.myb.api.models.responses.me.notifications.Notification;
 import com.sugarman.myb.api.models.responses.me.requests.Request;
@@ -84,10 +85,10 @@ import com.sugarman.myb.models.BaseChallengeItem;
 import com.sugarman.myb.models.ChallengeItem;
 import com.sugarman.myb.models.ChallengeMentorItem;
 import com.sugarman.myb.models.ChallengeWillStartItem;
+import com.sugarman.myb.models.ContactForServer;
 import com.sugarman.myb.models.ContactListForServer;
 import com.sugarman.myb.models.NoChallengeItem;
 import com.sugarman.myb.models.NoMentorsChallengeItem;
-import com.sugarman.myb.models.custom_events.CustomUserEvent;
 import com.sugarman.myb.services.MasterStepDetectorService;
 import com.sugarman.myb.ui.activities.CongratulationsActivity;
 import com.sugarman.myb.ui.activities.DailyActivity;
@@ -95,6 +96,7 @@ import com.sugarman.myb.ui.activities.FailedActivity;
 import com.sugarman.myb.ui.activities.GetUserInfoActivity;
 import com.sugarman.myb.ui.activities.SearchGroupsActivity;
 import com.sugarman.myb.ui.activities.StatsTrackingActivity;
+import com.sugarman.myb.ui.activities.addMember.AddMemberActivity;
 import com.sugarman.myb.ui.activities.createGroup.CreateGroupActivity;
 import com.sugarman.myb.ui.activities.groupDetails.GroupDetailsActivity;
 import com.sugarman.myb.ui.activities.mentorList.MentorListActivity;
@@ -119,6 +121,7 @@ import com.sugarman.myb.utils.animation.AnimationHelper;
 import com.sugarman.myb.utils.licence.LicenceChecker;
 import com.sugarman.myb.utils.md5.MD5Util;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -402,6 +405,14 @@ public class MainActivity extends GetUserInfoActivity
       @Override
       public void onEach(File image) {
         results.add(image);
+        try {
+          FileOutputStream out = new FileOutputStream(image);
+          out.flush();
+          out.close();
+
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
       }
 
       @Override
@@ -504,12 +515,11 @@ public class MainActivity extends GetUserInfoActivity
     //new SugarmanDialog.Builder(this,"doesn't work").content("INSTALLER PACKAGE NAME : " + getPackageManager()
     //    .getInstallerPackageName(getPackageName()) + " LICENCE CHECKED " + LicenceChecker.isStoreVersion(this)).build().show();
 
-    Timber.e("INSTALLER PACKAGE NAME : "
-        + getPackageManager().getInstallerPackageName(getPackageName())
-        + " LICENCE CHECKED "
-        + LicenceChecker.isStoreVersion(this));
+    Timber.e("INSTALLER PACKAGE NAME : " + getPackageManager()
+        .getInstallerPackageName(getPackageName()) + " LICENCE CHECKED " + LicenceChecker.isStoreVersion(this));
 
-    if (!LicenceChecker.isStoreVersion(this) && !BuildConfig.DEBUG) {
+    if(!LicenceChecker.isStoreVersion(this) && !BuildConfig.DEBUG)
+    {
       Timber.e("Ochko ebuchee chmo");
       new SugarmanDialog.Builder(this, "").btnCallback(new SugarmanDialogListener() {
         @Override public void onClickDialog(SugarmanDialog dialog, DialogButton button) {
@@ -518,8 +528,7 @@ public class MainActivity extends GetUserInfoActivity
 
       finishAffinity();
       System.exit(0);
-    }
-    ;
+    };
 
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
@@ -752,7 +761,7 @@ public class MainActivity extends GetUserInfoActivity
 
     ivAnimatedMan = (ImageView) findViewById(R.id.iv_animated_man);
     Log.e("Showed steps before ai", "" + SharedPreferenceHelper.getShowedSteps());
-    // updateAnimations();
+     //updateAnimations();
 
     mGetMyInvitesClient.getInvites(true);
     mGetMyRequestsClient.getRequests(true);
@@ -777,14 +786,15 @@ public class MainActivity extends GetUserInfoActivity
       case 1:
         if ((grantResults.length > 0) && (grantResults[2] == PackageManager.PERMISSION_GRANTED)) {
 
-          if (!SharedPreferenceHelper.getContactsSent()) {
+          if(!SharedPreferenceHelper.getContactsSent()) {
             AsyncTask.execute(() -> {
-              ContactListForServer list =
-                  ContactsHelper.getContactListMultipleNumbers(MainActivity.this);
+              List<ContactForServer> contacts = new ArrayList<>();
+              ContactListForServer list = ContactsHelper.getContactListMultipleNumbers(MainActivity.this);
 
               mPresenter.sendContacts(list);
             });
           }
+
 
           saveIMEI();
         }
@@ -871,9 +881,9 @@ public class MainActivity extends GetUserInfoActivity
     }
   }
 
+
   @Override protected void onResume() {
     super.onResume();
-    mPresenter.checkIfRuleStepsDone(todaySteps);
     String urlAvatar = SharedPreferenceHelper.getAvatar();
     if (TextUtils.isEmpty(urlAvatar)) {
     } else {
@@ -1743,7 +1753,14 @@ public class MainActivity extends GetUserInfoActivity
     spiChallenges.invalidate();
   }
 
-  @Override public void doEventActionResponse(CustomUserEvent customUserEvent) {
-    doEventAction(customUserEvent, null);
+  @Override public void setAnimation(AnimationDrawable animation) {
+
+    Timber.e("Set animation");
+    ivAnimatedMan.setBackgroundDrawable(animation);
+    animationMan = (AnimationDrawable) ivAnimatedMan.getBackground();
+    animationMan = animation;
+    animationMan.stop();
+    animationMan.start();
+
   }
 }
