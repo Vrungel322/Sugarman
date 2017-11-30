@@ -35,6 +35,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.facebook.FacebookException;
 import com.mzelzoghbi.zgallery.CustomViewPager;
 import com.squareup.picasso.CustomPicasso;
+import com.squareup.picasso.Picasso;
 import com.sugarman.myb.App;
 import com.sugarman.myb.BuildConfig;
 import com.sugarman.myb.R;
@@ -47,7 +48,6 @@ import com.sugarman.myb.api.clients.MarkNotificationClient;
 import com.sugarman.myb.api.clients.SendFirebaseTokenClient;
 import com.sugarman.myb.api.models.requests.ReportStats;
 import com.sugarman.myb.api.models.responses.Tracking;
-import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.api.models.responses.me.invites.Invite;
 import com.sugarman.myb.api.models.responses.me.notifications.Notification;
 import com.sugarman.myb.api.models.responses.me.requests.Request;
@@ -96,7 +96,6 @@ import com.sugarman.myb.ui.activities.FailedActivity;
 import com.sugarman.myb.ui.activities.GetUserInfoActivity;
 import com.sugarman.myb.ui.activities.SearchGroupsActivity;
 import com.sugarman.myb.ui.activities.StatsTrackingActivity;
-import com.sugarman.myb.ui.activities.addMember.AddMemberActivity;
 import com.sugarman.myb.ui.activities.createGroup.CreateGroupActivity;
 import com.sugarman.myb.ui.activities.groupDetails.GroupDetailsActivity;
 import com.sugarman.myb.ui.activities.mentorList.MentorListActivity;
@@ -1754,13 +1753,7 @@ public class MainActivity extends GetUserInfoActivity
   }
 
   @Override public void setAnimation(AnimationDrawable animation) {
-
     Timber.e("Set animation");
-    ivAnimatedMan.setBackgroundDrawable(animation);
-    animationMan = (AnimationDrawable) ivAnimatedMan.getBackground();
-    animationMan = animation;
-    animationMan.stop();
-    animationMan.start();
-
+    runOnUiThread(() -> Picasso.with(this).load("1").placeholder(animation).into(ivAnimatedMan));
   }
 }
