@@ -1,5 +1,7 @@
 package com.sugarman.myb.ui.activities.mainScreeen;
 
+import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
 import com.arellomobile.mvp.InjectViewState;
 import com.sugarman.myb.App;
 import com.sugarman.myb.base.BasicPresenter;
@@ -72,16 +74,21 @@ Timber.e("Got inside animations");
           List<ImageModel> anims = animations.body().getAnimations();
           for(int i = 0; i < anims.size(); i++)
           {
-            urls.add(anims.get(i).getImageUrl());
-            Timber.e(anims.get(i).getImageUrl());
+            for(int j =0; j<anims.get(i).getImageUrl().size(); j++) {
+              urls.add(anims.get(i).getImageUrl().get(j));
+              Timber.e(anims.get(i).getImageUrl().get(j));
+            }
           }
           AnimationHelper animationHelper = new AnimationHelper(filesDir, urls);
+          AnimationDrawable animationDrawable = new AnimationDrawable();
           animationHelper.download(new AnimationHelper.Callback() {
             @Override public void onEach(File image) {
+              animationDrawable.addFrame(Drawable.createFromPath(image.getAbsolutePath()),400);
             }
 
             @Override public void onDone(File imagesDir) {
               Timber.e("Everything is downloaded");
+              getViewState().setAnimation(animationDrawable);
             }
           });
         }, Throwable::printStackTrace);

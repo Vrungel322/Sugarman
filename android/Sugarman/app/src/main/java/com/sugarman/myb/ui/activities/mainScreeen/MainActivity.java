@@ -121,6 +121,7 @@ import com.sugarman.myb.utils.animation.AnimationHelper;
 import com.sugarman.myb.utils.licence.LicenceChecker;
 import com.sugarman.myb.utils.md5.MD5Util;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -404,6 +405,14 @@ public class MainActivity extends GetUserInfoActivity
       @Override
       public void onEach(File image) {
         results.add(image);
+        try {
+          FileOutputStream out = new FileOutputStream(image);
+          out.flush();
+          out.close();
+
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
       }
 
       @Override
@@ -752,7 +761,7 @@ public class MainActivity extends GetUserInfoActivity
 
     ivAnimatedMan = (ImageView) findViewById(R.id.iv_animated_man);
     Log.e("Showed steps before ai", "" + SharedPreferenceHelper.getShowedSteps());
-    // updateAnimations();
+     //updateAnimations();
 
     mGetMyInvitesClient.getInvites(true);
     mGetMyRequestsClient.getRequests(true);
@@ -871,6 +880,7 @@ public class MainActivity extends GetUserInfoActivity
       if (!animationMan.isRunning()) animationMan.start();
     }
   }
+
 
   @Override protected void onResume() {
     super.onResume();
@@ -1741,5 +1751,16 @@ public class MainActivity extends GetUserInfoActivity
     spiChallenges.setViewPager(vpTrackings);
     spiChallenges.requestLayout();
     spiChallenges.invalidate();
+  }
+
+  @Override public void setAnimation(AnimationDrawable animation) {
+
+    Timber.e("Set animation");
+    ivAnimatedMan.setBackgroundDrawable(animation);
+    animationMan = (AnimationDrawable) ivAnimatedMan.getBackground();
+    animationMan = animation;
+    animationMan.stop();
+    animationMan.start();
+
   }
 }

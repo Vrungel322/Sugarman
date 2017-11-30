@@ -1,6 +1,7 @@
 package com.sugarman.myb.models.animation;
 
 import com.google.gson.annotations.SerializedName;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,8 +12,10 @@ import lombok.Setter;
  */
 
 @AllArgsConstructor @NoArgsConstructor public class ImageModel {
-  @Getter @Setter @SerializedName("url") String imageUrl;
-  @Getter @Setter @SerializedName("md5") String md5;
-  @Getter @Setter @SerializedName("index") String index ;
+  @Getter @Setter @SerializedName("url") List<String> imageUrl;
+  @Getter @Setter @SerializedName("md5") List<String> md5;
+  @Getter @Setter @SerializedName("level") String level;
+  @Getter @Setter @SerializedName("android_duration") int duration;
+  @Getter @Setter @SerializedName("steps") int steps;
 
 }
