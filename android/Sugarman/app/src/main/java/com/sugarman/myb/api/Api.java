@@ -4,7 +4,6 @@ import com.sugarman.myb.api.models.requests.AddMembersRequest;
 import com.sugarman.myb.api.models.requests.ApproveOtpRequest;
 import com.sugarman.myb.api.models.requests.CheckPhoneRequest;
 import com.sugarman.myb.api.models.requests.CheckVkRequest;
-import com.sugarman.myb.api.models.requests.CountInvitesRequest;
 import com.sugarman.myb.api.models.requests.JoinGroupRequest;
 import com.sugarman.myb.api.models.requests.PokeRequest;
 import com.sugarman.myb.api.models.requests.RefreshUserDataRequest;
@@ -15,7 +14,6 @@ import com.sugarman.myb.api.models.responses.AllMyUserDataResponse;
 import com.sugarman.myb.api.models.responses.ApproveOtpResponse;
 import com.sugarman.myb.api.models.responses.CheckPhoneResponse;
 import com.sugarman.myb.api.models.responses.CheckVkResponse;
-import com.sugarman.myb.api.models.responses.CountInvitesResponse;
 import com.sugarman.myb.api.models.responses.ResendMessageResponse;
 import com.sugarman.myb.api.models.responses.devices.DevicesResponse;
 import com.sugarman.myb.api.models.responses.me.EditGroupResponse;
@@ -49,9 +47,6 @@ public interface Api {
   @POST("/v2/users") Call<UsersResponse> refreshUserData(@Body RefreshUserDataRequest request);
 
   @POST("/v1/approveotp") Call<ApproveOtpResponse> approveOtp(@Body ApproveOtpRequest request);
-
-  @POST("/v2/count_inviters") Call<CountInvitesResponse> countInvites(
-      @Body CountInvitesRequest request);
 
   @Multipart @POST("/v2/editusers") Call<UsersResponse> editUser(@Part MultipartBody.Part filePart,
       @Part("userId") RequestBody userId, @Part("fbid") RequestBody fbId,
