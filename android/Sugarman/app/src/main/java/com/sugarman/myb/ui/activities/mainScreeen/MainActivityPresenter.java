@@ -82,6 +82,7 @@ Timber.e("Got inside animations");
               Timber.e(anims.get(i).getImageUrl().get(j));
             }
           }
+          //Collections.sort(urls);
           AnimationHelper animationHelper = new AnimationHelper(filesDir, urls);
           AnimationDrawable animationDrawable = new AnimationDrawable();
 
