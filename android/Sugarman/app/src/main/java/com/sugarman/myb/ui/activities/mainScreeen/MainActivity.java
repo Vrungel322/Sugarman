@@ -88,6 +88,7 @@ import com.sugarman.myb.models.ContactForServer;
 import com.sugarman.myb.models.ContactListForServer;
 import com.sugarman.myb.models.NoChallengeItem;
 import com.sugarman.myb.models.NoMentorsChallengeItem;
+import com.sugarman.myb.models.custom_events.CustomUserEvent;
 import com.sugarman.myb.services.MasterStepDetectorService;
 import com.sugarman.myb.ui.activities.CongratulationsActivity;
 import com.sugarman.myb.ui.activities.DailyActivity;
@@ -389,41 +390,6 @@ public class MainActivity extends GetUserInfoActivity
         }
       };
   private File cachedImagesFolder;
-
-  public void download() throws Exception {
-    List<File> results = new ArrayList<>();
-    final int[] done = {0};
-    List<String> urls = new ArrayList<>();
-
-    for (int i = 0; i < 2000; i++) {
-      urls.add(String.valueOf(2000 - i - 1));
-    }
-
-    new AnimationHelper(null, urls).download(new AnimationHelper.Callback() {
-      @Override
-      public void onEach(File image) {
-        results.add(image);
-        try {
-          FileOutputStream out = new FileOutputStream(image);
-          out.flush();
-          out.close();
-
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-      }
-
-      @Override
-      public void onDone(File imagesDir) {
-        done[0]++;
-      }
-    });
-
-    while (results.size() < 2000) {
-      Thread.sleep(10);
-    }
-  }
-
   private String userId;
   private int[] brokenGlassSoundIds;
   private final ApiGetNotificationsListener apiGetNotificationsListener =
@@ -499,6 +465,37 @@ public class MainActivity extends GetUserInfoActivity
       };
   private WalkDataViewPagerAdapter mWalkDataViewPagerAdapter;
 
+  public void download() throws Exception {
+    List<File> results = new ArrayList<>();
+    final int[] done = { 0 };
+    List<String> urls = new ArrayList<>();
+
+    for (int i = 0; i < 2000; i++) {
+      urls.add(String.valueOf(2000 - i - 1));
+    }
+
+    new AnimationHelper(null, urls).download(new AnimationHelper.Callback() {
+      @Override public void onEach(File image) {
+        results.add(image);
+        try {
+          FileOutputStream out = new FileOutputStream(image);
+          out.flush();
+          out.close();
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
+
+      @Override public void onDone(File imagesDir) {
+        done[0]++;
+      }
+    });
+
+    while (results.size() < 2000) {
+      Thread.sleep(10);
+    }
+  }
+
   @Override protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_main);
     super.onCreate(savedInstanceState);
@@ -509,15 +506,23 @@ public class MainActivity extends GetUserInfoActivity
     cachedImagesFolder = new File(getFilesDir() + "/animations/");
 
     mPresenter.getAnimations(cachedImagesFolder);
+    //Timber.e("!!!! " +new File(cachedImagesFolder.list()[0]));
+    //Timber.e(
+    //    "!!!! " + MD5Util.calculateMD5(new File(getFilesDir() + "/animations/"+cachedImagesFolder.list()[0])));
+
+    //Timber.e("!!!! " +new File(cachedImagesFolder.list()[0]));
+    //Timber.e(
+    //    "!!!! " + MD5Util.calculateMD5(new File("android.resource://com.sugarman.myb/drawable/image_name")));
 
     //new SugarmanDialog.Builder(this,"doesn't work").content("INSTALLER PACKAGE NAME : " + getPackageManager()
     //    .getInstallerPackageName(getPackageName()) + " LICENCE CHECKED " + LicenceChecker.isStoreVersion(this)).build().show();
 
-    Timber.e("INSTALLER PACKAGE NAME : " + getPackageManager()
-        .getInstallerPackageName(getPackageName()) + " LICENCE CHECKED " + LicenceChecker.isStoreVersion(this));
+    Timber.e("INSTALLER PACKAGE NAME : "
+        + getPackageManager().getInstallerPackageName(getPackageName())
+        + " LICENCE CHECKED "
+        + LicenceChecker.isStoreVersion(this));
 
-    if(!LicenceChecker.isStoreVersion(this) && !BuildConfig.DEBUG)
-    {
+    if (!LicenceChecker.isStoreVersion(this) && !BuildConfig.DEBUG) {
       Timber.e("Ochko ebuchee chmo");
       new SugarmanDialog.Builder(this, "").btnCallback(new SugarmanDialogListener() {
         @Override public void onClickDialog(SugarmanDialog dialog, DialogButton button) {
@@ -526,7 +531,8 @@ public class MainActivity extends GetUserInfoActivity
 
       finishAffinity();
       System.exit(0);
-    };
+    }
+    ;
 
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
@@ -759,7 +765,7 @@ public class MainActivity extends GetUserInfoActivity
 
     ivAnimatedMan = (ImageView) findViewById(R.id.iv_animated_man);
     Log.e("Showed steps before ai", "" + SharedPreferenceHelper.getShowedSteps());
-     //updateAnimations();
+    //updateAnimations();
 
     mGetMyInvitesClient.getInvites(true);
     mGetMyRequestsClient.getRequests(true);
@@ -784,15 +790,15 @@ public class MainActivity extends GetUserInfoActivity
       case 1:
         if ((grantResults.length > 0) && (grantResults[2] == PackageManager.PERMISSION_GRANTED)) {
 
-          if(!SharedPreferenceHelper.getContactsSent()) {
+          if (!SharedPreferenceHelper.getContactsSent()) {
             AsyncTask.execute(() -> {
               List<ContactForServer> contacts = new ArrayList<>();
-              ContactListForServer list = ContactsHelper.getContactListMultipleNumbers(MainActivity.this);
+              ContactListForServer list =
+                  ContactsHelper.getContactListMultipleNumbers(MainActivity.this);
 
               mPresenter.sendContacts(list);
             });
           }
-
 
           saveIMEI();
         }
@@ -879,9 +885,9 @@ public class MainActivity extends GetUserInfoActivity
     }
   }
 
-
   @Override protected void onResume() {
     super.onResume();
+    mPresenter.checkIfRuleStepsDone(todaySteps);
     String urlAvatar = SharedPreferenceHelper.getAvatar();
     if (TextUtils.isEmpty(urlAvatar)) {
     } else {
@@ -1755,10 +1761,14 @@ public class MainActivity extends GetUserInfoActivity
     Timber.e("Set animation");
     runOnUiThread(() -> {
       ivAnimatedMan.setBackgroundDrawable(null);
-      Timber.e(""+animation.getNumberOfFrames());
+      Timber.e("" + animation.getNumberOfFrames());
       ivAnimatedMan.setImageDrawable(animation);
       animation.start();
-     // Picasso.with(this).load("1").placeholder(animation).error(animation).into(ivAnimatedMan);
+      // Picasso.with(this).load("1").placeholder(animation).error(animation).into(ivAnimatedMan);
     });
+  }
+
+  @Override public void doEventActionResponse(CustomUserEvent customUserEvent) {
+    doEventAction(customUserEvent, null);
   }
 }

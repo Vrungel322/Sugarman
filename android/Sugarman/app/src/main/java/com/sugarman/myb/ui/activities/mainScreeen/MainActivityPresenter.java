@@ -5,8 +5,11 @@ import android.graphics.drawable.Drawable;
 import com.arellomobile.mvp.InjectViewState;
 import com.sugarman.myb.App;
 import com.sugarman.myb.base.BasicPresenter;
+import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.models.ContactListForServer;
 import com.sugarman.myb.models.animation.ImageModel;
+import com.sugarman.myb.models.custom_events.CustomUserEvent;
+import com.sugarman.myb.models.custom_events.Rule;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.ThreadSchedulers;
 import com.sugarman.myb.utils.animation.AnimationHelper;
@@ -28,6 +31,32 @@ import timber.log.Timber;
     super.onFirstViewAttach();
     fetchTasks();
     fetchCompletedTasks();
+    fetchRules();
+  }
+
+  private void fetchRules() {
+    Subscription subscription =
+        mDataManager.fetchRules().compose(ThreadSchedulers.applySchedulers()).subscribe(ruleSet -> {
+          mDataManager.saveRules(ruleSet.body());
+        }, Throwable::printStackTrace);
+    addToUnsubscription(subscription);
+  }
+
+  public void checkIfRuleStepsDone(int todaySteps) {
+    List<Rule> rules = mDataManager.getRuleByName(Constants.EVENT_X_STEPS_DONE);
+    if (!rules.isEmpty()) {
+      Rule rule = rules.get(0);
+
+      Timber.e(
+          "rule " + rule.getName() + " todaySteps " + todaySteps + " getCount()" + rule.getCount());
+      if (rule.getCount() <= todaySteps){
+        Timber.e("rule true");
+        getViewState().doEventActionResponse(CustomUserEvent.builder()
+            .strType(rule.getAction())
+            .eventText(rule.getMessage())
+            .build());
+      }
+    }
   }
 
   private void fetchTasks() {

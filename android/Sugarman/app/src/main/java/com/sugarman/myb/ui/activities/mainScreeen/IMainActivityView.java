@@ -4,6 +4,7 @@ import android.graphics.drawable.AnimationDrawable;
 import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
+import com.sugarman.myb.models.custom_events.CustomUserEvent;
 
 /**
  * Created by nikita on 06.10.2017.
@@ -11,4 +12,6 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 @StateStrategyType(AddToEndSingleStrategy.class) public interface IMainActivityView
     extends MvpView {
   void setAnimation(AnimationDrawable animation);
+
+  void doEventActionResponse(CustomUserEvent build);
 }

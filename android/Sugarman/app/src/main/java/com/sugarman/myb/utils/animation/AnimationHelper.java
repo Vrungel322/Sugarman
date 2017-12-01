@@ -2,7 +2,6 @@ package com.sugarman.myb.utils.animation;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import com.github.nkzawa.socketio.client.Url;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.net.MalformedURLException;
@@ -91,7 +90,8 @@ public class AnimationHelper {
         FileOutputStream out = new FileOutputStream(f);
 
         Bitmap bmp = BitmapFactory.decodeStream(url1.openConnection().getInputStream());
-        bmp.compress(Bitmap.CompressFormat.PNG,80,out);
+        //bmp.compress(Bitmap.CompressFormat.PNG,80,out);
+        bmp.compress(Bitmap.CompressFormat.PNG,0,out);
         out.flush();
         out.close();
 
