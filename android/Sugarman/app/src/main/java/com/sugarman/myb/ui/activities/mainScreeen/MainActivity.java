@@ -35,7 +35,6 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.facebook.FacebookException;
 import com.mzelzoghbi.zgallery.CustomViewPager;
 import com.squareup.picasso.CustomPicasso;
-import com.squareup.picasso.Picasso;
 import com.sugarman.myb.App;
 import com.sugarman.myb.BuildConfig;
 import com.sugarman.myb.R;
@@ -389,7 +388,7 @@ public class MainActivity extends GetUserInfoActivity
           showUpdateOldVersionDialog();
         }
       };
-
+  private File cachedImagesFolder;
 
   public void download() throws Exception {
     List<File> results = new ArrayList<>();
@@ -507,9 +506,9 @@ public class MainActivity extends GetUserInfoActivity
 
     Timber.e(MD5Util.md5("md5 test"));
 
-    File f3 = new File(getFilesDir() + "/animations/");
+    cachedImagesFolder = new File(getFilesDir() + "/animations/");
 
-    mPresenter.getAnimations(f3);
+    mPresenter.getAnimations(cachedImagesFolder);
 
     //new SugarmanDialog.Builder(this,"doesn't work").content("INSTALLER PACKAGE NAME : " + getPackageManager()
     //    .getInstallerPackageName(getPackageName()) + " LICENCE CHECKED " + LicenceChecker.isStoreVersion(this)).build().show();
