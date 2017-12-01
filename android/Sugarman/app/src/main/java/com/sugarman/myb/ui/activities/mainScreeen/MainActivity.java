@@ -35,7 +35,6 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.facebook.FacebookException;
 import com.mzelzoghbi.zgallery.CustomViewPager;
 import com.squareup.picasso.CustomPicasso;
-import com.squareup.picasso.Picasso;
 import com.sugarman.myb.App;
 import com.sugarman.myb.BuildConfig;
 import com.sugarman.myb.R;
@@ -89,6 +88,7 @@ import com.sugarman.myb.models.ContactForServer;
 import com.sugarman.myb.models.ContactListForServer;
 import com.sugarman.myb.models.NoChallengeItem;
 import com.sugarman.myb.models.NoMentorsChallengeItem;
+import com.sugarman.myb.models.custom_events.CustomUserEvent;
 import com.sugarman.myb.services.MasterStepDetectorService;
 import com.sugarman.myb.ui.activities.CongratulationsActivity;
 import com.sugarman.myb.ui.activities.DailyActivity;
@@ -117,6 +117,9 @@ import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.SoundHelper;
 import com.sugarman.myb.utils.StringHelper;
 import com.sugarman.myb.utils.animation.AnimationHelper;
+import com.sugarman.myb.utils.inapp.IabHelper;
+import com.sugarman.myb.utils.inapp.IabResult;
+import com.sugarman.myb.utils.inapp.Inventory;
 import com.sugarman.myb.utils.licence.LicenceChecker;
 import com.sugarman.myb.utils.md5.MD5Util;
 import java.io.File;
@@ -143,9 +146,38 @@ public class MainActivity extends GetUserInfoActivity
   private final List<Notification> myNotifications = new ArrayList<>(0);
   private final List<Invite> myInvites = new ArrayList<>(0);
   private final List<Request> myRequests = new ArrayList<>(0);
+  private String mFreeSku = "v1.group_rescue";
   private final HashMap<String, String> failedTrackingsId = new HashMap<>(0);
   private final HashMap<String, String> dailyTrackingsId = new HashMap<>(0);
   private final HashMap<String, String> congratulationTrackingsId = new HashMap<>(0);
+  IabHelper.QueryInventoryFinishedListener mReceivedInventoryListener =
+      new IabHelper.QueryInventoryFinishedListener() {
+        public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
+          Timber.e("mFreeSku mReceivedInventoryListener " + mFreeSku);
+
+          if (result.isFailure()) {
+            // Handle failure
+          } else {
+            mHelper.consumeAsync(inventory.getPurchase(mFreeSku), mConsumeFinishedListener);
+            //mHelper.consumeAsync(inventory.getAllPurchases(), mOnConsumeMultiFinishedListener);
+            Timber.e(result.getMessage());
+            Timber.e(inventory.getSkuDetails(mFreeSku).getTitle());
+            Timber.e(inventory.getSkuDetails(mFreeSku).getSku());
+
+            mPresenter.checkInAppBilling(inventory.getPurchase(mFreeSku),
+                inventory.getSkuDetails(mFreeSku).getTitle(), mFreeSku);
+          }
+        }
+      };
+  IabHelper mHelper;
+  IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = (purchase, result) -> {
+    Timber.e("mConsumeFinishedListener" + purchase.toString());
+    Timber.e("mConsumeFinishedListener" + result.toString());
+    if (result.isSuccess()) {
+    } else {
+      // handle error
+    }
+  };
   private final ApiSendFirebaseTokenListener apiSendFirebaseTokenListener =
       new ApiSendFirebaseTokenListener() {
         @Override public void onApiSendFirebaseTokenSuccess() {
@@ -389,42 +421,7 @@ public class MainActivity extends GetUserInfoActivity
           showUpdateOldVersionDialog();
         }
       };
-
-
-  public void download() throws Exception {
-    List<File> results = new ArrayList<>();
-    final int[] done = {0};
-    List<String> urls = new ArrayList<>();
-
-    for (int i = 0; i < 2000; i++) {
-      urls.add(String.valueOf(2000 - i - 1));
-    }
-
-    new AnimationHelper(null, urls).download(new AnimationHelper.Callback() {
-      @Override
-      public void onEach(File image) {
-        results.add(image);
-        try {
-          FileOutputStream out = new FileOutputStream(image);
-          out.flush();
-          out.close();
-
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-      }
-
-      @Override
-      public void onDone(File imagesDir) {
-        done[0]++;
-      }
-    });
-
-    while (results.size() < 2000) {
-      Thread.sleep(10);
-    }
-  }
-
+  private File cachedImagesFolder;
   private String userId;
   private int[] brokenGlassSoundIds;
   private final ApiGetNotificationsListener apiGetNotificationsListener =
@@ -500,25 +497,66 @@ public class MainActivity extends GetUserInfoActivity
       };
   private WalkDataViewPagerAdapter mWalkDataViewPagerAdapter;
 
+  public void download() throws Exception {
+    List<File> results = new ArrayList<>();
+    final int[] done = { 0 };
+    List<String> urls = new ArrayList<>();
+
+    for (int i = 0; i < 2000; i++) {
+      urls.add(String.valueOf(2000 - i - 1));
+    }
+
+    new AnimationHelper(null, urls).download(new AnimationHelper.Callback() {
+      @Override public void onEach(File image) {
+        results.add(image);
+        try {
+          FileOutputStream out = new FileOutputStream(image);
+          out.flush();
+          out.close();
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
+
+      @Override public void onDone(File imagesDir) {
+        done[0]++;
+      }
+    });
+
+    while (results.size() < 2000) {
+      Thread.sleep(10);
+    }
+  }
+
   @Override protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_main);
     super.onCreate(savedInstanceState);
     Resources resources = getResources();
 
+    setupInAppPurchase();
+
     Timber.e(MD5Util.md5("md5 test"));
 
-    File f3 = new File(getFilesDir() + "/animations/");
+    cachedImagesFolder = new File(getFilesDir() + "/animations/");
 
-    mPresenter.getAnimations(f3);
+    mPresenter.getAnimations(cachedImagesFolder);
+    //Timber.e("!!!! " +new File(cachedImagesFolder.list()[0]));
+    //Timber.e(
+    //    "!!!! " + MD5Util.calculateMD5(new File(getFilesDir() + "/animations/"+cachedImagesFolder.list()[0])));
+
+    //Timber.e("!!!! " +new File(cachedImagesFolder.list()[0]));
+    //Timber.e(
+    //    "!!!! " + MD5Util.calculateMD5(new File("android.resource://com.sugarman.myb/drawable/image_name")));
 
     //new SugarmanDialog.Builder(this,"doesn't work").content("INSTALLER PACKAGE NAME : " + getPackageManager()
     //    .getInstallerPackageName(getPackageName()) + " LICENCE CHECKED " + LicenceChecker.isStoreVersion(this)).build().show();
 
-    Timber.e("INSTALLER PACKAGE NAME : " + getPackageManager()
-        .getInstallerPackageName(getPackageName()) + " LICENCE CHECKED " + LicenceChecker.isStoreVersion(this));
+    Timber.e("INSTALLER PACKAGE NAME : "
+        + getPackageManager().getInstallerPackageName(getPackageName())
+        + " LICENCE CHECKED "
+        + LicenceChecker.isStoreVersion(this));
 
-    if(!LicenceChecker.isStoreVersion(this) && !BuildConfig.DEBUG)
-    {
+    if (!LicenceChecker.isStoreVersion(this) && !BuildConfig.DEBUG) {
       Timber.e("Ochko ebuchee chmo");
       new SugarmanDialog.Builder(this, "").btnCallback(new SugarmanDialogListener() {
         @Override public void onClickDialog(SugarmanDialog dialog, DialogButton button) {
@@ -527,7 +565,8 @@ public class MainActivity extends GetUserInfoActivity
 
       finishAffinity();
       System.exit(0);
-    };
+    }
+    ;
 
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
@@ -760,7 +799,7 @@ public class MainActivity extends GetUserInfoActivity
 
     ivAnimatedMan = (ImageView) findViewById(R.id.iv_animated_man);
     Log.e("Showed steps before ai", "" + SharedPreferenceHelper.getShowedSteps());
-     //updateAnimations();
+    //updateAnimations();
 
     mGetMyInvitesClient.getInvites(true);
     mGetMyRequestsClient.getRequests(true);
@@ -785,15 +824,15 @@ public class MainActivity extends GetUserInfoActivity
       case 1:
         if ((grantResults.length > 0) && (grantResults[2] == PackageManager.PERMISSION_GRANTED)) {
 
-          if(!SharedPreferenceHelper.getContactsSent()) {
+          if (!SharedPreferenceHelper.getContactsSent()) {
             AsyncTask.execute(() -> {
               List<ContactForServer> contacts = new ArrayList<>();
-              ContactListForServer list = ContactsHelper.getContactListMultipleNumbers(MainActivity.this);
+              ContactListForServer list =
+                  ContactsHelper.getContactListMultipleNumbers(MainActivity.this);
 
               mPresenter.sendContacts(list);
             });
           }
-
 
           saveIMEI();
         }
@@ -880,9 +919,9 @@ public class MainActivity extends GetUserInfoActivity
     }
   }
 
-
   @Override protected void onResume() {
     super.onResume();
+    mPresenter.checkIfRuleStepsDone(todaySteps);
     String urlAvatar = SharedPreferenceHelper.getAvatar();
     if (TextUtils.isEmpty(urlAvatar)) {
     } else {
@@ -1625,6 +1664,56 @@ public class MainActivity extends GetUserInfoActivity
     // vCreateGroup.startAnimation(rotate);
   }
 
+  private void setupInAppPurchase() {
+    mHelper = new IabHelper(this, Config.BASE_64_ENCODED_PUBLIC_KEY);
+
+    mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+      public void onIabSetupFinished(IabResult result) {
+        if (!result.isSuccess()) {
+          Timber.e("In-app Billing setup failed: " + result);
+        } else {
+          startPurchaseFlow("v1.group_rescue");
+          //consumeItem();
+          Timber.e("In-app Billing is set up OK");
+        }
+      }
+    });
+    mHelper.enableDebugLogging(true);
+  }
+
+  public void startPurchaseFlow(String freeSku) {
+    mFreeSku = freeSku;
+    Timber.e("mFreeSku startPurchaseFlow " + mFreeSku);
+    Map<String, Object> eventValue = new HashMap<>();
+    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+    eventValue.put(AFInAppEventParameterName.SCORE, 100);
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_tap_apply_for_mentor",
+            eventValue);
+
+    mHelper.launchPurchaseFlow(this, freeSku, 10001, (result, purchase) -> {
+          Timber.e("mFreeSku mPurchaseFinishedListener " + mFreeSku);
+
+          if (result.isFailure()) {
+            Timber.e("Result is failure");
+            // Handle error
+            return;
+          } else if (purchase.getSku().equals(mFreeSku)) {
+            Timber.e("Id is correct");
+            consumeItem();
+            Timber.e(mHelper.getMDataSignature());
+          } else {
+            Timber.e(result.getMessage());
+          }
+        },
+        "mypurchasetoken");
+  }
+
+  public void consumeItem() {
+    Timber.e("Item consumed");
+    mHelper.queryInventoryAsync(true, Arrays.asList(mFreeSku), mReceivedInventoryListener);
+  }
+
   private List<Notification> prepareNotifications(Notification[] notifications) {
     List<Notification> preparedNotifications = new ArrayList<>(notifications.length);
     for (Notification notification : notifications) {
@@ -1756,10 +1845,14 @@ public class MainActivity extends GetUserInfoActivity
     Timber.e("Set animation");
     runOnUiThread(() -> {
       ivAnimatedMan.setBackgroundDrawable(null);
-      Timber.e(""+animation.getNumberOfFrames());
+      Timber.e("" + animation.getNumberOfFrames());
       ivAnimatedMan.setImageDrawable(animation);
       animation.start();
-     // Picasso.with(this).load("1").placeholder(animation).error(animation).into(ivAnimatedMan);
+      // Picasso.with(this).load("1").placeholder(animation).error(animation).into(ivAnimatedMan);
     });
+  }
+
+  @Override public void doEventActionResponse(CustomUserEvent customUserEvent) {
+    doEventAction(customUserEvent, null);
   }
 }
