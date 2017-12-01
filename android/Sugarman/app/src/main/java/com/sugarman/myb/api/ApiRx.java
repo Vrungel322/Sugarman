@@ -17,6 +17,7 @@ import com.sugarman.myb.api.models.responses.animation.GetAnimationResponse;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.models.ContactListForServer;
 import com.sugarman.myb.models.custom_events.RuleSet;
+import com.sugarman.myb.models.iab.InAppSinglePurchase;
 import com.sugarman.myb.models.iab.NextFreeSkuEntity;
 import com.sugarman.myb.models.iab.PurchaseForServer;
 import com.sugarman.myb.models.iab.Subscriptions;
@@ -98,6 +99,9 @@ public interface ApiRx {
 
   @POST("v1/in_app_purchases") Observable<Response<Subscriptions>> checkInAppBilling(
       @Body PurchaseForServer purchaseForServer);
+
+  @POST("v1/in_app_purchases") Observable<Response<Subscriptions>> checkInAppBilling(
+      @Body InAppSinglePurchase purchaseForServer);
 
   @GET("v1/check_slots") Observable<Response<NextFreeSkuEntity>> getNextFreeSku(
       @Query("device") String device);

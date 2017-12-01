@@ -26,6 +26,7 @@ import com.sugarman.myb.data.local.PreferencesHelper;
 import com.sugarman.myb.models.ContactListForServer;
 import com.sugarman.myb.models.custom_events.Rule;
 import com.sugarman.myb.models.custom_events.RuleSet;
+import com.sugarman.myb.models.iab.InAppSinglePurchase;
 import com.sugarman.myb.models.iab.NextFreeSkuEntity;
 import com.sugarman.myb.models.iab.PurchaseForServer;
 import com.sugarman.myb.models.iab.Subscriptions;
@@ -166,6 +167,11 @@ public class DataManager {
 
   public Observable<Response<Subscriptions>> checkInAppBilling(
       PurchaseForServer purchaseForServer) {
+    return mRestApi.checkInAppBilling(purchaseForServer);
+  }
+
+  public Observable<Response<Subscriptions>> checkInAppBilling(
+      InAppSinglePurchase purchaseForServer) {
     return mRestApi.checkInAppBilling(purchaseForServer);
   }
 
