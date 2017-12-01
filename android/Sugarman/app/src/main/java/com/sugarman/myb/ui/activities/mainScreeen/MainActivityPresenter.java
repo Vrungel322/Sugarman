@@ -14,6 +14,8 @@ import com.sugarman.myb.utils.ThreadSchedulers;
 import com.sugarman.myb.utils.animation.AnimationHelper;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import rx.Subscription;
 import timber.log.Timber;
@@ -63,6 +65,7 @@ import timber.log.Timber;
 
   public void getAnimations(File filesDir)
   {
+    List<Drawable> animationList = new ArrayList<>();
     Subscription subscription = mDataManager.getAnimations()
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(animations ->
@@ -81,14 +84,19 @@ Timber.e("Got inside animations");
           }
           AnimationHelper animationHelper = new AnimationHelper(filesDir, urls);
           AnimationDrawable animationDrawable = new AnimationDrawable();
+
           animationHelper.download(new AnimationHelper.Callback() {
             @Override public void onEach(File image) {
-              animationDrawable.addFrame(Drawable.createFromPath(image.getAbsolutePath()),400);
+              animationList.add(Drawable.createFromPath(image.getAbsolutePath()));
             }
 
             @Override public void onDone(File imagesDir) {
               Timber.e("Everything is downloaded");
+              for(Drawable drawable : animationList) {
+                animationDrawable.addFrame(drawable, 60);
+              }
               getViewState().setAnimation(animationDrawable);
+
             }
           });
         }, Throwable::printStackTrace);

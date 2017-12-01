@@ -349,7 +349,7 @@ public class MainActivity extends GetUserInfoActivity
           List<BaseChallengeItem> converted = prepareTrackingItems();
 
           updatePagerTrackings();
-          updateAnimations(todaySteps);
+          //updateAnimations(todaySteps);
 
           if (swipedTracking != null) {
             ChallengeWillStartItem item = new ChallengeWillStartItem();
@@ -981,7 +981,7 @@ public class MainActivity extends GetUserInfoActivity
 
     App.getEventBus().post(new DebugRequestStepsEvent(todaySteps));
     showFullscreenNotifications();
-    updateAnimations(todaySteps);
+    //updateAnimations(todaySteps);
   }
 
   @Override protected void onStop() {
@@ -1510,7 +1510,7 @@ public class MainActivity extends GetUserInfoActivity
     tvCounter.setTextColor(color);
     color = color - 0xaa000000;
     tvCounter.setShadowLayer(12, 0, 10, color);
-    updateAnimations(todaySteps);
+    //updateAnimations(todaySteps);
     mWalkDataViewPagerAdapter.setWalkData(String.valueOf(todaySteps));
     mWalkDataViewPagerAdapter.notifyDataSetChanged();
   }
@@ -1756,7 +1756,10 @@ public class MainActivity extends GetUserInfoActivity
     Timber.e("Set animation");
     runOnUiThread(() -> {
       ivAnimatedMan.setBackgroundDrawable(null);
-      Picasso.with(this).load("1").placeholder(animation).into(ivAnimatedMan);
+      Timber.e(""+animation.getNumberOfFrames());
+      ivAnimatedMan.setImageDrawable(animation);
+      animation.start();
+     // Picasso.with(this).load("1").placeholder(animation).error(animation).into(ivAnimatedMan);
     });
   }
 }
