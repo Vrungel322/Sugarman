@@ -115,11 +115,10 @@ import timber.log.Timber;
             @Override public void onEach(File image) {
               animationList.add(Drawable.createFromPath(image.getAbsolutePath()));
             }
-
             @Override public void onDone(File imagesDir) {
               Timber.e("Everything is downloaded");
               for (Drawable drawable : animationList) {
-                animationDrawable.addFrame(drawable, 60);
+                animationDrawable.addFrame(drawable, 30);
               }
               getViewState().setAnimation(animationDrawable);
             }

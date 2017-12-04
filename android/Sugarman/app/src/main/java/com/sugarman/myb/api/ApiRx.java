@@ -100,6 +100,9 @@ public interface ApiRx {
   @POST("v1/in_app_purchases") Observable<Response<Subscriptions>> checkInAppBilling(
       @Body PurchaseForServer purchaseForServer);
 
+  @POST("v1/in_app_purchases") Observable<Response<Subscriptions>> checkInAppBilling(
+      @Body InAppSinglePurchase purchaseForServer);
+
   @GET("v1/check_slots") Observable<Response<NextFreeSkuEntity>> getNextFreeSku(
       @Query("device") String device);
 
