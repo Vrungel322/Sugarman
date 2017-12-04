@@ -8,9 +8,11 @@ import android.widget.Toast;
 import butterknife.ButterKnife;
 import com.arellomobile.mvp.MvpAppCompatActivity;
 import com.sugarman.myb.App;
+import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.models.custom_events.CustomUserEvent;
 import com.sugarman.myb.models.custom_events.IActionOnCurrentScreen;
 import com.sugarman.myb.utils.DialogHelper;
+import com.sugarman.myb.utils.SharedPreferenceHelper;
 import javax.inject.Inject;
 
 /**
@@ -46,11 +48,17 @@ public abstract class BasicActivity extends MvpAppCompatActivity {
           customEvent.getEventExtraStrings().forEach(body::append);
         }
         body.append(customEvent.getEventText());
-        DialogHelper.createSimpleInfoDialog("OK", customEvent.getEventName(), body.toString(), this,
-            (dialogInterface, i) -> dialogInterface.dismiss()).create().show();
-        break;
-      }
-      case "q": {
+        DialogHelper.createSimpleInfoDialog("OK", "Great!", body.toString(), this,
+            (dialogInterface, i) -> {
+              if (customEvent.getEventName().equals(Constants.EVENT_X_STEPS_DONE)){
+                SharedPreferenceHelper.setEventXStepsDone();
+              }
+              if (customEvent.getEventName().equals(Constants.EVENT_X_NEW_USERS_INVITE)){
+                SharedPreferenceHelper.setEventGroupWithXNewUsersDone();
+              }
+              dialogInterface.dismiss();
+            }).create().show(); break;
+      } case "q": {
         // animation on specific
         if (actionOnCurrentScreen != null) {
           actionOnCurrentScreen.action();

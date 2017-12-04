@@ -96,6 +96,7 @@ import timber.log.Timber;
         mRxBus.post(CustomUserEvent.builder()
             .strType(rule.getAction())
             .eventText(rule.getMessage())
+            .eventName(rule.getName())
             .build());
       }
     }

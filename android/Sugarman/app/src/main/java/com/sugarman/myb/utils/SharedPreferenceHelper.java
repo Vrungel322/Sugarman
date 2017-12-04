@@ -607,4 +607,21 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
   public static String getGroupsLimit() {
     return getString(SharedPreferenceConstants.GROUPS_LIMIT, "3");
   }
+
+  public static void setEventGroupWithXNewUsersDone() {
+    putBoolean(SharedPreferenceConstants.EVENT_GROUP_WITH_X_NEW_USERS_DONE, true);
+  }
+
+  public static boolean isEventGroupWithXNewUsersDone() {
+    return getBoolean(SharedPreferenceConstants.EVENT_GROUP_WITH_X_NEW_USERS_DONE,false);
+  }
+
+  public static void setEventXStepsDone() {
+    putBoolean(SharedPreferenceConstants.EVENT_X_STEPS_DONE, true);
+
+  }
+
+  public static boolean isEventXStepsDone() {
+    return getBoolean(SharedPreferenceConstants.EVENT_X_STEPS_DONE,false);
+  }
 }

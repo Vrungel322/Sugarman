@@ -76,6 +76,8 @@ public abstract class SharedPreferenceConstants {
   public static final String BASE_URL = "BASE_URL";
   public static final String GROUPS_LIMIT = "GROUPS_LIMIT";
   public static final String SUBSCRIPTIONS_JSON = "SUBSCRIPTIONS_JSON";
+  public static final String EVENT_GROUP_WITH_X_NEW_USERS_DONE = "EVENT_GROUP_WITH_X_NEW_USERS_DONE";
+  public static final String EVENT_X_STEPS_DONE = "EVENT_X_STEPS_DONE";
 
   private SharedPreferenceConstants() {
     // only static methods and fields

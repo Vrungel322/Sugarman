@@ -40,7 +40,11 @@ import timber.log.Timber;
   private void subscribeShowDialogEvent() {
     Subscription subscription = mRxBus.filteredObservable(CustomUserEvent.class)
         .compose(ThreadSchedulers.applySchedulers())
-        .subscribe(customUserEvent -> getViewState().doEventActionResponse(customUserEvent));
+        .subscribe(customUserEvent -> {
+          if (!SharedPreferenceHelper.isEventGroupWithXNewUsersDone()){
+            getViewState().doEventActionResponse(customUserEvent);
+          }
+        });
     addToUnsubscription(subscription);
   }
 
@@ -61,10 +65,13 @@ import timber.log.Timber;
           "rule " + rule.getName() + " todaySteps " + todaySteps + " getCount()" + rule.getCount());
       if (rule.getCount() <= todaySteps) {
         Timber.e("rule true");
-        getViewState().doEventActionResponse(CustomUserEvent.builder()
-            .strType(rule.getAction())
-            .eventText(rule.getMessage())
-            .build());
+        if (!SharedPreferenceHelper.isEventXStepsDone()) {
+          getViewState().doEventActionResponse(CustomUserEvent.builder()
+              .strType(rule.getAction())
+              .eventText(rule.getMessage())
+              .eventName(rule.getName())
+              .build());
+        }
       }
     }
   }
