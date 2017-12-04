@@ -75,18 +75,25 @@ import timber.log.Timber;
   }
 
   public void checkRuleXNewUsersInvite(List<FacebookFriend> members) {
+    Timber.e("checkRuleXNewUsersInvite " + members.size());
     int newUsersCount = 0;
     for (int i = 0; i < members.size(); i++) {
-      if (members.get(i).isPending()){
+      //if (members.get(i).getIsInvitable()==FacebookFriend.CODE_INVITABLE){
         newUsersCount++;
-      }
+      //}
     }
+    Timber.e("newUsersCount " + newUsersCount);
     List<Rule> rules = mDataManager.getRuleByName(Constants.EVENT_X_NEW_USERS_INVITE);
     if (!rules.isEmpty()) {
+      Timber.e("checkRuleXNewUsersInvite " + !rules.isEmpty());
       Rule rule = rules.get(0);
       if (rule.getCount() <= newUsersCount) {
         Timber.e("rule true");
-        getViewState().doEventActionResponse(CustomUserEvent.builder()
+        //getViewState().doEventActionResponse(CustomUserEvent.builder()
+        //    .strType(rule.getAction())
+        //    .eventText(rule.getMessage())
+        //    .build());
+        mRxBus.post(CustomUserEvent.builder()
             .strType(rule.getAction())
             .eventText(rule.getMessage())
             .build());

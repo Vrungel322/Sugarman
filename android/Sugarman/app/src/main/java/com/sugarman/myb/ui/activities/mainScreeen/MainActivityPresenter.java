@@ -11,7 +11,6 @@ import com.sugarman.myb.models.animation.ImageModel;
 import com.sugarman.myb.models.custom_events.CustomUserEvent;
 import com.sugarman.myb.models.custom_events.Rule;
 import com.sugarman.myb.models.iab.InAppSinglePurchase;
-import com.sugarman.myb.models.iab.PurchaseForServer;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.ThreadSchedulers;
 import com.sugarman.myb.utils.animation.AnimationHelper;
@@ -35,6 +34,14 @@ import timber.log.Timber;
     fetchTasks();
     fetchCompletedTasks();
     fetchRules();
+    subscribeShowDialogEvent();
+  }
+
+  private void subscribeShowDialogEvent() {
+    Subscription subscription = mRxBus.filteredObservable(CustomUserEvent.class)
+        .compose(ThreadSchedulers.applySchedulers())
+        .subscribe(customUserEvent -> getViewState().doEventActionResponse(customUserEvent));
+    addToUnsubscription(subscription);
   }
 
   private void fetchRules() {
@@ -52,7 +59,7 @@ import timber.log.Timber;
 
       Timber.e(
           "rule " + rule.getName() + " todaySteps " + todaySteps + " getCount()" + rule.getCount());
-      if (rule.getCount() <= todaySteps){
+      if (rule.getCount() <= todaySteps) {
         Timber.e("rule true");
         getViewState().doEventActionResponse(CustomUserEvent.builder()
             .strType(rule.getAction())
@@ -61,7 +68,6 @@ import timber.log.Timber;
       }
     }
   }
-
 
   private void fetchTasks() {
     Subscription subscription = mDataManager.fetchTasks()
@@ -140,8 +146,7 @@ import timber.log.Timber;
     }
   }
 
-  public void checkInAppBilling(Purchase purchase, String productName,
-      String freeSku) {
+  public void checkInAppBilling(Purchase purchase, String productName, String freeSku) {
     Subscription subscription = mDataManager.checkInAppBilling(
         new InAppSinglePurchase(productName, purchase.getSku(), purchase.getToken(), freeSku))
         .compose(ThreadSchedulers.applySchedulers())

@@ -4,7 +4,6 @@ import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
-import com.sugarman.myb.models.custom_events.CustomUserEvent;
 import java.util.List;
 
 /**
@@ -18,5 +17,5 @@ import java.util.List;
 
   void hideProgress();
 
-  void doEventActionResponse(CustomUserEvent build);
+  //void doEventActionResponse(CustomUserEvent build);
 }

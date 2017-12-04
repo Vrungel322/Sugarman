@@ -64,7 +64,6 @@ import com.sugarman.myb.listeners.ApiCreateGroupListener;
 import com.sugarman.myb.listeners.ApiJoinGroupListener;
 import com.sugarman.myb.listeners.AsyncSaveBitmapToFileListener;
 import com.sugarman.myb.listeners.OnFBGetFriendsListener;
-import com.sugarman.myb.models.custom_events.CustomUserEvent;
 import com.sugarman.myb.tasks.SaveBitmapToFileAsyncTask;
 import com.sugarman.myb.ui.activities.base.BaseActivity;
 import com.sugarman.myb.ui.activities.editProfile.EditProfileActivity;
@@ -991,6 +990,7 @@ public class CreateGroupActivity extends BaseActivity
     //______________________________________________________________________________________________
     String groupName = etGroupName.getText().toString();
     mPresenter.checkRuleXNewUsersInvite(members);
+    Timber.e("members "+ members.size());
     mCreateGroupClient.createGroup(members, groupName, selectedFile, CreateGroupActivity.this);
   }
 
@@ -1149,7 +1149,7 @@ public class CreateGroupActivity extends BaseActivity
     pb.setVisibility(View.GONE);
   }
 
-  @Override public void doEventActionResponse(CustomUserEvent build) {
-    doEventAction(build,null);
-  }
+  //@Override public void doEventActionResponse(CustomUserEvent build) {
+  //  doEventAction(build,null);
+  //}
 }
