@@ -19,5 +19,6 @@ import lombok.Singular;
   @Getter @Setter private String eventName;                         // event title
   @Getter @Setter private String eventImage;                        //event img if needed
   @Getter @Setter private String eventText;                         //event text body if needed
+  @Getter @Setter private String nameOfAnim;                         //event text body if needed
   @Getter @Setter @Singular private List<String> eventExtraStrings; // some text body
 }

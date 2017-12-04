@@ -922,6 +922,7 @@ public class MainActivity extends GetUserInfoActivity
   @Override protected void onResume() {
     super.onResume();
     mPresenter.checkIfRuleStepsDone(todaySteps);
+    mPresenter.checkIfRule15KStepsDone(todaySteps);
     String urlAvatar = SharedPreferenceHelper.getAvatar();
     if (TextUtils.isEmpty(urlAvatar)) {
     } else {
@@ -1853,6 +1854,11 @@ public class MainActivity extends GetUserInfoActivity
   }
 
   @Override public void doEventActionResponse(CustomUserEvent customUserEvent) {
-    doEventAction(customUserEvent, null);
+    if (customUserEvent.getEventName().equals(Constants.EVENT_X_STEPS_DONE)){
+      doEventAction(customUserEvent, null);
+    }
+    if (customUserEvent.getEventName().equals(Constants.EVENT_15K_STEPS_DONE)){
+      doEventAction(customUserEvent, () -> {Timber.e("EVENT_15K_STEPS_DONE");});
+    }
   }
 }

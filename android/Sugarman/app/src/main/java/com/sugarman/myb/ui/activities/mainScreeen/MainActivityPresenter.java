@@ -41,7 +41,7 @@ import timber.log.Timber;
     Subscription subscription = mRxBus.filteredObservable(CustomUserEvent.class)
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(customUserEvent -> {
-          if (!SharedPreferenceHelper.isEventGroupWithXNewUsersDone()){
+          if (!SharedPreferenceHelper.isEventGroupWithXNewUsersDone()) {
             getViewState().doEventActionResponse(customUserEvent);
           }
         });
@@ -63,7 +63,7 @@ import timber.log.Timber;
 
       Timber.e(
           "rule " + rule.getName() + " todaySteps " + todaySteps + " getCount()" + rule.getCount());
-      if (rule.getCount() <= todaySteps) {
+      if (todaySteps >= rule.getCount()) {
         Timber.e("rule true");
         if (!SharedPreferenceHelper.isEventXStepsDone()) {
           getViewState().doEventActionResponse(CustomUserEvent.builder()
@@ -72,6 +72,26 @@ import timber.log.Timber;
               .eventName(rule.getName())
               .build());
         }
+      }
+    }
+  }
+
+  public void checkIfRule15KStepsDone(int todaySteps) {
+    List<Rule> rules = mDataManager.getRuleByName(Constants.EVENT_15K_STEPS_DONE);
+    if (!rules.isEmpty()) {
+      Rule rule = rules.get(0);
+
+      Timber.e(
+          "rule " + rule.getName() + " todaySteps " + todaySteps + " getCount()" + rule.getCount());
+      if (todaySteps >= rule.getCount()) {
+        Timber.e("rule 15K true");
+        //if (!SharedPreferenceHelper.isEventXStepsDone()) {
+          getViewState().doEventActionResponse(CustomUserEvent.builder()
+              .strType(rule.getAction())
+              .eventText(rule.getMessage())
+              .eventName(rule.getName())
+              .build());
+        //}
       }
     }
   }

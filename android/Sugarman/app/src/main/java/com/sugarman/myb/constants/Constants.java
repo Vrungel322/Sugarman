@@ -209,6 +209,7 @@ public abstract class Constants {
   public static final String TAG_TEST_GO_TO_NEXT_DAY = "GO_TO_NEXT_DAY_TEST";
 
   public static final String EVENT_X_STEPS_DONE = "event_type_reach_steps";
+  public static final String EVENT_15K_STEPS_DONE = "event_type_reach_15k_steps";
 
   private Constants() {
     // only static methods and fields

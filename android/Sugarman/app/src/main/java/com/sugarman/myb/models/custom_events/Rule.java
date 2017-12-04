@@ -16,5 +16,6 @@ import lombok.Setter;
   @Getter @Setter @SerializedName("count") @Expose private Integer count;
   @Getter @Setter @SerializedName("message") @Expose private String message;
   @Getter @Setter @SerializedName("name") @Expose private String name;
+  @Getter @Setter @SerializedName("name_of_animation") @Expose private String nameOfAnim;
   @Getter @Setter @SerializedName("sequence") @Expose private Integer sequence;
 }

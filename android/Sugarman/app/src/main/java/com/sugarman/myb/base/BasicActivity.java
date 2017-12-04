@@ -58,7 +58,7 @@ public abstract class BasicActivity extends MvpAppCompatActivity {
               }
               dialogInterface.dismiss();
             }).create().show(); break;
-      } case "q": {
+      } case "animation": {
         // animation on specific
         if (actionOnCurrentScreen != null) {
           actionOnCurrentScreen.action();
