@@ -1036,6 +1036,9 @@ public class MainActivity extends GetUserInfoActivity
   @Override protected void onDestroy() {
     super.onDestroy();
 
+    if(mHelper!=null)
+      mHelper.dispose();
+
     mSendFirebaseTokenClient.unregisterListener();
     mGetMyTrackingsClient.unregisterListener();
     mGetMyInvitesClient.unregisterListener();
@@ -1673,8 +1676,9 @@ public class MainActivity extends GetUserInfoActivity
         if (!result.isSuccess()) {
           Timber.e("In-app Billing setup failed: " + result);
         } else {
-          startPurchaseFlow("v1.group_rescue");
+
           //consumeItem();
+          startPurchaseFlow("v1.group_rescue");
           Timber.e("In-app Billing is set up OK");
         }
       }
@@ -1685,14 +1689,9 @@ public class MainActivity extends GetUserInfoActivity
   public void startPurchaseFlow(String freeSku) {
     mFreeSku = freeSku;
     Timber.e("mFreeSku startPurchaseFlow " + mFreeSku);
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance()
-        .trackEvent(App.getInstance().getApplicationContext(), "af_tap_apply_for_mentor",
-            eventValue);
 
     mHelper.launchPurchaseFlow(this, freeSku, 10001, (result, purchase) -> {
+      Timber.e("Ochko huy pizda");
           Timber.e("mFreeSku mPurchaseFinishedListener " + mFreeSku);
 
           if (result.isFailure()) {

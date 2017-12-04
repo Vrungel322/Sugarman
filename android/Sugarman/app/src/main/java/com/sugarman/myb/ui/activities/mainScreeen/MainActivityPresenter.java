@@ -135,12 +135,12 @@ import timber.log.Timber;
 
           List<ImageModel> anims = animations.body().getAnimations();
           for (int i = 0; i < anims.size(); i++) {
+
             for (int j = 0; j < anims.get(i).getImageUrl().size(); j++) {
               urls.add(anims.get(i).getImageUrl().get(j));
               Timber.e(anims.get(i).getImageUrl().get(j));
             }
           }
-          //Collections.sort(urls);
           AnimationHelper animationHelper = new AnimationHelper(filesDir, urls);
           AnimationDrawable animationDrawable = new AnimationDrawable();
 
@@ -148,11 +148,10 @@ import timber.log.Timber;
             @Override public void onEach(File image) {
               animationList.add(Drawable.createFromPath(image.getAbsolutePath()));
             }
-
             @Override public void onDone(File imagesDir) {
               Timber.e("Everything is downloaded");
               for (Drawable drawable : animationList) {
-                animationDrawable.addFrame(drawable, 40);
+                animationDrawable.addFrame(drawable, 30);
               }
               getViewState().setAnimation(animationDrawable);
             }
