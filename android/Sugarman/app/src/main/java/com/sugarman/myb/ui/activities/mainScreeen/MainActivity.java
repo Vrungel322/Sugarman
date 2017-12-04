@@ -117,6 +117,9 @@ import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.SoundHelper;
 import com.sugarman.myb.utils.StringHelper;
 import com.sugarman.myb.utils.animation.AnimationHelper;
+import com.sugarman.myb.utils.inapp.IabHelper;
+import com.sugarman.myb.utils.inapp.IabResult;
+import com.sugarman.myb.utils.inapp.Inventory;
 import com.sugarman.myb.utils.licence.LicenceChecker;
 import com.sugarman.myb.utils.md5.MD5Util;
 import java.io.File;
@@ -143,9 +146,38 @@ public class MainActivity extends GetUserInfoActivity
   private final List<Notification> myNotifications = new ArrayList<>(0);
   private final List<Invite> myInvites = new ArrayList<>(0);
   private final List<Request> myRequests = new ArrayList<>(0);
+  private String mFreeSku = "v1.group_rescue";
   private final HashMap<String, String> failedTrackingsId = new HashMap<>(0);
   private final HashMap<String, String> dailyTrackingsId = new HashMap<>(0);
   private final HashMap<String, String> congratulationTrackingsId = new HashMap<>(0);
+  IabHelper.QueryInventoryFinishedListener mReceivedInventoryListener =
+      new IabHelper.QueryInventoryFinishedListener() {
+        public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
+          Timber.e("mFreeSku mReceivedInventoryListener " + mFreeSku);
+
+          if (result.isFailure()) {
+            // Handle failure
+          } else {
+            mHelper.consumeAsync(inventory.getPurchase(mFreeSku), mConsumeFinishedListener);
+            //mHelper.consumeAsync(inventory.getAllPurchases(), mOnConsumeMultiFinishedListener);
+            Timber.e(result.getMessage());
+            Timber.e(inventory.getSkuDetails(mFreeSku).getTitle());
+            Timber.e(inventory.getSkuDetails(mFreeSku).getSku());
+
+            mPresenter.checkInAppBilling(inventory.getPurchase(mFreeSku),
+                inventory.getSkuDetails(mFreeSku).getTitle(), mFreeSku);
+          }
+        }
+      };
+  IabHelper mHelper;
+  IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = (purchase, result) -> {
+    Timber.e("mConsumeFinishedListener" + purchase.toString());
+    Timber.e("mConsumeFinishedListener" + result.toString());
+    if (result.isSuccess()) {
+    } else {
+      // handle error
+    }
+  };
   private final ApiSendFirebaseTokenListener apiSendFirebaseTokenListener =
       new ApiSendFirebaseTokenListener() {
         @Override public void onApiSendFirebaseTokenSuccess() {
@@ -500,6 +532,8 @@ public class MainActivity extends GetUserInfoActivity
     setContentView(R.layout.activity_main);
     super.onCreate(savedInstanceState);
     Resources resources = getResources();
+
+    setupInAppPurchase();
 
     Timber.e(MD5Util.md5("md5 test"));
 
@@ -1628,6 +1662,56 @@ public class MainActivity extends GetUserInfoActivity
     });
 
     // vCreateGroup.startAnimation(rotate);
+  }
+
+  private void setupInAppPurchase() {
+    mHelper = new IabHelper(this, Config.BASE_64_ENCODED_PUBLIC_KEY);
+
+    mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+      public void onIabSetupFinished(IabResult result) {
+        if (!result.isSuccess()) {
+          Timber.e("In-app Billing setup failed: " + result);
+        } else {
+          startPurchaseFlow("v1.group_rescue");
+          //consumeItem();
+          Timber.e("In-app Billing is set up OK");
+        }
+      }
+    });
+    mHelper.enableDebugLogging(true);
+  }
+
+  public void startPurchaseFlow(String freeSku) {
+    mFreeSku = freeSku;
+    Timber.e("mFreeSku startPurchaseFlow " + mFreeSku);
+    Map<String, Object> eventValue = new HashMap<>();
+    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+    eventValue.put(AFInAppEventParameterName.SCORE, 100);
+    AppsFlyerLib.getInstance()
+        .trackEvent(App.getInstance().getApplicationContext(), "af_tap_apply_for_mentor",
+            eventValue);
+
+    mHelper.launchPurchaseFlow(this, freeSku, 10001, (result, purchase) -> {
+          Timber.e("mFreeSku mPurchaseFinishedListener " + mFreeSku);
+
+          if (result.isFailure()) {
+            Timber.e("Result is failure");
+            // Handle error
+            return;
+          } else if (purchase.getSku().equals(mFreeSku)) {
+            Timber.e("Id is correct");
+            consumeItem();
+            Timber.e(mHelper.getMDataSignature());
+          } else {
+            Timber.e(result.getMessage());
+          }
+        },
+        "mypurchasetoken");
+  }
+
+  public void consumeItem() {
+    Timber.e("Item consumed");
+    mHelper.queryInventoryAsync(true, Arrays.asList(mFreeSku), mReceivedInventoryListener);
   }
 
   private List<Notification> prepareNotifications(Notification[] notifications) {

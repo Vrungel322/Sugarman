@@ -10,9 +10,12 @@ import com.sugarman.myb.models.ContactListForServer;
 import com.sugarman.myb.models.animation.ImageModel;
 import com.sugarman.myb.models.custom_events.CustomUserEvent;
 import com.sugarman.myb.models.custom_events.Rule;
+import com.sugarman.myb.models.iab.InAppSinglePurchase;
+import com.sugarman.myb.models.iab.PurchaseForServer;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.ThreadSchedulers;
 import com.sugarman.myb.utils.animation.AnimationHelper;
+import com.sugarman.myb.utils.inapp.Purchase;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +62,7 @@ import timber.log.Timber;
     }
   }
 
+
   private void fetchTasks() {
     Subscription subscription = mDataManager.fetchTasks()
         .compose(ThreadSchedulers.applySchedulers())
@@ -103,6 +107,7 @@ import timber.log.Timber;
               Timber.e(anims.get(i).getImageUrl().get(j));
             }
           }
+          //Collections.sort(urls);
           AnimationHelper animationHelper = new AnimationHelper(filesDir, urls);
           AnimationDrawable animationDrawable = new AnimationDrawable();
 
@@ -133,5 +138,20 @@ import timber.log.Timber;
     } else {
       Timber.e("Not Deleted");
     }
+  }
+
+  public void checkInAppBilling(Purchase purchase, String productName,
+      String freeSku) {
+    Subscription subscription = mDataManager.checkInAppBilling(
+        new InAppSinglePurchase(productName, purchase.getSku(), purchase.getToken(), freeSku))
+        .compose(ThreadSchedulers.applySchedulers())
+        .subscribe(subscriptionsResponse -> {
+          SharedPreferenceHelper.saveListSubscriptionEntity(
+              subscriptionsResponse.body().getSubscriptionEntities());
+          Timber.e(String.valueOf(subscriptionsResponse.code()));
+          if (subscriptionsResponse.code() == 200) {
+          }
+        }, Throwable::printStackTrace);
+    addToUnsubscription(subscription);
   }
 }
