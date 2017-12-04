@@ -102,12 +102,12 @@ import timber.log.Timber;
 
           List<ImageModel> anims = animations.body().getAnimations();
           for (int i = 0; i < anims.size(); i++) {
+
             for (int j = 0; j < anims.get(i).getImageUrl().size(); j++) {
               urls.add(anims.get(i).getImageUrl().get(j));
               Timber.e(anims.get(i).getImageUrl().get(j));
             }
           }
-          //Collections.sort(urls);
           AnimationHelper animationHelper = new AnimationHelper(filesDir, urls);
           AnimationDrawable animationDrawable = new AnimationDrawable();
 

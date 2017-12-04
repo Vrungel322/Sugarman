@@ -117,8 +117,8 @@ public class SplashActivity extends GetUserInfoActivity
 
   @Override protected void onDestroy() {
     super.onDestroy();
-    if (mHelper != null) mHelper.dispose();
-    mHelper = null;
+    //if (mHelper != null) mHelper.dispose();
+    //mHelper = null;
 
     App.getSoundPoolInstance().setOnLoadCompleteListener(null);
   }
