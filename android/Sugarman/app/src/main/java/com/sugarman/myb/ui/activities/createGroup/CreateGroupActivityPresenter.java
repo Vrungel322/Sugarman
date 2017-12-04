@@ -78,9 +78,9 @@ import timber.log.Timber;
     Timber.e("checkRuleXNewUsersInvite " + members.size());
     int newUsersCount = 0;
     for (int i = 0; i < members.size(); i++) {
-      //if (members.get(i).getIsInvitable()==FacebookFriend.CODE_INVITABLE){
+      if (members.get(i).getIsInvitable()!=FacebookFriend.CODE_INVITABLE){
         newUsersCount++;
-      //}
+      }
     }
     Timber.e("newUsersCount " + newUsersCount);
     List<Rule> rules = mDataManager.getRuleByName(Constants.EVENT_X_NEW_USERS_INVITE);
