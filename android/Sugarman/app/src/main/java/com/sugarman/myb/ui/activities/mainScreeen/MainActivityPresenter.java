@@ -51,14 +51,17 @@ import timber.log.Timber;
   private void fetchRules() {
     Subscription subscription =
         mDataManager.fetchRules().compose(ThreadSchedulers.applySchedulers()).subscribe(ruleSet -> {
-          mDataManager.saveRules(ruleSet.body());
+          if (ruleSet.code() == 200){
+            Timber.e("ruleSet 200" );
+            mDataManager.saveRules(ruleSet.body());
+          }
         }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 
   public void checkIfRuleStepsDone(int todaySteps) {
     List<Rule> rules = mDataManager.getRuleByName(Constants.EVENT_X_STEPS_DONE);
-    if (!rules.isEmpty()) {
+    if (rules != null && !rules.isEmpty()) {
       Rule rule = rules.get(0);
 
       Timber.e(
@@ -86,11 +89,11 @@ import timber.log.Timber;
       if (todaySteps >= rule.getCount()) {
         Timber.e("rule 15K true");
         //if (!SharedPreferenceHelper.isEventXStepsDone()) {
-          getViewState().doEventActionResponse(CustomUserEvent.builder()
-              .strType(rule.getAction())
-              .eventText(rule.getMessage())
-              .eventName(rule.getName())
-              .build());
+        getViewState().doEventActionResponse(CustomUserEvent.builder()
+            .strType(rule.getAction())
+            .eventText(rule.getMessage())
+            .eventName(rule.getName())
+            .build());
         //}
       }
     }
@@ -148,6 +151,7 @@ import timber.log.Timber;
             @Override public void onEach(File image) {
               animationList.add(Drawable.createFromPath(image.getAbsolutePath()));
             }
+
             @Override public void onDone(File imagesDir) {
               Timber.e("Everything is downloaded");
               for (Drawable drawable : animationList) {
