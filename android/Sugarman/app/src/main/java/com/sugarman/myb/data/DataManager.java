@@ -188,6 +188,10 @@ public class DataManager {
   {
     return mRestApi.getAnimations();
   }
+  public Observable<Response<GetAnimationResponse>> getAnimationsByName(String name)
+  {
+    return mRestApi.getAnimationsByName(name);
+  }
   ///////////////////////////////////////////////////////////////////////////
   // DB
   ///////////////////////////////////////////////////////////////////////////
@@ -284,4 +288,5 @@ public class DataManager {
     Log.e("token", "editProfileClient rabotaem");
     return mRestApi.approveOtp(request);
   }
+
 }
