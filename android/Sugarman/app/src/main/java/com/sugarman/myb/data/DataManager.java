@@ -289,4 +289,10 @@ public class DataManager {
     return mRestApi.approveOtp(request);
   }
 
+  public void saveAnimation(GetAnimationResponse getAnimationResponseResponse) {
+    mDbHelper.dropRealmTable(GetAnimationResponse.class);
+
+      mDbHelper.save(getAnimationResponseResponse);
+
+  }
 }

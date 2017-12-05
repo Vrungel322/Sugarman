@@ -1,8 +1,14 @@
 package com.sugarman.myb.data.db;
 
+import com.sugarman.myb.models.animation.ImageModel;
 import io.realm.DynamicRealm;
+import io.realm.FieldAttribute;
+import io.realm.RealmList;
 import io.realm.RealmMigration;
+import io.realm.RealmObjectSchema;
 import io.realm.RealmSchema;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by nikita on 18.10.2017.
@@ -32,6 +38,27 @@ public class RealmMigrations implements RealmMigration {
     //userSchema1.addField("title", String.class);
     //userSchema1.addField("text", String.class);
     //userSchema1.addRealmListField("children", schema.get("GoodsSubCategoryEntity"));
+
+    if(oldVersion == 1)
+    {
+      if(!schema.contains("ImageModel")) {
+        final RealmObjectSchema realmObjectSchema = schema.create("ImageModel");
+        //realmObjectSchema.removeField("id");
+        realmObjectSchema.addField("id",Integer.class, FieldAttribute.PRIMARY_KEY);
+        realmObjectSchema.addRealmListField("imageUrl", String.class);
+        realmObjectSchema.addRealmListField("md5", String.class);
+        realmObjectSchema.addField("level", String.class);
+        realmObjectSchema.addField("duration", Integer.class);
+        realmObjectSchema.addField("steps", Integer.class);
+      }
+
+      if(!schema.contains("GetAnimationResponse")) {
+        final RealmObjectSchema realmObjectSchema1 = schema.create("GetAnimationResponse");
+        //realmObjectSchema1.removeField("id");
+        realmObjectSchema1.addField("id",Integer.class, FieldAttribute.PRIMARY_KEY);
+        realmObjectSchema1.addRealmListField("animations", schema.get("ImageModel"));
+      }
+    }
   }
 }
 

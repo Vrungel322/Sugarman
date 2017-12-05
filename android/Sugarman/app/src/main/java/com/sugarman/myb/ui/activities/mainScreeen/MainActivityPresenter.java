@@ -18,6 +18,7 @@ import com.sugarman.myb.utils.inapp.Purchase;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import rx.Observable;
 import rx.Subscription;
 import timber.log.Timber;
 
@@ -129,9 +130,11 @@ import timber.log.Timber;
 
   public void getAnimations(File filesDir) {
     List<Drawable> animationList = new ArrayList<>();
-    Subscription subscription = mDataManager.getAnimations()
-        .compose(ThreadSchedulers.applySchedulers())
-        .subscribe(animations -> {
+    Subscription subscription =
+        mDataManager.getAnimations().concatMap(getAnimationResponseResponse -> {
+          mDataManager.saveAnimation(getAnimationResponseResponse.body());
+          return Observable.just(getAnimationResponseResponse);
+        }).compose(ThreadSchedulers.applySchedulers()).subscribe(animations -> {
           Timber.e("Got inside animations");
           if (!filesDir.exists()) filesDir.mkdirs();
           List<String> urls = new ArrayList<>();
