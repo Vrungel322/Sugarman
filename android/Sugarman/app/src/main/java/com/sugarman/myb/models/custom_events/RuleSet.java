@@ -11,8 +11,7 @@ import lombok.Setter;
 /**
  * Created by nikita on 29.11.2017.
  */
-@NoArgsConstructor
-public class RuleSet extends RealmObject {
+@NoArgsConstructor public class RuleSet extends RealmObject {
   @PrimaryKey private Integer id;
   @Getter @Setter @SerializedName("rules") private RealmList<Rule> rules;
 }

@@ -4,7 +4,6 @@ import com.google.gson.annotations.SerializedName;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,5 +20,4 @@ import lombok.Setter;
   @Getter @Setter @SerializedName("level") String level;
   @Getter @Setter @SerializedName("android_duration") Integer duration;
   @Getter @Setter @SerializedName("steps") Integer steps;
-
 }

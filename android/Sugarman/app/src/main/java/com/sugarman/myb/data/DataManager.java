@@ -184,14 +184,14 @@ public class DataManager {
     return mRestApi.closeSubscription(purchaseForServer);
   }
 
-  public Observable<Response<GetAnimationResponse>> getAnimations()
-  {
+  public Observable<Response<GetAnimationResponse>> getAnimations() {
     return mRestApi.getAnimations();
   }
-  public Observable<Response<GetAnimationResponse>> getAnimationsByName(String name)
-  {
+
+  public Observable<Response<GetAnimationResponse>> getAnimationsByName(String name) {
     return mRestApi.getAnimationsByName(name);
   }
+
   ///////////////////////////////////////////////////////////////////////////
   // DB
   ///////////////////////////////////////////////////////////////////////////
@@ -277,7 +277,8 @@ public class DataManager {
     return mDbHelper.getElementsFromDBByQuery(Rule.class, "name", name);
   }
 
-  public Observable<Response<ApproveOtpResponse>> approveOtp(String userId, String phoneNumberStr, String otp) {
+  public Observable<Response<ApproveOtpResponse>> approveOtp(String userId, String phoneNumberStr,
+      String otp) {
     MultipartBody.Part filePart = null;
 
     ApproveOtpRequest request = new ApproveOtpRequest();
@@ -292,7 +293,6 @@ public class DataManager {
   public void saveAnimation(GetAnimationResponse getAnimationResponseResponse) {
     mDbHelper.dropRealmTable(GetAnimationResponse.class);
 
-      mDbHelper.save(getAnimationResponseResponse);
-
+    mDbHelper.save(getAnimationResponseResponse);
   }
 }

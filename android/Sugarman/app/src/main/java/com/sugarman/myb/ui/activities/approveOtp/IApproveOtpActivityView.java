@@ -8,8 +8,8 @@ import com.sugarman.myb.api.models.responses.ApproveOtpResponse;
 /**
  * Created by nikita on 30.11.2017.
  */
-@StateStrategyType(AddToEndSingleStrategy.class)
-public interface IApproveOtpActivityView extends MvpView {
+@StateStrategyType(AddToEndSingleStrategy.class) public interface IApproveOtpActivityView
+    extends MvpView {
   void onApiApproveOtpSuccess(ApproveOtpResponse dataResponse);
 
   void onApiUnauthorized();

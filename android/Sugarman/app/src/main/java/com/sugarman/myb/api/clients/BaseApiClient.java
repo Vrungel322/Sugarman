@@ -24,7 +24,8 @@ public abstract class BaseApiClient {
 
   public static final String FAILURE_PARSE_ERROR_RESPONSE = "Failure parse error response";
 
-  public static final String DEF_MESSAGE=App.getInstance().getString(R.string.no_internet_connection);
+  public static final String DEF_MESSAGE =
+      App.getInstance().getString(R.string.no_internet_connection);
 
   WeakReference<ApiBaseListener> clientListener = new WeakReference<>(null);
 

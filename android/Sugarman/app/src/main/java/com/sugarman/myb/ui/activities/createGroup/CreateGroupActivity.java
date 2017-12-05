@@ -990,7 +990,7 @@ public class CreateGroupActivity extends BaseActivity
     //______________________________________________________________________________________________
     String groupName = etGroupName.getText().toString();
     mPresenter.checkRuleXNewUsersInvite(members);
-    Timber.e("members "+ members.size());
+    Timber.e("members " + members.size());
     mCreateGroupClient.createGroup(members, groupName, selectedFile, CreateGroupActivity.this);
   }
 

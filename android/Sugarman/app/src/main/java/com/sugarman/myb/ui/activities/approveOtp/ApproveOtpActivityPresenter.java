@@ -66,7 +66,7 @@ import timber.log.Timber;
     try {
       error = errorBody.string();
     } catch (IOException e) {
-      Timber.e( "failure parse error body", e);
+      Timber.e("failure parse error body", e);
     }
     if (TextUtils.isEmpty(error)) {
       message = BaseApiClient.FAILURE_PARSE_ERROR_RESPONSE;
@@ -77,7 +77,7 @@ import timber.log.Timber;
         String title = StringHelper.getApiErrorTitle(error);
         String errorMessage = StringHelper.getApiErrorMessage(error);
         if (TextUtils.isEmpty(title) && TextUtils.isEmpty(errorMessage)) {
-          Timber.e( "failure parse error", e);
+          Timber.e("failure parse error", e);
           message = BaseApiClient.FAILURE_PARSE_ERROR_RESPONSE;
         } else {
           message = title + ". " + errorMessage;

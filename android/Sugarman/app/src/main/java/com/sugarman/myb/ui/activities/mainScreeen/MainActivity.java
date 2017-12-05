@@ -1036,8 +1036,7 @@ public class MainActivity extends GetUserInfoActivity
   @Override protected void onDestroy() {
     super.onDestroy();
 
-    if(mHelper!=null)
-      mHelper.dispose();
+    if (mHelper != null) mHelper.dispose();
 
     mSendFirebaseTokenClient.unregisterListener();
     mGetMyTrackingsClient.unregisterListener();
@@ -1694,21 +1693,20 @@ public class MainActivity extends GetUserInfoActivity
 
     mHelper.launchPurchaseFlow(this, freeSku, 10001, (result, purchase) -> {
       Timber.e("Ochko huy pizda");
-          Timber.e("mFreeSku mPurchaseFinishedListener " + mFreeSku);
+      Timber.e("mFreeSku mPurchaseFinishedListener " + mFreeSku);
 
-          if (result.isFailure()) {
-            Timber.e("Result is failure");
-            // Handle error
-            return;
-          } else if (purchase.getSku().equals(mFreeSku)) {
-            Timber.e("Id is correct");
-            consumeItem();
-            Timber.e(mHelper.getMDataSignature());
-          } else {
-            Timber.e(result.getMessage());
-          }
-        },
-        "mypurchasetoken");
+      if (result.isFailure()) {
+        Timber.e("Result is failure");
+        // Handle error
+        return;
+      } else if (purchase.getSku().equals(mFreeSku)) {
+        Timber.e("Id is correct");
+        consumeItem();
+        Timber.e(mHelper.getMDataSignature());
+      } else {
+        Timber.e(result.getMessage());
+      }
+    }, "mypurchasetoken");
   }
 
   public void consumeItem() {
@@ -1855,11 +1853,13 @@ public class MainActivity extends GetUserInfoActivity
   }
 
   @Override public void doEventActionResponse(CustomUserEvent customUserEvent) {
-    if (customUserEvent.getEventName().equals(Constants.EVENT_X_STEPS_DONE)){
+    if (customUserEvent.getEventName().equals(Constants.EVENT_X_STEPS_DONE)) {
       doEventAction(customUserEvent, null);
     }
-    if (customUserEvent.getEventName().equals(Constants.EVENT_15K_STEPS_DONE)){
-      doEventAction(customUserEvent, () -> {Timber.e("EVENT_15K_STEPS_DONE");});
+    if (customUserEvent.getEventName().equals(Constants.EVENT_15K_STEPS_DONE)) {
+      doEventAction(customUserEvent, () -> {
+        Timber.e("EVENT_15K_STEPS_DONE");
+      });
     }
   }
 }

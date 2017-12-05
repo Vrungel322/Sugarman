@@ -50,15 +50,17 @@ public abstract class BasicActivity extends MvpAppCompatActivity {
         body.append(customEvent.getEventText());
         DialogHelper.createSimpleInfoDialog("OK", "Great!", body.toString(), this,
             (dialogInterface, i) -> {
-              if (customEvent.getEventName().equals(Constants.EVENT_X_STEPS_DONE)){
+              if (customEvent.getEventName().equals(Constants.EVENT_X_STEPS_DONE)) {
                 SharedPreferenceHelper.setEventXStepsDone();
               }
-              if (customEvent.getEventName().equals(Constants.EVENT_X_NEW_USERS_INVITE)){
+              if (customEvent.getEventName().equals(Constants.EVENT_X_NEW_USERS_INVITE)) {
                 SharedPreferenceHelper.setEventGroupWithXNewUsersDone();
               }
               dialogInterface.dismiss();
-            }).create().show(); break;
-      } case "animation": {
+            }).create().show();
+        break;
+      }
+      case "animation": {
         // animation on specific
         if (actionOnCurrentScreen != null) {
           actionOnCurrentScreen.action();

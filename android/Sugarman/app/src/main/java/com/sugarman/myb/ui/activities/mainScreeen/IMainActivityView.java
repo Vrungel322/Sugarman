@@ -14,5 +14,4 @@ import com.sugarman.myb.models.custom_events.CustomUserEvent;
   void setAnimation(AnimationDrawable animation);
 
   void doEventActionResponse(CustomUserEvent build);
-
 }

@@ -119,6 +119,6 @@ public interface ApiRx {
   @POST("/v1/approveotp") Observable<Response<ApproveOtpResponse>> approveOtp(
       @Body ApproveOtpRequest request);
 
-  @GET("v1/get_animation")
-  Observable<Response<GetAnimationResponse>> getAnimationsByName(@Query("name") String name);
+  @GET("v1/get_animation") Observable<Response<GetAnimationResponse>> getAnimationsByName(
+      @Query("name") String name);
 }

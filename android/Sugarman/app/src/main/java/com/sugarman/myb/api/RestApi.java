@@ -208,7 +208,7 @@ public class RestApi {
   }
 
   public Observable<Response<ApproveOtpResponse>> approveOtp(ApproveOtpRequest request) {
-    return api.approveOtp( request);
+    return api.approveOtp(request);
   }
 
   public Observable<Response<GetAnimationResponse>> getAnimationsByName(String name) {

@@ -34,7 +34,7 @@ public class AnimationHelper {
    * @param callback is a callback that will be called with each work result when available
    */
   public void download(Callback callback) {
-    for(Thread worker : newWorkers(callback)) {
+    for (Thread worker : newWorkers(callback)) {
       worker.start();
     }
   }
@@ -51,13 +51,12 @@ public class AnimationHelper {
 
   private Runnable newWorker(Callback callback) {
     return new Runnable() {
-      @Override
-      public void run() {
+      @Override public void run() {
         while (!urls.empty()) {
           callback.onEach(AnimationHelper.this.doDownload(urls.pop()));
         }
 
-        if(done.compareAndSet(false, true)) {
+        if (done.compareAndSet(false, true)) {
           callback.onDone(imagesDir);
         }
 
@@ -65,7 +64,6 @@ public class AnimationHelper {
       }
     };
   }
-
 
   public static String getFilenameFromURL(URL url) {
     return new File(url.getPath().toString()).getName();
@@ -91,10 +89,9 @@ public class AnimationHelper {
 
         Bitmap bmp = BitmapFactory.decodeStream(url1.openConnection().getInputStream());
         //bmp.compress(Bitmap.CompressFormat.PNG,80,out);
-        bmp.compress(Bitmap.CompressFormat.PNG,0,out);
+        bmp.compress(Bitmap.CompressFormat.PNG, 0, out);
         out.flush();
         out.close();
-
       } catch (Exception e) {
         e.printStackTrace();
       }
@@ -108,7 +105,7 @@ public class AnimationHelper {
 
   public interface Callback {
     void onEach(File image);
+
     void onDone(File imagesDir);
   }
-
 }

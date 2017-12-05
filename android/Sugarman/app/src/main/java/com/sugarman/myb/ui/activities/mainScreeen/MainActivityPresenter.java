@@ -52,8 +52,8 @@ import timber.log.Timber;
   private void fetchRules() {
     Subscription subscription =
         mDataManager.fetchRules().compose(ThreadSchedulers.applySchedulers()).subscribe(ruleSet -> {
-          if (ruleSet.code() == 200){
-            Timber.e("ruleSet 200" );
+          if (ruleSet.code() == 200) {
+            Timber.e("ruleSet 200");
             mDataManager.saveRules(ruleSet.body());
           }
         }, Throwable::printStackTrace);

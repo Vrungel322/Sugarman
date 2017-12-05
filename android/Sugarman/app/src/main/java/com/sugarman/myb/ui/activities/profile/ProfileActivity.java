@@ -116,11 +116,9 @@ public class ProfileActivity extends BaseActivity
     setContentView(R.layout.activity_profile);
     super.onCreate(savedStateInstance);
 
-    if(SharedPreferenceHelper.getBaseUrl().contains("test"))
-    {
+    if (SharedPreferenceHelper.getBaseUrl().contains("test")) {
       tvTestEnvironment.setVisibility(View.VISIBLE);
-    }
-    else {
+    } else {
       tvTestEnvironment.setVisibility(View.GONE);
     }
 

@@ -353,7 +353,6 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
         "mypurchasetoken");
   }
 
-
   @Override public void showAllSlotsNotEmptyDialog() {
     DialogHelper.createSimpleInfoDialog(getString(R.string.okay), getString(R.string.error),
         getString(R.string.slots_error), this, (dialogInterface, i) -> dialogInterface.dismiss())
