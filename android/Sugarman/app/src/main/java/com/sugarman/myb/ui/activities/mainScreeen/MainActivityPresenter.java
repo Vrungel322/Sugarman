@@ -19,6 +19,7 @@ import com.sugarman.myb.utils.inapp.Purchase;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import rx.Observable;
 import rx.Subscription;
 import timber.log.Timber;
 
@@ -52,7 +53,7 @@ import timber.log.Timber;
 
       Timber.e(
           "rule " + rule.getName() + " todaySteps " + todaySteps + " getCount()" + rule.getCount());
-      if (rule.getCount() <= todaySteps){
+      if (rule.getCount() <= todaySteps) {
         Timber.e("rule true");
         getViewState().doEventActionResponse(CustomUserEvent.builder()
             .strType(rule.getAction())
@@ -61,7 +62,6 @@ import timber.log.Timber;
       }
     }
   }
-
 
   private void fetchTasks() {
     Subscription subscription = mDataManager.fetchTasks()
@@ -93,9 +93,11 @@ import timber.log.Timber;
 
   public void getAnimations(File filesDir) {
     List<Drawable> animationList = new ArrayList<>();
-    Subscription subscription = mDataManager.getAnimations()
-        .compose(ThreadSchedulers.applySchedulers())
-        .subscribe(animations -> {
+    Subscription subscription =
+        mDataManager.getAnimations().concatMap(getAnimationResponseResponse -> {
+          mDataManager.saveAnimation(getAnimationResponseResponse.body());
+          return Observable.just(getAnimationResponseResponse);
+        }).compose(ThreadSchedulers.applySchedulers()).subscribe(animations -> {
           Timber.e("Got inside animations");
           if (!filesDir.exists()) filesDir.mkdirs();
           List<String> urls = new ArrayList<>();
@@ -115,6 +117,7 @@ import timber.log.Timber;
             @Override public void onEach(File image) {
               animationList.add(Drawable.createFromPath(image.getAbsolutePath()));
             }
+
             @Override public void onDone(File imagesDir) {
               Timber.e("Everything is downloaded");
               for (Drawable drawable : animationList) {
@@ -139,8 +142,7 @@ import timber.log.Timber;
     }
   }
 
-  public void checkInAppBilling(Purchase purchase, String productName,
-      String freeSku) {
+  public void checkInAppBilling(Purchase purchase, String productName, String freeSku) {
     Subscription subscription = mDataManager.checkInAppBilling(
         new InAppSinglePurchase(productName, purchase.getSku(), purchase.getToken(), freeSku))
         .compose(ThreadSchedulers.applySchedulers())
