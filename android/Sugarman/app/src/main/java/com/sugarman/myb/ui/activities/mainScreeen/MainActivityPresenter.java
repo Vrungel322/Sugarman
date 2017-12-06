@@ -136,6 +136,7 @@ import timber.log.Timber;
           return Observable.just(getAnimationResponseResponse);
         }).compose(ThreadSchedulers.applySchedulers()).subscribe(animations -> {
           Timber.e("Got inside animations");
+          Timber.e("imageModel " + mDataManager.getAnimationByNameFromRealm("1").getId());
           if (!filesDir.exists()) filesDir.mkdirs();
           List<String> urls = new ArrayList<>();
 

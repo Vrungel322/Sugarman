@@ -24,6 +24,7 @@ import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.data.db.DbHelper;
 import com.sugarman.myb.data.local.PreferencesHelper;
 import com.sugarman.myb.models.ContactListForServer;
+import com.sugarman.myb.models.animation.ImageModel;
 import com.sugarman.myb.models.custom_events.Rule;
 import com.sugarman.myb.models.custom_events.RuleSet;
 import com.sugarman.myb.models.iab.InAppSinglePurchase;
@@ -294,5 +295,13 @@ public class DataManager {
     mDbHelper.dropRealmTable(GetAnimationResponse.class);
 
     mDbHelper.save(getAnimationResponseResponse);
+  }
+
+  public ImageModel getAnimationByNameFromRealm(String name){
+    for (ImageModel im : mDbHelper.getElementsFromDBByQuery(ImageModel.class,"name", name)) {
+      Timber.e("imageModel name" + im.getName());
+      Timber.e("imageModel id" + im.getId());
+    }
+    return mDbHelper.getElementsFromDBByQuery(ImageModel.class,"name", name).get(0);
   }
 }
