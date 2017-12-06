@@ -8,6 +8,7 @@ import com.sugarman.myb.models.BaseChallengeItem;
 import com.sugarman.myb.models.ChallengeItem;
 import com.sugarman.myb.models.ChallengeItemType;
 import com.sugarman.myb.models.ChallengeMentorItem;
+import com.sugarman.myb.models.ChallengeRescueItem;
 import com.sugarman.myb.models.ChallengeWillStartItem;
 import com.sugarman.myb.ui.fragments.BaseChallengeFragment;
 import com.sugarman.myb.ui.fragments.BaseFragment;
@@ -16,6 +17,7 @@ import com.sugarman.myb.ui.fragments.StartedChallengeFragment;
 import com.sugarman.myb.ui.fragments.WillStartChallengeFragment;
 import com.sugarman.myb.ui.fragments.mentors_challenge.MentorsChallengeFragment;
 import com.sugarman.myb.ui.fragments.no_mentors_challenge.NoMentorsChallengeFragment;
+import com.sugarman.myb.ui.fragments.rescue_challenge.ChallengeRescueFragment;
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -62,6 +64,10 @@ public class TrackingsPagerAdapter extends FragmentStatePagerAdapter {
 
         case NO_MENTORS_CHALLENGE:
           requestedFragment = NoMentorsChallengeFragment.newInstance();
+          break;
+
+        case RESCUE_GROUP:
+          requestedFragment = ChallengeRescueFragment.newInstance((ChallengeRescueItem) item);
           break;
         default:
           Log.e(TAG, "not supported type: " + type);

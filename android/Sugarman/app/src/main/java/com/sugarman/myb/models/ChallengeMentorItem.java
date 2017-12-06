@@ -19,7 +19,7 @@ public class ChallengeMentorItem extends BaseChallengeItem implements Parcelable
       return new ChallengeMentorItem[size];
     }
   };
-  @Getter @Setter private Tracking tracking;
+  @Getter @Setter public Tracking tracking;
 
   public ChallengeMentorItem() {
     super(ChallengeItemType.MENTORS_CHALLENGE);

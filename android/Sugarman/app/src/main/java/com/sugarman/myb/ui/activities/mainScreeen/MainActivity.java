@@ -1593,6 +1593,13 @@ public class MainActivity extends GetUserInfoActivity
           item.setUnreadMessages(5); // TODO: 09.08.2017 ТУТ
           items.add(item);
         }
+
+        // TODO: 06.12.2017 make check if tracking soon fail (need to be added new bool field on server)
+        //if (tracking.getSomeBOOLFIELD){
+        //  ChallengeRescueItem item = new ChallengeRescueItem();
+        //  item.setTracking(tracking);
+        //  items.add(item);
+        //}
       }
     }
 

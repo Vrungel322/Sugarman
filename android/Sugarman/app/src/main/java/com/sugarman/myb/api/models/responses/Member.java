@@ -4,7 +4,11 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 import java.util.Comparator;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@NoArgsConstructor
 public class Member implements Parcelable {
 
   public static final int ACTION_ZERO = 0;
@@ -23,100 +27,17 @@ public class Member implements Parcelable {
     }
   };
 
-  @SerializedName("steps") public int steps;
-  @SerializedName("action") private int action;
-  @SerializedName("ass_kick_count") private int kickCount;
-  @SerializedName("fbid") private String fbid;
-  @SerializedName("id") private String id;
-  @SerializedName("name") private String name;
-  @SerializedName("picture_url") private String pictureUrl;
-  @SerializedName("status") private String status;
-  @SerializedName("phone_number") private String phoneNumber;
-  @SerializedName("vkid") private String vkId;
-
-  public Member() {
-
-  }
-
-  public int getSteps() {
-    return steps;
-  }
-
-  public void setSteps(int steps) {
-    this.steps = steps;
-  }
-
-  public int getAction() {
-    return action;
-  }
-
-  public void setAction(int action) {
-    this.action = action;
-  }
-
-  public int getKickCount() {
-    return kickCount;
-  }
-
-  public void setKickCount(int kickCount) {
-    this.kickCount = kickCount;
-  }
-
-  public String getFbid() {
-    return fbid;
-  }
-
-  public void setFbid(String fbid) {
-    this.fbid = fbid;
-  }
-
-  public String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public String getPictureUrl() {
-    return pictureUrl;
-  }
-
-  public void setPictureUrl(String pictureUrl) {
-    this.pictureUrl = pictureUrl;
-  }
-
-  public String getStatus() {
-    return status;
-  }
-
-  public void setStatus(String status) {
-    this.status = status;
-  }
-
-  public String getPhoneNumber() {
-    return phoneNumber;
-  }
-
-  public void setPhoneNumber(String phoneNumber) {
-    this.phoneNumber = phoneNumber;
-  }
-
-  public String getVkId() {
-    return vkId;
-  }
-
-  public void setVkId(String vkId) {
-    this.vkId = vkId;
-  }
+ @Getter @Setter @SerializedName("steps") public int steps;
+ @Getter @Setter @SerializedName("action") private int action;
+ @Getter @Setter @SerializedName("ass_kick_count") private int kickCount;
+ @Getter @Setter @SerializedName("fbid") private String fbid;
+ @Getter @Setter @SerializedName("id") private String id;
+ @Getter @Setter @SerializedName("name") private String name;
+ @Getter @Setter @SerializedName("picture_url") private String pictureUrl;
+ @Getter @Setter @SerializedName("status") private String status;
+ @Getter @Setter @SerializedName("phone_number") private String phoneNumber;
+ @Getter @Setter @SerializedName("vkid") private String vkId;
+ @Getter @Setter @SerializedName("is_failed") private Boolean isFailer;
 
   protected Member(Parcel in) {
     steps = in.readInt();
@@ -129,23 +50,8 @@ public class Member implements Parcelable {
     status = in.readString();
     phoneNumber = in.readString();
     vkId = in.readString();
-  }
-
-  @Override public void writeToParcel(Parcel dest, int flags) {
-    dest.writeInt(steps);
-    dest.writeInt(action);
-    dest.writeInt(kickCount);
-    dest.writeString(fbid);
-    dest.writeString(id);
-    dest.writeString(name);
-    dest.writeString(pictureUrl);
-    dest.writeString(status);
-    dest.writeString(phoneNumber);
-    dest.writeString(vkId);
-  }
-
-  @Override public int describeContents() {
-    return 0;
+    byte tmpIsFailer = in.readByte();
+    isFailer = tmpIsFailer == 0 ? null : tmpIsFailer == 1;
   }
 
   public static final Creator<Member> CREATOR = new Creator<Member>() {
@@ -157,4 +63,22 @@ public class Member implements Parcelable {
       return new Member[size];
     }
   };
+
+  @Override public int describeContents() {
+    return 0;
+  }
+
+  @Override public void writeToParcel(Parcel parcel, int i) {
+    parcel.writeInt(steps);
+    parcel.writeInt(action);
+    parcel.writeInt(kickCount);
+    parcel.writeString(fbid);
+    parcel.writeString(id);
+    parcel.writeString(name);
+    parcel.writeString(pictureUrl);
+    parcel.writeString(status);
+    parcel.writeString(phoneNumber);
+    parcel.writeString(vkId);
+    parcel.writeByte((byte) (isFailer == null ? 0 : isFailer ? 1 : 2));
+  }
 }

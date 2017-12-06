@@ -24,6 +24,7 @@ import com.sugarman.myb.ui.activities.splash.SplashActivityPresenter;
 import com.sugarman.myb.ui.dialogs.sendVkInvitation.SendVkInvitationDialogPresenter;
 import com.sugarman.myb.ui.fragments.mentors_challenge.MentorsChallengeFragmentPresenter;
 import com.sugarman.myb.ui.fragments.no_mentors_challenge.NoMentorsChallengeFragmentPresenter;
+import com.sugarman.myb.ui.fragments.rescue_challenge.ChallengeRescueFragmentPresenter;
 import dagger.Component;
 
 /**
@@ -74,4 +75,6 @@ import dagger.Component;
   void inject(SplashActivityPresenter presenter);
 
   void inject(ApproveOtpActivityPresenter presenter);
+
+  void inject(ChallengeRescueFragmentPresenter presenter);
 }
