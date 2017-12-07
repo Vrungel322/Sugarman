@@ -539,6 +539,8 @@ public class MainActivity extends GetUserInfoActivity
 
     cachedImagesFolder = new File(getFilesDir() + "/animations/");
 
+    //mPresenter.getAnimationByName("1", getFilesDir().getAbsolutePath());
+
     mPresenter.getAnimations(cachedImagesFolder);
     //Timber.e("!!!! " +new File(cachedImagesFolder.list()[0]));
     //Timber.e(
@@ -1861,15 +1863,13 @@ public class MainActivity extends GetUserInfoActivity
 
   @Override public void doEventActionResponse(CustomUserEvent customUserEvent) {
     if (customUserEvent.getEventName().equals(Constants.EVENT_X_STEPS_DONE)) {
-      doEventAction(customUserEvent, () -> {
-        Timber.e("EVENT_" + customUserEvent.getEventName());
-        mPresenter.getAnimationByName(customUserEvent.getNameOfAnim(),
-            getFilesDir().getAbsolutePath());
-      });
+      Timber.e("EVENT_" + customUserEvent.getNameOfAnim());
+      doEventAction(customUserEvent,
+          () -> mPresenter.getAnimationByName(customUserEvent.getNameOfAnim(),
+              getFilesDir().getAbsolutePath()));
     }
-    if (customUserEvent.getEventName().equals(Constants.EVENT_PLAY_ANIMATION)) {
+    if (customUserEvent.getEventName().equals(Constants.EVENT_15K_STEPS_DONE)) {
       doEventAction(customUserEvent, () -> {
-        Timber.e("EVENT_" + customUserEvent.getEventName());
         mPresenter.getAnimationByName(customUserEvent.getNameOfAnim(),
             getFilesDir().getAbsolutePath());
       });

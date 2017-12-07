@@ -68,7 +68,22 @@ import timber.log.Timber;
   public void checkIfRuleStepsDone(int todaySteps) {
     List<Rule> rules = mDataManager.getRuleByName(Constants.EVENT_X_STEPS_DONE);
     if (rules != null && !rules.isEmpty()) {
-      Rule rule = rules.get(0);
+      //Rule rule = Collections.max(rules, (a, b) -> {
+      //  return a.getCount().compareTo(b.getCount());
+      //});
+
+      // выбор того правила у которого значение шагов ближе всего к текущему количеству шагов
+      // TODO: 07.12.2017 простестить с 1 рулом на количество шагов
+      Rule rule = new Rule();
+         int min=Integer.MAX_VALUE;
+      for (Rule currentRule : rules) {
+        final int diff = Math.abs(currentRule.getCount() - todaySteps);
+
+        if (diff < min) {
+          min = diff;
+          rule = currentRule;
+        }
+      }
 
       Timber.e(
           "rule " + rule.getName() + " todaySteps " + todaySteps + " getCount()" + rule.getCount());
@@ -87,25 +102,23 @@ import timber.log.Timber;
   }
 
   public void checkIfRule15KStepsDone(int todaySteps) {
-    List<Rule> rules = mDataManager.getRuleByName(Constants.EVENT_PLAY_ANIMATION);
-    if (!rules.isEmpty()) {
-      Rule rule = rules.get(0);
-
-      Timber.e(
-          "rule " + rule.getName() + " todaySteps " + todaySteps + " getCount()" + rule.getCount());
-      if (todaySteps >= rule.getCount()) {
-        Timber.e("rule 15K true");
-        //if (!SharedPreferenceHelper.isEventXStepsDone()) {
-        getViewState().doEventActionResponse(CustomUserEvent.builder()
-            .strType(rule.getAction())
-            .eventText(rule.getMessage())
-            .eventName(rule.getName())
-            .nameOfAnim(rule.getNameOfAnim())
-
-            .build());
-        //}
-      }
-    }
+    //List<Rule> rules = mDataManager.getRuleByName(Constants.EVENT_15K_STEPS_DONE);
+    //if (!rules.isEmpty()) {
+    //  Rule rule = rules.get(0);
+    //
+    //  Timber.e(
+    //      "rule " + rule.getName() + " todaySteps " + todaySteps + " getCount()" + rule.getCount());
+    //  if (todaySteps >= rule.getCount()) {
+    //    Timber.e("rule 15K true");
+    //    //if (!SharedPreferenceHelper.isEventXStepsDone()) {
+    //    getViewState().doEventActionResponse(CustomUserEvent.builder()
+    //        .strType(rule.getAction())
+    //        .eventText(rule.getMessage())
+    //        .eventName(rule.getName())
+    //        .build());
+    //    //}
+    //  }
+    //}
   }
 
   private void fetchTasks() {
@@ -137,34 +150,27 @@ import timber.log.Timber;
   }
 
   public void getAnimations(File filesDir) {
+    if (filesDir.listFiles()== null){
 
     List<Drawable> animationList = new ArrayList<>();
     Subscription subscription =
         mDataManager.getAnimations().concatMap(getAnimationResponseResponse -> {
-
+          mDataManager.saveAnimation(getAnimationResponseResponse.body());
           return Observable.just(getAnimationResponseResponse);
         }).compose(ThreadSchedulers.applySchedulers()).subscribe(animations -> {
-          mDataManager.saveAnimation(animations.body());
 
           Timber.e("Got inside animations");
-          Timber.e("imageModel " + mDataManager.getAnimationByNameFromRealm("1").getId());
           if (!filesDir.exists()) filesDir.mkdirs();
           List<String> urls = new ArrayList<>();
 
           List<ImageModel> anims = animations.body().getAnimations();
           for (int i = 0; i < anims.size(); i++) {
-            ImageModel temp = anims.get(i);
             duration = anims.get(i).getDuration();
-            // TODO: 07.12.2017 need to test - change md5 on server and check
-            if (!temp.getMd5()
-                .equals(mDataManager.getAnimationByNameFromRealm(temp.getName()).getMd5())) {
-              for (int j = 0; j < anims.get(i).getImageUrl().size(); j++) {
-                urls.add(anims.get(i).getImageUrl().get(j));
-                Timber.e(anims.get(i).getImageUrl().get(j));
-              }
+            for (int j = 0; j < anims.get(i).getImageUrl().size(); j++) {
+              urls.add(anims.get(i).getImageUrl().get(j));
+              Timber.e(anims.get(i).getImageUrl().get(j));
             }
           }
-
           AnimationHelper animationHelper = new AnimationHelper(filesDir, urls);
           AnimationDrawable animationDrawable = new AnimationDrawable();
 
@@ -184,7 +190,7 @@ import timber.log.Timber;
             }
           });
         }, Throwable::printStackTrace);
-    addToUnsubscription(subscription);
+    addToUnsubscription(subscription);}
   }
 
   public void clearCachedImages(File filesDir) {
@@ -214,26 +220,23 @@ import timber.log.Timber;
   }
 
   public void getAnimationByName(String name, String filesDir) {
-    Timber.e("getAnimationByName " + name);
     ImageModel anim = mDataManager.getAnimationByNameFromRealm(name);
-    if (anim != null) {
-      List<String> files = new ArrayList<>();
-      List<Drawable> animationList = new ArrayList<>();
-      AnimationDrawable animationDrawable = new AnimationDrawable();
-      for (int j = 0; j < anim.getImageUrl().size(); j++) {
-        try {
-          files.add(AnimationHelper.getFilenameFromURL(new URL(anim.getImageUrl().get(j))));
-          animationList.add(Drawable.createFromPath(
-              filesDir + "/animations/" + AnimationHelper.getFilenameFromURL(
-                  new URL(anim.getImageUrl().get(j)))));
-        } catch (MalformedURLException e) {
-          e.printStackTrace();
-        }
+    List<String> files = new ArrayList<>();
+    List<Drawable> animationList = new ArrayList<>();
+    AnimationDrawable animationDrawable = new AnimationDrawable();
+    for (int j = 0; j < anim.getImageUrl().size(); j++) {
+      try {
+        files.add(AnimationHelper.getFilenameFromURL(new URL(anim.getImageUrl().get(j))));
+        animationList.add(Drawable.createFromPath(
+            filesDir + "/animations/" + AnimationHelper.getFilenameFromURL(
+                new URL(anim.getImageUrl().get(j)))));
+      } catch (MalformedURLException e) {
+        e.printStackTrace();
       }
-      for (Drawable drawable : animationList) {
-        animationDrawable.addFrame(drawable, duration);
-      }
-      getViewState().setAnimation(animationDrawable);
     }
+    for (Drawable drawable : animationList) {
+      animationDrawable.addFrame(drawable, duration);
+    }
+    getViewState().setAnimation(animationDrawable);
   }
 }
