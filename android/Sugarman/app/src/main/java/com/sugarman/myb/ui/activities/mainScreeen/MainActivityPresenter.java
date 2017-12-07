@@ -132,7 +132,6 @@ import timber.log.Timber;
     List<Drawable> animationList = new ArrayList<>();
     Subscription subscription =
         mDataManager.getAnimations().concatMap(getAnimationResponseResponse -> {
-          mDataManager.saveAnimation(getAnimationResponseResponse.body());
           return Observable.just(getAnimationResponseResponse);
         }).compose(ThreadSchedulers.applySchedulers()).subscribe(animations -> {
           Timber.e("Got inside animations");
@@ -142,12 +141,18 @@ import timber.log.Timber;
 
           List<ImageModel> anims = animations.body().getAnimations();
           for (int i = 0; i < anims.size(); i++) {
-
-            for (int j = 0; j < anims.get(i).getImageUrl().size(); j++) {
-              urls.add(anims.get(i).getImageUrl().get(j));
-              Timber.e(anims.get(i).getImageUrl().get(j));
+            ImageModel temp = anims.get(i);
+            // TODO: 07.12.2017 need to test - change md5 on server and check
+            if (!temp.getMd5()
+                .equals(mDataManager.getAnimationByNameFromRealm(temp.getName()).getMd5())) {
+              for (int j = 0; j < anims.get(i).getImageUrl().size(); j++) {
+                urls.add(anims.get(i).getImageUrl().get(j));
+                Timber.e(anims.get(i).getImageUrl().get(j));
+              }
             }
           }
+          mDataManager.saveAnimation(animations.body());
+
           AnimationHelper animationHelper = new AnimationHelper(filesDir, urls);
           AnimationDrawable animationDrawable = new AnimationDrawable();
 
@@ -161,7 +166,7 @@ import timber.log.Timber;
               for (Drawable drawable : animationList) {
                 animationDrawable.addFrame(drawable, 30);
               }
-              getViewState().setAnimation(animationDrawable);
+              //getViewState().setAnimation(animationDrawable);
             }
           });
         }, Throwable::printStackTrace);
