@@ -17,6 +17,7 @@ import com.sugarman.myb.utils.animation.AnimationHelper;
 import com.sugarman.myb.utils.inapp.Purchase;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import rx.Observable;
 import rx.Subscription;
@@ -26,6 +27,7 @@ import timber.log.Timber;
  * Created by nikita on 06.10.2017.
  */
 @InjectViewState public class MainActivityPresenter extends BasicPresenter<IMainActivityView> {
+  int duration = 30;
   @Override protected void inject() {
     App.getAppComponent().inject(this);
   }
@@ -129,12 +131,14 @@ import timber.log.Timber;
   }
 
   public void getAnimations(File filesDir) {
+
     List<Drawable> animationList = new ArrayList<>();
     Subscription subscription =
         mDataManager.getAnimations().concatMap(getAnimationResponseResponse -> {
           mDataManager.saveAnimation(getAnimationResponseResponse.body());
           return Observable.just(getAnimationResponseResponse);
         }).compose(ThreadSchedulers.applySchedulers()).subscribe(animations -> {
+
           Timber.e("Got inside animations");
           Timber.e("imageModel " + mDataManager.getAnimationByNameFromRealm("1").getId());
           if (!filesDir.exists()) filesDir.mkdirs();
@@ -142,7 +146,7 @@ import timber.log.Timber;
 
           List<ImageModel> anims = animations.body().getAnimations();
           for (int i = 0; i < anims.size(); i++) {
-
+            duration = anims.get(i).getDuration();
             for (int j = 0; j < anims.get(i).getImageUrl().size(); j++) {
               urls.add(anims.get(i).getImageUrl().get(j));
               Timber.e(anims.get(i).getImageUrl().get(j));
@@ -152,14 +156,16 @@ import timber.log.Timber;
           AnimationDrawable animationDrawable = new AnimationDrawable();
 
           animationHelper.download(new AnimationHelper.Callback() {
+
             @Override public void onEach(File image) {
               animationList.add(Drawable.createFromPath(image.getAbsolutePath()));
             }
 
             @Override public void onDone(File imagesDir) {
               Timber.e("Everything is downloaded");
+              Collections.reverse(animationList);
               for (Drawable drawable : animationList) {
-                animationDrawable.addFrame(drawable, 30);
+                animationDrawable.addFrame(drawable, duration);
               }
               getViewState().setAnimation(animationDrawable);
             }

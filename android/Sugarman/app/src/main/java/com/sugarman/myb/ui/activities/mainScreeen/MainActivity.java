@@ -539,6 +539,7 @@ public class MainActivity extends GetUserInfoActivity
 
     cachedImagesFolder = new File(getFilesDir() + "/animations/");
 
+
     mPresenter.getAnimations(cachedImagesFolder);
     //Timber.e("!!!! " +new File(cachedImagesFolder.list()[0]));
     //Timber.e(
