@@ -923,8 +923,6 @@ public class MainActivity extends GetUserInfoActivity
 
   @Override protected void onResume() {
     super.onResume();
-    mPresenter.checkIfRuleStepsDone(todaySteps);
-    mPresenter.checkIfRule15KStepsDone(todaySteps);
     String urlAvatar = SharedPreferenceHelper.getAvatar();
     if (TextUtils.isEmpty(urlAvatar)) {
     } else {
@@ -1559,6 +1557,8 @@ public class MainActivity extends GetUserInfoActivity
     //updateAnimations(todaySteps);
     mWalkDataViewPagerAdapter.setWalkData(String.valueOf(todaySteps));
     mWalkDataViewPagerAdapter.notifyDataSetChanged();
+    mPresenter.checkIfRuleStepsDone(todaySteps);
+    mPresenter.checkIfRule15KStepsDone(todaySteps);
   }
 
   private List<BaseChallengeItem> convertTrackingsToItems() {
