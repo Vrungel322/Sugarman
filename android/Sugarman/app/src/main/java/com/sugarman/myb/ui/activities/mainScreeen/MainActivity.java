@@ -1868,7 +1868,7 @@ public class MainActivity extends GetUserInfoActivity
           () -> mPresenter.getAnimationByName(customUserEvent.getNameOfAnim(),
               getFilesDir().getAbsolutePath()));
     }
-    if (customUserEvent.getEventName().equals(Constants.EVENT_15K_STEPS_DONE)) {
+    if (customUserEvent.getEventName().equals(Constants.EVENT_PLAY_ANIMATION)) {
       doEventAction(customUserEvent, () -> {
         mPresenter.getAnimationByName(customUserEvent.getNameOfAnim(),
             getFilesDir().getAbsolutePath());

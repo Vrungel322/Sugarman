@@ -66,7 +66,13 @@ import timber.log.Timber;
   }
 
   public void checkIfRuleStepsDone(int todaySteps) {
-    List<Rule> rules = mDataManager.getRuleByName(Constants.EVENT_X_STEPS_DONE);
+    List<Rule> rules =new ArrayList<>();
+    List<Rule> rulesTempo = mDataManager.getRuleByName(Constants.EVENT_X_STEPS_DONE);
+    for (Rule r : rulesTempo) {
+      if (r.getCount() <= todaySteps) {
+        rules.add(r);
+      }
+      }
     if (rules != null && !rules.isEmpty()) {
       //Rule rule = Collections.max(rules, (a, b) -> {
       //  return a.getCount().compareTo(b.getCount());
