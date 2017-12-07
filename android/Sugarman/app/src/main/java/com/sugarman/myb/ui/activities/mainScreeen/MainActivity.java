@@ -146,38 +146,9 @@ public class MainActivity extends GetUserInfoActivity
   private final List<Notification> myNotifications = new ArrayList<>(0);
   private final List<Invite> myInvites = new ArrayList<>(0);
   private final List<Request> myRequests = new ArrayList<>(0);
-  private String mFreeSku = "v1.group_rescue";
   private final HashMap<String, String> failedTrackingsId = new HashMap<>(0);
   private final HashMap<String, String> dailyTrackingsId = new HashMap<>(0);
   private final HashMap<String, String> congratulationTrackingsId = new HashMap<>(0);
-  IabHelper.QueryInventoryFinishedListener mReceivedInventoryListener =
-      new IabHelper.QueryInventoryFinishedListener() {
-        public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
-          Timber.e("mFreeSku mReceivedInventoryListener " + mFreeSku);
-
-          if (result.isFailure()) {
-            // Handle failure
-          } else {
-            mHelper.consumeAsync(inventory.getPurchase(mFreeSku), mConsumeFinishedListener);
-            //mHelper.consumeAsync(inventory.getAllPurchases(), mOnConsumeMultiFinishedListener);
-            Timber.e(result.getMessage());
-            Timber.e(inventory.getSkuDetails(mFreeSku).getTitle());
-            Timber.e(inventory.getSkuDetails(mFreeSku).getSku());
-
-            mPresenter.checkInAppBilling(inventory.getPurchase(mFreeSku),
-                inventory.getSkuDetails(mFreeSku).getTitle(), mFreeSku);
-          }
-        }
-      };
-  IabHelper mHelper;
-  IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = (purchase, result) -> {
-    Timber.e("mConsumeFinishedListener" + purchase.toString());
-    Timber.e("mConsumeFinishedListener" + result.toString());
-    if (result.isSuccess()) {
-    } else {
-      // handle error
-    }
-  };
   private final ApiSendFirebaseTokenListener apiSendFirebaseTokenListener =
       new ApiSendFirebaseTokenListener() {
         @Override public void onApiSendFirebaseTokenSuccess() {
@@ -218,6 +189,15 @@ public class MainActivity extends GetUserInfoActivity
           showUpdateOldVersionDialog();
         }
       };
+  IabHelper mHelper;
+  IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = (purchase, result) -> {
+    Timber.e("mConsumeFinishedListener" + purchase.toString());
+    Timber.e("mConsumeFinishedListener" + result.toString());
+    if (result.isSuccess()) {
+    } else {
+      // handle error
+    }
+  };
   @InjectPresenter MainActivityPresenter mPresenter;
   float angle;
   ImageToDraw img;
@@ -227,6 +207,26 @@ public class MainActivity extends GetUserInfoActivity
   boolean isUpdating = false;
   @BindView(R.id.vp_challenges) CustomViewPager vpTrackings;
   @BindView(R.id.vpWalkData) CustomViewPager vpWalkData;
+  private String mFreeSku = "v1.group_rescue";
+  IabHelper.QueryInventoryFinishedListener mReceivedInventoryListener =
+      new IabHelper.QueryInventoryFinishedListener() {
+        public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
+          Timber.e("mFreeSku mReceivedInventoryListener " + mFreeSku);
+
+          if (result.isFailure()) {
+            // Handle failure
+          } else {
+            mHelper.consumeAsync(inventory.getPurchase(mFreeSku), mConsumeFinishedListener);
+            //mHelper.consumeAsync(inventory.getAllPurchases(), mOnConsumeMultiFinishedListener);
+            Timber.e(result.getMessage());
+            Timber.e(inventory.getSkuDetails(mFreeSku).getTitle());
+            Timber.e(inventory.getSkuDetails(mFreeSku).getSku());
+
+            mPresenter.checkInAppBilling(inventory.getPurchase(mFreeSku),
+                inventory.getSkuDetails(mFreeSku).getTitle(), mFreeSku);
+          }
+        }
+      };
   private CircleIndicatorView civMain;
   private ImageView ivColoredStrip;
   private ImageView ivLeftPagerScroll;
@@ -539,9 +539,9 @@ public class MainActivity extends GetUserInfoActivity
 
     cachedImagesFolder = new File(getFilesDir() + "/animations/");
 
-    mPresenter.getAnimationByName("1", getFilesDir().getAbsolutePath());
+    //mPresenter.getAnimationByName("1", getFilesDir().getAbsolutePath());
 
-    //mPresenter.getAnimations(cachedImagesFolder);
+    mPresenter.getAnimations(cachedImagesFolder);
     //Timber.e("!!!! " +new File(cachedImagesFolder.list()[0]));
     //Timber.e(
     //    "!!!! " + MD5Util.calculateMD5(new File(getFilesDir() + "/animations/"+cachedImagesFolder.list()[0])));
@@ -1863,11 +1863,15 @@ public class MainActivity extends GetUserInfoActivity
 
   @Override public void doEventActionResponse(CustomUserEvent customUserEvent) {
     if (customUserEvent.getEventName().equals(Constants.EVENT_X_STEPS_DONE)) {
-      doEventAction(customUserEvent, null);
+      Timber.e("EVENT_" + customUserEvent.getNameOfAnim());
+      doEventAction(customUserEvent,
+          () -> mPresenter.getAnimationByName(customUserEvent.getNameOfAnim(),
+              getFilesDir().getAbsolutePath()));
     }
     if (customUserEvent.getEventName().equals(Constants.EVENT_15K_STEPS_DONE)) {
       doEventAction(customUserEvent, () -> {
-        Timber.e("EVENT_15K_STEPS_DONE");
+        mPresenter.getAnimationByName(customUserEvent.getNameOfAnim(),
+            getFilesDir().getAbsolutePath());
       });
     }
   }

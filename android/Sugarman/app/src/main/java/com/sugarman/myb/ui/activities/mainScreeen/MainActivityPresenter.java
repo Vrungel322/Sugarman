@@ -30,6 +30,7 @@ import timber.log.Timber;
  */
 @InjectViewState public class MainActivityPresenter extends BasicPresenter<IMainActivityView> {
   int duration = 30;
+
   @Override protected void inject() {
     App.getAppComponent().inject(this);
   }
@@ -67,7 +68,22 @@ import timber.log.Timber;
   public void checkIfRuleStepsDone(int todaySteps) {
     List<Rule> rules = mDataManager.getRuleByName(Constants.EVENT_X_STEPS_DONE);
     if (rules != null && !rules.isEmpty()) {
-      Rule rule = rules.get(0);
+      //Rule rule = Collections.max(rules, (a, b) -> {
+      //  return a.getCount().compareTo(b.getCount());
+      //});
+
+      // выбор того правила у которого значение шагов ближе всего к текущему количеству шагов
+      // TODO: 07.12.2017 простестить с 1 рулом на количество шагов
+      Rule rule = new Rule();
+         int min=Integer.MAX_VALUE;
+      for (Rule currentRule : rules) {
+        final int diff = Math.abs(currentRule.getCount() - todaySteps);
+
+        if (diff < min) {
+          min = diff;
+          rule = currentRule;
+        }
+      }
 
       Timber.e(
           "rule " + rule.getName() + " todaySteps " + todaySteps + " getCount()" + rule.getCount());
@@ -78,6 +94,7 @@ import timber.log.Timber;
               .strType(rule.getAction())
               .eventText(rule.getMessage())
               .eventName(rule.getName())
+              .nameOfAnim(rule.getNameOfAnim())
               .build());
         }
       }
@@ -133,6 +150,7 @@ import timber.log.Timber;
   }
 
   public void getAnimations(File filesDir) {
+    if (filesDir.listFiles()== null){
 
     List<Drawable> animationList = new ArrayList<>();
     Subscription subscription =
@@ -142,7 +160,6 @@ import timber.log.Timber;
         }).compose(ThreadSchedulers.applySchedulers()).subscribe(animations -> {
 
           Timber.e("Got inside animations");
-          Timber.e("imageModel " + mDataManager.getAnimationByNameFromRealm("1").getId());
           if (!filesDir.exists()) filesDir.mkdirs();
           List<String> urls = new ArrayList<>();
 
@@ -161,49 +178,48 @@ import timber.log.Timber;
 
             @Override public void onEach(File image) {
               animationList.add(Drawable.createFromPath(image.getAbsolutePath()));
-}
+            }
 
-  @Override public void onDone(File imagesDir) {
-    Timber.e("Everything is downloaded");
-    Collections.reverse(animationList);
-    for (Drawable drawable : animationList) {
-      animationDrawable.addFrame(drawable, duration);
-    }
-    getViewState().setAnimation(animationDrawable);
+            @Override public void onDone(File imagesDir) {
+              Timber.e("Everything is downloaded");
+              Collections.reverse(animationList);
+              for (Drawable drawable : animationList) {
+                animationDrawable.addFrame(drawable, duration);
+              }
+              //getViewState().setAnimation(animationDrawable);
+            }
+          });
+        }, Throwable::printStackTrace);
+    addToUnsubscription(subscription);}
   }
-});
-    }, Throwable::printStackTrace);
-    addToUnsubscription(subscription);
-    }
 
-public void clearCachedImages(File filesDir) {
+  public void clearCachedImages(File filesDir) {
 
     if (filesDir.exists() && filesDir.isDirectory()) {
-    String[] children = filesDir.list();
-    for (int i = 0; i < children.length; i++) {
-    new File(filesDir, children[i]).delete();
-    }
+      String[] children = filesDir.list();
+      for (int i = 0; i < children.length; i++) {
+        new File(filesDir, children[i]).delete();
+      }
     } else {
-    Timber.e("Not Deleted");
+      Timber.e("Not Deleted");
     }
-    }
+  }
 
-public void checkInAppBilling(Purchase purchase, String productName, String freeSku) {
+  public void checkInAppBilling(Purchase purchase, String productName, String freeSku) {
     Subscription subscription = mDataManager.checkInAppBilling(
-    new InAppSinglePurchase(productName, purchase.getSku(), purchase.getToken(), freeSku))
-    .compose(ThreadSchedulers.applySchedulers())
-    .subscribe(subscriptionsResponse -> {
-    SharedPreferenceHelper.saveListSubscriptionEntity(
-    subscriptionsResponse.body().getSubscriptionEntities());
-    Timber.e(String.valueOf(subscriptionsResponse.code()));
-    if (subscriptionsResponse.code() == 200) {
-    }
-    }, Throwable::printStackTrace);
+        new InAppSinglePurchase(productName, purchase.getSku(), purchase.getToken(), freeSku))
+        .compose(ThreadSchedulers.applySchedulers())
+        .subscribe(subscriptionsResponse -> {
+          SharedPreferenceHelper.saveListSubscriptionEntity(
+              subscriptionsResponse.body().getSubscriptionEntities());
+          Timber.e(String.valueOf(subscriptionsResponse.code()));
+          if (subscriptionsResponse.code() == 200) {
+          }
+        }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
-    }
+  }
 
-public void getAnimationByName(String name, String filesDir)
-  {
+  public void getAnimationByName(String name, String filesDir) {
     ImageModel anim = mDataManager.getAnimationByNameFromRealm(name);
     List<String> files = new ArrayList<>();
     List<Drawable> animationList = new ArrayList<>();
@@ -211,7 +227,9 @@ public void getAnimationByName(String name, String filesDir)
     for (int j = 0; j < anim.getImageUrl().size(); j++) {
       try {
         files.add(AnimationHelper.getFilenameFromURL(new URL(anim.getImageUrl().get(j))));
-        animationList.add(Drawable.createFromPath(filesDir + "/animations/" + AnimationHelper.getFilenameFromURL(new URL(anim.getImageUrl().get(j)))));
+        animationList.add(Drawable.createFromPath(
+            filesDir + "/animations/" + AnimationHelper.getFilenameFromURL(
+                new URL(anim.getImageUrl().get(j)))));
       } catch (MalformedURLException e) {
         e.printStackTrace();
       }
