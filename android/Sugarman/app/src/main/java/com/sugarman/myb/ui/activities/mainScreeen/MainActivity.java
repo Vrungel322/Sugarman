@@ -539,8 +539,9 @@ public class MainActivity extends GetUserInfoActivity
 
     cachedImagesFolder = new File(getFilesDir() + "/animations/");
 
+    mPresenter.getAnimationByName("1", getFilesDir().getAbsolutePath());
 
-    mPresenter.getAnimations(cachedImagesFolder);
+    //mPresenter.getAnimations(cachedImagesFolder);
     //Timber.e("!!!! " +new File(cachedImagesFolder.list()[0]));
     //Timber.e(
     //    "!!!! " + MD5Util.calculateMD5(new File(getFilesDir() + "/animations/"+cachedImagesFolder.list()[0])));

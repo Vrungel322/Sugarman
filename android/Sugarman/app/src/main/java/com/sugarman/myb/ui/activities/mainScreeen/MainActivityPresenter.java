@@ -16,6 +16,8 @@ import com.sugarman.myb.utils.ThreadSchedulers;
 import com.sugarman.myb.utils.animation.AnimationHelper;
 import com.sugarman.myb.utils.inapp.Purchase;
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -159,44 +161,64 @@ import timber.log.Timber;
 
             @Override public void onEach(File image) {
               animationList.add(Drawable.createFromPath(image.getAbsolutePath()));
-            }
+}
 
-            @Override public void onDone(File imagesDir) {
-              Timber.e("Everything is downloaded");
-              Collections.reverse(animationList);
-              for (Drawable drawable : animationList) {
-                animationDrawable.addFrame(drawable, duration);
-              }
-              getViewState().setAnimation(animationDrawable);
-            }
-          });
-        }, Throwable::printStackTrace);
-    addToUnsubscription(subscription);
+  @Override public void onDone(File imagesDir) {
+    Timber.e("Everything is downloaded");
+    Collections.reverse(animationList);
+    for (Drawable drawable : animationList) {
+      animationDrawable.addFrame(drawable, duration);
+    }
+    getViewState().setAnimation(animationDrawable);
   }
+});
+    }, Throwable::printStackTrace);
+    addToUnsubscription(subscription);
+    }
 
-  public void clearCachedImages(File filesDir) {
+public void clearCachedImages(File filesDir) {
 
     if (filesDir.exists() && filesDir.isDirectory()) {
-      String[] children = filesDir.list();
-      for (int i = 0; i < children.length; i++) {
-        new File(filesDir, children[i]).delete();
-      }
-    } else {
-      Timber.e("Not Deleted");
+    String[] children = filesDir.list();
+    for (int i = 0; i < children.length; i++) {
+    new File(filesDir, children[i]).delete();
     }
-  }
+    } else {
+    Timber.e("Not Deleted");
+    }
+    }
 
-  public void checkInAppBilling(Purchase purchase, String productName, String freeSku) {
+public void checkInAppBilling(Purchase purchase, String productName, String freeSku) {
     Subscription subscription = mDataManager.checkInAppBilling(
-        new InAppSinglePurchase(productName, purchase.getSku(), purchase.getToken(), freeSku))
-        .compose(ThreadSchedulers.applySchedulers())
-        .subscribe(subscriptionsResponse -> {
-          SharedPreferenceHelper.saveListSubscriptionEntity(
-              subscriptionsResponse.body().getSubscriptionEntities());
-          Timber.e(String.valueOf(subscriptionsResponse.code()));
-          if (subscriptionsResponse.code() == 200) {
-          }
-        }, Throwable::printStackTrace);
+    new InAppSinglePurchase(productName, purchase.getSku(), purchase.getToken(), freeSku))
+    .compose(ThreadSchedulers.applySchedulers())
+    .subscribe(subscriptionsResponse -> {
+    SharedPreferenceHelper.saveListSubscriptionEntity(
+    subscriptionsResponse.body().getSubscriptionEntities());
+    Timber.e(String.valueOf(subscriptionsResponse.code()));
+    if (subscriptionsResponse.code() == 200) {
+    }
+    }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
+    }
+
+public void getAnimationByName(String name, String filesDir)
+  {
+    ImageModel anim = mDataManager.getAnimationByNameFromRealm(name);
+    List<String> files = new ArrayList<>();
+    List<Drawable> animationList = new ArrayList<>();
+    AnimationDrawable animationDrawable = new AnimationDrawable();
+    for (int j = 0; j < anim.getImageUrl().size(); j++) {
+      try {
+        files.add(AnimationHelper.getFilenameFromURL(new URL(anim.getImageUrl().get(j))));
+        animationList.add(Drawable.createFromPath(filesDir + "/animations/" + AnimationHelper.getFilenameFromURL(new URL(anim.getImageUrl().get(j)))));
+      } catch (MalformedURLException e) {
+        e.printStackTrace();
+      }
+    }
+    for (Drawable drawable : animationList) {
+      animationDrawable.addFrame(drawable, duration);
+    }
+    getViewState().setAnimation(animationDrawable);
   }
 }
