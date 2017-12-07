@@ -79,6 +79,7 @@ import timber.log.Timber;
               .strType(rule.getAction())
               .eventText(rule.getMessage())
               .eventName(rule.getName())
+              .nameOfAnim(rule.getNameOfAnim())
               .build());
         }
       }
@@ -86,7 +87,7 @@ import timber.log.Timber;
   }
 
   public void checkIfRule15KStepsDone(int todaySteps) {
-    List<Rule> rules = mDataManager.getRuleByName(Constants.EVENT_15K_STEPS_DONE);
+    List<Rule> rules = mDataManager.getRuleByName(Constants.EVENT_PLAY_ANIMATION);
     if (!rules.isEmpty()) {
       Rule rule = rules.get(0);
 
@@ -99,6 +100,8 @@ import timber.log.Timber;
             .strType(rule.getAction())
             .eventText(rule.getMessage())
             .eventName(rule.getName())
+            .nameOfAnim(rule.getNameOfAnim())
+
             .build());
         //}
       }
@@ -138,8 +141,10 @@ import timber.log.Timber;
     List<Drawable> animationList = new ArrayList<>();
     Subscription subscription =
         mDataManager.getAnimations().concatMap(getAnimationResponseResponse -> {
+
           return Observable.just(getAnimationResponseResponse);
         }).compose(ThreadSchedulers.applySchedulers()).subscribe(animations -> {
+          mDataManager.saveAnimation(animations.body());
 
           Timber.e("Got inside animations");
           Timber.e("imageModel " + mDataManager.getAnimationByNameFromRealm("1").getId());
@@ -159,7 +164,6 @@ import timber.log.Timber;
               }
             }
           }
-          mDataManager.saveAnimation(animations.body());
 
           AnimationHelper animationHelper = new AnimationHelper(filesDir, urls);
           AnimationDrawable animationDrawable = new AnimationDrawable();
@@ -176,7 +180,7 @@ import timber.log.Timber;
               for (Drawable drawable : animationList) {
                 animationDrawable.addFrame(drawable, duration);
               }
-              getViewState().setAnimation(animationDrawable);
+              //getViewState().setAnimation(animationDrawable);
             }
           });
         }, Throwable::printStackTrace);
@@ -210,23 +214,26 @@ import timber.log.Timber;
   }
 
   public void getAnimationByName(String name, String filesDir) {
+    Timber.e("getAnimationByName " + name);
     ImageModel anim = mDataManager.getAnimationByNameFromRealm(name);
-    List<String> files = new ArrayList<>();
-    List<Drawable> animationList = new ArrayList<>();
-    AnimationDrawable animationDrawable = new AnimationDrawable();
-    for (int j = 0; j < anim.getImageUrl().size(); j++) {
-      try {
-        files.add(AnimationHelper.getFilenameFromURL(new URL(anim.getImageUrl().get(j))));
-        animationList.add(Drawable.createFromPath(
-            filesDir + "/animations/" + AnimationHelper.getFilenameFromURL(
-                new URL(anim.getImageUrl().get(j)))));
-      } catch (MalformedURLException e) {
-        e.printStackTrace();
+    if (anim != null) {
+      List<String> files = new ArrayList<>();
+      List<Drawable> animationList = new ArrayList<>();
+      AnimationDrawable animationDrawable = new AnimationDrawable();
+      for (int j = 0; j < anim.getImageUrl().size(); j++) {
+        try {
+          files.add(AnimationHelper.getFilenameFromURL(new URL(anim.getImageUrl().get(j))));
+          animationList.add(Drawable.createFromPath(
+              filesDir + "/animations/" + AnimationHelper.getFilenameFromURL(
+                  new URL(anim.getImageUrl().get(j)))));
+        } catch (MalformedURLException e) {
+          e.printStackTrace();
+        }
       }
+      for (Drawable drawable : animationList) {
+        animationDrawable.addFrame(drawable, duration);
+      }
+      getViewState().setAnimation(animationDrawable);
     }
-    for (Drawable drawable : animationList) {
-      animationDrawable.addFrame(drawable, duration);
-    }
-    getViewState().setAnimation(animationDrawable);
   }
 }

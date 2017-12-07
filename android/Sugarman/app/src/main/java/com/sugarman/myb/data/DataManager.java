@@ -292,6 +292,8 @@ public class DataManager {
   }
 
   public void saveAnimation(GetAnimationResponse getAnimationResponseResponse) {
+    Timber.e("saveAnimation");
+
     mDbHelper.dropRealmTable(GetAnimationResponse.class);
 
     mDbHelper.save(getAnimationResponseResponse);
