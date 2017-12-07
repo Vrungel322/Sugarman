@@ -87,7 +87,13 @@ import timber.log.Timber;
   public void checkIfRule15KStepsDone(int todaySteps) {
     List<Rule> rules = mDataManager.getRuleByName(Constants.EVENT_15K_STEPS_DONE);
     if (!rules.isEmpty()) {
-      Rule rule = rules.get(0);
+      Rule rule = Collections.max(rules, (a, b) -> {
+        if (a.getCount() > b.getCount())
+          return -1; // highest value first
+        if (a.getCount() == b.getCount())
+          return 0;
+        return 1;
+      });
 
       Timber.e(
           "rule " + rule.getName() + " todaySteps " + todaySteps + " getCount()" + rule.getCount());
@@ -142,7 +148,7 @@ import timber.log.Timber;
         }).compose(ThreadSchedulers.applySchedulers()).subscribe(animations -> {
 
           Timber.e("Got inside animations");
-          Timber.e("imageModel " + mDataManager.getAnimationByNameFromRealm("1").getId());
+          //Timber.e("imageModel " + mDataManager.getAnimationByNameFromRealm("1").getId());
           if (!filesDir.exists()) filesDir.mkdirs();
           List<String> urls = new ArrayList<>();
 
