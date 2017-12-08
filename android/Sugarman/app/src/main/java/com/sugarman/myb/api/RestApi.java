@@ -6,6 +6,7 @@ import com.sugarman.myb.api.models.requests.ApproveOtpRequest;
 import com.sugarman.myb.api.models.requests.CheckPhoneRequest;
 import com.sugarman.myb.api.models.requests.CheckVkRequest;
 import com.sugarman.myb.api.models.requests.DeleteUserRequest;
+import com.sugarman.myb.api.models.requests.PokeRequest;
 import com.sugarman.myb.api.models.requests.PurchaseDataRequest;
 import com.sugarman.myb.api.models.requests.RefreshUserDataRequest;
 import com.sugarman.myb.api.models.responses.ApproveOtpResponse;
@@ -213,5 +214,9 @@ public class RestApi {
 
   public Observable<Response<GetAnimationResponse>> getAnimationsByName(String name) {
     return api.getAnimationsByName(name);
+  }
+
+  public Observable<Response<Object>> poke (PokeRequest request) {
+    return api.poke(request);
   }
 }

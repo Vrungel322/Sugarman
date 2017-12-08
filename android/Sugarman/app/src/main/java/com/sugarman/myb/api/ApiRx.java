@@ -5,6 +5,7 @@ import com.sugarman.myb.api.models.requests.ApproveOtpRequest;
 import com.sugarman.myb.api.models.requests.CheckPhoneRequest;
 import com.sugarman.myb.api.models.requests.CheckVkRequest;
 import com.sugarman.myb.api.models.requests.DeleteUserRequest;
+import com.sugarman.myb.api.models.requests.PokeRequest;
 import com.sugarman.myb.api.models.requests.PurchaseDataRequest;
 import com.sugarman.myb.api.models.requests.RefreshUserDataRequest;
 import com.sugarman.myb.api.models.responses.ApproveOtpResponse;
@@ -121,4 +122,7 @@ public interface ApiRx {
 
   @GET("v1/get_animation") Observable<Response<GetAnimationResponse>> getAnimationsByName(
       @Query("name") String name);
+
+  @POST("v1/pokes") Observable<Response<Object>> poke(@Body PokeRequest request);
+
 }
