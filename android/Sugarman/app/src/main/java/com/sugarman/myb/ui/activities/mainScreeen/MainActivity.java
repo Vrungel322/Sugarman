@@ -46,6 +46,7 @@ import com.sugarman.myb.api.clients.GetNotificationsClient;
 import com.sugarman.myb.api.clients.MarkNotificationClient;
 import com.sugarman.myb.api.clients.SendFirebaseTokenClient;
 import com.sugarman.myb.api.models.requests.ReportStats;
+import com.sugarman.myb.api.models.responses.Member;
 import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.api.models.responses.me.invites.Invite;
 import com.sugarman.myb.api.models.responses.me.notifications.Notification;
@@ -83,6 +84,7 @@ import com.sugarman.myb.listeners.SugarmanDialogListener;
 import com.sugarman.myb.models.BaseChallengeItem;
 import com.sugarman.myb.models.ChallengeItem;
 import com.sugarman.myb.models.ChallengeMentorItem;
+import com.sugarman.myb.models.ChallengeRescueItem;
 import com.sugarman.myb.models.ChallengeWillStartItem;
 import com.sugarman.myb.models.ContactForServer;
 import com.sugarman.myb.models.ContactListForServer;
@@ -1589,6 +1591,7 @@ public class MainActivity extends GetUserInfoActivity
           item.setTracking(tracking);
           items.add(item);
         } else {
+          // TODO: 12/8/17 check for failing group
           ChallengeItem item = new ChallengeItem();
           item.setTracking(tracking);
           item.setUnreadMessages(5); // TODO: 09.08.2017 ТУТ
@@ -1596,11 +1599,12 @@ public class MainActivity extends GetUserInfoActivity
         }
 
         // TODO: 06.12.2017 make check if tracking soon fail (need to be added new bool field on server)
-        //if (tracking.getSomeBOOLFIELD){
-        //  ChallengeRescueItem item = new ChallengeRescueItem();
-        //  item.setTracking(tracking);
-        //  items.add(item);
-        //}
+        for(Member m : tracking.getMembers())
+        if (m.getIsFailer()){
+          ChallengeRescueItem item = new ChallengeRescueItem();
+          item.setTracking(tracking);
+          items.add(item);
+        }
       }
     }
 
@@ -1842,6 +1846,7 @@ public class MainActivity extends GetUserInfoActivity
     if (mMentorsGroups == null || mMentorsGroups.size() <= 0) {
       converted.add(new Random().nextInt(converted.size()), new NoMentorsChallengeItem());
     }
+    //converted.add(new ChallengeRescueItem());
     trackingsAdapter.setItems(converted);
     spiChallenges.setMaxIndicatorCircles(5);
     spiChallenges.setViewPager(vpTrackings);
