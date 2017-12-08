@@ -19,6 +19,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import rx.Observable;
@@ -66,13 +67,13 @@ import timber.log.Timber;
   }
 
   public void checkIfRuleStepsDone(int todaySteps) {
-    List<Rule> rules =new ArrayList<>();
+    List<Rule> rules = new ArrayList<>();
     List<Rule> rulesTempo = mDataManager.getRuleByName(Constants.EVENT_X_STEPS_DONE);
     for (Rule r : rulesTempo) {
       if (r.getCount() <= todaySteps) {
         rules.add(r);
       }
-      }
+    }
     if (rules != null && !rules.isEmpty()) {
       //Rule rule = Collections.max(rules, (a, b) -> {
       //  return a.getCount().compareTo(b.getCount());
@@ -81,7 +82,7 @@ import timber.log.Timber;
       // выбор того правила у которого значение шагов ближе всего к текущему количеству шагов
       // TODO: 07.12.2017 простестить с 1 рулом на количество шагов
       Rule rule = new Rule();
-         int min=Integer.MAX_VALUE;
+      int min = Integer.MAX_VALUE;
       for (Rule currentRule : rules) {
         final int diff = Math.abs(currentRule.getCount() - todaySteps);
 
@@ -156,7 +157,6 @@ import timber.log.Timber;
   }
 
   public void getAnimations(File filesDir) {
-    if (filesDir.listFiles()== null){
 
     List<Drawable> animationList = new ArrayList<>();
     Subscription subscription =
@@ -174,9 +174,24 @@ import timber.log.Timber;
             duration = anims.get(i).getDuration();
             for (int j = 0; j < anims.get(i).getImageUrl().size(); j++) {
               urls.add(anims.get(i).getImageUrl().get(j));
-              Timber.e(anims.get(i).getImageUrl().get(j));
+              Timber.e("getAnimations urls from server " + anims.get(i).getImageUrl().get(j));
             }
           }
+          if (filesDir.listFiles() != null) {
+            List<File> files = Arrays.asList(filesDir.listFiles());
+            for (File f : files) {
+              Timber.e("getAnimations " + f.getName());
+              if (urls.contains("https://sugarman-myb.s3.amazonaws.com/" + f.getName())) {
+                urls.remove("https://sugarman-myb.s3.amazonaws.com/" + f.getName());
+              }
+
+            }
+          }
+          //test
+          for (String u : urls) {
+            Timber.e("getAnimations urls to download "+ u);
+          }
+
           AnimationHelper animationHelper = new AnimationHelper(filesDir, urls);
           AnimationDrawable animationDrawable = new AnimationDrawable();
 
@@ -196,7 +211,7 @@ import timber.log.Timber;
             }
           });
         }, Throwable::printStackTrace);
-    addToUnsubscription(subscription);}
+    addToUnsubscription(subscription);
   }
 
   public void clearCachedImages(File filesDir) {

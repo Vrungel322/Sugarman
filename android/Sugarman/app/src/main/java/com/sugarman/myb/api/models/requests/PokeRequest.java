@@ -1,26 +1,14 @@
 package com.sugarman.myb.api.models.requests;
 
 import com.google.gson.annotations.SerializedName;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-public class PokeRequest {
+@AllArgsConstructor @NoArgsConstructor public class PokeRequest {
 
-  @SerializedName("user_id") private String userId;
+  @Getter @Setter @SerializedName("user_id") private String userId;
 
-  @SerializedName("tracking_id") private String trackingId;
-
-  public String getUserId() {
-    return userId;
-  }
-
-  public void setUserId(String userId) {
-    this.userId = userId;
-  }
-
-  public String getTrackingId() {
-    return trackingId;
-  }
-
-  public void setTrackingId(String trackingId) {
-    this.trackingId = trackingId;
-  }
+  @Getter @Setter @SerializedName("tracking_id") private String trackingId;
 }
