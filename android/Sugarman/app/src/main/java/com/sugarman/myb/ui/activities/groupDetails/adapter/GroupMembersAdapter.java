@@ -51,6 +51,7 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
   public static final int PENDING_LABEL_TYPE = 2;
   private static final String TAG = GroupMembersAdapter.class.getName();
   private static final int PENDING_MEMBER_TYPE = 1;
+  private static final int FAILING_MEMBER_TYPE = 3;
   private final WeakReference<OnStepMembersActionListener> actionListener;
   private final int red;
   private final int darkGray;
@@ -66,6 +67,7 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
   @InjectPresenter GroupMembersAdapterPresenter mAdapterPresenter;
   @Getter boolean editMode;
   PendingMemberHolder pendingMemberHolder;
+  FailingMemberHolder failingMemberHolder;
   Animation connectingAnimation;
   private String mTrackingId;
   private int countRedMembers;
@@ -117,6 +119,11 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
         view =
             LayoutInflater.from(context).inflate(R.layout.layout_item_group_member, parent, false);
         holder = new MemberHolder(view, this);
+        break;
+      case FAILING_MEMBER_TYPE:
+        view =
+            LayoutInflater.from(context).inflate(R.layout.layout_item_group_failing_member, parent, false);
+        holder = new FailingMemberHolder(view, this);
         break;
       case PENDING_MEMBER_TYPE:
         view = LayoutInflater.from(context)
@@ -350,6 +357,44 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
             }
           }
           break;
+        case FAILING_MEMBER_TYPE:
+          failingMemberHolder = (FailingMemberHolder) holder;
+          String str2 = member.getName();
+          str2 = str2.replaceAll("( +)", " ").trim();
+
+          String name2 = str2;
+          if (member.getName().contains(" ")) {
+            name2 = str2.substring(0, (member.getName().indexOf(" ")));
+          }
+          failingMemberHolder.tvMemberName.setText(name2);
+
+          if (TextUtils.isEmpty(url)) {
+            failingMemberHolder.ivAvatar.setImageResource(R.drawable.ic_gray_avatar);
+          } else {
+            CustomPicasso.with(context).cancelRequest(failingMemberHolder.ivAvatar);
+            if (member.getId().equals(SharedPreferenceHelper.getUserId())) {
+              CustomPicasso.with(context)
+                  .load(url)
+                  .fit()
+                  .centerCrop()
+                  .placeholder(R.drawable.ic_gray_avatar)
+                  .error(R.drawable.ic_gray_avatar)
+                  .networkPolicy(NetworkPolicy.NO_CACHE)
+                  .transform(new MaskTransformation(context, R.drawable.mask, true, 0xcccccccc))
+                  .into(failingMemberHolder.ivAvatar);
+            } else {
+              CustomPicasso.with(context)
+                  .load(url)
+                  .fit()
+                  .centerCrop()
+                  .placeholder(R.drawable.ic_gray_avatar)
+                  .error(R.drawable.ic_gray_avatar)
+                  .networkPolicy(NetworkPolicy.NO_CACHE)
+                  .transform(new CropCircleTransformation(0xff94989B, 4))
+                  .into(failingMemberHolder.ivAvatar);
+            }
+          }
+          break;
         case PENDING_LABEL_TYPE:
           // nothing
           break;
@@ -475,6 +520,12 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
           groupMember.setBlinked(true);
         }
       }
+      Timber.e(groupMember.getId() + " " +member.getIsFailer());
+      if(member.getIsFailer()) {
+        groupMember.setGroupType(FAILING_MEMBER_TYPE);
+        Timber.e("FAILER");
+      }
+
       listGroupmembers.add(groupMember);
     }
 
@@ -660,4 +711,91 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
       super(itemView);
     }
   }
+
+  private static class FailingMemberHolder extends RecyclerView.ViewHolder
+      implements View.OnClickListener {
+
+    private final WeakReference<ItemGroupMemberListener> mActionItemListener;
+
+    private final TextView tvMemberName;
+    public ImageView ivKick;
+    private ImageView ivAvatar;
+
+    FailingMemberHolder(View itemView, ItemGroupMemberListener listener) {
+      super(itemView);
+
+      mActionItemListener = new WeakReference<>(listener);
+
+      View vContainer = itemView.findViewById(R.id.ll_group_member_container);
+
+      tvMemberName = (TextView) itemView.findViewById(R.id.tv_member_name);
+      ivAvatar = (ImageView) itemView.findViewById(R.id.iv_avatar);
+      ivKick = (ImageView) itemView.findViewById(R.id.ivKickOverlay);
+
+      vContainer.setOnClickListener(this);
+    }
+
+    @Override public void onClick(View v) {
+      int id = v.getId();
+      int position = getAdapterPosition();
+
+      switch (id) {
+        case R.id.ll_group_member_container:
+          Timber.e("My ID ");
+
+          if (mActionItemListener.get() != null) {
+            mActionItemListener.get().onClickMemberAvatar(position);
+          }
+          break;
+        default:
+          Log.d(TAG,
+              "Click on not processed view with id " + v.getResources().getResourceEntryName(id));
+          break;
+      }
+    }
+  }
+
+  private static class SavedMemberHolder extends RecyclerView.ViewHolder
+      implements View.OnClickListener {
+
+    private final WeakReference<ItemGroupMemberListener> mActionItemListener;
+
+    private final TextView tvMemberName;
+    public ImageView ivKick;
+    private ImageView ivAvatar;
+
+    SavedMemberHolder(View itemView, ItemGroupMemberListener listener) {
+      super(itemView);
+
+      mActionItemListener = new WeakReference<>(listener);
+
+      View vContainer = itemView.findViewById(R.id.ll_group_member_container);
+
+      tvMemberName = (TextView) itemView.findViewById(R.id.tv_member_name);
+      ivAvatar = (ImageView) itemView.findViewById(R.id.iv_avatar);
+      ivKick = (ImageView) itemView.findViewById(R.id.ivKickOverlay);
+
+      vContainer.setOnClickListener(this);
+    }
+
+    @Override public void onClick(View v) {
+      int id = v.getId();
+      int position = getAdapterPosition();
+
+      switch (id) {
+        case R.id.ll_group_member_container:
+          Timber.e("My ID ");
+
+          if (mActionItemListener.get() != null) {
+            mActionItemListener.get().onClickMemberAvatar(position);
+          }
+          break;
+        default:
+          Log.d(TAG,
+              "Click on not processed view with id " + v.getResources().getResourceEntryName(id));
+          break;
+      }
+    }
+  }
+
 }
