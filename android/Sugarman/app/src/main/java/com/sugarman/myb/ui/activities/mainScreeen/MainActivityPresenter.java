@@ -97,8 +97,10 @@ import timber.log.Timber;
       Timber.e(
           "rule " + rule.getName() + " animation name " + rule.getNameOfAnim() + " todaySteps " + todaySteps + " getCount()" + rule.getCount());
       if (todaySteps >= rule.getCount()) {
-        Timber.e("rule true");
-        if (!SharedPreferenceHelper.isEventXStepsDone(rule.getCount()) && !rule.getAction().equals("animation")) {
+        Timber.e("rule true &&" + !SharedPreferenceHelper.isEventXStepsDone(rule.getCount()));
+        if (!SharedPreferenceHelper.isEventXStepsDone(rule.getCount())) {
+          Timber.e("rule true and SHP OK");
+
           getViewState().doEventActionResponse(CustomUserEvent.builder()
               .strType(rule.getAction())
               .eventText(rule.getMessage())

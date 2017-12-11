@@ -14,6 +14,7 @@ import com.sugarman.myb.models.custom_events.IActionOnCurrentScreen;
 import com.sugarman.myb.utils.DialogHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import javax.inject.Inject;
+import timber.log.Timber;
 
 /**
  * Created by John on 27.01.2017.
@@ -49,6 +50,7 @@ public abstract class BasicActivity extends MvpAppCompatActivity {
         }
         body.append(customEvent.getEventText());
         SharedPreferenceHelper.setEventXStepsDone(customEvent.getNumValue());
+        Timber.e("doEventAction", + customEvent.getNumValue());
         DialogHelper.createSimpleInfoDialog("OK", "Great!", body.toString(), this,
             (dialogInterface, i) -> {
               if (customEvent.getEventName().equals(Constants.EVENT_X_NEW_USERS_INVITE)) {

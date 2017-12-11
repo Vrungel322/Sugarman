@@ -315,7 +315,7 @@ public class DataManager {
   public void clearRuleDailyData() {
     List<Rule> rules = mDbHelper.getAll(Rule.class);
     for (Rule r : rules) {
-      SharedPreferenceHelper.setEventXStepsDone(r.getCount());
+      SharedPreferenceHelper.disableEventXStepsDone(r.getCount());
     }
   }
 }

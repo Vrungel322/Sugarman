@@ -620,6 +620,10 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     putBoolean(SharedPreferenceConstants.EVENT_X_STEPS_DONE + numValue, true);
   }
 
+  public static void disableEventXStepsDone(Integer numValue) {
+    putBoolean(SharedPreferenceConstants.EVENT_X_STEPS_DONE + numValue, false);
+  }
+
   public static boolean isEventXStepsDone(Integer numValue) {
     return getBoolean(SharedPreferenceConstants.EVENT_X_STEPS_DONE+numValue, false);
   }
