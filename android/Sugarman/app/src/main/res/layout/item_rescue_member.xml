@@ -5,16 +5,17 @@
     android:id="@+id/ll_group_member_container"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_margin="10dp"
     android:orientation="horizontal">
 
       <RelativeLayout
-          android:layout_width="@dimen/group_details_avatar_size"
-          android:layout_height="@dimen/group_details_avatar_size">
+          android:layout_width="70dp"
+          android:layout_height="70dp">
 
         <ImageView
             android:id="@+id/ivAvatar"
-            android:layout_width="@dimen/group_details_avatar_size"
-            android:layout_height="@dimen/group_details_avatar_size"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:src="@drawable/ic_gray_avatar"
             android:paddingBottom="5dp"/>
         <ImageView
