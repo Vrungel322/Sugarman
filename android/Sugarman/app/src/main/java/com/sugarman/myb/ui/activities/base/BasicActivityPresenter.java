@@ -46,4 +46,8 @@ import timber.log.Timber;
         }, Throwable::printStackTrace);
     addToUnsubscription(subscriptions);
   }
+
+  public void clearRuleDailyData() {
+    mDataManager.clearRuleDailyData();
+  }
 }

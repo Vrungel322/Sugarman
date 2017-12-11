@@ -194,8 +194,8 @@ public class DataManager {
     return mRestApi.getAnimationsByName(name);
   }
 
-  public Observable<Response<Object>> poke(String  memberId, String trakingId) {
-    return mRestApi.poke(new PokeRequest(memberId,trakingId));
+  public Observable<Response<Object>> poke(String memberId, String trakingId) {
+    return mRestApi.poke(new PokeRequest(memberId, trakingId));
   }
 
   ///////////////////////////////////////////////////////////////////////////
@@ -304,11 +304,18 @@ public class DataManager {
     mDbHelper.save(getAnimationResponseResponse);
   }
 
-  public ImageModel getAnimationByNameFromRealm(String name){
-    for (ImageModel im : mDbHelper.getElementsFromDBByQuery(ImageModel.class,"name", name)) {
+  public ImageModel getAnimationByNameFromRealm(String name) {
+    for (ImageModel im : mDbHelper.getElementsFromDBByQuery(ImageModel.class, "name", name)) {
       Timber.e("imageModel name" + im.getName());
       Timber.e("imageModel id" + im.getId());
     }
-    return mDbHelper.getElementsFromDBByQuery(ImageModel.class,"name", name).get(0);
+    return mDbHelper.getElementsFromDBByQuery(ImageModel.class, "name", name).get(0);
+  }
+
+  public void clearRuleDailyData() {
+    List<Rule> rules = mDbHelper.getAll(Rule.class);
+    for (Rule r : rules) {
+      SharedPreferenceHelper.setEventXStepsDone(r.getCount());
+    }
   }
 }

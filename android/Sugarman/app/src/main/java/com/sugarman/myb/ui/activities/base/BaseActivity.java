@@ -143,6 +143,7 @@ public abstract class BaseActivity extends BasicActivity
     super.onResume();
 
     SharedPreferenceHelper.isFirstLaunchOfTheDay(SharedPreferenceHelper.getUserId());
+    presenter.clearRuleDailyData();
 
     new Thread(new Runnable() {
       @Override public void run() {
