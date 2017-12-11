@@ -200,6 +200,7 @@ public class GroupDetailsActivity extends BaseActivity
   @BindView(R.id.etCommentBody) EditText mEditTextCommentBody;
   @BindView(R.id.ivEditMentor) ImageView ivEditMentor;
   @BindView(R.id.tv_group_steps) TextView groupSteps;
+  @BindView(R.id.ivGroupRescueCircle) ImageView rescueCircle;
   Thread thread = new Thread();
   FrameLayout parentLayout;
   View borderline;
@@ -624,6 +625,7 @@ public class GroupDetailsActivity extends BaseActivity
       new BroadcastReceiverImplementation();
   private Uri imageUri;
   private boolean isMentorGroup;
+  private boolean isFailedGroup;
   private String mentorId;
   private Tracking mTracking;
   private boolean editMode = false;
@@ -766,6 +768,12 @@ public class GroupDetailsActivity extends BaseActivity
     vEdit.setOnClickListener(this);
 
     trackingId = IntentExtractorHelper.getTrackingId(getIntent());
+
+    isFailedGroup = getIntent().getBooleanExtra("isRescueGroup", false);
+    if(isFailedGroup) {
+      rescueCircle.setVisibility(View.VISIBLE);
+    }
+
     isMentorGroup = getIntent().getBooleanExtra("isMentorGroup", false);
     if (isMentorGroup) {
 
@@ -965,7 +973,7 @@ public class GroupDetailsActivity extends BaseActivity
       @Override public void run() {
         rlComments.clearAnimation();
         rlComments.setVisibility(View.GONE);
-        Timber.e("VISIBILITY = " + rlComments.getVisibility());
+        Timber.e("is it visible? " + rlComments.getVisibility());
       }
     }).start();
   }
