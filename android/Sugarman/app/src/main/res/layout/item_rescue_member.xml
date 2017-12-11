@@ -19,6 +19,12 @@
             android:src="@drawable/ic_gray_avatar"
             android:paddingBottom="5dp"/>
         <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:paddingBottom="5dp"
+            android:src="@drawable/rescue_circle_border"
+            />
+        <ImageView
             android:id="@+id/ivClock"
             android:layout_width="15dp"
             android:layout_height="15dp"
