@@ -28,7 +28,6 @@ import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.base.BasicActivity;
 import com.sugarman.myb.constants.Config;
-import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.ui.views.CropCircleTransformation;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,6 +52,7 @@ public class CheckoutActivity extends BasicActivity
   @BindView(R.id.etZipCode) EditText etZipCode;
   @BindView(R.id.etFullName) EditText etFullName;
   @BindView(R.id.etPhoneNumber) EditText etPhoneNumber;
+  private String paymentType;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_checkout);
@@ -75,6 +75,7 @@ public class CheckoutActivity extends BasicActivity
     productPrice = intent.getStringExtra("productPrice");
     productImageUrl = intent.getStringExtra("productImageId");
     productName = intent.getStringExtra("productName");
+    paymentType = intent.getStringExtra("paymentType");
     Log.e("checkout", "" + type);
 
     totalPrice.setText(productPrice + " $");
@@ -213,7 +214,7 @@ public class CheckoutActivity extends BasicActivity
           etZipCode.getText().toString(), etFullName.getText().toString(),
           etPhoneNumber.getText().toString(),
           String.valueOf(num * Double.parseDouble(productPrice)), num, productName, productPrice,
-          Constants.PAY_PAL_PAYMENT_TYPE);
+          paymentType);
     }
   }
 

@@ -102,6 +102,7 @@ public abstract class Constants {
   public static final String INTENT_FCM_URL = "intent_fcm_url";
   public static final String IMEI = "IMEI";
   public static final String PAY_PAL_PAYMENT_TYPE = "paypal";
+  public static final String FREE_PAYMENT_TYPE = "free";
   public static final String INVITE_FRIENDS_PAYMENT_TYPE = "friends";
   public static final int ALL_SLOTS_NOT_EMPTY_ERROR = 222;
   public static final String EVENT_X_NEW_USERS_INVITE = "event_type_group_with_new_x_users";
