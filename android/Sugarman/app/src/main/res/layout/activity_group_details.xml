@@ -121,15 +121,30 @@
                     android:gravity="center">
 
 
+                    <RelativeLayout
+                        android:layout_weight="34"
+                        android:layout_width="0dp"
+                        android:layout_margin="12dp"
+                        android:layout_height="76dp"
+                        >
                 <ImageView
                     android:id="@+id/iv_group_avatar"
-                    android:layout_weight="34"
-                    android:layout_width="0dp"
-                    android:layout_margin="12dp"
-                    android:layout_height="76dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:src="@drawable/ic_gray_avatar" />
+                        <ImageView
+                            android:id="@+id/ivGroupRescueCircle"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:src="@drawable/rescue_group_circle"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginEnd="15dp"
+                            android:layout_marginBottom="2dp"
+                            android:visibility="gone"
+                            />
 
-
+                </RelativeLayout>
                     <LinearLayout
                         android:layout_weight="91"
                         android:id="@+id/linear_group_stats"

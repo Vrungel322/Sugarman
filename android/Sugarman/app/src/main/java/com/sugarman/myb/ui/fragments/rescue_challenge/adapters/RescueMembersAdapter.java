@@ -60,8 +60,6 @@ public class RescueMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vi
         .transform(new CropCircleTransformation(0x00ffffff, 4))
         .into(viewHolder.ivAvatar);
 
-
-
   }
 
   @Override public int getItemCount() {

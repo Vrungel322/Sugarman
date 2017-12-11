@@ -1,18 +1,27 @@
 package com.sugarman.myb.ui.fragments.rescue_challenge;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import butterknife.BindView;
+import butterknife.OnClick;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.Member;
 import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.base.BasicFragment;
 import com.sugarman.myb.models.ChallengeRescueItem;
+import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
 import com.sugarman.myb.ui.fragments.rescue_challenge.adapters.RescueMembersAdapter;
+import com.sugarman.myb.ui.views.CropCircleTransformation;
+import com.sugarman.myb.ui.views.CropSquareTransformation;
+import com.sugarman.myb.ui.views.MaskTransformation;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -26,6 +35,8 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
   private static final String RESCUE_CHALLENGE = "RESCUE_CHALLENGE";
   @InjectPresenter ChallengeRescueFragmentPresenter mPresenter;
   @BindView(R.id.rvMembers) RecyclerView rvMembers;
+  @BindView(R.id.group_avatar) ImageView ivAvatar;
+  @BindView(R.id.cvRescueChallengeContainer) CardView cvRescueChallengeContainer;
   RescueMembersAdapter adapter;
   private ChallengeRescueItem mChallengeItem;
   private Tracking mTracking;
@@ -48,6 +59,18 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
 
     mChallengeItem = getArguments().getParcelable(RESCUE_CHALLENGE);
     mTracking = mChallengeItem.getTracking();
+
+    CustomPicasso.with(mContext)
+        //.load(Uri.parse(productImageUrl))
+        .load(mTracking.getGroup().getPictureUrl())
+        .fit()
+        .centerCrop()
+        .error(R.drawable.ic_gray_avatar)
+        .error(R.drawable.ic_red_avatar)
+        .transform(new CropSquareTransformation())
+        .transform(new MaskTransformation(mContext,R.drawable.profile_mask,false, 0xfff))
+        .into(ivAvatar);
+
     Timber.e("onViewCreated got inside "  + mTracking.getMembers().length);
     List<Member> members = Arrays.asList(mTracking.getMembers());
     Timber.e("onViewCreated got inside list size "  + members.size());
@@ -58,4 +81,15 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
 
 
   }
+
+  @OnClick(R.id.cvRescueChallengeContainer) public void openGroupActivity()
+  {
+    Activity activity = getActivity();
+    if (activity != null
+        && activity instanceof MainActivity
+        && ((MainActivity) activity).isReady()) {
+      ((MainActivity) activity).openGroupDetailsActivity(mTracking.getId(), true);
+    }
+  }
+
 }

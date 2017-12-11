@@ -9,19 +9,19 @@
     android:orientation="horizontal">
 
       <RelativeLayout
-          android:layout_width="70dp"
-          android:layout_height="70dp">
+          android:layout_width="60dp"
+          android:layout_height="60dp">
 
         <ImageView
             android:id="@+id/ivAvatar"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:src="@drawable/ic_gray_avatar"
             android:paddingBottom="5dp"/>
         <ImageView
             android:id="@+id/ivClock"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:src="@drawable/rescue_clock"

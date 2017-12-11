@@ -542,6 +542,7 @@ public class MainActivity extends GetUserInfoActivity
     cachedImagesFolder = new File(getFilesDir() + "/animations/");
 
 
+
     mPresenter.getAnimations(cachedImagesFolder);
     //Timber.e("!!!! " +new File(cachedImagesFolder.list()[0]));
     //Timber.e(
@@ -1406,6 +1407,13 @@ public class MainActivity extends GetUserInfoActivity
     intent.putExtra(Constants.INTENT_TRACKING_ID, trackingId);
     intent.putExtra("isMentorGroup", isMentorGroup);
     intent.putExtra("mentorId", groupOwnerId);
+    startActivityForResult(intent, Constants.GROUP_DETAILS_ACTIVITY_REQUEST_CODE);
+  }
+
+  public void openGroupDetailsActivity(String trackingId, boolean isRescueGroup) {
+      Intent intent = new Intent(this, GroupDetailsActivity.class);
+      intent.putExtra(Constants.INTENT_TRACKING_ID, trackingId);
+      intent.putExtra("isRescueGroup", isRescueGroup);
     startActivityForResult(intent, Constants.GROUP_DETAILS_ACTIVITY_REQUEST_CODE);
   }
 
