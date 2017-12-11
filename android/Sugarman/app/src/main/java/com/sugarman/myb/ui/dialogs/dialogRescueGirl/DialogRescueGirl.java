@@ -94,6 +94,7 @@ public class DialogRescueGirl extends MvpDialogFragment implements IDialogRescue
       }
     }
     mRescueMembersAdapter = new RescueMembersAdapter(getMvpDelegate());
+    //mRescueMembersAdapter.setMembers(Arrays.asList(mTracking.getMembers()));
     mRescueMembersAdapter.setMembers(failures);
     mRecyclerViewFailures.setAdapter(mRescueMembersAdapter);
   }

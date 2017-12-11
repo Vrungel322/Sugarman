@@ -85,6 +85,7 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
       }
     }
     mRescueMembersAdapter = new RescueMembersAdapter(getMvpDelegate());
+    //mRescueMembersAdapter.setMembers(Arrays.asList(mTracking.getMembers()));
     mRescueMembersAdapter.setMembers(failures);
     mRecyclerViewFailures.setAdapter(mRescueMembersAdapter);
 
