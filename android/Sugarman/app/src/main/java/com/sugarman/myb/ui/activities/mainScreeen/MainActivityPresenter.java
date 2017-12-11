@@ -21,7 +21,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import rx.Observable;
 import rx.Subscription;
 import timber.log.Timber;
@@ -167,7 +169,7 @@ import timber.log.Timber;
 
           Timber.e("Got inside animations");
           if (!filesDir.exists()) filesDir.mkdirs();
-          List<String> urls = new ArrayList<>();
+          Set<String> urls = new HashSet<>();
 
           List<ImageModel> anims = animations.body().getAnimations();
           for (int i = 0; i < anims.size(); i++) {
@@ -192,7 +194,7 @@ import timber.log.Timber;
             Timber.e("getAnimations urls to download "+ u);
           }
 
-          AnimationHelper animationHelper = new AnimationHelper(filesDir, urls);
+          AnimationHelper animationHelper = new AnimationHelper(filesDir, new ArrayList<>(urls));
           AnimationDrawable animationDrawable = new AnimationDrawable();
 
           animationHelper.download(new AnimationHelper.Callback() {

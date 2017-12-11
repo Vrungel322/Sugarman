@@ -21,6 +21,7 @@ import com.sugarman.myb.ui.activities.profile.ProfileActivityPresenter;
 import com.sugarman.myb.ui.activities.shop.ShopActivityPresenter;
 import com.sugarman.myb.ui.activities.shopInviteFriend.ShopInviteFriendsActivityPresenter;
 import com.sugarman.myb.ui.activities.splash.SplashActivityPresenter;
+import com.sugarman.myb.ui.dialogs.dialogRescueGirl.DialogRescueGirlPresenter;
 import com.sugarman.myb.ui.dialogs.sendVkInvitation.SendVkInvitationDialogPresenter;
 import com.sugarman.myb.ui.fragments.mentors_challenge.MentorsChallengeFragmentPresenter;
 import com.sugarman.myb.ui.fragments.no_mentors_challenge.NoMentorsChallengeFragmentPresenter;
@@ -77,4 +78,6 @@ import dagger.Component;
   void inject(ApproveOtpActivityPresenter presenter);
 
   void inject(ChallengeRescueFragmentPresenter presenter);
+
+  void inject(DialogRescueGirlPresenter presenter);
 }

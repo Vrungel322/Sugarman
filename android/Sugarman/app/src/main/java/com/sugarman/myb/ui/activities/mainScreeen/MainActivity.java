@@ -105,6 +105,7 @@ import com.sugarman.myb.ui.activities.profile.ProfileActivity;
 import com.sugarman.myb.ui.activities.shop.ShopActivity;
 import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
+import com.sugarman.myb.ui.dialogs.dialogRescueGirl.DialogRescueGirl;
 import com.sugarman.myb.ui.fragments.BaseFragment;
 import com.sugarman.myb.ui.fragments.NotificationsFragment;
 import com.sugarman.myb.ui.views.CircleIndicatorView;
@@ -1113,6 +1114,8 @@ public class MainActivity extends GetUserInfoActivity
     switch (id) {
       case R.id.iv_avatar:
         openProfileActivity();
+        //DialogRescueGirl.newInstance(myTrackings[0]).show(getFragmentManager(),"DialogRescueGirl");
+
         break;
       case R.id.iv_create_group:
         //if (SharedPreferenceHelper.getActiveTrackingsCreated()
@@ -1609,6 +1612,7 @@ public class MainActivity extends GetUserInfoActivity
         // TODO: 06.12.2017 make check if tracking soon fail (need to be added new bool field on server)
         for(Member m : tracking.getMembers())
         if (m.getIsFailer()){
+          Timber.e("failer group " + m.getName());
           ChallengeRescueItem item = new ChallengeRescueItem();
           item.setTracking(tracking);
           items.add(item);
