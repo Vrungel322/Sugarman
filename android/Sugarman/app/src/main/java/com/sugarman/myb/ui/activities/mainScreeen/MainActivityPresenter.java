@@ -95,17 +95,17 @@ import timber.log.Timber;
       }
 
       Timber.e(
-          "rule " + rule.getName() + " todaySteps " + todaySteps + " getCount()" + rule.getCount());
+          "rule " + rule.getName() + " animation name " + rule.getNameOfAnim() + " todaySteps " + todaySteps + " getCount()" + rule.getCount());
       if (todaySteps >= rule.getCount()) {
         Timber.e("rule true");
-        if (!SharedPreferenceHelper.isEventXStepsDone()) {
+        //if (!SharedPreferenceHelper.isEventXStepsDone()) {
           getViewState().doEventActionResponse(CustomUserEvent.builder()
               .strType(rule.getAction())
               .eventText(rule.getMessage())
               .eventName(rule.getName())
               .nameOfAnim(rule.getNameOfAnim())
               .build());
-        }
+       // }
       }
     }
   }
@@ -243,6 +243,9 @@ import timber.log.Timber;
   }
 
   public void getAnimationByName(String name, String filesDir) {
+
+    Timber.e("Animation name : " + name + " filesDir : " + filesDir);
+
     ImageModel anim = mDataManager.getAnimationByNameFromRealm(name);
     List<String> files = new ArrayList<>();
     List<Drawable> animationList = new ArrayList<>();
@@ -257,6 +260,7 @@ import timber.log.Timber;
         e.printStackTrace();
       }
     }
+    Timber.e("Animation list size : " + animationList.size());
     for (Drawable drawable : animationList) {
       animationDrawable.addFrame(drawable, duration);
     }

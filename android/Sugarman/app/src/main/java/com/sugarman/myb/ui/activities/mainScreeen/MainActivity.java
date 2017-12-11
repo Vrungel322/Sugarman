@@ -1880,8 +1880,8 @@ public class MainActivity extends GetUserInfoActivity
   }
 
   @Override public void doEventActionResponse(CustomUserEvent customUserEvent) {
+    Timber.e("EVENT_NAME_ANIMATION " + customUserEvent.getNameOfAnim() + ", EVENT_NAME_TYPE " + customUserEvent.getStrType());
     if (customUserEvent.getEventName().equals(Constants.EVENT_X_STEPS_DONE)) {
-      Timber.e("EVENT_" + customUserEvent.getNameOfAnim());
       doEventAction(customUserEvent,
           () -> mPresenter.getAnimationByName(customUserEvent.getNameOfAnim(),
               getFilesDir().getAbsolutePath()));
