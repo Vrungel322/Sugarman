@@ -576,5 +576,6 @@
   <string name="text_num_to_rescue">The group needs %1$d more rescue</string>
   <string name="kick_them_now_for_a_rescue">Kick them now \n for a rescue!!!</string>
   <string name="your_group_has_failed_thanks_to">Your group %1$s has Failed! thanks to:</string>
+  <string name="you_still_have_time_to_rescue_the_group">You still have time to rescue the group!</string>
 
 </resources>

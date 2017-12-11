@@ -105,6 +105,7 @@ import com.sugarman.myb.ui.activities.profile.ProfileActivity;
 import com.sugarman.myb.ui.activities.shop.ShopActivity;
 import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
+import com.sugarman.myb.ui.dialogs.dialogRescueBoldMan.DialogRescueBoldMan;
 import com.sugarman.myb.ui.dialogs.dialogRescueGirl.DialogRescueGirl;
 import com.sugarman.myb.ui.fragments.BaseFragment;
 import com.sugarman.myb.ui.fragments.NotificationsFragment;
@@ -1113,8 +1114,8 @@ public class MainActivity extends GetUserInfoActivity
     int id = v.getId();
     switch (id) {
       case R.id.iv_avatar:
-        openProfileActivity();
-        //DialogRescueGirl.newInstance(myTrackings[0]).show(getFragmentManager(),"DialogRescueGirl");
+        //openProfileActivity();
+        DialogRescueBoldMan.newInstance(myTrackings[0]).show(getFragmentManager(),"DialogRescueBoldMan");
 
         break;
       case R.id.iv_create_group:

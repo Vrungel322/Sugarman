@@ -1,10 +1,14 @@
 package com.sugarman.myb.utils;
 
 import android.content.Context;
+import com.sugarman.myb.R;
+import com.sugarman.myb.constants.Constants;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 /**
  * Created by nikita on 20.09.17.
@@ -40,5 +44,32 @@ public class Converters {
     }
 
     return null;
+  }
+
+  public static String timeFromMilliseconds(Context context,long timeMs) {
+    //if (!date.equals("")) {
+    //  String dateResult;
+    //  SimpleDateFormat formatter =
+    //      //new SimpleDateFormat("HH:mm:ss", new Locale(Locale.getDefault().getLanguage()));
+    //      new SimpleDateFormat("HH:mm:ss", new Locale("en"));
+    //  Calendar calendar = Calendar.getInstance(new Locale("en"));
+    //  long d = Long.valueOf(date);
+    //  calendar.setTimeInMillis(d);
+    //  dateResult = formatter.format(calendar.getTime());
+    //
+    //  return dateResult;
+    //}
+    //return "";
+    final NumberFormat timeFormatter = new DecimalFormat("00");
+
+    int days = (int) (timeMs / Constants.MS_IN_DAY);
+    int hours = (int) ((timeMs % Constants.MS_IN_DAY) / Constants.MS_IN_HOUR);
+    int minutes = (int) ((timeMs % Constants.MS_IN_HOUR) / Constants.MS_IN_MIN);
+    int sec = (int) ((timeMs % Constants.MS_IN_MIN) / Constants.MS_IN_SEC);
+
+    String timeFormatted =
+        String.format(context.getString(R.string.timer_template), timeFormatter.format(days), timeFormatter.format(hours),
+            timeFormatter.format(minutes), timeFormatter.format(sec));
+    return timeFormatted;
   }
 }
