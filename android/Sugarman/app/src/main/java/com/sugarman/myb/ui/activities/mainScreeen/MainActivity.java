@@ -1113,9 +1113,8 @@ public class MainActivity extends GetUserInfoActivity
     int id = v.getId();
     switch (id) {
       case R.id.iv_avatar:
-        //openProfileActivity();
-
-        DialogRescueGirl.newInstance(myTrackings[0]).show(getFragmentManager(),"DialogRescueGirl");
+        openProfileActivity();
+        //DialogRescueGirl.newInstance(myTrackings[0]).show(getFragmentManager(),"DialogRescueGirl");
 
         break;
       case R.id.iv_create_group:

@@ -19,11 +19,9 @@ import com.sugarman.myb.base.BasicFragment;
 import com.sugarman.myb.models.ChallengeRescueItem;
 import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
 import com.sugarman.myb.ui.fragments.rescue_challenge.adapters.RescueMembersAdapter;
-import com.sugarman.myb.ui.views.CropCircleTransformation;
 import com.sugarman.myb.ui.views.CropSquareTransformation;
 import com.sugarman.myb.ui.views.MaskTransformation;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import timber.log.Timber;
 
@@ -74,7 +72,7 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
     Timber.e("onViewCreated got inside "  + mTracking.getMembers().length);
     List<Member> members = Arrays.asList(mTracking.getMembers());
     Timber.e("onViewCreated got inside list size "  + members.size());
-    adapter = new RescueMembersAdapter(getMvpDelegate(), members, view.getContext());
+    adapter = new RescueMembersAdapter(getMvpDelegate(), members);
     rvMembers.setLayoutManager(new LinearLayoutManager(view.getContext(),LinearLayoutManager.HORIZONTAL,false));
     rvMembers.setAdapter(adapter);
     adapter.notifyDataSetChanged();

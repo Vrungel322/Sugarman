@@ -2,6 +2,7 @@ package com.sugarman.myb.ui.dialogs.dialogRescueGirl;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,11 @@ import com.arellomobile.mvp.MvpDialogFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.R;
+import com.sugarman.myb.api.models.responses.Member;
 import com.sugarman.myb.api.models.responses.Tracking;
+import com.sugarman.myb.ui.fragments.rescue_challenge.adapters.RescueMembersAdapter;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by nikita on 11.12.2017.
@@ -33,6 +38,8 @@ public class DialogRescueGirl extends MvpDialogFragment implements IDialogRescue
   @BindView(R.id.tvKickcThemNow) TextView mTextViewKickThemNow;
   private Tracking mTracking;
   private int failuresCount = 0;
+  private RescueMembersAdapter mRescueMembersAdapter;
+  private List<Member> failures = new ArrayList<>();
 
   public static DialogRescueGirl newInstance(Tracking tracking) {
     Bundle args = new Bundle();
@@ -71,13 +78,25 @@ public class DialogRescueGirl extends MvpDialogFragment implements IDialogRescue
     }
     mTextViewNumToRescue.setText(
         String.format(getString(R.string.text_num_to_rescue), (int) failuresCount));
+
+    mRecyclerViewFailures.setLayoutManager(
+        new LinearLayoutManager(mRecyclerViewFailures.getContext(), LinearLayoutManager.HORIZONTAL,
+            false));
+    for (Member m : mTracking.getMembers()) {
+      if (m.getIsFailer()) {
+        failures.add(m);
+      }
+    }
+    mRescueMembersAdapter = new RescueMembersAdapter(getMvpDelegate());
+    mRescueMembersAdapter.setMembers(failures);
+    mRecyclerViewFailures.setAdapter(mRescueMembersAdapter);
   }
 
   @OnClick(R.id.ivCross) public void ivCrossClick() {
     getDialog().cancel();
   }
 
-  @OnClick({R.id.ivKick,R.id.tvKickcThemNow}) public void kickAllFailures(){
+  @OnClick({ R.id.ivKick, R.id.tvKickcThemNow }) public void kickAllFailures() {
 
   }
 }

@@ -6,12 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import com.arellomobile.mvp.MvpDelegate;
 import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.Member;
 import com.sugarman.myb.base.MvpBaseRecyclerAdapter;
 import com.sugarman.myb.ui.views.CropCircleTransformation;
+import java.util.ArrayList;
 import java.util.List;
 import timber.log.Timber;
 
@@ -21,15 +24,23 @@ import timber.log.Timber;
 
 public class RescueMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.ViewHolder> {
 
-  List<Member> members;
-  Context context;
+  List<Member> members = new ArrayList<>();
 
-  public RescueMembersAdapter(MvpDelegate<?> parentDelegate, List<Member> members, Context context) {
+  public RescueMembersAdapter(MvpDelegate<?> parentDelegate, List<Member> members) {
     super(parentDelegate, "RescueMembersAdapter");
     this.members = members;
-    this.context = context;
 
     Timber.e("Members size: " + members.size());
+  }
+
+  public RescueMembersAdapter(MvpDelegate<?> parentDelegate) {
+    super(parentDelegate, "RescueMembersAdapter");
+  }
+
+  public void setMembers(List<Member> members) {
+    this.members.clear();
+    this.members = members;
+    notifyDataSetChanged();
   }
 
   @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -37,8 +48,7 @@ public class RescueMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vi
     Timber.e("zashol v onCreateViewHolder");
     View view;
     RecyclerView.ViewHolder holder = null;
-    view =
-        LayoutInflater.from(context).inflate(R.layout.item_rescue_member, parent, false);
+    view = LayoutInflater.from(context).inflate(R.layout.item_rescue_member, parent, false);
     holder = new RescueMemberHolder(view);
 
     return holder;
@@ -50,7 +60,7 @@ public class RescueMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vi
     Member member = members.get(position);
     RescueMemberHolder viewHolder = (RescueMemberHolder) holder;
 
-    CustomPicasso.with(context)
+    CustomPicasso.with(viewHolder.ivAvatar.getContext())
         //.load(Uri.parse(productImageUrl))
         .load(member.getPictureUrl())
         .fit()
@@ -59,24 +69,22 @@ public class RescueMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vi
         .error(R.drawable.ic_red_avatar)
         .transform(new CropCircleTransformation(0x00ffffff, 4))
         .into(viewHolder.ivAvatar);
-
   }
 
   @Override public int getItemCount() {
     return members.size();
   }
 
-  private static class RescueMemberHolder extends RecyclerView.ViewHolder {
+  static class RescueMemberHolder extends RecyclerView.ViewHolder {
 
+    @BindView(R.id.ivAvatar) ImageView ivAvatar;
+    @BindView(R.id.ivClock) ImageView ivClock;
 
-    private final ImageView ivAvatar;
-    private final ImageView ivClock;
+    RescueMemberHolder(View view) {
+      super(view);
+      ButterKnife.bind(this, view);
 
-    RescueMemberHolder(View itemView) {
-      super(itemView);
-      View vContainer = itemView.findViewById(R.id.ll_group_member_container);
-      ivAvatar = (ImageView) itemView.findViewById(R.id.ivAvatar);
-      ivClock =  (ImageView) itemView.findViewById(R.id.ivClock);
+      View vContainer = view.findViewById(R.id.ll_group_member_container);
     }
   }
 }
