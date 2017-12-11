@@ -572,5 +572,9 @@
   <string name="buy_now">Buy now</string>
   <string name="type_your_comment_here">Type your comment here</string>
   <string name="cancel_subscription_warning">You are about to leave the group. Your subscription will be cancelled. Are you sure?</string>
+  <string name="you_got_your_first_rescue">You got your first rescue!</string>
+  <string name="text_num_to_rescue">The group needs %1$d more rescue</string>
+  <string name="kick_them_now_for_a_rescue">Kick them now \n for a rescue!!!</string>
+  <string name="your_group_has_failed_thanks_to">Your group %1$s has Failed! thanks to:</string>
 
 </resources>
