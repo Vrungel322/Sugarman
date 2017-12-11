@@ -20,6 +20,8 @@ import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.Member;
 import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.ui.fragments.rescue_challenge.adapters.RescueMembersAdapter;
+import com.sugarman.myb.ui.views.CropSquareTransformation;
+import com.sugarman.myb.ui.views.MaskTransformation;
 import com.sugarman.myb.utils.Converters;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +67,10 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
   private void setUpUi() {
     CustomPicasso.with(mImageViewGroupAvatar.getContext())
         .load(mTracking.getGroup().getPictureUrl())
+        .transform(new CropSquareTransformation())
+        .transform(
+            new MaskTransformation(mImageViewGroupAvatar.getContext(), R.drawable.profile_mask,
+                false, 0xfff))
         .into(mImageViewGroupAvatar);
 
     mTextViewFailText.setText(String.format(getString(R.string.your_group_has_failed_thanks_to),
@@ -84,12 +90,11 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
 
     CountDownTimer timer = new CountDownTimer(6000, 1000) {
       @Override public void onTick(long l) {
-        mTextViewTimeLeftForRescue.setText(Converters.timeFromMilliseconds(getActivity(),l));
+        mTextViewTimeLeftForRescue.setText(Converters.timeFromMilliseconds(getActivity(), l));
       }
 
       @Override public void onFinish() {
-        mTextViewTimeLeftForRescue.setText(Converters.timeFromMilliseconds(getActivity(),0L));
-
+        mTextViewTimeLeftForRescue.setText(Converters.timeFromMilliseconds(getActivity(), 0L));
       }
     }.start();
   }

@@ -19,6 +19,8 @@ import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.Member;
 import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.ui.fragments.rescue_challenge.adapters.RescueMembersAdapter;
+import com.sugarman.myb.ui.views.CropSquareTransformation;
+import com.sugarman.myb.ui.views.MaskTransformation;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,6 +68,10 @@ public class DialogRescueGirl extends MvpDialogFragment implements IDialogRescue
   private void setUpUi() {
     CustomPicasso.with(mImageViewGroupAvatar.getContext())
         .load(mTracking.getGroup().getPictureUrl())
+        .transform(new CropSquareTransformation())
+        .transform(
+            new MaskTransformation(mImageViewGroupAvatar.getContext(), R.drawable.profile_mask,
+                false, 0xfff))
         .into(mImageViewGroupAvatar);
 
     mTextViewFailText.setText(String.format(getString(R.string.your_group_has_failed_thanks_to),
