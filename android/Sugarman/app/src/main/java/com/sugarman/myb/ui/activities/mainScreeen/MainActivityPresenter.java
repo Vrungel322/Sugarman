@@ -98,14 +98,15 @@ import timber.log.Timber;
           "rule " + rule.getName() + " animation name " + rule.getNameOfAnim() + " todaySteps " + todaySteps + " getCount()" + rule.getCount());
       if (todaySteps >= rule.getCount()) {
         Timber.e("rule true");
-        //if (!SharedPreferenceHelper.isEventXStepsDone()) {
+        if (!SharedPreferenceHelper.isEventXStepsDone(rule.getCount())) {
           getViewState().doEventActionResponse(CustomUserEvent.builder()
               .strType(rule.getAction())
               .eventText(rule.getMessage())
               .eventName(rule.getName())
               .nameOfAnim(rule.getNameOfAnim())
+              .numValue(rule.getCount())
               .build());
-       // }
+        }
       }
     }
   }

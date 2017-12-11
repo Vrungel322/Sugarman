@@ -616,11 +616,11 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     return getBoolean(SharedPreferenceConstants.EVENT_GROUP_WITH_X_NEW_USERS_DONE, false);
   }
 
-  public static void setEventXStepsDone() {
-    putBoolean(SharedPreferenceConstants.EVENT_X_STEPS_DONE, true);
+  public static void setEventXStepsDone(Integer numValue) {
+    putBoolean(SharedPreferenceConstants.EVENT_X_STEPS_DONE + numValue, true);
   }
 
-  public static boolean isEventXStepsDone() {
-    return getBoolean(SharedPreferenceConstants.EVENT_X_STEPS_DONE, false);
+  public static boolean isEventXStepsDone(Integer numValue) {
+    return getBoolean(SharedPreferenceConstants.EVENT_X_STEPS_DONE+numValue, false);
   }
 }
