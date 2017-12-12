@@ -195,7 +195,7 @@ public class DataManager {
   }
 
   public Observable<Response<Object>> poke(String memberId, String trakingId) {
-    Timber.e("poke memberId "+memberId + "trakingId "+trakingId);
+    Timber.e("poke memberId "+memberId + " trakingId "+trakingId);
     return mRestApi.poke(new PokeRequest(memberId, trakingId));
   }
 

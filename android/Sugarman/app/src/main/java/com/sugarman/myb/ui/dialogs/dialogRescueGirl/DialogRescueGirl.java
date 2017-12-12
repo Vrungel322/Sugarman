@@ -14,6 +14,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.arellomobile.mvp.MvpDialogFragment;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.Member;
@@ -91,7 +93,9 @@ public class DialogRescueGirl extends MvpDialogFragment implements IDialogRescue
         new LinearLayoutManager(mRecyclerViewFailures.getContext(), LinearLayoutManager.HORIZONTAL,
             false));
     for (Member m : mTracking.getMembers()) {
-      if (m.getFailureStatus()==Member.FAIL_STATUS_FAILUER || m.getFailureStatus()==Member.FAIL_STATUS_SAVED) {
+      Timber.e("status " + m.getFailureStatus());
+      if (m.getFailureStatus() == Member.FAIL_STATUS_FAILUER
+          || m.getFailureStatus() == Member.FAIL_STATUS_SAVED) {
         failures.add(m);
       }
     }
@@ -106,8 +110,9 @@ public class DialogRescueGirl extends MvpDialogFragment implements IDialogRescue
   }
 
   @OnClick({ R.id.ivKick, R.id.tvKickcThemNow }) public void kickAllFailures() {
+    YoYo.with(Techniques.Shake).duration(700).playOn(mTextViewKickThemNow);
     Timber.e("kickAllFailures " + failures.size());
-    mPresenter.superPoke(failures,mTracking.getId());
+    mPresenter.superPoke(failures, mTracking.getId());
   }
 
   @Override public void superKickResponse() {

@@ -1613,7 +1613,7 @@ public class MainActivity extends GetUserInfoActivity
 
         // TODO: 06.12.2017 make check if tracking soon fail (need to be added new bool field on server)
         for(Member m : tracking.getMembers())
-        if (m.getIsFailer()){
+        if (m.getFailureStatus()==Member.FAIL_STATUS_FAILUER||m.getFailureStatus()==Member.FAIL_STATUS_SAVED){
           Timber.e("failer group " + m.getName());
           ChallengeRescueItem item = new ChallengeRescueItem();
           item.setTracking(tracking);
