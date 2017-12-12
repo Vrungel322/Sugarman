@@ -9,12 +9,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @NoArgsConstructor
-public class Member implements Parcelable {
+public class Member implements Parcelable{
 
   public static final int ACTION_ZERO = 0;
   public static final int ACTION_LAZY = 1;
   public static final int ACTION_WALK = 2;
   public static final int ACTION_RUN = 3;
+  public static final int FAIL_STATUS_FAILUER = 1;
+  public static final int FAIL_STATUS_NORMAL = 0;
+  public static final int FAIL_STATUS_SAVED = 2;
 
   public static final Comparator<Member> BY_STEPS_ASC = new Comparator<Member>() {
     @Override public int compare(Member o1, Member o2) {
@@ -37,7 +40,7 @@ public class Member implements Parcelable {
  @Getter @Setter @SerializedName("status") private String status;
  @Getter @Setter @SerializedName("phone_number") private String phoneNumber;
  @Getter @Setter @SerializedName("vkid") private String vkId;
- @Getter @Setter @SerializedName("is_failed") private Boolean isFailer;
+ @Getter @Setter @SerializedName("failed_status") private int failureStatus;
 
   protected Member(Parcel in) {
     steps = in.readInt();
@@ -50,8 +53,7 @@ public class Member implements Parcelable {
     status = in.readString();
     phoneNumber = in.readString();
     vkId = in.readString();
-    byte tmpIsFailer = in.readByte();
-    isFailer = tmpIsFailer == 0 ? null : tmpIsFailer == 1;
+    failureStatus = in.readInt();
   }
 
   public static final Creator<Member> CREATOR = new Creator<Member>() {
@@ -79,6 +81,6 @@ public class Member implements Parcelable {
     parcel.writeString(status);
     parcel.writeString(phoneNumber);
     parcel.writeString(vkId);
-    parcel.writeByte((byte) (isFailer == null ? 0 : isFailer ? 1 : 2));
+    parcel.writeInt(failureStatus);
   }
 }

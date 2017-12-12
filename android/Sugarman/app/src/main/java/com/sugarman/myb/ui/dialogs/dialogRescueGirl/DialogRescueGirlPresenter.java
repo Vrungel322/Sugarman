@@ -2,14 +2,33 @@ package com.sugarman.myb.ui.dialogs.dialogRescueGirl;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.sugarman.myb.App;
+import com.sugarman.myb.api.models.responses.Member;
 import com.sugarman.myb.base.BasicPresenter;
+import com.sugarman.myb.utils.ThreadSchedulers;
+import java.util.List;
+import rx.Observable;
+import rx.Subscription;
 
 /**
  * Created by nikita on 11.12.2017.
  */
-@InjectViewState
-public class DialogRescueGirlPresenter extends BasicPresenter<IDialogRescueGirlView> {
+@InjectViewState public class DialogRescueGirlPresenter
+    extends BasicPresenter<IDialogRescueGirlView> {
   @Override protected void inject() {
     App.getAppComponent().inject(this);
+  }
+
+  public void superPoke(List<Member> failures, String trackingId) {
+    Subscription subscription = Observable.from(failures)
+        .filter(member -> member.getFailureStatus() == Member.FAIL_STATUS_FAILUER)
+        .concatMap(member -> Observable.just(member.getId()))
+        .concatMap(id -> mDataManager.poke(id, trackingId))
+        .compose(ThreadSchedulers.applySchedulers())
+        .subscribe(objectResponse -> {
+          if (objectResponse.isSuccessful()) {
+            getViewState().superKickResponse();
+          }
+        });
+    addToUnsubscription(subscription);
   }
 }

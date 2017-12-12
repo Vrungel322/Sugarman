@@ -80,7 +80,7 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
         new LinearLayoutManager(mRecyclerViewFailures.getContext(), LinearLayoutManager.HORIZONTAL,
             false));
     for (Member m : mTracking.getMembers()) {
-      if (m.getIsFailer()) {
+      if (m.getFailureStatus()==Member.FAIL_STATUS_FAILUER || m.getFailureStatus()==Member.FAIL_STATUS_SAVED) {
         failures.add(m);
       }
     }

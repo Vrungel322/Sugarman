@@ -21,8 +21,10 @@ import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.ui.fragments.rescue_challenge.adapters.RescueMembersAdapter;
 import com.sugarman.myb.ui.views.CropSquareTransformation;
 import com.sugarman.myb.ui.views.MaskTransformation;
+import com.sugarman.myb.utils.VibrationHelper;
 import java.util.ArrayList;
 import java.util.List;
+import timber.log.Timber;
 
 /**
  * Created by nikita on 11.12.2017.
@@ -78,7 +80,7 @@ public class DialogRescueGirl extends MvpDialogFragment implements IDialogRescue
         mTracking.getGroup().getName()));
 
     for (int i = 0; i < mTracking.getMembers().length; i++) {
-      if (mTracking.getMembers()[i].getIsFailer()) {
+      if (mTracking.getMembers()[i].getFailureStatus() == Member.FAIL_STATUS_FAILUER) {
         failuresCount++;
       }
     }
@@ -89,7 +91,7 @@ public class DialogRescueGirl extends MvpDialogFragment implements IDialogRescue
         new LinearLayoutManager(mRecyclerViewFailures.getContext(), LinearLayoutManager.HORIZONTAL,
             false));
     for (Member m : mTracking.getMembers()) {
-      if (m.getIsFailer()) {
+      if (m.getFailureStatus()==Member.FAIL_STATUS_FAILUER || m.getFailureStatus()==Member.FAIL_STATUS_SAVED) {
         failures.add(m);
       }
     }
@@ -104,6 +106,11 @@ public class DialogRescueGirl extends MvpDialogFragment implements IDialogRescue
   }
 
   @OnClick({ R.id.ivKick, R.id.tvKickcThemNow }) public void kickAllFailures() {
+    Timber.e("kickAllFailures " + failures.size());
+    mPresenter.superPoke(failures,mTracking.getId());
+  }
 
+  @Override public void superKickResponse() {
+    VibrationHelper.simpleVibration(getActivity(), 1300L);
   }
 }
