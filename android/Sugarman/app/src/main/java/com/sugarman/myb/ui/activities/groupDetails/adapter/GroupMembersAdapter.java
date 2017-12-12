@@ -520,8 +520,8 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
           groupMember.setBlinked(true);
         }
       }
-      Timber.e(groupMember.getId() + " " +member.getIsFailer());
-      if(member.getIsFailer()) {
+      Timber.e(groupMember.getId() + " " +member.getFailureStatus());
+      if(member.getFailureStatus()==1) {
         groupMember.setGroupType(FAILING_MEMBER_TYPE);
         Timber.e("FAILER");
       }
