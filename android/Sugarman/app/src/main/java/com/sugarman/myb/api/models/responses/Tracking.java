@@ -11,6 +11,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class Tracking implements Parcelable {
+  public static final int STATUS_FAIL = 1;
+  public static final int STATUS_NORMAL = 0;
 
   public static final Comparator<Tracking> BY_END_DATE_ASC_AND_MEMBER_COUNT_DESC =
       new Comparator<Tracking>() {
@@ -45,6 +47,8 @@ public class Tracking implements Parcelable {
   @SerializedName("members") private Member[] members;
 
   @Getter @Setter @SerializedName("is_mentors") boolean isMentors;
+
+  @Getter @Setter @SerializedName("failed_group") int failGroupStatus;
 
   protected Tracking(Parcel in) {
     challengeName = in.readString();

@@ -46,7 +46,6 @@ import com.sugarman.myb.api.clients.GetNotificationsClient;
 import com.sugarman.myb.api.clients.MarkNotificationClient;
 import com.sugarman.myb.api.clients.SendFirebaseTokenClient;
 import com.sugarman.myb.api.models.requests.ReportStats;
-import com.sugarman.myb.api.models.responses.Member;
 import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.api.models.responses.me.invites.Invite;
 import com.sugarman.myb.api.models.responses.me.notifications.Notification;
@@ -105,7 +104,6 @@ import com.sugarman.myb.ui.activities.profile.ProfileActivity;
 import com.sugarman.myb.ui.activities.shop.ShopActivity;
 import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
-import com.sugarman.myb.ui.dialogs.dialogRescueBoldMan.DialogRescueBoldMan;
 import com.sugarman.myb.ui.dialogs.dialogRescueGirl.DialogRescueGirl;
 import com.sugarman.myb.ui.fragments.BaseFragment;
 import com.sugarman.myb.ui.fragments.NotificationsFragment;
@@ -542,8 +540,6 @@ public class MainActivity extends GetUserInfoActivity
     Timber.e(MD5Util.md5("md5 test"));
 
     cachedImagesFolder = new File(getFilesDir() + "/animations/");
-
-
 
     mPresenter.getAnimations(cachedImagesFolder);
     //Timber.e("!!!! " +new File(cachedImagesFolder.list()[0]));
@@ -1116,7 +1112,7 @@ public class MainActivity extends GetUserInfoActivity
       case R.id.iv_avatar:
         //openProfileActivity();
         //DialogRescueBoldMan.newInstance(myTrackings[0]).show(getFragmentManager(),"DialogRescueBoldMan");
-        DialogRescueGirl.newInstance(myTrackings[0]).show(getFragmentManager(),"DialogRescueGirl");
+        DialogRescueGirl.newInstance(myTrackings[0]).show(getFragmentManager(), "DialogRescueGirl");
 
         break;
       case R.id.iv_create_group:
@@ -1416,9 +1412,9 @@ public class MainActivity extends GetUserInfoActivity
   }
 
   public void openGroupDetailsActivity(String trackingId, boolean isRescueGroup) {
-      Intent intent = new Intent(this, GroupDetailsActivity.class);
-      intent.putExtra(Constants.INTENT_TRACKING_ID, trackingId);
-      intent.putExtra("isRescueGroup", isRescueGroup);
+    Intent intent = new Intent(this, GroupDetailsActivity.class);
+    intent.putExtra(Constants.INTENT_TRACKING_ID, trackingId);
+    intent.putExtra("isRescueGroup", isRescueGroup);
     startActivityForResult(intent, Constants.GROUP_DETAILS_ACTIVITY_REQUEST_CODE);
   }
 
@@ -1599,25 +1595,26 @@ public class MainActivity extends GetUserInfoActivity
           Constants.STATUS_COMPLETED)) {
         Date startedDate = tracking.getStartUTCDate();
 
-        if (System.currentTimeMillis() < startedDate.getTime()) {
-          ChallengeWillStartItem item = new ChallengeWillStartItem();
-          item.setTracking(tracking);
-          items.add(item);
+        if (tracking.getFailGroupStatus() != Tracking.STATUS_FAIL) {
+          if (System.currentTimeMillis() < startedDate.getTime()) {
+            ChallengeWillStartItem item = new ChallengeWillStartItem();
+            item.setTracking(tracking);
+            items.add(item);
+          } else {
+            // TODO: 12/8/17 check for failing group
+            ChallengeItem item = new ChallengeItem();
+            item.setTracking(tracking);
+            item.setUnreadMessages(5); // TODO: 09.08.2017 ТУТ
+            items.add(item);
+          }
         } else {
-          // TODO: 12/8/17 check for failing group
-          ChallengeItem item = new ChallengeItem();
-          item.setTracking(tracking);
-          item.setUnreadMessages(5); // TODO: 09.08.2017 ТУТ
-          items.add(item);
-        }
 
-        // TODO: 06.12.2017 make check if tracking soon fail (need to be added new bool field on server)
-        for(Member m : tracking.getMembers())
-        if (m.getFailureStatus()==Member.FAIL_STATUS_FAILUER||m.getFailureStatus()==Member.FAIL_STATUS_SAVED){
-          Timber.e("failer group " + m.getName());
-          ChallengeRescueItem item = new ChallengeRescueItem();
-          item.setTracking(tracking);
-          items.add(item);
+          // TODO: 06.12.2017 make check if tracking soon fail (need to be added new bool field on server)
+          if (tracking.getFailGroupStatus() == Tracking.STATUS_FAIL) {
+            ChallengeRescueItem item = new ChallengeRescueItem();
+            item.setTracking(tracking);
+            items.add(item);
+          }
         }
       }
     }
@@ -1880,7 +1877,10 @@ public class MainActivity extends GetUserInfoActivity
   }
 
   @Override public void doEventActionResponse(CustomUserEvent customUserEvent) {
-    Timber.e("EVENT_NAME_ANIMATION " + customUserEvent.getNameOfAnim() + ", EVENT_NAME_TYPE " + customUserEvent.getStrType());
+    Timber.e("EVENT_NAME_ANIMATION "
+        + customUserEvent.getNameOfAnim()
+        + ", EVENT_NAME_TYPE "
+        + customUserEvent.getStrType());
     if (customUserEvent.getEventName().equals(Constants.EVENT_X_STEPS_DONE)) {
       doEventAction(customUserEvent,
           () -> mPresenter.getAnimationByName(customUserEvent.getNameOfAnim(),
