@@ -15,6 +15,7 @@ import com.sugarman.myb.api.models.responses.Member;
 import com.sugarman.myb.base.MvpBaseRecyclerAdapter;
 import com.sugarman.myb.ui.views.CropCircleTransformation;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import timber.log.Timber;
 
@@ -29,8 +30,6 @@ public class RescueMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vi
   public RescueMembersAdapter(MvpDelegate<?> parentDelegate, List<Member> members) {
     super(parentDelegate, "RescueMembersAdapter");
     this.members = members;
-
-    Timber.e("Members size: " + members.size());
   }
 
   public RescueMembersAdapter(MvpDelegate<?> parentDelegate) {

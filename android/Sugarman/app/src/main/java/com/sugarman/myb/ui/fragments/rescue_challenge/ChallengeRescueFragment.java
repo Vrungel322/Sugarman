@@ -21,7 +21,9 @@ import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
 import com.sugarman.myb.ui.fragments.rescue_challenge.adapters.RescueMembersAdapter;
 import com.sugarman.myb.ui.views.CropSquareTransformation;
 import com.sugarman.myb.ui.views.MaskTransformation;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import timber.log.Timber;
 
@@ -70,8 +72,17 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
         .into(ivAvatar);
 
     Timber.e("onViewCreated got inside "  + mTracking.getMembers().length);
-    List<Member> members = Arrays.asList(mTracking.getMembers());
+    List<Member> members = new ArrayList<>();
+    members.addAll(Arrays.asList(mTracking.getMembers()));
     Timber.e("onViewCreated got inside list size "  + members.size());
+    for (Iterator<Member> m = members.iterator(); m.hasNext(); ) {
+      {
+        if (m.next().getFailureStatus() == 0) {
+          m.remove();
+        }
+      }
+      Timber.e("Members size: " + members.size());
+    }
     adapter = new RescueMembersAdapter(getMvpDelegate(), members);
     rvMembers.setLayoutManager(new LinearLayoutManager(view.getContext(),LinearLayoutManager.HORIZONTAL,false));
     rvMembers.setAdapter(adapter);
