@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -36,6 +37,9 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
   @InjectPresenter ChallengeRescueFragmentPresenter mPresenter;
   @BindView(R.id.rvMembers) RecyclerView rvMembers;
   @BindView(R.id.group_avatar) ImageView ivAvatar;
+  @BindView(R.id.tv_group_name) TextView mTextViewGroupName;
+  @BindView(R.id.tvRescueCounter) TextView mTextViewRescueCount;
+  @BindView(R.id.tvRescueTimer) TextView mTextViewRescueTimer;
   @BindView(R.id.cvRescueChallengeContainer) CardView cvRescueChallengeContainer;
   RescueMembersAdapter adapter;
   private ChallengeRescueItem mChallengeItem;
@@ -68,31 +72,39 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
         .error(R.drawable.ic_gray_avatar)
         .error(R.drawable.ic_red_avatar)
         .transform(new CropSquareTransformation())
-        .transform(new MaskTransformation(mContext,R.drawable.profile_mask,false, 0xfff))
+        .transform(new MaskTransformation(mContext, R.drawable.profile_mask, false, 0xfff))
         .into(ivAvatar);
 
-    Timber.e("onViewCreated got inside "  + mTracking.getMembers().length);
+    Timber.e("onViewCreated got inside " + mTracking.getMembers().length);
     List<Member> members = new ArrayList<>();
     members.addAll(Arrays.asList(mTracking.getMembers()));
-    Timber.e("onViewCreated got inside list size "  + members.size());
+    Timber.e("onViewCreated got inside list size " + members.size());
     for (Iterator<Member> m = members.iterator(); m.hasNext(); ) {
       {
-        if (m.next().getFailureStatus() == 0) {
+        if (m.next().getFailureStatus() == Member.FAIL_STATUS_NORMAL) {
           m.remove();
         }
       }
       Timber.e("Members size: " + members.size());
     }
     adapter = new RescueMembersAdapter(getMvpDelegate(), members);
-    rvMembers.setLayoutManager(new LinearLayoutManager(view.getContext(),LinearLayoutManager.HORIZONTAL,false));
+    rvMembers.setLayoutManager(
+        new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, false));
     rvMembers.setAdapter(adapter);
     adapter.notifyDataSetChanged();
 
+    mTextViewGroupName.setText(
+        String.format(getString(R.string.your_group_has_failed_thanks_to_you_and),
+            mTracking.getGroup().getName()));
 
+    mTextViewRescueCount.setText(String.format(getString(R.string.the_group_needs_x_more_rescues),
+        (int) adapter.getItemCount()));
+
+    //mTextViewRescueTimer.setText(
+    //    String.format(getString(R.string.you_have_x_time_to_rescue_the_group),);
   }
 
-  @OnClick(R.id.cvRescueChallengeContainer) public void openGroupActivity()
-  {
+  @OnClick(R.id.cvRescueChallengeContainer) public void openGroupActivity() {
     Activity activity = getActivity();
     if (activity != null
         && activity instanceof MainActivity
@@ -100,5 +112,4 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
       ((MainActivity) activity).openGroupDetailsActivity(mTracking.getId(), true);
     }
   }
-
 }

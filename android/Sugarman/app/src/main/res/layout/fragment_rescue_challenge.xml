@@ -85,7 +85,7 @@
             android:gravity="center"
             android:textColor="@color/dark_gray"
             android:textSize="14sp"
-            android:text="Your group Bullshit Group has \nFAILED! thanks to you and:"
+            android:text="@string/your_group_has_failed_thanks_to_you_and"
             app:font="@string/font_roboto_regular"
             android:layout_marginEnd="5dp"
             tools:text="Little Monkeys" />
@@ -113,7 +113,7 @@
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginBottom="10dp"
-            android:text="The group needs 2 more rescues"
+            android:text="@string/the_group_needs_x_more_rescues"
             />
         <TextView
             android:id="@+id/tvRescueTimer"
@@ -122,7 +122,7 @@
             android:gravity="center"
             android:layout_marginBottom="7dp"
             android:textSize="16sp"
-            android:text="You have 23:20:15 to rescue the group"
+            android:text="@string/you_have_x_time_to_rescue_the_group"
             android:layout_above="@id/tvRescueCounter"
             />
       </RelativeLayout>

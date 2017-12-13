@@ -594,6 +594,14 @@
     <string name="address">כתובת</string>
     <string name="apply_now_for">הצטרף עכשיו עבור</string>
     <string name="cancel_subscription_warning">האם אתה בטוח שברצונך לעזוב אתה הקבוצה? המנוי יבוטל</string>
+  <string name="you_have_x_time_to_rescue_the_group">יש עוד %1$s להצלת הקבוצה</string>
+    <string name="the_group_needs_x_more_rescues">הקבוצה צריכה עוד %1$d הצלות</string>
+    <string name="your_group_has_failed_thanks_to_you_and">הקבוצה %1$s נפלה תודות לך ול..:</string>
+    <string name="you_still_have_time_to_rescue_the_group">אתה עדיין צריך להציל את הקבוצה</string>
+    <string name="your_group_has_failed_thanks_to">הקבוצה %1$s נכשלה תודות ל:</string>
+    <string name="kick_them_now_for_a_rescue">תבעט בהם שיצילו את הקבוצה</string>
+    <string name="text_num_to_rescue">הקבוצה צריכה עוד %1$d הצלות</string>
+    <string name="you_got_your_first_rescue">יש הצלה ראשונה לקבוצה</string>
 
 
 </resources>
