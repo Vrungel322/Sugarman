@@ -115,6 +115,10 @@
         android:screenOrientation="portrait"
         android:theme="@style/SugarmanActivityTheme"/>
     <activity
+        android:name=".ui.activities.inviteForRescue.InviteForRescueActivity"
+        android:screenOrientation="portrait"
+        android:theme="@style/SugarmanActivityTheme"/>
+    <activity
         android:name=".ui.activities.SearchGroupsActivity"
         android:screenOrientation="portrait"
         android:theme="@style/SugarmanActivityTheme"/>

@@ -13,6 +13,7 @@ import com.sugarman.myb.ui.activities.createGroup.CreateGroupActivityPresenter;
 import com.sugarman.myb.ui.activities.editProfile.EditProfileActivityPresenter;
 import com.sugarman.myb.ui.activities.groupDetails.GroupDetailsActivityPresenter;
 import com.sugarman.myb.ui.activities.groupDetails.adapter.GroupMembersAdapterPresenter;
+import com.sugarman.myb.ui.activities.inviteForRescue.InviteForRescueActivityPresenter;
 import com.sugarman.myb.ui.activities.mainScreeen.MainActivityPresenter;
 import com.sugarman.myb.ui.activities.mentorDetail.MentorDetailActivityPresenter;
 import com.sugarman.myb.ui.activities.mentorList.MentorListActivityPresenter;
@@ -83,4 +84,6 @@ import dagger.Component;
   void inject(DialogRescueGirlPresenter presenter);
 
   void inject(DialogRescueBoldManPresenter presenter);
+
+  void inject(InviteForRescueActivityPresenter presenter);
 }

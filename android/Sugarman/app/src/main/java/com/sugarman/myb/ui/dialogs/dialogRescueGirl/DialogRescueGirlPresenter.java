@@ -8,6 +8,7 @@ import com.sugarman.myb.utils.ThreadSchedulers;
 import java.util.List;
 import rx.Observable;
 import rx.Subscription;
+import timber.log.Timber;
 
 /**
  * Created by nikita on 11.12.2017.
@@ -25,10 +26,11 @@ import rx.Subscription;
         .concatMap(id -> mDataManager.poke(id, trackingId))
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(objectResponse -> {
+          Timber.e("objectResponse code " + objectResponse.code());
           if (objectResponse.isSuccessful()) {
             getViewState().superKickResponse();
           }
-        });
+        },Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 }
