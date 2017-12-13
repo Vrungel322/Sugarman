@@ -97,7 +97,6 @@ import com.sugarman.myb.ui.activities.FailedActivity;
 import com.sugarman.myb.ui.activities.GetUserInfoActivity;
 import com.sugarman.myb.ui.activities.SearchGroupsActivity;
 import com.sugarman.myb.ui.activities.StatsTrackingActivity;
-import com.sugarman.myb.ui.activities.createGroup.CreateGroupActivity;
 import com.sugarman.myb.ui.activities.groupDetails.GroupDetailsActivity;
 import com.sugarman.myb.ui.activities.inviteForRescue.InviteForRescueActivity;
 import com.sugarman.myb.ui.activities.mentorList.MentorListActivity;
@@ -116,6 +115,7 @@ import com.sugarman.myb.utils.ContactsHelper;
 import com.sugarman.myb.utils.DeviceHelper;
 import com.sugarman.myb.utils.ImageToDraw;
 import com.sugarman.myb.utils.IntentExtractorHelper;
+import com.sugarman.myb.utils.RxBusHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.SoundHelper;
 import com.sugarman.myb.utils.StringHelper;
@@ -1197,6 +1197,16 @@ public class MainActivity extends GetUserInfoActivity
   @Subscribe public void onEvent(GetInAppNotificationsEvent event) {
     showProgressFragment();
     mGetMyTrackingsClient.getMyTrackings(true);
+  }
+
+  @Subscribe public void onEvent(RxBusHelper.ShowDialogRescue event) {
+    Timber.e("ShowDialogRescue " + event.getTrackingId());
+    for (Tracking t : myTrackings) {
+      if (t.getId().equals(event.getTrackingId())) {
+        // TODO: 13.12.2017 add on server type of of dialog to show (for invites or for money)
+        DialogRescueGirl.newInstance(t).show(getFragmentManager(), "DialogRescueGirl");
+      }
+    }
   }
 
   @Subscribe public void onEvent(SwitchUIToNextDayEvent event) {

@@ -26,6 +26,7 @@ import com.sugarman.myb.eventbus.events.UpdateInvitesEvent;
 import com.sugarman.myb.eventbus.events.UpdateRequestsEvent;
 import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
 import com.sugarman.myb.ui.activities.splash.SplashActivity;
+import com.sugarman.myb.utils.RxBusHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.StringHelper;
 import java.util.Map;
@@ -171,6 +172,9 @@ public class FcmListenerService extends FirebaseMessagingService {
       case NotificationMessageType.GROUP_NAME_HAS_FAILED:
         intent.putExtra(Constants.INTENT_OPEN_ACTIVITY, Constants.OPEN_FAILED_ACTIVITY);
         intent.putExtra(Constants.INTENT_FCM_TRACKING_ID, trackingId);
+        // TODO: 13.12.2017 need new type but now this will be good
+        Timber.e("GROUP_NAME_HAS_FAILED");
+        App.getEventBus().post(new RxBusHelper.ShowDialogRescue(trackingId));
         break;
       case NotificationMessageType.USER_NAME_REQUESTED:
         App.getEventBus().post(new UpdateRequestsEvent());
