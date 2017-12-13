@@ -1,38 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
 <animation-list xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:drawable="@drawable/sugar_walkcycle_0166" android:duration="26" />
-    <item android:drawable="@drawable/sugar_walkcycle_0167" android:duration="26" />
-    <item android:drawable="@drawable/sugar_walkcycle_0168" android:duration="26" />
-    <item android:drawable="@drawable/sugar_walkcycle_0169" android:duration="26" />
-    <item android:drawable="@drawable/sugar_walkcycle_0170" android:duration="26" />
-    <item android:drawable="@drawable/sugar_walkcycle_0171" android:duration="26" />
-    <item android:drawable="@drawable/sugar_walkcycle_0172" android:duration="26" />
-    <item android:drawable="@drawable/sugar_walkcycle_0173" android:duration="26" />
-    <item android:drawable="@drawable/sugar_walkcycle_0174" android:duration="26" />
-    <item android:drawable="@drawable/sugar_walkcycle_0175" android:duration="26" />
-    <item android:drawable="@drawable/sugar_walkcycle_0176" android:duration="26" />
-    <item android:drawable="@drawable/sugar_walkcycle_0177" android:duration="26" />
-    <item android:drawable="@drawable/sugar_walkcycle_0178" android:duration="26" />
-    <item android:drawable="@drawable/sugar_walkcycle_0179" android:duration="26" />
-    <item android:drawable="@drawable/sugar_walkcycle_0180" android:duration="26" />
-    <item android:drawable="@drawable/sugar_walkcycle_0181" android:duration="26" />
-    <item android:drawable="@drawable/sugar_walkcycle_0182" android:duration="26" />
-    <item android:drawable="@drawable/sugar_walkcycle_0183" android:duration="26" />
-    <item android:drawable="@drawable/sugar_walkcycle_0184" android:duration="26" />
-    <item android:drawable="@drawable/sugar_walkcycle_0185" android:duration="26" />
-    <item android:drawable="@drawable/sugar_walkcycle_0186" android:duration="26" />
-    <item android:drawable="@drawable/sugar_walkcycle_0187" android:duration="26" />
-    <item android:drawable="@drawable/sugar_walkcycle_0188" android:duration="26" />
-    <item android:drawable="@drawable/sugar_walkcycle_0189" android:duration="26" />
-    <item android:drawable="@drawable/sugar_walkcycle_0190" android:duration="26" />
-    <item android:drawable="@drawable/sugar_walkcycle_0191" android:duration="26" />
-    <item android:drawable="@drawable/sugar_walkcycle_0192" android:duration="26" />
-    <item android:drawable="@drawable/sugar_walkcycle_0193" android:duration="26" />
-    <item android:drawable="@drawable/sugar_walkcycle_0194" android:duration="26" />
-    <item android:drawable="@drawable/sugar_walkcycle_0195" android:duration="26" />
-    <item android:drawable="@drawable/sugar_walkcycle_0196" android:duration="26" />
-    <item android:drawable="@drawable/sugar_walkcycle_0197" android:duration="26" />
-    <item android:drawable="@drawable/sugar_walkcycle_0198" android:duration="26" />
-
-
 </animation-list>
