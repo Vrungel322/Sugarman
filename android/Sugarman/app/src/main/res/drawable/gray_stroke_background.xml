@@ -3,8 +3,6 @@
     <stroke
         android:width="@dimen/dialog_stroke_width"
         android:color="@color/gray" />
-    <corners android:radius="4dp"
-        />
 
     <solid android:color="@android:color/white" />
 </shape>

@@ -123,11 +123,9 @@ public class InviteForRescueActivity extends BaseActivity
   private FriendsAdapter friendsAdapter;
   private RecyclerView rcvFriends;
   private ImageView ivGroupAvatar;
-  private EditText etGroupName;
+  //private EditText etGroupName;
   private EditText etMemberFilter;
-  private View vAddPhotoContainer;
   private View vNoFriends;
-  private View vClearGroupName;
   private final TextWatcher groupNameWatcher = new TextWatcher() {
     @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {
       // nothing
@@ -139,10 +137,8 @@ public class InviteForRescueActivity extends BaseActivity
 
     @Override public void afterTextChanged(Editable s) {
       boolean isEmpty = TextUtils.isEmpty(s);
-      vClearGroupName.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
     }
   };
-  private View vClearMembersFilter;
   private final TextWatcher filterWatcher = new TextWatcher() {
     @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {
       // nothing
@@ -154,7 +150,6 @@ public class InviteForRescueActivity extends BaseActivity
 
     @Override public void afterTextChanged(Editable s) {
       boolean isEmpty = TextUtils.isEmpty(s);
-      vClearMembersFilter.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
       if (!isEmpty) {
         filterFacebookFriends(s.toString());
       } else {
@@ -255,14 +250,10 @@ public class InviteForRescueActivity extends BaseActivity
     fbInviteDialog = new GameRequestDialog(this);
     fbInviteDialog.registerCallback(fbCallbackManager, fbInviteCallback);
 
-    vAddPhotoContainer = findViewById(R.id.ll_add_photo_container);
     vNoFriends = findViewById(R.id.tv_no_friends);
-    etGroupName = (EditText) findViewById(R.id.et_group_name);
     etMemberFilter = (EditText) findViewById(R.id.et_search);
     ivGroupAvatar = (ImageView) findViewById(R.id.iv_group_avatar);
     rcvFriends = (RecyclerView) findViewById(R.id.rcv_friends);
-    vClearGroupName = findViewById(R.id.iv_clear_group_name_input);
-    vClearMembersFilter = findViewById(R.id.iv_clear_member_filter_input);
     View vCross = findViewById(R.id.iv_cross);
     vApply = findViewById(R.id.iv_apply);
 
@@ -270,20 +261,14 @@ public class InviteForRescueActivity extends BaseActivity
     rcvFriends.setAdapter(friendsAdapter);
 
     etMemberFilter.addTextChangedListener(filterWatcher);
-    etGroupName.addTextChangedListener(groupNameWatcher);
 
     String userName = SharedPreferenceHelper.getUserName();
     String groupName = String.format(getString(R.string.group_name_template), userName);
-    etGroupName.setText(groupName);
 
     vApply.setOnClickListener(this);
     vCross.setOnClickListener(this);
-    vClearGroupName.setOnClickListener(this);
-    vClearMembersFilter.setOnClickListener(this);
-    vAddPhotoContainer.setOnClickListener(this);
 
     etMemberFilter.setOnFocusChangeListener(this);
-    etGroupName.setOnFocusChangeListener(this);
 
     Bitmap bitmap = ((BitmapDrawable) ivGroupAvatar.getDrawable()).getBitmap();
     mi = new MaskImage(this, R.drawable.group_avatar, false, 0xff000000);
@@ -332,11 +317,9 @@ public class InviteForRescueActivity extends BaseActivity
                 if (etMemberFilter.isFocused()) {
                   //vAddPhotoContainer.setVisibility(View.GONE);
                 } else {
-                  vAddPhotoContainer.setVisibility(View.VISIBLE);
                 }
               } else if (mPreviousHeight < newHeight) {
                 // Height increased: keyboard was hidden
-                vAddPhotoContainer.setVisibility(View.VISIBLE);
               }
             }
             mPreviousHeight = newHeight;
@@ -621,9 +604,6 @@ public class InviteForRescueActivity extends BaseActivity
       case R.id.ll_add_photo_container:
         tryChooseGroupAvatar();
         break;
-      case R.id.iv_clear_group_name_input:
-        etGroupName.setText("");
-        break;
       case R.id.iv_clear_member_filter_input:
         etMemberFilter.setText("");
         break;
@@ -639,7 +619,6 @@ public class InviteForRescueActivity extends BaseActivity
     switch (id) {
       case R.id.et_group_name:
         if (hasFocus) {
-          vAddPhotoContainer.setVisibility(View.VISIBLE);
         }
         break;
       case R.id.et_search:
@@ -919,14 +898,10 @@ public class InviteForRescueActivity extends BaseActivity
     filtered.addAll(allFriends);
     setFriends(filtered);
 
-    String groupName = etGroupName.getText().toString();
     List<FacebookFriend> selectedFriends = friendsAdapter.getSelectedFriends();
     members.clear();
 
-    if (TextUtils.isEmpty(groupName.replace(" ", ""))) {
-      new SugarmanDialog.Builder(this, DialogConstants.GROUP_NAME_IS_EMPTY_ID).content(
-          R.string.group_name_is_empty).show();
-    } else if (selectedFriends.isEmpty()) {
+   if (selectedFriends.isEmpty()) {
       new SugarmanDialog.Builder(this, DialogConstants.FRIENDS_LIST_IS_IMPTY_ID).content(
           R.string.members_list_is_empty).show();
     } else {
@@ -993,10 +968,9 @@ public class InviteForRescueActivity extends BaseActivity
       fbInviteDialog.show(content);
     }
     //______________________________________________________________________________________________
-    String groupName = etGroupName.getText().toString();
     mPresenter.checkRuleXNewUsersInvite(members);
     Timber.e("members " + members.size());
-    mCreateGroupClient.createGroup(members, groupName, selectedFile, InviteForRescueActivity.this);
+    mCreateGroupClient.createGroup(members, "TEST", selectedFile, InviteForRescueActivity.this); // TODO: 12/13/17 change this
   }
 
   private void setFriends(List<FacebookFriend> friends) {
