@@ -2,6 +2,7 @@ package com.sugarman.myb.ui.activities.groupDetails.adapter;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.media.Image;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -52,6 +53,7 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
   private static final String TAG = GroupMembersAdapter.class.getName();
   private static final int PENDING_MEMBER_TYPE = 1;
   private static final int FAILING_MEMBER_TYPE = 3;
+  private static final int SAVED_MEMBER_TYPE = 4;
   private final WeakReference<OnStepMembersActionListener> actionListener;
   private final int red;
   private final int darkGray;
@@ -68,6 +70,7 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
   @Getter boolean editMode;
   PendingMemberHolder pendingMemberHolder;
   FailingMemberHolder failingMemberHolder;
+  SavedMemberHolder savedMemberHolder;
   Animation connectingAnimation;
   private String mTrackingId;
   private int countRedMembers;
@@ -119,6 +122,12 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
         view =
             LayoutInflater.from(context).inflate(R.layout.layout_item_group_member, parent, false);
         holder = new MemberHolder(view, this);
+        break;
+
+      case SAVED_MEMBER_TYPE:
+        view =
+            LayoutInflater.from(context).inflate(R.layout.layout_item_group_saved_member, parent, false);
+        holder = new SavedMemberHolder(view, this);
         break;
       case FAILING_MEMBER_TYPE:
         view =
@@ -395,6 +404,48 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
             }
           }
           break;
+
+        case SAVED_MEMBER_TYPE:
+          savedMemberHolder = (SavedMemberHolder) holder;
+          str2 = member.getName();
+          str2 = str2.replaceAll("( +)", " ").trim();
+
+          name2 = str2;
+          if (member.getName().contains(" ")) {
+            name2 = str2.substring(0, (member.getName().indexOf(" ")));
+          }
+          savedMemberHolder.tvMemberName.setText(name2);
+
+          if (TextUtils.isEmpty(url)) {
+            savedMemberHolder.ivAvatar.setImageResource(R.drawable.ic_gray_avatar);
+          } else {
+            CustomPicasso.with(context).cancelRequest(savedMemberHolder.ivAvatar);
+            if (member.getId().equals(SharedPreferenceHelper.getUserId())) {
+              CustomPicasso.with(context)
+                  .load(url)
+                  .fit()
+                  .centerCrop()
+                  .placeholder(R.drawable.ic_gray_avatar)
+                  .error(R.drawable.ic_gray_avatar)
+                  .networkPolicy(NetworkPolicy.NO_CACHE)
+                  .transform(new MaskTransformation(context, R.drawable.mask, true, 0xcccccccc))
+                  .into(savedMemberHolder.ivAvatar);
+            } else {
+              CustomPicasso.with(context)
+                  .load(url)
+                  .fit()
+                  .centerCrop()
+                  .placeholder(R.drawable.ic_gray_avatar)
+                  .error(R.drawable.ic_gray_avatar)
+                  .networkPolicy(NetworkPolicy.NO_CACHE)
+                  .transform(new CropCircleTransformation(0xff94989B, 4))
+                  .into(savedMemberHolder.ivAvatar);
+            }
+          }
+          Animation animation =
+              AnimationUtils.loadAnimation(context, R.anim.anim_scale_up);
+          savedMemberHolder.ivAnimationCircle.startAnimation(animation);
+          break;
         case PENDING_LABEL_TYPE:
           // nothing
           break;
@@ -524,6 +575,10 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
       if(member.getFailureStatus()==1) {
         groupMember.setGroupType(FAILING_MEMBER_TYPE);
         Timber.e("FAILER");
+      }
+      else if(member.getFailureStatus()==2)
+      {
+        groupMember.setGroupType(SAVED_MEMBER_TYPE);
       }
 
       listGroupmembers.add(groupMember);
@@ -762,7 +817,8 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
 
     private final TextView tvMemberName;
     public ImageView ivKick;
-    private ImageView ivAvatar;
+    public ImageView ivAvatar;
+    public ImageView ivAnimationCircle;
 
     SavedMemberHolder(View itemView, ItemGroupMemberListener listener) {
       super(itemView);
@@ -774,6 +830,7 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
       tvMemberName = (TextView) itemView.findViewById(R.id.tv_member_name);
       ivAvatar = (ImageView) itemView.findViewById(R.id.iv_avatar);
       ivKick = (ImageView) itemView.findViewById(R.id.ivKickOverlay);
+      ivAnimationCircle = (ImageView) itemView.findViewById(R.id.ivBorderAnim);
 
       vContainer.setOnClickListener(this);
     }
