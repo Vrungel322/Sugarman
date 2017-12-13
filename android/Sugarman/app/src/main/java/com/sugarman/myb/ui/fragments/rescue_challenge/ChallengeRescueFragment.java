@@ -22,6 +22,7 @@ import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
 import com.sugarman.myb.ui.fragments.rescue_challenge.adapters.RescueMembersAdapter;
 import com.sugarman.myb.ui.views.CropSquareTransformation;
 import com.sugarman.myb.ui.views.MaskTransformation;
+import com.sugarman.myb.utils.Converters;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -100,8 +101,10 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
     mTextViewRescueCount.setText(String.format(getString(R.string.the_group_needs_x_more_rescues),
         (int) adapter.getItemCount()));
 
-    //mTextViewRescueTimer.setText(
-    //    String.format(getString(R.string.you_have_x_time_to_rescue_the_group),);
+    mTextViewRescueTimer.setText(
+        String.format(getString(R.string.you_have_x_time_to_rescue_the_group),
+            Converters.timeFromMilliseconds(getContext(),
+                mTracking.getRemainToFailUTCDate().getTime())));
   }
 
   @OnClick(R.id.cvRescueChallengeContainer) public void openGroupActivity() {

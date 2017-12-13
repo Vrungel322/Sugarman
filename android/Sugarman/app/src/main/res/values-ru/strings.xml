@@ -548,6 +548,6 @@
     <string name="you_still_have_time_to_rescue_the_group">У вас все еще есть время для спасения!</string>
     <string name="your_group_has_failed_thanks_to_you_and">Ваша группа %1$s Проваена ! благодаря:</string>
     <string name="the_group_needs_x_more_rescues">Вашей группе еще нужно %1$d спасений.</string>
-    <string name="you_have_x_time_to_rescue_the_group">"Увас осталось для спасения группы "</string>
+    <string name="you_have_x_time_to_rescue_the_group">"У вас осталось %1$s для спасения группы "</string>
 
 </resources>

@@ -70,6 +70,7 @@ public class Tracking implements Parcelable {
     status = in.readString();
     timezone = in.readString();
     updatedAt = in.readString();
+    remainTime = in.readString();
   }
 
   public static final Creator<Tracking> CREATOR = new Creator<Tracking>() {
@@ -102,11 +103,14 @@ public class Tracking implements Parcelable {
 
   @SerializedName("updated_at") private String updatedAt;
 
+  @SerializedName("remain_time") private String remainTime;
+
   private Date createdAtUTCDate;
 
   private Date endUTCDate;
 
   private Date startUTCDate;
+  private Date remainUTCDate;
 
   private Date updateUTCDate;
 
@@ -217,6 +221,14 @@ public class Tracking implements Parcelable {
     return startUTCDate;
   }
 
+  public Date getRemainToFailUTCDate() {
+    if (remainUTCDate == null) {
+      remainUTCDate = StringHelper.convertApiDate(remainTime,
+          TimeZone.getDefault().toString()); // workaround problems
+    }
+    return remainUTCDate;
+  }
+
   protected void setStartDate(String startDate) {
     this.startDate = startDate;
   }
@@ -305,5 +317,6 @@ public class Tracking implements Parcelable {
     parcel.writeString(status);
     parcel.writeString(timezone);
     parcel.writeString(updatedAt);
+    parcel.writeString(remainTime);
   }
 }
