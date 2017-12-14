@@ -580,6 +580,6 @@
   <string name="your_group_has_failed_thanks_to_you_and">Your group %1$s has  FAILED! thanks to you and:</string>
   <string name="the_group_needs_x_more_rescues">The group needs %1$d more rescues</string>
   <string name="you_have_x_time_to_rescue_the_group">You have %1$s to rescue the group</string>
-  <string name="you_group_has_been_rescued">You group %1$s has been rescued!</string>
+  <string name="you_group_has_been_rescued">Your group %1$s has been rescued!</string>
 
 </resources>
