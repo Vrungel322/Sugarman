@@ -20,6 +20,7 @@ import com.sugarman.myb.api.models.responses.InvitersImgUrls;
 import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.animation.GetAnimationResponse;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
+import com.sugarman.myb.api.models.responses.me.groups.CreateGroupResponse;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.data.db.DbHelper;
@@ -43,7 +44,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import okhttp3.MediaType;
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Response;
 import rx.Observable;
 import timber.log.Timber;
@@ -195,7 +198,7 @@ public class DataManager {
   }
 
   public Observable<Response<Object>> poke(String memberId, String trakingId) {
-    Timber.e("poke memberId "+memberId + " trakingId "+trakingId);
+    Timber.e("poke memberId " + memberId + " trakingId " + trakingId);
     return mRestApi.poke(new PokeRequest(memberId, trakingId));
   }
 
@@ -320,7 +323,77 @@ public class DataManager {
     }
   }
 
-  public Observable<Response<Void>> checkInAppBillingOneDollar(InAppSinglePurchase inAppSinglePurchase) {
+  public Observable<Response<Void>> checkInAppBillingOneDollar(
+      InAppSinglePurchase inAppSinglePurchase) {
     return mRestApi.checkInAppBillingOneDollar(inAppSinglePurchase);
+  }
+
+  public Observable<Response<CreateGroupResponse>> sendInvitersForRescue(
+      List<FacebookFriend> members, String groupName, File avatar) {
+
+    MultipartBody.Part filePart = null;
+
+    int totalMembers = members.size();
+    List<RequestBody> ids = new ArrayList<>(totalMembers);
+    List<RequestBody> vkids = new ArrayList<>(totalMembers);
+    List<RequestBody> phoneNumbers = new ArrayList<>(totalMembers);
+    List<RequestBody> names = new ArrayList<>(totalMembers);
+    List<RequestBody> vkNames = new ArrayList<>(totalMembers);
+    List<RequestBody> phoneNames = new ArrayList<>(totalMembers);
+    List<RequestBody> pictures = new ArrayList<>(totalMembers);
+    List<RequestBody> vkpictures = new ArrayList<>(totalMembers);
+    List<RequestBody> phonePictures = new ArrayList<>(totalMembers);
+
+    if (avatar != null && avatar.exists() && avatar.isFile()) {
+      RequestBody requestFile =
+          RequestBody.create(MediaType.parse(Constants.IMAGE_JPEG_TYPE), avatar);
+      filePart =
+          MultipartBody.Part.createFormData(Constants.PICTURE, avatar.getName(), requestFile);
+      Log.e("FILE NAME", avatar.getName());
+    }
+
+    RequestBody name = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), groupName);
+    RequestBody fbToken = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
+        SharedPreferenceHelper.getFBAccessToken());
+
+    for (FacebookFriend friend : members) {
+      //friend.setSocialNetwork("fb");
+      if (friend.getSocialNetwork().equals("fb")) {
+        Timber.e("FB FRIEND = " + friend.getId());
+        ids.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getId()));
+        names.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getName()));
+        pictures.add(
+            RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getPicture()));
+      } else if (friend.getSocialNetwork().equals("vk")) {
+        Timber.e("VK FRIEND = " + friend.getName());
+        vkids.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getId()));
+        vkNames.add(
+            RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getName()));
+        vkpictures.add(
+            RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getPicture()));
+      } else {
+
+        Timber.e("Phone contact " + friend.getName());
+
+        phoneNumbers.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
+            friend.getId().replace(" ", "")));
+        phoneNames.add(
+            RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getName()));
+        phonePictures.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
+            "https://sugarman-myb.s3.amazonaws.com/Group_New.png"));
+        Timber.e("pictures phone: "
+            + phonePictures.size()
+            + " names phone: "
+            + phoneNames.size()
+            + " ids phone: "
+            + phoneNumbers.size());
+      }
+    }
+
+    String vkTokenStr = SharedPreferenceHelper.getVkToken();
+    RequestBody vkToken =
+        RequestBody.create(MediaType.parse(Constants.IMAGE_JPEG_TYPE), vkTokenStr);
+    return mRestApi.sendInvitersForRescue(filePart, name, fbToken, ids, vkids, phoneNumbers, names,
+        vkNames, phoneNames, pictures, vkpictures, phonePictures, vkToken);
   }
 }

@@ -15,6 +15,7 @@ import com.sugarman.myb.api.models.responses.CountInvitesResponse;
 import com.sugarman.myb.api.models.responses.InvitersImgUrls;
 import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.animation.GetAnimationResponse;
+import com.sugarman.myb.api.models.responses.me.groups.CreateGroupResponse;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.models.ContactListForServer;
 import com.sugarman.myb.models.custom_events.RuleSet;
@@ -125,6 +126,20 @@ public interface ApiRx {
 
   @POST("v1/pokes") Observable<Response<Object>> poke(@Body PokeRequest request);
 
-  @POST("v1/")
-  Observable<Response<Void>> checkInAppBillingOneDollar(@Body InAppSinglePurchase inAppSinglePurchase);
+  @POST("v1/") Observable<Response<Void>> checkInAppBillingOneDollar(
+      @Body InAppSinglePurchase inAppSinglePurchase);
+
+  @Multipart @POST("/v1/") Observable<Response<CreateGroupResponse>> sendInvitersForRescue(
+      @Part MultipartBody.Part filePart, @Part("name") RequestBody name,
+      @Part("facebook_token") RequestBody facebookToken,
+      @Part("members[][fbid]") List<RequestBody> ids,
+      @Part("members[][vkid]") List<RequestBody> vkids,
+      @Part("members[][phonenumber]") List<RequestBody> phoneNumbers,
+      @Part("members[][name]") List<RequestBody> names,
+      @Part("members[][vkname]") List<RequestBody> vknames,
+      @Part("members[][phonename]") List<RequestBody> phoneNames,
+      @Part("members[][picture_url]") List<RequestBody> pictures,
+      @Part("members[][picture_url_vk]") List<RequestBody> picturesVK,
+      @Part("members[][picture_url_phone]") List<RequestBody> picturesPhone,
+      @Part("vk_token") RequestBody vkToken);
 }

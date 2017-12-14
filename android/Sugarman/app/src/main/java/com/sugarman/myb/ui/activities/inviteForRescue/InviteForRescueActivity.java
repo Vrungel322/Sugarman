@@ -60,7 +60,6 @@ import com.sugarman.myb.constants.DialogConstants;
 import com.sugarman.myb.eventbus.events.ReportStepsEvent;
 import com.sugarman.myb.listeners.ApiCheckPhoneListener;
 import com.sugarman.myb.listeners.ApiCheckVkListener;
-import com.sugarman.myb.listeners.ApiCreateGroupListener;
 import com.sugarman.myb.listeners.ApiJoinGroupListener;
 import com.sugarman.myb.listeners.AsyncSaveBitmapToFileListener;
 import com.sugarman.myb.listeners.OnFBGetFriendsListener;
@@ -100,7 +99,7 @@ import static com.sugarman.myb.utils.ImageHelper.scaleCenterCrop;
  */
 
 public class InviteForRescueActivity extends BaseActivity
-    implements View.OnClickListener, OnFBGetFriendsListener, ApiCreateGroupListener,
+    implements View.OnClickListener, OnFBGetFriendsListener,
     ApiJoinGroupListener, AsyncSaveBitmapToFileListener, View.OnFocusChangeListener,
     IInviteForRescueActivityView, ApiCheckPhoneListener, ApiCheckVkListener {
 
@@ -970,7 +969,8 @@ public class InviteForRescueActivity extends BaseActivity
     //______________________________________________________________________________________________
     mPresenter.checkRuleXNewUsersInvite(members);
     Timber.e("members " + members.size());
-    mCreateGroupClient.createGroup(members, "TEST", selectedFile, InviteForRescueActivity.this); // TODO: 12/13/17 change this
+    //mCreateGroupClient.createGroup(members, "TEST", selectedFile, InviteForRescueActivity.this); // TODO: 12/13/17 change this
+    mPresenter.sendInvitersForRescue(members, "TEST", selectedFile); // TODO: 12/13/17 change this
   }
 
   private void setFriends(List<FacebookFriend> friends) {

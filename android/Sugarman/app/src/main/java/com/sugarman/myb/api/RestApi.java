@@ -17,6 +17,7 @@ import com.sugarman.myb.api.models.responses.InvitersImgUrls;
 import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.animation.GetAnimationResponse;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
+import com.sugarman.myb.api.models.responses.me.groups.CreateGroupResponse;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.models.ContactListForServer;
@@ -223,5 +224,14 @@ public class RestApi {
   public Observable<Response<Void>> checkInAppBillingOneDollar(
       InAppSinglePurchase inAppSinglePurchase) {
     return api.checkInAppBillingOneDollar(inAppSinglePurchase);
+  }
+
+  public Observable<Response<CreateGroupResponse>> sendInvitersForRescue(MultipartBody.Part filePart, RequestBody name,
+      RequestBody fbToken, List<RequestBody> ids, List<RequestBody> vkids,
+      List<RequestBody> phoneNumbers, List<RequestBody> names, List<RequestBody> vkNames,
+      List<RequestBody> phoneNames, List<RequestBody> pictures, List<RequestBody> vkpictures,
+      List<RequestBody> phonePictures, RequestBody vkToken) {
+    return api.sendInvitersForRescue( filePart, name, fbToken, ids, vkids, phoneNumbers, names, vkNames, phoneNames,
+        pictures, vkpictures, phonePictures, vkToken);
   }
 }
