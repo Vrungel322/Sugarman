@@ -105,6 +105,7 @@ import com.sugarman.myb.ui.activities.shop.ShopActivity;
 import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.ui.dialogs.dialogRescueBoldMan.DialogRescueBoldMan;
+import com.sugarman.myb.ui.dialogs.dialogRescueBoldManKick.DialogRescueBoldManKick;
 import com.sugarman.myb.ui.dialogs.dialogRescueGirl.DialogRescueGirl;
 import com.sugarman.myb.ui.dialogs.dialogRescueGirlCongratulations.DialogRescueGirCongratulations;
 import com.sugarman.myb.ui.fragments.BaseFragment;
@@ -1113,10 +1114,11 @@ public class MainActivity extends GetUserInfoActivity
     int id = v.getId();
     switch (id) {
       case R.id.iv_avatar:
-        //openProfileActivity();
-        DialogRescueBoldMan.newInstance(myTrackings[0]).show(getFragmentManager(),"DialogRescueBoldMan");
-        DialogRescueGirl.newInstance(myTrackings[0]).show(getFragmentManager(), "DialogRescueGirl");
-        DialogRescueGirCongratulations.newInstance(myTrackings[0]).show(getFragmentManager(), "DialogRescueGirCongratulations");
+        openProfileActivity();
+        //DialogRescueBoldMan.newInstance(myTrackings[0]).show(getFragmentManager(),"DialogRescueBoldMan");
+        //DialogRescueGirl.newInstance(myTrackings[0]).show(getFragmentManager(), "DialogRescueGirl");
+        //DialogRescueGirCongratulations.newInstance(myTrackings[0]).show(getFragmentManager(), "DialogRescueGirCongratulations");
+        //DialogRescueBoldManKick.newInstance(myTrackings[0]).show(getFragmentManager(), "DialogRescueBoldManKick");
 
         break;
       case R.id.iv_create_group:
