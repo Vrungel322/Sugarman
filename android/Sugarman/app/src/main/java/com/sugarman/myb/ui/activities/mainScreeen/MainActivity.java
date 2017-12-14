@@ -105,6 +105,7 @@ import com.sugarman.myb.ui.activities.shop.ShopActivity;
 import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.ui.dialogs.dialogRescueGirl.DialogRescueGirl;
+import com.sugarman.myb.ui.dialogs.dialogRescueGirlCongratulations.DialogRescueGirCongratulations;
 import com.sugarman.myb.ui.fragments.BaseFragment;
 import com.sugarman.myb.ui.fragments.NotificationsFragment;
 import com.sugarman.myb.ui.views.CircleIndicatorView;
@@ -1113,7 +1114,9 @@ public class MainActivity extends GetUserInfoActivity
       case R.id.iv_avatar:
         //openProfileActivity();
         //DialogRescueBoldMan.newInstance(myTrackings[0]).show(getFragmentManager(),"DialogRescueBoldMan");
-        DialogRescueGirl.newInstance(myTrackings[0]).show(getFragmentManager(), "DialogRescueGirl");
+        //DialogRescueGirl.newInstance(myTrackings[0]).show(getFragmentManager(), "DialogRescueGirl");
+        Timber.e("tra!!! "+ myTrackings[0].getGroup().getPictureUrl());
+        DialogRescueGirCongratulations.newInstance(myTrackings[0]).show(getFragmentManager(), "DialogRescueGirCongratulations");
 
         break;
       case R.id.iv_create_group:

@@ -41,6 +41,8 @@ public class RescueMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vi
     this.members.clear();
     this.members = members;
     notifyDataSetChanged();
+    Timber.e("zashol v setMembers");
+
   }
 
   @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
