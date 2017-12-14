@@ -319,4 +319,8 @@ public class DataManager {
       SharedPreferenceHelper.disableEventXStepsDone(r.getCount());
     }
   }
+
+  public Observable<Response<Void>> checkInAppBillingOneDollar(InAppSinglePurchase inAppSinglePurchase) {
+    return mRestApi.checkInAppBillingOneDollar(inAppSinglePurchase);
+  }
 }

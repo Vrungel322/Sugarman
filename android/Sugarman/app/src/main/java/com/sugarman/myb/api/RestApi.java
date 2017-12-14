@@ -216,7 +216,12 @@ public class RestApi {
     return api.getAnimationsByName(name);
   }
 
-  public Observable<Response<Object>> poke (PokeRequest request) {
+  public Observable<Response<Object>> poke(PokeRequest request) {
     return api.poke(request);
+  }
+
+  public Observable<Response<Void>> checkInAppBillingOneDollar(
+      InAppSinglePurchase inAppSinglePurchase) {
+    return api.checkInAppBillingOneDollar(inAppSinglePurchase);
   }
 }

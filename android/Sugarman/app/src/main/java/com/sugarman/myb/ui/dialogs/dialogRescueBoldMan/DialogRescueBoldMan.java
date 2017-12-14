@@ -19,12 +19,16 @@ import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.Member;
 import com.sugarman.myb.api.models.responses.Tracking;
+import com.sugarman.myb.constants.Config;
 import com.sugarman.myb.ui.fragments.rescue_challenge.adapters.RescueMembersAdapter;
 import com.sugarman.myb.ui.views.CropSquareTransformation;
 import com.sugarman.myb.ui.views.MaskTransformation;
 import com.sugarman.myb.utils.Converters;
+import com.sugarman.myb.utils.inapp.IabHelper;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import timber.log.Timber;
 
 /**
  * Created by nikita on 11.12.2017.
@@ -38,9 +42,12 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
   @BindView(R.id.tvFailText) TextView mTextViewFailText;
   @BindView(R.id.rvFailures) RecyclerView mRecyclerViewFailures;
   @BindView(R.id.tvTimeLeftForRescue) TextView mTextViewTimeLeftForRescue;
+  @BindView(R.id.ivRescueLogo) ImageView mImageViewRescueLogo;
   private Tracking mTracking;
   private RescueMembersAdapter mRescueMembersAdapter;
   private List<Member> failures = new ArrayList<>();
+  private IabHelper mHelper;
+  private String mFreeSku = "v1.group_rescue";
 
   public static DialogRescueBoldMan newInstance(Tracking tracking) {
     Bundle args = new Bundle();
@@ -53,6 +60,7 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     mTracking = getArguments().getParcelable(DIALOG_RESCUE_BOLD_MAN);
+    setupInAppPurchase();
   }
 
   @Nullable @Override
@@ -80,7 +88,8 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
         new LinearLayoutManager(mRecyclerViewFailures.getContext(), LinearLayoutManager.HORIZONTAL,
             false));
     for (Member m : mTracking.getMembers()) {
-      if (m.getFailureStatus()==Member.FAIL_STATUS_FAILUER || m.getFailureStatus()==Member.FAIL_STATUS_SAVED) {
+      if (m.getFailureStatus() == Member.FAIL_STATUS_FAILUER
+          || m.getFailureStatus() == Member.FAIL_STATUS_SAVED) {
         failures.add(m);
       }
     }
@@ -102,5 +111,66 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
 
   @OnClick(R.id.ivCross) public void ivCrossClick() {
     getDialog().cancel();
+  }
+
+  @OnClick(R.id.ivRescueLogo) public void startPurchaseFlowClick() {
+    startPurchaseFlow("v1.group_rescue");
+  }
+
+  private void setupInAppPurchase() {
+    mHelper = new IabHelper(getActivity(), Config.BASE_64_ENCODED_PUBLIC_KEY);
+
+    mHelper.startSetup(result -> {
+      if (!result.isSuccess()) {
+        Timber.e("In-app Billing setup failed: " + result);
+      } else {
+        Timber.e("In-app Billing is set up OK");
+      }
+    });
+    mHelper.enableDebugLogging(true);
+  }
+
+  public void startPurchaseFlow(String freeSku) {
+    mFreeSku = freeSku;
+    mHelper.launchPurchaseFlow(getActivity(), freeSku, 10001, (result, purchase) -> {
+
+      if (result.isFailure()) {
+        Timber.e("Result is failure");
+        // Handle error
+        return;
+      } else if (purchase.getSku().equals(mFreeSku)) {
+        Timber.e("Id is correct");
+        consumeItem();
+        Timber.e(mHelper.getMDataSignature());
+      } else {
+        Timber.e(result.getMessage());
+      }
+    }, "mypurchasetoken");
+  }
+
+  public void consumeItem() {
+    mHelper.queryInventoryAsync(true, Arrays.asList(mFreeSku), (result, inventory) -> {
+
+      if (result.isFailure()) {
+        // Handle failure
+      } else {
+        mHelper.consumeAsync(inventory.getPurchase(mFreeSku), (purchase, result1) -> {
+          Timber.e("mConsumeFinishedListener" + purchase.toString());
+          Timber.e("mConsumeFinishedListener" + result.toString());
+        });
+        //mHelper.consumeAsync(inventory.getAllPurchases(), mOnConsumeMultiFinishedListener);
+        Timber.e(result.getMessage());
+        Timber.e(inventory.getSkuDetails(mFreeSku).getTitle());
+        Timber.e(inventory.getSkuDetails(mFreeSku).getSku());
+
+        mPresenter.checkInAppBillingOneDollar(inventory.getPurchase(mFreeSku),
+            inventory.getSkuDetails(mFreeSku).getTitle(), mFreeSku);
+      }
+    });
+  }
+
+  @Override public void onDestroy() {
+    super.onDestroy();
+    if (mHelper != null) mHelper.dispose();
   }
 }

@@ -125,4 +125,6 @@ public interface ApiRx {
 
   @POST("v1/pokes") Observable<Response<Object>> poke(@Body PokeRequest request);
 
+  @POST("v1/")
+  Observable<Response<Void>> checkInAppBillingOneDollar(@Body InAppSinglePurchase inAppSinglePurchase);
 }
