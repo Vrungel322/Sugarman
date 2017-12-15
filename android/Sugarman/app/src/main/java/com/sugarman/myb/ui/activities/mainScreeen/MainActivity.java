@@ -541,7 +541,7 @@ public class MainActivity extends GetUserInfoActivity
     super.onCreate(savedInstanceState);
     Resources resources = getResources();
 
-    setupInAppPurchase();
+    //setupInAppPurchase();
 
     Timber.e(MD5Util.md5("md5 test"));
 
@@ -1064,8 +1064,8 @@ public class MainActivity extends GetUserInfoActivity
   @SuppressLint("NewApi") // checking version inside
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
-    if (!mHelper.handleActivityResult(requestCode, resultCode, data)) {
-    }
+    //if (!mHelper.handleActivityResult(requestCode, resultCode, data)) {
+    //}
 
     switch (requestCode) {
       case Constants.CREATE_GROUP_ACTIVITY_REQUEST_CODE:
