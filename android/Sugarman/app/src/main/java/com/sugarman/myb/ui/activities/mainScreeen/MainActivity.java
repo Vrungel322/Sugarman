@@ -211,6 +211,7 @@ public class MainActivity extends GetUserInfoActivity
   boolean isUpdating = false;
   @BindView(R.id.vp_challenges) CustomViewPager vpTrackings;
   @BindView(R.id.vpWalkData) CustomViewPager vpWalkData;
+  @BindView(R.id.ivLifebuoy) ImageView ivLifebuoy;
   private String mFreeSku = "v1.group_rescue";
   IabHelper.QueryInventoryFinishedListener mReceivedInventoryListener =
       new IabHelper.QueryInventoryFinishedListener() {
@@ -500,6 +501,7 @@ public class MainActivity extends GetUserInfoActivity
         }
       };
   private WalkDataViewPagerAdapter mWalkDataViewPagerAdapter;
+  private int firstFailedGroupPosition = -1;
 
   public void download() throws Exception {
     List<File> results = new ArrayList<>();
@@ -540,6 +542,14 @@ public class MainActivity extends GetUserInfoActivity
     setupInAppPurchase();
 
     Timber.e(MD5Util.md5("md5 test"));
+
+
+    ivLifebuoy.setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View view) {
+        vpTrackings.setCurrentItem(firstFailedGroupPosition);
+      }
+    });
+
 
     cachedImagesFolder = new File(getFilesDir() + "/animations/");
 
@@ -1621,6 +1631,7 @@ public class MainActivity extends GetUserInfoActivity
             item.setTracking(tracking);
             item.setUnreadMessages(5); // TODO: 09.08.2017 ТУТ
             items.add(item);
+
           }
         } else {
 
@@ -1629,6 +1640,19 @@ public class MainActivity extends GetUserInfoActivity
             ChallengeRescueItem item = new ChallengeRescueItem();
             item.setTracking(tracking);
             items.add(item);
+            if(firstFailedGroupPosition == -1)
+            {
+              // TODO: 12/13/17 fix this logic
+              if(mMentorsGroups !=null)
+              {
+                firstFailedGroupPosition = items.size();    // setting the first position of the failed groups so that we are able to scroll to them
+              }
+              else
+              {
+                firstFailedGroupPosition = items.size()-1; // didn't use (size-1) because we have a mentor group commercial first
+              }
+              ivLifebuoy.setVisibility(View.VISIBLE);
+            }
           }
         }
       }
@@ -1870,7 +1894,7 @@ public class MainActivity extends GetUserInfoActivity
     }
     // TODO: 10/27/17 Random position for noMentorsChallenge
     if (mMentorsGroups == null || mMentorsGroups.size() <= 0) {
-      converted.add(new Random().nextInt(converted.size()), new NoMentorsChallengeItem());
+      converted.add(0, new NoMentorsChallengeItem());
     }
     //converted.add(new ChallengeRescueItem());
     trackingsAdapter.setItems(converted);

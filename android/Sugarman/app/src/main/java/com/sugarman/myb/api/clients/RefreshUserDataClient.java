@@ -89,6 +89,7 @@ public class RefreshUserDataClient extends BaseApiClient {
     request.setTimezone(TimeZone.getDefault().getID());
     request.setVOS(Build.VERSION.RELEASE);
     request.setImei(SharedPreferenceHelper.getIMEI());
+    request.setCampaign(SharedPreferenceHelper.getCampaign());
     Log.e("Request", request.toString());
     Log.e("token", "refreshUserData rabotaem");
 

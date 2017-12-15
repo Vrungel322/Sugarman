@@ -627,4 +627,12 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
   public static boolean isEventXStepsDone(Integer numValue) {
     return getBoolean(SharedPreferenceConstants.EVENT_X_STEPS_DONE+numValue, false);
   }
+
+  public static void setCampaign(String campaign) {
+    putString("campaign", campaign);
+  }
+
+  public static String getCampaign() {
+    return getString("campaign", "");
+  }
 }

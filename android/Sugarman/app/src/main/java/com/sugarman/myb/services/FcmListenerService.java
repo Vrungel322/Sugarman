@@ -172,7 +172,6 @@ public class FcmListenerService extends FirebaseMessagingService {
       case NotificationMessageType.GROUP_NAME_HAS_FAILED:
         intent.putExtra(Constants.INTENT_OPEN_ACTIVITY, Constants.OPEN_FAILED_ACTIVITY);
         intent.putExtra(Constants.INTENT_FCM_TRACKING_ID, trackingId);
-        // TODO: 13.12.2017 need new type but now this will be good
         Timber.e("GROUP_NAME_HAS_FAILED");
         App.getEventBus().post(new RxBusHelper.ShowDialogRescue(trackingId));
         break;
