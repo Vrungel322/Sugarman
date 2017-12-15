@@ -142,8 +142,10 @@ public abstract class BaseActivity extends BasicActivity
   @Override protected void onResume() {
     super.onResume();
 
-    SharedPreferenceHelper.isFirstLaunchOfTheDay(SharedPreferenceHelper.getUserId());
-    presenter.clearRuleDailyData();
+    Timber.e("isFirstLaunchOfTheDay " + SharedPreferenceHelper.isFirstLaunchOfTheDay(SharedPreferenceHelper.getUserId()));
+    if(SharedPreferenceHelper.isFirstLaunchOfTheDay(SharedPreferenceHelper.getUserId())){
+      presenter.clearRuleDailyData();
+    }
 
     new Thread(new Runnable() {
       @Override public void run() {
@@ -365,33 +367,6 @@ public abstract class BaseActivity extends BasicActivity
       }
     } catch (IllegalStateException e) {
       Log.e(TAG, "failure show progress fragment", e);
-    }
-  }
-
-  public void showFragment(BaseFragment fragment) {
-    DeviceHelper.hideKeyboard(this);
-
-    try {
-      if (fragment != null) {
-        if (fragment.isFragmentHidden() && !fragment.isAdded() && !isOverlayFragmentShowed) {
-          FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-          transaction.add(R.id.fragment_container, fragment);
-
-          transaction.commitAllowingStateLoss();
-          isOverlayFragmentShowed = true;
-        }
-      } else {
-        Log.e(TAG, "fragment is null");
-      }
-    } catch (IllegalStateException e) {
-      Log.e(TAG, "failure show fragment", e);
-    }
-  }
-
-  public void closeProgressFragment() {
-    isOverlayFragmentShowed = false;
-    if (mProgressFragment != null) {
-      mProgressFragment.closeFragment();
     }
   }
 
