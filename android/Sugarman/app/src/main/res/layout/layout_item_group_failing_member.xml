@@ -36,13 +36,14 @@
 
             <RelativeLayout
                 android:layout_marginTop="6dp"
-                android:layout_width="60dp"
-                android:layout_height="60dp">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
                 <ImageView
                     android:id="@+id/iv_avatar"
                     android:layout_width="52dp"
                     android:layout_height="52dp"
+                    android:padding="5dp"
                     android:layout_centerHorizontal="true"
                     android:layout_marginBottom="8dp"
                     android:src="@drawable/ic_gray_avatar" />
@@ -66,6 +67,7 @@
                     android:id="@+id/ivRescueIcon"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
+                    android:layout_marginBottom="20dp"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:src="@drawable/rescue_clock"
