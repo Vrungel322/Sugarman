@@ -297,6 +297,33 @@ public abstract class BaseActivity extends BasicActivity
     }
   }
 
+  public void showFragment(BaseFragment fragment) {
+    DeviceHelper.hideKeyboard(this);
+
+    try {
+      if (fragment != null) {
+        if (fragment.isFragmentHidden() && !fragment.isAdded() && !isOverlayFragmentShowed) {
+          FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+          transaction.add(R.id.fragment_container, fragment);
+
+          transaction.commitAllowingStateLoss();
+          isOverlayFragmentShowed = true;
+        }
+      } else {
+        Log.e(TAG, "fragment is null");
+      }
+    } catch (IllegalStateException e) {
+      Log.e(TAG, "failure show fragment", e);
+    }
+  }
+
+  public void closeProgressFragment() {
+    isOverlayFragmentShowed = false;
+    if (mProgressFragment != null) {
+      mProgressFragment.closeFragment();
+    }
+  }
+
   public void showSugarmanProgressFragment() {
     DeviceHelper.hideKeyboard(this);
 

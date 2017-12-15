@@ -506,7 +506,8 @@ public class CreateGroupActivity extends BaseActivity
     if (networksLoaded == networksToLoad) {
       Timber.e(
           networksLoaded + " out of " + networksToLoad + "allFriends side is " + allFriends.size());
-      closeProgressFragment();
+      //closeProgressFragment();
+      hideProgress();
       //Cache friends
       mPresenter.cacheFriends(allFriends);
     }
@@ -596,12 +597,15 @@ public class CreateGroupActivity extends BaseActivity
     int id = v.getId();
     switch (id) {
       case R.id.iv_cross:
+        Timber.e("iv_cross");
         Map<String, Object> eventValue = new HashMap<>();
         eventValue.put(AFInAppEventParameterName.LEVEL, 9);
         eventValue.put(AFInAppEventParameterName.SCORE, 100);
         AppsFlyerLib.getInstance()
             .trackEvent(getApplicationContext(), "af_cancel_group_creation", eventValue);
         setResult(RESULT_CANCELED);
+        hideProgress();
+        //closeProgressFragment();
         finish();
         break;
       case R.id.iv_apply:
@@ -703,8 +707,8 @@ public class CreateGroupActivity extends BaseActivity
     this.invitable.clear();
 
     setFriends(allFriends);
-    closeProgressFragment();
-
+    //closeProgressFragment();
+    hideProgress();
     if (DeviceHelper.isNetworkConnected()) {
       new SugarmanDialog.Builder(this, DialogConstants.FAILURE_GET_FACEBOOK_FRIENDS_ID).content(
           message).show();
@@ -719,7 +723,8 @@ public class CreateGroupActivity extends BaseActivity
   }
 
   @Override public void onGetFriendInfoFailure(String message) {
-    closeProgressFragment();
+    //closeProgressFragment();
+    hideProgress();
 
     if (DeviceHelper.isNetworkConnected()) {
       new SugarmanDialog.Builder(this, DialogConstants.FAILURE_CONVERT_FB_FRIENDS_ID).content(
@@ -744,7 +749,8 @@ public class CreateGroupActivity extends BaseActivity
   }
 
   @Override public void onApiJoinGroupSuccess(Tracking result) {
-    closeProgressFragment();
+    //closeProgressFragment();
+    hideProgress();
     int activeTrackings = SharedPreferenceHelper.getActiveTrackingsCreated();
     SharedPreferenceHelper.saveActiveTrackingsCreated(++activeTrackings);
 
@@ -796,11 +802,13 @@ public class CreateGroupActivity extends BaseActivity
 
   @Override public void onAsyncBitmapSaveSuccess(String path) {
     selectedFile = new File(path);
-    closeProgressFragment();
+    //closeProgressFragment();
+    hideProgress();
   }
 
   @Override public void onAsyncBitmapSaveFailed() {
-    closeProgressFragment();
+    //closeProgressFragment();
+    hideProgress();
   }
 
   private void tryChooseGroupAvatar() {
@@ -909,7 +917,6 @@ public class CreateGroupActivity extends BaseActivity
 
   private void checkFilledData() {
 
-    showProgress();
     filtered.clear();
     filtered.addAll(allFriends);
     setFriends(filtered);
@@ -925,6 +932,8 @@ public class CreateGroupActivity extends BaseActivity
       new SugarmanDialog.Builder(this, DialogConstants.FRIENDS_LIST_IS_IMPTY_ID).content(
           R.string.members_list_is_empty).show();
     } else {
+      showProgress();
+
       List<String> ids = new ArrayList<>();
       String id;
       for (FacebookFriend friend : selectedFriends) {
@@ -950,7 +959,7 @@ public class CreateGroupActivity extends BaseActivity
   }
 
   private void createGroup(List<FacebookFriend> members) {
-    showProgressFragmentTemp();
+    showProgress();
     vApply.setEnabled(false);
     List<String> facebookElements = new ArrayList<>();
     ArrayList<FacebookFriend> vkElements = new ArrayList<>();
@@ -1041,7 +1050,7 @@ public class CreateGroupActivity extends BaseActivity
       bm = BitmapUtils.scaleBitmap(bm, Config.MAX_PICTURE_SIZE_SEND_TO_SERVER,
           Config.MAX_PICTURE_SIZE_SEND_TO_SERVER);
 
-      showProgressFragmentTemp();
+      showProgress();
       new SaveBitmapToFileAsyncTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, bm);
 
       bm = scaleCenterCrop(bm, bm.getHeight() < bm.getWidth() ? bm.getHeight() : bm.getWidth(),
