@@ -97,8 +97,8 @@ import com.sugarman.myb.ui.activities.FailedActivity;
 import com.sugarman.myb.ui.activities.GetUserInfoActivity;
 import com.sugarman.myb.ui.activities.SearchGroupsActivity;
 import com.sugarman.myb.ui.activities.StatsTrackingActivity;
-import com.sugarman.myb.ui.activities.createGroup.CreateGroupActivity;
 import com.sugarman.myb.ui.activities.groupDetails.GroupDetailsActivity;
+import com.sugarman.myb.ui.activities.inviteForRescue.InviteForRescueActivity;
 import com.sugarman.myb.ui.activities.mentorList.MentorListActivity;
 import com.sugarman.myb.ui.activities.profile.ProfileActivity;
 import com.sugarman.myb.ui.activities.shop.ShopActivity;
@@ -1407,8 +1407,8 @@ public class MainActivity extends GetUserInfoActivity
     eventValue.put(AFInAppEventParameterName.SCORE, 100);
     AppsFlyerLib.getInstance().trackEvent(getApplicationContext(), "af_create_group", eventValue);
 
-    Intent intent = new Intent(this, CreateGroupActivity.class);
-    //Intent intent = new Intent(this, InviteForRescueActivity.class);
+    //Intent intent = new Intent(this, CreateGroupActivity.class);
+    Intent intent = new Intent(this, InviteForRescueActivity.class);
     startActivityForResult(intent, Constants.CREATE_GROUP_ACTIVITY_REQUEST_CODE);
   }
 
