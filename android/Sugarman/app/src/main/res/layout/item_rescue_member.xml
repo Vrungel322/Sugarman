@@ -1,37 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ll_group_member_container"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    >
 
-      <RelativeLayout
-          android:padding="8dp"
-          android:layout_width="60dp"
-          android:layout_height="60dp">
+  <RelativeLayout
+      android:layout_width="100dp"
+      android:layout_height="100dp"
+      >
 
-        <ImageView
-            android:id="@+id/ivAvatar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/ic_gray_avatar"
-            android:paddingBottom="5dp"/>
-        <ImageView
-            android:id="@+id/ivBorderAnim"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="5dp"
-            android:src="@drawable/rescue_circle_border"
-            />
-        <ImageView
-            android:id="@+id/ivClock"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/rescue_clock"
-            />
-      </RelativeLayout>
+    <ImageView
+        android:id="@+id/ivAvatar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="24dp"
+        android:paddingBottom="5dp"
+        android:src="@drawable/ic_gray_avatar"
+        />
+    <ImageView
+        android:id="@+id/ivBorderAnim"
+        android:layout_width="match_parent"
+
+        android:layout_height="match_parent"
+        android:layout_margin="24dp"
+        android:paddingBottom="5dp"
+        android:src="@drawable/rescue_circle_border"
+        />
+    <ImageView
+        android:id="@+id/ivClock"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="24dp"
+        android:src="@drawable/rescue_clock"
+        />
+  </RelativeLayout>
 </LinearLayout>
