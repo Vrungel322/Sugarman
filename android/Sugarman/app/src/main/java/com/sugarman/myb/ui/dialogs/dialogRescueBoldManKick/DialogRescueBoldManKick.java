@@ -104,7 +104,7 @@ public class DialogRescueBoldManKick extends MvpDialogFragment
       }
 
       @Override public void onFinish() {
-        mTextViewTimeLeftForRescue.setText(Converters.timeFromMilliseconds(getActivity(), 0L));
+        mTextViewTimeLeftForRescue.setText(Converters.timeFromMilliseconds(getActivity(), 1L));
       }
     }.start();
   }

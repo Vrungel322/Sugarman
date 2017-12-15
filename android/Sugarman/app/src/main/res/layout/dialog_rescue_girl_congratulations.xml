@@ -5,20 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-
-
-  <RelativeLayout
-      android:id="@+id/relativeLayout3"
-      android:layout_width="0dp"
-      android:layout_height="match_parent"
-      android:layout_marginStart="48dp"
-      android:layout_marginTop="8dp"
-      app:layout_constraintDimensionRatio="1:1"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/imageView4"
-      >
-
-  </RelativeLayout>
   <ImageView
       android:id="@+id/ivCross"
       android:layout_width="wrap_content"
@@ -36,9 +22,10 @@
       android:layout_height="200dp"
       android:layout_marginEnd="32dp"
       android:layout_marginStart="32dp"
+      android:layout_marginTop="32dp"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/ivCross"
+      app:layout_constraintTop_toTopOf="parent"
       app:srcCompat="@drawable/rescue_pop_up_hexagon_rescue"
       />
   <TextView
@@ -67,7 +54,7 @@
       />
   <TextView
       android:id="@+id/tvYouGroupRescued"
-      android:layout_width="344dp"
+      android:layout_width="256dp"
       android:layout_height="wrap_content"
       android:layout_marginEnd="8dp"
       android:layout_marginStart="8dp"
