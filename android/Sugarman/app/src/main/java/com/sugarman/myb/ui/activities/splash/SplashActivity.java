@@ -9,11 +9,16 @@ import android.content.pm.Signature;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.media.SoundPool;
+import android.net.UrlQuerySanitizer;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
+import com.android.installreferrer.api.InstallReferrerClient;
+import com.android.installreferrer.api.InstallReferrerStateListener;
+import com.android.installreferrer.api.ReferrerDetails;
 import com.appsflyer.AFInAppEventParameterName;
 import com.appsflyer.AppsFlyerLib;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -49,7 +54,7 @@ import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
 public class SplashActivity extends GetUserInfoActivity
-    implements SoundPool.OnLoadCompleteListener, ISplashActivityView {
+    implements SoundPool.OnLoadCompleteListener, ISplashActivityView, InstallReferrerStateListener {
   private static final String TAG = SplashActivity.class.getName();
   private final Runnable showNotSupported = () -> new SugarmanDialog.Builder(SplashActivity.this,
       DialogConstants.DEVICE_IS_NOT_SUPPORTED_ID).content(R.string.step_detector_not_supported)
@@ -61,10 +66,15 @@ public class SplashActivity extends GetUserInfoActivity
   private String trackingIdFromFcm = "";
   private CompositeSubscription mCompositeSubscription = new CompositeSubscription();
   private boolean done;
+  InstallReferrerClient mReferrerClient;
+
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_splash);
     super.onCreate(savedInstanceState);
+
+    mReferrerClient = InstallReferrerClient.newBuilder(this).build();
+    mReferrerClient.startConnection(this);
 
     try {
       PackageInfo info =
@@ -309,5 +319,50 @@ public class SplashActivity extends GetUserInfoActivity
     intent.putExtra(Constants.INTENT_MY_NOTIFICATIONS, actualNotifications);
     startActivity(intent);
     finish();
+  }
+
+  @Override public void onInstallReferrerSetupFinished(int responseCode) {
+
+    switch (responseCode) {
+      case InstallReferrerClient.InstallReferrerResponse.OK:
+        try {
+          Timber.e("InstallReferrer conneceted");
+          ReferrerDetails response = mReferrerClient.getInstallReferrer();
+          handleReferrer(response);
+          mReferrerClient.endConnection();
+        } catch (RemoteException e) {
+          e.printStackTrace();
+        }
+        break;
+      case InstallReferrerClient.InstallReferrerResponse.FEATURE_NOT_SUPPORTED:
+        Timber.e("InstallReferrer not supported");
+        break;
+      case InstallReferrerClient.InstallReferrerResponse.SERVICE_UNAVAILABLE:
+        Timber.e( "Unable to connect to the service");
+        break;
+      default:
+        Timber.e( "responseCode not found.");
+    }
+
+  }
+
+  @Override public void onInstallReferrerServiceDisconnected() {
+    Timber.e("Referrer service disconnected");
+  }
+
+  private void handleReferrer(ReferrerDetails response)
+  {
+    String searchQuery = "utm_campaign";
+    String referrerStr = response.getInstallReferrer();
+    SharedPreferenceHelper.setCampaign(referrerStr);
+    Timber.e(SharedPreferenceHelper.getCampaign());
+    if(referrerStr.contains(searchQuery))
+    {
+      String temp = referrerStr.split(searchQuery)[1];
+      int index = temp.indexOf("&");
+      if(index==-1) index = temp.length();
+      temp = temp.substring(1,index);
+      Timber.e(temp);
+    }
   }
 }

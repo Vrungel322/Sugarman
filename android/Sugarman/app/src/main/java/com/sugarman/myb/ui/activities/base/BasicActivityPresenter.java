@@ -34,6 +34,7 @@ import timber.log.Timber;
     request.setVkId("none");
     request.setFbId("none");
     request.setPictureUrl("none");
+    request.setCampaign(SharedPreferenceHelper.getCampaign());
     request.setTimezone(TimeZone.getDefault().getID());
     Subscription subscriptions = mDataManager.refreshRxUserData(request)
         .compose(ThreadSchedulers.applySchedulers())

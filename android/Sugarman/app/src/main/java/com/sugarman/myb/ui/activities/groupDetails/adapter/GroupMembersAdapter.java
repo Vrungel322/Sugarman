@@ -443,7 +443,7 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
             }
           }
           Animation animation =
-              AnimationUtils.loadAnimation(context, R.anim.anim_scale_up);
+              AnimationUtils.loadAnimation(context, R.anim.anim_rescue_scale_up);
           savedMemberHolder.ivAnimationCircle.startAnimation(animation);
           break;
         case PENDING_LABEL_TYPE:

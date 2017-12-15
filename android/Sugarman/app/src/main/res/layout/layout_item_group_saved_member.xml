@@ -9,14 +9,8 @@
     android:paddingRight="10dp"
     android:orientation="horizontal">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal"
 
-        android:orientation="vertical">
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
@@ -36,14 +30,15 @@
                 tools:textColor="@color/red" />
 
             <RelativeLayout
-                android:layout_marginTop="6dp"
-                android:layout_width="66dp"
-                android:layout_height="66dp">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/tv_member_name">
 
                 <ImageView
                     android:id="@+id/iv_avatar"
                     android:layout_width="52dp"
                     android:layout_height="52dp"
+                    android:paddingTop="5dp"
                     android:layout_centerHorizontal="true"
                     android:layout_marginBottom="8dp"
                     android:src="@drawable/ic_gray_avatar" />
@@ -51,6 +46,7 @@
                     android:id="@+id/ivKickOverlay"
                     android:layout_width="52dp"
                     android:layout_height="52dp"
+                    android:paddingTop="5dp"
                     android:visibility="visible"
                     android:layout_centerHorizontal="true"
                     android:src="@drawable/rescue_circle_border"
@@ -59,6 +55,7 @@
                     android:id="@+id/ivBorderAnim"
                     android:layout_width="52dp"
                     android:layout_height="52dp"
+                    android:paddingTop="5dp"
                     android:visibility="visible"
                     android:layout_centerHorizontal="true"
                     android:src="@drawable/rescue_circle_border"
@@ -69,6 +66,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="25dp"
                     android:layout_centerHorizontal="true"
                     android:src="@drawable/rescue_circle_life"
                     />
@@ -82,8 +80,7 @@
                     android:visibility="gone"/>
             </RelativeLayout>
                 <!-- maxLines not working on some devices, use deprecated singleLine -->
-        </LinearLayout>
+        </RelativeLayout>
 
-    </LinearLayout>
 
 </LinearLayout>

@@ -72,7 +72,8 @@ public class RescueMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vi
 
     if (member.getFailureStatus()==Member.FAIL_STATUS_SAVED){
       Animation animation =
-          AnimationUtils.loadAnimation(viewHolder.ivBorderAnim.getContext(), R.anim.anim_scale_up);
+          AnimationUtils.loadAnimation(viewHolder.ivBorderAnim.getContext(), R.anim.anim_rescue_scale_up);
+      viewHolder.ivClock.setImageDrawable(viewHolder.ivClock.getContext().getResources().getDrawable(R.drawable.rescue_circle_life));
       viewHolder.ivBorderAnim.startAnimation(animation);
     }
   }

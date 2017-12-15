@@ -38,6 +38,8 @@ public class RefreshUserDataRequest {
 
   @Getter @Setter @SerializedName("IMEI") private String imei;
 
+  @Getter @Setter @SerializedName("campaign") private String campaign;
+
   public void setPhoneToken(String phoneToken) {
     this.phoneToken = phoneToken;
   }

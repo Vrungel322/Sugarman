@@ -16,6 +16,9 @@ buildscript {
 repositories {
   maven { url 'https://maven.fabric.io/public' }
   maven { url "https://jitpack.io" }
+  maven {
+    url "https://maven.google.com"
+  }
 }
 
 repositories {
@@ -73,6 +76,7 @@ dependencies {
   compile project(':chat')
   compile 'com.github.instacart.truetime-android:library:3.2'
   compile 'com.google.android.gms:play-services-auth:10.0.1'
+  compile 'com.android.installreferrer:installreferrer:1.0'
   compile 'com.vk:androidsdk:1.6.5'
   compile 'jp.wasabeef:blurry:2.1.1'
   compile 'com.appsflyer:af-android-sdk:4.7.3'
