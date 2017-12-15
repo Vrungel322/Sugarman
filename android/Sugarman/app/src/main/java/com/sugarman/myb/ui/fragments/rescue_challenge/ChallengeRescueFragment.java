@@ -101,10 +101,10 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
     mTextViewRescueCount.setText(String.format(getString(R.string.the_group_needs_x_more_rescues),
         (int) adapter.getItemCount()));
 
-    mTextViewRescueTimer.setText(
-        String.format(getString(R.string.you_have_x_time_to_rescue_the_group),
-            Converters.timeFromMilliseconds(getContext(),
-                mTracking.getRemainToFailUTCDate().getTime())));
+    //mTextViewRescueTimer.setText(
+    //    String.format(getString(R.string.you_have_x_time_to_rescue_the_group),
+    //        Converters.timeFromMilliseconds(getContext(),
+    //            mTracking.getRemainToFailUTCDate().getTime())));
   }
 
   @OnClick(R.id.cvRescueChallengeContainer) public void openGroupActivity() {
