@@ -54,6 +54,8 @@ public class User {
 
   @SerializedName("groups_limit") @Getter @Setter private String groupsLimit;
 
+  @SerializedName("ab_testing") @Getter @Setter private Integer aOrB;
+
   @SerializedName("subscriptions") @Getter @Setter private List<SubscriptionEntity>
       subscriptionEntities;
 

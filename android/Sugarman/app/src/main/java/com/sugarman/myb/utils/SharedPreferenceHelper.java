@@ -635,4 +635,12 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
   public static String getCampaign() {
     return getString("campaign", "");
   }
+
+  public static void saveAorB(Integer aOrB) {
+    putInt(SharedPreferenceConstants.A_OR_B, aOrB);
+  }
+
+  public static int getAorB() {
+    return getInt(SharedPreferenceConstants.A_OR_B, 0);
+  }
 }
