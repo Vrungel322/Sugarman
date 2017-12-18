@@ -49,6 +49,7 @@ public class DialogRescueBoldManKick extends MvpDialogFragment
   private Tracking mTracking;
   private RescueMembersAdapter mRescueMembersAdapter;
   private List<Member> failures = new ArrayList<>();
+  private CountDownTimer mTimer;
 
   public static DialogRescueBoldManKick newInstance(Tracking tracking) {
     Bundle args = new Bundle();
@@ -98,15 +99,21 @@ public class DialogRescueBoldManKick extends MvpDialogFragment
     mRescueMembersAdapter.setMembers(failures);
     mRecyclerViewFailures.setAdapter(mRescueMembersAdapter);
 
-    CountDownTimer timer = new CountDownTimer(6000, 1000) {
+    mTimer = new CountDownTimer(6000, 1000) {
       @Override public void onTick(long l) {
-        mTextViewTimeLeftForRescue.setText(Converters.timeFromMilliseconds(getActivity(), l));
+        mTextViewTimeLeftForRescue.setText(
+            Converters.timeFromMilliseconds(getActivity(), l));
       }
 
       @Override public void onFinish() {
         mTextViewTimeLeftForRescue.setText(Converters.timeFromMilliseconds(getActivity(), 1L));
       }
     }.start();
+  }
+
+  @Override public void onDestroyView() {
+    super.onDestroyView();
+    mTimer.cancel();
   }
 
   @OnClick({ R.id.ivKick, R.id.tvKickcThemNow }) public void kickAllFailures() {

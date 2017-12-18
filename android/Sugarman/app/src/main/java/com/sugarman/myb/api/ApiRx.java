@@ -126,10 +126,10 @@ public interface ApiRx {
 
   @POST("v1/pokes") Observable<Response<Object>> poke(@Body PokeRequest request);
 
-  @POST("v1/") Observable<Response<Void>> checkInAppBillingOneDollar(
+  @POST("v1/vasya_napishi_zapros_Blyat_checkInAppBillingOneDollar") Observable<Response<Void>> checkInAppBillingOneDollar(
       @Body InAppSinglePurchase inAppSinglePurchase);
 
-  @Multipart @POST("/v1/") Observable<Response<CreateGroupResponse>> sendInvitersForRescue(
+  @Multipart @POST("/v1/vasya_napishi_zapros_Blyat_sendInvitersForRescue") Observable<Response<CreateGroupResponse>> sendInvitersForRescue(
       @Part MultipartBody.Part filePart, @Part("name") RequestBody name,
       @Part("facebook_token") RequestBody facebookToken,
       @Part("members[][fbid]") List<RequestBody> ids,

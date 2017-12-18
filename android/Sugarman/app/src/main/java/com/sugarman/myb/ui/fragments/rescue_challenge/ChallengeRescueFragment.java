@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -19,10 +20,11 @@ import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.base.BasicFragment;
 import com.sugarman.myb.models.ChallengeRescueItem;
 import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
+import com.sugarman.myb.ui.dialogs.dialogRescueBoldMan.DialogRescueBoldMan;
+import com.sugarman.myb.ui.dialogs.dialogRescueBoldManKick.DialogRescueBoldManKick;
 import com.sugarman.myb.ui.fragments.rescue_challenge.adapters.RescueMembersAdapter;
 import com.sugarman.myb.ui.views.CropSquareTransformation;
 import com.sugarman.myb.ui.views.MaskTransformation;
-import com.sugarman.myb.utils.Converters;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -42,6 +44,7 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
   @BindView(R.id.tvRescueCounter) TextView mTextViewRescueCount;
   @BindView(R.id.tvRescueTimer) TextView mTextViewRescueTimer;
   @BindView(R.id.cvRescueChallengeContainer) CardView cvRescueChallengeContainer;
+  @BindView(R.id.llRescueArea) LinearLayout mLinearLayoutRescueArea;
   RescueMembersAdapter adapter;
   private ChallengeRescueItem mChallengeItem;
   private Tracking mTracking;
@@ -114,5 +117,14 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
         && ((MainActivity) activity).isReady()) {
       ((MainActivity) activity).openGroupDetailsActivity(mTracking.getId(), true);
     }
+  }
+
+  @OnClick(R.id.llRescueArea) public void llRescueAreaClick() {
+    //if (){
+      DialogRescueBoldManKick.newInstance(mTracking).show(getActivity().getFragmentManager(), "DialogRescueBoldManKick");
+    //}else {
+      DialogRescueBoldMan.newInstance(mTracking).show(getActivity().getFragmentManager(), "DialogRescueBoldMan");
+    //}
+
   }
 }
