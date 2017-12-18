@@ -21,6 +21,7 @@ import com.sugarman.myb.api.models.responses.me.groups.CreateGroupResponse;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.models.ContactListForServer;
+import com.sugarman.myb.models.ab_testing.ABTesting;
 import com.sugarman.myb.models.custom_events.RuleSet;
 import com.sugarman.myb.models.iab.InAppSinglePurchase;
 import com.sugarman.myb.models.iab.NextFreeSkuEntity;
@@ -233,5 +234,9 @@ public class RestApi {
       List<RequestBody> phonePictures, RequestBody vkToken) {
     return api.sendInvitersForRescue( filePart, name, fbToken, ids, vkids, phoneNumbers, names, vkNames, phoneNames,
         pictures, vkpictures, phonePictures, vkToken);
+  }
+
+  public Observable<Response<ABTesting>> fetchAorBtesting() {
+    return api.fetchAorBtesting();
   }
 }

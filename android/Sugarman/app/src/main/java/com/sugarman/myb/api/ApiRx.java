@@ -18,6 +18,7 @@ import com.sugarman.myb.api.models.responses.animation.GetAnimationResponse;
 import com.sugarman.myb.api.models.responses.me.groups.CreateGroupResponse;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.models.ContactListForServer;
+import com.sugarman.myb.models.ab_testing.ABTesting;
 import com.sugarman.myb.models.custom_events.RuleSet;
 import com.sugarman.myb.models.iab.InAppSinglePurchase;
 import com.sugarman.myb.models.iab.NextFreeSkuEntity;
@@ -129,7 +130,7 @@ public interface ApiRx {
   @POST("v1/vasya_napishi_zapros_Blyat_checkInAppBillingOneDollar") Observable<Response<Void>> checkInAppBillingOneDollar(
       @Body InAppSinglePurchase inAppSinglePurchase);
 
-  @Multipart @POST("/v1/vasya_napishi_zapros_Blyat_sendInvitersForRescue") Observable<Response<CreateGroupResponse>> sendInvitersForRescue(
+  @Multipart @POST("v1/vasya_napishi_zapros_Blyat_sendInvitersForRescue") Observable<Response<CreateGroupResponse>> sendInvitersForRescue(
       @Part MultipartBody.Part filePart, @Part("name") RequestBody name,
       @Part("facebook_token") RequestBody facebookToken,
       @Part("members[][fbid]") List<RequestBody> ids,
@@ -142,4 +143,6 @@ public interface ApiRx {
       @Part("members[][picture_url_vk]") List<RequestBody> picturesVK,
       @Part("members[][picture_url_phone]") List<RequestBody> picturesPhone,
       @Part("vk_token") RequestBody vkToken);
+
+  @GET("v1/ab_testing") Observable<Response<ABTesting>> fetchAorBtesting();
 }
