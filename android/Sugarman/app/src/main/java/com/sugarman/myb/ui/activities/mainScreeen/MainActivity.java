@@ -287,14 +287,6 @@ public class MainActivity extends GetUserInfoActivity
 
     @Override public void onApiGetMyInvitesFailure(String message) {
       closeProgressFragment();
-      if (DeviceHelper.isNetworkConnected()) {
-        new SugarmanDialog.Builder(MainActivity.this, DialogConstants.API_GET_MY_INVITES_FAILURE_ID)
-            .content(message)
-            .btnCallback(MainActivity.this)
-            .show();
-      } else {
-        showNoInternetConnectionDialog();
-      }
     }
 
     @Override public void onApiUnauthorized() {
@@ -332,14 +324,6 @@ public class MainActivity extends GetUserInfoActivity
 
     @Override public void onApiGetMyRequestsFailure(String message) {
       closeProgressFragment();
-      if (DeviceHelper.isNetworkConnected()) {
-        new SugarmanDialog.Builder(MainActivity.this,
-            DialogConstants.API_GET_MY_REQUESTS_FAILURE_ID).content(message)
-            .btnCallback(MainActivity.this)
-            .show();
-      } else {
-        showNoInternetConnectionDialog();
-      }
     }
 
     @Override public void onApiUnauthorized() {
@@ -485,6 +469,8 @@ public class MainActivity extends GetUserInfoActivity
 
         @Override public void onApiGetNotificationsFailure(String message) {
           closeProgressFragment();
+          Timber.e("isNetworkConnected onApiGetNotificationsFailure"+ DeviceHelper.isNetworkConnected());
+
           if (DeviceHelper.isNetworkConnected()) {
             new SugarmanDialog.Builder(MainActivity.this,
                 DialogConstants.API_GET_NOTIFICATIONS_FAILURE_ID).content(message).show();
