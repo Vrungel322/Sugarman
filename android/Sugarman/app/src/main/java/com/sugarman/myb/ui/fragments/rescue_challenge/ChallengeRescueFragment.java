@@ -2,6 +2,7 @@ package com.sugarman.myb.ui.fragments.rescue_challenge;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,6 +26,7 @@ import com.sugarman.myb.ui.dialogs.dialogRescueBoldManKick.DialogRescueBoldManKi
 import com.sugarman.myb.ui.fragments.rescue_challenge.adapters.RescueMembersAdapter;
 import com.sugarman.myb.ui.views.CropSquareTransformation;
 import com.sugarman.myb.ui.views.MaskTransformation;
+import com.sugarman.myb.utils.Converters;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -48,6 +50,7 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
   RescueMembersAdapter adapter;
   private ChallengeRescueItem mChallengeItem;
   private Tracking mTracking;
+  private CountDownTimer mTimer;
 
   public ChallengeRescueFragment() {
     super(R.layout.fragment_rescue_challenge);
@@ -104,10 +107,25 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
     mTextViewRescueCount.setText(String.format(getString(R.string.the_group_needs_x_more_rescues),
         (int) adapter.getItemCount()));
 
-    //mTextViewRescueTimer.setText(
-    //    String.format(getString(R.string.you_have_x_time_to_rescue_the_group),
-    //        Converters.timeFromMilliseconds(getContext(),
-    //            mTracking.getRemainToFailUTCDate().getTime())));
+
+    mTimer = new CountDownTimer(mTracking.getRemainToFailUTCDate().getTime()-System.currentTimeMillis(), 1000) {
+      @Override public void onTick(long l) {
+        mTextViewRescueTimer.setText(
+            String.format(getString(R.string.you_have_x_time_to_rescue_the_group),
+                Converters.timeFromMilliseconds(getActivity(), l)));
+      }
+
+      @Override public void onFinish() {
+        mTextViewRescueTimer.setText(
+            String.format(getString(R.string.you_have_x_time_to_rescue_the_group),
+                Converters.timeFromMilliseconds(getActivity(),1L)));
+      }
+    }.start();
+  }
+
+  @Override public void onDestroyView() {
+    super.onDestroyView();
+    mTimer.cancel();
   }
 
   @OnClick(R.id.cvRescueChallengeContainer) public void openGroupActivity() {
@@ -121,9 +139,11 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
 
   @OnClick(R.id.llRescueArea) public void llRescueAreaClick() {
     //if (){
-      DialogRescueBoldManKick.newInstance(mTracking).show(getActivity().getFragmentManager(), "DialogRescueBoldManKick");
+    DialogRescueBoldManKick.newInstance(mTracking)
+        .show(getActivity().getFragmentManager(), "DialogRescueBoldManKick");
     //}else {
-      DialogRescueBoldMan.newInstance(mTracking).show(getActivity().getFragmentManager(), "DialogRescueBoldMan");
+    DialogRescueBoldMan.newInstance(mTracking)
+        .show(getActivity().getFragmentManager(), "DialogRescueBoldMan");
     //}
 
   }
