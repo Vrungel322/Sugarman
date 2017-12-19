@@ -222,18 +222,52 @@ public class RestApi {
     return api.poke(request);
   }
 
-  public Observable<Response<Void>> checkInAppBillingOneDollar(
+  public Observable<Response<Void>> checkInAppBillingOneDollar(String trackingId,
       InAppSinglePurchase inAppSinglePurchase) {
-    return api.checkInAppBillingOneDollar(inAppSinglePurchase);
+    return api.checkInAppBillingOneDollar(trackingId, inAppSinglePurchase);
   }
 
-  public Observable<Response<CreateGroupResponse>> sendInvitersForRescue(MultipartBody.Part filePart, RequestBody name,
-      RequestBody fbToken, List<RequestBody> ids, List<RequestBody> vkids,
-      List<RequestBody> phoneNumbers, List<RequestBody> names, List<RequestBody> vkNames,
-      List<RequestBody> phoneNames, List<RequestBody> pictures, List<RequestBody> vkpictures,
-      List<RequestBody> phonePictures, RequestBody vkToken) {
-    return api.sendInvitersForRescue( filePart, name, fbToken, ids, vkids, phoneNumbers, names, vkNames, phoneNames,
-        pictures, vkpictures, phonePictures, vkToken);
+  public Observable<Response<CreateGroupResponse>> sendInvitersForRescue(String userId,
+      List<FacebookFriend> selectedMembers) {
+    RequestBody uId = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), userId);
+
+    List<RequestBody> ids = new ArrayList<>();
+    List<RequestBody> vkids = new ArrayList<>();
+    List<RequestBody> phoneNumbers = new ArrayList<>();
+    List<RequestBody> names = new ArrayList<>();
+    List<RequestBody> vkNames = new ArrayList<>();
+    List<RequestBody> phoneNames = new ArrayList<>();
+    List<RequestBody> pictures = new ArrayList<>();
+    List<RequestBody> vkpictures = new ArrayList<>();
+    List<RequestBody> phonePictures = new ArrayList<>();
+
+    for (FacebookFriend friend : selectedMembers) {
+      //friend.setSocialNetwork("fb");
+      if (friend.getSocialNetwork().equals("fb")) {
+        Timber.e("FB FRIEND = " + friend.getId());
+        ids.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getId()));
+        names.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getName()));
+        pictures.add(
+            RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getPicture()));
+      } else if (friend.getSocialNetwork().equals("vk")) {
+        Timber.e("VK FRIEND = " + friend.getName());
+        vkids.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getId()));
+        vkNames.add(
+            RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getName()));
+        vkpictures.add(
+            RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getPicture()));
+      } else {
+        Timber.e("PH FRIEND = " + friend.getName() + " " + friend.getId());
+        phoneNumbers.add(
+            RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getId()));
+        phoneNames.add(
+            RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getName()));
+        phonePictures.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
+            "https://sugarman-myb.s3.amazonaws.com/Group_New.png"));
+      }
+    }
+    return api.sendInvitersForRescue(uId, ids, vkids, phoneNumbers, names, vkNames, phoneNames,
+        pictures, vkpictures, phonePictures);
   }
 
   public Observable<Response<ABTesting>> fetchAorBtesting() {

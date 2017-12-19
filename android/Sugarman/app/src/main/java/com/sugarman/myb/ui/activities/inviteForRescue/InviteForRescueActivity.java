@@ -700,7 +700,7 @@ public class InviteForRescueActivity extends BaseActivity
 
   @Override public void onGetFriendInfoSuccess(List<FacebookFriend> convertedFriends) {
     members.addAll(convertedFriends);
-    createGroup(members);
+    inviteForRescue(members);
   }
 
   @Override public void onGetFriendInfoFailure(String message) {
@@ -928,12 +928,12 @@ hideProgress();
                 .build();
         fbInviteDialog.show(content);
       } else {
-        createGroup(members);
+        inviteForRescue(members);
       }
     }
   }
 
-  private void createGroup(List<FacebookFriend> members) {
+  private void inviteForRescue(List<FacebookFriend> members) {
     showProgress();
     vApply.setEnabled(false);
     List<String> facebookElements = new ArrayList<>();
@@ -975,7 +975,7 @@ hideProgress();
     mPresenter.checkRuleXNewUsersInvite(members);
     Timber.e("members " + members.size());
     //mCreateGroupClient.createGroup(members, "TEST", selectedFile, InviteForRescueActivity.this); // TODO: 12/13/17 change this
-    mPresenter.sendInvitersForRescue(members, "TEST", selectedFile); // TODO: 12/13/17 change this
+    mPresenter.sendInvitersForRescue(members);
   }
 
   private void setFriends(List<FacebookFriend> friends) {

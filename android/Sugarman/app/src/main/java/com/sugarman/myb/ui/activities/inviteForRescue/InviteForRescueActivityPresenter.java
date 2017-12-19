@@ -21,7 +21,6 @@ import com.vk.sdk.api.VKError;
 import com.vk.sdk.api.VKParameters;
 import com.vk.sdk.api.VKRequest;
 import com.vk.sdk.api.VKResponse;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import javax.inject.Inject;
@@ -112,8 +111,8 @@ import static com.sugarman.myb.api.clients.BaseApiClient.FAILURE_PARSE_ERROR_RES
     }
   }
 
-  public void sendInvitersForRescue(List<FacebookFriend> members, String name, File selectedFile) {
-    Subscription subscription = mDataManager.sendInvitersForRescue(members, name, selectedFile)
+  public void sendInvitersForRescue(List<FacebookFriend> members) {
+    Subscription subscription = mDataManager.sendInvitersForRescue(members)
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(createGroupResponseResponse -> {  CreateGroupResponse dataResponse = createGroupResponseResponse.body();
           ResponseBody errorBody = createGroupResponseResponse.errorBody();

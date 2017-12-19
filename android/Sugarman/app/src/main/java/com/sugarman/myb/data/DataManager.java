@@ -45,9 +45,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import okhttp3.MediaType;
 import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import retrofit2.Response;
 import rx.Observable;
 import timber.log.Timber;
@@ -324,78 +322,14 @@ public class DataManager {
     }
   }
 
-  public Observable<Response<Void>> checkInAppBillingOneDollar(
+  public Observable<Response<Void>> checkInAppBillingOneDollar(String trackingId,
       InAppSinglePurchase inAppSinglePurchase) {
-    return mRestApi.checkInAppBillingOneDollar(inAppSinglePurchase);
+    return mRestApi.checkInAppBillingOneDollar(trackingId,inAppSinglePurchase);
   }
 
   public Observable<Response<CreateGroupResponse>> sendInvitersForRescue(
-      List<FacebookFriend> members, String groupName, File avatar) {
-
-    MultipartBody.Part filePart = null;
-
-    int totalMembers = members.size();
-    List<RequestBody> ids = new ArrayList<>(totalMembers);
-    List<RequestBody> vkids = new ArrayList<>(totalMembers);
-    List<RequestBody> phoneNumbers = new ArrayList<>(totalMembers);
-    List<RequestBody> names = new ArrayList<>(totalMembers);
-    List<RequestBody> vkNames = new ArrayList<>(totalMembers);
-    List<RequestBody> phoneNames = new ArrayList<>(totalMembers);
-    List<RequestBody> pictures = new ArrayList<>(totalMembers);
-    List<RequestBody> vkpictures = new ArrayList<>(totalMembers);
-    List<RequestBody> phonePictures = new ArrayList<>(totalMembers);
-
-    if (avatar != null && avatar.exists() && avatar.isFile()) {
-      RequestBody requestFile =
-          RequestBody.create(MediaType.parse(Constants.IMAGE_JPEG_TYPE), avatar);
-      filePart =
-          MultipartBody.Part.createFormData(Constants.PICTURE, avatar.getName(), requestFile);
-      Log.e("FILE NAME", avatar.getName());
-    }
-
-    RequestBody name = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), groupName);
-    RequestBody fbToken = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
-        SharedPreferenceHelper.getFBAccessToken());
-
-    for (FacebookFriend friend : members) {
-      //friend.setSocialNetwork("fb");
-      if (friend.getSocialNetwork().equals("fb")) {
-        Timber.e("FB FRIEND = " + friend.getId());
-        ids.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getId()));
-        names.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getName()));
-        pictures.add(
-            RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getPicture()));
-      } else if (friend.getSocialNetwork().equals("vk")) {
-        Timber.e("VK FRIEND = " + friend.getName());
-        vkids.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getId()));
-        vkNames.add(
-            RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getName()));
-        vkpictures.add(
-            RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getPicture()));
-      } else {
-
-        Timber.e("Phone contact " + friend.getName());
-
-        phoneNumbers.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
-            friend.getId().replace(" ", "")));
-        phoneNames.add(
-            RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), friend.getName()));
-        phonePictures.add(RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE),
-            "https://sugarman-myb.s3.amazonaws.com/Group_New.png"));
-        Timber.e("pictures phone: "
-            + phonePictures.size()
-            + " names phone: "
-            + phoneNames.size()
-            + " ids phone: "
-            + phoneNumbers.size());
-      }
-    }
-
-    String vkTokenStr = SharedPreferenceHelper.getVkToken();
-    RequestBody vkToken =
-        RequestBody.create(MediaType.parse(Constants.IMAGE_JPEG_TYPE), vkTokenStr);
-    return mRestApi.sendInvitersForRescue(filePart, name, fbToken, ids, vkids, phoneNumbers, names,
-        vkNames, phoneNames, pictures, vkpictures, phonePictures, vkToken);
+      List<FacebookFriend> members) {
+    return mRestApi.sendInvitersForRescue(SharedPreferenceHelper.getUserId(),members);
   }
 
   public Observable<Response<ABTesting>> fetchAorBtesting() {

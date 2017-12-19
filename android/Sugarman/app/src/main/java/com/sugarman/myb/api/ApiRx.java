@@ -127,22 +127,19 @@ public interface ApiRx {
 
   @POST("v1/pokes") Observable<Response<Object>> poke(@Body PokeRequest request);
 
-  @POST("v1/vasya_napishi_zapros_Blyat_checkInAppBillingOneDollar") Observable<Response<Void>> checkInAppBillingOneDollar(
+  @POST("v1/in_app_purchases") Observable<Response<Void>> checkInAppBillingOneDollar(@Header("tracking_id") String trackingId,
       @Body InAppSinglePurchase inAppSinglePurchase);
 
-  @Multipart @POST("v1/vasya_napishi_zapros_Blyat_sendInvitersForRescue") Observable<Response<CreateGroupResponse>> sendInvitersForRescue(
-      @Part MultipartBody.Part filePart, @Part("name") RequestBody name,
-      @Part("facebook_token") RequestBody facebookToken,
-      @Part("members[][fbid]") List<RequestBody> ids,
+  @Multipart @POST("v1/invite_rescue") Observable<Response<CreateGroupResponse>> sendInvitersForRescue(
+      @Part("user_id") RequestBody userId, @Part("members[][fbid]") List<RequestBody> ids,
       @Part("members[][vkid]") List<RequestBody> vkids,
-      @Part("members[][phonenumber]") List<RequestBody> phoneNumbers,
+      @Part("members[][phone_number]") List<RequestBody> phoneNumbers,
       @Part("members[][name]") List<RequestBody> names,
       @Part("members[][vkname]") List<RequestBody> vknames,
-      @Part("members[][phonename]") List<RequestBody> phoneNames,
+      @Part("members[][phone_name]") List<RequestBody> phoneNames,
       @Part("members[][picture_url]") List<RequestBody> pictures,
       @Part("members[][picture_url_vk]") List<RequestBody> picturesVK,
-      @Part("members[][picture_url_phone]") List<RequestBody> picturesPhone,
-      @Part("vk_token") RequestBody vkToken);
+      @Part("members[][picture_url_phone]") List<RequestBody> picturesPhone);
 
   @GET("v1/ab_testing") Observable<Response<ABTesting>> fetchAorBtesting();
 }

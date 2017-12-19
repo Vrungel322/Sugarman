@@ -136,6 +136,8 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
 
       if (result.isFailure()) {
         Timber.e("Result is failure");
+        consumeItem();
+
         // Handle error
         return;
       } else if (purchase.getSku().equals(mFreeSku)) {
@@ -163,7 +165,7 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
         Timber.e(inventory.getSkuDetails(mFreeSku).getTitle());
         Timber.e(inventory.getSkuDetails(mFreeSku).getSku());
 
-        mPresenter.checkInAppBillingOneDollar(inventory.getPurchase(mFreeSku),
+        mPresenter.checkInAppBillingOneDollar(mTracking.getId(),inventory.getPurchase(mFreeSku),
             inventory.getSkuDetails(mFreeSku).getTitle(), mFreeSku);
       }
     });
