@@ -1,6 +1,7 @@
 package com.sugarman.myb.ui.activities.groupDetails.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.media.Image;
 import android.os.Handler;
@@ -230,9 +231,11 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
                   .placeholder(R.drawable.ic_gray_avatar)
                   .error(R.drawable.ic_gray_avatar)
                   .networkPolicy(NetworkPolicy.NO_CACHE)
-                  .transform(new MaskTransformation(context, R.drawable.mask, true, color))
+                  .transform(new MaskTransformation(context, R.drawable.profile_mask, false, color))
                   .into(memberHolder.ivAvatar);
 
+              memberHolder.ivBorder.setImageDrawable(context.getResources().getDrawable(R.drawable.border_anim));
+              memberHolder.ivBorder.setColorFilter(color);
               //Drawable drawable = context.getResources().getDrawable(R.drawable.hexagon_border);
               //System.out.println("Drawable + " + drawable);
               //Bitmap bitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
@@ -257,6 +260,11 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
                   .networkPolicy(NetworkPolicy.NO_CACHE)
                   .transform(new CropCircleTransformation(color, 4))
                   .into(memberHolder.ivAvatar);
+
+
+              memberHolder.ivBorder.setColorFilter(color);
+
+
             }
           }
 
@@ -675,6 +683,7 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
     private final TextView tvMemberName;
     private final TextView tvSteps;
     private final View ivBroken;
+    private final ImageView ivBorder;
     private final TextView tvAction;
     //private final ImageView ivBad;
     public ImageView ivKick;
@@ -695,6 +704,7 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
       ivAvatar = (ImageView) itemView.findViewById(R.id.iv_avatar);
       ivBroken = itemView.findViewById(R.id.iv_broken_avatar);
       ivKick = (ImageView) itemView.findViewById(R.id.ivKickOverlay);
+      ivBorder = (ImageView) itemView.findViewById(R.id.ivBorder);
       //ivBad = (ImageView) itemView.findViewById(R.id.iv_bad);
 
       vContainer.setOnClickListener(this);

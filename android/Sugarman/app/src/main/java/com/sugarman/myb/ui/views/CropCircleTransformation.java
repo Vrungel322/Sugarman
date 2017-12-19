@@ -56,11 +56,11 @@ public class CropCircleTransformation implements Transformation {
     paint.setAntiAlias(true);
     paint.setColor(borderColor);
     paint.setShader(null);
-    canvas.drawCircle(r, r, r, paint);
+    //canvas.drawCircle(r, r, r, paint);
     paint.setShader(shader);
     paint.setColor(0xff000000);
     //paint.setShadowLayer(10.0f,0,10,0xff000000);
-    canvas.drawCircle(r, r, r - radius, paint);
+    canvas.drawCircle(r, r, r, paint);
 
     source.recycle();
 

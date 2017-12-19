@@ -97,6 +97,7 @@ import com.sugarman.myb.ui.activities.FailedActivity;
 import com.sugarman.myb.ui.activities.GetUserInfoActivity;
 import com.sugarman.myb.ui.activities.SearchGroupsActivity;
 import com.sugarman.myb.ui.activities.StatsTrackingActivity;
+import com.sugarman.myb.ui.activities.createGroup.CreateGroupActivity;
 import com.sugarman.myb.ui.activities.groupDetails.GroupDetailsActivity;
 import com.sugarman.myb.ui.activities.inviteForRescue.InviteForRescueActivity;
 import com.sugarman.myb.ui.activities.mentorList.MentorListActivity;
@@ -1417,8 +1418,8 @@ public class MainActivity extends GetUserInfoActivity
     eventValue.put(AFInAppEventParameterName.SCORE, 100);
     AppsFlyerLib.getInstance().trackEvent(getApplicationContext(), "af_create_group", eventValue);
 
-    //Intent intent = new Intent(this, CreateGroupActivity.class);
-    Intent intent = new Intent(this, InviteForRescueActivity.class);
+    Intent intent = new Intent(this, CreateGroupActivity.class);
+    //Intent intent = new Intent(this, InviteForRescueActivity.class);
     startActivityForResult(intent, Constants.CREATE_GROUP_ACTIVITY_REQUEST_CODE);
   }
 
@@ -1642,14 +1643,15 @@ public class MainActivity extends GetUserInfoActivity
             items.add(item);
             if(firstFailedGroupPosition == -1)
             {
-              // TODO: 12/13/17 fix this logic
-              if(mMentorsGroups !=null)
+              if(mMentorsGroups !=null && mMentorsGroups.size()>0)
               {
-                firstFailedGroupPosition = items.size();    // setting the first position of the failed groups so that we are able to scroll to them
+                Timber.e("Mentors Groups != 0 " + mMentorsGroups.size());
+                firstFailedGroupPosition = items.size()-1;    // setting the first position of the failed groups so that we are able to scroll to them
               }
               else
               {
-                firstFailedGroupPosition = items.size()-1; // didn't use (size-1) because we have a mentor group commercial first
+                Timber.e("Mentors Groups == 0");
+                firstFailedGroupPosition = items.size(); // didn't use (size-1) because we have a mentor group commercial first
               }
               ivLifebuoy.setVisibility(View.VISIBLE);
             }

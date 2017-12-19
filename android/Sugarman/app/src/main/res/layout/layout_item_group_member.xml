@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ll_group_member_container"
-    android:layout_width="80dp"
+    android:layout_width="70dp"
     android:layout_height="103dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
@@ -17,7 +17,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
 
             android:orientation="vertical">
 
@@ -36,24 +36,33 @@
 
             <RelativeLayout
                 android:layout_marginTop="6dp"
-                android:layout_width="@dimen/group_details_avatar_size"
-                android:layout_height="@dimen/group_details_avatar_size"
-                android:layout_marginLeft="5dp"
-                android:layout_marginEnd="@dimen/group_details_padding">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
                 <ImageView
                     android:id="@+id/iv_avatar"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="52dp"
+                    android:layout_height="52dp"
+                    android:padding="6dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="8dp"
                     android:src="@drawable/ic_gray_avatar" />
+                <ImageView
+                    android:id="@+id/ivBorder"
+                    android:layout_width="52dp"
+                    android:layout_height="52dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="8dp"
+                    android:padding="4dp"
+                    android:src="@drawable/rescue_circle_border"
+                    />
                 <ImageView
                     android:id="@+id/ivKickOverlay"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:visibility="gone"
                     android:alpha="0.5"
-                    android:src="@drawable/ic_s"
-                    />
+                    android:src="@drawable/ic_s"/>
 
                 <ImageView
                     android:id="@+id/iv_broken_avatar"
@@ -61,26 +70,24 @@
                     android:layout_height="match_parent"
                     android:contentDescription="@string/content_description"
                     android:src="@drawable/ic_kicked_user"
-                    android:visibility="gone" />
+                    android:visibility="gone"/>
             </RelativeLayout>
-                <!-- maxLines not working on some devices, use deprecated singleLine -->
-
-
-                <com.sugarman.myb.ui.views.CustomFontTextView
-                    android:id="@+id/tv_steps"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:textSize="10sp"
-                    android:maxLines="1"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:textAlignment="center"
-                    android:singleLine="true"
-                    app:font="@string/font_roboto_regular"
-                    tools:text="2,397 steps"
-                    tools:textColor="@color/red" />
+            <com.sugarman.myb.ui.views.CustomFontTextView
+                android:id="@+id/tv_steps"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:textSize="10sp"
+                android:maxLines="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:singleLine="true"
+                app:font="@string/font_roboto_regular"
+                tools:text="2,397 steps"
+                tools:textColor="@color/red" />
+            <!-- maxLines not working on some devices, use deprecated singleLine -->
         </LinearLayout>
 
     </LinearLayout>
