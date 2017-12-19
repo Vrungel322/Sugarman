@@ -169,7 +169,8 @@ public class InvitesActivity extends BaseActivity
     invitesAdapter.removeItem(actionPosition);
     actionPosition = -1;
     refreshNoInvites();
-    closeProgressFragment();
+    //closeProgressFragment();
+
   }
 
   @Override public void onApiDeclineInviteFailure(String message) {

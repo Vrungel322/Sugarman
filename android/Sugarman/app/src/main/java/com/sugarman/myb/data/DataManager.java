@@ -26,6 +26,7 @@ import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.data.db.DbHelper;
 import com.sugarman.myb.data.local.PreferencesHelper;
 import com.sugarman.myb.models.ContactListForServer;
+import com.sugarman.myb.models.ab_testing.ABTesting;
 import com.sugarman.myb.models.animation.ImageModel;
 import com.sugarman.myb.models.custom_events.Rule;
 import com.sugarman.myb.models.custom_events.RuleSet;
@@ -395,5 +396,9 @@ public class DataManager {
         RequestBody.create(MediaType.parse(Constants.IMAGE_JPEG_TYPE), vkTokenStr);
     return mRestApi.sendInvitersForRescue(filePart, name, fbToken, ids, vkids, phoneNumbers, names,
         vkNames, phoneNames, pictures, vkpictures, phonePictures, vkToken);
+  }
+
+  public Observable<Response<ABTesting>> fetchAorBtesting() {
+    return mRestApi.fetchAorBtesting();
   }
 }

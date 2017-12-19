@@ -2,12 +2,14 @@ package com.sugarman.myb.ui.fragments.rescue_challenge;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -18,11 +20,15 @@ import com.sugarman.myb.api.models.responses.Member;
 import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.base.BasicFragment;
 import com.sugarman.myb.models.ChallengeRescueItem;
+import com.sugarman.myb.models.ab_testing.ABTesting;
 import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
+import com.sugarman.myb.ui.dialogs.dialogRescueBoldMan.DialogRescueBoldMan;
+import com.sugarman.myb.ui.dialogs.dialogRescueBoldManKick.DialogRescueBoldManKick;
 import com.sugarman.myb.ui.fragments.rescue_challenge.adapters.RescueMembersAdapter;
 import com.sugarman.myb.ui.views.CropSquareTransformation;
 import com.sugarman.myb.ui.views.MaskTransformation;
 import com.sugarman.myb.utils.Converters;
+import com.sugarman.myb.utils.SharedPreferenceHelper;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -42,9 +48,11 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
   @BindView(R.id.tvRescueCounter) TextView mTextViewRescueCount;
   @BindView(R.id.tvRescueTimer) TextView mTextViewRescueTimer;
   @BindView(R.id.cvRescueChallengeContainer) CardView cvRescueChallengeContainer;
+  @BindView(R.id.llRescueArea) LinearLayout mLinearLayoutRescueArea;
   RescueMembersAdapter adapter;
   private ChallengeRescueItem mChallengeItem;
   private Tracking mTracking;
+  private CountDownTimer mTimer;
 
   public ChallengeRescueFragment() {
     super(R.layout.fragment_rescue_challenge);
@@ -101,10 +109,25 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
     mTextViewRescueCount.setText(String.format(getString(R.string.the_group_needs_x_more_rescues),
         (int) adapter.getItemCount()));
 
-    //mTextViewRescueTimer.setText(
-    //    String.format(getString(R.string.you_have_x_time_to_rescue_the_group),
-    //        Converters.timeFromMilliseconds(getContext(),
-    //            mTracking.getRemainToFailUTCDate().getTime())));
+
+    mTimer = new CountDownTimer(mTracking.getRemainToFailUTCDate().getTime()-System.currentTimeMillis(), 1000) {
+      @Override public void onTick(long l) {
+        mTextViewRescueTimer.setText(
+            String.format(getString(R.string.you_have_x_time_to_rescue_the_group),
+                Converters.timeFromMilliseconds(getActivity(), l)));
+      }
+
+      @Override public void onFinish() {
+        mTextViewRescueTimer.setText(
+            String.format(getString(R.string.you_have_x_time_to_rescue_the_group),
+                Converters.timeFromMilliseconds(getActivity(),1L)));
+      }
+    }.start();
+  }
+
+  @Override public void onDestroyView() {
+    super.onDestroyView();
+    mTimer.cancel();
   }
 
   @OnClick(R.id.cvRescueChallengeContainer) public void openGroupActivity() {
@@ -114,5 +137,16 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
         && ((MainActivity) activity).isReady()) {
       ((MainActivity) activity).openGroupDetailsActivity(mTracking.getId(), true);
     }
+  }
+
+  @OnClick(R.id.llRescueArea) public void llRescueAreaClick() {
+    if (SharedPreferenceHelper.getAorB()== ABTesting.A){
+    DialogRescueBoldManKick.newInstance(mTracking)
+        .show(getActivity().getFragmentManager(), "DialogRescueBoldManKick");
+    }else {
+    DialogRescueBoldMan.newInstance(mTracking)
+        .show(getActivity().getFragmentManager(), "DialogRescueBoldMan");
+    }
+
   }
 }

@@ -99,14 +99,15 @@ import com.sugarman.myb.ui.activities.SearchGroupsActivity;
 import com.sugarman.myb.ui.activities.StatsTrackingActivity;
 import com.sugarman.myb.ui.activities.createGroup.CreateGroupActivity;
 import com.sugarman.myb.ui.activities.groupDetails.GroupDetailsActivity;
-import com.sugarman.myb.ui.activities.inviteForRescue.InviteForRescueActivity;
 import com.sugarman.myb.ui.activities.mentorList.MentorListActivity;
 import com.sugarman.myb.ui.activities.profile.ProfileActivity;
 import com.sugarman.myb.ui.activities.shop.ShopActivity;
 import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.ui.dialogs.dialogRescueBoldMan.DialogRescueBoldMan;
+import com.sugarman.myb.ui.dialogs.dialogRescueBoldManKick.DialogRescueBoldManKick;
 import com.sugarman.myb.ui.dialogs.dialogRescueGirl.DialogRescueGirl;
+import com.sugarman.myb.ui.dialogs.dialogRescueGirlCongratulations.DialogRescueGirCongratulations;
 import com.sugarman.myb.ui.fragments.BaseFragment;
 import com.sugarman.myb.ui.fragments.NotificationsFragment;
 import com.sugarman.myb.ui.views.CircleIndicatorView;
@@ -286,14 +287,6 @@ public class MainActivity extends GetUserInfoActivity
 
     @Override public void onApiGetMyInvitesFailure(String message) {
       closeProgressFragment();
-      if (DeviceHelper.isNetworkConnected()) {
-        new SugarmanDialog.Builder(MainActivity.this, DialogConstants.API_GET_MY_INVITES_FAILURE_ID)
-            .content(message)
-            .btnCallback(MainActivity.this)
-            .show();
-      } else {
-        showNoInternetConnectionDialog();
-      }
     }
 
     @Override public void onApiUnauthorized() {
@@ -331,14 +324,6 @@ public class MainActivity extends GetUserInfoActivity
 
     @Override public void onApiGetMyRequestsFailure(String message) {
       closeProgressFragment();
-      if (DeviceHelper.isNetworkConnected()) {
-        new SugarmanDialog.Builder(MainActivity.this,
-            DialogConstants.API_GET_MY_REQUESTS_FAILURE_ID).content(message)
-            .btnCallback(MainActivity.this)
-            .show();
-      } else {
-        showNoInternetConnectionDialog();
-      }
     }
 
     @Override public void onApiUnauthorized() {
@@ -484,6 +469,8 @@ public class MainActivity extends GetUserInfoActivity
 
         @Override public void onApiGetNotificationsFailure(String message) {
           closeProgressFragment();
+          Timber.e("isNetworkConnected onApiGetNotificationsFailure"+ DeviceHelper.isNetworkConnected());
+
           if (DeviceHelper.isNetworkConnected()) {
             new SugarmanDialog.Builder(MainActivity.this,
                 DialogConstants.API_GET_NOTIFICATIONS_FAILURE_ID).content(message).show();
@@ -540,7 +527,7 @@ public class MainActivity extends GetUserInfoActivity
     super.onCreate(savedInstanceState);
     Resources resources = getResources();
 
-    setupInAppPurchase();
+    //setupInAppPurchase();
 
     Timber.e(MD5Util.md5("md5 test"));
 
@@ -1063,8 +1050,8 @@ public class MainActivity extends GetUserInfoActivity
   @SuppressLint("NewApi") // checking version inside
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
-    if (!mHelper.handleActivityResult(requestCode, resultCode, data)) {
-    }
+    //if (!mHelper.handleActivityResult(requestCode, resultCode, data)) {
+    //}
 
     switch (requestCode) {
       case Constants.CREATE_GROUP_ACTIVITY_REQUEST_CODE:
@@ -1125,9 +1112,9 @@ public class MainActivity extends GetUserInfoActivity
       case R.id.iv_avatar:
         openProfileActivity();
         DialogRescueBoldMan.newInstance(myTrackings[0]).show(getFragmentManager(),"DialogRescueBoldMan");
-        //DialogRescueGirl.newInstance(myTrackings[0]).show(getFragmentManager(), "DialogRescueGirl");
-        //DialogRescueGirCongratulations.newInstance(myTrackings[0]).show(getFragmentManager(), "DialogRescueGirCongratulations");
-        //DialogRescueBoldManKick.newInstance(myTrackings[0]).show(getFragmentManager(), "DialogRescueBoldManKick");
+        DialogRescueGirl.newInstance(myTrackings[0]).show(getFragmentManager(), "DialogRescueGirl");
+        DialogRescueGirCongratulations.newInstance(myTrackings[0]).show(getFragmentManager(), "DialogRescueGirCongratulations");
+        DialogRescueBoldManKick.newInstance(myTrackings[0]).show(getFragmentManager(), "DialogRescueBoldManKick");
 
         break;
       case R.id.iv_create_group:

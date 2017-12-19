@@ -163,7 +163,7 @@ public class InviteForRescueActivity extends BaseActivity
       new FacebookCallback<GameRequestDialog.Result>() {
 
         @Override public void onSuccess(GameRequestDialog.Result result) {
-          showProgressFragmentTemp();
+          showProgress();
 
           List<String> recipients = result.getRequestRecipients();
           fbApiClient.getFriendsInfo(recipients);
@@ -493,7 +493,8 @@ public class InviteForRescueActivity extends BaseActivity
     if (networksLoaded == networksToLoad) {
       Timber.e(
           networksLoaded + " out of " + networksToLoad + "allFriends side is " + allFriends.size());
-      closeProgressFragment();
+      //closeProgressFragment();
+      hideProgress();
       //Cache friends
       mPresenter.cacheFriends(allFriends);
     }
@@ -686,7 +687,8 @@ public class InviteForRescueActivity extends BaseActivity
     this.invitable.clear();
 
     setFriends(allFriends);
-    closeProgressFragment();
+    //closeProgressFragment();
+    hideProgress();
 
     if (DeviceHelper.isNetworkConnected()) {
       new SugarmanDialog.Builder(this, DialogConstants.FAILURE_GET_FACEBOOK_FRIENDS_ID).content(
@@ -702,8 +704,8 @@ public class InviteForRescueActivity extends BaseActivity
   }
 
   @Override public void onGetFriendInfoFailure(String message) {
-    closeProgressFragment();
-
+    //closeProgressFragment();
+hideProgress();
     if (DeviceHelper.isNetworkConnected()) {
       new SugarmanDialog.Builder(this, DialogConstants.FAILURE_CONVERT_FB_FRIENDS_ID).content(
           message).show();
@@ -727,7 +729,8 @@ public class InviteForRescueActivity extends BaseActivity
   }
 
   @Override public void onApiJoinGroupSuccess(Tracking result) {
-    closeProgressFragment();
+    //closeProgressFragment();
+    hideProgress();
     int activeTrackings = SharedPreferenceHelper.getActiveTrackingsCreated();
     SharedPreferenceHelper.saveActiveTrackingsCreated(++activeTrackings);
 
@@ -779,11 +782,13 @@ public class InviteForRescueActivity extends BaseActivity
 
   @Override public void onAsyncBitmapSaveSuccess(String path) {
     selectedFile = new File(path);
-    closeProgressFragment();
+    //closeProgressFragment();
+    hideProgress();
   }
 
   @Override public void onAsyncBitmapSaveFailed() {
-    closeProgressFragment();
+    //closeProgressFragment();
+    hideProgress();
   }
 
   private void tryChooseGroupAvatar() {
@@ -883,7 +888,7 @@ public class InviteForRescueActivity extends BaseActivity
 
   private void getFacebookFriends() {
     if (DeviceHelper.isNetworkConnected()) {
-      //showProgressFragmentTemp();
+      //showProgress()
       fbApiClient.searchFriends();
     } else {
       showNoInternetConnectionDialog();
@@ -892,7 +897,6 @@ public class InviteForRescueActivity extends BaseActivity
 
   private void checkFilledData() {
 
-    showProgress();
     filtered.clear();
     filtered.addAll(allFriends);
     setFriends(filtered);
@@ -904,7 +908,8 @@ public class InviteForRescueActivity extends BaseActivity
       new SugarmanDialog.Builder(this, DialogConstants.FRIENDS_LIST_IS_IMPTY_ID).content(
           R.string.members_list_is_empty).show();
     } else {
-      List<String> ids = new ArrayList<>();
+     showProgress();
+     List<String> ids = new ArrayList<>();
       String id;
       for (FacebookFriend friend : selectedFriends) {
         if (invitable.contains(friend)) {
@@ -929,7 +934,7 @@ public class InviteForRescueActivity extends BaseActivity
   }
 
   private void createGroup(List<FacebookFriend> members) {
-    showProgressFragmentTemp();
+    showProgress();
     vApply.setEnabled(false);
     List<String> facebookElements = new ArrayList<>();
     ArrayList<FacebookFriend> vkElements = new ArrayList<>();
@@ -1020,7 +1025,7 @@ public class InviteForRescueActivity extends BaseActivity
       bm = BitmapUtils.scaleBitmap(bm, Config.MAX_PICTURE_SIZE_SEND_TO_SERVER,
           Config.MAX_PICTURE_SIZE_SEND_TO_SERVER);
 
-      showProgressFragmentTemp();
+      showProgress();
       new SaveBitmapToFileAsyncTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, bm);
 
       bm = scaleCenterCrop(bm, bm.getHeight() < bm.getWidth() ? bm.getHeight() : bm.getWidth(),
