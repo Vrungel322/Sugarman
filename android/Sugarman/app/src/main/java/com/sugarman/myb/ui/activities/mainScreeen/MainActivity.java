@@ -89,6 +89,7 @@ import com.sugarman.myb.models.ContactForServer;
 import com.sugarman.myb.models.ContactListForServer;
 import com.sugarman.myb.models.NoChallengeItem;
 import com.sugarman.myb.models.NoMentorsChallengeItem;
+import com.sugarman.myb.models.ab_testing.ABTesting;
 import com.sugarman.myb.models.custom_events.CustomUserEvent;
 import com.sugarman.myb.services.MasterStepDetectorService;
 import com.sugarman.myb.ui.activities.CongratulationsActivity;
@@ -1204,8 +1205,14 @@ public class MainActivity extends GetUserInfoActivity
     Timber.e("ShowDialogRescue " + event.getTrackingId());
     for (Tracking t : myTrackings) {
       if (t.getId().equals(event.getTrackingId())) {
-        // TODO: 13.12.2017 add on server type of of dialog to show (for invites or for money)
-        DialogRescueGirl.newInstance(t).show(getFragmentManager(), "DialogRescueGirl");
+
+        if (SharedPreferenceHelper.getAorB()== ABTesting.B){
+          DialogRescueBoldMan.newInstance(t,DialogRescueBoldMan.MONEY)
+              .show(getFragmentManager(), "DialogRescueBoldMan");
+        }else {
+          DialogRescueBoldMan.newInstance(t,DialogRescueBoldMan.INVITES)
+              .show(getFragmentManager(), "DialogRescueBoldMan");
+        }
       }
     }
   }
