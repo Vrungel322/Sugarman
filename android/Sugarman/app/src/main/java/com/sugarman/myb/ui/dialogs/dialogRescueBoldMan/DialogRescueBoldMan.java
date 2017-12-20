@@ -1,5 +1,6 @@
 package com.sugarman.myb.ui.dialogs.dialogRescueBoldMan;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
@@ -20,6 +21,8 @@ import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.Member;
 import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.constants.Config;
+import com.sugarman.myb.constants.Constants;
+import com.sugarman.myb.ui.activities.inviteForRescue.InviteForRescueActivity;
 import com.sugarman.myb.ui.fragments.rescue_challenge.adapters.RescueMembersAdapter;
 import com.sugarman.myb.ui.views.CropSquareTransformation;
 import com.sugarman.myb.ui.views.MaskTransformation;
@@ -35,7 +38,10 @@ import timber.log.Timber;
  */
 
 public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRescueBoldManView {
+  public static final int MONEY = 1;
+  public static final int INVITES = 0;
   private static final String DIALOG_RESCUE_BOLD_MAN = "DIALOG_RESCUE_BOLD_MAN";
+  private static final String MODE = "MODE";
   @InjectPresenter DialogRescueBoldManPresenter mPresenter;
   @BindView(R.id.group_avatar) ImageView mImageViewGroupAvatar;
   @BindView(R.id.ivCross) ImageView mImageViewCross;
@@ -47,11 +53,13 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
   private RescueMembersAdapter mRescueMembersAdapter;
   private List<Member> failures = new ArrayList<>();
   private IabHelper mHelper;
+  private int mMode;
   private String mFreeSku = "v1.group_rescue";
 
-  public static DialogRescueBoldMan newInstance(Tracking tracking) {
+  public static DialogRescueBoldMan newInstance(Tracking tracking, int invites) {
     Bundle args = new Bundle();
     args.putParcelable(DIALOG_RESCUE_BOLD_MAN, tracking);
+    args.putInt(MODE, invites);
     DialogRescueBoldMan fragment = new DialogRescueBoldMan();
     fragment.setArguments(args);
     return fragment;
@@ -60,6 +68,7 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     mTracking = getArguments().getParcelable(DIALOG_RESCUE_BOLD_MAN);
+    mMode = getArguments().getInt(MODE);
     setupInAppPurchase();
   }
 
@@ -114,7 +123,13 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
   }
 
   @OnClick(R.id.ivRescueLogo) public void startPurchaseFlowClick() {
-    startPurchaseFlow("v1.group_rescue");
+    if (mMode == MONEY) {
+      startPurchaseFlow("v1.group_rescue");
+    }
+    if (mMode==INVITES){
+      Intent intent = new Intent(getActivity(), InviteForRescueActivity.class);
+      startActivityForResult(intent, Constants.CREATE_GROUP_ACTIVITY_REQUEST_CODE);
+    }
   }
 
   private void setupInAppPurchase() {
@@ -165,7 +180,7 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
         Timber.e(inventory.getSkuDetails(mFreeSku).getTitle());
         Timber.e(inventory.getSkuDetails(mFreeSku).getSku());
 
-        mPresenter.checkInAppBillingOneDollar(mTracking.getId(),inventory.getPurchase(mFreeSku),
+        mPresenter.checkInAppBillingOneDollar(mTracking.getId(), inventory.getPurchase(mFreeSku),
             inventory.getSkuDetails(mFreeSku).getTitle(), mFreeSku);
       }
     });

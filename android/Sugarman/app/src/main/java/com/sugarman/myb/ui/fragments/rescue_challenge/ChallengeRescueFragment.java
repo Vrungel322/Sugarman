@@ -23,7 +23,6 @@ import com.sugarman.myb.models.ChallengeRescueItem;
 import com.sugarman.myb.models.ab_testing.ABTesting;
 import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
 import com.sugarman.myb.ui.dialogs.dialogRescueBoldMan.DialogRescueBoldMan;
-import com.sugarman.myb.ui.dialogs.dialogRescueBoldManKick.DialogRescueBoldManKick;
 import com.sugarman.myb.ui.fragments.rescue_challenge.adapters.RescueMembersAdapter;
 import com.sugarman.myb.ui.views.CropSquareTransformation;
 import com.sugarman.myb.ui.views.MaskTransformation;
@@ -140,11 +139,11 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
   }
 
   @OnClick(R.id.llRescueArea) public void llRescueAreaClick() {
-    if (SharedPreferenceHelper.getAorB()== ABTesting.A){
-    DialogRescueBoldManKick.newInstance(mTracking)
-        .show(getActivity().getFragmentManager(), "DialogRescueBoldManKick");
+    if (SharedPreferenceHelper.getAorB()== ABTesting.B){
+      DialogRescueBoldMan.newInstance(mTracking,DialogRescueBoldMan.MONEY)
+        .show(getActivity().getFragmentManager(), "DialogRescueBoldMan");
     }else {
-    DialogRescueBoldMan.newInstance(mTracking)
+    DialogRescueBoldMan.newInstance(mTracking,DialogRescueBoldMan.INVITES)
         .show(getActivity().getFragmentManager(), "DialogRescueBoldMan");
     }
 
