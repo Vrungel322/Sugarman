@@ -35,7 +35,9 @@ public class RefreshUserDataClient extends BaseApiClient {
               dataResponse);
           Timber.e("Base url " + response.body().getBaseUrl());
           SharedPreferenceHelper.saveBaseUrl(response.body().getBaseUrl());
-          SharedPreferenceHelper.saveAorB(response.body().getUser().getAOrB());
+          if (response.body().getUser().getAOrB() != null) {
+            SharedPreferenceHelper.saveAorB(response.body().getUser().getAOrB());
+          }
         } else if (errorBody != null) {
           String errorMessage = parseErrorBody(errorBody);
           responseFailure(TAG, errorMessage);
