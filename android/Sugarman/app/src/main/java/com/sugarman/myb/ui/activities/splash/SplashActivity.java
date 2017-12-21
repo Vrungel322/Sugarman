@@ -9,7 +9,6 @@ import android.content.pm.Signature;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.media.SoundPool;
-import android.net.UrlQuerySanitizer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.RemoteException;
@@ -153,8 +152,8 @@ public class SplashActivity extends GetUserInfoActivity
       if (SharedPreferenceHelper.getListSubscriptionEntity() != null
           && SharedPreferenceHelper.getListSubscriptionEntity().size() != 0) {
         for (SubscriptionEntity subscriptionEntity : SharedPreferenceHelper.getListSubscriptionEntity()) {
-          Timber.e(inventory.getSkuDetails(subscriptionEntity.getSlot()).getTitle());
-          Timber.e(inventory.getSkuDetails(subscriptionEntity.getSlot()).getSku());
+          //Timber.e(inventory.getSkuDetails(subscriptionEntity.getSlot()).getTitle());
+          //Timber.e(inventory.getSkuDetails(subscriptionEntity.getSlot()).getSku());
 
           mPresenter.checkInAppBilling(inventory.getPurchase(subscriptionEntity.getSlot()),
               inventory.getSkuDetails(subscriptionEntity.getSlot()).getTitle(), null,
