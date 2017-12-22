@@ -46,6 +46,7 @@ import com.sugarman.myb.api.clients.GetNotificationsClient;
 import com.sugarman.myb.api.clients.MarkNotificationClient;
 import com.sugarman.myb.api.clients.SendFirebaseTokenClient;
 import com.sugarman.myb.api.models.requests.ReportStats;
+import com.sugarman.myb.api.models.responses.Member;
 import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.api.models.responses.me.invites.Invite;
 import com.sugarman.myb.api.models.responses.me.notifications.Notification;
@@ -107,8 +108,6 @@ import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.ui.dialogs.dialogRescueBoldMan.DialogRescueBoldMan;
 import com.sugarman.myb.ui.dialogs.dialogRescueBoldManKick.DialogRescueBoldManKick;
-import com.sugarman.myb.ui.dialogs.dialogRescueGirl.DialogRescueGirl;
-import com.sugarman.myb.ui.dialogs.dialogRescueGirlCongratulations.DialogRescueGirCongratulations;
 import com.sugarman.myb.ui.fragments.BaseFragment;
 import com.sugarman.myb.ui.fragments.NotificationsFragment;
 import com.sugarman.myb.ui.views.CircleIndicatorView;
@@ -363,56 +362,6 @@ public class MainActivity extends GetUserInfoActivity
     }
   };
   private List<Tracking> mMentorsGroups = new ArrayList<>();
-  private final ApiGetMyTrackingsListener apiGetMyTrackingsListener =
-      new ApiGetMyTrackingsListener() {
-        @Override
-        public void onApiGetMyTrackingSuccess(Tracking[] trackings, List<Tracking> mentorsGroup,
-            boolean isRefreshNotifications) {
-          myTrackings = trackings;
-          mMentorsGroups = mentorsGroup;
-          List<BaseChallengeItem> converted = prepareTrackingItems();
-
-          updatePagerTrackings();
-          //updateAnimations(todaySteps);
-
-          if (swipedTracking != null) {
-            ChallengeWillStartItem item = new ChallengeWillStartItem();
-            item.setTracking(swipedTracking);
-            createdTrackingPosition = converted.indexOf(item);
-
-            App.getHandlerInstance()
-                .postDelayed(showCreatedTracking, Constants.OPEN_CREATED_CHALLENGE_TIMEOUT);
-          }
-          //setTrackingsArrowsVisibility(vpTrackings.getCurrentItem());
-
-          if (isRefreshNotifications) {
-            mGetNotificationsClient.getNotifications();
-          } else {
-            closeProgressFragment();
-          }
-        }
-
-        @Override public void onApiGetMyTrackingsFailure(String message) {
-          closeProgressFragment();
-          if (DeviceHelper.isNetworkConnected()) {
-            // new SugarmanDialog.Builder(MainActivity.this, DialogConstants.API_GET_MY_TRACKINGS_FAILURE_ID)
-            //         .content(message)
-            //         .btnCallback(MainActivity.this)
-            //         .show();
-          } else {
-            showNoInternetConnectionDialog();
-          }
-        }
-
-        @Override public void onApiUnauthorized() {
-          // logout();
-          Log.e("Token", "unauthorized");
-        }
-
-        @Override public void onUpdateOldVersion() {
-          showUpdateOldVersionDialog();
-        }
-      };
   private File cachedImagesFolder;
   private String userId;
   private int[] brokenGlassSoundIds;
@@ -470,7 +419,8 @@ public class MainActivity extends GetUserInfoActivity
 
         @Override public void onApiGetNotificationsFailure(String message) {
           closeProgressFragment();
-          Timber.e("isNetworkConnected onApiGetNotificationsFailure"+ DeviceHelper.isNetworkConnected());
+          Timber.e("isNetworkConnected onApiGetNotificationsFailure"
+              + DeviceHelper.isNetworkConnected());
 
           if (DeviceHelper.isNetworkConnected()) {
             new SugarmanDialog.Builder(MainActivity.this,
@@ -491,6 +441,56 @@ public class MainActivity extends GetUserInfoActivity
       };
   private WalkDataViewPagerAdapter mWalkDataViewPagerAdapter;
   private int firstFailedGroupPosition = -1;
+  private final ApiGetMyTrackingsListener apiGetMyTrackingsListener =
+      new ApiGetMyTrackingsListener() {
+        @Override
+        public void onApiGetMyTrackingSuccess(Tracking[] trackings, List<Tracking> mentorsGroup,
+            boolean isRefreshNotifications) {
+          myTrackings = trackings;
+          mMentorsGroups = mentorsGroup;
+          List<BaseChallengeItem> converted = prepareTrackingItems();
+
+          updatePagerTrackings();
+          //updateAnimations(todaySteps);
+
+          if (swipedTracking != null) {
+            ChallengeWillStartItem item = new ChallengeWillStartItem();
+            item.setTracking(swipedTracking);
+            createdTrackingPosition = converted.indexOf(item);
+
+            App.getHandlerInstance()
+                .postDelayed(showCreatedTracking, Constants.OPEN_CREATED_CHALLENGE_TIMEOUT);
+          }
+          //setTrackingsArrowsVisibility(vpTrackings.getCurrentItem());
+
+          if (isRefreshNotifications) {
+            mGetNotificationsClient.getNotifications();
+          } else {
+            closeProgressFragment();
+          }
+        }
+
+        @Override public void onApiGetMyTrackingsFailure(String message) {
+          closeProgressFragment();
+          if (DeviceHelper.isNetworkConnected()) {
+            // new SugarmanDialog.Builder(MainActivity.this, DialogConstants.API_GET_MY_TRACKINGS_FAILURE_ID)
+            //         .content(message)
+            //         .btnCallback(MainActivity.this)
+            //         .show();
+          } else {
+            showNoInternetConnectionDialog();
+          }
+        }
+
+        @Override public void onApiUnauthorized() {
+          // logout();
+          Log.e("Token", "unauthorized");
+        }
+
+        @Override public void onUpdateOldVersion() {
+          showUpdateOldVersionDialog();
+        }
+      };
 
   public void download() throws Exception {
     List<File> results = new ArrayList<>();
@@ -532,13 +532,11 @@ public class MainActivity extends GetUserInfoActivity
 
     Timber.e(MD5Util.md5("md5 test"));
 
-
     ivLifebuoy.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
         vpTrackings.setCurrentItem(firstFailedGroupPosition);
       }
     });
-
 
     cachedImagesFolder = new File(getFilesDir() + "/animations/");
 
@@ -1205,13 +1203,21 @@ public class MainActivity extends GetUserInfoActivity
     Timber.e("ShowDialogRescue " + event.getTrackingId());
     for (Tracking t : myTrackings) {
       if (t.getId().equals(event.getTrackingId())) {
-
-        if (SharedPreferenceHelper.getAorB()== ABTesting.B){
-          DialogRescueBoldMan.newInstance(t,DialogRescueBoldMan.MONEY)
-              .show(getFragmentManager(), "DialogRescueBoldMan");
-        }else {
-          DialogRescueBoldMan.newInstance(t,DialogRescueBoldMan.INVITES)
-              .show(getFragmentManager(), "DialogRescueBoldMan");
+        for (Member member : t.getMembers()) {
+          if (member.getId().equals(SharedPreferenceHelper.getUserId())) {
+            if (member.getFailureStatus() != Member.FAIL_STATUS_NORMAL) {
+              if (SharedPreferenceHelper.getAorB() == ABTesting.B) {
+                DialogRescueBoldMan.newInstance(t, DialogRescueBoldMan.MONEY)
+                    .show(getFragmentManager(), "DialogRescueBoldMan");
+              } else {
+                DialogRescueBoldMan.newInstance(t, DialogRescueBoldMan.INVITES)
+                    .show(getFragmentManager(), "DialogRescueBoldMan");
+              }
+            } else {
+              DialogRescueBoldManKick.newInstance(t)
+                  .show(getFragmentManager(), "DialogRescueBoldManKick");
+            }
+          }
         }
       }
     }
@@ -1626,7 +1632,6 @@ public class MainActivity extends GetUserInfoActivity
             item.setTracking(tracking);
             item.setUnreadMessages(5); // TODO: 09.08.2017 ТУТ
             items.add(item);
-
           }
         } else {
 
@@ -1635,17 +1640,15 @@ public class MainActivity extends GetUserInfoActivity
             ChallengeRescueItem item = new ChallengeRescueItem();
             item.setTracking(tracking);
             items.add(item);
-            if(firstFailedGroupPosition == -1)
-            {
-              if(mMentorsGroups !=null && mMentorsGroups.size()>0)
-              {
+            if (firstFailedGroupPosition == -1) {
+              if (mMentorsGroups != null && mMentorsGroups.size() > 0) {
                 Timber.e("Mentors Groups != 0 " + mMentorsGroups.size());
-                firstFailedGroupPosition = items.size()-1;    // setting the first position of the failed groups so that we are able to scroll to them
-              }
-              else
-              {
+                firstFailedGroupPosition = items.size()
+                    - 1;    // setting the first position of the failed groups so that we are able to scroll to them
+              } else {
                 Timber.e("Mentors Groups == 0");
-                firstFailedGroupPosition = items.size(); // didn't use (size-1) because we have a mentor group commercial first
+                firstFailedGroupPosition =
+                    items.size(); // didn't use (size-1) because we have a mentor group commercial first
               }
               ivLifebuoy.setVisibility(View.VISIBLE);
             }
