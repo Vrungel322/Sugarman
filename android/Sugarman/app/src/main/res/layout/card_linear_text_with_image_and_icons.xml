@@ -12,8 +12,7 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_gravity="center"
-            android:foregroundGravity="center"
-            android:src="@drawable/shop_hat"/>
+            android:foregroundGravity="center"/>
 <TextView
     android:id="@+id/firstText"
     android:paddingTop="10dp"

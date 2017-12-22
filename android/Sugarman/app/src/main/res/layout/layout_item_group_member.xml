@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ll_group_member_container"
     android:layout_width="70dp"
-    android:layout_height="103dp"
+    android:layout_height="105dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:orientation="horizontal">
@@ -44,14 +44,14 @@
                     android:layout_width="52dp"
                     android:layout_height="52dp"
                     android:padding="6dp"
-                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="true"
                     android:layout_marginBottom="8dp"
                     android:src="@drawable/ic_gray_avatar" />
                 <ImageView
                     android:id="@+id/ivBorder"
                     android:layout_width="52dp"
                     android:layout_height="52dp"
-                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="true"
                     android:layout_marginBottom="8dp"
                     android:padding="4dp"
                     android:src="@drawable/rescue_circle_border"
@@ -60,6 +60,7 @@
                     android:id="@+id/ivKickOverlay"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
                     android:visibility="gone"
                     android:alpha="0.5"
                     android:src="@drawable/ic_s"/>
