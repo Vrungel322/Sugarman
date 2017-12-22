@@ -94,8 +94,14 @@ import timber.log.Timber;
         }
       }
 
-      Timber.e(
-          "rule " + rule.getName() + " animation name " + rule.getNameOfAnim() + " todaySteps " + todaySteps + " getCount()" + rule.getCount());
+      Timber.e("rule "
+          + rule.getName()
+          + " animation name "
+          + rule.getNameOfAnim()
+          + " todaySteps "
+          + todaySteps
+          + " getCount()"
+          + rule.getCount());
       if (todaySteps >= rule.getCount()) {
         Timber.e("rule true &&" + !SharedPreferenceHelper.isEventXStepsDone(rule.getCount()));
         if (!SharedPreferenceHelper.isEventXStepsDone(rule.getCount())) {
@@ -189,12 +195,11 @@ import timber.log.Timber;
               if (urls.contains("https://sugarman-myb.s3.amazonaws.com/" + f.getName())) {
                 urls.remove("https://sugarman-myb.s3.amazonaws.com/" + f.getName());
               }
-
             }
           }
           //test
           for (String u : urls) {
-            Timber.e("getAnimations urls to download "+ u);
+            Timber.e("getAnimations urls to download " + u);
           }
 
           AnimationHelper animationHelper = new AnimationHelper(filesDir, new ArrayList<>(urls));
@@ -250,23 +255,25 @@ import timber.log.Timber;
     Timber.e("Animation name : " + name + " filesDir : " + filesDir);
 
     ImageModel anim = mDataManager.getAnimationByNameFromRealm(name);
-    List<String> files = new ArrayList<>();
-    List<Drawable> animationList = new ArrayList<>();
-    AnimationDrawable animationDrawable = new AnimationDrawable();
-    for (int j = 0; j < anim.getImageUrl().size(); j++) {
-      try {
-        files.add(AnimationHelper.getFilenameFromURL(new URL(anim.getImageUrl().get(j))));
-        animationList.add(Drawable.createFromPath(
-            filesDir + "/animations/" + AnimationHelper.getFilenameFromURL(
-                new URL(anim.getImageUrl().get(j)))));
-      } catch (MalformedURLException e) {
-        e.printStackTrace();
+    if (anim != null) {
+      List<String> files = new ArrayList<>();
+      List<Drawable> animationList = new ArrayList<>();
+      AnimationDrawable animationDrawable = new AnimationDrawable();
+      for (int j = 0; j < anim.getImageUrl().size(); j++) {
+        try {
+          files.add(AnimationHelper.getFilenameFromURL(new URL(anim.getImageUrl().get(j))));
+          animationList.add(Drawable.createFromPath(
+              filesDir + "/animations/" + AnimationHelper.getFilenameFromURL(
+                  new URL(anim.getImageUrl().get(j)))));
+        } catch (MalformedURLException e) {
+          e.printStackTrace();
+        }
       }
+      Timber.e("Animation list size : " + animationList.size());
+      for (Drawable drawable : animationList) {
+        animationDrawable.addFrame(drawable, duration);
+      }
+      getViewState().setAnimation(animationDrawable);
     }
-    Timber.e("Animation list size : " + animationList.size());
-    for (Drawable drawable : animationList) {
-      animationDrawable.addFrame(drawable, duration);
-    }
-    getViewState().setAnimation(animationDrawable);
   }
 }

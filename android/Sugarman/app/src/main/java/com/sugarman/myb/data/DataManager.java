@@ -312,7 +312,13 @@ public class DataManager {
       Timber.e("imageModel name" + im.getName());
       Timber.e("imageModel id" + im.getId());
     }
-    return mDbHelper.getElementsFromDBByQuery(ImageModel.class, "name", name).get(0);
+    List<ImageModel> imageModels = mDbHelper.getElementsFromDBByQuery(ImageModel.class, "name", name);
+    if (!imageModels.isEmpty()){
+      return imageModels.get(0);
+    }
+    else {
+      return null;
+    }
   }
 
   public void clearRuleDailyData() {
