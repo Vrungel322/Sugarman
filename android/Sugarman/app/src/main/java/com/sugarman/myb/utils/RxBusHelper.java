@@ -27,7 +27,7 @@ public final class RxBusHelper {
   }
 
   public static class ShowDialogRescue {
-   @Getter @Setter private final String trackingId;
+   @Getter private final String trackingId;
 
     public ShowDialogRescue(String trackingId) {
       this.trackingId = trackingId;

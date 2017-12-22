@@ -22,12 +22,26 @@ import timber.log.Timber;
   public void checkInAppBilling(Purchase purchase, String productName, String userId,
       String freeSku) {
     Timber.e("checkInAppBilling productName" + productName);
-    Timber.e("checkInAppBilling getSku" + purchase.getSku());
-    Timber.e("checkInAppBilling getToken" + purchase.getToken());
+//    Timber.e("checkInAppBilling getSku" + purchase.getSku());
+    //Timber.e("checkInAppBilling getToken" + purchase.getToken());
+
+    String skuName = "";
+    String skuToken = "";
+
+    if(purchase==null)
+    {
+      skuName = "";
+      skuToken = "";
+    }
+    else
+    {
+      skuName = purchase.getSku();
+      skuToken = purchase.getToken();
+    }
     Timber.e("checkInAppBilling userId" + userId);
     Timber.e("checkInAppBilling freeSku" + freeSku);
     Subscription subscription = mDataManager.checkInAppBilling(
-        new PurchaseForServer(productName, purchase.getSku(), purchase.getToken(), userId, freeSku))
+        new PurchaseForServer(productName, skuName, skuToken, userId, freeSku))
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(subscriptionsResponse -> {
           Timber.e(String.valueOf(subscriptionsResponse.code()));
