@@ -1919,7 +1919,12 @@ public class MainActivity extends GetUserInfoActivity
         + customUserEvent.getNameOfAnim()
         + ", EVENT_NAME_TYPE "
         + customUserEvent.getStrType());
-    if (customUserEvent.getEventName().equals(Constants.EVENT_X_STEPS_DONE)) {
+    if (customUserEvent.getEventName().equals(Constants.EVENT_X_STEPS_DONE)
+        && customUserEvent.getStrType().equals(POPUP_ACTION)) {
+      doEventAction(customUserEvent, null);
+    }
+    if (customUserEvent.getEventName().equals(Constants.EVENT_X_STEPS_DONE)
+        && customUserEvent.getStrType().equals(ANIMATION_ACTION)) {
       doEventAction(customUserEvent,
           () -> mPresenter.getAnimationByName(customUserEvent.getNameOfAnim(),
               getFilesDir().getAbsolutePath()));

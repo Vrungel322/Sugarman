@@ -83,16 +83,7 @@ import timber.log.Timber;
 
       // выбор того правила у которого значение шагов ближе всего к текущему количеству шагов
       // TODO: 07.12.2017 простестить с 1 рулом на количество шагов
-      Rule rule = new Rule();
-      int min = Integer.MAX_VALUE;
-      for (Rule currentRule : rules) {
-        final int diff = Math.abs(currentRule.getCount() - todaySteps);
-
-        if (diff < min) {
-          min = diff;
-          rule = currentRule;
-        }
-      }
+      Rule rule = getRuleApproximatelyToCurrentSteps(todaySteps, rules);
 
       Timber.e("rule "
           + rule.getName()
@@ -114,9 +105,54 @@ import timber.log.Timber;
               .nameOfAnim(rule.getNameOfAnim())
               .numValue(rule.getCount())
               .build());
+        } else {
+          launchLastAnim(rulesTempo,todaySteps);
         }
       }
     }
+  }
+
+  private void launchLastAnim(List<Rule> rulesTempo, int todaySteps) {
+    Rule rule = new Rule();
+    int min = Integer.MAX_VALUE;
+    for (Rule r : rulesTempo) {
+      final int diff = Math.abs(r.getCount() - todaySteps);
+
+      if (diff < min && r.getNameOfAnim()!=null) {
+        min = diff;
+        rule = r;
+      }
+    }
+
+    Timber.e(" launchLastAnim rule "
+        + rule.getName()
+        + " animation name "
+        + rule.getNameOfAnim()
+        + " todaySteps "
+        + todaySteps
+        + " getCount()"
+        + rule.getCount());
+    getViewState().doEventActionResponse(CustomUserEvent.builder()
+        .strType(rule.getAction())
+        .eventText(rule.getMessage())
+        .eventName(rule.getName())
+        .nameOfAnim(rule.getNameOfAnim())
+        .numValue(rule.getCount())
+        .build());
+  }
+
+  private Rule getRuleApproximatelyToCurrentSteps(int todaySteps, List<Rule> rules) {
+    Rule rule = new Rule();
+    int min = Integer.MAX_VALUE;
+    for (Rule currentRule : rules) {
+      final int diff = Math.abs(currentRule.getCount() - todaySteps);
+
+      if (diff < min) {
+        min = diff;
+        rule = currentRule;
+      }
+    }
+    return rule;
   }
 
   public void checkIfRule15KStepsDone(int todaySteps) {

@@ -22,6 +22,8 @@ import timber.log.Timber;
 
 public abstract class BasicActivity extends MvpAppCompatActivity {
 
+  public static final String POPUP_ACTION = "popup";
+  public static final String ANIMATION_ACTION = "animation";
   @Inject protected Context mContext;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +43,7 @@ public abstract class BasicActivity extends MvpAppCompatActivity {
   protected void doEventAction(CustomUserEvent customEvent,
       @Nullable IActionOnCurrentScreen actionOnCurrentScreen) {
     switch (customEvent.getStrType()) {
-      case "popup": {
+      case POPUP_ACTION: {
         // event to show simple info dialog
         StringBuilder body = new StringBuilder();
         if (customEvent.getEventExtraStrings() != null && !customEvent.getEventExtraStrings()
@@ -60,7 +62,7 @@ public abstract class BasicActivity extends MvpAppCompatActivity {
             }).create().show();
         break;
       }
-      case "animation": {
+      case ANIMATION_ACTION: {
         // animation on specific
         if (actionOnCurrentScreen != null) {
           actionOnCurrentScreen.action();
