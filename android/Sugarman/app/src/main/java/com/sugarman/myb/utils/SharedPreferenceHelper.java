@@ -617,6 +617,7 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
   }
 
   public static void setEventXStepsDone(Integer numValue) {
+    Timber.e("setEventXStepsDone " + numValue);
     putBoolean(SharedPreferenceConstants.EVENT_X_STEPS_DONE + numValue, true);
   }
 
@@ -625,6 +626,7 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
   }
 
   public static boolean isEventXStepsDone(Integer numValue) {
+    Timber.e("isEventXStepsDone " + numValue);
     return getBoolean(SharedPreferenceConstants.EVENT_X_STEPS_DONE+numValue, false);
   }
 

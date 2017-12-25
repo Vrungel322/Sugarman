@@ -83,19 +83,16 @@ import timber.log.Timber;
 
       // выбор того правила у которого значение шагов ближе всего к текущему количеству шагов
       // TODO: 07.12.2017 простестить с 1 рулом на количество шагов
-      Rule rule = new Rule();
-      int min = Integer.MAX_VALUE;
-      for (Rule currentRule : rules) {
-        final int diff = Math.abs(currentRule.getCount() - todaySteps);
+      Rule rule = getRuleApproximatelyToCurrentSteps(todaySteps, rules);
 
-        if (diff < min) {
-          min = diff;
-          rule = currentRule;
-        }
-      }
-
-      Timber.e(
-          "rule " + rule.getName() + " animation name " + rule.getNameOfAnim() + " todaySteps " + todaySteps + " getCount()" + rule.getCount());
+      Timber.e("rule "
+          + rule.getName()
+          + " animation name "
+          + rule.getNameOfAnim()
+          + " todaySteps "
+          + todaySteps
+          + " getCount()"
+          + rule.getCount());
       if (todaySteps >= rule.getCount()) {
         Timber.e("rule true &&" + !SharedPreferenceHelper.isEventXStepsDone(rule.getCount()));
         if (!SharedPreferenceHelper.isEventXStepsDone(rule.getCount())) {
@@ -108,9 +105,54 @@ import timber.log.Timber;
               .nameOfAnim(rule.getNameOfAnim())
               .numValue(rule.getCount())
               .build());
+        } else {
+          launchLastAnim(rulesTempo,todaySteps);
         }
       }
     }
+  }
+
+  private void launchLastAnim(List<Rule> rulesTempo, int todaySteps) {
+    Rule rule = new Rule();
+    int min = Integer.MAX_VALUE;
+    for (Rule r : rulesTempo) {
+      final int diff = Math.abs(r.getCount() - todaySteps);
+
+      if (diff < min && r.getNameOfAnim()!=null) {
+        min = diff;
+        rule = r;
+      }
+    }
+
+    Timber.e(" launchLastAnim rule "
+        + rule.getName()
+        + " animation name "
+        + rule.getNameOfAnim()
+        + " todaySteps "
+        + todaySteps
+        + " getCount()"
+        + rule.getCount());
+    getViewState().doEventActionResponse(CustomUserEvent.builder()
+        .strType(rule.getAction())
+        .eventText(rule.getMessage())
+        .eventName(rule.getName())
+        .nameOfAnim(rule.getNameOfAnim())
+        .numValue(rule.getCount())
+        .build());
+  }
+
+  private Rule getRuleApproximatelyToCurrentSteps(int todaySteps, List<Rule> rules) {
+    Rule rule = new Rule();
+    int min = Integer.MAX_VALUE;
+    for (Rule currentRule : rules) {
+      final int diff = Math.abs(currentRule.getCount() - todaySteps);
+
+      if (diff < min) {
+        min = diff;
+        rule = currentRule;
+      }
+    }
+    return rule;
   }
 
   public void checkIfRule15KStepsDone(int todaySteps) {
@@ -189,12 +231,11 @@ import timber.log.Timber;
               if (urls.contains("https://sugarman-myb.s3.amazonaws.com/" + f.getName())) {
                 urls.remove("https://sugarman-myb.s3.amazonaws.com/" + f.getName());
               }
-
             }
           }
           //test
           for (String u : urls) {
-            Timber.e("getAnimations urls to download "+ u);
+            Timber.e("getAnimations urls to download " + u);
           }
 
           AnimationHelper animationHelper = new AnimationHelper(filesDir, new ArrayList<>(urls));
@@ -250,23 +291,25 @@ import timber.log.Timber;
     Timber.e("Animation name : " + name + " filesDir : " + filesDir);
 
     ImageModel anim = mDataManager.getAnimationByNameFromRealm(name);
-    List<String> files = new ArrayList<>();
-    List<Drawable> animationList = new ArrayList<>();
-    AnimationDrawable animationDrawable = new AnimationDrawable();
-    for (int j = 0; j < anim.getImageUrl().size(); j++) {
-      try {
-        files.add(AnimationHelper.getFilenameFromURL(new URL(anim.getImageUrl().get(j))));
-        animationList.add(Drawable.createFromPath(
-            filesDir + "/animations/" + AnimationHelper.getFilenameFromURL(
-                new URL(anim.getImageUrl().get(j)))));
-      } catch (MalformedURLException e) {
-        e.printStackTrace();
+    if (anim != null) {
+      List<String> files = new ArrayList<>();
+      List<Drawable> animationList = new ArrayList<>();
+      AnimationDrawable animationDrawable = new AnimationDrawable();
+      for (int j = 0; j < anim.getImageUrl().size(); j++) {
+        try {
+          files.add(AnimationHelper.getFilenameFromURL(new URL(anim.getImageUrl().get(j))));
+          animationList.add(Drawable.createFromPath(
+              filesDir + "/animations/" + AnimationHelper.getFilenameFromURL(
+                  new URL(anim.getImageUrl().get(j)))));
+        } catch (MalformedURLException e) {
+          e.printStackTrace();
+        }
       }
+      Timber.e("Animation list size : " + animationList.size());
+      for (Drawable drawable : animationList) {
+        animationDrawable.addFrame(drawable, duration);
+      }
+      getViewState().setAnimation(animationDrawable);
     }
-    Timber.e("Animation list size : " + animationList.size());
-    for (Drawable drawable : animationList) {
-      animationDrawable.addFrame(drawable, duration);
-    }
-    getViewState().setAnimation(animationDrawable);
   }
 }
