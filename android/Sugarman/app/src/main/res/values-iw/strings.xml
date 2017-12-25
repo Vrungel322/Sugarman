@@ -602,6 +602,6 @@
     <string name="kick_them_now_for_a_rescue">תבעט בהם שיצילו את הקבוצה</string>
     <string name="text_num_to_rescue">הקבוצה צריכה עוד %1$d הצלות</string>
     <string name="you_got_your_first_rescue">יש הצלה ראשונה לקבוצה</string>
-
+    <string name="you_group_has_been_rescued">Your group %1$s has been rescued!</string>
 
 </resources>
