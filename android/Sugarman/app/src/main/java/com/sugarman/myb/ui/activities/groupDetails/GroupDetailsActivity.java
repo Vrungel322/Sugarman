@@ -201,6 +201,7 @@ public class GroupDetailsActivity extends BaseActivity
   @BindView(R.id.ivEditMentor) ImageView ivEditMentor;
   @BindView(R.id.tv_group_steps) TextView groupSteps;
   @BindView(R.id.ivGroupRescueCircle) ImageView rescueCircle;
+  @BindView(R.id.tvTotalGroupSteps) TextView tvTotalGroupSteps;
   Thread thread = new Thread();
   FrameLayout parentLayout;
   View borderline;
@@ -779,7 +780,7 @@ public class GroupDetailsActivity extends BaseActivity
 
       pieChart.setVisibility(View.VISIBLE);
       groupSteps.setVisibility(View.GONE);
-      groupSteps.setText(getResources().getString(R.string.success_rate));
+      tvTotalGroupSteps.setText(getResources().getString(R.string.success_rate));
 
       mentorId = getIntent().getStringExtra("mentorId");
       if (mentorId.equals(SharedPreferenceHelper.getUserId())) {
@@ -792,7 +793,7 @@ public class GroupDetailsActivity extends BaseActivity
       mentorId = "";
       pieChart.setVisibility(View.GONE);
       groupSteps.setVisibility(View.VISIBLE);
-      groupSteps.setText(getResources().getString(R.string.total_group_steps));
+      tvTotalGroupSteps.setText(getResources().getString(R.string.total_group_steps));
     }
 
     membersAdapter = new GroupMembersAdapter(getMvpDelegate(), this, this, trackingId, amIMentor);
