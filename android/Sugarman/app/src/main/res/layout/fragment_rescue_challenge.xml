@@ -45,33 +45,17 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:src="@drawable/ic_gray_avatar"/>
-          <!--<ImageView-->
-              <!--android:layout_width="25dp"-->
-              <!--android:layout_height="25dp"-->
-              <!--android:visibility="gone"-->
-              <!--android:layout_alignBottom="@id/group_avatar"-->
-              <!--android:layout_alignRight="@id/group_avatar"-->
-              <!--android:layout_alignEnd="@id/group_avatar"-->
-              <!--android:src="@drawable/rescue_circle_life"-->
-              <!--android:layout_marginRight="15dp"-->
-              <!--android:layout_marginBottom="9dp"-->
-              <!--/> -->
-          <TextView
-              android:id="@+id/tvTimesSave"
-              android:layout_width="24dp"
-              android:layout_height="24dp"
-              android:text="10"
-              android:gravity="center"
-              android:textSize="8sp"
-              android:textColor="@color/white"
-              android:background="@drawable/rescue_circle_life"
-
+          <ImageView
+              android:layout_width="25dp"
+              android:layout_height="25dp"
               android:layout_alignBottom="@id/group_avatar"
               android:layout_alignRight="@id/group_avatar"
               android:layout_alignEnd="@id/group_avatar"
+              android:src="@drawable/rescue_group_circle"
               android:layout_marginRight="15dp"
               android:layout_marginBottom="9dp"
               />
+
 
           <com.sugarman.myb.ui.views.CustomFontTextView
               android:id="@+id/tv_avatar_events"

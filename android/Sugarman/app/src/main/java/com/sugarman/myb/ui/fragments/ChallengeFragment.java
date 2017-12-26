@@ -69,32 +69,63 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
     implements View.OnClickListener {
 
   private static final String TAG = ChallengeFragment.class.getName();
-
+  final ChallengeMember[] challengeMembers = new ChallengeMember[4]; // 4 icons in fragment
   protected List<Message> lastDataFromServer = new ArrayList<>();
-
+  protected Retrofit client;
   String lastMessageId;
   Thread th;
   TextView messageCounter;
   Tracking tracking;
-  protected Retrofit client;
-  final ChallengeMember[] challengeMembers = new ChallengeMember[4]; // 4 icons in fragment
-
-  private Context context;
   int allSteps;
   User user;
+  View vWillContainer;
+  View vChallengeContainer;
+  boolean firstTime = true;
+  TextView stepsTotal;
+  ImageView daysStrip, progressStrip;
+  TextView mTextViewTimesSave;
+  private Context context;
   private int red;
   private int gray;
   private int darkGray;
-
-  View vWillContainer;
-  View vChallengeContainer;
-
-  boolean firstTime = true;
-
-  TextView stepsTotal;
-
-  ImageView daysStrip, progressStrip;
   private String groupOwnerId;
+  private SocketManagerListener socketListener = new SocketManagerListener() {
+    @Override public void onConnect() {
+      LogCS.w("LOG", "CONNECTED TO SOCKET");
+    }
+
+    @Override public void onSocketFailed() {
+    }
+
+    @Override public void onNewUser(Object... args) {
+      Log.w("LOG", "new user, args" + args[0].toString());
+    }
+
+    @Override public void onLoginWithSocket() {
+      JSONObject emitLogin = EmitJsonCreator.createEmitLoginMessage(user);
+      SocketManager.getInstance().emitMessage(Const.EmitKeyWord.LOGIN, emitLogin);
+    }
+
+    @Override public void onUserLeft(User user) {
+
+    }
+
+    @Override public void onTyping(SendTyping typing) {
+
+    }
+
+    @Override public void onMessageReceived(Message message) {
+
+    }
+
+    @Override public void onMessagesUpdated(List<Message> messages) {
+
+    }
+
+    @Override public void onSocketError(int code) {
+
+    }
+  };
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
@@ -109,6 +140,7 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
     allSteps = 0;
     daysStrip = (ImageView) root.findViewById(R.id.days_strip);
     progressStrip = (ImageView) root.findViewById(R.id.progress_strip);
+    mTextViewTimesSave = (TextView) root.findViewById(R.id.tvTimesSave);
 
     Bundle args = getArguments();
     position = IntentExtractorHelper.getTrackingPosition(args);
@@ -399,6 +431,14 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
 
     groupOwnerId = group.getOwner().getId();
 
+    if (tracking.getTimesSave() != null && tracking.getTimesSave() > 0) {
+      mTextViewTimesSave.setVisibility(View.VISIBLE);
+      mTextViewTimesSave.setText(tracking.getTimesSave().toString());
+    }
+    else {
+      mTextViewTimesSave.setVisibility(View.GONE);
+    }
+
     getMessages(lastMessageId);
     return root;
   }
@@ -451,44 +491,6 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
     SocketManager.getInstance().setListener(socketListener);
     SocketManager.getInstance().connectToSocket(getActivity());
   }
-
-  private SocketManagerListener socketListener = new SocketManagerListener() {
-    @Override public void onConnect() {
-      LogCS.w("LOG", "CONNECTED TO SOCKET");
-    }
-
-    @Override public void onSocketFailed() {
-    }
-
-    @Override public void onNewUser(Object... args) {
-      Log.w("LOG", "new user, args" + args[0].toString());
-    }
-
-    @Override public void onLoginWithSocket() {
-      JSONObject emitLogin = EmitJsonCreator.createEmitLoginMessage(user);
-      SocketManager.getInstance().emitMessage(Const.EmitKeyWord.LOGIN, emitLogin);
-    }
-
-    @Override public void onUserLeft(User user) {
-
-    }
-
-    @Override public void onTyping(SendTyping typing) {
-
-    }
-
-    @Override public void onMessageReceived(Message message) {
-
-    }
-
-    @Override public void onMessagesUpdated(List<Message> messages) {
-
-    }
-
-    @Override public void onSocketError(int code) {
-
-    }
-  };
 
   private void getMessages(String lastMessageId) {
 

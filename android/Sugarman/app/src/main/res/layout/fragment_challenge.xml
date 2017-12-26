@@ -40,6 +40,23 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_gray_avatar"/>
 
+                    <TextView
+                        android:id="@+id/tvTimesSave"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:text="0"
+                        android:visibility="gone"
+                        android:gravity="center"
+                        android:textSize="8sp"
+                        android:textColor="@color/white"
+                        android:background="@drawable/rescue_circle_life"
+                        android:layout_alignBottom="@id/group_avatar"
+                        android:layout_alignRight="@id/group_avatar"
+                        android:layout_alignEnd="@id/group_avatar"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginBottom="9dp"
+                        />
+
                     <com.sugarman.myb.ui.views.CustomFontTextView
                         android:id="@+id/tv_avatar_events"
                         android:layout_width="20dp"
