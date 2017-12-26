@@ -106,7 +106,7 @@ import timber.log.Timber;
               .numValue(rule.getCount())
               .build());
         } else {
-          launchLastAnim(rulesTempo,todaySteps);
+          launchLastAnim(rulesTempo, todaySteps);
         }
       }
     }
@@ -118,7 +118,7 @@ import timber.log.Timber;
     for (Rule r : rulesTempo) {
       final int diff = Math.abs(r.getCount() - todaySteps);
 
-      if (diff < min && r.getNameOfAnim()!=null) {
+      if (diff < min && r.getNameOfAnim() != null) {
         min = diff;
         rule = r;
       }
@@ -219,9 +219,11 @@ import timber.log.Timber;
           List<ImageModel> anims = animations.body().getAnimations();
           for (int i = 0; i < anims.size(); i++) {
             duration = anims.get(i).getDuration();
-            for (int j = 0; j < anims.get(i).getImageUrl().size(); j++) {
-              urls.add(anims.get(i).getImageUrl().get(j));
-              Timber.e("getAnimations urls from server " + anims.get(i).getImageUrl().get(j));
+            if (anims.get(i).getDownloadImmediately()) {
+              for (int j = 0; j < anims.get(i).getImageUrl().size(); j++) {
+                urls.add(anims.get(i).getImageUrl().get(j));
+                Timber.e("getAnimations urls from server " + anims.get(i).getImageUrl().get(j));
+              }
             }
           }
           if (filesDir.listFiles() != null) {
