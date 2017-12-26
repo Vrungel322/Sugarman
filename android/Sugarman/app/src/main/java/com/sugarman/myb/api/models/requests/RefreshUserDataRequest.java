@@ -38,7 +38,12 @@ public class RefreshUserDataRequest {
 
   @Getter @Setter @SerializedName("IMEI") private String imei;
 
-  @Getter @Setter @SerializedName("campaign") private String campaign;
+  @Getter @Setter @SerializedName("utm_source") private String source;
+  @Getter @Setter @SerializedName("utm_medium") private String medium;
+  @Getter @Setter @SerializedName("utm_term") private String term;
+  @Getter @Setter @SerializedName("utm_content") private String content;
+  @Getter @Setter @SerializedName("utm_campaign") private String campaign;
+
 
   public void setPhoneToken(String phoneToken) {
     this.phoneToken = phoneToken;

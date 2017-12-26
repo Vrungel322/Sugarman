@@ -227,7 +227,7 @@
                                 android:layout_gravity="center"
                                 android:gravity="center"
                                 android:textSize="12sp"
-                                android:text="@string/total_group_steps"
+                                android:text="@string/daily_success_rate"
                                 app:font="@string/font_roboto_regular" />
 
                             </LinearLayout>

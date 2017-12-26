@@ -356,18 +356,27 @@ public class SplashActivity extends GetUserInfoActivity
 
   private void handleReferrer(ReferrerDetails response)
   {
-    String searchQuery = "utm_source";
-    String referrerStr = response.getInstallReferrer();
 
+    String referrerStr = response.getInstallReferrer();
     Timber.e(SharedPreferenceHelper.getCampaign());
-    if(referrerStr.contains(searchQuery))
+    searchInString("utm_source", referrerStr);
+    searchInString("utm_medium", referrerStr);
+    searchInString("utm_term", referrerStr);
+    searchInString("utm_content", referrerStr);
+    searchInString("utm_campaign", referrerStr);
+  }
+
+  private void searchInString(String query, String origin)
+  {
+    if(origin.contains(query))
     {
-      String temp = referrerStr.split(searchQuery)[1];
+      String temp = origin.split(query)[1];
       int index = temp.indexOf("&");
       if(index==-1) index = temp.length();
       temp = temp.substring(1,index);
-      Timber.e(temp);
-      SharedPreferenceHelper.setCampaign(temp);
+      Timber.e("Found in referrer " + query + " " + temp);
+      SharedPreferenceHelper.setCampaignParam(query, temp);
     }
   }
+
 }

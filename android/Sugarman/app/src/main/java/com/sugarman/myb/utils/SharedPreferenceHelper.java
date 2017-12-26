@@ -634,6 +634,16 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     putString("campaign", campaign);
   }
 
+  public static void setCampaignParam(String key, String value)
+  {
+    putString(key, value);
+  }
+
+  public static String getCampaignParam(String param)
+  {
+    return getString(param, "");
+  }
+
   public static String getCampaign() {
     return getString("campaign", "");
   }
