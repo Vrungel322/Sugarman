@@ -50,6 +50,22 @@ public class Tracking implements Parcelable {
 
   @Getter @Setter @SerializedName("failed_group") int failGroupStatus;
 
+  @SerializedName("not_failing_members") private Member[] notFailingMembers;
+
+  @SerializedName("pending") private Member[] pending;
+
+  @SerializedName("start_date") private String startDate;
+
+  @SerializedName("status") private String status;
+
+  @SerializedName("timezone") private String timezone;
+
+  @SerializedName("updated_at") private String updatedAt;
+
+  @SerializedName("remain_time") private String remainTime;
+
+  @Getter @Setter @SerializedName("rescue_counter") private Integer timesSave;
+
   protected Tracking(Parcel in) {
     challengeName = in.readString();
     createdAt = in.readString();
@@ -64,6 +80,7 @@ public class Tracking implements Parcelable {
     id = in.readString();
     members = in.createTypedArray(Member.CREATOR);
     isMentors = in.readByte() != 0;
+    failGroupStatus = in.readInt();
     notFailingMembers = in.createTypedArray(Member.CREATOR);
     pending = in.createTypedArray(Member.CREATOR);
     startDate = in.readString();
@@ -71,7 +88,45 @@ public class Tracking implements Parcelable {
     timezone = in.readString();
     updatedAt = in.readString();
     remainTime = in.readString();
-    timesSave = in.readInt();
+    if (in.readByte() == 0) {
+      timesSave = null;
+    } else {
+      timesSave = in.readInt();
+    }
+  }
+
+  @Override public void writeToParcel(Parcel dest, int flags) {
+    dest.writeString(challengeName);
+    dest.writeString(createdAt);
+    dest.writeParcelable(dailySugarman, flags);
+    dest.writeString(endDate);
+    dest.writeTypedArray(failingMembers, flags);
+    dest.writeParcelable(group, flags);
+    dest.writeString(groupOwnerId);
+    dest.writeString(groupOnwerName);
+    dest.writeInt(groupStepsCount);
+    dest.writeInt(groupStepsCountWithoutMe);
+    dest.writeString(id);
+    dest.writeTypedArray(members, flags);
+    dest.writeByte((byte) (isMentors ? 1 : 0));
+    dest.writeInt(failGroupStatus);
+    dest.writeTypedArray(notFailingMembers, flags);
+    dest.writeTypedArray(pending, flags);
+    dest.writeString(startDate);
+    dest.writeString(status);
+    dest.writeString(timezone);
+    dest.writeString(updatedAt);
+    dest.writeString(remainTime);
+    if (timesSave == null) {
+      dest.writeByte((byte) 0);
+    } else {
+      dest.writeByte((byte) 1);
+      dest.writeInt(timesSave);
+    }
+  }
+
+  @Override public int describeContents() {
+    return 0;
   }
 
   public static final Creator<Tracking> CREATOR = new Creator<Tracking>() {
@@ -91,22 +146,6 @@ public class Tracking implements Parcelable {
   public void setNotFailingMembers(Member[] notFailingMembers) {
     this.notFailingMembers = notFailingMembers;
   }
-
-  @SerializedName("not_failing_members") private Member[] notFailingMembers;
-
-  @SerializedName("pending") private Member[] pending;
-
-  @SerializedName("start_date") private String startDate;
-
-  @SerializedName("status") private String status;
-
-  @SerializedName("timezone") private String timezone;
-
-  @SerializedName("updated_at") private String updatedAt;
-
-  @SerializedName("remain_time") private String remainTime;
-
-  @Getter @Setter @SerializedName("times_save") private Integer timesSave;
 
   private Date createdAtUTCDate;
 
@@ -296,31 +335,5 @@ public class Tracking implements Parcelable {
     this.groupStepsCountWithoutMe = groupStepsCountWithoutMe;
   }
 
-  @Override public int describeContents() {
-    return 0;
-  }
 
-  @Override public void writeToParcel(Parcel parcel, int i) {
-    parcel.writeString(challengeName);
-    parcel.writeString(createdAt);
-    parcel.writeParcelable(dailySugarman, i);
-    parcel.writeString(endDate);
-    parcel.writeTypedArray(failingMembers, i);
-    parcel.writeParcelable(group, i);
-    parcel.writeString(groupOwnerId);
-    parcel.writeString(groupOnwerName);
-    parcel.writeInt(groupStepsCount);
-    parcel.writeInt(groupStepsCountWithoutMe);
-    parcel.writeString(id);
-    parcel.writeTypedArray(members, i);
-    parcel.writeByte((byte) (isMentors ? 1 : 0));
-    parcel.writeTypedArray(notFailingMembers, i);
-    parcel.writeTypedArray(pending, i);
-    parcel.writeString(startDate);
-    parcel.writeString(status);
-    parcel.writeString(timezone);
-    parcel.writeString(updatedAt);
-    parcel.writeString(remainTime);
-    parcel.writeInt(timesSave);
-  }
 }

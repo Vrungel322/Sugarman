@@ -124,7 +124,9 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
       }
     }.start();
 
-    //mTextViewTimesSave.setText(mTracking.getTimesSave().toString());
+    if (mTracking.getTimesSave() != null) {
+      mTextViewTimesSave.setText(mTracking.getTimesSave().toString());
+    }
   }
 
   @Override public void onDestroyView() {
