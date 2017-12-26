@@ -49,6 +49,7 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
   @BindView(R.id.rvFailures) RecyclerView mRecyclerViewFailures;
   @BindView(R.id.tvTimeLeftForRescue) TextView mTextViewTimeLeftForRescue;
   @BindView(R.id.ivRescueLogo) ImageView mImageViewRescueLogo;
+  @BindView(R.id.tvRescueForWhat) TextView tvRescueForWhat;
   private Tracking mTracking;
   private RescueMembersAdapter mRescueMembersAdapter;
   private List<Member> failures = new ArrayList<>();
@@ -56,10 +57,10 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
   private int mMode;
   private String mFreeSku = "v1.group_rescue";
 
-  public static DialogRescueBoldMan newInstance(Tracking tracking, int invites) {
+  public static DialogRescueBoldMan newInstance(Tracking tracking, int type) {
     Bundle args = new Bundle();
     args.putParcelable(DIALOG_RESCUE_BOLD_MAN, tracking);
-    args.putInt(MODE, invites);
+    args.putInt(MODE, type);
     DialogRescueBoldMan fragment = new DialogRescueBoldMan();
     fragment.setArguments(args);
     return fragment;
@@ -89,6 +90,15 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
             new MaskTransformation(mImageViewGroupAvatar.getContext(), R.drawable.profile_mask,
                 false, 0xfff))
         .into(mImageViewGroupAvatar);
+
+    switch(mMode) {
+      case MONEY:
+      tvRescueForWhat.setText("FOR 1$");
+      break;
+      case INVITES:
+        tvRescueForWhat.setText("FOR INVITES");
+        break;
+    }
 
     mTextViewFailText.setText(String.format(getString(R.string.your_group_has_failed_thanks_to),
         mTracking.getGroup().getName()));

@@ -143,11 +143,37 @@
           android:orientation="vertical">
       </LinearLayout>
         <ImageView
+            android:id="@+id/rescueButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:adjustViewBounds="true"
             android:src="@drawable/rescue_button_card"
             />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/rescueButton"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:textColor="@color/red"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:text="RESCUE"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/rescueButton"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/red"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:text="NOW!!!"
+            />
+
       </RelativeLayout>
     </LinearLayout>
   </android.support.v7.widget.CardView>
