@@ -309,7 +309,6 @@ import timber.log.Timber;
           animationList.add(Drawable.createFromPath(framePath));
         }else {
           AnimationHelper animationHelper = new AnimationHelper(new File(filesDir + "/animations/"), new ArrayList<>(anim.getImageUrl()));
-          AnimationDrawable animationDrawable1 = new AnimationDrawable();
 
           animationHelper.download(new AnimationHelper.Callback() {
 
@@ -321,7 +320,7 @@ import timber.log.Timber;
               Timber.e("Everything is downloaded by need");
               Collections.reverse(animationList);
               for (Drawable drawable : animationList) {
-                animationDrawable1.addFrame(drawable, duration);
+                animationDrawable.addFrame(drawable, duration);
               }
               //getViewState().setAnimation(animationDrawable1);
             }
