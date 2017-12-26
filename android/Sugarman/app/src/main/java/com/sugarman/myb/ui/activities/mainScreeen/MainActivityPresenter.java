@@ -219,6 +219,7 @@ import timber.log.Timber;
           List<ImageModel> anims = animations.body().getAnimations();
           for (int i = 0; i < anims.size(); i++) {
             duration = anims.get(i).getDuration();
+            //  скачиваются все анимации у которых статус "now"=true
             if (anims.get(i).getDownloadImmediately()) {
               for (int j = 0; j < anims.get(i).getImageUrl().size(); j++) {
                 urls.add(anims.get(i).getImageUrl().get(j));
@@ -294,17 +295,37 @@ import timber.log.Timber;
 
     ImageModel anim = mDataManager.getAnimationByNameFromRealm(name);
     if (anim != null) {
-      List<String> files = new ArrayList<>();
       List<Drawable> animationList = new ArrayList<>();
       AnimationDrawable animationDrawable = new AnimationDrawable();
       for (int j = 0; j < anim.getImageUrl().size(); j++) {
+        String framePath = "Pustaya stroka";
         try {
-          files.add(AnimationHelper.getFilenameFromURL(new URL(anim.getImageUrl().get(j))));
-          animationList.add(Drawable.createFromPath(
-              filesDir + "/animations/" + AnimationHelper.getFilenameFromURL(
-                  new URL(anim.getImageUrl().get(j)))));
+          framePath = filesDir + "/animations/" + AnimationHelper.getFilenameFromURL(
+              new URL(anim.getImageUrl().get(j)));
         } catch (MalformedURLException e) {
           e.printStackTrace();
+        }
+        if (new File(framePath).exists()) {
+          animationList.add(Drawable.createFromPath(framePath));
+        }else {
+          AnimationHelper animationHelper = new AnimationHelper(new File(filesDir + "/animations/"), new ArrayList<>(anim.getImageUrl()));
+          AnimationDrawable animationDrawable1 = new AnimationDrawable();
+
+          animationHelper.download(new AnimationHelper.Callback() {
+
+            @Override public void onEach(File image) {
+              animationList.add(Drawable.createFromPath(image.getAbsolutePath()));
+            }
+
+            @Override public void onDone(File imagesDir) {
+              Timber.e("Everything is downloaded by need");
+              Collections.reverse(animationList);
+              for (Drawable drawable : animationList) {
+                animationDrawable1.addFrame(drawable, duration);
+              }
+              //getViewState().setAnimation(animationDrawable1);
+            }
+          });
         }
       }
       Timber.e("Animation list size : " + animationList.size());
