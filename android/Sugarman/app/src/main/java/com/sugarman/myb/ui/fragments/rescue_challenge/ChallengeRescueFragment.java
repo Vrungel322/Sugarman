@@ -48,6 +48,7 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
   @BindView(R.id.tvRescueTimer) TextView mTextViewRescueTimer;
   @BindView(R.id.cvRescueChallengeContainer) CardView cvRescueChallengeContainer;
   @BindView(R.id.llRescueArea) LinearLayout mLinearLayoutRescueArea;
+  @BindView(R.id.tvTimesSave) TextView mTextViewTimesSave;
   RescueMembersAdapter adapter;
   private ChallengeRescueItem mChallengeItem;
   private Tracking mTracking;
@@ -122,6 +123,8 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
                 Converters.timeFromMilliseconds(getActivity(),1L)));
       }
     }.start();
+
+    //mTextViewTimesSave.setText(mTracking.getTimesSave().toString());
   }
 
   @Override public void onDestroyView() {

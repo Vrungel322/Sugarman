@@ -71,6 +71,7 @@ public class Tracking implements Parcelable {
     timezone = in.readString();
     updatedAt = in.readString();
     remainTime = in.readString();
+    timesSave = in.readInt();
   }
 
   public static final Creator<Tracking> CREATOR = new Creator<Tracking>() {
@@ -104,6 +105,8 @@ public class Tracking implements Parcelable {
   @SerializedName("updated_at") private String updatedAt;
 
   @SerializedName("remain_time") private String remainTime;
+
+  @Getter @Setter @SerializedName("times_save") private Integer timesSave;
 
   private Date createdAtUTCDate;
 
@@ -318,5 +321,6 @@ public class Tracking implements Parcelable {
     parcel.writeString(timezone);
     parcel.writeString(updatedAt);
     parcel.writeString(remainTime);
+    parcel.writeInt(timesSave);
   }
 }

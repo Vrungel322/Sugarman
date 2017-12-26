@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="10dp">
+    android:layout_height="300dp">
 
   <android.support.v7.widget.CardView
       android:id="@+id/cvRescueChallengeContainer"
@@ -45,13 +45,30 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:src="@drawable/ic_gray_avatar"/>
-          <ImageView
-              android:layout_width="25dp"
-              android:layout_height="25dp"
+          <!--<ImageView-->
+              <!--android:layout_width="25dp"-->
+              <!--android:layout_height="25dp"-->
+              <!--android:visibility="gone"-->
+              <!--android:layout_alignBottom="@id/group_avatar"-->
+              <!--android:layout_alignRight="@id/group_avatar"-->
+              <!--android:layout_alignEnd="@id/group_avatar"-->
+              <!--android:src="@drawable/rescue_circle_life"-->
+              <!--android:layout_marginRight="15dp"-->
+              <!--android:layout_marginBottom="9dp"-->
+              <!--/> -->
+          <TextView
+              android:id="@+id/tvTimesSave"
+              android:layout_width="24dp"
+              android:layout_height="24dp"
+              android:text="10"
+              android:gravity="center"
+              android:textSize="8sp"
+              android:textColor="@color/white"
+              android:background="@drawable/rescue_circle_life"
+
               android:layout_alignBottom="@id/group_avatar"
               android:layout_alignRight="@id/group_avatar"
               android:layout_alignEnd="@id/group_avatar"
-              android:src="@drawable/rescue_group_circle"
               android:layout_marginRight="15dp"
               android:layout_marginBottom="9dp"
               />
