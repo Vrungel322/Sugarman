@@ -110,7 +110,7 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
     CountDownTimer timer = new CountDownTimer(
         mTracking.getRemainToFailUTCDate().getTime() - System.currentTimeMillis(), 1000) {
       @Override public void onTick(long l) {
-        mTextViewTimeLeftForRescue.setText(Converters.timeFromMilliseconds(getActivity(), l));
+        mTextViewTimeLeftForRescue.setText(Converters.timeFromMilliseconds(mTextViewTimeLeftForRescue.getContext(), l));
       }
 
       @Override public void onFinish() {
@@ -125,6 +125,7 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
 
   @OnClick(R.id.ivRescueLogo) public void startPurchaseFlowClick() {
     if (mMode == MONEY) {
+      mImageViewRescueLogo.setClickable(false);
       startPurchaseFlow("v1.group_rescue");
     }
     if (mMode == INVITES) {
@@ -190,5 +191,9 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
   @Override public void onDestroy() {
     super.onDestroy();
     if (mHelper != null) mHelper.dispose();
+  }
+
+  @Override public void enableButton() {
+    mImageViewRescueLogo.setClickable(true);
   }
 }

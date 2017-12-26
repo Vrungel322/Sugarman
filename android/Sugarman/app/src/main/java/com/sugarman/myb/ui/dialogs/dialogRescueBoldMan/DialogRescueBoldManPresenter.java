@@ -24,6 +24,7 @@ import timber.log.Timber;
         new InAppSinglePurchase(productName, purchase.getSku(), purchase.getToken(), freeSku))
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(subscriptionsResponse -> {
+          getViewState().enableButton();
 
           Timber.e(String.valueOf(subscriptionsResponse.code()));
           if (subscriptionsResponse.code() == 200) {
