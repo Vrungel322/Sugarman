@@ -107,7 +107,8 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
     mRescueMembersAdapter.setMembers(failures);
     mRecyclerViewFailures.setAdapter(mRescueMembersAdapter);
 
-    CountDownTimer timer = new CountDownTimer(6000, 1000) {
+    CountDownTimer timer = new CountDownTimer(
+        mTracking.getRemainToFailUTCDate().getTime() - System.currentTimeMillis(), 1000) {
       @Override public void onTick(long l) {
         mTextViewTimeLeftForRescue.setText(Converters.timeFromMilliseconds(getActivity(), l));
       }
@@ -126,7 +127,7 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
     if (mMode == MONEY) {
       startPurchaseFlow("v1.group_rescue");
     }
-    if (mMode==INVITES){
+    if (mMode == INVITES) {
       Intent intent = new Intent(getActivity(), InviteForRescueActivity.class);
       startActivityForResult(intent, Constants.CREATE_GROUP_ACTIVITY_REQUEST_CODE);
     }

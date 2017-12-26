@@ -99,7 +99,7 @@ public class DialogRescueBoldManKick extends MvpDialogFragment
     mRescueMembersAdapter.setMembers(failures);
     mRecyclerViewFailures.setAdapter(mRescueMembersAdapter);
 
-    mTimer = new CountDownTimer(6000, 1000) {
+    mTimer = new CountDownTimer(mTracking.getRemainToFailUTCDate().getTime()-System.currentTimeMillis(), 1000) {
       @Override public void onTick(long l) {
         mTextViewTimeLeftForRescue.setText(
             Converters.timeFromMilliseconds(getActivity(), l));
