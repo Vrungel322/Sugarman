@@ -21,4 +21,5 @@ import lombok.Setter;
   @Getter @Setter @SerializedName("name") String name;
   @Getter @Setter @SerializedName("android_duration") Integer duration;
   @Getter @Setter @SerializedName("steps") Integer steps;
+  @Getter @Setter @SerializedName("now") Boolean downloadImmediately;
 }
