@@ -356,9 +356,9 @@ public class SplashActivity extends GetUserInfoActivity
 
   private void handleReferrer(ReferrerDetails response)
   {
-    String searchQuery = "utm_campaign";
+    String searchQuery = "utm_source";
     String referrerStr = response.getInstallReferrer();
-    SharedPreferenceHelper.setCampaign(referrerStr);
+
     Timber.e(SharedPreferenceHelper.getCampaign());
     if(referrerStr.contains(searchQuery))
     {
@@ -367,6 +367,7 @@ public class SplashActivity extends GetUserInfoActivity
       if(index==-1) index = temp.length();
       temp = temp.substring(1,index);
       Timber.e(temp);
+      SharedPreferenceHelper.setCampaign(temp);
     }
   }
 }
