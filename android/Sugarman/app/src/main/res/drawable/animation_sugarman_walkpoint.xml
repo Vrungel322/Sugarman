@@ -70,7 +70,6 @@
   <item android:drawable="@drawable/sugar_walkpoint_00067" android:duration="30" />
   <item android:drawable="@drawable/sugar_walkpoint_00068" android:duration="30" />
   <item android:drawable="@drawable/sugar_walkpoint_00069" android:duration="30" />
-
   <item android:drawable="@drawable/sugar_walkcycle_0166" android:duration="30" />
   <item android:drawable="@drawable/sugar_walkcycle_0167" android:duration="30" />
   <item android:drawable="@drawable/sugar_walkcycle_0168" android:duration="30" />
@@ -104,6 +103,4 @@
   <item android:drawable="@drawable/sugar_walkcycle_0196" android:duration="30" />
   <item android:drawable="@drawable/sugar_walkcycle_0197" android:duration="30" />
   <item android:drawable="@drawable/sugar_walkcycle_0198" android:duration="30" />
-
-
 </animation-list>

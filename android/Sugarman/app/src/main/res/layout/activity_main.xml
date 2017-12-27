@@ -186,7 +186,6 @@
                                         android:layout_height="95dp"
                                         android:adjustViewBounds="true"
                                         android:scaleType="fitCenter"
-                                        android:src="@drawable/sugar_stand_50"
                                         android:contentDescription="@string/content_description" />
 
 

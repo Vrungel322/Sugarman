@@ -451,7 +451,7 @@ public class MainActivity extends GetUserInfoActivity
           List<BaseChallengeItem> converted = prepareTrackingItems();
 
           updatePagerTrackings();
-          //updateAnimations(todaySteps);
+          updateAnimations(todaySteps);
 
           if (swipedTracking != null) {
             ChallengeWillStartItem item = new ChallengeWillStartItem();
@@ -800,7 +800,7 @@ public class MainActivity extends GetUserInfoActivity
 
     ivAnimatedMan = (ImageView) findViewById(R.id.iv_animated_man);
     Log.e("Showed steps before ai", "" + SharedPreferenceHelper.getShowedSteps());
-    //updateAnimations();
+    updateAnimations(todaySteps);
 
     mGetMyInvitesClient.getInvites(true);
     mGetMyRequestsClient.getRequests(true);
@@ -854,6 +854,7 @@ public class MainActivity extends GetUserInfoActivity
     // TODO: 12.07.2017 next milestone
     int animSteps = todaySteps;
     if (todaySteps > 0 && myTrackings.length == 0) {
+      Timber.e(" updateAnimations 1");
       ivAnimatedMan.setBackgroundResource(R.drawable.animation_sugarman_walkpoint);
       animationMan = (AnimationDrawable) ivAnimatedMan.getBackground();
       animationMan.stop();
@@ -861,6 +862,8 @@ public class MainActivity extends GetUserInfoActivity
       return;
     }
     if (todaySteps == 0 && myTrackings.length == 0) {
+      Timber.e(" updateAnimations 2");
+
       ivAnimatedMan.setBackgroundResource(R.drawable.animation_sugarman_point);
       animationMan = (AnimationDrawable) ivAnimatedMan.getBackground();
       animationMan.stop();
@@ -1020,7 +1023,7 @@ public class MainActivity extends GetUserInfoActivity
 
     App.getEventBus().post(new DebugRequestStepsEvent(todaySteps));
     showFullscreenNotifications();
-    //updateAnimations(todaySteps);
+    updateAnimations(todaySteps);
   }
 
   @Override protected void onStop() {
@@ -1590,11 +1593,13 @@ public class MainActivity extends GetUserInfoActivity
     tvCounter.setTextColor(color);
     color = color - 0xaa000000;
     tvCounter.setShadowLayer(12, 0, 10, color);
-    //updateAnimations(todaySteps);
+    updateAnimations(todaySteps);
     mWalkDataViewPagerAdapter.setWalkData(String.valueOf(todaySteps));
     mWalkDataViewPagerAdapter.notifyDataSetChanged();
-    mPresenter.checkIfRuleStepsDone(todaySteps);
-    mPresenter.checkIfRule15KStepsDone(todaySteps);
+    if (myTrackings.length != 0) {
+      mPresenter.checkIfRuleStepsDone(todaySteps);
+      mPresenter.checkIfRule15KStepsDone(todaySteps);
+    }
   }
 
   private List<BaseChallengeItem> convertTrackingsToItems() {
