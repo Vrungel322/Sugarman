@@ -193,6 +193,14 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
     mPresenter.fetchComments(mMentorEntity.getUserId());
 
     setupInAppPurchase();
+
+    if (mMentorEntity.isOwned()){
+      ivSubscribeMentor.setEnabled(false);
+      mentorPrice.setText(getResources().getString(R.string.mentor_already_owned));
+    }
+    else {
+      ivSubscribeMentor.setEnabled(true);
+    }
   }
 
   private void setSuccessRateData(PieChart pieChart, float successRate, TextView tvIndicator) {
