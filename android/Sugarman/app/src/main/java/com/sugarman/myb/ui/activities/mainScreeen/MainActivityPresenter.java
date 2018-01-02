@@ -327,15 +327,15 @@ import timber.log.Timber;
               //}
             }
           });
-
         }
-        getViewState().setAnimation(animationList, duration);
-        //for (Drawable drawable : animationList) {
-        //  if (drawable != null) {
-        //  }
-        //}
-        Timber.e("Animation list size : " + animationList.size());
       }
+
+      getViewState().setAnimation(animationList, duration);
+      //for (Drawable drawable : animationList) {
+      //  if (drawable != null) {
+      //  }
+      //}
+      Timber.e("Animation list size : " + animationList.size());
     }
   }
 }

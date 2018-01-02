@@ -1574,6 +1574,7 @@ public class MainActivity extends GetUserInfoActivity
     angle = (float) todaySteps / 10000f * 360f;
     img = new ImageToDraw(MainActivity.this);
     bmp = BitmapFactory.decodeResource(getResources(), R.drawable.red_circle);
+
     ViewTreeObserver vto = ivColoredStrip.getViewTreeObserver();
     vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
       @Override public void onGlobalLayout() {
@@ -1916,7 +1917,9 @@ public class MainActivity extends GetUserInfoActivity
     Timber.e("Set animation");
     AnimationDrawable animation = new AnimationDrawable();
     for (Drawable d : drawable) {
-      animation.addFrame(d, duration);
+      if (d != null) {
+        animation.addFrame(d, duration);
+      }
     }
 
     runOnUiThread(() -> {
