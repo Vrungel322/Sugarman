@@ -236,6 +236,11 @@
     <activity android:name=".ui.activities.mentorDetail.MentorDetailActivity"
         android:screenOrientation="portrait">
     </activity>
+
+    <service android:name=".services.fetching_animation.FetchingAnimationService"
+        android:exported="true"
+        android:enabled="true">
+    </service>
   </application>
 
 </manifest>

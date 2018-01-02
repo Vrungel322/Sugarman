@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.net.Uri;
@@ -93,6 +94,7 @@ import com.sugarman.myb.models.NoMentorsChallengeItem;
 import com.sugarman.myb.models.ab_testing.ABTesting;
 import com.sugarman.myb.models.custom_events.CustomUserEvent;
 import com.sugarman.myb.services.MasterStepDetectorService;
+import com.sugarman.myb.services.fetching_animation.FetchingAnimationService;
 import com.sugarman.myb.ui.activities.CongratulationsActivity;
 import com.sugarman.myb.ui.activities.DailyActivity;
 import com.sugarman.myb.ui.activities.FailedActivity;
@@ -540,7 +542,8 @@ public class MainActivity extends GetUserInfoActivity
 
     cachedImagesFolder = new File(getFilesDir() + "/animations/");
 
-    mPresenter.getAnimations(cachedImagesFolder);
+    //mPresenter.getAnimations(cachedImagesFolder);
+    startService(new Intent(this, FetchingAnimationService.class));
     //Timber.e("!!!! " +new File(cachedImagesFolder.list()[0]));
     //Timber.e(
     //    "!!!! " + MD5Util.calculateMD5(new File(getFilesDir() + "/animations/"+cachedImagesFolder.list()[0])));
@@ -1112,7 +1115,8 @@ public class MainActivity extends GetUserInfoActivity
     int id = v.getId();
     switch (id) {
       case R.id.iv_avatar:
-        openProfileActivity();
+
+        //openProfileActivity();
         //DialogRescueBoldMan.newInstance(myTrackings[0]).show(getFragmentManager(),"DialogRescueBoldMan");
         //DialogRescueGirl.newInstance(myTrackings[0]).show(getFragmentManager(), "DialogRescueGirl");
         //DialogRescueGirCongratulations.newInstance(myTrackings[0]).show(getFragmentManager(), "DialogRescueGirCongratulations");
@@ -1908,8 +1912,13 @@ public class MainActivity extends GetUserInfoActivity
     spiChallenges.invalidate();
   }
 
-  @Override public void setAnimation(AnimationDrawable animation) {
+  @Override public void setAnimation(List<Drawable> drawable, int duration) {
     Timber.e("Set animation");
+    AnimationDrawable animation = new AnimationDrawable();
+    for (Drawable d : drawable) {
+      animation.addFrame(d, duration);
+    }
+
     runOnUiThread(() -> {
       ivAnimatedMan.setBackgroundDrawable(null);
       Timber.e("" + animation.getNumberOfFrames());

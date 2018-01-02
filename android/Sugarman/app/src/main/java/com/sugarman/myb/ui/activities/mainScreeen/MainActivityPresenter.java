@@ -296,7 +296,6 @@ import timber.log.Timber;
     ImageModel anim = mDataManager.getAnimationByNameFromRealm(name);
     if (anim != null) {
       List<Drawable> animationList = new ArrayList<>();
-      AnimationDrawable animationDrawable = new AnimationDrawable();
       for (int j = 0; j < anim.getImageUrl().size(); j++) {
         String framePath = "Pustaya stroka";
         try {
@@ -306,9 +305,11 @@ import timber.log.Timber;
           e.printStackTrace();
         }
         if (new File(framePath).exists()) {
+          Timber.e("exists");
           animationList.add(Drawable.createFromPath(framePath));
-        }else {
-          AnimationHelper animationHelper = new AnimationHelper(new File(filesDir + "/animations/"), new ArrayList<>(anim.getImageUrl()));
+        } else {
+          AnimationHelper animationHelper = new AnimationHelper(new File(filesDir + "/animations/"),
+              new ArrayList<>(anim.getImageUrl()));
 
           animationHelper.download(new AnimationHelper.Callback() {
 
@@ -317,21 +318,24 @@ import timber.log.Timber;
             }
 
             @Override public void onDone(File imagesDir) {
-              Timber.e("Everything is downloaded by need");
+              Timber.e("Everything is downloaded by need " + animationList.size());
               Collections.reverse(animationList);
-              for (Drawable drawable : animationList) {
-                animationDrawable.addFrame(drawable, duration);
-              }
-              //getViewState().setAnimation(animationDrawable1);
+              getViewState().setAnimation(animationList, duration);
+              //for (int i = 0; i<animationList.size();i++) {
+              //  if (animationList.get(i) != null) {
+              //  }
+              //}
             }
           });
+
         }
+        getViewState().setAnimation(animationList, duration);
+        //for (Drawable drawable : animationList) {
+        //  if (drawable != null) {
+        //  }
+        //}
+        Timber.e("Animation list size : " + animationList.size());
       }
-      Timber.e("Animation list size : " + animationList.size());
-      for (Drawable drawable : animationList) {
-        animationDrawable.addFrame(drawable, duration);
-      }
-      getViewState().setAnimation(animationDrawable);
     }
   }
 }
