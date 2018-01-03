@@ -1601,7 +1601,8 @@ public class MainActivity extends GetUserInfoActivity
     updateAnimations(todaySteps);
     mWalkDataViewPagerAdapter.setWalkData(String.valueOf(todaySteps));
     mWalkDataViewPagerAdapter.notifyDataSetChanged();
-    if (myTrackings.length != 0) {
+    Timber.e("updateTodaySteps " + !SharedPreferenceHelper.isRulesBlocked());
+    if (myTrackings.length != 0 && !SharedPreferenceHelper.isRulesBlocked()) {
       mPresenter.checkIfRuleStepsDone(todaySteps);
       mPresenter.checkIfRule15KStepsDone(todaySteps);
     }

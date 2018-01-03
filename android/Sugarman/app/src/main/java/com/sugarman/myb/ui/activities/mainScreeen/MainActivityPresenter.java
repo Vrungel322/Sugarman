@@ -293,6 +293,7 @@ import timber.log.Timber;
 
     Timber.e("Animation name : " + name + " filesDir : " + filesDir);
 
+
     ImageModel anim = mDataManager.getAnimationByNameFromRealm(name);
     if (anim != null) {
       List<Drawable> animationList = new ArrayList<>();

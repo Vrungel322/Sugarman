@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable;
 import com.sugarman.myb.App;
 import com.sugarman.myb.base.BasicPresenter;
 import com.sugarman.myb.models.animation.ImageModel;
+import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.ThreadSchedulers;
 import com.sugarman.myb.utils.animation.AnimationHelper;
 import java.io.File;
@@ -30,7 +31,6 @@ public class FetchingAnimationServicePresenter
   }
 
   public void getAnimations(File filesDir) {
-
     List<Drawable> animationList = new ArrayList<>();
     Subscription subscription =
         mDataManager.getAnimations().concatMap(getAnimationResponseResponse -> {
@@ -55,6 +55,9 @@ public class FetchingAnimationServicePresenter
           }
           if (filesDir.listFiles() != null) {
             List<File> files = Arrays.asList(filesDir.listFiles());
+            if (files.size()!=urls.size()){
+              SharedPreferenceHelper.blockRules();
+            }
             for (File f : files) {
               Timber.e("getAnimations " + f.getName());
               if (urls.contains("https://sugarman-myb.s3.amazonaws.com/" + f.getName())) {
@@ -78,6 +81,7 @@ public class FetchingAnimationServicePresenter
 
             @Override public void onDone(File imagesDir) {
               Timber.e("Everything is downloaded");
+              SharedPreferenceHelper.unBlockRules();
               Collections.reverse(animationList);
               for (Drawable drawable : animationList) {
                 //animationDrawable.addFrame(drawable, duration);

@@ -627,25 +627,23 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
 
   public static boolean isEventXStepsDone(Integer numValue) {
     Timber.e("isEventXStepsDone " + numValue);
-    return getBoolean(SharedPreferenceConstants.EVENT_X_STEPS_DONE+numValue, false);
+    return getBoolean(SharedPreferenceConstants.EVENT_X_STEPS_DONE + numValue, false);
   }
 
-  public static void setCampaign(String campaign) {
-    putString("campaign", campaign);
-  }
-
-  public static void setCampaignParam(String key, String value)
-  {
+  public static void setCampaignParam(String key, String value) {
     putString(key, value);
   }
 
-  public static String getCampaignParam(String param)
-  {
+  public static String getCampaignParam(String param) {
     return getString(param, "");
   }
 
   public static String getCampaign() {
     return getString("campaign", "");
+  }
+
+  public static void setCampaign(String campaign) {
+    putString("campaign", campaign);
   }
 
   public static void saveAorB(Integer aOrB) {
@@ -654,5 +652,20 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
 
   public static int getAorB() {
     return getInt(SharedPreferenceConstants.A_OR_B, 0);
+  }
+
+  public static void blockRules() {
+    Timber.e("blockRules");
+    putBoolean(SharedPreferenceConstants.BLOCK_RULES, true);
+  }
+
+  public static void unBlockRules() {
+    Timber.e("blockRules!");
+
+    putBoolean(SharedPreferenceConstants.BLOCK_RULES, false);
+  }
+
+  public static boolean isRulesBlocked() {
+    return getBoolean(SharedPreferenceConstants.BLOCK_RULES, true);
   }
 }

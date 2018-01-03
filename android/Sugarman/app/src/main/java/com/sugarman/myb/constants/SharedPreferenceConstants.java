@@ -80,6 +80,7 @@ public abstract class SharedPreferenceConstants {
       "EVENT_GROUP_WITH_X_NEW_USERS_DONE";
   public static final String EVENT_X_STEPS_DONE = "EVENT_X_STEPS_DONE";
   public static final String A_OR_B = "A_OR_B";
+  public static final String BLOCK_RULES = "BLOCK_RULES";
 
   private SharedPreferenceConstants() {
     // only static methods and fields
