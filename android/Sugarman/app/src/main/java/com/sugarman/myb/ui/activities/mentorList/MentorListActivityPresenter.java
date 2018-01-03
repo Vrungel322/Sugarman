@@ -3,7 +3,10 @@ package com.sugarman.myb.ui.activities.mentorList;
 import com.arellomobile.mvp.InjectViewState;
 import com.sugarman.myb.App;
 import com.sugarman.myb.base.BasicPresenter;
+import com.sugarman.myb.models.mentor.MentorEntity;
 import com.sugarman.myb.utils.ThreadSchedulers;
+import java.util.Collections;
+import java.util.List;
 import rx.Subscription;
 
 /**
@@ -25,7 +28,13 @@ import rx.Subscription;
     Subscription subscription = mDataManager.fetchMentors()
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(mentorStupidAbstraction -> {
-          getViewState().fillMentorsList(mentorStupidAbstraction.getMentorEntities());
+          List<MentorEntity> mentorEntities = mentorStupidAbstraction.getMentorEntities();
+          if (mentorEntities != null) {
+            Collections.sort(mentorEntities,
+                (mentorEntity, t1) -> Float.valueOf(t1.getMentorRating())
+                    .compareTo(Float.valueOf(mentorEntity.getMentorRating())));
+            getViewState().fillMentorsList(mentorEntities);
+          }
         }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }

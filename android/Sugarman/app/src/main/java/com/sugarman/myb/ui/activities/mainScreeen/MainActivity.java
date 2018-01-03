@@ -1538,6 +1538,9 @@ public class MainActivity extends GetUserInfoActivity
       startActivity(intent);
       overridePendingTransition(R.anim.slide_down, R.anim.slide_up);
     }
+    else {
+      Timber.e("tracking == null"+vpTrackings.getCurrentItem());
+    }
   }
 
   private void getIntentData(Intent intent) {
@@ -1915,7 +1918,7 @@ public class MainActivity extends GetUserInfoActivity
   }
 
   @Override public void setAnimation(List<Drawable> drawable, int duration) {
-    Timber.e("Set animation");
+    Timber.e("Set animation" + drawable.size());
     AnimationDrawable animation = new AnimationDrawable();
     for (Drawable d : drawable) {
       if (d != null) {
