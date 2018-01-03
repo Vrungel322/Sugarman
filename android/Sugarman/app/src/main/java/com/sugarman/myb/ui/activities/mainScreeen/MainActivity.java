@@ -454,6 +454,8 @@ public class MainActivity extends GetUserInfoActivity
 
           updatePagerTrackings();
           updateAnimations(todaySteps);
+          updateTodaySteps(todaySteps);
+
 
           if (swipedTracking != null) {
             ChallengeWillStartItem item = new ChallengeWillStartItem();
@@ -820,6 +822,7 @@ public class MainActivity extends GetUserInfoActivity
     spiWalkData.setViewPager(vpWalkData);
     spiWalkData.requestLayout();
     spiWalkData.setVisibility(View.GONE);
+
   }
 
   @Override public void onRequestPermissionsResult(int requestCode, String permissions[],
@@ -1604,7 +1607,7 @@ public class MainActivity extends GetUserInfoActivity
     updateAnimations(todaySteps);
     mWalkDataViewPagerAdapter.setWalkData(String.valueOf(todaySteps));
     mWalkDataViewPagerAdapter.notifyDataSetChanged();
-    Timber.e("updateTodaySteps " + !SharedPreferenceHelper.isRulesBlocked());
+    Timber.e("updateTodaySteps " + !SharedPreferenceHelper.isRulesBlocked() + " l " + myTrackings.length);
     if (myTrackings.length != 0 && !SharedPreferenceHelper.isRulesBlocked()) {
       mPresenter.checkIfRuleStepsDone(todaySteps);
       mPresenter.checkIfRule15KStepsDone(todaySteps);
