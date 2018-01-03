@@ -123,6 +123,12 @@ public class TrackingsPagerAdapter extends FragmentStatePagerAdapter {
         case CHALLENGE_WILL_START:
           tracking = ((ChallengeWillStartItem) item).getTracking();
           break;
+        case RESCUE_GROUP:
+          tracking = ((ChallengeRescueItem) item).getTracking();
+          break;
+        case MENTORS_CHALLENGE:
+          tracking = ((ChallengeMentorItem) item).getTracking();
+          break;
         case NO_CHALLENGES:
           tracking = null;
           break;
