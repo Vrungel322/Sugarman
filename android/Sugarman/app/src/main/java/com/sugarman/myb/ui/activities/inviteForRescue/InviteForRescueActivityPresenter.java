@@ -131,7 +131,7 @@ import static com.sugarman.myb.api.clients.BaseApiClient.FAILURE_PARSE_ERROR_RES
             } else {
               getViewState().onApiCreateGroupFailure(BaseApiClient.RESPONSE_IS_NULL);
             }
-          });
+          },Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 

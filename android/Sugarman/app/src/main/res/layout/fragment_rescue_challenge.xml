@@ -151,6 +151,7 @@
             android:src="@drawable/rescue_button_card"
             />
         <TextView
+            android:id="@+id/tvLeftText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@id/rescueButton"
@@ -163,6 +164,7 @@
             />
 
         <TextView
+            android:id="@+id/tvRightText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/rescueButton"

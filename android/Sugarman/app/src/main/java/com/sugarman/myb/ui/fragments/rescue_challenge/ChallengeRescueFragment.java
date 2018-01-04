@@ -14,6 +14,8 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.Member;
@@ -28,6 +30,7 @@ import com.sugarman.myb.ui.views.CropSquareTransformation;
 import com.sugarman.myb.ui.views.MaskTransformation;
 import com.sugarman.myb.utils.Converters;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
+import com.sugarman.myb.utils.VibrationHelper;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -43,7 +46,10 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
   @InjectPresenter ChallengeRescueFragmentPresenter mPresenter;
   @BindView(R.id.rvMembers) RecyclerView rvMembers;
   @BindView(R.id.group_avatar) ImageView ivAvatar;
+  @BindView(R.id.rescueButton) ImageView rescueButton;
   @BindView(R.id.tv_group_name) TextView mTextViewGroupName;
+  @BindView(R.id.tvLeftText) TextView tvLeftText;
+  @BindView(R.id.tvRightText) TextView tvRightText;
   @BindView(R.id.tvRescueCounter) TextView mTextViewRescueCount;
   @BindView(R.id.tvRescueTimer) TextView mTextViewRescueTimer;
   @BindView(R.id.cvRescueChallengeContainer) CardView cvRescueChallengeContainer;
@@ -108,8 +114,8 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
     mTextViewRescueCount.setText(String.format(getString(R.string.the_group_needs_x_more_rescues),
         (int) adapter.getItemCount()));
 
-
-    mTimer = new CountDownTimer(mTracking.getRemainToFailUTCDate().getTime()-System.currentTimeMillis(), 1000) {
+    mTimer = new CountDownTimer(
+        mTracking.getRemainToFailUTCDate().getTime() - System.currentTimeMillis(), 1000) {
       @Override public void onTick(long l) {
         mTextViewRescueTimer.setText(
             String.format(getString(R.string.you_have_x_time_to_rescue_the_group),
@@ -119,14 +125,17 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
       @Override public void onFinish() {
         mTextViewRescueTimer.setText(
             String.format(getString(R.string.you_have_x_time_to_rescue_the_group),
-                Converters.timeFromMilliseconds(getActivity(),1L)));
+                Converters.timeFromMilliseconds(getActivity(), 1L)));
       }
     }.start();
 
     for (Member m : mTracking.getMembers()) {
-      if (m.getFailureStatus() == Member.FAIL_STATUS_FAILUER && m.getId()
-          .equals(SharedPreferenceHelper.getUserId())){
-        Timber.e("Me Current user is failure");
+      if (m.getFailureStatus() == Member.FAIL_STATUS_FAILUER && !m.getId()
+          .equals(SharedPreferenceHelper.getUserId())) {
+        Timber.e("Not Me Current user is failure");
+        rescueButton.setImageResource(R.drawable.kick_kick);
+        tvLeftText.setText("Kick them now");
+        tvRightText.setText("For a rescue");
       }
     }
   }
@@ -146,13 +155,26 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
   }
 
   @OnClick(R.id.llRescueArea) public void llRescueAreaClick() {
-    if (SharedPreferenceHelper.getAorB()== ABTesting.B){
-      DialogRescueBoldMan.newInstance(mTracking,DialogRescueBoldMan.MONEY)
-        .show(getActivity().getFragmentManager(), "DialogRescueBoldMan");
-    }else {
-    DialogRescueBoldMan.newInstance(mTracking,DialogRescueBoldMan.INVITES)
-        .show(getActivity().getFragmentManager(), "DialogRescueBoldMan");
+    if (!tvLeftText.getText().equals("Kick them now")) {
+      if (SharedPreferenceHelper.getAorB() == ABTesting.B) {
+        DialogRescueBoldMan.newInstance(mTracking, DialogRescueBoldMan.MONEY)
+            .show(getActivity().getFragmentManager(), "DialogRescueBoldMan");
+      } else {
+        DialogRescueBoldMan.newInstance(mTracking, DialogRescueBoldMan.INVITES)
+            .show(getActivity().getFragmentManager(), "DialogRescueBoldMan");
+      }
     }
+    else {
+      Timber.e("llRescueAreaClick poke");
+      YoYo.with(Techniques.Shake).duration(700).playOn(tvLeftText);
+      YoYo.with(Techniques.Shake).duration(700).playOn(tvRightText);
+      YoYo.with(Techniques.Shake).duration(700).playOn(rescueButton);
+      mPresenter.pokeAll(mTracking);
+    }
+  }
+
+  @Override public void superKickResponse() {
+    VibrationHelper.simpleVibration(getActivity(), 1300L);
 
   }
 }
