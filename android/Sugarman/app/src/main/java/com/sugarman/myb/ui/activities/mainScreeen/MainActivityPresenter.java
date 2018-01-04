@@ -293,10 +293,10 @@ import timber.log.Timber;
 
     Timber.e("Animation name : " + name + " filesDir : " + filesDir);
 
-
     ImageModel anim = mDataManager.getAnimationByNameFromRealm(name);
     if (anim != null) {
       List<Drawable> animationList = new ArrayList<>();
+      AnimationDrawable animationDrawable = new AnimationDrawable();
       for (int j = 0; j < anim.getImageUrl().size(); j++) {
         String framePath = "Pustaya stroka";
         try {
@@ -306,37 +306,43 @@ import timber.log.Timber;
           e.printStackTrace();
         }
         if (new File(framePath).exists()) {
-          Timber.e("exists");
           animationList.add(Drawable.createFromPath(framePath));
-        } else {
-          AnimationHelper animationHelper = new AnimationHelper(new File(filesDir + "/animations/"),
-              new ArrayList<>(anim.getImageUrl()));
+        }else {
 
-          animationHelper.download(new AnimationHelper.Callback() {
+          if (!SharedPreferenceHelper.isBlockedGetAnimationByName()) {
+            Timber.e("Start by need");
 
-            @Override public void onEach(File image) {
-              animationList.add(Drawable.createFromPath(image.getAbsolutePath()));
-            }
+            AnimationHelper animationHelper =
+                new AnimationHelper(new File(filesDir + "/animations/"), new ArrayList<>(anim.getImageUrl()));
+            SharedPreferenceHelper.blockGetAnimsByName();
 
-            @Override public void onDone(File imagesDir) {
-              Timber.e("Everything is downloaded by need " + animationList.size());
-              Collections.reverse(animationList);
-              getViewState().setAnimation(animationList, duration);
-              //for (int i = 0; i<animationList.size();i++) {
-              //  if (animationList.get(i) != null) {
-              //  }
-              //}
-            }
-          });
+            animationHelper.download(new AnimationHelper.Callback() {
+
+              @Override public void onEach(File image) {
+                animationList.add(Drawable.createFromPath(image.getAbsolutePath()));
+              }
+
+              @Override public void onDone(File imagesDir) {
+                SharedPreferenceHelper.unBlockGetAnimsByName();
+                Timber.e("Everything is downloaded by need");
+                Collections.reverse(animationList);
+                getViewState().setAnimation(animationList,duration);
+
+                //for (Drawable drawable : animationList) {
+                //  animationDrawable.addFrame(drawable, duration);
+                //}
+                //getViewState().setAnimation(animationDrawable1);
+              }
+            });
+          }
         }
-      }
+        getViewState().setAnimation(animationList,duration);
 
-      getViewState().setAnimation(animationList, duration);
-      //for (Drawable drawable : animationList) {
-      //  if (drawable != null) {
-      //  }
-      //}
+      }
       Timber.e("Animation list size : " + animationList.size());
+      //for (Drawable drawable : animationList) {
+      //  animationDrawable.addFrame(drawable, duration);
+      //}
     }
   }
 }

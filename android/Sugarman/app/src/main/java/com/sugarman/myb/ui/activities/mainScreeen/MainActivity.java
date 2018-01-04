@@ -456,7 +456,6 @@ public class MainActivity extends GetUserInfoActivity
           updateAnimations(todaySteps);
           updateTodaySteps(todaySteps);
 
-
           if (swipedTracking != null) {
             ChallengeWillStartItem item = new ChallengeWillStartItem();
             item.setTracking(swipedTracking);
@@ -822,7 +821,6 @@ public class MainActivity extends GetUserInfoActivity
     spiWalkData.setViewPager(vpWalkData);
     spiWalkData.requestLayout();
     spiWalkData.setVisibility(View.GONE);
-
   }
 
   @Override public void onRequestPermissionsResult(int requestCode, String permissions[],
@@ -1540,9 +1538,8 @@ public class MainActivity extends GetUserInfoActivity
       intent.putExtra(Constants.INTENT_TRACKING, tracking);
       startActivity(intent);
       overridePendingTransition(R.anim.slide_down, R.anim.slide_up);
-    }
-    else {
-      Timber.e("tracking == null"+vpTrackings.getCurrentItem());
+    } else {
+      Timber.e("tracking == null" + vpTrackings.getCurrentItem());
     }
   }
 
@@ -1607,7 +1604,10 @@ public class MainActivity extends GetUserInfoActivity
     updateAnimations(todaySteps);
     mWalkDataViewPagerAdapter.setWalkData(String.valueOf(todaySteps));
     mWalkDataViewPagerAdapter.notifyDataSetChanged();
-    Timber.e("updateTodaySteps " + !SharedPreferenceHelper.isRulesBlocked() + " l " + myTrackings.length);
+    Timber.e("updateTodaySteps "
+        + !SharedPreferenceHelper.isRulesBlocked()
+        + " l "
+        + myTrackings.length);
     if (myTrackings.length != 0 && !SharedPreferenceHelper.isRulesBlocked()) {
       mPresenter.checkIfRuleStepsDone(todaySteps);
       mPresenter.checkIfRule15KStepsDone(todaySteps);
@@ -1937,6 +1937,18 @@ public class MainActivity extends GetUserInfoActivity
       // Picasso.with(this).load("1").placeholder(animation).error(animation).into(ivAnimatedMan);
     });
   }
+  //@Override public void setAnimation(AnimationDrawable animation) {
+  //
+  //  runOnUiThread(() -> {
+  //    ivAnimatedMan.setBackgroundDrawable(null);
+  //    Timber.e("" + animation.getNumberOfFrames());
+  //    if (animation.getNumberOfFrames()!=0) {
+  //      ivAnimatedMan.setImageDrawable(animation);
+  //      animation.start();
+  //    }
+  //    // Picasso.with(this).load("1").placeholder(animation).error(animation).into(ivAnimatedMan);
+  //  });
+  //}
 
   @Override public void doEventActionResponse(CustomUserEvent customUserEvent) {
     Timber.e("EVENT_NAME_ANIMATION "
@@ -1949,9 +1961,10 @@ public class MainActivity extends GetUserInfoActivity
     }
     if (customUserEvent.getEventName().equals(Constants.EVENT_X_STEPS_DONE)
         && customUserEvent.getStrType().equals(ANIMATION_ACTION)) {
-      doEventAction(customUserEvent,
-          () -> mPresenter.getAnimationByName(customUserEvent.getNameOfAnim(),
-              getFilesDir().getAbsolutePath()));
+      doEventAction(customUserEvent, () -> {
+        mPresenter.getAnimationByName(customUserEvent.getNameOfAnim(),
+            getFilesDir().getAbsolutePath());
+      });
     }
     if (customUserEvent.getEventName().equals(Constants.EVENT_PLAY_ANIMATION)) {
       doEventAction(customUserEvent, () -> {

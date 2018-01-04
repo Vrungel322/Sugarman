@@ -122,6 +122,13 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
                 Converters.timeFromMilliseconds(getActivity(),1L)));
       }
     }.start();
+
+    for (Member m : mTracking.getMembers()) {
+      if (m.getFailureStatus() == Member.FAIL_STATUS_FAILUER && m.getId()
+          .equals(SharedPreferenceHelper.getUserId())){
+        Timber.e("Me Current user is failure");
+      }
+    }
   }
 
   @Override public void onDestroyView() {

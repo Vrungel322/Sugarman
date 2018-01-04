@@ -668,4 +668,18 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
   public static boolean isRulesBlocked() {
     return getBoolean(SharedPreferenceConstants.BLOCK_RULES, true);
   }
+
+  public static void unBlockGetAnimsByName() {
+    putBoolean(SharedPreferenceConstants.BLOCK_GET_ANIMS_BY_NAME, false);
+  }
+
+  public static void blockGetAnimsByName() {
+    putBoolean(SharedPreferenceConstants.BLOCK_GET_ANIMS_BY_NAME, true);
+
+  }
+
+  public static boolean isBlockedGetAnimationByName() {
+    return getBoolean(SharedPreferenceConstants.BLOCK_GET_ANIMS_BY_NAME, false);
+
+  }
 }
