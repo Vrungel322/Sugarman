@@ -336,7 +336,9 @@ import timber.log.Timber;
             });
           }
         }
-        getViewState().setAnimation(animationList,duration);
+        if (!animationList.isEmpty()) {
+          getViewState().setAnimation(animationList, duration);
+        }
 
       }
       Timber.e("Animation list size : " + animationList.size());

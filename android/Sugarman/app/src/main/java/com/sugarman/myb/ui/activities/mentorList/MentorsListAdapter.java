@@ -15,6 +15,7 @@ import com.sugarman.myb.models.mentor.MentorEntity;
 import com.sugarman.myb.ui.views.MaskTransformation;
 import java.util.ArrayList;
 import java.util.List;
+import timber.log.Timber;
 
 /**
  * Created by nikita on 27.10.2017.
@@ -24,6 +25,7 @@ public class MentorsListAdapter extends RecyclerView.Adapter<MentorsListAdapter.
   private List<MentorEntity> mMentorEntities = new ArrayList<>();
 
   public void setMentorEntity(List<MentorEntity> mentorEntities) {
+    Timber.e("setMentorEntity " + mentorEntities.size());
     mMentorEntities.clear();
     mMentorEntities.addAll(mentorEntities);
     notifyDataSetChanged();
