@@ -1931,6 +1931,9 @@ public class MainActivity extends GetUserInfoActivity
 
     runOnUiThread(() -> {
       ivAnimatedMan.setBackgroundDrawable(null);
+      if (ivAnimatedMan.getAnimation() != null) {
+        ivAnimatedMan.getAnimation().cancel();
+      }
       Timber.e("" + animation.getNumberOfFrames());
       ivAnimatedMan.setImageDrawable(animation);
       animation.start();
