@@ -129,7 +129,7 @@ public class MentorsChallengeFragment extends BasicFragment
         str = mTracking.getDailySugarman().getUser().getName();
         name = "";
         str = str.replaceAll("( +)", " ").trim();
-        if (str.length() > 0) {
+        if (str.length() > 0 && mTracking.getDailySugarman().getUser().getName().contains(" ")) {
           name = str.substring(0, (mTracking.getDailySugarman().getUser().getName().indexOf(" ")));
         } else {
           name = str;

@@ -34,7 +34,11 @@ import timber.log.Timber;
     request.setVkId("none");
     request.setFbId("none");
     request.setPictureUrl("none");
-    request.setCampaign(SharedPreferenceHelper.getCampaignParam("utm_source"));
+    request.setCampaign(SharedPreferenceHelper.getCampaignParam("utm_campaign"));
+    request.setContent(SharedPreferenceHelper.getCampaignParam("utm_content"));
+    request.setSource(SharedPreferenceHelper.getCampaignParam("utm_source"));
+    request.setTerm(SharedPreferenceHelper.getCampaignParam("utm_term"));
+    request.setMedium(SharedPreferenceHelper.getCampaignParam("utm_medium"));
     request.setTimezone(TimeZone.getDefault().getID());
     Subscription subscriptions = mDataManager.refreshRxUserData(request)
         .compose(ThreadSchedulers.applySchedulers())

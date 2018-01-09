@@ -132,6 +132,8 @@ import com.sugarman.myb.utils.licence.LicenceChecker;
 import com.sugarman.myb.utils.md5.MD5Util;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.lang.ref.SoftReference;
+import java.lang.ref.WeakReference;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -209,7 +211,7 @@ public class MainActivity extends GetUserInfoActivity
   @InjectPresenter MainActivityPresenter mPresenter;
   float angle;
   ImageToDraw img;
-  Bitmap bmp;
+  SoftReference<Bitmap> bmp = new SoftReference<Bitmap>(null);
   ImageView ivAnimatedMan;
   ImageView ivAvatar;
   boolean isUpdating = false;
@@ -930,6 +932,7 @@ public class MainActivity extends GetUserInfoActivity
   @Override protected void onResume() {
     super.onResume();
     String urlAvatar = SharedPreferenceHelper.getAvatar();
+
     if (TextUtils.isEmpty(urlAvatar)) {
     } else {
       CustomPicasso.with(this)
@@ -940,6 +943,10 @@ public class MainActivity extends GetUserInfoActivity
           .transform(new MaskTransformation(this, R.drawable.main_screen_avatar, false, 0xfff))
           .into(ivAvatar);
     }
+
+
+    Timber.e("bmp" + bmp.get());
+    updateTodaySteps(todaySteps);
     //int currentItem = vpTrackings.getCurrentItem();
     //
     //
@@ -1042,6 +1049,7 @@ public class MainActivity extends GetUserInfoActivity
   @Override protected void onDestroy() {
     super.onDestroy();
 
+    bmp.clear();
     if (mHelper != null) mHelper.dispose();
 
     mSendFirebaseTokenClient.unregisterListener();
@@ -1576,7 +1584,8 @@ public class MainActivity extends GetUserInfoActivity
     }
     angle = (float) todaySteps / 10000f * 360f;
     img = new ImageToDraw(MainActivity.this);
-    bmp = BitmapFactory.decodeResource(getResources(), R.drawable.red_circle);
+
+    //bmp =new SoftReference<Bitmap>( BitmapFactory.decodeResource(getResources(), R.drawable.red_circle));
 
     ViewTreeObserver vto = ivColoredStrip.getViewTreeObserver();
     vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -1586,9 +1595,15 @@ public class MainActivity extends GetUserInfoActivity
         int height = ivColoredStrip.getMeasuredHeight();
 
         if (width > 0 && height > 0) {
-          bmp = img.transform(bmp, angle);
-          bmp = Bitmap.createScaledBitmap(bmp, width, height, false);
-          ivColoredStrip.setImageBitmap(bmp);
+
+          bmp = new SoftReference<Bitmap>( BitmapFactory.decodeResource(getResources(), R.drawable.red_circle));
+          Timber.e("bmp 2 " + bmp.get());
+
+          if(bmp.get()!=null) {
+            Bitmap bmp1 = img.transform(bmp.get(), angle);
+            bmp1 = Bitmap.createScaledBitmap(bmp1, width, height, false);
+            ivColoredStrip.setImageBitmap(bmp1);
+          }
         }
       }
     });
@@ -1608,6 +1623,7 @@ public class MainActivity extends GetUserInfoActivity
         + !SharedPreferenceHelper.isRulesBlocked()
         + " l "
         + myTrackings.length);
+
     if (myTrackings.length != 0 && !SharedPreferenceHelper.isRulesBlocked()) {
       mPresenter.checkIfRuleStepsDone(todaySteps);
       mPresenter.checkIfRule15KStepsDone(todaySteps);

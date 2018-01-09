@@ -550,5 +550,6 @@
     <string name="the_group_needs_x_more_rescues">Вашей группе еще нужно %1$d спасений.</string>
     <string name="you_have_x_time_to_rescue_the_group">"У вас осталось %1$s для спасения группы "</string>
   <string name="you_group_has_been_rescued">Ваша группа %1$s была спасена!</string>
+    <string name="mentor_already_owned">Mentor already owned</string>
 
 </resources>

@@ -603,5 +603,6 @@
     <string name="text_num_to_rescue">הקבוצה צריכה עוד %1$d הצלות</string>
     <string name="you_got_your_first_rescue">יש הצלה ראשונה לקבוצה</string>
     <string name="you_group_has_been_rescued">Your group %1$s has been rescued!</string>
+    <string name="mentor_already_owned">Mentor already owned</string>
 
 </resources>

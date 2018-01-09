@@ -182,7 +182,7 @@
                                     <ImageView
                                         android:id="@+id/iv_animated_man"
                                         android:layout_centerHorizontal="true"
-                                        android:layout_width="match_parent"
+                                        android:layout_width="88dp"
                                         android:layout_height="95dp"
                                         android:adjustViewBounds="true"
                                         android:scaleType="fitCenter"
