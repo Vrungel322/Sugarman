@@ -113,7 +113,7 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
             mTracking.getGroup().getName()));
 
     mTextViewRescueCount.setText(String.format(getString(R.string.the_group_needs_x_more_rescues),
-        (int) adapter.getItemCount()));
+        (int) adapter.getFailureMembersCount()));
 
     mTimer = new CountDownTimer(
         mTracking.getRemainToFailUTCDate().getTime() - System.currentTimeMillis(), 1000) {
