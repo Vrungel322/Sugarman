@@ -945,6 +945,8 @@ public class MainActivity extends GetUserInfoActivity
     }
 
 
+    bmp = new SoftReference<Bitmap>( BitmapFactory.decodeResource(getResources(), R.drawable.red_circle));
+
     Timber.e("bmp" + bmp.get());
     updateTodaySteps(todaySteps);
     //int currentItem = vpTrackings.getCurrentItem();
@@ -1596,7 +1598,7 @@ public class MainActivity extends GetUserInfoActivity
 
         if (width > 0 && height > 0) {
 
-          bmp = new SoftReference<Bitmap>( BitmapFactory.decodeResource(getResources(), R.drawable.red_circle));
+          bmp = new SoftReference<>( BitmapFactory.decodeResource(getResources(), R.drawable.red_circle));
           Timber.e("bmp 2 " + bmp.get());
 
           if(bmp.get()!=null) {

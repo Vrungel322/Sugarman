@@ -58,6 +58,7 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
   private ChallengeRescueItem mChallengeItem;
   private Tracking mTracking;
   private CountDownTimer mTimer;
+  private boolean amIFailing = false;
 
   public ChallengeRescueFragment() {
     super(R.layout.fragment_rescue_challenge);
@@ -130,13 +131,17 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
     }.start();
 
     for (Member m : mTracking.getMembers()) {
-      if (m.getFailureStatus() == Member.FAIL_STATUS_FAILUER && !m.getId()
+      if (m.getFailureStatus() == Member.FAIL_STATUS_FAILUER && m.getId()
           .equals(SharedPreferenceHelper.getUserId())) {
-        Timber.e("Not Me Current user is failure");
-        rescueButton.setImageResource(R.drawable.kick_kick);
-        tvLeftText.setText("Kick them now");
-        tvRightText.setText("For a rescue");
+        Timber.e("Me Current user is failure");
+        amIFailing = true;
+        break;
       }
+    }
+    if(!amIFailing) {
+      rescueButton.setImageResource(R.drawable.kick_kick);
+      tvLeftText.setText("Kick them now");
+      tvRightText.setText("For a rescue");
     }
   }
 
