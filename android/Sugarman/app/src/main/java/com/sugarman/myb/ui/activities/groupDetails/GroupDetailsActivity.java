@@ -16,6 +16,7 @@ import android.graphics.Point;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
@@ -137,6 +138,7 @@ import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.ui.views.CropSquareTransformation;
 import com.sugarman.myb.ui.views.MaskTransformation;
+import com.sugarman.myb.utils.Converters;
 import com.sugarman.myb.utils.DeviceHelper;
 import com.sugarman.myb.utils.DialogHelper;
 import com.sugarman.myb.utils.IntentExtractorHelper;
@@ -202,6 +204,7 @@ public class GroupDetailsActivity extends BaseActivity
   @BindView(R.id.tv_group_steps) TextView groupSteps;
   @BindView(R.id.ivGroupRescueCircle) ImageView rescueCircle;
   @BindView(R.id.tvTotalGroupSteps) TextView tvTotalGroupSteps;
+  @BindView(R.id.tvRescueTimer) TextView mTextViewRescueTimer;
   Thread thread = new Thread();
   FrameLayout parentLayout;
   View borderline;
@@ -634,6 +637,7 @@ public class GroupDetailsActivity extends BaseActivity
   private IabHelper mHelper;
   private List<SubscriptionEntity> subscribeList = new ArrayList<>();
   private float successRateFloat;
+  private CountDownTimer mTimer;
 
   @OnClick(R.id.ivEditMentor) public void editMentorClicked() {
     Map<String, Object> eventValue = new HashMap<>();
@@ -773,6 +777,21 @@ public class GroupDetailsActivity extends BaseActivity
     isFailedGroup = getIntent().getBooleanExtra("isRescueGroup", false);
     if(isFailedGroup) {
       rescueCircle.setVisibility(View.VISIBLE);
+      mTextViewRescueTimer.setVisibility(View.VISIBLE);
+      mTimer = new CountDownTimer(
+          mTracking.getRemainToFailUTCDate().getTime() - System.currentTimeMillis(), 1000) {
+        @Override public void onTick(long l) {
+          mTextViewRescueTimer.setText(
+              String.format(getString(R.string.you_have_x_time_to_rescue_the_group),
+                  Converters.timeFromMilliseconds(getApplicationContext(), l)));
+        }
+
+        @Override public void onFinish() {
+          mTextViewRescueTimer.setText(
+              String.format(getString(R.string.you_have_x_time_to_rescue_the_group),
+                  Converters.timeFromMilliseconds(getApplicationContext(), 1L)));
+        }
+      }.start();
     }
 
     isMentorGroup = getIntent().getBooleanExtra("isMentorGroup", false);
@@ -1551,6 +1570,10 @@ public class GroupDetailsActivity extends BaseActivity
     super.onDestroy();
     SocketManager.getInstance().closeAndDisconnectSocket();
     mTrackingInfoClient.unregisterListener();
+    if (mTimer != null){
+      mTimer.cancel();
+    }
+
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {

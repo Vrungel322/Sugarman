@@ -65,6 +65,17 @@
                             android:textSize="17sp"
                             app:font="@string/font_roboto_medium"
                             tools:text="Little Monkeys " />
+                        <TextView
+                            android:id="@+id/tvRescueTimer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:layout_marginBottom="7dp"
+                            android:textSize="16sp"
+                            android:visibility="gone"
+                            android:text="@string/you_have_x_time_to_rescue_the_group"
+                            android:layout_below="@id/tv_group_name"
+                            />
                     </RelativeLayout>
 
                     <ImageView
