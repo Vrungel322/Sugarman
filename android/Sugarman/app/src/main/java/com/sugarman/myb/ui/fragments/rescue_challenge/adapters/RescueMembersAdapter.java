@@ -42,7 +42,6 @@ public class RescueMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vi
     this.members = members;
     notifyDataSetChanged();
     Timber.e("zashol v setMembers");
-
   }
 
   @Override public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -72,16 +71,28 @@ public class RescueMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vi
         .transform(new CropCircleTransformation(0x00ffffff, 4))
         .into(viewHolder.ivAvatar);
 
-    if (member.getFailureStatus()==Member.FAIL_STATUS_SAVED){
-      Animation animation =
-          AnimationUtils.loadAnimation(viewHolder.ivBorderAnim.getContext(), R.anim.anim_rescue_scale_up);
-      viewHolder.ivClock.setImageDrawable(viewHolder.ivClock.getContext().getResources().getDrawable(R.drawable.rescue_circle_life));
+    if (member.getFailureStatus() == Member.FAIL_STATUS_SAVED) {
+      Animation animation = AnimationUtils.loadAnimation(viewHolder.ivBorderAnim.getContext(),
+          R.anim.anim_rescue_scale_up);
+      viewHolder.ivClock.setImageDrawable(viewHolder.ivClock.getContext()
+          .getResources()
+          .getDrawable(R.drawable.rescue_circle_life));
       viewHolder.ivBorderAnim.startAnimation(animation);
     }
   }
 
   @Override public int getItemCount() {
     return members.size();
+  }
+
+  public int getFailureMembersCount() {
+    int count = 0;
+    for (Member member : members) {
+      if (member.getFailureStatus() == Member.FAIL_STATUS_FAILUER) {
+        count++;
+      }
+    }
+    return count;
   }
 
   static class RescueMemberHolder extends RecyclerView.ViewHolder {
