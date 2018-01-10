@@ -1937,7 +1937,7 @@ public class MainActivity extends GetUserInfoActivity
   }
 
   @Override public void setAnimation(List<Drawable> drawable, int duration) {
-    Timber.e("Set animation" + drawable.size());
+    //Timber.e("Set animation" + drawable.size());
     AnimationDrawable animation = new AnimationDrawable();
     for (Drawable d : drawable) {
       if (d != null) {
@@ -1950,7 +1950,7 @@ public class MainActivity extends GetUserInfoActivity
       if (ivAnimatedMan.getAnimation() != null) {
         ivAnimatedMan.getAnimation().cancel();
       }
-      Timber.e("" + animation.getNumberOfFrames());
+      //Timber.e("" + animation.getNumberOfFrames());
       ivAnimatedMan.setImageDrawable(animation);
       animation.start();
       // Picasso.with(this).load("1").placeholder(animation).error(animation).into(ivAnimatedMan);

@@ -305,8 +305,13 @@ import timber.log.Timber;
         } catch (MalformedURLException e) {
           e.printStackTrace();
         }
-        if (new File(framePath).exists()) {
+        if (new File(framePath).exists() && !SharedPreferenceHelper.isBlockedGetAnimationByName()) {
           animationList.add(Drawable.createFromPath(framePath));
+
+          if (!animationList.isEmpty()) {
+            Timber.e("getAnimationByName from storage " + animationList.size());
+            getViewState().setAnimation(animationList, duration);
+          }
         }else {
 
           if (!SharedPreferenceHelper.isBlockedGetAnimationByName()) {
@@ -336,11 +341,8 @@ import timber.log.Timber;
             });
           }
         }
-        if (!animationList.isEmpty()) {
-          getViewState().setAnimation(animationList, duration);
-        }
-
       }
+
       Timber.e("Animation list size : " + animationList.size());
       //for (Drawable drawable : animationList) {
       //  animationDrawable.addFrame(drawable, duration);
