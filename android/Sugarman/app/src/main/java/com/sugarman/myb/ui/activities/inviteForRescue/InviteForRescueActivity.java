@@ -671,7 +671,7 @@ public class InviteForRescueActivity extends BaseActivity
     for (FacebookFriend friend : invitable)
       if (friend.getSocialNetwork() == null) friend.setSocialNetwork("fb");
     //allFriends.clear();
-    allFriends.addAll(friends);
+    //allFriends.addAll(friends);
     allFriends.addAll(invitable);
 
     etMemberFilter.setText("");
@@ -1042,6 +1042,18 @@ hideProgress();
     }
   }
 
+  public void removeFriendsWithApplication()
+  {
+    for(int i = 0; i < allFriends.size(); i++)
+    {
+      Timber.e(allFriends.get(i).getName());
+      if(allFriends.get(i).getIsInvitable()==FacebookFriend.CODE_NOT_INVITABLE) {
+        allFriends.remove(i);
+        i--;
+      }
+    }
+  }
+
   @Override public void onApiCheckPhoneSuccess(List<Phones> phones) {
     mDistinktorList = phones;
 
@@ -1058,10 +1070,12 @@ hideProgress();
           if (friend.getId().equals(p.getPhone())) {
             //    Timber.e("SET INVITABLE IF 4 " + friend.getName());
             friend.setIsInvitable(FacebookFriend.CODE_NOT_INVITABLE);
+
           }
         }
       }
     }
+    removeFriendsWithApplication();
 
     runOnUiThread(() -> {
       //setFriends(allFriends);
@@ -1095,11 +1109,9 @@ hideProgress();
       }
     }
 
-    runOnUiThread(new Runnable() {
-      @Override public void run() {
-        setFriends(allFriends);
-      }
-    });
+    removeFriendsWithApplication();
+
+    runOnUiThread(() -> setFriends(allFriends));
     networksLoaded++;
     Timber.e("networkds loaded checkvk " + networksLoaded);
     checkNetworksLoaded();

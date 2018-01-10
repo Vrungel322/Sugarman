@@ -56,7 +56,7 @@ import timber.log.Timber;
 
   @Provides @AppScope OkHttpClient provideOkClient(HttpLoggingInterceptor httpLoggingInterceptor,
       @Named("HeaderInterceptor") Interceptor headerInterceptor) {
-    return new OkHttpClient.Builder().readTimeout(10, TimeUnit.SECONDS)
+    return new OkHttpClient.Builder().readTimeout(30, TimeUnit.SECONDS)
         .addInterceptor(headerInterceptor)
         .addInterceptor(httpLoggingInterceptor)
         .build();
