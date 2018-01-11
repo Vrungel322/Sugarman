@@ -889,41 +889,41 @@ public class MainActivity extends GetUserInfoActivity
         }
       } else if (nextMilestone == 5000) {
 
-        ivAnimatedMan.setBackgroundResource(R.drawable.animation_sugarman_slow);
-        animationMan = (AnimationDrawable) ivAnimatedMan.getBackground();
-        if (animSteps > 5000) {
-          nextMilestone = 7500;
-          animationMan.stop();
-          animationMan.start();
-        }
+        //ivAnimatedMan.setBackgroundResource(R.drawable.animation_sugarman_slow);
+        //animationMan = (AnimationDrawable) ivAnimatedMan.getBackground();
+        //if (animSteps > 5000) {
+        //  nextMilestone = 7500;
+        //  animationMan.stop();
+        //  animationMan.start();
+        //}
       } else if (nextMilestone == 7500) {
 
-        ivAnimatedMan.setBackgroundResource(R.drawable.animation_sugarman);
-        animationMan = (AnimationDrawable) ivAnimatedMan.getBackground();
-        if (animSteps > 7500) {
-          nextMilestone = 10000;
-          animationMan.stop();
-          animationMan.start();
-        }
+        //ivAnimatedMan.setBackgroundResource(R.drawable.animation_sugarman);
+        //animationMan = (AnimationDrawable) ivAnimatedMan.getBackground();
+        //if (animSteps > 7500) {
+        //  nextMilestone = 10000;
+        //  animationMan.stop();
+        //  animationMan.start();
+        //}
       } else if (nextMilestone == 10000) {
-        ivAnimatedMan.setBackgroundResource(R.drawable.animation_sugarman_fast);
-        animationMan = (AnimationDrawable) ivAnimatedMan.getBackground();
-        if (animSteps > 10000) {
-          nextMilestone = 11000;
-          animationMan.stop();
-          animationMan.start();
-        }
+        //ivAnimatedMan.setBackgroundResource(R.drawable.animation_sugarman_fast);
+        //animationMan = (AnimationDrawable) ivAnimatedMan.getBackground();
+        //if (animSteps > 10000) {
+        //  nextMilestone = 11000;
+        //  animationMan.stop();
+        //  animationMan.start();
+        //}
       } else if (nextMilestone == 11000) {
-        ivAnimatedMan.setBackgroundResource(R.drawable.animation_sugarman_eleven);
-        animationMan = (AnimationDrawable) ivAnimatedMan.getBackground();
-        if (animSteps > 11000) {
-          nextMilestone = 12000;
-          animationMan.stop();
-          animationMan.start();
-        }
+        //ivAnimatedMan.setBackgroundResource(R.drawable.animation_sugarman_eleven);
+        //animationMan = (AnimationDrawable) ivAnimatedMan.getBackground();
+        //if (animSteps > 11000) {
+        //  nextMilestone = 12000;
+        //  animationMan.stop();
+        //  animationMan.start();
+        //}
       } else {
-        ivAnimatedMan.setBackgroundResource(R.drawable.animation_sugarman_twelve);
-        animationMan = (AnimationDrawable) ivAnimatedMan.getBackground();
+        //ivAnimatedMan.setBackgroundResource(R.drawable.animation_sugarman_twelve);
+        //animationMan = (AnimationDrawable) ivAnimatedMan.getBackground();
       }
       if (!animationMan.isRunning()) animationMan.start();
     }
