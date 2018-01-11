@@ -17,6 +17,7 @@
     <string name="members_list_is_empty">Чтобы создать группу, Вам необходимо выбрать участников</string>
     <string name="play_with_me">Давай сыграем в этот уровень вместе!</string>
     <string name="invite_friends">Пригласить друзей</string>
+    <string name="this_user_has_saved_the_group">Этот пользователь уже спас группу!</string>
     <string name="max_active_groups">Вы можете быть участником только %1$s групп одновременно</string>
     <string name="this_user_has_completed_daily">Этот пользователь выполнил дневную норму шагов</string>
     <string name="you_cant_kick_self">Вы не можете подтолкнуть под зад самого себя</string>

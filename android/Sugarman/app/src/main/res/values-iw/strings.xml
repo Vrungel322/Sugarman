@@ -15,6 +15,7 @@
     <string name="step_detector_not_supported">סנסור זיהוי צעדים לא מאופשר על המכשיר</string>
     <string name="group_name_is_empty">אנא הכנס שם קבוצה</string>
     <string name="invite_friends">הזמן חברים</string>
+    <string name="this_user_has_saved_the_group">This user has already saved the group!</string>
     <string name="members_list_is_empty">אנא בחר משתתפים בקבוצה לשם יצירה</string>
     <string name="play_with_me">בוא לשחק ברמה הזו איתי</string>
     <string name="max_active_groups">המערכת מאפשרת ליצור עד %1$s קבוצות פעילות למשתמש</string>

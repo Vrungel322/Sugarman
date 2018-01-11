@@ -92,7 +92,6 @@ public abstract class DialogConstants {
   public static final String API_GET_MY_STATS_FAILURE_ID = "api_get_my_stats_failure_id";
 
   public static final String UPDATE_OLD_VERSION = "update_old_version";
-  public static final String THIS_USER_HAS_SAVED_THE_GROUP = "THIS_USER_HAS_SAVED_THE_GROUP";
 
   private DialogConstants() {
     // only static methods and fields
