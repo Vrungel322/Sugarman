@@ -22,7 +22,6 @@ public class ChallengeRescueFragmentPresenter extends
   }
 
   public void pokeAll(Tracking tracking) {
-
     Subscription subscription = Observable.from(tracking.getMembers())
         .filter(member -> member.getFailureStatus() == Member.FAIL_STATUS_FAILUER)
         .filter(member -> !member.getId().equals(SharedPreferenceHelper.getUserId()))
@@ -30,11 +29,28 @@ public class ChallengeRescueFragmentPresenter extends
         .concatMap(id -> mDataManager.poke(id, tracking.getId()))
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(objectResponse -> {
-          Timber.e("objectResponse code " + objectResponse.code());
+          Timber.e("pokeAll objectResponse code " + objectResponse.code());
           if (objectResponse.isSuccessful()) {
             getViewState().superKickResponse();
           }
         },Throwable::printStackTrace);
     addToUnsubscription(subscription);
+  }
+
+  public void pokeMember(Member member, Tracking tracking) {
+    if (!member.getId().equals(SharedPreferenceHelper.getUserId())) {
+      Subscription subscription = mDataManager.poke(member.getId(), tracking.getId())
+          .compose(ThreadSchedulers.applySchedulers())
+          .subscribe(objectResponse -> {
+            Timber.e(" pokeMember objectResponse code " + objectResponse.code());
+            if (objectResponse.isSuccessful()) {
+              getViewState().superKickResponse();
+            }
+          }, Throwable::printStackTrace);
+      addToUnsubscription(subscription);
+    }
+    else {
+      getViewState().youCanNotPokeYourselfView();
+    }
   }
 }

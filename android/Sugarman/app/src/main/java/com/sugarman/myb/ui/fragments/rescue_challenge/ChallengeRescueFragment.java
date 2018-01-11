@@ -21,14 +21,17 @@ import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.Member;
 import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.base.BasicFragment;
+import com.sugarman.myb.constants.DialogConstants;
 import com.sugarman.myb.models.ChallengeRescueItem;
 import com.sugarman.myb.models.ab_testing.ABTesting;
 import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
+import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.ui.dialogs.dialogRescueBoldMan.DialogRescueBoldMan;
 import com.sugarman.myb.ui.fragments.rescue_challenge.adapters.RescueMembersAdapter;
 import com.sugarman.myb.ui.views.CropSquareTransformation;
 import com.sugarman.myb.ui.views.MaskTransformation;
 import com.sugarman.myb.utils.Converters;
+import com.sugarman.myb.utils.ItemClickSupport;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.VibrationHelper;
 import java.util.ArrayList;
@@ -54,7 +57,7 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
   @BindView(R.id.tvRescueTimer) TextView mTextViewRescueTimer;
   @BindView(R.id.cvRescueChallengeContainer) CardView cvRescueChallengeContainer;
   @BindView(R.id.llRescueArea) LinearLayout mLinearLayoutRescueArea;
-  RescueMembersAdapter adapter;
+  private RescueMembersAdapter adapter;
   private ChallengeRescueItem mChallengeItem;
   private Tracking mTracking;
   private CountDownTimer mTimer;
@@ -107,6 +110,17 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
         new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, false));
     rvMembers.setAdapter(adapter);
     adapter.notifyDataSetChanged();
+
+    ItemClickSupport.addTo(rvMembers).setOnItemClickListener((recyclerView, pos, v) -> {
+      if (adapter.getItem(pos).getFailureStatus() == Member.FAIL_STATUS_SAVED){
+        new SugarmanDialog.Builder(getContext(), DialogConstants.THIS_USER_HAS_SAVED_THE_GROUP).content(
+            R.string.this_user_has_saved_the_group).show();
+      }
+      if (adapter.getItem(pos).getFailureStatus() == Member.FAIL_STATUS_FAILUER){
+        YoYo.with(Techniques.Shake).duration(700).playOn(v);
+        mPresenter.pokeMember(adapter.getItem(pos), mTracking);
+      }
+    });
 
     mTextViewGroupName.setText(
         String.format(getString(R.string.your_group_has_failed_thanks_to_you_and),
@@ -180,6 +194,9 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
 
   @Override public void superKickResponse() {
     VibrationHelper.simpleVibration(getActivity(), 1300L);
+  }
 
+  @Override public void youCanNotPokeYourselfView() {
+    showToastMessage(R.string.you_cant_kick_yourself);
   }
 }

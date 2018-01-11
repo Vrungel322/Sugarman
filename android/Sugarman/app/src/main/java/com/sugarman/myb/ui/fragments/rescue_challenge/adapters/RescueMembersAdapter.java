@@ -85,6 +85,10 @@ public class RescueMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vi
     return members.size();
   }
 
+  public Member getItem(int position) {
+    return members.get(position);
+  }
+
   public int getFailureMembersCount() {
     int count = 0;
     for (Member member : members) {

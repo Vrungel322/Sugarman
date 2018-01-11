@@ -124,7 +124,7 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
       }
 
       @Override public void onFinish() {
-        mTextViewTimeLeftForRescue.setText(Converters.timeFromMilliseconds(getActivity(), 0L));
+        mTextViewTimeLeftForRescue.setText(Converters.timeFromMilliseconds(mTextViewTimeLeftForRescue.getContext(), 0L));
       }
     }.start();
   }
