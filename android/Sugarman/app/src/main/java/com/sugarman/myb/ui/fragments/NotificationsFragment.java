@@ -234,7 +234,7 @@ public class NotificationsFragment extends BaseFragment
         openRequestsActivity();
         break;
       default:
-        if (item.getUrl() != null) {
+        if (item.getUrl() != null && !item.getUrl().isEmpty()) {
           String url = item.getUrl();
           Intent i = new Intent(Intent.ACTION_VIEW);
           if (!url.contains("://")) {

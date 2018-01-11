@@ -2209,6 +2209,11 @@ public class GroupDetailsActivity extends BaseActivity
         R.string.this_user_has_completed_daily).show();
   }
 
+  @Override public void onPokeSaver() {
+    new SugarmanDialog.Builder(this, DialogConstants.THIS_USER_HAS_SAVED_THE_GROUP).content(
+        R.string.this_user_has_saved_the_group).show();
+  }
+
   @Override public void onPokeMoreThatSelf() {
     new SugarmanDialog.Builder(this, DialogConstants.YOU_CANT_KICK_MORE_THAT_SELF_ID).content(
         R.string.you_cant_kick_more_that_self).show();

@@ -5,81 +5,95 @@
     android:id="@+id/ll_group_member_container"
     android:layout_width="70dp"
     android:layout_height="103dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
     android:orientation="horizontal">
 
-        <RelativeLayout
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+
+      android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:orientation="vertical">
+
+      <com.sugarman.myb.ui.views.CustomFontTextView
+          android:id="@+id/tv_member_name"
+          android:gravity="center"
+          android:textAlignment="center"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:maxLines="1"
+          android:singleLine="true"
+          android:textSize="@dimen/group_details_text_size"
+          app:font="@string/font_roboto_regular"
+          tools:text="Anastasia Kaminanskisky"
+          tools:textColor="@color/red" />
+
+      <RelativeLayout
+          android:layout_marginTop="6dp"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_avatar"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:padding="6dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/ic_gray_avatar" />
+        <ImageView
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="8dp"
+            android:padding="5dp"
+            android:src="@drawable/rescue_circle_border"
+            />
+        <ImageView
+            android:id="@+id/ivBorderAnim"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="8dp"
+            android:padding="5dp"
+            android:src="@drawable/rescue_circle_border"
+            />
+        <ImageView
+            android:id="@+id/ivKickOverlay"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+            android:visibility="gone"
+            android:alpha="0.5"
+            android:src="@drawable/ic_s"
+            />
 
-            <com.sugarman.myb.ui.views.CustomFontTextView
-                android:id="@+id/tv_member_name"
-                android:gravity="center"
-                android:textAlignment="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:textSize="@dimen/group_details_text_size"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                app:font="@string/font_roboto_regular"
-                tools:text="Anastasia Kaminanskisky"
-                tools:textColor="@color/red" />
+        <ImageView
+            android:id="@+id/ivRescueIcon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginBottom="25dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/rescue_circle_life"
+            />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/tv_member_name">
+        <ImageView
+            android:id="@+id/iv_broken_avatar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/content_description"
+            android:src="@drawable/ic_kicked_user"
+            android:visibility="gone"/>
+      </RelativeLayout>
+      <!-- maxLines not working on some devices, use deprecated singleLine -->
+    </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/iv_avatar"
-                    android:layout_width="52dp"
-                    android:layout_height="52dp"
-                    android:padding="6dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="8dp"
-                    android:src="@drawable/ic_gray_avatar" />
-                <ImageView
-                    android:id="@+id/ivKickOverlay"
-                    android:layout_width="52dp"
-                    android:layout_height="52dp"
-                    android:padding="6dp"
-                    android:visibility="visible"
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/rescue_circle_border"
-                    />
-                <ImageView
-                    android:id="@+id/ivBorderAnim"
-                    android:layout_width="52dp"
-                    android:layout_height="52dp"
-                    android:padding="6dp"
-                    android:visibility="visible"
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/rescue_circle_border"
-                    />
-
-                <ImageView
-                    android:id="@+id/ivRescueIcon"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="30dp"
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/rescue_circle_life"
-                    />
-
-                <ImageView
-                    android:id="@+id/iv_broken_avatar"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:contentDescription="@string/content_description"
-                    android:src="@drawable/ic_kicked_user"
-                    android:visibility="gone"/>
-            </RelativeLayout>
-                <!-- maxLines not working on some devices, use deprecated singleLine -->
-        </RelativeLayout>
-
+  </LinearLayout>
 
 </LinearLayout>

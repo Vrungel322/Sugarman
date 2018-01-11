@@ -15,4 +15,6 @@ public interface OnStepMembersActionListener {
   void onPokeMoreThatSelf();
 
   void onPokeInForeignGroup();
+
+  void onPokeSaver();
 }

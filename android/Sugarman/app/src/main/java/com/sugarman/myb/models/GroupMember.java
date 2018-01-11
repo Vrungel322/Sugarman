@@ -2,6 +2,8 @@ package com.sugarman.myb.models;
 
 import com.sugarman.myb.api.models.responses.Member;
 import com.sugarman.myb.ui.activities.groupDetails.adapter.GroupMembersAdapter;
+import lombok.Getter;
+import lombok.Setter;
 
 public class GroupMember extends Member {
 
@@ -10,6 +12,8 @@ public class GroupMember extends Member {
   private boolean isBroken;
 
   private boolean isBlinked;
+
+  @Getter @Setter private int failedStatus;
 
   public GroupMember(Member member) {
     setAction(member.getAction());
@@ -20,6 +24,7 @@ public class GroupMember extends Member {
     setName(member.getName());
     setPictureUrl(member.getPictureUrl());
     setSteps(member.getSteps());
+    setFailedStatus(member.getFailureStatus());
   }
 
   public GroupMember() {

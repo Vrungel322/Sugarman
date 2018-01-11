@@ -70,6 +70,8 @@ public abstract class DialogConstants {
 
   public static final String THIS_USER_HAS_COMPLETED_DAILY_ID = "this_user_has_completed_daily_id";
 
+  public static final String THIS_USER_HAS_SAVED_THE_GROUP = "this_user_has_saved_the_group";
+
   public static final String YOU_CANT_KICK_MORE_THAT_SELF_ID = "you_cant_kick_more_that_self_id";
 
   public static final String YOU_CANT_KICK_SELF_ID = "you_cant_kick_self_id";

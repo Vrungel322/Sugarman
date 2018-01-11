@@ -518,18 +518,31 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
         if (actionListener.get() != null) {
           GroupMember member = mData.get(position);
           int memberSteps = member.getSteps();
-          if (myPosition == -1) {
-            actionListener.get().onPokeInForeignGroup();
-          } else if (TextUtils.equals(member.getId(), userId)) {
-            actionListener.get().onPokeSelf();
-          } else if (memberSteps >= Config.MAX_STEPS_PER_DAY) {
-            actionListener.get().onPokeCompletedDaily();
-          } else if (memberSteps >= userSteps) {
-            actionListener.get().onPokeMoreThatSelf();
-          } else {
-            member.setBroken(true);
-            notifyItemChanged(position);
+          Timber.e("Failer status = " + member.getFailedStatus());
+          if(member.getFailedStatus()==Member.FAIL_STATUS_FAILUER)
+          {
+            Timber.e("Clicked on failer");
             actionListener.get().onPokeMember(member);
+          }
+          else if(member.getFailedStatus()==Member.FAIL_STATUS_SAVED)
+          {
+            Timber.e("Clicked on saver");
+            actionListener.get().onPokeSaver();
+          }
+          else {
+            if (myPosition == -1) {
+              actionListener.get().onPokeInForeignGroup();
+            } else if (TextUtils.equals(member.getId(), userId)) {
+              actionListener.get().onPokeSelf();
+            } else if (memberSteps >= Config.MAX_STEPS_PER_DAY) {
+              actionListener.get().onPokeCompletedDaily();
+            } else if (memberSteps >= userSteps) {
+              actionListener.get().onPokeMoreThatSelf();
+            } else {
+              member.setBroken(true);
+              notifyItemChanged(position);
+              actionListener.get().onPokeMember(member);
+            }
           }
         }
 
