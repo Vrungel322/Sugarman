@@ -580,7 +580,7 @@
   <string name="you_still_have_time_to_rescue_the_group">You still have time to rescue the group!</string>
   <string name="your_group_has_failed_thanks_to_you_and">Your group %1$s has  FAILED! thanks to you and:</string>
   <string name="the_group_needs_x_more_rescues">The group needs %1$d more rescues</string>
-  <string name="you_have_x_time_to_rescue_the_group">You have %1$s to rescue the group</string>
+  <string name="you_have_x_time_to_rescue_the_group">%1$s</string>
   <string name="you_group_has_been_rescued">Your group %1$s has been rescued!</string>
   <string name="mentor_already_owned">Mentor already owned</string>
   <string name="this_user_has_saved_the_group">This user has saved the group</string>
