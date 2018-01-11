@@ -778,20 +778,7 @@ public class GroupDetailsActivity extends BaseActivity
     if(isFailedGroup) {
       rescueCircle.setVisibility(View.VISIBLE);
       mTextViewRescueTimer.setVisibility(View.VISIBLE);
-      mTimer = new CountDownTimer(
-          mTracking.getRemainToFailUTCDate().getTime() - System.currentTimeMillis(), 1000) {
-        @Override public void onTick(long l) {
-          mTextViewRescueTimer.setText(
-              String.format(getString(R.string.you_have_x_time_to_rescue_the_group),
-                  Converters.timeFromMilliseconds(getApplicationContext(), l)));
-        }
 
-        @Override public void onFinish() {
-          mTextViewRescueTimer.setText(
-              String.format(getString(R.string.you_have_x_time_to_rescue_the_group),
-                  Converters.timeFromMilliseconds(getApplicationContext(), 1L)));
-        }
-      }.start();
     }
 
     isMentorGroup = getIntent().getBooleanExtra("isMentorGroup", false);
@@ -1949,6 +1936,21 @@ public class GroupDetailsActivity extends BaseActivity
       if (commentsEntities != null && commentsEntities.size() > 0) {
         mComment = commentsEntities.get(0);
       }
+
+      mTimer = new CountDownTimer(
+          mTracking.getRemainToFailUTCDate().getTime() - System.currentTimeMillis(), 1000) {
+        @Override public void onTick(long l) {
+          mTextViewRescueTimer.setText(
+              String.format(getString(R.string.you_have_x_time_to_rescue_the_group),
+                  Converters.timeFromMilliseconds(getApplicationContext(), l)));
+        }
+
+        @Override public void onFinish() {
+          mTextViewRescueTimer.setText(
+              String.format(getString(R.string.you_have_x_time_to_rescue_the_group),
+                  Converters.timeFromMilliseconds(getApplicationContext(), 1L)));
+        }
+      }.start();
 
       if (successRate != null && !successRate.isEmpty()) {
         successRateFloat = Float.valueOf(successRate);
