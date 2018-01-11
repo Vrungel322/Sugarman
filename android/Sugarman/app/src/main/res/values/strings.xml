@@ -316,6 +316,7 @@
     <item>has requested to join_ae_314_qp_group</item>
     <item>is unable to start 10000 Steps Per Day due to lack of users</item>
     <item>kicked you to MYB on_ae_314_qp_group</item>
+    <item>is about to fail! You still have time to rescue it!</item>
   </array>
   <string name="title_activity_approve_otp">ApproveOtpActivity</string>
   <string name="empty_field_denied">%1$s can not be empty</string>

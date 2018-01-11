@@ -93,6 +93,7 @@ public abstract class StringHelper {
       case NotificationMessageType.GROUP_NAME_GOOD_LUCK: // expected: Group_name group had start the challenge.Good luck!
       case NotificationMessageType.GROUP_NAME_HAS_FAILED: // expected: Group_name has failed the challenge
       case NotificationMessageType.USER_NAME_HAS_POKED_YOU: // expected: User_name has poked you!
+      case NotificationMessageType.IS_ABOUT_TO_FAIL: //expected: Group_name is about to fail! You still have time to rescue it!
       case NotificationMessageType.IS_UNABLE_TO_START: // expected: Group_name is unable to start 10000 Steps Per Day due to lack of users
         builder = getSingleStartBoldSpan(message, flags[type], bold, regular);
         break;

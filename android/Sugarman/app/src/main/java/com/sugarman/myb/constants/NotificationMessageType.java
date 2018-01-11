@@ -17,13 +17,14 @@ public abstract class NotificationMessageType {
   public static final int USER_NAME_REQUESTED = 11;
   public static final int IS_UNABLE_TO_START = 12;
   public static final int PINGED_YOU_TO_MYB = 13;
+  public static final int IS_ABOUT_TO_FAIL = 14;
 
   // order is important!
   public static final int[] IDS = new int[] {
       GROUP_NAME_IN_HOUR, GROUP_NAME_GOOD_LUCK, USER_NAME_HAS_POKED_YOU, USER_NAME_INVITED,
       CONGRATS, DAILY_SUGARMAN, USER_NAME_JOINED, GROUP_NAME_HAS_FAILED,
       ONE_MORE_DAY_TO_ADD_FRIENDS, INVITATION_NO_AVAILABLE, CREATOR_NAME_APPROVED,
-      USER_NAME_REQUESTED, IS_UNABLE_TO_START, PINGED_YOU_TO_MYB
+      USER_NAME_REQUESTED, IS_UNABLE_TO_START, PINGED_YOU_TO_MYB, IS_ABOUT_TO_FAIL
   };
 
   private NotificationMessageType() {
