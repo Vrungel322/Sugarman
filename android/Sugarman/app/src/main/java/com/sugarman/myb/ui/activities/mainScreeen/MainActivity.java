@@ -133,7 +133,6 @@ import com.sugarman.myb.utils.md5.MD5Util;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.lang.ref.SoftReference;
-import java.lang.ref.WeakReference;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -211,7 +210,7 @@ public class MainActivity extends GetUserInfoActivity
   @InjectPresenter MainActivityPresenter mPresenter;
   float angle;
   ImageToDraw img;
-  SoftReference<Bitmap> bmp = new SoftReference<Bitmap>(null);
+  Bitmap bmp;
   ImageView ivAnimatedMan;
   ImageView ivAvatar;
   boolean isUpdating = false;
@@ -943,11 +942,6 @@ public class MainActivity extends GetUserInfoActivity
           .transform(new MaskTransformation(this, R.drawable.main_screen_avatar, false, 0xfff))
           .into(ivAvatar);
     }
-
-
-    bmp = new SoftReference<Bitmap>( BitmapFactory.decodeResource(getResources(), R.drawable.red_circle));
-
-    Timber.e("bmp" + bmp.get());
     updateTodaySteps(todaySteps);
     //int currentItem = vpTrackings.getCurrentItem();
     //
@@ -1051,7 +1045,6 @@ public class MainActivity extends GetUserInfoActivity
   @Override protected void onDestroy() {
     super.onDestroy();
 
-    bmp.clear();
     if (mHelper != null) mHelper.dispose();
 
     mSendFirebaseTokenClient.unregisterListener();
@@ -1598,14 +1591,13 @@ public class MainActivity extends GetUserInfoActivity
 
         if (width > 0 && height > 0) {
 
-          bmp = new SoftReference<>( BitmapFactory.decodeResource(getResources(), R.drawable.red_circle));
-          Timber.e("bmp 2 " + bmp.get());
-
-          if(bmp.get()!=null) {
-            Bitmap bmp1 = img.transform(bmp.get(), angle);
-            bmp1 = Bitmap.createScaledBitmap(bmp1, width, height, false);
-            ivColoredStrip.setImageBitmap(bmp1);
+          if (bmp != null) {
+            bmp.recycle();
+            bmp = null;
           }
+          bmp = BitmapFactory.decodeResource(getResources(), R.drawable.red_circle);
+          ivColoredStrip.setImageBitmap(
+              Bitmap.createScaledBitmap(img.transform(bmp, angle), width, height, false));
         }
       }
     });
