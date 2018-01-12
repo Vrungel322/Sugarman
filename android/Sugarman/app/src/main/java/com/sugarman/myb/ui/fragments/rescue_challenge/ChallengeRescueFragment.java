@@ -62,6 +62,7 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
   private Tracking mTracking;
   private CountDownTimer mTimer;
   private boolean amIFailing = false;
+  private boolean meFailuer;
 
   public ChallengeRescueFragment() {
     super(R.layout.fragment_rescue_challenge);
@@ -102,6 +103,10 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
         if (m.next().getFailureStatus() == Member.FAIL_STATUS_NORMAL) {
           m.remove();
         }
+        if (m.next().getId().equals(SharedPreferenceHelper.getUserId())
+            && m.next().getFailureStatus() == Member.FAIL_STATUS_FAILUER) {
+          meFailuer = true;
+        }
       }
       Timber.e("Members size: " + members.size());
     }
@@ -112,13 +117,18 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
     adapter.notifyDataSetChanged();
 
     ItemClickSupport.addTo(rvMembers).setOnItemClickListener((recyclerView, pos, v) -> {
-      if (adapter.getItem(pos).getFailureStatus() == Member.FAIL_STATUS_SAVED){
-        new SugarmanDialog.Builder(getContext(), DialogConstants.THIS_USER_HAS_SAVED_THE_GROUP).content(
-            R.string.this_user_has_saved_the_group).show();
-      }
-      if (adapter.getItem(pos).getFailureStatus() == Member.FAIL_STATUS_FAILUER){
-        YoYo.with(Techniques.Shake).duration(700).playOn(v);
-        mPresenter.pokeMember(adapter.getItem(pos), mTracking);
+      if (meFailuer) {
+        showToastMessage("You are failuer! Sorry :(");
+      } else {
+        if (adapter.getItem(pos).getFailureStatus() == Member.FAIL_STATUS_SAVED) {
+          new SugarmanDialog.Builder(getContext(),
+              DialogConstants.THIS_USER_HAS_SAVED_THE_GROUP).content(
+              R.string.this_user_has_saved_the_group).show();
+        }
+        if (adapter.getItem(pos).getFailureStatus() == Member.FAIL_STATUS_FAILUER) {
+          YoYo.with(Techniques.Shake).duration(700).playOn(v);
+          mPresenter.pokeMember(adapter.getItem(pos), mTracking);
+        }
       }
     });
 
@@ -152,7 +162,7 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
         break;
       }
     }
-    if(!amIFailing) {
+    if (!amIFailing) {
       rescueButton.setImageResource(R.drawable.kick_kick);
       tvLeftText.setText("Kick them now");
       tvRightText.setText("For a rescue");
@@ -182,8 +192,7 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
         DialogRescueBoldMan.newInstance(mTracking, DialogRescueBoldMan.INVITES)
             .show(getActivity().getFragmentManager(), "DialogRescueBoldMan");
       }
-    }
-    else {
+    } else {
       Timber.e("llRescueAreaClick poke");
       YoYo.with(Techniques.Shake).duration(700).playOn(tvLeftText);
       YoYo.with(Techniques.Shake).duration(700).playOn(tvRightText);
