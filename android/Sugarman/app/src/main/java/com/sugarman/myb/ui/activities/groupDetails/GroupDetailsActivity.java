@@ -2099,7 +2099,7 @@ public class GroupDetailsActivity extends BaseActivity
       tvAsses.setText(Integer.toString(assesCount));
 
       groupStepsWithoutMe = tracking.getGroupStepsCountWithoutMe();
-      setNumberOfUsers();
+      if(!isFailedGroup)setNumberOfUsers();
       membersAdapter.setMySteps(todaySteps);
 
       groupPictureUrl = group.getPictureUrl();
