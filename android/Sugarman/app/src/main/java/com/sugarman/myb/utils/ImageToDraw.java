@@ -10,6 +10,7 @@ import android.graphics.PathEffect;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
+import timber.log.Timber;
 
 public class ImageToDraw {
   private Paint mMaskingPaint = new Paint();
@@ -34,6 +35,8 @@ public class ImageToDraw {
     float y = startY + (float) (Math.sin(Math.toRadians(angle) - Math.PI / 2)) * height / 2
         - (float) (Math.sin(Math.toRadians(angle) - Math.PI / 2)) * strokeWidth
         - (float) (Math.sin(Math.toRadians(angle) - Math.PI / 2)) * padding;
+
+    Timber.e("w; h " + width + " " + height);
 
     Bitmap result = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 

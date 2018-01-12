@@ -531,6 +531,7 @@ public class MainActivity extends GetUserInfoActivity
     setContentView(R.layout.activity_main);
     super.onCreate(savedInstanceState);
     Resources resources = getResources();
+    img = new ImageToDraw(MainActivity.this);
 
     //setupInAppPurchase();
 
@@ -1578,7 +1579,7 @@ public class MainActivity extends GetUserInfoActivity
       color = 0xff54CC14;
     }
     angle = (float) todaySteps / 10000f * 360f;
-    img = new ImageToDraw(MainActivity.this);
+
 
     //bmp =new SoftReference<Bitmap>( BitmapFactory.decodeResource(getResources(), R.drawable.red_circle));
 

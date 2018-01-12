@@ -183,7 +183,7 @@
   <string name="cant_kick_not_in_group">You can\'t kick people if you are not a part of the group!</string>
   <string name="my_steps_today">My steps\nToday</string>
   <string name="total_assess_kicked">Total asses\nKicked</string>
-  <string name="total_group_steps">Total group\nSteps</string>
+  <string name="total_group_steps">Total users\nin group</string>
   <string name="wake_them_up">Type to wake them up…</string>
   <string name="steps">Steps</string>
 

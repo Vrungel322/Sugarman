@@ -234,6 +234,8 @@ public class GroupDetailsActivity extends BaseActivity
   private String groupName;
   private Member[] members = new Member[0];
   private Member[] pendings = new Member[0];
+  private List<Member> failers = new ArrayList<>();
+  private List<Member> savers = new ArrayList<>();
   private long timestampCreate;
   private boolean isEditable = false;
   private int assesCount = 0;
@@ -774,12 +776,7 @@ public class GroupDetailsActivity extends BaseActivity
 
     trackingId = IntentExtractorHelper.getTrackingId(getIntent());
 
-    isFailedGroup = getIntent().getBooleanExtra("isRescueGroup", false);
-    if(isFailedGroup) {
-      rescueCircle.setVisibility(View.VISIBLE);
-      mTextViewRescueTimer.setVisibility(View.VISIBLE);
 
-    }
 
     isMentorGroup = getIntent().getBooleanExtra("isMentorGroup", false);
     if (isMentorGroup) {
@@ -800,6 +797,14 @@ public class GroupDetailsActivity extends BaseActivity
       pieChart.setVisibility(View.GONE);
       groupSteps.setVisibility(View.VISIBLE);
       tvTotalGroupSteps.setText(getResources().getString(R.string.total_group_steps));
+    }
+
+    isFailedGroup = getIntent().getBooleanExtra("isRescueGroup", false);
+    if(isFailedGroup) {
+      rescueCircle.setVisibility(View.VISIBLE);
+      mTextViewRescueTimer.setVisibility(View.VISIBLE);
+
+      tvTotalGroupSteps.setText("Rescues needed");
     }
 
     membersAdapter = new GroupMembersAdapter(getMvpDelegate(), this, this, trackingId, amIMentor);
@@ -1936,7 +1941,7 @@ public class GroupDetailsActivity extends BaseActivity
       if (commentsEntities != null && commentsEntities.size() > 0) {
         mComment = commentsEntities.get(0);
       }
-
+      if(mTracking.getRemainToFailUTCDate()!=null)
       mTimer = new CountDownTimer(
           mTracking.getRemainToFailUTCDate().getTime() - System.currentTimeMillis(), 1000) {
         @Override public void onTick(long l) {
@@ -1983,6 +1988,21 @@ public class GroupDetailsActivity extends BaseActivity
       pendings = tracking.getPending();
       timestampCreate = tracking.getCreatedAtUTCDate().getTime();
       String groupId = tracking.getId();
+
+      savers.clear();
+      failers.clear();
+
+      for(Member member : members)
+      {
+        if(member.getFailureStatus() == Member.FAIL_STATUS_SAVED)
+          savers.add(member);
+        if(member.getFailureStatus()== Member.FAIL_STATUS_FAILUER)
+          failers.add(member);
+      }
+
+      tvSteps.setText(""+failers.size());
+
+
 
       if (!thread.isAlive()) {
         thread = new Thread(new MyThread(tracking));
@@ -2086,7 +2106,7 @@ public class GroupDetailsActivity extends BaseActivity
       tvAsses.setText(Integer.toString(assesCount));
 
       groupStepsWithoutMe = tracking.getGroupStepsCountWithoutMe();
-      setGroupSteps();
+      setNumberOfUsers();
       membersAdapter.setMySteps(todaySteps);
 
       groupPictureUrl = group.getPictureUrl();
@@ -2237,7 +2257,7 @@ public class GroupDetailsActivity extends BaseActivity
   @Subscribe public void onEvent(DebugRealStepAddedEvent event) {
     todaySteps = event.getStepsCalculated();
     setActualData();
-    setGroupSteps();
+    //setGroupSteps();
   }
 
   @Subscribe public void onEvent(RefreshTrackingsEvent event) {
@@ -2251,16 +2271,8 @@ public class GroupDetailsActivity extends BaseActivity
     membersAdapter.setMySteps(todaySteps);
   }
 
-  private void setGroupSteps() {
-    int stepsCount = groupStepsWithoutMe + todaySteps;
-    String stepsPlural =
-        getResources().getQuantityString(R.plurals.group_steps, stepsCount, stepsCount);
-    String stepsCountFormatted = stepsCount < 1000 ? String.valueOf(stepsCount)
-        : String.format(Locale.US, "%,d", stepsCount);
-    String stepsFormatted =
-        String.format(getString(R.string.plural_string_template), stepsCountFormatted,
-            "\n" + stepsPlural);
-    tvSteps.setText(stepsCountFormatted);
+  private void setNumberOfUsers() {
+    tvSteps.setText(""+mTracking.getMembers().length);
   }
 
   private void openAddMembersActivity() {

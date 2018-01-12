@@ -176,7 +176,7 @@
     <string name="cant_kick_not_in_group">Вы не можете толкать людей, если вы не в группе!</string>
     <string name="my_steps_today">Мои шаги\nСегодня</string>
     <string name="total_assess_kicked">Всего\nТолчков</string>
-    <string name="total_group_steps">Всего шагов\nГруппы</string>
+    <string name="total_group_steps">Total users\nin group</string>
     <string name="wake_them_up">Напиши, чтоб разбудить их…</string>
     <string name="steps">Шагов</string>
 

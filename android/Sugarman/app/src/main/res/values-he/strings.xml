@@ -175,7 +175,7 @@
   <string name="cant_kick_not_in_group">אתה לא יכול לבעוט באף אחד כאשר אתה לא חלק מהקבוצה!</string>
   <string name="my_steps_today">הצעדים שלי\nהיום</string>
   <string name="total_assess_kicked">סהכ\nבעיטות</string>
-  <string name="total_group_steps">סהכ צעדים\nבקבוצה</string>
+  <string name="total_group_steps">Total users\nin group</string>
   <string name="wake_them_up">הקלד להעיר אותם</string>
   <string name="steps">בקבוצה</string>
 
