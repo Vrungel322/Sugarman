@@ -17,4 +17,8 @@ public interface OnStepMembersActionListener {
   void onPokeInForeignGroup();
 
   void onPokeSaver();
+
+  void youCantPokeYourself();
+
+  void failuerCantPokeAnyone();
 }

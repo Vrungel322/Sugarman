@@ -776,8 +776,6 @@ public class GroupDetailsActivity extends BaseActivity
 
     trackingId = IntentExtractorHelper.getTrackingId(getIntent());
 
-
-
     isMentorGroup = getIntent().getBooleanExtra("isMentorGroup", false);
     if (isMentorGroup) {
 
@@ -800,7 +798,7 @@ public class GroupDetailsActivity extends BaseActivity
     }
 
     isFailedGroup = getIntent().getBooleanExtra("isRescueGroup", false);
-    if(isFailedGroup) {
+    if (isFailedGroup) {
       rescueCircle.setVisibility(View.VISIBLE);
       mTextViewRescueTimer.setVisibility(View.VISIBLE);
 
@@ -1562,10 +1560,9 @@ public class GroupDetailsActivity extends BaseActivity
     super.onDestroy();
     SocketManager.getInstance().closeAndDisconnectSocket();
     mTrackingInfoClient.unregisterListener();
-    if (mTimer != null){
+    if (mTimer != null) {
       mTimer.cancel();
     }
-
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -1941,21 +1938,22 @@ public class GroupDetailsActivity extends BaseActivity
       if (commentsEntities != null && commentsEntities.size() > 0) {
         mComment = commentsEntities.get(0);
       }
-      if(mTracking.getRemainToFailUTCDate()!=null)
-      mTimer = new CountDownTimer(
-          mTracking.getRemainToFailUTCDate().getTime() - System.currentTimeMillis(), 1000) {
-        @Override public void onTick(long l) {
-          mTextViewRescueTimer.setText(
-              String.format(getString(R.string.you_have_x_time_to_rescue_the_group),
-                  Converters.timeFromMilliseconds(getApplicationContext(), l)));
-        }
+      if (mTracking.getRemainToFailUTCDate() != null) {
+        mTimer = new CountDownTimer(
+            mTracking.getRemainToFailUTCDate().getTime() - System.currentTimeMillis(), 1000) {
+          @Override public void onTick(long l) {
+            mTextViewRescueTimer.setText(
+                String.format(getString(R.string.you_have_x_time_to_rescue_the_group),
+                    Converters.timeFromMilliseconds(getApplicationContext(), l)));
+          }
 
-        @Override public void onFinish() {
-          mTextViewRescueTimer.setText(
-              String.format(getString(R.string.you_have_x_time_to_rescue_the_group),
-                  Converters.timeFromMilliseconds(getApplicationContext(), 1L)));
-        }
-      }.start();
+          @Override public void onFinish() {
+            mTextViewRescueTimer.setText(
+                String.format(getString(R.string.you_have_x_time_to_rescue_the_group),
+                    Converters.timeFromMilliseconds(getApplicationContext(), 1L)));
+          }
+        }.start();
+      }
 
       if (successRate != null && !successRate.isEmpty()) {
         successRateFloat = Float.valueOf(successRate);
@@ -1992,17 +1990,12 @@ public class GroupDetailsActivity extends BaseActivity
       savers.clear();
       failers.clear();
 
-      for(Member member : members)
-      {
-        if(member.getFailureStatus() == Member.FAIL_STATUS_SAVED)
-          savers.add(member);
-        if(member.getFailureStatus()== Member.FAIL_STATUS_FAILUER)
-          failers.add(member);
+      for (Member member : members) {
+        if (member.getFailureStatus() == Member.FAIL_STATUS_SAVED) savers.add(member);
+        if (member.getFailureStatus() == Member.FAIL_STATUS_FAILUER) failers.add(member);
       }
 
-      tvSteps.setText(""+failers.size());
-
-
+      tvSteps.setText("" + failers.size());
 
       if (!thread.isAlive()) {
         thread = new Thread(new MyThread(tracking));
@@ -2183,29 +2176,40 @@ public class GroupDetailsActivity extends BaseActivity
   }
 
   public void massPokeMember() {
-    if (amIInGroup) {
-
-      Map<String, Object> eventValue = new HashMap<>();
-      eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-      eventValue.put(AFInAppEventParameterName.SCORE, 100);
-      AppsFlyerLib.getInstance()
-          .trackEvent(App.getInstance().getApplicationContext(), "af_kick_all", eventValue);
-
-      if (lessThanYou.size() > 0) {
-        for (Member m : lessThanYou) {
-          onPokeMember(new GroupMember(m));
-        }
-        new SugarmanDialog.Builder(this, "kicked_users").content(
-            String.format(getString(R.string.kicked_users), (int) (lessThanYou.size()))).show();
-        int id = new Random().nextInt(7);
-        SoundHelper.play(brokenGlassIds[id]);
-      } else {
-        new SugarmanDialog.Builder(this, "you_cant_kick_anybody").content(
-            getString(R.string.cant_kick_anybody)).show();
+    boolean meFailuer = false;
+    for (Member m : mTracking.getMembers()) {
+      if (m.getId().equals(SharedPreferenceHelper.getUserId())
+          && m.getFailureStatus() == Member.FAIL_STATUS_FAILUER) {
+        meFailuer = true;
       }
+    }
+    if (meFailuer) {
+      showToastMessage(R.string.failuer_can_not_poke_anyone);
     } else {
-      new SugarmanDialog.Builder(this, "you_cant_kick_not_in_group").content(
-          getString(R.string.cant_kick_not_in_group)).show();
+      if (amIInGroup) {
+
+        Map<String, Object> eventValue = new HashMap<>();
+        eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+        eventValue.put(AFInAppEventParameterName.SCORE, 100);
+        AppsFlyerLib.getInstance()
+            .trackEvent(App.getInstance().getApplicationContext(), "af_kick_all", eventValue);
+
+        if (lessThanYou.size() > 0) {
+          for (Member m : lessThanYou) {
+            onPokeMember(new GroupMember(m));
+          }
+          new SugarmanDialog.Builder(this, "kicked_users").content(
+              String.format(getString(R.string.kicked_users), (int) (lessThanYou.size()))).show();
+          int id = new Random().nextInt(7);
+          SoundHelper.play(brokenGlassIds[id]);
+        } else {
+          new SugarmanDialog.Builder(this, "you_cant_kick_anybody").content(
+              getString(R.string.cant_kick_anybody)).show();
+        }
+      } else {
+        new SugarmanDialog.Builder(this, "you_cant_kick_not_in_group").content(
+            getString(R.string.cant_kick_not_in_group)).show();
+      }
     }
   }
 
@@ -2234,6 +2238,14 @@ public class GroupDetailsActivity extends BaseActivity
   @Override public void onPokeSaver() {
     new SugarmanDialog.Builder(this, DialogConstants.THIS_USER_HAS_SAVED_THE_GROUP).content(
         R.string.this_user_has_saved_the_group).show();
+  }
+
+  @Override public void youCantPokeYourself() {
+    showToastMessage(R.string.you_cant_kick_yourself);
+  }
+
+  @Override public void failuerCantPokeAnyone() {
+    showToastMessage(R.string.failuer_can_not_poke_anyone);
   }
 
   @Override public void onPokeMoreThatSelf() {
@@ -2272,7 +2284,7 @@ public class GroupDetailsActivity extends BaseActivity
   }
 
   private void setNumberOfUsers() {
-    tvSteps.setText(""+mTracking.getMembers().length);
+    tvSteps.setText("" + mTracking.getMembers().length);
   }
 
   private void openAddMembersActivity() {

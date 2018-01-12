@@ -513,6 +513,17 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
         if (actionListener.get() != null) {
           GroupMember member = mData.get(position);
           int memberSteps = member.getSteps();
+          if (member.getId().equals(SharedPreferenceHelper.getUserId())){
+            actionListener.get().youCantPokeYourself();
+            return;
+          }
+          for (GroupMember gm : mData) {
+            if (gm.getId().equals(SharedPreferenceHelper.getUserId())
+                && gm.getFailedStatus() == Member.FAIL_STATUS_FAILUER) {
+              actionListener.get().failuerCantPokeAnyone();
+              return;
+            }
+          }
           Timber.e("Failer status = " + member.getFailedStatus());
           if (member.getFailedStatus() == Member.FAIL_STATUS_FAILUER) {
             Timber.e("Clicked on failer");
