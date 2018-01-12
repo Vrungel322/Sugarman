@@ -1,9 +1,7 @@
 package com.sugarman.myb.ui.activities.groupDetails.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
-import android.media.Image;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -126,13 +124,13 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
         break;
 
       case SAVED_MEMBER_TYPE:
-        view =
-            LayoutInflater.from(context).inflate(R.layout.layout_item_group_saved_member, parent, false);
+        view = LayoutInflater.from(context)
+            .inflate(R.layout.layout_item_group_saved_member, parent, false);
         holder = new SavedMemberHolder(view, this);
         break;
       case FAILING_MEMBER_TYPE:
-        view =
-            LayoutInflater.from(context).inflate(R.layout.layout_item_group_failing_member, parent, false);
+        view = LayoutInflater.from(context)
+            .inflate(R.layout.layout_item_group_failing_member, parent, false);
         holder = new FailingMemberHolder(view, this);
         break;
       case PENDING_MEMBER_TYPE:
@@ -163,8 +161,8 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
       int type = getItemViewType(position);
 
       int stepsCount = member.getSteps();
-      String stepsPlural =
-          context.getResources().getQuantityString(R.plurals.steps, stepsCount, stepsCount);
+      //String stepsPlural =
+      //    context.getResources().getQuantityString(R.plurals.steps, stepsCount, stepsCount);
       String stepsCountFormatted = stepsCount < 1000 ? String.valueOf(stepsCount)
           : String.format(Locale.US, "%,d", stepsCount);
       String stepsFormatted = String.format(stepsCountFormatted);
@@ -234,7 +232,8 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
                   .transform(new MaskTransformation(context, R.drawable.profile_mask, false, color))
                   .into(memberHolder.ivAvatar);
 
-              memberHolder.ivBorder.setImageDrawable(context.getResources().getDrawable(R.drawable.border_anim));
+              memberHolder.ivBorder.setImageDrawable(
+                  memberHolder.ivBorder.getContext().getResources().getDrawable(R.drawable.border_anim));
               memberHolder.ivBorder.setColorFilter(color);
               //Drawable drawable = context.getResources().getDrawable(R.drawable.hexagon_border);
               //System.out.println("Drawable + " + drawable);
@@ -261,10 +260,7 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
                   .transform(new CropCircleTransformation(color, 4))
                   .into(memberHolder.ivAvatar);
 
-
               memberHolder.ivBorder.setColorFilter(color);
-
-
             }
           }
 
@@ -450,8 +446,7 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
                   .into(savedMemberHolder.ivAvatar);
             }
           }
-          Animation animation =
-              AnimationUtils.loadAnimation(context, R.anim.anim_rescue_scale_up);
+          Animation animation = AnimationUtils.loadAnimation(context, R.anim.anim_rescue_scale_up);
           savedMemberHolder.ivAnimationCircle.startAnimation(animation);
           break;
         case PENDING_LABEL_TYPE:
@@ -519,17 +514,13 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
           GroupMember member = mData.get(position);
           int memberSteps = member.getSteps();
           Timber.e("Failer status = " + member.getFailedStatus());
-          if(member.getFailedStatus()==Member.FAIL_STATUS_FAILUER)
-          {
+          if (member.getFailedStatus() == Member.FAIL_STATUS_FAILUER) {
             Timber.e("Clicked on failer");
             actionListener.get().onPokeMember(member);
-          }
-          else if(member.getFailedStatus()==Member.FAIL_STATUS_SAVED)
-          {
+          } else if (member.getFailedStatus() == Member.FAIL_STATUS_SAVED) {
             Timber.e("Clicked on saver");
             actionListener.get().onPokeSaver();
-          }
-          else {
+          } else {
             if (myPosition == -1) {
               actionListener.get().onPokeInForeignGroup();
             } else if (TextUtils.equals(member.getId(), userId)) {
@@ -593,12 +584,10 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
         }
       }
       //Timber.e(groupMember.getId() + " " +member.getIsFailer());
-      if(member.getFailureStatus() == Member.FAIL_STATUS_FAILUER) {
+      if (member.getFailureStatus() == Member.FAIL_STATUS_FAILUER) {
         groupMember.setGroupType(FAILING_MEMBER_TYPE);
         Timber.e("FAILER");
-      }
-      else if(member.getFailureStatus()==2)
-      {
+      } else if (member.getFailureStatus() == 2) {
         groupMember.setGroupType(SAVED_MEMBER_TYPE);
       }
 
@@ -736,7 +725,7 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
           }
           break;
         default:
-          Log.d(TAG,
+          Timber.e(
               "Click on not processed view with id " + v.getResources().getResourceEntryName(id));
           break;
       }
@@ -776,7 +765,7 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
           }
           break;
         default:
-          Log.d(TAG,
+          Timber.e(
               "Click on not processed view with id " + v.getResources().getResourceEntryName(id));
           break;
       }
@@ -826,7 +815,7 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
           }
           break;
         default:
-          Log.d(TAG,
+          Timber.e(
               "Click on not processed view with id " + v.getResources().getResourceEntryName(id));
           break;
       }
@@ -871,11 +860,9 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
           }
           break;
         default:
-          Log.d(TAG,
-              "Click on not processed view with id " + v.getResources().getResourceEntryName(id));
+          Timber.e("Click on not processed view with id " + v.getResources().getResourceEntryName(id));
           break;
       }
     }
   }
-
 }
