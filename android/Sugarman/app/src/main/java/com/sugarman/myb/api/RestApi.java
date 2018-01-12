@@ -228,7 +228,7 @@ public class RestApi {
   }
 
   public Observable<Response<CreateGroupResponse>> sendInvitersForRescue(String userId,
-      List<FacebookFriend> selectedMembers) {
+      List<FacebookFriend> selectedMembers, String trackingId) {
     RequestBody uId = RequestBody.create(MediaType.parse(Constants.TEXT_PLAIN_TYPE), userId);
 
     List<RequestBody> ids = new ArrayList<>();
@@ -267,7 +267,7 @@ public class RestApi {
       }
     }
     return api.sendInvitersForRescue(uId, ids, vkids, phoneNumbers, names, vkNames, phoneNames,
-        pictures, vkpictures, phonePictures);
+        pictures, vkpictures, phonePictures,trackingId);
   }
 
   public Observable<Response<ABTesting>> fetchAorBtesting() {

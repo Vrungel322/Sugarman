@@ -140,6 +140,7 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
     }
     if (mMode == INVITES) {
       Intent intent = new Intent(getActivity(), InviteForRescueActivity.class);
+      intent.putExtra(InviteForRescueActivity.TRACKING, mTracking);
       startActivityForResult(intent, Constants.CREATE_GROUP_ACTIVITY_REQUEST_CODE);
     }
   }

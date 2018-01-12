@@ -7,6 +7,7 @@ import com.google.gson.JsonSyntaxException;
 import com.sugarman.myb.App;
 import com.sugarman.myb.api.clients.BaseApiClient;
 import com.sugarman.myb.api.models.responses.ErrorResponse;
+import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.api.models.responses.me.groups.CreateGroupResponse;
 import com.sugarman.myb.base.BasicPresenter;
@@ -111,8 +112,8 @@ import static com.sugarman.myb.api.clients.BaseApiClient.FAILURE_PARSE_ERROR_RES
     }
   }
 
-  public void sendInvitersForRescue(List<FacebookFriend> members) {
-    Subscription subscription = mDataManager.sendInvitersForRescue(members)
+  public void sendInvitersForRescue(List<FacebookFriend> members, Tracking tracking) {
+    Subscription subscription = mDataManager.sendInvitersForRescue(members, tracking.getId())
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(createGroupResponseResponse -> {  CreateGroupResponse dataResponse = createGroupResponseResponse.body();
           ResponseBody errorBody = createGroupResponseResponse.errorBody();

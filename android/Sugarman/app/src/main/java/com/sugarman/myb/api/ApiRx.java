@@ -127,10 +127,11 @@ public interface ApiRx {
 
   @POST("v1/pokes") Observable<Response<Object>> poke(@Body PokeRequest request);
 
-  @POST("v1/in_app_purchases") Observable<Response<Void>> checkInAppBillingOneDollar(@Header("tracking_id") String trackingId,
-      @Body InAppSinglePurchase inAppSinglePurchase);
+  @POST("v1/in_app_purchases") Observable<Response<Void>> checkInAppBillingOneDollar(
+      @Header("tracking_id") String trackingId, @Body InAppSinglePurchase inAppSinglePurchase);
 
-  @Multipart @POST("v1/invite_rescue") Observable<Response<CreateGroupResponse>> sendInvitersForRescue(
+  @Multipart @POST("v1/invite_rescue")
+  Observable<Response<CreateGroupResponse>> sendInvitersForRescue(
       @Part("user_id") RequestBody userId, @Part("members[][fbid]") List<RequestBody> ids,
       @Part("members[][vkid]") List<RequestBody> vkids,
       @Part("members[][phone_number]") List<RequestBody> phoneNumbers,
@@ -139,7 +140,8 @@ public interface ApiRx {
       @Part("members[][phone_name]") List<RequestBody> phoneNames,
       @Part("members[][picture_url]") List<RequestBody> pictures,
       @Part("members[][picture_url_vk]") List<RequestBody> picturesVK,
-      @Part("members[][picture_url_phone]") List<RequestBody> picturesPhone);
+      @Part("members[][picture_url_phone]") List<RequestBody> picturesPhone,
+      @Part("tracking_id") String trackingId);
 
   @GET("v1/ab_testing") Observable<Response<ABTesting>> fetchAorBtesting();
 }

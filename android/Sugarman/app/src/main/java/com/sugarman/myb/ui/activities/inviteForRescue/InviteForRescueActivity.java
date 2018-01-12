@@ -104,6 +104,7 @@ public class InviteForRescueActivity extends BaseActivity
     IInviteForRescueActivityView, ApiCheckPhoneListener, ApiCheckVkListener {
 
   private static final String TAG = CreateGroupActivity.class.getName();
+  public static final String TRACKING = "TRACKING";
   private final List<FacebookFriend> filtered = new ArrayList<>();
   private final List<FacebookFriend> allFriends = new ArrayList<>();
   private final List<FacebookFriend> invitable = new ArrayList<>();
@@ -119,6 +120,7 @@ public class InviteForRescueActivity extends BaseActivity
   MaskImage mi;
   @InjectPresenter InviteForRescueActivityPresenter mPresenter;
   View vApply;
+  private Tracking mTracking;
   private FriendsAdapter friendsAdapter;
   private RecyclerView rcvFriends;
   private ImageView ivGroupAvatar;
@@ -204,6 +206,7 @@ public class InviteForRescueActivity extends BaseActivity
     setContentView(R.layout.activity_invite_for_rescue);
     super.onCreate(savedStateInstance);
     pb.setVisibility(View.GONE);
+    mTracking = getIntent().getExtras().getParcelable(TRACKING);
     pb.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
 
@@ -975,7 +978,7 @@ hideProgress();
     mPresenter.checkRuleXNewUsersInvite(members);
     Timber.e("members " + members.size());
     //mCreateGroupClient.createGroup(members, "TEST", selectedFile, InviteForRescueActivity.this); // TODO: 12/13/17 change this
-    mPresenter.sendInvitersForRescue(members);
+    mPresenter.sendInvitersForRescue(members, mTracking);
   }
 
   private void setFriends(List<FacebookFriend> friends) {

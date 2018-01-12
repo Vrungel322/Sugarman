@@ -334,8 +334,8 @@ public class DataManager {
   }
 
   public Observable<Response<CreateGroupResponse>> sendInvitersForRescue(
-      List<FacebookFriend> members) {
-    return mRestApi.sendInvitersForRescue(SharedPreferenceHelper.getUserId(),members);
+      List<FacebookFriend> members, String trackingId) {
+    return mRestApi.sendInvitersForRescue(SharedPreferenceHelper.getUserId(),members,trackingId);
   }
 
   public Observable<Response<ABTesting>> fetchAorBtesting() {
