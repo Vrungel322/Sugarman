@@ -15,6 +15,7 @@ import timber.log.Timber;
 public class ImageToDraw {
   private Paint mMaskingPaint = new Paint();
   private Context context;
+  private Bitmap mResult;
 
   public ImageToDraw(Context context) {
     this.context = context;
@@ -38,9 +39,15 @@ public class ImageToDraw {
 
     Timber.e("w; h " + width + " " + height);
 
-    Bitmap result = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+    // clear Bitmap
+    if (mResult != null) {
+      mResult.recycle();
+      mResult = null;
+    }
 
-    Canvas canvas = new Canvas(result);
+    mResult = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+
+    Canvas canvas = new Canvas(mResult);
     RectF mBigOval = new RectF(padding, padding, width - padding, height - padding);
     Paint p = new Paint();
     DashPathEffect dashPath = new DashPathEffect(new float[] { 5, 5 }, (float) 1.0);
@@ -72,6 +79,6 @@ public class ImageToDraw {
 
     mMaskingPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
     canvas.drawBitmap(source, 0, 0, mMaskingPaint);
-    return result;
+    return mResult;
   }
 }
