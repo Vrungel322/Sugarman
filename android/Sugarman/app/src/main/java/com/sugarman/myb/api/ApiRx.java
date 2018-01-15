@@ -61,7 +61,7 @@ public interface ApiRx {
       @Part("members[][phone_number]") List<RequestBody> phoneNumbers,
       @Part("members[][name]") List<RequestBody> names,
       @Part("members[][vkname]") List<RequestBody> vknames,
-      @Part("members[][phone_name]") List<RequestBody> phoneNames,
+      @Part("members[][name_phone]") List<RequestBody> phoneNames,
       @Part("members[][picture_url]") List<RequestBody> pictures,
       @Part("members[][picture_url_vk]") List<RequestBody> picturesVK,
       @Part("members[][picture_url_phone]") List<RequestBody> picturesPhone);
@@ -137,7 +137,7 @@ public interface ApiRx {
       @Part("members[][phone_number]") List<RequestBody> phoneNumbers,
       @Part("members[][name]") List<RequestBody> names,
       @Part("members[][vkname]") List<RequestBody> vknames,
-      @Part("members[][phone_name]") List<RequestBody> phoneNames,
+      @Part("members[][name_phone]") List<RequestBody> phoneNames,
       @Part("members[][picture_url]") List<RequestBody> pictures,
       @Part("members[][picture_url_vk]") List<RequestBody> picturesVK,
       @Part("members[][picture_url_phone]") List<RequestBody> picturesPhone,
