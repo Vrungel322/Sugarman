@@ -294,17 +294,17 @@
                         android:layout_weight="91"
                         android:id="@+id/linear_group_timer"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:visibility="gone">
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_gravity="center"
                             android:gravity="center"
                             android:paddingBottom="25dp"
-                            android:layout_height="match_parent">
+                            android:layout_height="wrap_content">
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:gravity="center"
                             android:orientation="vertical">

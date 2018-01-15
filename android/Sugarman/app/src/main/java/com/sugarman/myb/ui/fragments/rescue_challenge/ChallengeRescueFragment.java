@@ -98,12 +98,19 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
     List<Member> members = new ArrayList<>();
     members.addAll(Arrays.asList(mTracking.getMembers()));
     Timber.e("onViewCreated got inside list size " + members.size());
-    for (Iterator<Member> m = members.iterator(); m.hasNext(); ) {
-      {
-        if (m.next().getFailureStatus() == Member.FAIL_STATUS_NORMAL) {
-          m.remove();
-        }
-      }
+    //for (Iterator<Member> m = members.iterator(); m.hasNext(); ) {
+    //  {
+    //    if (m.next().getFailureStatus() == Member.FAIL_STATUS_NORMAL) {
+    //      m.remove();
+    //    }
+    //  }
+    //  Timber.e("Members size: " + members.size());
+    //}
+
+    for(int i = 0 ; i<members.size();i++)
+    {
+      if(members.get(i).getFailureStatus()==Member.FAIL_STATUS_NORMAL)
+        members.remove(i);
       Timber.e("Members size: " + members.size());
     }
 
