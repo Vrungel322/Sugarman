@@ -103,12 +103,15 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
         if (m.next().getFailureStatus() == Member.FAIL_STATUS_NORMAL) {
           m.remove();
         }
-        if (m.next().getId().equals(SharedPreferenceHelper.getUserId())
-            && m.next().getFailureStatus() == Member.FAIL_STATUS_FAILUER) {
-          meFailuer = true;
-        }
       }
       Timber.e("Members size: " + members.size());
+    }
+
+    for (Member m : members) {
+      if (m.getId().equals(SharedPreferenceHelper.getUserId())
+          && m.getFailureStatus() == Member.FAIL_STATUS_FAILUER) {
+        meFailuer = true;
+      }
     }
     adapter = new RescueMembersAdapter(getMvpDelegate(), members);
     rvMembers.setLayoutManager(
@@ -164,8 +167,8 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
     }
     if (!amIFailing) {
       rescueButton.setImageResource(R.drawable.kick_kick);
-      tvLeftText.setText("Kick them now");
-      tvRightText.setText("For a rescue");
+      tvLeftText.setText(getString(R.string.kick_them_now));
+      tvRightText.setText(getString(R.string.for_rescue));
     }
   }
 
@@ -184,7 +187,7 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
   }
 
   @OnClick(R.id.llRescueArea) public void llRescueAreaClick() {
-    if (!tvLeftText.getText().equals("Kick them now")) {
+    if (amIFailing) {
       if (SharedPreferenceHelper.getAorB() == ABTesting.B) {
         DialogRescueBoldMan.newInstance(mTracking, DialogRescueBoldMan.MONEY)
             .show(getActivity().getFragmentManager(), "DialogRescueBoldMan");

@@ -10,4 +10,6 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 @StateStrategyType(AddToEndSingleStrategy.class)
 public interface IDialogRescueBoldManView   extends MvpView {
   void enableButton();
+
+  void showCongratulationsDialog();
 }

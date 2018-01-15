@@ -600,5 +600,9 @@
   <string name="you_have_x_time_to_rescue_the_group">יש עוד %1$s להצלת הקבוצה</string>
   <string name="you_group_has_been_rescued">Your group %1$s has been rescued!</string>
   <string name="mentor_already_owned">Mentor already owned</string>
+  <string name="you_cant_kick_yourself">אתה לא יכול לבעוט בעצמך!</string>
+  <string name="failuer_can_not_poke_anyone">הנכשל לא יכול לבעוט באך אחד</string>
+  <string name="kick_them_now">תבעט בהם</string>
+  <string name="for_rescue">" שיצילו את הקבוצה"</string>
 
 </resources>

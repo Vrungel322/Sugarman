@@ -291,7 +291,7 @@ import timber.log.Timber;
 
   public void getAnimationByName(String name, String filesDir) {
 
-    Timber.e("Animation name : " + name + " filesDir : " + filesDir);
+    Timber.e("getAnimationByName Animation name : " + name + " filesDir : " + filesDir);
 
     ImageModel anim = mDataManager.getAnimationByNameFromRealm(name);
     if (anim != null) {
@@ -315,7 +315,7 @@ import timber.log.Timber;
         }else {
 
           if (!SharedPreferenceHelper.isBlockedGetAnimationByName()) {
-            Timber.e("Start by need");
+            Timber.e("getAnimationByName Start by need");
 
             AnimationHelper animationHelper =
                 new AnimationHelper(new File(filesDir + "/animations/"), new ArrayList<>(anim.getImageUrl()));
@@ -343,7 +343,7 @@ import timber.log.Timber;
         }
       }
 
-      Timber.e("Animation list size : " + animationList.size());
+      Timber.e("getAnimationByName Animation list size : " + animationList.size());
       //for (Drawable drawable : animationList) {
       //  animationDrawable.addFrame(drawable, duration);
       //}
