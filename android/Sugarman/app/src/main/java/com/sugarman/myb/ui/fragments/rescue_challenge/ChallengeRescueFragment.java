@@ -103,12 +103,15 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
         if (m.next().getFailureStatus() == Member.FAIL_STATUS_NORMAL) {
           m.remove();
         }
-        if (m.next().getId().equals(SharedPreferenceHelper.getUserId())
-            && m.next().getFailureStatus() == Member.FAIL_STATUS_FAILUER) {
-          meFailuer = true;
-        }
       }
       Timber.e("Members size: " + members.size());
+    }
+
+    for (Member m : members) {
+      if (m.getId().equals(SharedPreferenceHelper.getUserId())
+          && m.getFailureStatus() == Member.FAIL_STATUS_FAILUER) {
+        meFailuer = true;
+      }
     }
     adapter = new RescueMembersAdapter(getMvpDelegate(), members);
     rvMembers.setLayoutManager(

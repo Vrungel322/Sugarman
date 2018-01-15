@@ -23,6 +23,7 @@ import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.constants.Config;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.ui.activities.inviteForRescue.InviteForRescueActivity;
+import com.sugarman.myb.ui.dialogs.dialogRescueGirlCongratulations.DialogRescueGirCongratulations;
 import com.sugarman.myb.ui.fragments.rescue_challenge.adapters.RescueMembersAdapter;
 import com.sugarman.myb.ui.views.CropSquareTransformation;
 import com.sugarman.myb.ui.views.MaskTransformation;
@@ -206,5 +207,10 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
 
   @Override public void enableButton() {
     mImageViewRescueLogo.setClickable(true);
+  }
+
+  @Override public void showCongratulationsDialog() {
+    DialogRescueGirCongratulations.newInstance(mTracking) .show(getActivity().getFragmentManager(), "DialogRescueGirCongratulations");
+
   }
 }
