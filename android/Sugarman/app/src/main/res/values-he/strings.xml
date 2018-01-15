@@ -38,7 +38,6 @@
   <string name="divider">|</string>
 
   <!-- PROGRESS FRAGMENT -->
-  <string name="loading">Loading&#8230;</string>
 
   <!-- MAIN ACTIVITY -->
   <string name="steps_today_caps">צעדים היום</string>
@@ -591,7 +590,9 @@
   <string name="you_still_have_time_to_rescue_the_group">אתה עדיין צריך להציל את הקבוצה</string>
   <string name="your_group_has_failed_thanks_to_you_and">הקבוצה %1$s נפלה תודות לך ול..:</string>
   <string name="the_group_needs_x_more_rescues">הקבוצה צריכה עוד %1$d הצלות</string>
-  <string name="you_have_x_time_to_rescue_the_group">יש עוד %1$s להצלת הקבוצה</string>
+  <string name="you_have_x_time_to_rescue_the_group">%1$s</string>
+  <string name="you_group_has_been_rescued">Your group %1$s has been rescued!</string>
+  <string name="mentor_already_owned">Mentor already owned</string>
   <string name="you_cant_kick_yourself">אתה לא יכול לבעוט בעצמך!</string>
   <string name="failuer_can_not_poke_anyone">הנכשל לא יכול לבעוט באך אחד</string>
   <string name="kick_them_now">תבעט בהם</string>

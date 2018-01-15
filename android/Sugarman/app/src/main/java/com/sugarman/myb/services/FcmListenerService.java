@@ -49,6 +49,8 @@ public class FcmListenerService extends FirebaseMessagingService {
       flags = getResources().getStringArray(R.array.notifications_types);
     }
 
+    Timber.e("message : " + message.getData().get(Constants.FCM_MESSAGE) + " ;44444; " + message.getData().get(Constants.FCM_NOTIFICATION));
+
     App.getEventBus().post(new GetInAppNotificationsEvent());
 
     Map data = message.getData();

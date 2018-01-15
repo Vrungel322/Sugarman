@@ -208,6 +208,7 @@
       app:layout_constraintEnd_toEndOf="@+id/linearLayout6"
       app:layout_constraintStart_toStartOf="@+id/linearLayout6"
       app:layout_constraintTop_toTopOf="@+id/linearLayout6"
+      android:visibility="gone"
       style="?android:attr/progressBarStyle"
       />
 
