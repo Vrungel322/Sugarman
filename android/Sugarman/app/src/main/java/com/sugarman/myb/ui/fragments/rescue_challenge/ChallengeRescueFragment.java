@@ -164,8 +164,8 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
     }
     if (!amIFailing) {
       rescueButton.setImageResource(R.drawable.kick_kick);
-      tvLeftText.setText("Kick them now");
-      tvRightText.setText("For a rescue");
+      tvLeftText.setText(getString(R.string.kick_them_now));
+      tvRightText.setText(getString(R.string.for_rescue));
     }
   }
 
