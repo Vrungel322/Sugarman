@@ -556,5 +556,8 @@
     <string name="failuer_can_not_poke_anyone">Проваливший, не может подталкивать!</string>
     <string name="kick_them_now">Подтолкни их</string>
     <string name="for_rescue">и спаси группу</string>
+  <string name="you_are_failuer">Вы проваливший! ;(</string>
+    <string name="rescue">Спасти</string>
+    <string name="now">сейчас</string>
 
 </resources>

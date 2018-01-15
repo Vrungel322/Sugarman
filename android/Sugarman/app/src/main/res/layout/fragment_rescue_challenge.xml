@@ -160,7 +160,7 @@
             android:textColor="@color/red"
             android:textStyle="bold"
             android:textSize="16sp"
-            android:text="RESCUE"
+            android:text="@string/rescue"
             />
 
         <TextView
@@ -173,7 +173,7 @@
             android:textColor="@color/red"
             android:textStyle="bold"
             android:textSize="16sp"
-            android:text="NOW!!!"
+            android:text="@string/now"
             />
 
       </RelativeLayout>
