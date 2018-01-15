@@ -121,7 +121,7 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
 
     ItemClickSupport.addTo(rvMembers).setOnItemClickListener((recyclerView, pos, v) -> {
       if (meFailuer) {
-        showToastMessage("You are failuer! Sorry :(");
+        showToastMessage(R.string.you_are_failuer);
       } else {
         if (adapter.getItem(pos).getFailureStatus() == Member.FAIL_STATUS_SAVED) {
           new SugarmanDialog.Builder(getContext(),
