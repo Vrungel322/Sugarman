@@ -999,6 +999,7 @@ public class MainActivity extends GetUserInfoActivity
 
   @Override protected void onStart() {
     super.onStart();
+    Timber.e("onStart");
 
     //if(animationMan!=null)
     //animationMan.start();
@@ -1032,6 +1033,8 @@ public class MainActivity extends GetUserInfoActivity
     App.getEventBus().post(new DebugRequestStepsEvent(todaySteps));
     showFullscreenNotifications();
     updateAnimations(todaySteps);
+    mGetMyTrackingsClient.getMyTrackings(true);
+
   }
 
   @Override protected void onStop() {

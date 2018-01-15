@@ -211,6 +211,7 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
 
   @Override public void showCongratulationsDialog() {
     DialogRescueGirCongratulations.newInstance(mTracking) .show(getActivity().getFragmentManager(), "DialogRescueGirCongratulations");
+    getDialog().cancel();
 
   }
 }

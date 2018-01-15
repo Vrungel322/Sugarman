@@ -578,7 +578,7 @@
   <string name="kick_them_now_for_a_rescue">Kick them now \n for a rescue!!!</string>
   <string name="your_group_has_failed_thanks_to">Your group %1$s has Failed! thanks to:</string>
   <string name="you_still_have_time_to_rescue_the_group">You still have time to rescue the group!</string>
-  <string name="your_group_has_failed_thanks_to_you_and">Your group %1$s has  FAILED! thanks to you and:</string>
+  <string name="your_group_has_failed_thanks_to_you_and">Your group %1$s has  FAILED! thanks to%2$s and:</string>
   <string name="the_group_needs_x_more_rescues">The group needs %1$d more rescues</string>
   <string name="you_have_x_time_to_rescue_the_group">%1$s</string>
   <string name="you_group_has_been_rescued">Your group %1$s has been rescued!</string>
@@ -591,5 +591,7 @@
   <string name="you_are_failuer">You are failuer! Sorry :(</string>
   <string name="rescue">RESCUE</string>
   <string name="now">NOW!!!</string>
+  <string name="you"> you</string>
+  <string name="empty"> </string>
 
 </resources>

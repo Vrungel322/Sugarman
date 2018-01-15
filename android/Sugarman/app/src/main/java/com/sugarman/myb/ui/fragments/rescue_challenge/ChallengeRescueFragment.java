@@ -77,7 +77,7 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
     return fragment;
   }
 
-  @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
 
     mChallengeItem = getArguments().getParcelable(RESCUE_CHALLENGE);
@@ -142,9 +142,26 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
       }
     });
 
+     for (Member m : mTracking.getMembers()) {
+       if (m.getFailureStatus() == Member.FAIL_STATUS_FAILUER && m.getId()
+           .equals(SharedPreferenceHelper.getUserId())) {
+         Timber.e("Me Current user is failure");
+         amIFailing = true;
+         break;
+       }
+     }
+
+    if (amIFailing){
+      mTextViewGroupName.setText(
+          String.format(getString(R.string.your_group_has_failed_thanks_to_you_and),
+              mTracking.getGroup().getName(),getString(R.string.you)));
+    }
+    else {
     mTextViewGroupName.setText(
         String.format(getString(R.string.your_group_has_failed_thanks_to_you_and),
-            mTracking.getGroup().getName()));
+            mTracking.getGroup().getName(),getString(R.string.empty)));
+    }
+
 
     mTextViewRescueCount.setText(String.format(getString(R.string.the_group_needs_x_more_rescues),
         (int) adapter.getFailureMembersCount()));
@@ -164,14 +181,7 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
       }
     }.start();
 
-    for (Member m : mTracking.getMembers()) {
-      if (m.getFailureStatus() == Member.FAIL_STATUS_FAILUER && m.getId()
-          .equals(SharedPreferenceHelper.getUserId())) {
-        Timber.e("Me Current user is failure");
-        amIFailing = true;
-        break;
-      }
-    }
+
     if (!amIFailing) {
       rescueButton.setImageResource(R.drawable.kick_kick);
       tvLeftText.setText(getString(R.string.kick_them_now));
