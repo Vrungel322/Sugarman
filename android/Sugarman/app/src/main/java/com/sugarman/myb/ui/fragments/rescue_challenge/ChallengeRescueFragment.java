@@ -184,7 +184,7 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
   }
 
   @OnClick(R.id.llRescueArea) public void llRescueAreaClick() {
-    if (!tvLeftText.getText().equals("Kick them now")) {
+    if (amIFailing) {
       if (SharedPreferenceHelper.getAorB() == ABTesting.B) {
         DialogRescueBoldMan.newInstance(mTracking, DialogRescueBoldMan.MONEY)
             .show(getActivity().getFragmentManager(), "DialogRescueBoldMan");
