@@ -341,8 +341,6 @@
     <string name="title_activity_approve_otp">ApproveOtpActivity</string>
     <string name="empty_field_denied">%1$s can not be empty</string>
     <string name="purchase_request_send">We hope you will enjoy your purchase.</string>
-    <string name="you_cant_kick_yourself">You can not kick yourself!</string>
-    <string name="failuer_can_not_poke_anyone">Failers can\'t poke anyone!</string>
     <string name="slots_error">You can have only 3 mentors</string>
 
 
