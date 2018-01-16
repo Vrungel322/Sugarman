@@ -2,6 +2,7 @@ package com.sugarman.myb.ui.activities.mentorDetail;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.sugarman.myb.App;
+import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.base.BasicPresenter;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.models.iab.PurchaseForServer;
@@ -54,8 +55,16 @@ import timber.log.Timber;
               subscriptionsResponse.body().getSubscriptionEntities());
           Timber.e(String.valueOf(subscriptionsResponse.code()));
           if (subscriptionsResponse.code() == 200) {
-            getViewState().moveToMainActivity();
-            //getViewState().moveToMentorsDetailActivity(subscriptionsResponse.body().getTracking());
+            //getViewState().moveToMainActivity();
+            Tracking tracking = subscriptionsResponse.body().getTracking();
+            if (tracking != null) {
+              Timber.e("checkInAppBilling tracking != null");
+              getViewState().moveToMentorsDetailActivity(tracking);
+            }
+            else {
+              Timber.e("checkInAppBilling tracking == null");
+
+            }
           }
         }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
