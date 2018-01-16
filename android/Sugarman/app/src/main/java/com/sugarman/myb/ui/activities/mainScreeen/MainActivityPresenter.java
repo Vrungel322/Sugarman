@@ -104,6 +104,7 @@ import timber.log.Timber;
               .eventName(rule.getName())
               .nameOfAnim(rule.getNameOfAnim())
               .numValue(rule.getCount())
+              .groupCount(rule.getGroupCount())
               .build());
         } else {
           launchLastAnim(rulesTempo, todaySteps);

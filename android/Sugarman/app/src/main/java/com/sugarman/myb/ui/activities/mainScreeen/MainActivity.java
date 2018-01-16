@@ -132,7 +132,6 @@ import com.sugarman.myb.utils.licence.LicenceChecker;
 import com.sugarman.myb.utils.md5.MD5Util;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.lang.ref.SoftReference;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -1034,7 +1033,6 @@ public class MainActivity extends GetUserInfoActivity
     showFullscreenNotifications();
     updateAnimations(todaySteps);
     mGetMyTrackingsClient.getMyTrackings(true);
-
   }
 
   @Override protected void onStop() {
@@ -1583,7 +1581,6 @@ public class MainActivity extends GetUserInfoActivity
     }
     angle = (float) todaySteps / 10000f * 360f;
 
-
     //bmp =new SoftReference<Bitmap>( BitmapFactory.decodeResource(getResources(), R.drawable.red_circle));
 
     ViewTreeObserver vto = ivColoredStrip.getViewTreeObserver();
@@ -1949,7 +1946,7 @@ public class MainActivity extends GetUserInfoActivity
         ivAnimatedMan.getAnimation().cancel();
       }
       //Timber.e("" + animation.getNumberOfFrames());
-      if (App.isAppForeground()){
+      if (App.isAppForeground()) {
         ivAnimatedMan.setImageDrawable(animation);
         animation.start();
       }
@@ -1980,10 +1977,12 @@ public class MainActivity extends GetUserInfoActivity
     }
     if (customUserEvent.getEventName().equals(Constants.EVENT_X_STEPS_DONE)
         && customUserEvent.getStrType().equals(ANIMATION_ACTION)) {
-      doEventAction(customUserEvent, () -> {
-        mPresenter.getAnimationByName(customUserEvent.getNameOfAnim(),
-            getFilesDir().getAbsolutePath());
-      });
+      if (customUserEvent.getGroupCount() != null && customUserEvent.getGroupCount() != 0) {
+        doEventAction(customUserEvent, () -> {
+          mPresenter.getAnimationByName(customUserEvent.getNameOfAnim(),
+              getFilesDir().getAbsolutePath());
+        });
+      }
     }
     if (customUserEvent.getEventName().equals(Constants.EVENT_PLAY_ANIMATION)) {
       doEventAction(customUserEvent, () -> {
