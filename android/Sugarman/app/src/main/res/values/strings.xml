@@ -588,10 +588,12 @@
   <string name="failuer_can_not_poke_anyone">Failers can\'t poke anyone!</string>
   <string name="kick_them_now">Kick them now</string>
   <string name="for_rescue">For a rescue</string>
-  <string name="you_are_failuer">You are failuer! Sorry :(</string>
+  <string name="you_are_failuer">You are failer! Sorry :(</string>
   <string name="rescue">RESCUE</string>
   <string name="now">NOW!!!</string>
   <string name="you"> you</string>
   <string name="empty"> </string>
+  <string name="rescues_needed">Rescues needed</string>
+  <string name="you_got_x_rescues">You got %1$s rescues</string>
 
 </resources>

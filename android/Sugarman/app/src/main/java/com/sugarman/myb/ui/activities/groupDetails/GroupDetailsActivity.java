@@ -802,7 +802,7 @@ public class GroupDetailsActivity extends BaseActivity
       rescueCircle.setVisibility(View.VISIBLE);
       mTextViewRescueTimer.setVisibility(View.VISIBLE);
 
-      tvTotalGroupSteps.setText("Rescues needed");
+      tvTotalGroupSteps.setText(getResources().getString(R.string.rescues_needed));
     }
 
     membersAdapter = new GroupMembersAdapter(getMvpDelegate(), this, this, trackingId, amIMentor);

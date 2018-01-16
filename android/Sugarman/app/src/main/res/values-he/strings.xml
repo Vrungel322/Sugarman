@@ -174,7 +174,7 @@
   <string name="cant_kick_not_in_group">אתה לא יכול לבעוט באף אחד כאשר אתה לא חלק מהקבוצה!</string>
   <string name="my_steps_today">הצעדים שלי\nהיום</string>
   <string name="total_assess_kicked">סהכ\nבעיטות</string>
-  <string name="total_group_steps">Total users\nin group</string>
+  <string name="total_group_steps">סה\'\'כ משתמשים בקבוצה </string>
   <string name="wake_them_up">הקלד להעיר אותם</string>
   <string name="steps">בקבוצה</string>
 
@@ -590,16 +590,23 @@
   <string name="you_still_have_time_to_rescue_the_group">אתה עדיין צריך להציל את הקבוצה</string>
   <string name="the_group_needs_x_more_rescues">הקבוצה צריכה עוד %1$d הצלות</string>
   <string name="you_have_x_time_to_rescue_the_group">%1$s</string>
-  <string name="you_group_has_been_rescued">Your group %1$s has been rescued!</string>
-  <string name="mentor_already_owned">Mentor already owned</string>
+  <string name="you_group_has_been_rescued">הקבוצבה שלך %1$s ניצלה</string>
+  <string name="mentor_already_owned">אתה רשום כבר על המנטור</string>
   <string name="you_cant_kick_yourself">אתה לא יכול לבעוט בעצמך!</string>
-  <string name="failuer_can_not_poke_anyone">הנכשל לא יכול לבעוט באך אחד</string>
+  <string name="failuer_can_not_poke_anyone">מי שנפסל לא יכול לבעוט באף אחד אחר</string>
   <string name="kick_them_now">תבעט בהם</string>
   <string name="for_rescue">" שיצילו את הקבוצה"</string>
   <string name="loading">טוען</string>
   <string name="level">רמה</string>
   <string name="purchase_request_send">אנו  מקווים שאתם מרוצים מהקנייה</string>
   <string name="slots_error">אתה יכול להיות בעל שלושה מנטורים בלבד</string>
-  <string name="your_group_has_failed_thanks_to_you_and">"הקבוצה שלך 11 נכשלה//י ! "</string>
+  <string name="your_group_has_failed_thanks_to_you_and">הקבוצה שלך %1$s נכשלה! תודה ל%2$s</string>
+  <string name="you">על ידך ו-</string>
+  <string name="rescue">להציל</string>
+  <string name="now">עכשיו</string>
+  <string name="you_are_failuer">נכשלתה :(</string>
+  <string name="rescues_needed">נדרשת הצלה</string>
+  <string name="you_got_x_rescues">קיבלתה %1$s הצלות</string>
+
 
 </resources>

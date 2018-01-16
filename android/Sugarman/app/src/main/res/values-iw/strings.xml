@@ -15,8 +15,8 @@
     <string name="step_detector_not_supported">סנסור זיהוי צעדים לא מאופשר על המכשיר</string>
     <string name="group_name_is_empty">אנא הכנס שם קבוצה</string>
     <string name="invite_friends">הזמן חברים</string>
-    <string name="this_user_has_saved_the_group">This user has already saved the group!</string>
     <string name="members_list_is_empty">אנא בחר משתתפים בקבוצה לשם יצירה</string>
+    <string name="this_user_has_saved_the_group">This user has already saved the group!</string>
     <string name="play_with_me">בוא לשחק ברמה הזו איתי</string>
     <string name="max_active_groups">המערכת מאפשרת ליצור עד %1$s קבוצות פעילות למשתמש</string>
     <string name="this_user_has_completed_daily">המשמתש הזה סיים את האתגר היומי שלו</string>
@@ -127,8 +127,6 @@
     <string name="steps_per_day_in_21_day">כל יום 10,000 צעדים</string>
     <string name="tap_on">&#160;ליצירת קבוצה</string>
     <string name="to_create_a_group"> לחץ על</string>
-    <!--    <string name="tap_on">&#160;לחץ על</string>
-        <string name="to_create_a_group">ליצירת קבוצה&#160;</string>-->
     <string name="tap_on_plus">לחץ על + ליצירת קבוצה ולהתחיל אתגר</string>
     <string name="or_tap_on">או לחץ על </string>
     <string name="to_search_for_pending">למצוא קבוצות להצטרף אליהן</string>
@@ -176,7 +174,7 @@
     <string name="cant_kick_not_in_group">אתה לא יכול לבעוט באף אחד כאשר אתה לא חלק מהקבוצה!</string>
     <string name="my_steps_today">הצעדים שלי\nהיום</string>
     <string name="total_assess_kicked">סהכ\nבעיטות</string>
-    <string name="total_group_steps">Total users\nin group</string>
+    <string name="total_group_steps">סה\'\'כ משתמשים בקבוצה </string>
     <string name="wake_them_up">הקלד להעיר אותם</string>
     <string name="steps">בקבוצה</string>
 
@@ -218,7 +216,6 @@
     <string name="sugarman_comics">חוברת שוגרמן</string>
 
 
-
     <string name="purchase_details">פרטי רכישה</string>
 
     <string name="total_price">סה"כ מחיר</string>
@@ -242,9 +239,6 @@
     <string name="already_installed_by_your_link">הותקן כבר על ידי הקישור שלך</string>
 
 
-
-
-
     <!-- PHONE LOGIN -->
 
     <string name="your_phone_number">מספר הטלפון שלך</string>
@@ -256,7 +250,6 @@
     <string name="to_complete">לסיים אישור מספר הטלפון שלך\nאנא הכנס 5 ספרות הפעלה</string>
 
 
-
     <!-- PROFILE SETTINGS ACTIVITY -->
 
     <string name="social_network">רשתות חברתיות</string>
@@ -266,7 +259,6 @@
     <string name="profile_settings">הגדרות פרופיל</string>
 
 
-
     <string name="choooseCountry">בחר ארץ</string>
 
     <string name="not_logged_in">לא מחובר</string>
@@ -274,6 +266,7 @@
     <string name="log_in_to_fb">התחבר לפייסבוק?</string>
 
     <string name="the_email_is_not_valid">האימייל שהוזן לא נכון</string>
+    <string name="the_phone_is_not_valid">מספר הטלפון שהזנת אינו חוקי</string>
 
     <string name="coming_soon">בקרוב</string>
 
@@ -337,6 +330,7 @@
         <item>is unable to start 10000 Steps Per Day due to lack of users</item>
         <item>kicked you to MYB on_ae_314_qp_group</item>
     </array>
+
     <string name="title_activity_approve_otp">ApproveOtpActivity</string>
     <string name="empty_field_denied">%1$s can not be empty</string>
 
@@ -562,44 +556,57 @@
         <item>260,ZM</item>
         <item>263,ZW</item>
     </string-array>
-  <string name="the_phone_is_not_valid">מספר הטלפון שהזנת אינו חוקי</string>
     <string name="resend_code">שלח קוד בשנית</string>
-    <string name="wait_for">Resend in</string>
-  <string name="comments">תגובות</string>
+    <string name="wait_for">שלח שוב בעוד</string>
+    <string name="comments">תגובות</string>
     <string name="delete_user_from_group">אתה בטוח שברצונך למחוק את המשתמש?</string>
+    <string name="mentorship">מנטור</string>
     <string name="tap_to_see">Tap to see what to do next</string>
     <string name="warning">אזהרה</string>
-    <string name="mentorship">מנטור</string>
-    <string name="unsubscribe">בטל</string>
-    <string name="type_your_comment_here">הזו תגובתך כאן</string>
-    <string name="social_media">מדיה חברתית</string>
-    <string name="price_total">מחיר</string>
-    <string name="phone">טלפון</string>
-    <string name="no_mentors_text_5">לגוף מושלם</string>
-    <string name="no_mentors_text_4">אותך</string>
-    <string name="no_mentors_text_3">שיוביל</string>
-    <string name="no_mentors_text_2">מנטורים</string>
-    <string name="no_mentors_text_1">\"הצטרף לקבוצה עם \"</string>
-    <string name="monthly_success_rate">אחוזי הצלחה החודש</string>
-    <string name="mentor_s_group">קבוצת מנטור</string>
-    <string name="join_group">הצטרף לקבוצה</string>
-    <string name="error_code_otp">אנא בדוק את הקוד שקיבלת</string>
-    <string name="contacts_book">ספר טלפונים</string>
-    <string name="buy_now">קנה עכשיו</string>
-    <string name="approve_phone_pls">אנא אשר מספר טלפון</string>
     <string name="address">כתובת</string>
+    <string name="approve_phone_pls">אנא אשר מספר טלפון</string>
+    <string name="buy_now">קנה עכשיו</string>
+    <string name="contacts_book">ספר טלפונים</string>
+    <string name="error_code_otp">אנא בדוק את הקוד שקיבלת</string>
+    <string name="join_group">הצטרף לקבוצה</string>
+    <string name="mentor_s_group">קבוצת מנטור</string>
+    <string name="monthly_success_rate">אחוזי הצלחה החודש</string>
+    <string name="no_mentors_text_1">"הצטרף לקבוצה עם "</string>
+    <string name="no_mentors_text_2">מנטורים</string>
+    <string name="no_mentors_text_3">שיוביל</string>
+    <string name="no_mentors_text_4">אותך</string>
+    <string name="no_mentors_text_5">לגוף מושלם</string>
+    <string name="phone">טלפון</string>
+    <string name="price_total">מחיר</string>
+    <string name="social_media">מדיה חברתית</string>
+    <string name="type_your_comment_here">הזו תגובתך כאן</string>
+    <string name="unsubscribe">בטל</string>
     <string name="apply_now_for">הצטרף עכשיו עבור</string>
     <string name="cancel_subscription_warning">האם אתה בטוח שברצונך לעזוב אתה הקבוצה? המנוי יבוטל</string>
-  <string name="you_have_x_time_to_rescue_the_group">%1$s</string>
-    <string name="the_group_needs_x_more_rescues">הקבוצה צריכה עוד %1$d הצלות</string>
-    <string name="you_still_have_time_to_rescue_the_group">אתה עדיין צריך להציל את הקבוצה</string>
-    <string name="your_group_has_failed_thanks_to">הקבוצה %1$s נכשלה תודות ל:</string>
-    <string name="kick_them_now_for_a_rescue">תבעט בהם שיצילו את הקבוצה</string>
-    <string name="text_num_to_rescue">הקבוצה צריכה עוד %1$d הצלות</string>
     <string name="you_got_your_first_rescue">יש הצלה ראשונה לקבוצה</string>
-    <string name="for_rescue">" שיצילו את הקבוצה"</string>
-    <string name="kick_them_now">תבעט בהם</string>
-    <string name="failuer_can_not_poke_anyone">הנכשל לא יכול לבעוט באך אחד</string>
+    <string name="text_num_to_rescue">הקבוצה צריכה עוד %1$d הצלות</string>
+    <string name="kick_them_now_for_a_rescue">תבעט בהם שיצילו את הקבוצה</string>
+    <string name="your_group_has_failed_thanks_to">הקבוצה %1$s נכשלה תודות ל:</string>
+    <string name="you_still_have_time_to_rescue_the_group">אתה עדיין צריך להציל את הקבוצה</string>
+    <string name="the_group_needs_x_more_rescues">הקבוצה צריכה עוד %1$d הצלות</string>
+    <string name="you_have_x_time_to_rescue_the_group">%1$s</string>
+    <string name="you_group_has_been_rescued">הקבוצבה שלך %1$s ניצלה</string>
+    <string name="mentor_already_owned">אתה רשום כבר על המנטור</string>
     <string name="you_cant_kick_yourself">אתה לא יכול לבעוט בעצמך!</string>
+    <string name="failuer_can_not_poke_anyone">מי שנפסל לא יכול לבעוט באף אחד אחר</string>
+    <string name="kick_them_now">תבעט בהם</string>
+    <string name="for_rescue">" שיצילו את הקבוצה"</string>
+    <string name="loading">טוען</string>
+    <string name="level">רמה</string>
+    <string name="purchase_request_send">אנו  מקווים שאתם מרוצים מהקנייה</string>
+    <string name="slots_error">אתה יכול להיות בעל שלושה מנטורים בלבד</string>
+    <string name="your_group_has_failed_thanks_to_you_and">הקבוצה שלך %1$s נכשלה! תודה ל%2$s</string>
+    <string name="you">על ידך ו-</string>
+    <string name="rescue">להציל</string>
+    <string name="now">עכשיו</string>
+    <string name="you_are_failuer">נכשלתה :(</string>
+    <string name="rescues_needed">נדרשת הצלה</string>
+    <string name="you_got_x_rescues">קיבלתה %1$s הצלות</string>
+
 
 </resources>
