@@ -28,11 +28,14 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.App;
 import com.sugarman.myb.R;
+import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.base.BasicActivity;
 import com.sugarman.myb.constants.Config;
+import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.models.mentor.MentorEntity;
 import com.sugarman.myb.models.mentor.MentorsSkills;
 import com.sugarman.myb.models.mentor.comments.MentorsCommentsEntity;
+import com.sugarman.myb.ui.activities.groupDetails.GroupDetailsActivity;
 import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
 import com.sugarman.myb.ui.views.MaskTransformation;
 import com.sugarman.myb.utils.DialogHelper;
@@ -366,6 +369,14 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
         getString(R.string.slots_error), this, (dialogInterface, i) -> dialogInterface.dismiss())
         .create()
         .show();
+  }
+
+  @Override public void moveToMentorsDetailActivity(Tracking tracking) {
+    Intent intent = new Intent(this, GroupDetailsActivity.class);
+    intent.putExtra(Constants.INTENT_TRACKING_ID, tracking.getId());
+    intent.putExtra("isMentorGroup", tracking.isMentors());
+    intent.putExtra("mentorId", tracking.getGroupOwnerId());
+    startActivityForResult(intent, Constants.GROUP_DETAILS_ACTIVITY_REQUEST_CODE);
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -11,4 +11,5 @@ import lombok.Setter;
 
 public class Subscriptions {
   @SerializedName("subscriptions") @Getter @Setter List<SubscriptionEntity> subscriptionEntities;
+  //@SerializedName("tracking") @Getter @Setter Tracking tracking;
 }

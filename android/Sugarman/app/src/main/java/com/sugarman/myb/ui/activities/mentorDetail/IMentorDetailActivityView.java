@@ -3,6 +3,7 @@ package com.sugarman.myb.ui.activities.mentorDetail;
 import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
+import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.models.mentor.comments.MentorsCommentsEntity;
 import java.util.List;
 
@@ -25,4 +26,6 @@ import java.util.List;
   void startPurchaseFlow(String freeSku);
 
   void showAllSlotsNotEmptyDialog();
+
+  void moveToMentorsDetailActivity(Tracking tracking);
 }

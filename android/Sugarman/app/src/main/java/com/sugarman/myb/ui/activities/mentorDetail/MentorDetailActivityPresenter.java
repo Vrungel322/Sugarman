@@ -55,6 +55,7 @@ import timber.log.Timber;
           Timber.e(String.valueOf(subscriptionsResponse.code()));
           if (subscriptionsResponse.code() == 200) {
             getViewState().moveToMainActivity();
+            //getViewState().moveToMentorsDetailActivity(subscriptionsResponse.body().getTracking());
           }
         }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
