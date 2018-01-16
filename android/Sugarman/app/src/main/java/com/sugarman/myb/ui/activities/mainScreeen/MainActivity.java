@@ -1949,8 +1949,10 @@ public class MainActivity extends GetUserInfoActivity
         ivAnimatedMan.getAnimation().cancel();
       }
       //Timber.e("" + animation.getNumberOfFrames());
-      ivAnimatedMan.setImageDrawable(animation);
-      animation.start();
+      if (App.isAppForeground()){
+        ivAnimatedMan.setImageDrawable(animation);
+        animation.start();
+      }
       // Picasso.with(this).load("1").placeholder(animation).error(animation).into(ivAnimatedMan);
     });
   }

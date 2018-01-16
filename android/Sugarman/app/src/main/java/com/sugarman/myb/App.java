@@ -103,7 +103,7 @@ public class App extends MultiDexApplication {
   private static volatile UIThreadBus sEventBus;
   private static volatile Gson sGson;
   private static volatile SoundPool soundPool;
-  private final ActivityCallback activityCallback = new ActivityCallback();
+  private static final ActivityCallback activityCallback = new ActivityCallback();
   VKAccessTokenTracker vkAccessTokenTracker = new VKAccessTokenTracker() {
     @Override public void onVKAccessTokenChanged(VKAccessToken oldToken, VKAccessToken newToken) {
       Log.e("VK", "Token changed");
@@ -333,7 +333,7 @@ public class App extends MultiDexApplication {
     return mTracker;
   }
 
-  public boolean isAppForeground() {
+  public static boolean isAppForeground() {
     return activityCallback.isAppForeground();
   }
 
