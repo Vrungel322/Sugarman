@@ -596,5 +596,10 @@
   <string name="failuer_can_not_poke_anyone">הנכשל לא יכול לבעוט באך אחד</string>
   <string name="kick_them_now">תבעט בהם</string>
   <string name="for_rescue">" שיצילו את הקבוצה"</string>
+  <string name="loading">טוען</string>
+  <string name="level">רמה</string>
+  <string name="purchase_request_send">אנו  מקווים שאתם מרוצים מהקנייה</string>
+  <string name="slots_error">אתה יכול להיות בעל שלושה מנטורים בלבד</string>
+  <string name="your_group_has_failed_thanks_to_you_and">"הקבוצה שלך 11 נכשלה//י ! "</string>
 
 </resources>
