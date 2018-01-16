@@ -606,7 +606,7 @@
     <string name="now">עכשיו</string>
     <string name="you_are_failuer">נכשלתה :(</string>
     <string name="rescues_needed">נדרשת הצלה</string>
-    <string name="you_got_x_rescues">קיבלתה %1$s הצלות</string>
+    <string name="you_got_x_rescues">קיבלתה %1$d הצלות</string>
 
 
 </resources>

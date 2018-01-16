@@ -594,6 +594,6 @@
   <string name="you"> you</string>
   <string name="empty"> </string>
   <string name="rescues_needed">Rescues needed</string>
-  <string name="you_got_x_rescues">You got %1$s rescues</string>
+  <string name="you_got_x_rescues">You got %1$d rescues</string>
 
 </resources>

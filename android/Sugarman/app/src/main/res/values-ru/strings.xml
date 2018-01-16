@@ -561,6 +561,6 @@
     <string name="now">сейчас</string>
     <string name="you">вам и </string>
     <string name="rescues_needed">Нужно спасений</string>
-    <string name="you_got_x_rescues">У Вас спасений: %1$s</string>
+    <string name="you_got_x_rescues">У Вас спасений: %1$d</string>
 
 </resources>

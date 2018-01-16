@@ -40,12 +40,14 @@ public class DialogRescueGirl extends MvpDialogFragment implements IDialogRescue
   @BindView(R.id.tvFailText) TextView mTextViewFailText;
   @BindView(R.id.rvFailures) RecyclerView mRecyclerViewFailures;
   @BindView(R.id.tvNumToRescue) TextView mTextViewNumToRescue;
+  @BindView(R.id.tvYouGroupRescued) TextView mTextViewYouGotXRescues;
   @BindView(R.id.ivKick) ImageView mImageViewKick;
   @BindView(R.id.tvKickcThemNow) TextView mTextViewKickThemNow;
   private Tracking mTracking;
   private int failuresCount = 0;
   private List<Member> failures = new ArrayList<>();
   private RescueMembersAdapter mRescueMembersAdapter;
+  private int saverCount;
 
   public static DialogRescueGirl newInstance(Tracking tracking) {
     Bundle args = new Bundle();
@@ -103,6 +105,16 @@ public class DialogRescueGirl extends MvpDialogFragment implements IDialogRescue
     //mRescueMembersAdapter.setMembers(Arrays.asList(mTracking.getMembers()));
     mRescueMembersAdapter.setMembers(failures);
     mRecyclerViewFailures.setAdapter(mRescueMembersAdapter);
+
+    for (Member m : mTracking.getMembers()) {
+      if (m.getFailureStatus() == Member.FAIL_STATUS_SAVED) {
+        saverCount++;
+      }
+    }
+    
+    mTextViewYouGotXRescues.setText(
+        String.format(getString(R.string.you_got_x_rescues), (int) saverCount));
+    
   }
 
   @OnClick(R.id.ivCross) public void ivCrossClick() {
