@@ -161,27 +161,29 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
   }
 
   public void startPurchaseFlow(String freeSku) {
+    Timber.e("startPurchaseFlow");
     mFreeSku = freeSku;
     mHelper.launchPurchaseFlow(getActivity(), freeSku, 10001, (result, purchase) -> {
+      Timber.e("launchPurchaseFlow");
+      consumeItem();
 
-      if (result.isFailure()) {
-        Timber.e("Result is failure");
-        consumeItem();
-
-        // Handle error
-        return;
-      } else if (purchase.getSku().equals(mFreeSku)) {
-        Timber.e("Id is correct");
-        consumeItem();
-        Timber.e(mHelper.getMDataSignature());
-      } else {
-        Timber.e(result.getMessage());
-      }
+      //if (result.isFailure()) {
+      //  Timber.e("Result is failure");
+      //  // Handle error
+      //  return;
+      //} else if (purchase.getSku().equals(mFreeSku)) {
+      //  Timber.e("Id is correct");
+      //  Timber.e(mHelper.getMDataSignature());
+      //} else {
+      //  Timber.e(result.getMessage());
+      //}
     }, "mypurchasetoken");
   }
 
   public void consumeItem() {
     mHelper.queryInventoryAsync(true, Arrays.asList(mFreeSku), (result, inventory) -> {
+      Timber.e("queryInventoryAsync");
+
       mPresenter.checkInAppBillingOneDollar(mTracking.getId(), inventory.getPurchase(mFreeSku),
           inventory.getSkuDetails(mFreeSku).getTitle(), mFreeSku);
 

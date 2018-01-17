@@ -19,6 +19,7 @@ import timber.log.Timber;
   }
 
   public void checkInAppBillingOneDollar(String trackingId,Purchase purchase, String productName, String freeSku) {
+    Timber.e("checkInAppBillingOneDollar");
 
     Subscription subscription = mDataManager.checkInAppBillingOneDollar(trackingId,
         new InAppSinglePurchase(productName, purchase.getSku(), purchase.getToken(), freeSku))
