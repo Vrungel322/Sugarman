@@ -607,6 +607,6 @@
     <string name="you_are_failuer">נכשלתה :(</string>
     <string name="rescues_needed">נדרשת הצלה</string>
     <string name="you_got_x_rescues">קיבלתה %1$d הצלות</string>
-
+    <string name="empty"> </string>
 
 </resources>

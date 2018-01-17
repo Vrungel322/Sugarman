@@ -562,5 +562,6 @@
     <string name="you">вам и </string>
     <string name="rescues_needed">Нужно спасений</string>
     <string name="you_got_x_rescues">У Вас спасений: %1$d</string>
+    <string name="empty"> </string>
 
 </resources>
