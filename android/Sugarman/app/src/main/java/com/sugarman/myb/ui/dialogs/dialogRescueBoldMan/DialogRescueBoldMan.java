@@ -121,7 +121,8 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
     CountDownTimer timer = new CountDownTimer(
         mTracking.getRemainToFailUTCDate().getTime() - System.currentTimeMillis(), 1000) {
       @Override public void onTick(long l) {
-        mTextViewTimeLeftForRescue.setText(Converters.timeFromMilliseconds(mTextViewTimeLeftForRescue.getContext(), l));
+        mTextViewTimeLeftForRescue.setText(
+            Converters.timeFromMilliseconds(mTextViewTimeLeftForRescue.getContext(), l));
       }
 
       @Override public void onFinish() {
@@ -181,6 +182,8 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
 
   public void consumeItem() {
     mHelper.queryInventoryAsync(true, Arrays.asList(mFreeSku), (result, inventory) -> {
+      mPresenter.checkInAppBillingOneDollar(mTracking.getId(), inventory.getPurchase(mFreeSku),
+          inventory.getSkuDetails(mFreeSku).getTitle(), mFreeSku);
 
       if (result.isFailure()) {
         // Handle failure
@@ -194,8 +197,7 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
         Timber.e(inventory.getSkuDetails(mFreeSku).getTitle());
         Timber.e(inventory.getSkuDetails(mFreeSku).getSku());
 
-        mPresenter.checkInAppBillingOneDollar(mTracking.getId(), inventory.getPurchase(mFreeSku),
-            inventory.getSkuDetails(mFreeSku).getTitle(), mFreeSku);
+
       }
     });
   }
