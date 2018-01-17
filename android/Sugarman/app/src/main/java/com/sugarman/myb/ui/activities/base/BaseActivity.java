@@ -21,6 +21,7 @@ import com.sugarman.myb.R;
 import com.sugarman.myb.api.clients.RefreshUserDataClient;
 import com.sugarman.myb.api.clients.SendFirebaseTokenClient;
 import com.sugarman.myb.base.BasicActivity;
+import com.sugarman.myb.constants.Config;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.constants.DialogConstants;
 import com.sugarman.myb.eventbus.events.ChangeConnectionEvent;
@@ -418,6 +419,7 @@ public abstract class BaseActivity extends BasicActivity
     SharedPreferenceHelper.saveVkId("none");
     SharedPreferenceHelper.saveVkToken("none");
     SharedPreferenceHelper.savePhoneNumber("none");
+    SharedPreferenceHelper.saveBaseUrl(Config.SERVER_URL);
     VKSdk.logout();
     LoginManager.getInstance().logOut();
   }
