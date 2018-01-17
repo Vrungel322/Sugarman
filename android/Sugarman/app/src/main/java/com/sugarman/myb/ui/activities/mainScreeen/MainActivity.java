@@ -1619,8 +1619,8 @@ public class MainActivity extends GetUserInfoActivity
         + " l "
         + myTrackings.length);
 
-    if (myTrackings.length != 0 && !SharedPreferenceHelper.isRulesBlocked()) {
-      mPresenter.checkIfRuleStepsDone(todaySteps);
+    if (!SharedPreferenceHelper.isRulesBlocked()) {
+      mPresenter.checkIfRuleStepsDone(todaySteps, myTrackings.length);
       mPresenter.checkIfRule15KStepsDone(todaySteps);
     }
   }
@@ -1977,12 +1977,10 @@ public class MainActivity extends GetUserInfoActivity
     }
     if (customUserEvent.getEventName().equals(Constants.EVENT_X_STEPS_DONE)
         && customUserEvent.getStrType().equals(ANIMATION_ACTION)) {
-      if (customUserEvent.getGroupCount() != null && customUserEvent.getGroupCount() != 0) {
-        doEventAction(customUserEvent, () -> {
-          mPresenter.getAnimationByName(customUserEvent.getNameOfAnim(),
-              getFilesDir().getAbsolutePath());
-        });
-      }
+      doEventAction(customUserEvent, () -> {
+        mPresenter.getAnimationByName(customUserEvent.getNameOfAnim(),
+            getFilesDir().getAbsolutePath());
+      });
     }
     if (customUserEvent.getEventName().equals(Constants.EVENT_PLAY_ANIMATION)) {
       doEventAction(customUserEvent, () -> {

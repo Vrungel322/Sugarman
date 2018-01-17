@@ -68,7 +68,7 @@ import timber.log.Timber;
     addToUnsubscription(subscription);
   }
 
-  public void checkIfRuleStepsDone(int todaySteps) {
+  public void checkIfRuleStepsDone(int todaySteps, int groupsCount) {
     List<Rule> rules = new ArrayList<>();
     List<Rule> rulesTempo = mDataManager.getRuleByName(Constants.EVENT_X_STEPS_DONE);
     for (Rule r : rulesTempo) {
@@ -94,20 +94,24 @@ import timber.log.Timber;
           + " getCount()"
           + rule.getCount());
       if (todaySteps >= rule.getCount()) {
-        Timber.e("rule true &&" + !SharedPreferenceHelper.isEventXStepsDone(rule.getCount()));
-        if (!SharedPreferenceHelper.isEventXStepsDone(rule.getCount())) {
-          Timber.e("rule true and SHP OK");
 
-          getViewState().doEventActionResponse(CustomUserEvent.builder()
-              .strType(rule.getAction())
-              .eventText(rule.getMessage())
-              .eventName(rule.getName())
-              .nameOfAnim(rule.getNameOfAnim())
-              .numValue(rule.getCount())
-              .groupCount(rule.getGroupCount())
-              .build());
-        } else {
-          launchLastAnim(rulesTempo, todaySteps);
+        if ((rule.getGroupCount() == 0 && groupsCount == 0) || (rule.getGroupCount() > 0
+            && groupsCount > 0)) {
+          Timber.e("rule true &&" + !SharedPreferenceHelper.isEventXStepsDone(rule.getCount()));
+          if (!SharedPreferenceHelper.isEventXStepsDone(rule.getCount())) {
+            Timber.e("rule true and SHP OK");
+
+            getViewState().doEventActionResponse(CustomUserEvent.builder()
+                .strType(rule.getAction())
+                .eventText(rule.getMessage())
+                .eventName(rule.getName())
+                .nameOfAnim(rule.getNameOfAnim())
+                .numValue(rule.getCount())
+                .groupCount(rule.getGroupCount())
+                .build());
+          } else {
+            launchLastAnim(rulesTempo, todaySteps);
+          }
         }
       }
     }
@@ -313,13 +317,14 @@ import timber.log.Timber;
             Timber.e("getAnimationByName from storage " + animationList.size());
             getViewState().setAnimation(animationList, duration);
           }
-        }else {
+        } else {
 
           if (!SharedPreferenceHelper.isBlockedGetAnimationByName()) {
             Timber.e("getAnimationByName Start by need");
 
             AnimationHelper animationHelper =
-                new AnimationHelper(new File(filesDir + "/animations/"), new ArrayList<>(anim.getImageUrl()));
+                new AnimationHelper(new File(filesDir + "/animations/"),
+                    new ArrayList<>(anim.getImageUrl()));
             SharedPreferenceHelper.blockGetAnimsByName();
 
             animationHelper.download(new AnimationHelper.Callback() {
@@ -332,7 +337,7 @@ import timber.log.Timber;
                 SharedPreferenceHelper.unBlockGetAnimsByName();
                 Timber.e("Everything is downloaded by need");
                 Collections.reverse(animationList);
-                getViewState().setAnimation(animationList,duration);
+                getViewState().setAnimation(animationList, duration);
 
                 //for (Drawable drawable : animationList) {
                 //  animationDrawable.addFrame(drawable, duration);
