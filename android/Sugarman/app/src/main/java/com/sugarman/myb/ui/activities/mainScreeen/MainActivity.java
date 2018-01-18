@@ -1663,8 +1663,19 @@ public class MainActivity extends GetUserInfoActivity
           }
         } else {
 
+          boolean isFailedStatusAdapter = false;
+
+          for(int i = 0; i<tracking.getMembers().length; i++)
+          {
+            if(tracking.getMembers()[i].getFailureStatus() == Member.FAIL_STATUS_FAILUER) {
+              isFailedStatusAdapter = true;
+              break;
+            }
+          }
+
           // TODO: 06.12.2017 make check if tracking soon fail (need to be added new bool field on server)
-          if (tracking.getFailGroupStatus() == Tracking.STATUS_FAIL) {
+          //if (tracking.getFailGroupStatus() == Tracking.STATUS_FAIL) {
+          if (isFailedStatusAdapter) {
             ChallengeRescueItem item = new ChallengeRescueItem();
             item.setTracking(tracking);
             items.add(item);
