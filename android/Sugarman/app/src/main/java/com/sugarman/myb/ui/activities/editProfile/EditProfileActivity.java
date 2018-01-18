@@ -355,6 +355,7 @@ public class EditProfileActivity extends BasicActivity
     String displayEmail = etEmail.getText().toString();
     displayNumber = etPhone.getText().toString();
 
+    if (!etName.getText().toString().trim().isEmpty()){
     if (isEmailValid(displayEmail) || displayEmail.equals("")) {
       if (displayNumber.equals("")) {
         Timber.e("Got in here 1");
@@ -382,6 +383,10 @@ public class EditProfileActivity extends BasicActivity
     } else {
       new SugarmanDialog.Builder(this, "Email").content(
           getResources().getString(R.string.the_email_is_not_valid)).build().show();
+    }
+  } else {
+      new SugarmanDialog.Builder(this, "Name").content(
+          getResources().getString(R.string.name_can_not_be_empty)).build().show();
     }
     Log.e("EDIT PROFILE", "PRESSED");
   }
