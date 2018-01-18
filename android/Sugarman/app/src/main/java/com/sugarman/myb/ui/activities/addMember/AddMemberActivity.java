@@ -1002,7 +1002,6 @@ public class AddMemberActivity extends BaseActivity
   }
 
   private void addMembersPh(List<FacebookFriend> members) {
-    mInviteByPh.clear();
     Timber.e("addMembersPh " + members.size());
     List<String> facebookElements = new ArrayList<>();
     List<FacebookFriend> vkElements = new ArrayList<>();
@@ -1015,7 +1014,7 @@ public class AddMemberActivity extends BaseActivity
       Timber.e("Vk Unique Send");
       mPresenter.sendInvitationInVk(vkElements, getString(R.string.invite_message));
     }
-    if (!facebookElements.isEmpty()) {
+    //if (!facebookElements.isEmpty()) {
       Timber.e("Fb Unique Send");
       //GameRequestDialog tempDialog = new GameRequestDialog(this);
       //tempDialog.registerCallback(fbCallbackManager,
@@ -1060,7 +1059,9 @@ public class AddMemberActivity extends BaseActivity
         }
       });
       mAddMembersClient.addMembers(trackingId, members);
-    }
+    mInviteByPh.clear();
+
+    //}
     //______________________________________________________________________________________________
   }
 
