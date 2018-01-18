@@ -1,5 +1,6 @@
 package com.sugarman.myb.ui.activities.mainScreeen;
 
+import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import com.arellomobile.mvp.InjectViewState;
@@ -11,6 +12,7 @@ import com.sugarman.myb.models.animation.ImageModel;
 import com.sugarman.myb.models.custom_events.CustomUserEvent;
 import com.sugarman.myb.models.custom_events.Rule;
 import com.sugarman.myb.models.iab.InAppSinglePurchase;
+import com.sugarman.myb.utils.RxBusHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.ThreadSchedulers;
 import com.sugarman.myb.utils.animation.AnimationHelper;
@@ -354,5 +356,9 @@ import timber.log.Timber;
       //  animationDrawable.addFrame(drawable, duration);
       //}
     }
+  }
+
+  public void postEventAboutInAppPurchase(int requestCode, int resultCode, Intent data) {
+    mRxBus.post(new RxBusHelper.EventAboutInAppPurchase(requestCode, resultCode, data));
   }
 }

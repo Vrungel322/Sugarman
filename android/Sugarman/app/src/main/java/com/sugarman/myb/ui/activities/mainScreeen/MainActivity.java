@@ -1061,6 +1061,7 @@ public class MainActivity extends GetUserInfoActivity
   @SuppressLint("NewApi") // checking version inside
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
+    mPresenter.postEventAboutInAppPurchase(requestCode, resultCode, data);
     //if (!mHelper.handleActivityResult(requestCode, resultCode, data)) {
     //}
 
@@ -1122,8 +1123,8 @@ public class MainActivity extends GetUserInfoActivity
     switch (id) {
       case R.id.iv_avatar:
 
-        openProfileActivity();
-        //DialogRescueBoldMan.newInstance(myTrackings[0],DialogRescueBoldMan.MONEY).show(getFragmentManager(),"DialogRescueBoldMan");
+        //openProfileActivity();
+        DialogRescueBoldMan.newInstance(myTrackings[0],DialogRescueBoldMan.MONEY).show(getFragmentManager(),"DialogRescueBoldMan");
         //DialogRescueGirl.newInstance(myTrackings[0]).show(getFragmentManager(), "DialogRescueGirl");
         //DialogRescueGirCongratulations.newInstance(myTrackings[0]).show(getFragmentManager(), "DialogRescueGirCongratulations");
         //DialogRescueBoldManKick.newInstance(myTrackings[0]).show(getFragmentManager(), "DialogRescueBoldManKick");

@@ -1,10 +1,10 @@
 package com.sugarman.myb.utils;
 
+import android.content.Intent;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * Created by John on 26.01.2017.
@@ -31,6 +31,18 @@ public final class RxBusHelper {
 
     public ShowDialogRescue(String trackingId) {
       this.trackingId = trackingId;
+    }
+  }
+
+  public static class EventAboutInAppPurchase {
+    public final int requestCode;
+    public final int resultCode;
+    public final Intent data;
+
+    public EventAboutInAppPurchase(int requestCode, int resultCode, Intent data) {
+      this.requestCode=requestCode;
+      this.resultCode=resultCode;
+      this.data=data;
     }
   }
 }

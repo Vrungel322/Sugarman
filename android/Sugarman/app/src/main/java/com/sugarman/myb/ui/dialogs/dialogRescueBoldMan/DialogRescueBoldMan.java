@@ -2,7 +2,6 @@ package com.sugarman.myb.ui.dialogs.dialogRescueBoldMan;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,7 +27,6 @@ import com.sugarman.myb.ui.dialogs.dialogRescueGirlCongratulations.DialogRescueG
 import com.sugarman.myb.ui.fragments.rescue_challenge.adapters.RescueMembersAdapter;
 import com.sugarman.myb.ui.views.CropSquareTransformation;
 import com.sugarman.myb.ui.views.MaskTransformation;
-import com.sugarman.myb.utils.Converters;
 import com.sugarman.myb.utils.inapp.IabHelper;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,6 +50,7 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
   @BindView(R.id.tvTimeLeftForRescue) TextView mTextViewTimeLeftForRescue;
   @BindView(R.id.ivRescueLogo) ImageView mImageViewRescueLogo;
   @BindView(R.id.tvRescueForWhat) TextView tvRescueForWhat;
+  @BindView(R.id.progressBar4) ProgressBar mProgressBar;
   private Tracking mTracking;
   private RescueMembersAdapter mRescueMembersAdapter;
   private List<Member> failures = new ArrayList<>();
@@ -118,17 +118,17 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
     mRescueMembersAdapter.setMembers(failures);
     mRecyclerViewFailures.setAdapter(mRescueMembersAdapter);
 
-    CountDownTimer timer = new CountDownTimer(
-        mTracking.getRemainToFailUTCDate().getTime() - System.currentTimeMillis(), 1000) {
-      @Override public void onTick(long l) {
-        mTextViewTimeLeftForRescue.setText(
-            Converters.timeFromMilliseconds(mTextViewTimeLeftForRescue.getContext(), l));
-      }
-
-      @Override public void onFinish() {
-        mTextViewTimeLeftForRescue.setText(Converters.timeFromMilliseconds(mTextViewTimeLeftForRescue.getContext(), 0L));
-      }
-    }.start();
+    //CountDownTimer timer = new CountDownTimer(
+    //    mTracking.getRemainToFailUTCDate().getTime() - System.currentTimeMillis(), 1000) {
+    //  @Override public void onTick(long l) {
+    //    mTextViewTimeLeftForRescue.setText(
+    //        Converters.timeFromMilliseconds(mTextViewTimeLeftForRescue.getContext(), l));
+    //  }
+    //
+    //  @Override public void onFinish() {
+    //    mTextViewTimeLeftForRescue.setText(Converters.timeFromMilliseconds(mTextViewTimeLeftForRescue.getContext(), 0L));
+    //  }
+    //}.start();
   }
 
   @OnClick(R.id.ivCross) public void ivCrossClick() {
@@ -138,6 +138,7 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
   @OnClick(R.id.ivRescueLogo) public void startPurchaseFlowClick() {
     if (mMode == MONEY) {
       mImageViewRescueLogo.setClickable(false);
+      showProgressBar();
       startPurchaseFlow("v1.group_rescue");
     }
     if (mMode == INVITES) {
@@ -162,8 +163,7 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
 
   public void startPurchaseFlow(String freeSku) {
     Timber.e("startPurchaseFlow");
-    mFreeSku = freeSku;
-    mHelper.launchPurchaseFlow(getActivity(), freeSku, 10001, (result, purchase) -> {
+    mHelper.launchPurchaseFlow(getActivity(), mFreeSku, 10001, (result, purchase) -> {
       Timber.e("launchPurchaseFlow");
       consumeItem();
 
@@ -204,6 +204,11 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
     });
   }
 
+  @Override public void handleActivityResult(int requestCode, int resultCode, Intent data) {
+    Timber.e("onActivityResult");
+    mHelper.handleActivityResult(requestCode, resultCode, data);
+  }
+
   @Override public void onDestroy() {
     super.onDestroy();
     if (mHelper != null) mHelper.dispose();
@@ -217,5 +222,13 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
     DialogRescueGirCongratulations.newInstance(mTracking) .show(getActivity().getFragmentManager(), "DialogRescueGirCongratulations");
     getDialog().cancel();
 
+  }
+
+  @Override public void showProgressBar() {
+    mProgressBar.setVisibility(View.VISIBLE);
+  }
+
+  @Override public void hideProgressBar() {
+    mProgressBar.setVisibility(View.GONE);
   }
 }
