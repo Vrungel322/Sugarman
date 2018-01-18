@@ -342,11 +342,11 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
   }
 
   public static void saveUserName(String userName) {
-    putString(SharedPreferenceConstants.USER_NAME, userName);
+    putString(SharedPreferenceConstants.USER_NAME, userName.trim());
   }
 
   public static String getUserName() {
-    return getString(SharedPreferenceConstants.USER_NAME, "");
+    return getString(SharedPreferenceConstants.USER_NAME, "").trim();
   }
 
   public static String getAccessToken() {

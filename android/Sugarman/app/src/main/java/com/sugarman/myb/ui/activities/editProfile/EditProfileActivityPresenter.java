@@ -25,7 +25,7 @@ import rx.Subscription;
 
       if (phone.equals("")) {
         Subscription subscription =
-            mDataManager.sendUserDataToServer(phone, email, name, fbId, vkId, avatar, selectedFile)
+            mDataManager.sendUserDataToServer(phone, email, name.trim(), fbId, vkId, avatar, selectedFile)
                 .compose(ThreadSchedulers.applySchedulers())
                 .subscribe(usersResponse -> {
                   if (usersResponse.getResult() != null) {
