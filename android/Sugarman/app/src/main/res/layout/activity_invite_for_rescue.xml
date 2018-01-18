@@ -85,7 +85,7 @@
       <TextView
           android:layout_width="0dp"
           android:layout_height="wrap_content"
-          android:text="RESCUE"
+          android:text="@string/rescue"
           android:textStyle="bold"
           android:textColor="@color/white"
           android:gravity="center"
@@ -106,7 +106,7 @@
           android:gravity="center"
           android:textSize="25sp"
           android:layout_gravity="center"
-          android:text="NOW!!!"/>
+          android:text="@string/now"/>
     </LinearLayout>
 
   </RelativeLayout>
