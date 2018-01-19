@@ -23,6 +23,7 @@ import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.constants.Config;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.ui.activities.inviteForRescue.InviteForRescueActivity;
+import com.sugarman.myb.ui.dialogs.dialogRescueGirl.DialogRescueGirl;
 import com.sugarman.myb.ui.dialogs.dialogRescueGirlCongratulations.DialogRescueGirCongratulations;
 import com.sugarman.myb.ui.fragments.rescue_challenge.adapters.RescueMembersAdapter;
 import com.sugarman.myb.ui.views.CropSquareTransformation;
@@ -92,10 +93,10 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
                 false, 0xfff))
         .into(mImageViewGroupAvatar);
 
-    switch(mMode) {
+    switch (mMode) {
       case MONEY:
-      tvRescueForWhat.setText("FOR 1$");
-      break;
+        tvRescueForWhat.setText("FOR 1$");
+        break;
       case INVITES:
         tvRescueForWhat.setText("FOR INVITES");
         break;
@@ -198,8 +199,6 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
         Timber.e(result.getMessage());
         Timber.e(inventory.getSkuDetails(mFreeSku).getTitle());
         Timber.e(inventory.getSkuDetails(mFreeSku).getSku());
-
-
       }
     });
   }
@@ -219,9 +218,21 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
   }
 
   @Override public void showCongratulationsDialog() {
-    DialogRescueGirCongratulations.newInstance(mTracking) .show(getActivity().getFragmentManager(), "DialogRescueGirCongratulations");
+    int failCountLocal = 0;
+    for (Member m : mTracking.getMembers()) {
+      if (m.getFailureStatus() == Member.FAIL_STATUS_FAILUER) {
+        failCountLocal++;
+      }
+    }
+    if (failCountLocal>0) {
+      DialogRescueGirl.newInstance(mTracking)
+          .show(getActivity().getFragmentManager(), "DialogRescueGirl");
+    }
+    else {
+      DialogRescueGirCongratulations.newInstance(mTracking)
+          .show(getActivity().getFragmentManager(), "DialogRescueGirCongratulations");
+    }
     getDialog().cancel();
-
   }
 
   @Override public void showProgressBar() {
