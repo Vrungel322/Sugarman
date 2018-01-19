@@ -26,5 +26,7 @@ import java.util.List;
 
   void onApiCreateGroupFailure(String errorMessage);
 
+  void closeActivity();
+
   //void doEventActionResponse(CustomUserEvent build);
 }

@@ -17,6 +17,7 @@ import com.sugarman.myb.api.models.responses.CheckPhoneResponse;
 import com.sugarman.myb.api.models.responses.CheckVkResponse;
 import com.sugarman.myb.api.models.responses.CountInvitesResponse;
 import com.sugarman.myb.api.models.responses.InvitersImgUrls;
+import com.sugarman.myb.api.models.responses.RescueFriendResponse;
 import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.animation.GetAnimationResponse;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
@@ -333,7 +334,7 @@ public class DataManager {
     return mRestApi.checkInAppBillingOneDollar(trackingId,inAppSinglePurchase);
   }
 
-  public Observable<Response<CreateGroupResponse>> sendInvitersForRescue(
+  public Observable<Response<RescueFriendResponse>> sendInvitersForRescue(
       List<FacebookFriend> members, String trackingId) {
     return mRestApi.sendInvitersForRescue(SharedPreferenceHelper.getUserId(),members,trackingId);
   }

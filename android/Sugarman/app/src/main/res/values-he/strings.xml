@@ -608,6 +608,7 @@
   <string name="rescues_needed">נדרשת הצלה</string>
   <string name="you_got_x_rescues">קיבלתה %1$d הצלות</string>
   <string name="empty"> </string>
+  <string name="name_can_not_be_empty">Name can not be empty!</string>
 
 
 </resources>

@@ -993,6 +993,10 @@ hideProgress();
     }
   }
 
+  @Override public void closeActivity() {
+    finish();
+  }
+
   private void sendInvitation() {
 
     List<String> ids = new ArrayList<>();

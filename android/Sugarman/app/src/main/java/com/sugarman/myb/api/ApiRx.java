@@ -13,6 +13,7 @@ import com.sugarman.myb.api.models.responses.CheckPhoneResponse;
 import com.sugarman.myb.api.models.responses.CheckVkResponse;
 import com.sugarman.myb.api.models.responses.CountInvitesResponse;
 import com.sugarman.myb.api.models.responses.InvitersImgUrls;
+import com.sugarman.myb.api.models.responses.RescueFriendResponse;
 import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.animation.GetAnimationResponse;
 import com.sugarman.myb.api.models.responses.me.groups.CreateGroupResponse;
@@ -131,7 +132,7 @@ public interface ApiRx {
       @Header("tracking_id") String trackingId, @Body InAppSinglePurchase inAppSinglePurchase);
 
   @Multipart @POST("v1/invite_rescue")
-  Observable<Response<CreateGroupResponse>> sendInvitersForRescue(
+  Observable<Response<RescueFriendResponse>> sendInvitersForRescue(
       @Part("user_id") RequestBody userId, @Part("members[][fbid]") List<RequestBody> ids,
       @Part("members[][vkid]") List<RequestBody> vkids,
       @Part("members[][phone_number]") List<RequestBody> phoneNumbers,
