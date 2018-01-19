@@ -95,10 +95,10 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
 
     switch (mMode) {
       case MONEY:
-        tvRescueForWhat.setText("FOR 1$");
+        tvRescueForWhat.setText(getString(R.string.for_1_dollar));
         break;
       case INVITES:
-        tvRescueForWhat.setText("FOR INVITES");
+        tvRescueForWhat.setText(getString(R.string.for_invites));
         break;
     }
 
