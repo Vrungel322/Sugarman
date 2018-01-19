@@ -85,7 +85,7 @@ import timber.log.Timber;
 
       // выбор того правила у которого значение шагов ближе всего к текущему количеству шагов
       // TODO: 07.12.2017 простестить с 1 рулом на количество шагов
-      Rule rule = getRuleApproximatelyToCurrentSteps(todaySteps, rules);
+      Rule rule = getRuleApproximatelyToCurrentSteps(todaySteps, groupsCount, rules);
 
       Timber.e("rule "
           + rule.getName()
@@ -148,17 +148,24 @@ import timber.log.Timber;
         .build());
   }
 
-  private Rule getRuleApproximatelyToCurrentSteps(int todaySteps, List<Rule> rules) {
+  private Rule getRuleApproximatelyToCurrentSteps(int todaySteps, int groupsCount,
+      List<Rule> rules) {
     Rule rule = new Rule();
     int min = Integer.MAX_VALUE;
     for (Rule currentRule : rules) {
       final int diff = Math.abs(currentRule.getCount() - todaySteps);
 
-      if (diff < min) {
-        min = diff;
-        rule = currentRule;
+      if ((groupsCount == 0 && currentRule.getGroupCount() == 0) || (groupsCount > 0
+          && currentRule.getGroupCount() > 0)) {
+        if (diff < min) {
+          min = diff;
+          rule = currentRule;
+        }
+      } else {
+        continue;
       }
     }
+    Timber.e("getRuleApproximatelyToCurrentSteps " + rule.toString());
     return rule;
   }
 
