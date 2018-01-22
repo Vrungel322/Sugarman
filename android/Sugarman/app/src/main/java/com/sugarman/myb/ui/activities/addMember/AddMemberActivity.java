@@ -1114,6 +1114,10 @@ public class AddMemberActivity extends BaseActivity
     Timber.e("onApiEditGroupSuccess");
 
     hideProgress();
+    if (mInviteByPh.isEmpty() && mInviteByVk.isEmpty()&& mIdsFb.isEmpty()) {
+      Timber.e("all lists empty - activity finished");
+      finish();
+    }
     //finish();
   }
 
