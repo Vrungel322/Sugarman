@@ -592,7 +592,7 @@
   <string name="rescue">RESCUE</string>
   <string name="now">NOW!!!</string>
   <string name="you"> you</string>
-  <string name="empty" translatable="false"> </string>
+  <string name="empty"> </string>
   <string name="rescues_needed">Rescues needed</string>
   <string name="you_got_x_rescues">You got %1$d rescues</string>
   <string name="name_can_not_be_empty">Name can not be empty!</string>
