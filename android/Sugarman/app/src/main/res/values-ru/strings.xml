@@ -532,8 +532,8 @@
     <string name="join_group">Вступить в группу</string>
     <string name="mentor_s_group">ГРУППА НАСТАВНИКА</string>
     <string name="no_mentors_text_1">Станьте частью команды с</string>
-    <string name="no_mentors_text_2">профессиональными наставниками </string>
-    <string name="no_mentors_text_3">которые поведут</string>
+    <string name="no_mentors_text_2">профессиональными наставниками</string>
+    <string name="no_mentors_text_3">, которые поведут</string>
     <string name="no_mentors_text_4">вас к вашему</string>
     <string name="no_mentors_text_5">идеальному телу</string>
     <string name="phone">Телефон</string>
