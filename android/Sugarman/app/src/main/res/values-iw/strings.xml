@@ -609,7 +609,7 @@
     <string name="you_got_x_rescues">קיבלתה %1$d הצלות</string>
     <string name="empty"> </string>
     <string name="name_can_not_be_empty">Name can not be empty!</string>
-    <string name="for_invites">FOR INVITES</string>
-    <string name="for_1_dollar">FOR 1$</string>
+    <string name="for_invites">עבור הזמנות</string>
+    <string name="for_1_dollar">עבור 1$</string>
 
 </resources>
