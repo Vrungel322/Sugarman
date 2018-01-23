@@ -1237,6 +1237,32 @@ public class MainActivity extends GetUserInfoActivity
     }
   }
 
+
+  @Subscribe public void onEvent(RxBusHelper.ShowDialogRescuePoke event) {
+    Timber.e("ShowDialogRescuePoke " + event.getTrackingId());
+    for (Tracking t : myTrackings) {
+      if (t.getId().equals(event.getTrackingId())) {
+        for (Member member : t.getMembers()) {
+          if (member.getId().equals(SharedPreferenceHelper.getUserId())) {
+            if (member.getFailureStatus() != Member.FAIL_STATUS_NORMAL) {
+              if (SharedPreferenceHelper.getAorB() == ABTesting.B) {
+                DialogRescueBoldMan.newInstance(t, DialogRescueBoldMan.MONEY)
+                    .show(getFragmentManager(), "DialogRescueBoldMan");
+              } else {
+                DialogRescueBoldMan.newInstance(t, DialogRescueBoldMan.INVITES)
+                    .show(getFragmentManager(), "DialogRescueBoldMan");
+              }
+            } else {
+              DialogRescueBoldManKick.newInstance(t)
+                  .show(getFragmentManager(), "DialogRescueBoldManKick");
+            }
+          }
+        }
+      }
+    }
+  }
+
+
   @Subscribe public void onEvent(SwitchUIToNextDayEvent event) {
     todaySteps = 0;
     updateTodaySteps(todaySteps);

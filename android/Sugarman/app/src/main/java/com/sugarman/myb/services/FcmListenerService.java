@@ -186,6 +186,10 @@ public class FcmListenerService extends FirebaseMessagingService {
         Timber.e("GROUP_NAME IS ABOUT TO FAIL");
         App.getEventBus().post(new RxBusHelper.ShowDialogRescue(trackingId));
         break;
+      case NotificationMessageType.USER_NAME_HAS_POKED_YOU_TO_SAVE:
+        Timber.e("USER_NAME_HAS_POKED_YOU_TO_SAVE PUSH TRIGGERED");
+        App.getEventBus().post(new RxBusHelper.ShowDialogRescuePoke(trackingId));
+        break;
       default:
         break;
     }
