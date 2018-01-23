@@ -36,7 +36,6 @@ import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.VibrationHelper;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import timber.log.Timber;
 
@@ -110,7 +109,7 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
     for(int i = 0 ; i<members.size();i++)
     {
       if(members.get(i).getFailureStatus()==Member.FAIL_STATUS_NORMAL)
-        members.remove(i);
+        members.remove(members.get(i));
       Timber.e("Members size: " + members.size());
     }
 
@@ -119,6 +118,7 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
           && m.getFailureStatus() == Member.FAIL_STATUS_FAILUER) {
         meFailuer = true;
       }
+      Timber.e(m.toString());
     }
     adapter = new RescueMembersAdapter(getMvpDelegate(), members);
     rvMembers.setLayoutManager(
