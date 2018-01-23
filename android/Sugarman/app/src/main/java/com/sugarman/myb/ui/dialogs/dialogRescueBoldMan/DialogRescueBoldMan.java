@@ -2,6 +2,7 @@ package com.sugarman.myb.ui.dialogs.dialogRescueBoldMan;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,6 +29,7 @@ import com.sugarman.myb.ui.dialogs.dialogRescueGirlCongratulations.DialogRescueG
 import com.sugarman.myb.ui.fragments.rescue_challenge.adapters.RescueMembersAdapter;
 import com.sugarman.myb.ui.views.CropSquareTransformation;
 import com.sugarman.myb.ui.views.MaskTransformation;
+import com.sugarman.myb.utils.Converters;
 import com.sugarman.myb.utils.inapp.IabHelper;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -119,17 +121,19 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
     mRescueMembersAdapter.setMembers(failures);
     mRecyclerViewFailures.setAdapter(mRescueMembersAdapter);
 
-    //CountDownTimer timer = new CountDownTimer(
-    //    mTracking.getRemainToFailUTCDate().getTime() - System.currentTimeMillis(), 1000) {
-    //  @Override public void onTick(long l) {
-    //    mTextViewTimeLeftForRescue.setText(
-    //        Converters.timeFromMilliseconds(mTextViewTimeLeftForRescue.getContext(), l));
-    //  }
-    //
-    //  @Override public void onFinish() {
-    //    mTextViewTimeLeftForRescue.setText(Converters.timeFromMilliseconds(mTextViewTimeLeftForRescue.getContext(), 0L));
-    //  }
-    //}.start();
+    if (mTracking.getRemainToFailUTCDate()!=null) {
+      CountDownTimer timer = new CountDownTimer(mTracking.getRemainToFailUTCDate().getTime() - System.currentTimeMillis(), 1000) {
+        @Override public void onTick(long l) {
+          mTextViewTimeLeftForRescue.setText(
+              Converters.timeFromMilliseconds(mTextViewTimeLeftForRescue.getContext(), l));
+        }
+
+        @Override public void onFinish() {
+          mTextViewTimeLeftForRescue.setText(
+              Converters.timeFromMilliseconds(mTextViewTimeLeftForRescue.getContext(), 0L));
+        }
+      }.start();
+    }
   }
 
   @OnClick(R.id.ivCross) public void ivCrossClick() {
