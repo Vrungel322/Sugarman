@@ -35,7 +35,6 @@ import com.sugarman.myb.utils.ItemClickSupport;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.VibrationHelper;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import timber.log.Timber;
 
@@ -95,7 +94,6 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
 
     Timber.e("onViewCreated got inside " + mTracking.getMembers().length);
     List<Member> members = new ArrayList<>();
-    members.addAll(Arrays.asList(mTracking.getMembers()));
     Timber.e("onViewCreated got inside list size " + members.size());
     //for (Iterator<Member> m = members.iterator(); m.hasNext(); ) {
     //  {
@@ -106,10 +104,10 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
     //  Timber.e("Members size: " + members.size());
     //}
 
-    for(int i = 0 ; i<members.size();i++)
+    for(int i = 0 ; i<mTracking.getMembers().length;i++)
     {
-      if(members.get(i).getFailureStatus()==Member.FAIL_STATUS_NORMAL)
-        members.remove(members.get(i));
+      if(mTracking.getMembers()[i].getFailureStatus()!=Member.FAIL_STATUS_NORMAL)
+        members.add(mTracking.getMembers()[i]);
       Timber.e("Members size: " + members.size());
     }
 
