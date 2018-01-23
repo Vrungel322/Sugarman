@@ -34,6 +34,14 @@ public final class RxBusHelper {
     }
   }
 
+  public static class ShowDialogRescuePoke {
+    @Getter private final String trackingId;
+
+    public ShowDialogRescuePoke(String trackingId) {
+      this.trackingId = trackingId;
+    }
+  }
+
   public static class EventAboutInAppPurchase {
     public final int requestCode;
     public final int resultCode;
