@@ -566,7 +566,7 @@
     <string name="you_got_x_rescues">У Вас спасений: %1$d</string>
     <string name="empty"> </string>
     <string name="name_can_not_be_empty">Имя не может быть пустым!</string>
-    <string name="for_invites">ЗА ПРИГЛАШЕНИЯ</string>
+    <string name="for_invites">ЗА ДРУЗЕЙ</string>
     <string name="for_1_dollar">ЗА 1$</string>
 
 </resources>
