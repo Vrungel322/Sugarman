@@ -9,7 +9,7 @@ import com.sugarman.myb.ui.fragments.mentors_challenge.IMentorsChallengeFragment
  * Created by nikita on 26.10.2017.
  */
 @InjectViewState public class NoMentorsChallengeFragmentPresenter
-    extends BasicPresenter<IMentorsChallengeFragmentView> {
+    extends BasicPresenter<INoMentorsChallengeFragmentView> {
   @Override protected void inject() {
     App.getAppComponent().inject(this);
   }

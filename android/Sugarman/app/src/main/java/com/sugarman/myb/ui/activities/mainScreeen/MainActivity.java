@@ -448,6 +448,7 @@ public class MainActivity extends GetUserInfoActivity
         @Override
         public void onApiGetMyTrackingSuccess(Tracking[] trackings, List<Tracking> mentorsGroup,
             boolean isRefreshNotifications) {
+          Timber.e("trackings:" +trackings.length+ " mentorsGroup:"+mentorsGroup.size());
           myTrackings = trackings;
           mMentorsGroups = mentorsGroup;
           List<BaseChallengeItem> converted = prepareTrackingItems();

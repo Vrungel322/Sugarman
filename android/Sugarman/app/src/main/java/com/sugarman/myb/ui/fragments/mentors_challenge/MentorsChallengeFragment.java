@@ -32,7 +32,7 @@ import timber.log.Timber;
 public class MentorsChallengeFragment extends BasicFragment
     implements IMentorsChallengeFragmentView {
   private static final String MENTOR_CHALLENGE = "MENTOR_CHALLENGE";
-  @InjectPresenter NoMentorsChallengeFragmentPresenter mPresenter;
+  @InjectPresenter MentorsChallengeFragmentPresenter mPresenter;
 
   @BindView(R.id.group_avatar) ImageView mImageViewGroupAvatar;
   @BindView(R.id.tv_avatar_events) TextView mTextViewNumAvatarEvents;

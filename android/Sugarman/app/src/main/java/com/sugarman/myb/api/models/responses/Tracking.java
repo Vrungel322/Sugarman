@@ -334,6 +334,4 @@ public class Tracking implements Parcelable {
   public void setGroupStepsCountWithoutMe(int groupStepsCountWithoutMe) {
     this.groupStepsCountWithoutMe = groupStepsCountWithoutMe;
   }
-
-
 }
