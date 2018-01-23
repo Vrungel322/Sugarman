@@ -99,16 +99,18 @@ public class DialogRescueBoldManKick extends MvpDialogFragment
     mRescueMembersAdapter.setMembers(failures);
     mRecyclerViewFailures.setAdapter(mRescueMembersAdapter);
 
-    mTimer = new CountDownTimer(mTracking.getRemainToFailUTCDate().getTime()-System.currentTimeMillis(), 1000) {
-      @Override public void onTick(long l) {
-        mTextViewTimeLeftForRescue.setText(
-            Converters.timeFromMilliseconds(getActivity(), l));
-      }
+    if (mTracking.getRemainToFailUTCDate() != null) {
+      mTimer = new CountDownTimer(
+          mTracking.getRemainToFailUTCDate().getTime() - System.currentTimeMillis(), 1000) {
+        @Override public void onTick(long l) {
+          mTextViewTimeLeftForRescue.setText(Converters.timeFromMilliseconds(getActivity(), l));
+        }
 
-      @Override public void onFinish() {
-        mTextViewTimeLeftForRescue.setText(Converters.timeFromMilliseconds(getActivity(), 1L));
-      }
-    }.start();
+        @Override public void onFinish() {
+          mTextViewTimeLeftForRescue.setText(Converters.timeFromMilliseconds(getActivity(), 1L));
+        }
+      }.start();
+    }
   }
 
   @Override public void onDestroyView() {
