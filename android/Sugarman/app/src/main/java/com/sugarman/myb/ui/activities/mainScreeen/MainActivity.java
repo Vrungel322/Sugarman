@@ -110,6 +110,8 @@ import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.ui.dialogs.dialogRescueBoldMan.DialogRescueBoldMan;
 import com.sugarman.myb.ui.dialogs.dialogRescueBoldManKick.DialogRescueBoldManKick;
+import com.sugarman.myb.ui.dialogs.dialogRescueGirl.DialogRescueGirl;
+import com.sugarman.myb.ui.dialogs.dialogRescueGirlCongratulations.DialogRescueGirCongratulations;
 import com.sugarman.myb.ui.fragments.BaseFragment;
 import com.sugarman.myb.ui.fragments.NotificationsFragment;
 import com.sugarman.myb.ui.views.CircleIndicatorView;
@@ -448,7 +450,7 @@ public class MainActivity extends GetUserInfoActivity
         @Override
         public void onApiGetMyTrackingSuccess(Tracking[] trackings, List<Tracking> mentorsGroup,
             boolean isRefreshNotifications) {
-          Timber.e("trackings:" +trackings.length+ " mentorsGroup:"+mentorsGroup.size());
+          Timber.e("trackings:" + trackings.length + " mentorsGroup:" + mentorsGroup.size());
           myTrackings = trackings;
           mMentorsGroups = mentorsGroup;
           List<BaseChallengeItem> converted = prepareTrackingItems();
@@ -1125,7 +1127,7 @@ public class MainActivity extends GetUserInfoActivity
       case R.id.iv_avatar:
 
         openProfileActivity();
-//        DialogRescueBoldMan.newInstance(myTrackings[0],DialogRescueBoldMan.MONEY).show(getFragmentManager(),"DialogRescueBoldMan");
+        //        DialogRescueBoldMan.newInstance(myTrackings[0],DialogRescueBoldMan.MONEY).show(getFragmentManager(),"DialogRescueBoldMan");
         //DialogRescueGirl.newInstance(myTrackings[0]).show(getFragmentManager(), "DialogRescueGirl");
         //DialogRescueGirCongratulations.newInstance(myTrackings[0]).show(getFragmentManager(), "DialogRescueGirCongratulations");
         //DialogRescueBoldManKick.newInstance(myTrackings[0]).show(getFragmentManager(), "DialogRescueBoldManKick");
@@ -1238,7 +1240,6 @@ public class MainActivity extends GetUserInfoActivity
     }
   }
 
-
   @Subscribe public void onEvent(RxBusHelper.ShowDialogRescuePoke event) {
     Timber.e("ShowDialogRescuePoke " + event.getTrackingId());
     for (Tracking t : myTrackings) {
@@ -1263,6 +1264,24 @@ public class MainActivity extends GetUserInfoActivity
     }
   }
 
+  @Subscribe public void onEvent(RxBusHelper.ShowDialogUserSaved event) {
+    Timber.e("ShowDialogUserSaved " + event.getTrackingId());
+    for (Tracking t : myTrackings) {
+      if (t.getId().equals(event.getTrackingId())) {
+        DialogRescueGirl.newInstance(t).show(getFragmentManager(), "DialogRescueGirl");
+      }
+    }
+  }
+
+  @Subscribe public void onEvent(RxBusHelper.ShowDialogGroupSaved event) {
+    Timber.e("ShowDialogUserSaved " + event.getTrackingId());
+    for (Tracking t : myTrackings) {
+      if (t.getId().equals(event.getTrackingId())) {
+        DialogRescueGirCongratulations.newInstance(t)
+            .show(getFragmentManager(), "DialogRescueGirlCongradulations");
+      }
+    }
+  }
 
   @Subscribe public void onEvent(SwitchUIToNextDayEvent event) {
     todaySteps = 0;
@@ -1693,9 +1712,8 @@ public class MainActivity extends GetUserInfoActivity
 
           boolean isFailedStatusAdapter = false;
 
-          for(int i = 0; i<tracking.getMembers().length; i++)
-          {
-            if(tracking.getMembers()[i].getFailureStatus() == Member.FAIL_STATUS_FAILUER) {
+          for (int i = 0; i < tracking.getMembers().length; i++) {
+            if (tracking.getMembers()[i].getFailureStatus() == Member.FAIL_STATUS_FAILUER) {
               isFailedStatusAdapter = true;
               break;
             }

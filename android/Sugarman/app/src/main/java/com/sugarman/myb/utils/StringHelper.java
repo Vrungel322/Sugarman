@@ -102,6 +102,8 @@ public abstract class StringHelper {
       case NotificationMessageType.CREATOR_NAME_APPROVED: // expected Creator_name has approved your request to join Group_name group
       case NotificationMessageType.USER_NAME_REQUESTED: // expected: User_name has requested to join Group_name group
       case NotificationMessageType.PINGED_YOU_TO_MYB: // expected: User_name pinged you to MYB on Group_name group
+      case NotificationMessageType.USER_NAME_HAS_POKED_YOU_TO_SAVE:
+      case NotificationMessageType.USER_SAVED_THE_GROUP:
         itemFlags = flags[type].split(Constants.IN_APP_NOTIFICATION_MESSAGE_DIVIDER);
         flag1 = itemFlags[0];
         flag2 = itemFlags[1];
