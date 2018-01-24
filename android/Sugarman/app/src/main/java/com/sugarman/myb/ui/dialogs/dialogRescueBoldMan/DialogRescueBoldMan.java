@@ -30,6 +30,7 @@ import com.sugarman.myb.ui.fragments.rescue_challenge.adapters.RescueMembersAdap
 import com.sugarman.myb.ui.views.CropSquareTransformation;
 import com.sugarman.myb.ui.views.MaskTransformation;
 import com.sugarman.myb.utils.Converters;
+import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.inapp.IabHelper;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,6 +54,7 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
   @BindView(R.id.tvTimeLeftForRescue) TextView mTextViewTimeLeftForRescue;
   @BindView(R.id.ivRescueLogo) ImageView mImageViewRescueLogo;
   @BindView(R.id.tvRescueForWhat) TextView tvRescueForWhat;
+  @BindView(R.id.tvYouGroupRescued) TextView tvYouGroupRescued;
   @BindView(R.id.progressBar4) ProgressBar mProgressBar;
   private Tracking mTracking;
   private RescueMembersAdapter mRescueMembersAdapter;
@@ -60,6 +62,7 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
   private IabHelper mHelper;
   private int mMode;
   private String mFreeSku = "v1.group_rescue";
+  private boolean meFailuer;
 
   public static DialogRescueBoldMan newInstance(Tracking tracking, int type) {
     Bundle args = new Bundle();
@@ -102,6 +105,20 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
       case INVITES:
         tvRescueForWhat.setText(getString(R.string.for_invites));
         break;
+    }
+
+    for (Member m : mTracking.getMembers()) {
+      if (m.getId().equals(SharedPreferenceHelper.getUserId())
+          && m.getFailureStatus() == Member.FAIL_STATUS_FAILUER) {
+        meFailuer = true;
+      }
+    }
+    if (!meFailuer){
+      tvYouGroupRescued.setText(R.string.they_still_have_time_to_rescue_the_group);
+    }
+    else {
+      tvYouGroupRescued.setText(R.string.you_still_have_time_to_rescue_the_group);
+
     }
 
     mTextViewFailText.setText(String.format(getString(R.string.your_group_has_failed_thanks_to),

@@ -75,7 +75,7 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
     return fragment;
   }
 
-   @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+  @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
 
     mChallengeItem = getArguments().getParcelable(RESCUE_CHALLENGE);
@@ -104,10 +104,10 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
     //  Timber.e("Members size: " + members.size());
     //}
 
-    for(int i = 0 ; i<mTracking.getMembers().length;i++)
-    {
-      if(mTracking.getMembers()[i].getFailureStatus()!=Member.FAIL_STATUS_NORMAL)
+    for (int i = 0; i < mTracking.getMembers().length; i++) {
+      if (mTracking.getMembers()[i].getFailureStatus() != Member.FAIL_STATUS_NORMAL) {
         members.add(mTracking.getMembers()[i]);
+      }
       Timber.e("Members size: " + members.size());
     }
 
@@ -140,26 +140,24 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
       }
     });
 
-     for (Member m : mTracking.getMembers()) {
-       if (m.getFailureStatus() == Member.FAIL_STATUS_FAILUER && m.getId()
-           .equals(SharedPreferenceHelper.getUserId())) {
-         Timber.e("Me Current user is failure");
-         amIFailing = true;
-         break;
-       }
-     }
+    for (Member m : mTracking.getMembers()) {
+      if (m.getFailureStatus() == Member.FAIL_STATUS_FAILUER && m.getId()
+          .equals(SharedPreferenceHelper.getUserId())) {
+        Timber.e("Me Current user is failure");
+        amIFailing = true;
+        break;
+      }
+    }
 
-    if (amIFailing){
+    if (amIFailing) {
       mTextViewGroupName.setText(
           String.format(getString(R.string.your_group_has_failed_thanks_to_you_and),
-              mTracking.getGroup().getName(),getString(R.string.you)));
+              mTracking.getGroup().getName(), getString(R.string.you)));
+    } else {
+      mTextViewGroupName.setText(
+          String.format(getString(R.string.your_group_has_failed_thanks_to_you_and),
+              mTracking.getGroup().getName(), getString(R.string.empty)));
     }
-    else {
-    mTextViewGroupName.setText(
-        String.format(getString(R.string.your_group_has_failed_thanks_to_you_and),
-            mTracking.getGroup().getName(),getString(R.string.empty)));
-    }
-
 
     mTextViewRescueCount.setText(String.format(getString(R.string.the_group_needs_x_more_rescues),
         (int) adapter.getFailureMembersCount()));
@@ -167,18 +165,31 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
     mTimer = new CountDownTimer(
         mTracking.getRemainToFailUTCDate().getTime() - System.currentTimeMillis(), 1000) {
       @Override public void onTick(long l) {
-        mTextViewRescueTimer.setText(
-            String.format(getString(R.string.you_have_x_time_to_rescue_the_group),
-                Converters.timeFromMilliseconds(getActivity(), l)));
+        if (amIFailing) {
+          mTextViewRescueTimer.setText(
+              String.format(getString(R.string.you_have_x_time_to_rescue_the_group),
+                  Converters.timeFromMilliseconds(getActivity(), l)));
+        }
+        else {
+          mTextViewRescueTimer.setText(
+              String.format(getString(R.string.they_have_x_time_to_rescue_the_group),
+                  Converters.timeFromMilliseconds(getActivity(), l)));
+        }
       }
 
       @Override public void onFinish() {
-        mTextViewRescueTimer.setText(
-            String.format(getString(R.string.you_have_x_time_to_rescue_the_group),
-                Converters.timeFromMilliseconds(getActivity(), 1L)));
+        if (amIFailing) {
+          mTextViewRescueTimer.setText(
+              String.format(getString(R.string.you_have_x_time_to_rescue_the_group),
+                  Converters.timeFromMilliseconds(getActivity(), 1L)));
+        }
+        else {
+          mTextViewRescueTimer.setText(
+              String.format(getString(R.string.they_have_x_time_to_rescue_the_group),
+                  Converters.timeFromMilliseconds(getActivity(), 1L)));
+        }
       }
     }.start();
-
 
     if (!amIFailing) {
       rescueButton.setImageResource(R.drawable.kick_kick);

@@ -25,6 +25,7 @@ import com.sugarman.myb.ui.fragments.rescue_challenge.adapters.RescueMembersAdap
 import com.sugarman.myb.ui.views.CropSquareTransformation;
 import com.sugarman.myb.ui.views.MaskTransformation;
 import com.sugarman.myb.utils.Converters;
+import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.VibrationHelper;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,11 +46,13 @@ public class DialogRescueBoldManKick extends MvpDialogFragment
   @BindView(R.id.tvTimeLeftForRescue) TextView mTextViewTimeLeftForRescue;
   @BindView(R.id.ivKick) ImageView mImageViewKick;
   @BindView(R.id.tvKickcThemNow) TextView mTextViewKickThemNow;
+  @BindView(R.id.tvYouGroupRescued) TextView tvYouGroupRescued;
 
   private Tracking mTracking;
   private RescueMembersAdapter mRescueMembersAdapter;
   private List<Member> failures = new ArrayList<>();
   private CountDownTimer mTimer;
+  private boolean meFailuer;
 
   public static DialogRescueBoldManKick newInstance(Tracking tracking) {
     Bundle args = new Bundle();
@@ -84,6 +87,19 @@ public class DialogRescueBoldManKick extends MvpDialogFragment
 
     mTextViewFailText.setText(String.format(getString(R.string.your_group_has_failed_thanks_to),
         mTracking.getGroup().getName()));
+
+    for (Member m : mTracking.getMembers()) {
+      if (m.getId().equals(SharedPreferenceHelper.getUserId())
+          && m.getFailureStatus() == Member.FAIL_STATUS_FAILUER) {
+        meFailuer = true;
+      }
+    }
+    if (meFailuer){
+      tvYouGroupRescued.setText(R.string.you_still_have_time_to_rescue_the_group);
+    }
+    else {
+      tvYouGroupRescued.setText(R.string.they_still_have_time_to_rescue_the_group);
+    }
 
     mRecyclerViewFailures.setLayoutManager(
         new LinearLayoutManager(mRecyclerViewFailures.getContext(), LinearLayoutManager.HORIZONTAL,
