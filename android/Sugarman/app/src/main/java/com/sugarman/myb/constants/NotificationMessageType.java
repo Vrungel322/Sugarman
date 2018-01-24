@@ -19,6 +19,8 @@ public abstract class NotificationMessageType {
   public static final int PINGED_YOU_TO_MYB = 13;
   public static final int IS_ABOUT_TO_FAIL = 14;
   public static final int USER_NAME_HAS_POKED_YOU_TO_SAVE = 15;
+  public static final int USER_SAVED_THE_GROUP = 16;
+  public static final int GROUP_NAME_HAS_BEEN_SAVED = 17;
 
   // order is important!
   public static final int[] IDS = new int[] {
@@ -26,7 +28,7 @@ public abstract class NotificationMessageType {
       CONGRATS, DAILY_SUGARMAN, USER_NAME_JOINED, GROUP_NAME_HAS_FAILED,
       ONE_MORE_DAY_TO_ADD_FRIENDS, INVITATION_NO_AVAILABLE, CREATOR_NAME_APPROVED,
       USER_NAME_REQUESTED, IS_UNABLE_TO_START, PINGED_YOU_TO_MYB, IS_ABOUT_TO_FAIL,
-      USER_NAME_HAS_POKED_YOU_TO_SAVE
+      USER_NAME_HAS_POKED_YOU_TO_SAVE, USER_SAVED_THE_GROUP, GROUP_NAME_HAS_BEEN_SAVED
   };
 
   private NotificationMessageType() {

@@ -200,6 +200,7 @@ public class ChallengeRescueFragment extends BasicFragment implements IChallenge
 
   @Override public void onDestroyView() {
     super.onDestroyView();
+    if(mTimer!=null)
     mTimer.cancel();
   }
 

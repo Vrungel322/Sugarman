@@ -318,6 +318,8 @@
     <item>kicked you to MYB on_ae_314_qp_group</item>
     <item>is about to fail! You still have time to rescue it!</item>
     <item>kicked you to rescue_ae_314_qp_group</item>
+    <item>saved the_ae_314_qp_group</item>
+    <item>has been saved</item>
   </array>
   <string name="title_activity_approve_otp">ApproveOtpActivity</string>
   <string name="empty_field_denied">%1$s can not be empty</string>

@@ -42,6 +42,24 @@ public final class RxBusHelper {
     }
   }
 
+  public static class ShowDialogUserSaved
+  {
+    @Getter private final String trackingId;
+
+    public ShowDialogUserSaved(String trackingId) {
+      this.trackingId = trackingId;
+    }
+  }
+
+  public static class ShowDialogGroupSaved
+  {
+    @Getter private final String trackingId;
+
+    public ShowDialogGroupSaved(String trackingId) {
+      this.trackingId = trackingId;
+    }
+  }
+
   public static class EventAboutInAppPurchase {
     public final int requestCode;
     public final int resultCode;

@@ -190,6 +190,14 @@ public class FcmListenerService extends FirebaseMessagingService {
         Timber.e("USER_NAME_HAS_POKED_YOU_TO_SAVE PUSH TRIGGERED");
         App.getEventBus().post(new RxBusHelper.ShowDialogRescuePoke(trackingId));
         break;
+      case NotificationMessageType.USER_SAVED_THE_GROUP:
+        Timber.e("USER_SAVED_THE_GROUP PUSH TRIGGERED");
+        App.getEventBus().post(new RxBusHelper.ShowDialogUserSaved(trackingId));
+        break;
+      case NotificationMessageType.GROUP_NAME_HAS_BEEN_SAVED:
+        Timber.e("GROUP_NAME_HAS_BEEN_SAVED PUSH TRIGGERED");
+        App.getEventBus().post(new RxBusHelper.ShowDialogGroupSaved(trackingId));
+        break;
       default:
         break;
     }

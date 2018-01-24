@@ -110,7 +110,7 @@ public interface ApiRx {
   @GET("v1/check_slots") Observable<Response<NextFreeSkuEntity>> getNextFreeSku(
       @Query("device") String device);
 
-  @POST("v1/in_app_purchases/cancel") Observable<Response<Subscriptions>> closeSubscription(
+  @POST(" ") Observable<Response<Subscriptions>> closeSubscription(
       @Body PurchaseForServer purchaseForServer);
 
   @POST("v1/contact_list") Observable<Response<Void>> sendContacts(
