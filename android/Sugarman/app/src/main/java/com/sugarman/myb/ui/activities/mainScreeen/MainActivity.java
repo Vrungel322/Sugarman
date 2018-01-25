@@ -398,6 +398,12 @@ public class MainActivity extends GetUserInfoActivity
                 case NotificationMessageType.DAILY_SUGARMAN:
                   dailyTrackingsId.put(notificationId, trackingId);
                   break;
+                case NotificationMessageType.USER_NAME_HAS_POKED_YOU_TO_SAVE:
+                  break;
+                case NotificationMessageType.USER_SAVED_THE_GROUP:
+                  break;
+                case NotificationMessageType.GROUP_NAME_HAS_BEEN_SAVED:
+                   break;
                 default:
                   myNotifications.add(notification);
                   break;
@@ -1035,7 +1041,7 @@ public class MainActivity extends GetUserInfoActivity
     App.getEventBus().post(new DebugRequestStepsEvent(todaySteps));
     showFullscreenNotifications();
     updateAnimations(todaySteps);
-    mGetMyTrackingsClient.getMyTrackings(true);
+    //mGetMyTrackingsClient.getMyTrackings(true);
   }
 
   @Override protected void onStop() {

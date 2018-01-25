@@ -49,9 +49,12 @@ public class FcmListenerService extends FirebaseMessagingService {
       flags = getResources().getStringArray(R.array.notifications_types);
     }
 
-    Timber.e("message : " + message.getData().get(Constants.FCM_MESSAGE) + " ;44444; " + message.getData().get(Constants.FCM_NOTIFICATION));
+    Timber.e("message : "
+        + message.getData().get(Constants.FCM_MESSAGE)
+        + " ;44444; "
+        + message.getData().get(Constants.FCM_NOTIFICATION));
 
-    App.getEventBus().post(new GetInAppNotificationsEvent());
+    //App.getEventBus().post(new GetInAppNotificationsEvent());
 
     Map data = message.getData();
     String text = (String) data.get(Constants.FCM_MESSAGE);
@@ -80,7 +83,7 @@ public class FcmListenerService extends FirebaseMessagingService {
           Timber.e("url " + url);
           //if (url != null) {
           if (!url.isEmpty()) {
-
+            App.getEventBus().post(new GetInAppNotificationsEvent());
             processURL(url, text);
           } else {
             processMessage(text, notification);
@@ -149,29 +152,35 @@ public class FcmListenerService extends FirebaseMessagingService {
       case NotificationMessageType.PINGED_YOU_TO_MYB:
       case NotificationMessageType.USER_NAME_HAS_POKED_YOU:
       case NotificationMessageType.GROUP_NAME_IN_HOUR:
+        App.getEventBus().post(new GetInAppNotificationsEvent());
         intent.putExtra(Constants.INTENT_OPEN_ACTIVITY, Constants.OPEN_MAIN_ACTIVITY);
         intent.putExtra(Constants.INTENT_FCM_TRACKING_ID, trackingId);
         break;
       case NotificationMessageType.USER_NAME_JOINED:
       case NotificationMessageType.CREATOR_NAME_APPROVED:
+        App.getEventBus().post(new GetInAppNotificationsEvent());
         App.getEventBus().post(new RefreshTrackingsEvent(trackingId));
         intent.putExtra(Constants.INTENT_OPEN_ACTIVITY, Constants.OPEN_MAIN_ACTIVITY);
         intent.putExtra(Constants.INTENT_FCM_TRACKING_ID, trackingId);
         break;
       case NotificationMessageType.USER_NAME_INVITED:
+        App.getEventBus().post(new GetInAppNotificationsEvent());
         App.getEventBus().post(new UpdateInvitesEvent());
         Timber.e("UpdateInvitesEvent");
         intent.putExtra(Constants.INTENT_OPEN_ACTIVITY, Constants.OPEN_INVITES_ACTIVITY);
         break;
       case NotificationMessageType.CONGRATS:
+        App.getEventBus().post(new GetInAppNotificationsEvent());
         intent.putExtra(Constants.INTENT_OPEN_ACTIVITY, Constants.OPEN_CONGRATULATION_ACTIVITY);
         intent.putExtra(Constants.INTENT_FCM_TRACKING_ID, trackingId);
         break;
       case NotificationMessageType.DAILY_SUGARMAN:
+        App.getEventBus().post(new GetInAppNotificationsEvent());
         intent.putExtra(Constants.INTENT_OPEN_ACTIVITY, Constants.OPEN_DAILY_ACTIVITY);
         intent.putExtra(Constants.INTENT_FCM_TRACKING_ID, trackingId);
         break;
       case NotificationMessageType.GROUP_NAME_HAS_FAILED:
+        App.getEventBus().post(new GetInAppNotificationsEvent());
         intent.putExtra(Constants.INTENT_OPEN_ACTIVITY, Constants.OPEN_FAILED_ACTIVITY);
         intent.putExtra(Constants.INTENT_FCM_TRACKING_ID, trackingId);
         Timber.e("GROUP_NAME_HAS_FAILED");
@@ -179,10 +188,12 @@ public class FcmListenerService extends FirebaseMessagingService {
         //App.getEventBus().post(new RxBusHelper.ShowDialogRescue(trackingId));
         break;
       case NotificationMessageType.USER_NAME_REQUESTED:
+        App.getEventBus().post(new GetInAppNotificationsEvent());
         App.getEventBus().post(new UpdateRequestsEvent());
         intent.putExtra(Constants.INTENT_OPEN_ACTIVITY, Constants.OPEN_REQUESTS_ACTIVITY);
         break;
       case NotificationMessageType.IS_ABOUT_TO_FAIL:
+        App.getEventBus().post(new GetInAppNotificationsEvent());
         Timber.e("GROUP_NAME IS ABOUT TO FAIL");
         App.getEventBus().post(new RxBusHelper.ShowDialogRescue(trackingId));
         break;
