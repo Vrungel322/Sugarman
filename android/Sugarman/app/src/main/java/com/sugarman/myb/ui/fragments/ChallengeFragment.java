@@ -258,6 +258,7 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
           str = str.replaceAll("( +)", " ").trim();
           if (str.length() > 0) name = str.substring(0, (fastest.getName().indexOf(" ")));
 
+
           fastestName.setText(name);
           fastestSteps.setText(String.format(Locale.US, "%,d", fastest.getSteps()));
           CustomPicasso.with(getActivity())
@@ -267,6 +268,14 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
               .error(R.drawable.ic_red_avatar)
               .transform(new CropCircleTransformation(0xffff0000, 1))
               .into(fastestAvatar);
+
+          //this is fixing of server bug, but on client
+          for (int i = 0; i < tracking.getMembers().length; i++) {
+            if (fastest.getId().equals(tracking.getMembers()[i].getId())) {
+              fastestSteps.setText(
+                  String.format(Locale.US, "%,d", tracking.getMembers()[i].getSteps()));
+            }
+          }
         } else {
           fastestName.setText(getResources().getString(R.string.sugarman_is));
           fastestSteps.setText(getResources().getString(R.string.todays_fastest));
@@ -434,8 +443,7 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
     if (tracking.getTimesSave() != null && tracking.getTimesSave() > 0) {
       mTextViewTimesSave.setVisibility(View.VISIBLE);
       mTextViewTimesSave.setText(tracking.getTimesSave().toString());
-    }
-    else {
+    } else {
       mTextViewTimesSave.setVisibility(View.GONE);
     }
 
