@@ -17,7 +17,6 @@ import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.base.BasicFragment;
 import com.sugarman.myb.models.ChallengeMentorItem;
 import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
-import com.sugarman.myb.ui.fragments.no_mentors_challenge.NoMentorsChallengeFragmentPresenter;
 import com.sugarman.myb.ui.views.CropCircleTransformation;
 import com.sugarman.myb.ui.views.CropSquareTransformation;
 import com.sugarman.myb.ui.views.MaskTransformation;
@@ -59,11 +58,11 @@ public class MentorsChallengeFragment extends BasicFragment
   @BindView(R.id.iv_broken_avatar_fourth) ImageView mImageViewBrocenAvatarFourth;
   @BindView(R.id.progress_strip) ImageView mImageViewProgressStripe;
   @BindView(R.id.steps_total) TextView mTextViewTotalSteps;
+  CardView vChallengeContainer;
   private ChallengeMentorItem mChallengeItem;
   private Tracking mTracking;
   private Member[] mMembers;
   private int mAllSteps;
-  CardView vChallengeContainer;
 
   public MentorsChallengeFragment() {
     super(R.layout.fragment_mentor_challenge);
@@ -145,6 +144,18 @@ public class MentorsChallengeFragment extends BasicFragment
             .transform(new CropSquareTransformation())
             .transform(new CropCircleTransformation(0xffff0000, 1))
             .into(mImageViewFastestAvatar);
+
+        //this is fixing of server bug, but on client
+        for (int i = 0; i < mTracking.getMembers().length; i++) {
+          if (mTracking.getDailySugarman()
+              .getUser()
+              .getId()
+              .equals(mTracking.getMembers()[i].getId())) {
+            mTextViewFastestSteps.setText(
+                String.format(Locale.US, "%,d", mTracking.getMembers()[i].getSteps()));
+            Timber.e("fastestSteps=" + mTracking.getMembers()[i].getSteps());
+          }
+        }
       } else {
         mTextViewFastestName.setText(getResources().getString(R.string.sugarman_is));
         mTextViewFastestSteps.setText(getResources().getString(R.string.todays_fastest));
