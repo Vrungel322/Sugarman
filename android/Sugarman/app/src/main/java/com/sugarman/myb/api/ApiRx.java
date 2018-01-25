@@ -16,7 +16,6 @@ import com.sugarman.myb.api.models.responses.InvitersImgUrls;
 import com.sugarman.myb.api.models.responses.RescueFriendResponse;
 import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.animation.GetAnimationResponse;
-import com.sugarman.myb.api.models.responses.me.groups.CreateGroupResponse;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.models.ContactListForServer;
 import com.sugarman.myb.models.ab_testing.ABTesting;
@@ -110,7 +109,7 @@ public interface ApiRx {
   @GET("v1/check_slots") Observable<Response<NextFreeSkuEntity>> getNextFreeSku(
       @Query("device") String device);
 
-  @POST(" ") Observable<Response<Subscriptions>> closeSubscription(
+  @POST("v1/in_app_purchases/cancel") Observable<Response<Subscriptions>> closeSubscription(
       @Body PurchaseForServer purchaseForServer);
 
   @POST("v1/contact_list") Observable<Response<Void>> sendContacts(
