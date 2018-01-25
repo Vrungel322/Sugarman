@@ -187,8 +187,10 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
     Timber.e("startPurchaseFlow");
     mHelper.launchPurchaseFlow(getActivity(), mFreeSku, 10001, (result, purchase) -> {
       Timber.e("launchPurchaseFlow");
-      consumeItem();
 
+      if (purchase != null) {
+        consumeItem();
+      }
       //if (result.isFailure()) {
       //  Timber.e("Result is failure");
       //  // Handle error
