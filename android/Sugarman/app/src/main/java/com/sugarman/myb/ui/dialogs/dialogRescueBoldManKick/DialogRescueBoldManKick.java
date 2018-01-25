@@ -131,7 +131,9 @@ public class DialogRescueBoldManKick extends MvpDialogFragment
 
   @Override public void onDestroyView() {
     super.onDestroyView();
-    mTimer.cancel();
+    if (mTimer != null) {
+      mTimer.cancel();
+    }
   }
 
   @OnClick({ R.id.ivKick, R.id.tvKickcThemNow }) public void kickAllFailures() {
