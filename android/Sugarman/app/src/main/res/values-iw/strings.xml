@@ -614,5 +614,6 @@
     <string name="name_can_not_be_empty">Name can not be empty!</string>
     <string name="for_invites">עבור הזמנות</string>
     <string name="for_1_dollar">עבור 1$</string>
+  <string name="they_still_have_time_to_rescue_the_group">אתה עדיין צריך להציל את הקבוצה</string>
 
 </resources>

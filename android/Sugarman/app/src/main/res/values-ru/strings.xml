@@ -569,5 +569,6 @@
     <string name="name_can_not_be_empty">Имя не может быть пустым!</string>
     <string name="for_invites">ЗА ДРУЗЕЙ</string>
     <string name="for_1_dollar">ЗА 1$</string>
+  <string name="they_still_have_time_to_rescue_the_group">У вас все еще есть время для спасения!</string>
 
 </resources>
