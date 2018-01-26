@@ -82,6 +82,7 @@ public abstract class SharedPreferenceConstants {
   public static final String A_OR_B = "A_OR_B";
   public static final String BLOCK_RULES = "BLOCK_RULES";
   public static final String BLOCK_GET_ANIMS_BY_NAME = "BLOCK_GET_ANIMS_BY_NAME";
+  public static final String CONTACTS_COUNT = "CONTACTS_COUNT";
 
   private SharedPreferenceConstants() {
     // only static methods and fields

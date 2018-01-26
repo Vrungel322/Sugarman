@@ -682,4 +682,12 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     return getBoolean(SharedPreferenceConstants.BLOCK_GET_ANIMS_BY_NAME, false);
 
   }
+
+  public static void saveNumberOfContacts(int size) {
+    putInt(SharedPreferenceConstants.CONTACTS_COUNT, size);
+  }
+
+  public static int getNumberOfContacts() {
+    return getInt(SharedPreferenceConstants.CONTACTS_COUNT, 0);
+  }
 }

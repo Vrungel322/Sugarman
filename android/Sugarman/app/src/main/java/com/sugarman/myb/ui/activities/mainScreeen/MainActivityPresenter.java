@@ -26,8 +26,10 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import rx.Observable;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
 
 /**
@@ -46,6 +48,18 @@ import timber.log.Timber;
     fetchCompletedTasks();
     fetchRules();
     subscribeShowDialogEvent();
+    startFetchingTrackingsPeriodically();
+  }
+
+  private void startFetchingTrackingsPeriodically() {
+    //interval by default subscribeOn in Computation thread
+    Subscription subscription = Observable.interval(1000, 10000, TimeUnit.MILLISECONDS)
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(aLong -> {
+         Timber.e("startFetchingTrackingsPeriodically");
+         getViewState().refreshTrackings();
+        });
+    addToUnsubscription(subscription);
   }
 
   private void subscribeShowDialogEvent() {
@@ -208,13 +222,19 @@ import timber.log.Timber;
   }
 
   public void sendContacts(ContactListForServer contactForServer) {
-    Subscription subscription = mDataManager.sendContacts(contactForServer)
-        .compose(ThreadSchedulers.applySchedulers())
-        .subscribe(voidResponse -> {
-          Timber.e("Success");
-          SharedPreferenceHelper.setContactsSent(true);
-        }, Throwable::printStackTrace);
-    addToUnsubscription(subscription);
+    Timber.e("sendContacts : " + (SharedPreferenceHelper.getNumberOfContacts()
+        != contactForServer.getContactForServerList().size()));
+    if (SharedPreferenceHelper.getNumberOfContacts() != contactForServer.getContactForServerList()
+        .size()) {
+      Subscription subscription = mDataManager.sendContacts(contactForServer)
+          .compose(ThreadSchedulers.applySchedulers())
+          .subscribe(voidResponse -> {
+            Timber.e("sendContacts Success");
+            SharedPreferenceHelper.saveNumberOfContacts(
+                contactForServer.getContactForServerList().size());
+          }, Throwable::printStackTrace);
+      addToUnsubscription(subscription);
+    }
   }
 
   public void getAnimations(File filesDir) {

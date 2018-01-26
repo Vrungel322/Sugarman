@@ -17,4 +17,6 @@ import java.util.List;
   void doEventActionResponse(CustomUserEvent build);
 
   void setAnimation(List<Drawable> drawable, int duration);
+
+  void refreshTrackings();
 }

@@ -73,6 +73,7 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   @BindView(R.id.tvSuccessRateToday) TextView tvSuccessRateToday;
   @BindView(R.id.tvSuccessRateWeekly) TextView tvSuccessRateWeek;
   @BindView(R.id.tvSuccessRateMonthly) TextView tvSuccessRateMonth;
+  @BindView(R.id.llSuccessRateContainer) LinearLayout llSuccessRateContainer;
   IabHelper mHelper;
   IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = (purchase, result) -> {
     Timber.e("mConsumeFinishedListener" + purchase.toString());
@@ -86,19 +87,6 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   @BindView(R.id.llVideos) LinearLayout llVideos;
   @BindView(R.id.rvVideos) RecyclerView mRecyclerViewVideos;
   private String mFreeSku;
-  IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = (result, purchase) -> {
-    Timber.e("mFreeSku mPurchaseFinishedListener " + mFreeSku);
-
-    if (result.isFailure()) {
-      // Handle error
-      return;
-    } else if (purchase.getSku().equals(mFreeSku)) {
-      consumeItem();
-      Timber.e(mHelper.getMDataSignature());
-    } else {
-      Timber.e(result.getMessage());
-    }
-  };
   private MentorEntity mMentorEntity;
   //IabHelper.OnConsumeMultiFinishedListener mOnConsumeMultiFinishedListener = (purchases, results) -> {
   //
@@ -122,6 +110,19 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
           }
         }
       };
+  IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = (result, purchase) -> {
+    Timber.e("mFreeSku mPurchaseFinishedListener " + mFreeSku);
+
+    if (result.isFailure()) {
+      // Handle error
+      return;
+    } else if (purchase.getSku().equals(mFreeSku)) {
+      consumeItem();
+      Timber.e(mHelper.getMDataSignature());
+    } else {
+      Timber.e(result.getMessage());
+    }
+  };
   private MentorsFriendAdapter mMentorsFriendAdapter;
   private MentorsCommentsAdapter mMentorsCommentsAdapter;
   private MentorsVideosAdapter mMentorsVideosAdapter;
@@ -175,10 +176,29 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
     successRate.setData(data);
     successRate.invalidate(); // refresh
 
-    setSuccessRateData(successRateToday, mMentorEntity.getDailySuccessRate(), tvSuccessRateToday);
-    setSuccessRateData(successRateWeekly, mMentorEntity.getWeeklySuccessRate(), tvSuccessRateWeek);
-    setSuccessRateData(successRateMonthly, mMentorEntity.getMonthlySuccessRate(),
-        tvSuccessRateMonth);
+    Timber.e("  DailySuccessRate: "
+        + mMentorEntity.getDailySuccessRate()
+        + "  WeeklySuccessRate: "
+        + mMentorEntity.getWeeklySuccessRate()
+        + "  MonthlySuccessRate: "
+        + mMentorEntity.getMonthlySuccessRate()
+        + "  bool: "
+        + (mMentorEntity.getDailySuccessRate() == 0
+        && mMentorEntity.getWeeklySuccessRate() == 0
+        && mMentorEntity.getMonthlySuccessRate() == 0));
+
+    if (mMentorEntity.getDailySuccessRate() == 0
+        && mMentorEntity.getWeeklySuccessRate() == 0
+        && mMentorEntity.getMonthlySuccessRate() == 0) {
+      llSuccessRateContainer.setVisibility(View.GONE);
+      successRate.setVisibility(View.GONE);
+    } else {
+      setSuccessRateData(successRateToday, mMentorEntity.getDailySuccessRate(), tvSuccessRateToday);
+      setSuccessRateData(successRateWeekly, mMentorEntity.getWeeklySuccessRate(),
+          tvSuccessRateWeek);
+      setSuccessRateData(successRateMonthly, mMentorEntity.getMonthlySuccessRate(),
+          tvSuccessRateMonth);
+    }
 
     LayoutInflater vi =
         (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -197,11 +217,10 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
 
     setupInAppPurchase();
 
-    if (mMentorEntity.isOwned()){
+    if (mMentorEntity.isOwned()) {
       ivSubscribeMentor.setEnabled(false);
       mentorPrice.setText(getResources().getString(R.string.mentor_already_owned));
-    }
-    else {
+    } else {
       ivSubscribeMentor.setEnabled(true);
     }
   }

@@ -551,8 +551,8 @@
     <string name="you_still_have_time_to_rescue_the_group">У вас все еще есть время для спасения!</string>
     <string name="your_group_has_failed_thanks_to_you_and">Ваша группа %1$s Провалена ! благодаря %2$s:</string>
     <string name="the_group_needs_x_more_rescues">Вашей группе еще нужно %1$d спасений.</string>
-    <string name="you_have_x_time_to_rescue_the_group">You have %1$s to rescue the group</string>
-    <string name="they_have_x_time_to_rescue_the_group">They have %1$s to rescue the group</string>
+    <string name="you_have_x_time_to_rescue_the_group">У вас есть %1$s для спасения группы</string>
+    <string name="they_have_x_time_to_rescue_the_group">У них есть %1$s для спасения группы</string>
   <string name="you_group_has_been_rescued">Ваша группа %1$s была спасена!</string>
     <string name="mentor_already_owned">Вы уже подписаны на наставника.</string>
   <string name="you_cant_kick_yourself">Вы не можете подтолкнуть самого себя ;(</string>
