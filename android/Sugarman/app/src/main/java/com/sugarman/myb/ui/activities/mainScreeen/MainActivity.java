@@ -1673,7 +1673,7 @@ public class MainActivity extends GetUserInfoActivity
         + myTrackings.length);
 
     if (!SharedPreferenceHelper.isRulesBlocked()) {
-      mPresenter.checkIfRuleStepsDone(todaySteps, myTrackings.length);
+      mPresenter.checkIfRuleStepsDone(todaySteps, myTrackings.length + mMentorsGroups.size());
       mPresenter.checkIfRule15KStepsDone(todaySteps);
     }
   }

@@ -212,6 +212,14 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
           best.setPictureUrl("https://sugarman-myb.s3.amazonaws.com/Group_New.png");
         }
 
+        for (int i = 0; i < tracking.getMembers().length; i++) {
+          if (best.getId().equals(SharedPreferenceHelper.getUserId())) {
+            bestSteps.setText(
+                String.format(Locale.US, "%,d", SharedPreferenceHelper.getReportStatsLocal(SharedPreferenceHelper.getUserId())[0]
+                    .getStepsCount()));
+          }
+        }
+
         CustomPicasso.with(getActivity())
             .load(best.getPictureUrl())
             //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
@@ -236,6 +244,15 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
 
         laziestName.setText(name);
         laziestSteps.setText(String.format(Locale.US, "%,d", laziest.getSteps()));
+
+        for (int i = 0; i < tracking.getMembers().length; i++) {
+          if (laziest.getId().equals(SharedPreferenceHelper.getUserId())) {
+            laziestSteps.setText(
+                String.format(Locale.US, "%,d", SharedPreferenceHelper.getReportStatsLocal(SharedPreferenceHelper.getUserId())[0]
+                    .getStepsCount()));
+          }
+        }
+
         if (laziest.getPictureUrl() == null
             || laziest.getPictureUrl().equals("")
             || laziest.getPictureUrl().equals(" ")) {
@@ -271,9 +288,10 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
 
           //this is fixing of server bug, but on client
           for (int i = 0; i < tracking.getMembers().length; i++) {
-            if (fastest.getId().equals(tracking.getMembers()[i].getId())) {
+            if (fastest.getId().equals(SharedPreferenceHelper.getUserId())) {
               fastestSteps.setText(
-                  String.format(Locale.US, "%,d", tracking.getMembers()[i].getSteps()));
+                  String.format(Locale.US, "%,d", SharedPreferenceHelper.getReportStatsLocal(SharedPreferenceHelper.getUserId())[0]
+                      .getStepsCount()));
             }
           }
         } else {

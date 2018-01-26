@@ -20,6 +20,7 @@ import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
 import com.sugarman.myb.ui.views.CropCircleTransformation;
 import com.sugarman.myb.ui.views.CropSquareTransformation;
 import com.sugarman.myb.ui.views.MaskTransformation;
+import com.sugarman.myb.utils.SharedPreferenceHelper;
 import java.util.Arrays;
 import java.util.Locale;
 import timber.log.Timber;
@@ -115,6 +116,16 @@ public class MentorsChallengeFragment extends BasicFragment
       mTextViewBestName.setText(name);
       mTextViewBestSteps.setText(String.format(Locale.US, "%,d", best.getSteps()));
 
+
+      for (int i = 0; i < mTracking.getMembers().length; i++) {
+        if (best.getId()
+            .equals(SharedPreferenceHelper.getUserId())) {
+          mTextViewBestSteps.setText(
+              String.format(Locale.US, "%,d", SharedPreferenceHelper.getReportStatsLocal(SharedPreferenceHelper.getUserId())[0]
+                  .getStepsCount()));
+        }
+      }
+
       CustomPicasso.with(getActivity())
           .load(best.getPictureUrl())
           .placeholder(R.drawable.ic_gray_avatar)
@@ -150,9 +161,10 @@ public class MentorsChallengeFragment extends BasicFragment
           if (mTracking.getDailySugarman()
               .getUser()
               .getId()
-              .equals(mTracking.getMembers()[i].getId())) {
+              .equals(SharedPreferenceHelper.getUserId())) {
             mTextViewFastestSteps.setText(
-                String.format(Locale.US, "%,d", mTracking.getMembers()[i].getSteps()));
+                String.format(Locale.US, "%,d", SharedPreferenceHelper.getReportStatsLocal(SharedPreferenceHelper.getUserId())[0]
+                    .getStepsCount()));
             Timber.e("fastestSteps=" + mTracking.getMembers()[i].getSteps());
           }
         }
@@ -180,6 +192,16 @@ public class MentorsChallengeFragment extends BasicFragment
       }
       mTextViewLaziestName.setText(name);
       mTextViewLaziestSteps.setText(String.format(Locale.US, "%,d", mMembers[0].getSteps()));
+
+      for (int i = 0; i < mTracking.getMembers().length; i++) {
+        if (laziest.getId()
+            .equals(SharedPreferenceHelper.getUserId())) {
+          mTextViewLaziestSteps.setText(
+              String.format(Locale.US, "%,d", SharedPreferenceHelper.getReportStatsLocal(SharedPreferenceHelper.getUserId())[0]
+                  .getStepsCount()));
+        }
+      }
+
       CustomPicasso.with(getActivity())
           .load(mMembers[0].getPictureUrl())
           .placeholder(R.drawable.ic_gray_avatar)
