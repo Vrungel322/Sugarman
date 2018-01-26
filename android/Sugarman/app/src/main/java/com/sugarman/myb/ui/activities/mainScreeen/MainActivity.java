@@ -403,7 +403,7 @@ public class MainActivity extends GetUserInfoActivity
                 case NotificationMessageType.USER_SAVED_THE_GROUP:
                   break;
                 case NotificationMessageType.GROUP_NAME_HAS_BEEN_SAVED:
-                   break;
+                  break;
                 default:
                   myNotifications.add(notification);
                   break;
@@ -841,14 +841,13 @@ public class MainActivity extends GetUserInfoActivity
           SharedPreferenceHelper.setContactsSent(true);
           Timber.e(" sendContacts onRequestPermissionsResult");
 
-            AsyncTask.execute(() -> {
-              List<ContactForServer> contacts = new ArrayList<>();
-              ContactListForServer list =
-                  ContactsHelper.getContactListMultipleNumbers(MainActivity.this);
+          AsyncTask.execute(() -> {
+            List<ContactForServer> contacts = new ArrayList<>();
+            ContactListForServer list =
+                ContactsHelper.getContactListMultipleNumbers(MainActivity.this);
 
-              mPresenter.sendContacts(list);
-            });
-
+            mPresenter.sendContacts(list);
+          });
 
           saveIMEI();
         }
@@ -1720,7 +1719,8 @@ public class MainActivity extends GetUserInfoActivity
           boolean isFailedStatusAdapter = false;
 
           for (int i = 0; i < tracking.getMembers().length; i++) {
-            if (tracking.getMembers()[i].getFailureStatus() == Member.FAIL_STATUS_FAILUER) {
+            if (tracking.getMembers()[i].getFailureStatus() == Member.FAIL_STATUS_FAILUER
+                || tracking.getMembers()[i].getFailureStatus() == Member.FAIL_STATUS_SAVED) {
               isFailedStatusAdapter = true;
               break;
             }
