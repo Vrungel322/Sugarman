@@ -168,7 +168,7 @@
                             android:visibility="gone"
                             android:textColor="@color/red"
                             android:textStyle="bold"
-                            android:text="@string/you_have_x_time_to_rescue_the_group"
+                            android:text=""
                             android:layout_below="@id/tv_group_name"
                             />
                     <LinearLayout

@@ -1943,13 +1943,13 @@ public class GroupDetailsActivity extends BaseActivity
             mTracking.getRemainToFailUTCDate().getTime() - System.currentTimeMillis(), 1000) {
           @Override public void onTick(long l) {
             mTextViewRescueTimer.setText(
-                String.format(getString(R.string.you_have_x_time_to_rescue_the_group),
+                String.format(getString(R.string.rescue_timer),
                     Converters.timeFromMilliseconds(getApplicationContext(), l)));
           }
 
           @Override public void onFinish() {
             mTextViewRescueTimer.setText(
-                String.format(getString(R.string.you_have_x_time_to_rescue_the_group),
+                String.format(getString(R.string.rescue_timer),
                     Converters.timeFromMilliseconds(getApplicationContext(), 1L)));
           }
         }.start();

@@ -615,6 +615,7 @@
   <string name="for_invites">FOR INVITES</string>
   <string name="for_1_dollar">FOR 1$</string>
   <string name="they_still_have_time_to_rescue_the_group">אתה עדיין צריך להציל את הקבוצה</string>
+  <string name="rescue_timer">%1$s</string>
 
 
 </resources>
