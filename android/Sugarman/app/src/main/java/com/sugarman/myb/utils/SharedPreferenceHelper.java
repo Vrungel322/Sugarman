@@ -11,6 +11,7 @@ import com.sugarman.myb.constants.Config;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.constants.SharedPreferenceConstants;
 import com.sugarman.myb.models.iab.SubscriptionEntity;
+import com.sugarman.myb.models.mentor.MentorEntity;
 import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -689,5 +690,15 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
 
   public static int getNumberOfContacts() {
     return getInt(SharedPreferenceConstants.CONTACTS_COUNT, 0);
+  }
+
+  public static void putMentorEntity(String s) {
+    putString(SharedPreferenceConstants.CACHED_MENTORS,s);
+  }
+
+  public static List<MentorEntity> getCachedMentors() {
+    Type type = new TypeToken<List<MentorEntity>>() {
+    }.getType();
+    return new Gson().fromJson(getString(SharedPreferenceConstants.CACHED_MENTORS, ""), type);
   }
 }

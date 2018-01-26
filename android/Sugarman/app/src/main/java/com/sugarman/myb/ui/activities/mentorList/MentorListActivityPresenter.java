@@ -7,6 +7,7 @@ import com.sugarman.myb.models.mentor.MentorEntity;
 import com.sugarman.myb.utils.ThreadSchedulers;
 import java.util.Collections;
 import java.util.List;
+import rx.Observable;
 import rx.Subscription;
 
 /**
@@ -21,20 +22,27 @@ import rx.Subscription;
   @Override protected void onFirstViewAttach() {
     super.onFirstViewAttach();
     getViewState().setUpUI();
+    List<MentorEntity> cachedMentors = mDataManager.getCachedMentors();
+    if (cachedMentors!=null && !cachedMentors.isEmpty()){
+      getViewState().fillMentorsList(cachedMentors);
+    }
     fetchMentors();
   }
 
   private void fetchMentors() {
     Subscription subscription = mDataManager.fetchMentors()
+        .filter(mentorStupidAbstraction -> mentorStupidAbstraction.getMentorEntities() != null)
+        .concatMap(mentorStupidAbstraction -> rx.Observable.just(
+            mentorStupidAbstraction.getMentorEntities()))
+        .concatMap(mentorEntities -> {
+          Collections.sort(mentorEntities, (mentorEntity, t1) -> Float.valueOf(t1.getMentorRating())
+              .compareTo(Float.valueOf(mentorEntity.getMentorRating())));
+          return Observable.just(mentorEntities);
+        })
         .compose(ThreadSchedulers.applySchedulers())
-        .subscribe(mentorStupidAbstraction -> {
-          List<MentorEntity> mentorEntities = mentorStupidAbstraction.getMentorEntities();
-          if (mentorEntities != null) {
-            Collections.sort(mentorEntities,
-                (mentorEntity, t1) -> Float.valueOf(t1.getMentorRating())
-                    .compareTo(Float.valueOf(mentorEntity.getMentorRating())));
-            getViewState().fillMentorsList(mentorEntities);
-          }
+        .subscribe(mentorEntities -> {
+          mDataManager.cacheMentors(mentorEntities);
+          getViewState().fillMentorsList(mentorEntities);
         }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
