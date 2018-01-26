@@ -26,8 +26,10 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import rx.Observable;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 import timber.log.Timber;
 
 /**
@@ -46,6 +48,18 @@ import timber.log.Timber;
     fetchCompletedTasks();
     fetchRules();
     subscribeShowDialogEvent();
+    startFetchingTrackingsPeriodically();
+  }
+
+  private void startFetchingTrackingsPeriodically() {
+    //interval by default subscribeOn in Computation thread
+    Subscription subscription = Observable.interval(1000, 10000, TimeUnit.MILLISECONDS)
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe(aLong -> {
+         Timber.e("startFetchingTrackingsPeriodically");
+         getViewState().refreshTrackings();
+        });
+    addToUnsubscription(subscription);
   }
 
   private void subscribeShowDialogEvent() {
