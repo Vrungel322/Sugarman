@@ -2,6 +2,7 @@ package com.sugarman.myb.data;
 
 import android.content.ContentResolver;
 import android.util.Log;
+import com.google.gson.Gson;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.RestApi;
 import com.sugarman.myb.api.models.levelSystem.TaskEntity;
@@ -21,7 +22,6 @@ import com.sugarman.myb.api.models.responses.RescueFriendResponse;
 import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.animation.GetAnimationResponse;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
-import com.sugarman.myb.api.models.responses.me.groups.CreateGroupResponse;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.data.db.DbHelper;
@@ -35,6 +35,7 @@ import com.sugarman.myb.models.iab.InAppSinglePurchase;
 import com.sugarman.myb.models.iab.NextFreeSkuEntity;
 import com.sugarman.myb.models.iab.PurchaseForServer;
 import com.sugarman.myb.models.iab.Subscriptions;
+import com.sugarman.myb.models.mentor.MentorEntity;
 import com.sugarman.myb.models.mentor.MentorStupidAbstraction;
 import com.sugarman.myb.models.mentor.MentorsCommentsStupidAbstraction;
 import com.sugarman.myb.models.mentor.comments.CommentEntity;
@@ -341,5 +342,13 @@ public class DataManager {
 
   public Observable<Response<ABTesting>> fetchAorBtesting() {
     return mRestApi.fetchAorBtesting();
+  }
+
+  public void cacheMentors(List<MentorEntity> mentorEntities) {
+    SharedPreferenceHelper.putMentorEntity(new Gson().toJson(mentorEntities));
+  }
+
+  public List<MentorEntity> getCachedMentors(){
+    return SharedPreferenceHelper.getCachedMentors();
   }
 }
