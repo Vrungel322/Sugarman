@@ -838,8 +838,9 @@ public class MainActivity extends GetUserInfoActivity
     switch (requestCode) {
       case 1:
         if ((grantResults.length > 0) && (grantResults[2] == PackageManager.PERMISSION_GRANTED)) {
+          SharedPreferenceHelper.setContactsSent(true);
+          Timber.e(" sendContacts onRequestPermissionsResult");
 
-          if (!SharedPreferenceHelper.getContactsSent()) {
             AsyncTask.execute(() -> {
               List<ContactForServer> contacts = new ArrayList<>();
               ContactListForServer list =
@@ -847,7 +848,7 @@ public class MainActivity extends GetUserInfoActivity
 
               mPresenter.sendContacts(list);
             });
-          }
+
 
           saveIMEI();
         }

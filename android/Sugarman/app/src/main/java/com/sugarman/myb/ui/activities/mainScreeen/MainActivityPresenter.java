@@ -208,13 +208,19 @@ import timber.log.Timber;
   }
 
   public void sendContacts(ContactListForServer contactForServer) {
-    Subscription subscription = mDataManager.sendContacts(contactForServer)
-        .compose(ThreadSchedulers.applySchedulers())
-        .subscribe(voidResponse -> {
-          Timber.e("Success");
-          SharedPreferenceHelper.setContactsSent(true);
-        }, Throwable::printStackTrace);
-    addToUnsubscription(subscription);
+    Timber.e("sendContacts : " + (SharedPreferenceHelper.getNumberOfContacts()
+        != contactForServer.getContactForServerList().size()));
+    if (SharedPreferenceHelper.getNumberOfContacts() != contactForServer.getContactForServerList()
+        .size()) {
+      Subscription subscription = mDataManager.sendContacts(contactForServer)
+          .compose(ThreadSchedulers.applySchedulers())
+          .subscribe(voidResponse -> {
+            Timber.e("sendContacts Success");
+            SharedPreferenceHelper.saveNumberOfContacts(
+                contactForServer.getContactForServerList().size());
+          }, Throwable::printStackTrace);
+      addToUnsubscription(subscription);
+    }
   }
 
   public void getAnimations(File filesDir) {
