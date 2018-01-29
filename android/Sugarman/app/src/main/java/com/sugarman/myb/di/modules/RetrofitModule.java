@@ -33,7 +33,17 @@ import timber.log.Timber;
  */
 @Module public class RetrofitModule {
 
-  @Provides @AppScope Retrofit provideRetrofit(Converter.Factory converterFactory,
+  @Provides @AppScope @Named("Spika") Retrofit provideSpikaRetrofit(Converter.Factory converterFactory,
+      OkHttpClient okClient) {
+    return new Retrofit.Builder().baseUrl("https://sugarman-spika.herokuapp.com/spika/v1/")
+        //return new Retrofit.Builder().baseUrl(Config.SERVER_URL)
+        .client(okClient)
+        .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
+        .addConverterFactory(converterFactory)
+        .build();
+  }
+
+  @Provides @AppScope @Named("Sugarman") Retrofit provideRetrofit(Converter.Factory converterFactory,
       OkHttpClient okClient) {
     return new Retrofit.Builder().baseUrl(SharedPreferenceHelper.getBaseUrl())
         //return new Retrofit.Builder().baseUrl(Config.SERVER_URL)

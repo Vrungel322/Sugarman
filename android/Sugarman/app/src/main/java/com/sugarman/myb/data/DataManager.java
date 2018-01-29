@@ -2,9 +2,12 @@ package com.sugarman.myb.data;
 
 import android.content.ContentResolver;
 import android.util.Log;
+import com.clover_studio.spikachatmodule.models.Login;
+import com.clover_studio.spikachatmodule.models.User;
 import com.google.gson.Gson;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.RestApi;
+import com.sugarman.myb.api.RestApiSpika;
 import com.sugarman.myb.api.models.levelSystem.TaskEntity;
 import com.sugarman.myb.api.models.requests.ApproveOtpRequest;
 import com.sugarman.myb.api.models.requests.CheckPhoneRequest;
@@ -29,6 +32,7 @@ import com.sugarman.myb.data.local.PreferencesHelper;
 import com.sugarman.myb.models.ContactListForServer;
 import com.sugarman.myb.models.ab_testing.ABTesting;
 import com.sugarman.myb.models.animation.ImageModel;
+import com.sugarman.myb.models.chat_refactor.GetMessagesModelRefactored;
 import com.sugarman.myb.models.custom_events.Rule;
 import com.sugarman.myb.models.custom_events.RuleSet;
 import com.sugarman.myb.models.iab.InAppSinglePurchase;
@@ -59,13 +63,15 @@ import timber.log.Timber;
 public class DataManager {
 
   private RestApi mRestApi;
+  private RestApiSpika mRestApiSpika;
   private DbHelper mDbHelper;
   private PreferencesHelper mPref;
   private ContentResolver mContentResolver;
 
-  public DataManager(RestApi restApi, PreferencesHelper pref, ContentResolver contentResolver,
-      DbHelper dbHelper) {
+  public DataManager(RestApiSpika restApiSpika, RestApi restApi, PreferencesHelper pref,
+      ContentResolver contentResolver, DbHelper dbHelper) {
     mRestApi = restApi;
+    mRestApiSpika = restApiSpika;
     mPref = pref;
     mContentResolver = contentResolver;
     mDbHelper = dbHelper;
@@ -314,11 +320,11 @@ public class DataManager {
       Timber.e("imageModel name" + im.getName());
       Timber.e("imageModel id" + im.getId());
     }
-    List<ImageModel> imageModels = mDbHelper.getElementsFromDBByQuery(ImageModel.class, "name", name);
-    if (!imageModels.isEmpty()){
+    List<ImageModel> imageModels =
+        mDbHelper.getElementsFromDBByQuery(ImageModel.class, "name", name);
+    if (!imageModels.isEmpty()) {
       return imageModels.get(0);
-    }
-    else {
+    } else {
       return null;
     }
   }
@@ -332,12 +338,12 @@ public class DataManager {
 
   public Observable<Response<Void>> checkInAppBillingOneDollar(String trackingId,
       InAppSinglePurchase inAppSinglePurchase) {
-    return mRestApi.checkInAppBillingOneDollar(trackingId,inAppSinglePurchase);
+    return mRestApi.checkInAppBillingOneDollar(trackingId, inAppSinglePurchase);
   }
 
   public Observable<Response<RescueFriendResponse>> sendInvitersForRescue(
       List<FacebookFriend> members, String trackingId) {
-    return mRestApi.sendInvitersForRescue(SharedPreferenceHelper.getUserId(),members,trackingId);
+    return mRestApi.sendInvitersForRescue(SharedPreferenceHelper.getUserId(), members, trackingId);
   }
 
   public Observable<Response<ABTesting>> fetchAorBtesting() {
@@ -348,7 +354,16 @@ public class DataManager {
     SharedPreferenceHelper.putMentorEntity(new Gson().toJson(mentorEntities));
   }
 
-  public List<MentorEntity> getCachedMentors(){
+  public List<MentorEntity> getCachedMentors() {
     return SharedPreferenceHelper.getCachedMentors();
+  }
+
+  public Observable<GetMessagesModelRefactored> fetchMessagesSpika(String roomId, String lastMessageId,
+      String token) {
+    return mRestApiSpika.fetchMessagesSpika(roomId, lastMessageId, token);
+  }
+
+  public Observable<Login> loginSpika(User user) {
+    return mRestApiSpika.loginSpika(user);
   }
 }

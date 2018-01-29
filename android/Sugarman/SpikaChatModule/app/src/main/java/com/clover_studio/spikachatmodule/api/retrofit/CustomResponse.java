@@ -2,16 +2,11 @@ package com.clover_studio.spikachatmodule.api.retrofit;
 
 import android.content.Context;
 import android.util.Log;
-
 import com.clover_studio.spikachatmodule.R;
 import com.clover_studio.spikachatmodule.base.BaseActivity;
 import com.clover_studio.spikachatmodule.base.BaseModel;
 import com.clover_studio.spikachatmodule.dialogs.NotifyDialog;
-import com.clover_studio.spikachatmodule.utils.ErrorHandle;
-import com.clover_studio.spikachatmodule.utils.LogCS;
-
 import java.io.IOException;
-
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -68,7 +63,7 @@ public abstract class CustomResponse<T> implements CustomResponseListener<T>{
                 onCustomSuccess(call, response);
             }
         }else if (response.body() instanceof String){
-            LogCS.custom("LOG", "RESPONSE: " + response.body());
+            //LogCS.custom("LOG", "RESPONSE: " + response.body());
             onCustomFailed(call, response);
         }else{
             onCustomFailed(call, response);

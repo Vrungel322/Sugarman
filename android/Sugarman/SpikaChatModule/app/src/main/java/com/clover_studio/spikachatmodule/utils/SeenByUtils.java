@@ -3,7 +3,6 @@ package com.clover_studio.spikachatmodule.utils;
 import com.clover_studio.spikachatmodule.models.Message;
 import com.clover_studio.spikachatmodule.models.SeenByModel;
 import com.clover_studio.spikachatmodule.models.User;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +22,7 @@ public class SeenByUtils {
         List<String> unSeenMessagesIds = new ArrayList<>();
 
         for(Message item : allMessages){
+            //Log.e("SeenByUtils getUnSeenM"," userID: " + myUser.userID + "   item.getUser().getId: "+item.user.userID);
 
             boolean seen = false;
 
@@ -46,5 +46,4 @@ public class SeenByUtils {
         return unSeenMessagesIds;
 
     }
-
 }

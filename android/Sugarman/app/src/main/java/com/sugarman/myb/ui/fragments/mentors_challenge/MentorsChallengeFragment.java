@@ -10,6 +10,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.clover_studio.spikachatmodule.base.SingletonLikeApp;
 import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.Member;
@@ -116,13 +117,11 @@ public class MentorsChallengeFragment extends BasicFragment
       mTextViewBestName.setText(name);
       mTextViewBestSteps.setText(String.format(Locale.US, "%,d", best.getSteps()));
 
-
       for (int i = 0; i < mTracking.getMembers().length; i++) {
-        if (best.getId()
-            .equals(SharedPreferenceHelper.getUserId())) {
-          mTextViewBestSteps.setText(
-              String.format(Locale.US, "%,d", SharedPreferenceHelper.getReportStatsLocal(SharedPreferenceHelper.getUserId())[0]
-                  .getStepsCount()));
+        if (best.getId().equals(SharedPreferenceHelper.getUserId())) {
+          mTextViewBestSteps.setText(String.format(Locale.US, "%,d",
+              SharedPreferenceHelper.getReportStatsLocal(
+                  SharedPreferenceHelper.getUserId())[0].getStepsCount()));
         }
       }
 
@@ -162,9 +161,9 @@ public class MentorsChallengeFragment extends BasicFragment
               .getUser()
               .getId()
               .equals(SharedPreferenceHelper.getUserId())) {
-            mTextViewFastestSteps.setText(
-                String.format(Locale.US, "%,d", SharedPreferenceHelper.getReportStatsLocal(SharedPreferenceHelper.getUserId())[0]
-                    .getStepsCount()));
+            mTextViewFastestSteps.setText(String.format(Locale.US, "%,d",
+                SharedPreferenceHelper.getReportStatsLocal(
+                    SharedPreferenceHelper.getUserId())[0].getStepsCount()));
             Timber.e("fastestSteps=" + mTracking.getMembers()[i].getSteps());
           }
         }
@@ -194,11 +193,10 @@ public class MentorsChallengeFragment extends BasicFragment
       mTextViewLaziestSteps.setText(String.format(Locale.US, "%,d", mMembers[0].getSteps()));
 
       for (int i = 0; i < mTracking.getMembers().length; i++) {
-        if (laziest.getId()
-            .equals(SharedPreferenceHelper.getUserId())) {
-          mTextViewLaziestSteps.setText(
-              String.format(Locale.US, "%,d", SharedPreferenceHelper.getReportStatsLocal(SharedPreferenceHelper.getUserId())[0]
-                  .getStepsCount()));
+        if (laziest.getId().equals(SharedPreferenceHelper.getUserId())) {
+          mTextViewLaziestSteps.setText(String.format(Locale.US, "%,d",
+              SharedPreferenceHelper.getReportStatsLocal(
+                  SharedPreferenceHelper.getUserId())[0].getStepsCount()));
         }
       }
 
@@ -256,6 +254,9 @@ public class MentorsChallengeFragment extends BasicFragment
     //        }
     //      }
     //    });
+
+    mPresenter.fetchMessages(mTracking.getId(), "0",
+        SingletonLikeApp.getInstance().getSharedPreferences(getActivity()).getToken());
   }
 
   @OnClick(R.id.cv_mentor_challenge_container) public void cvMentorChallengeClicked() {
