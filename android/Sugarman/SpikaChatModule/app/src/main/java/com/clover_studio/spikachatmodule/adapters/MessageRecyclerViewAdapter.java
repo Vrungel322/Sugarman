@@ -513,6 +513,11 @@ if (str1.contains(" "))               name1 = str1.substring(0,(message.user.nam
                         .into(avatar);
 
                 }
+                else
+                {
+                    flContainer.setBackgroundResource(R.drawable.my_message_background_drawable);
+                    messageTV.setTextColor(0xff000000);
+                }
                 messageTV.setText(message.message);
             }
 
