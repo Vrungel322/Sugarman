@@ -261,6 +261,9 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
                   .transform(new CropCircleTransformation(color, 4))
                   .into(memberHolder.ivAvatar);
 
+              memberHolder.ivBorder.setImageDrawable(memberHolder.ivBorder.getContext()
+                  .getResources()
+                  .getDrawable(R.drawable.rescue_circle_border));
               memberHolder.ivBorder.setColorFilter(color);
             }
           }
