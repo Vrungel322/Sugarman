@@ -237,8 +237,9 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
                   .transform(new MaskTransformation(context, R.drawable.profile_mask, false, color))
                   .into(memberHolder.ivAvatar);
 
-              memberHolder.ivBorder.setImageDrawable(
-                  memberHolder.ivBorder.getContext().getResources().getDrawable(R.drawable.border_anim));
+              memberHolder.ivBorder.setImageDrawable(memberHolder.ivBorder.getContext()
+                  .getResources()
+                  .getDrawable(R.drawable.border_anim));
               memberHolder.ivBorder.setColorFilter(color);
               //Drawable drawable = context.getResources().getDrawable(R.drawable.hexagon_border);
               //System.out.println("Drawable + " + drawable);
@@ -265,6 +266,9 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
                   .transform(new CropCircleTransformation(color, 4))
                   .into(memberHolder.ivAvatar);
 
+              memberHolder.ivBorder.setImageDrawable(memberHolder.ivBorder.getContext()
+                  .getResources()
+                  .getDrawable(R.drawable.rescue_circle_border));
               memberHolder.ivBorder.setColorFilter(color);
             }
           }
@@ -546,7 +550,7 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
         if (actionListener.get() != null) {
           GroupMember member = mData.get(position);
           int memberSteps = member.getSteps();
-          if (member.getId().equals(SharedPreferenceHelper.getUserId())){
+          if (member.getId().equals(SharedPreferenceHelper.getUserId())) {
             actionListener.get().youCantPokeYourself();
             return;
           }
@@ -610,6 +614,7 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
   }
 
   public void setValues(List<Member> members, List<Member> pendings) {
+    Timber.e("setValues");
 
     countMembers = members.size();
     countRedMembers = Config.getCountRedMembers(countMembers);
@@ -685,6 +690,7 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
     }
 
     Collections.sort(members, Member.BY_STEPS_DESC);
+    Timber.e("setMyStepsAndResortMembers");
   }
 
   public List<GroupMember> getData() {
@@ -700,11 +706,16 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
   }
 
   public void setMySteps(int mySteps) {
+    Collections.sort(mData, (groupMember, t1) -> t1.getSteps() - groupMember.getSteps());
+    for (GroupMember gm : mData) {
+      Timber.e(gm.getName());
+    }
     userSteps = mySteps;
     if (myPosition != -1 && mData != null && mData.size() != 0) {
       mData.get(myPosition).setSteps(mySteps);
       notifyItemChanged(myPosition);
     }
+    Timber.e("setMySteps");
   }
 
   @Override public void removeUser(int position) {
@@ -904,7 +915,8 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
           }
           break;
         default:
-          Timber.e("Click on not processed view with id " + v.getResources().getResourceEntryName(id));
+          Timber.e(
+              "Click on not processed view with id " + v.getResources().getResourceEntryName(id));
           break;
       }
     }
