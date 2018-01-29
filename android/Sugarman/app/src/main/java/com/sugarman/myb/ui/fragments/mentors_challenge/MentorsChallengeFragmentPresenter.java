@@ -11,6 +11,7 @@ import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.ThreadSchedulers;
 import java.util.ArrayList;
 import java.util.List;
+import rx.Observable;
 import rx.Subscription;
 import timber.log.Timber;
 
@@ -44,21 +45,19 @@ import timber.log.Timber;
     user.name = SharedPreferenceHelper.getUserName(); // ->  name of user
     user.avatarURL = SharedPreferenceHelper.getAvatar();//  ->  user avatar, this is optional
 
-    Timber.e("user :"+user.toString());
+    Timber.e("user :" + user.toString());
 
     String finalLastMessageId = lastMessageId;
-    Subscription subscription =
-        //mDataManager.loginSpika(user)
-        //.concatMap(login -> mDataManager.fetchMessagesSpika(roomId, finalLastMessageId, token))
-        mDataManager.fetchMessagesSpika(roomId, finalLastMessageId, token)
+    Subscription subscription = mDataManager.fetchMessagesSpika(roomId, finalLastMessageId, token)
+        .concatMap(getMessagesModelRefactored -> {
+          List<String> unReadMessagesIds =
+              getUnSeenMessages(getMessagesModelRefactored.getData().getMessages(),
+                  SharedPreferenceHelper.getUserId());
+          return Observable.just(unReadMessagesIds);
+        })
         .compose(ThreadSchedulers.applySchedulers())
-        .subscribe(getMessagesModel -> {
-          List<String> unReadMessages = getUnSeenMessages(getMessagesModel.getData().getMessages(),
-              SharedPreferenceHelper.getUserId());
-          Timber.e(" fetchMessages countMsg: "
-              + getMessagesModel.getData().getMessages().size()
-              + "   unReadMessages: "
-              + unReadMessages.size());
+        .subscribe(unReadMessagesIds -> {
+          Timber.e(" fetchMessages" + "   unReadMessages: " + unReadMessagesIds.size());
         }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
@@ -66,14 +65,10 @@ import timber.log.Timber;
   private List<String> getUnSeenMessages(List<Message> allMessages, String userID) {
     List<String> unSeenMessagesIds = new ArrayList<>();
     for (Message item : allMessages) {
-      Timber.e("getUnSeenMessages: userID: " + userID + "   item.getUser().getId: "+item.getUser().getUserID());
       boolean seen = false;
       if (userID.equals(item.getUser().getUserID())) {
-        Timber.e("getUnSeenMessages: my msg is" + item.getMessage());
         seen = true;
       } else {
-        Timber.e("getUnSeenMessages:  not my msg is" + item.getMessage());
-
         for (SeenBy itemUser : item.getSeenBy()) {
           if (itemUser.getUser().getUserID().equals(userID)) {
             seen = true;
