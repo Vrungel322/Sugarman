@@ -59,6 +59,7 @@ import timber.log.Timber;
               + getMessagesModel.getData().getMessages().size()
               + "   unReadMessages: "
               + unReadMessages.size());
+          getViewState().setUnreadMessages(unReadMessages.size());
         }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }

@@ -9,4 +9,5 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
  */
 @StateStrategyType(AddToEndSingleStrategy.class) public interface IMentorsChallengeFragmentView
     extends MvpView {
+  void setUnreadMessages(int size);
 }
