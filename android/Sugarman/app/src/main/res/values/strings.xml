@@ -590,6 +590,7 @@
   <string name="mentor_already_owned">Mentor already owned</string>
   <string name="this_user_has_saved_the_group">This user has saved the group</string>
   <string name="you_cant_kick_yourself">You can not kick yourself!</string>
+  <string name="you_cant_kick_mentor">You can not kick a mentor!</string>
   <string name="failuer_can_not_poke_anyone">Failers can\'t poke anyone!</string>
   <string name="kick_them_now">Kick them now</string>
   <string name="for_rescue">For a rescue</string>

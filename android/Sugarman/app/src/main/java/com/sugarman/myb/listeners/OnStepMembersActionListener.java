@@ -18,6 +18,8 @@ public interface OnStepMembersActionListener {
 
   void onPokeSaver();
 
+  void onPokeMentor();
+
   void youCantPokeYourself();
 
   void failuerCantPokeAnyone();

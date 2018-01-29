@@ -79,14 +79,19 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
   private int countMembers = 0;
   private int myPosition = -1;
   private boolean amIMentor = false;
+  private boolean isMentorGroup = false;
+  private String mentorId="";
 
   public GroupMembersAdapter(MvpDelegate<?> parentDelegate, Context context,
-      OnStepMembersActionListener listener, String trackingId, boolean isMentor) {
+      OnStepMembersActionListener listener, String trackingId, boolean isMentor,
+      boolean isMentorGroup, String mentorId) {
     super(parentDelegate, "GroupMembersAdapter");
 
     mTrackingId = trackingId;
     this.context = context;
     amIMentor = isMentor;
+    this.mentorId = mentorId;
+    this.isMentorGroup = isMentorGroup;
     connectingAnimation = AnimationUtils.loadAnimation(context, R.anim.scale);
     userId = SharedPreferenceHelper.getUserId();
     brokenGlassIds = SharedPreferenceHelper.getBrokenGlassIds();
@@ -499,16 +504,44 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
     AppsFlyerLib.getInstance()
         .trackEvent(App.getInstance().getApplicationContext(), "af_kick_single_person", eventValue);
 
-    if (amIMentor) {
-      GroupMember member = mData.get(position);
-      member.setBroken(true);
-      notifyItemChanged(position);
-      if (TextUtils.equals(member.getId(), userId)) {
-        actionListener.get().onPokeSelf();
-      } else {
-        actionListener.get().onPokeMember(member);
+    if(isMentorGroup) {
+      if (amIMentor) {
+        GroupMember member = mData.get(position);
+        member.setBroken(true);
+        notifyItemChanged(position);
+        if (TextUtils.equals(member.getId(), userId)) {
+          actionListener.get().onPokeSelf();
+        } else {
+          actionListener.get().onPokeMember(member);
+        }
       }
-    } else {
+      else
+      {
+        GroupMember member = mData.get(position);
+        int memberSteps = member.getSteps();
+        if (member.getId().equals(SharedPreferenceHelper.getUserId())){
+          actionListener.get().youCantPokeYourself();
+          return;
+        }
+        if(TextUtils.equals(member.getId(),mentorId))
+          actionListener.get().onPokeMentor();
+        else {
+          if (myPosition == -1) {
+            actionListener.get().onPokeInForeignGroup();
+          } else if (TextUtils.equals(member.getId(), userId)) {
+            actionListener.get().onPokeSelf();
+          } else if (memberSteps >= Config.MAX_STEPS_PER_DAY) {
+            actionListener.get().onPokeCompletedDaily();
+          } else if (memberSteps >= userSteps) {
+            actionListener.get().onPokeMoreThatSelf();
+          } else {
+            member.setBroken(true);
+            notifyItemChanged(position);
+            actionListener.get().onPokeMember(member);
+          }
+        }
+      }
+    }else {
       if (position >= 0 && position < mData.size()) {
         if (actionListener.get() != null) {
           GroupMember member = mData.get(position);

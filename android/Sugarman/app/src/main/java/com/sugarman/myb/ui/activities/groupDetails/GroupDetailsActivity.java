@@ -198,6 +198,7 @@ public class GroupDetailsActivity extends BaseActivity
   @InjectPresenter GroupDetailsActivityPresenter mPresenter;
   @BindView(R.id.tvOk) TextView tvOk;
   @BindView(R.id.pcSuccessRateToday) PieChart pieChart;
+  @BindView(R.id.successRateStroke) ImageView successRateStroke;
   @BindView(R.id.rbMentor) AppCompatRatingBar mAppCompatRatingBarMentor;
   @BindView(R.id.etCommentBody) EditText mEditTextCommentBody;
   @BindView(R.id.ivEditMentor) ImageView ivEditMentor;
@@ -793,6 +794,7 @@ public class GroupDetailsActivity extends BaseActivity
     } else {
       mentorId = "";
       pieChart.setVisibility(View.GONE);
+      successRateStroke.setVisibility(View.GONE);
       groupSteps.setVisibility(View.VISIBLE);
       tvTotalGroupSteps.setText(getResources().getString(R.string.total_group_steps));
     }
@@ -805,7 +807,7 @@ public class GroupDetailsActivity extends BaseActivity
       tvTotalGroupSteps.setText(getResources().getString(R.string.rescues_needed));
     }
 
-    membersAdapter = new GroupMembersAdapter(getMvpDelegate(), this, this, trackingId, amIMentor);
+    membersAdapter = new GroupMembersAdapter(getMvpDelegate(), this, this, trackingId, amIMentor, isMentorGroup, mentorId);
     rcvMembers.setLayoutManager(
         new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
     rcvMembers.setAdapter(membersAdapter);
@@ -2238,6 +2240,11 @@ public class GroupDetailsActivity extends BaseActivity
   @Override public void onPokeSaver() {
     new SugarmanDialog.Builder(this, DialogConstants.THIS_USER_HAS_SAVED_THE_GROUP).content(
         R.string.this_user_has_saved_the_group).show();
+  }
+
+  @Override public void onPokeMentor() {
+    new SugarmanDialog.Builder(this, DialogConstants.THIS_USER_HAS_SAVED_THE_GROUP).content(
+        R.string.you_cant_kick_mentor).show();
   }
 
   @Override public void youCantPokeYourself() {
