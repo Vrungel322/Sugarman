@@ -58,6 +58,7 @@ import timber.log.Timber;
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(unReadMessagesIds -> {
           Timber.e(" fetchMessages" + "   unReadMessages: " + unReadMessagesIds.size());
+          getViewState().setUnreadMessages(unReadMessagesIds.size());
         }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }

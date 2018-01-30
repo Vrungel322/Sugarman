@@ -42,19 +42,19 @@ import timber.log.Timber;
  */
 
 public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRescueBoldManView {
-  public static final int MONEY = 1;
-  public static final int INVITES = 0;
-  private static final String DIALOG_RESCUE_BOLD_MAN = "DIALOG_RESCUE_BOLD_MAN";
-  private static final String MODE = "MODE";
-  @InjectPresenter DialogRescueBoldManPresenter mPresenter;
-  @BindView(R.id.group_avatar) ImageView mImageViewGroupAvatar;
-  @BindView(R.id.ivCross) ImageView mImageViewCross;
-  @BindView(R.id.tvFailText) TextView mTextViewFailText;
-  @BindView(R.id.rvFailures) RecyclerView mRecyclerViewFailures;
-  @BindView(R.id.tvTimeLeftForRescue) TextView mTextViewTimeLeftForRescue;
-  @BindView(R.id.ivRescueLogo) ImageView mImageViewRescueLogo;
-  @BindView(R.id.tvRescueForWhat) TextView tvRescueForWhat;
-  @BindView(R.id.tvYouGroupRescued) TextView tvYouGroupRescued;
+    public static final int MONEY = 1;
+    public static final int INVITES = 0;
+    private static final String DIALOG_RESCUE_BOLD_MAN = "DIALOG_RESCUE_BOLD_MAN";
+    private static final String MODE = "MODE";
+    @InjectPresenter DialogRescueBoldManPresenter mPresenter;
+    @BindView(R.id.group_avatar) ImageView mImageViewGroupAvatar;
+    @BindView(R.id.ivCross) ImageView mImageViewCross;
+    @BindView(R.id.tvFailText) TextView mTextViewFailText;
+    @BindView(R.id.rvFailures) RecyclerView mRecyclerViewFailures;
+    @BindView(R.id.tvTimeLeftForRescue) TextView mTextViewTimeLeftForRescue;
+    @BindView(R.id.ivRescueLogo) ImageView mImageViewRescueLogo;
+    @BindView(R.id.tvRescueForWhat) TextView tvRescueForWhat;
+    @BindView(R.id.tvYouGroupRescued) TextView tvYouGroupRescued;
   @BindView(R.id.progressBar4) ProgressBar mProgressBar;
   private Tracking mTracking;
   private RescueMembersAdapter mRescueMembersAdapter;

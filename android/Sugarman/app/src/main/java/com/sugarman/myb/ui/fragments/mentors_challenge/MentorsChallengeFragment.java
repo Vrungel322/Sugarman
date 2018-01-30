@@ -282,6 +282,10 @@ public class MentorsChallengeFragment extends BasicFragment
   }
 
   @Override public void setUnreadMessages(int size) {
-
+    mTextViewNumAvatarEvents.setText("" + size);
+    if(size>0)
+    mTextViewNumAvatarEvents.setVisibility(View.VISIBLE);
+    else
+      mTextViewNumAvatarEvents.setVisibility(View.GONE);
   }
 }
