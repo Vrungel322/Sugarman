@@ -3,8 +3,8 @@
 
         <ListPreference
             android:key="pref_app_language"
-            android:title="@string/pref_language"
-            android:dialogTitle="@string/pref_language"
+            android:title="@string/pref_language_options"
+            android:dialogTitle="@string/pref_language_options"
             android:entries="@array/pref_language_array"
             android:entryValues="@array/pref_language_code_array"/>
 
