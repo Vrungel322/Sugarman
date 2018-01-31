@@ -124,10 +124,13 @@ import timber.log.Timber;
                 + " storedname:"
                 + SharedPreferenceHelper.getNameOfCurrentAnim()
                 + " animName:"
-                + rule.getNameOfAnim() + "  isCanLaunchLastAnim: "+ SharedPreferenceHelper.isCanLaunchLastAnim());
+                + rule.getNameOfAnim()
+                + "  isCanLaunchLastAnim: "
+                + SharedPreferenceHelper.isCanLaunchLastAnim());
 
-            if (rule.getAction().equals(BasicActivity.ANIMATION_ACTION)
-                && !SharedPreferenceHelper.getNameOfCurrentAnim().equals(rule.getNameOfAnim())) {
+            if ((rule.getAction().equals(BasicActivity.ANIMATION_ACTION)
+                && !SharedPreferenceHelper.getNameOfCurrentAnim().equals(rule.getNameOfAnim()))
+                || rule.getAction().equals(BasicActivity.POPUP_ACTION)) {
               getViewState().doEventActionResponse(CustomUserEvent.builder()
                   .strType(rule.getAction())
                   .eventText(rule.getMessage())
@@ -136,9 +139,8 @@ import timber.log.Timber;
                   .numValue(rule.getCount())
                   .groupCount(rule.getGroupCount())
                   .build());
-            }
-            else {
-              if (SharedPreferenceHelper.isCanLaunchLastAnim()){
+            } else {
+              if (SharedPreferenceHelper.isCanLaunchLastAnim()) {
                 launchLastAnim(rulesTempo, todaySteps);
               }
             }
