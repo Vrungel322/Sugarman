@@ -5,6 +5,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import com.arellomobile.mvp.InjectViewState;
 import com.sugarman.myb.App;
+import com.sugarman.myb.base.BasicActivity;
 import com.sugarman.myb.base.BasicPresenter;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.models.ContactListForServer;
@@ -56,8 +57,8 @@ import timber.log.Timber;
     Subscription subscription = Observable.interval(1000, 10000, TimeUnit.MILLISECONDS)
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(aLong -> {
-         Timber.e("startFetchingTrackingsPeriodically");
-         getViewState().refreshTrackings();
+          Timber.e("startFetchingTrackingsPeriodically");
+          getViewState().refreshTrackings();
         });
     addToUnsubscription(subscription);
   }
@@ -117,14 +118,30 @@ import timber.log.Timber;
           if (!SharedPreferenceHelper.isEventXStepsDone(rule.getCount())) {
             Timber.e("rule true and SHP OK");
 
-            getViewState().doEventActionResponse(CustomUserEvent.builder()
-                .strType(rule.getAction())
-                .eventText(rule.getMessage())
-                .eventName(rule.getName())
-                .nameOfAnim(rule.getNameOfAnim())
-                .numValue(rule.getCount())
-                .groupCount(rule.getGroupCount())
-                .build());
+            Timber.e("setAnimation bool: "
+                + (!SharedPreferenceHelper.getNameOfCurrentAnim()
+                .equals(rule.getNameOfAnim()))
+                + " storedname:"
+                + SharedPreferenceHelper.getNameOfCurrentAnim()
+                + " animName:"
+                + rule.getNameOfAnim() + "  isCanLaunchLastAnim: "+ SharedPreferenceHelper.isCanLaunchLastAnim());
+
+            if (rule.getAction().equals(BasicActivity.ANIMATION_ACTION)
+                && !SharedPreferenceHelper.getNameOfCurrentAnim().equals(rule.getNameOfAnim())) {
+              getViewState().doEventActionResponse(CustomUserEvent.builder()
+                  .strType(rule.getAction())
+                  .eventText(rule.getMessage())
+                  .eventName(rule.getName())
+                  .nameOfAnim(rule.getNameOfAnim())
+                  .numValue(rule.getCount())
+                  .groupCount(rule.getGroupCount())
+                  .build());
+            }
+            else {
+              if (SharedPreferenceHelper.isCanLaunchLastAnim()){
+                launchLastAnim(rulesTempo, todaySteps);
+              }
+            }
           } else {
             launchLastAnim(rulesTempo, todaySteps);
           }
@@ -144,6 +161,7 @@ import timber.log.Timber;
         rule = r;
       }
     }
+    SharedPreferenceHelper.canLaunchLastAnim(false);
 
     Timber.e(" launchLastAnim rule "
         + rule.getName()
@@ -324,6 +342,7 @@ import timber.log.Timber;
   }
 
   public void getAnimationByName(String name, String filesDir) {
+    SharedPreferenceHelper.saveNameOfCurrentAnim(name);
 
     Timber.e("getAnimationByName Animation name : " + name + " filesDir : " + filesDir);
 
@@ -344,7 +363,7 @@ import timber.log.Timber;
 
           if (!animationList.isEmpty()) {
             Timber.e("getAnimationByName from storage " + animationList.size());
-            getViewState().setAnimation(animationList, duration);
+            getViewState().setAnimation(animationList, duration, name);
           }
         } else {
 
@@ -366,7 +385,7 @@ import timber.log.Timber;
                 SharedPreferenceHelper.unBlockGetAnimsByName();
                 Timber.e("Everything is downloaded by need");
                 Collections.reverse(animationList);
-                getViewState().setAnimation(animationList, duration);
+                getViewState().setAnimation(animationList, duration, name);
 
                 //for (Drawable drawable : animationList) {
                 //  animationDrawable.addFrame(drawable, duration);

@@ -23,6 +23,7 @@ import com.sugarman.myb.ui.activities.profile.ProfileActivityPresenter;
 import com.sugarman.myb.ui.activities.shop.ShopActivityPresenter;
 import com.sugarman.myb.ui.activities.shopInviteFriend.ShopInviteFriendsActivityPresenter;
 import com.sugarman.myb.ui.activities.splash.SplashActivityPresenter;
+import com.sugarman.myb.ui.dialogs.dialogCuteRule.DialogCuteRulePresenter;
 import com.sugarman.myb.ui.dialogs.dialogRescueBoldMan.DialogRescueBoldManPresenter;
 import com.sugarman.myb.ui.dialogs.dialogRescueBoldManKick.DialogRescueBoldManKickPresenter;
 import com.sugarman.myb.ui.dialogs.dialogRescueGirl.DialogRescueGirlPresenter;
@@ -95,4 +96,6 @@ import dagger.Component;
   void inject(DialogRescueBoldManKickPresenter presenter);
 
   void inject(FetchingAnimationServicePresenter presenter);
+
+  void inject(DialogCuteRulePresenter presenter);
 }

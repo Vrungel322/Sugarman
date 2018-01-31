@@ -701,4 +701,20 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     }.getType();
     return new Gson().fromJson(getString(SharedPreferenceConstants.CACHED_MENTORS, ""), type);
   }
+
+  public static void saveNameOfCurrentAnim(String animName) {
+    putString(SharedPreferenceConstants.NAME_OF_CURRENT_ANIM,animName);
+  }
+
+  public static String getNameOfCurrentAnim() {
+    return getString(SharedPreferenceConstants.NAME_OF_CURRENT_ANIM, "NoNe anim");
+  }
+
+  public static boolean isCanLaunchLastAnim() {
+    return getBoolean(SharedPreferenceConstants.CAN_LAUNCH_LAST_ANIM, true);
+  }
+
+  public static void canLaunchLastAnim(boolean b) {
+    putBoolean(SharedPreferenceConstants.CAN_LAUNCH_LAST_ANIM,b);
+  }
 }

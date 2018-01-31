@@ -11,7 +11,7 @@ import com.sugarman.myb.App;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.models.custom_events.CustomUserEvent;
 import com.sugarman.myb.models.custom_events.IActionOnCurrentScreen;
-import com.sugarman.myb.utils.DialogHelper;
+import com.sugarman.myb.ui.dialogs.dialogCuteRule.DialogCuteRule;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import javax.inject.Inject;
 import timber.log.Timber;
@@ -52,14 +52,12 @@ public abstract class BasicActivity extends MvpAppCompatActivity {
         }
         body.append(customEvent.getEventText());
         SharedPreferenceHelper.setEventXStepsDone(customEvent.getNumValue());
-        Timber.e("doEventAction", + customEvent.getNumValue());
-        DialogHelper.createSimpleInfoDialog("OK", "Great!", body.toString(), this,
-            (dialogInterface, i) -> {
-              if (customEvent.getEventName().equals(Constants.EVENT_X_NEW_USERS_INVITE)) {
-                SharedPreferenceHelper.setEventGroupWithXNewUsersDone();
-              }
-              dialogInterface.dismiss();
-            }).create().show();
+        Timber.e("doEventAction", +customEvent.getNumValue());
+        DialogCuteRule.newInstance(body.toString(), () -> {
+          if (customEvent.getEventName().equals(Constants.EVENT_X_NEW_USERS_INVITE)) {
+            SharedPreferenceHelper.setEventGroupWithXNewUsersDone();
+          }
+        }).show(getFragmentManager(), "DialogCuteRule");
         break;
       }
       case ANIMATION_ACTION: {

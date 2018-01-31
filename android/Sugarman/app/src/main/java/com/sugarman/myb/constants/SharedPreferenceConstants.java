@@ -84,6 +84,8 @@ public abstract class SharedPreferenceConstants {
   public static final String BLOCK_GET_ANIMS_BY_NAME = "BLOCK_GET_ANIMS_BY_NAME";
   public static final String CONTACTS_COUNT = "CONTACTS_COUNT";
   public static final String CACHED_MENTORS = "CACHED_MENTORS";
+  public static final String NAME_OF_CURRENT_ANIM = "NAME_OF_CURRENT_ANIM";
+  public static final String CAN_LAUNCH_LAST_ANIM = "CAN_LAUNCH_LAST_ANIM";
 
   private SharedPreferenceConstants() {
     // only static methods and fields
