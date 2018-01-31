@@ -200,7 +200,6 @@
 
   <!-- STATS ACTIVITY -->
   <string name="pref_language_options">Language</string>
-  <string name="pref_language">English</string>
 
 
   <!-- SHOP ACTIVITY -->
@@ -344,9 +343,9 @@
   <string name="weekly_success_rate">Success rate this week</string>
   <string name="monthly_success_rate">Success rate this month</string>
 
-  <string name="calories">CALORIES</string>
-  <string name="distance">DISTANCE</string>
-  <string name="steps_caps">STEPS</string>
+  <string name="calories">CALORIES TODAY</string>
+  <string name="distance">KILOMETERS TODAY</string>
+  <string name="steps_caps">STEPS TODAY</string>
   
   <!-- Country Codes -->
   <string-array name="CountryCodes">

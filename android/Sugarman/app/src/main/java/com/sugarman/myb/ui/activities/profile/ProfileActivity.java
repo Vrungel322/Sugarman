@@ -187,7 +187,8 @@ public class ProfileActivity extends BaseActivity
       }
     });
 
-    level.setText(String.format(getString(R.string.level), SharedPreferenceHelper.getLevel()));
+    //level.setText(String.format(getString(R.string.level), SharedPreferenceHelper.getLevel()));
+    level.setText(SharedPreferenceHelper.getUserName());
 
     Typeface tfDin = Typeface.createFromAsset(getAssets(), "din_light.ttf");
     tvTotal.setTypeface(tfDin);

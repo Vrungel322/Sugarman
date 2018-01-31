@@ -63,6 +63,6 @@ public class SettingsActivity extends PreferenceActivity
         "isChatEnabled")) {
       needsRestart = true;
     }
-    if (s.equals("pref_app_language")) lang.setTitle(SharedPreferenceHelper.getLanguage());
+    //if (s.equals("pref_app_language")) lang.setTitle(SharedPreferenceHelper.getLanguage());
   }
 }
