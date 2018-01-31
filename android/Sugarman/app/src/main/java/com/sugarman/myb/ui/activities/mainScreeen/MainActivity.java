@@ -540,6 +540,7 @@ public class MainActivity extends GetUserInfoActivity
     super.onCreate(savedInstanceState);
     Resources resources = getResources();
     img = new ImageToDraw(MainActivity.this);
+    SharedPreferenceHelper.saveNameOfCurrentAnim("NoNe anim");
 
     //setupInAppPurchase();
 
@@ -867,34 +868,35 @@ public class MainActivity extends GetUserInfoActivity
   private void updateAnimations(int todaySteps) {
     // TODO: 12.07.2017 next milestone
     int animSteps = todaySteps;
+    animationMan = (AnimationDrawable) ivAnimatedMan.getBackground();
     if (todaySteps > 0 && myTrackings.length == 0) {
-      Timber.e(" updateAnimations 1");
-      ivAnimatedMan.setBackgroundResource(R.drawable.animation_sugarman_walkpoint);
-      animationMan = (AnimationDrawable) ivAnimatedMan.getBackground();
-      animationMan.stop();
-      animationMan.start();
-      return;
+      //Timber.e(" updateAnimations 1");
+      //ivAnimatedMan.setBackgroundResource(R.drawable.animation_sugarman_walkpoint);
+      //animationMan = (AnimationDrawable) ivAnimatedMan.getBackground();
+      //animationMan.stop();
+      //animationMan.start();
+      //return;
     }
     if (todaySteps == 0 && myTrackings.length == 0) {
       Timber.e(" updateAnimations 2");
-
-      ivAnimatedMan.setBackgroundResource(R.drawable.animation_sugarman_point);
-      animationMan = (AnimationDrawable) ivAnimatedMan.getBackground();
-      animationMan.stop();
-      animationMan.start();
-      return;
+      //
+      //ivAnimatedMan.setBackgroundResource(R.drawable.animation_sugarman_point);
+      //animationMan = (AnimationDrawable) ivAnimatedMan.getBackground();
+      //animationMan.stop();
+      //animationMan.start();
+      //return;
     } else {
       Log.e("Anim", "Milestone " + nextMilestone + "; Steps " + animSteps);
 
       if (nextMilestone == 0) {
-        ivAnimatedMan.setBackgroundResource(R.drawable.animation_sugarman_stand);
-        animationMan = (AnimationDrawable) ivAnimatedMan.getBackground();
-        if (animSteps > 0) {
-          nextMilestone = 5000;
-          Log.e("Anim", "STARTTTTTT");
-          animationMan.stop();
-          animationMan.start();
-        }
+        //ivAnimatedMan.setBackgroundResource(R.drawable.animation_sugarman_stand);
+        //animationMan = (AnimationDrawable) ivAnimatedMan.getBackground();
+        //if (animSteps > 0) {
+        //  nextMilestone = 5000;
+        //  Log.e("Anim", "STARTTTTTT");
+        //  animationMan.stop();
+        //  animationMan.start();
+        //}
       } else if (nextMilestone == 5000) {
 
         //ivAnimatedMan.setBackgroundResource(R.drawable.animation_sugarman_slow);
@@ -933,7 +935,7 @@ public class MainActivity extends GetUserInfoActivity
         //ivAnimatedMan.setBackgroundResource(R.drawable.animation_sugarman_twelve);
         //animationMan = (AnimationDrawable) ivAnimatedMan.getBackground();
       }
-      if (!animationMan.isRunning()) animationMan.start();
+      if (animationMan!=null && !animationMan.isRunning()) animationMan.start();
     }
   }
 
