@@ -1046,6 +1046,7 @@ public class MainActivity extends GetUserInfoActivity
 
   @Override protected void onStop() {
     super.onStop();
+    SharedPreferenceHelper.canLaunchLastAnim(true);
 
     if (animationMan != null) animationMan.stop();
     Timber.e("Save Showed Steps on stop " + todaySteps);
@@ -1057,6 +1058,7 @@ public class MainActivity extends GetUserInfoActivity
     super.onDestroy();
 
     if (mHelper != null) mHelper.dispose();
+
 
     mSendFirebaseTokenClient.unregisterListener();
     mGetMyTrackingsClient.unregisterListener();
@@ -1995,27 +1997,27 @@ public class MainActivity extends GetUserInfoActivity
     spiChallenges.invalidate();
   }
 
-  @Override public void setAnimation(List<Drawable> drawable, int duration) {
-    Timber.e("Set animation" + drawable.size());
-    AnimationDrawable animation = new AnimationDrawable();
-    for (Drawable d : drawable) {
-      if (d != null) {
-        animation.addFrame(d, duration);
+  @Override public void setAnimation(List<Drawable> drawable, int duration, String animName) {
+      Timber.e("setAnimation size" + drawable.size());
+      AnimationDrawable animation = new AnimationDrawable();
+      for (Drawable d : drawable) {
+        if (d != null) {
+          animation.addFrame(d, duration);
+        }
       }
-    }
 
-    runOnUiThread(() -> {
-      ivAnimatedMan.setBackgroundDrawable(null);
-      if (ivAnimatedMan.getAnimation() != null) {
-        ivAnimatedMan.getAnimation().cancel();
-      }
-      Timber.e("isAppForeground = " + App.isAppForeground());
-      if (!App.isAppForeground()) { // так написать сказал Егор
-        ivAnimatedMan.setImageDrawable(animation);
-        animation.start();
-      }
-      // Picasso.with(this).load("1").placeholder(animation).error(animation).into(ivAnimatedMan);
-    });
+      runOnUiThread(() -> {
+        ivAnimatedMan.setBackgroundDrawable(null);
+        if (ivAnimatedMan.getAnimation() != null) {
+          ivAnimatedMan.getAnimation().cancel();
+        }
+        Timber.e("isAppForeground = " + App.isAppForeground());
+        if (!App.isAppForeground()) { // так написать сказал Егор
+          ivAnimatedMan.setImageDrawable(animation);
+          animation.start();
+        }
+        // Picasso.with(this).load("1").placeholder(animation).error(animation).into(ivAnimatedMan);
+      });
   }
   //@Override public void setAnimation(AnimationDrawable animation) {
   //

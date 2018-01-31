@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AnimationHelper {
 
-  public static final int WORKERS = 1;
+  public static final int WORKERS = 10;
 
   private AtomicBoolean done;
   private File imagesDir;
