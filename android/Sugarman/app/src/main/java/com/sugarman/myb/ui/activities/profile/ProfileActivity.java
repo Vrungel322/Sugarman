@@ -76,6 +76,7 @@ public class ProfileActivity extends BaseActivity
   @BindView(R.id.wave3) ImageView wave3;
   @BindView(R.id.tv_level) TextView level;
   @BindView(R.id.tvTestServer) TextView tvTestEnvironment;
+  @BindView(R.id.tvWalked10k) TextView tvWalked10k;
   ImageView ivNoInvites, ivNoRequests;
   ImageView ivAvatar;
   int days;
@@ -144,8 +145,6 @@ public class ProfileActivity extends BaseActivity
     View vRequests = findViewById(R.id.ll_requests_container);
     View vHighScore = findViewById(R.id.ll_high_score_container);
     View vInviteFriends = findViewById(R.id.tv_invite_friends);
-    View vPrivacyPolicy = findViewById(R.id.tv_privacy_policy);
-    View vTermsOfUse = findViewById(R.id.tv_terms_of_use);
     View vLogout = findViewById(R.id.ll_logout_container);
     View vCross = findViewById(R.id.iv_cross);
     View vSettings = findViewById(R.id.ll_settings_container);
@@ -187,6 +186,8 @@ public class ProfileActivity extends BaseActivity
       }
     });
 
+    tvWalked10k.setText(String.format(getString(R.string.walked10k),days));
+
     //level.setText(String.format(getString(R.string.level), SharedPreferenceHelper.getLevel()));
     level.setText(SharedPreferenceHelper.getUserName());
 
@@ -211,8 +212,6 @@ public class ProfileActivity extends BaseActivity
     vInvites.setOnTouchListener(this);
     vRequests.setOnTouchListener(this);
     vHighScore.setOnTouchListener(this);
-    vPrivacyPolicy.setOnTouchListener(this);
-    vTermsOfUse.setOnTouchListener(this);
     vLogout.setOnTouchListener(this);
     vCross.setOnTouchListener(this);
     vSettings.setOnTouchListener(this);
@@ -342,27 +341,11 @@ public class ProfileActivity extends BaseActivity
         v.setBackgroundColor(0xffffffff);
         switch (id) {
 
-          case R.id.tv_terms_of_use:
-            openInWebView(Config.TERMS_OF_USE_URL);
-            Map<String, Object> eventValue = new HashMap<>();
-            eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-            eventValue.put(AFInAppEventParameterName.SCORE, 100);
-            AppsFlyerLib.getInstance()
-                .trackEvent(App.getInstance().getApplicationContext(), "af_open_terms_of_use",
-                    eventValue);
-            break;
+
           case R.id.ll_settings_container:
             openSettingsActivity();
             break;
-          case R.id.tv_privacy_policy:
-            Map<String, Object> eventValues = new HashMap<>();
-            eventValues.put(AFInAppEventParameterName.LEVEL, 9);
-            eventValues.put(AFInAppEventParameterName.SCORE, 100);
-            AppsFlyerLib.getInstance()
-                .trackEvent(App.getInstance().getApplicationContext(), "af_open_private_policy",
-                    eventValues);
-            openInWebView(Config.PRIVACY_POLICY);
-            break;
+
           case R.id.ll_invites_container:
             openInvitesActivity();
             break;

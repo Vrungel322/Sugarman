@@ -376,18 +376,6 @@ public class LoginActivity extends GetUserInfoActivity implements View.OnClickLi
 
   @Override public void onClick(View v) {
     int id = v.getId();
-    switch (id) {
-      case R.id.tv_terms_of_use:
-        openInWebView(Config.TERMS_OF_USE_URL);
-        break;
-      case R.id.tv_privacy_policy:
-        openInWebView(Config.PRIVACY_POLICY);
-        break;
-      default:
-        Log.d(TAG,
-            "Click on not processed view with id " + getResources().getResourceEntryName(id));
-        break;
-    }
   }
 
   @Override public void onClickDialog(SugarmanDialog dialog, DialogButton button) {

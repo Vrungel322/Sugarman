@@ -89,6 +89,7 @@
   <string name="photo">Photo</string>
   <string name="create_group_et_hint">Enter Group Name</string>
   <string name="search">Search</string>
+  <string name="search_and_invite">Search and invite...</string>
   <string name="add_photo">Add Photo</string>
   <string name="no_friends_found">No friends found</string>
   <string name="group_name_template">%1$s\'s group</string>
@@ -329,7 +330,7 @@
   <string name="approve_phone_pls">You need to approve phone number</string>
   <string name="contacts_book">Contacts book</string>
   <string name="comments">Comments</string>
-  <string name="mentorship">Mentorship</string>
+  <string name="mentorship">Mentor\'s group</string>
   <string name="warning">Warning</string>
   <string name="delete_user_from_group">Do you really want to delete user?</string>
   <string name="slots_error">You can have only 3 mentors</string>
@@ -604,5 +605,6 @@
   <string name="for_invites">FOR INVITES</string>
   <string name="for_1_dollar">FOR 1$</string>
   <string name="rescue_timer">%1$s</string>
+  <string name="walked10k">Walked 10K for %1$d days</string>
 
 </resources>

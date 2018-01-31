@@ -82,6 +82,7 @@
     <string name="photo">Фото</string>
     <string name="create_group_et_hint">Введите имя группы</string>
     <string name="search">Поиск</string>
+    <string name="search_and_invite">Поиск и приглашение...</string>
     <string name="add_photo">Добавить фото</string>
     <string name="no_friends_found">Друзья не найдены</string>
     <string name="group_name_template">Группа %1$s</string>
@@ -571,5 +572,6 @@
     <string name="for_1_dollar">ЗА 1$</string>
   <string name="they_still_have_time_to_rescue_the_group">У вас все еще есть время для спасения!</string>
     <string name="rescue_timer">%1$s</string>
+    <string name="walked10k">Walked 10K for %1$d days</string>
 
 </resources>

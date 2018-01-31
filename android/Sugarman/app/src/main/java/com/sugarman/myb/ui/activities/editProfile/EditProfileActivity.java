@@ -20,6 +20,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -78,8 +79,9 @@ public class EditProfileActivity extends BasicActivity
   @InjectPresenter EditProfileActivityPresenter mPresenter;
   @BindView(R.id.iv_profile_avatar) ImageView profileAvatar;
   @BindView(R.id.pb_spinner) ProgressBar pb;
-  @BindView(R.id.iv_next) ImageView nextButton;
+  @BindView(R.id.iv_next) TextView nextButton;
   @BindView(R.id.iv_back) ImageView backButton;
+  @BindView(R.id.rlBackContainer) RelativeLayout rlBackContainer;
   @BindView(R.id.tv_facebook) TextView tvFb;
   @BindView(R.id.tv_vk) TextView tvVk;
   @BindView(R.id.tv_ph) TextView tvPh;
@@ -391,7 +393,7 @@ public class EditProfileActivity extends BasicActivity
     Log.e("EDIT PROFILE", "PRESSED");
   }
 
-  @OnClick(R.id.iv_back) public void ivBackClicked() {
+  @OnClick(R.id.rlBackContainer) public void ivBackClicked() {
 
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);

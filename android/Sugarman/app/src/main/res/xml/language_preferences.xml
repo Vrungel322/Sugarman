@@ -1,12 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+        <PreferenceCategory
+            android:key="Account"
+            android:title="Account"
+            >
         <ListPreference
             android:key="pref_app_language"
             android:title="@string/pref_language_options"
             android:dialogTitle="@string/pref_language_options"
             android:entries="@array/pref_language_array"
             android:entryValues="@array/pref_language_code_array"/>
+        </PreferenceCategory>
+        <PreferenceCategory
+                android:key="About us"
+            android:title="About us"
+                >
+                <Preference android:title="Terms of use"
+                    android:key="terms_of_use"/>
+
+                <Preference android:title="Privacy Policy"
+                    android:key="privacy_policy"/>
+
+        </PreferenceCategory>
+
 
 
 </PreferenceScreen>

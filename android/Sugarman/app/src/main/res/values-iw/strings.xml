@@ -80,6 +80,7 @@
     <string name="photo">תמונה</string>
     <string name="create_group_et_hint">הכנס שם קבוצה</string>
     <string name="search">חפש</string>
+    <string name="search_and_invite">Search and invite...</string>
     <string name="add_photo">הוסף תמונה</string>
     <string name="no_friends_found">לא נמצאו חברים</string>
     <string name="group_name_template">קבוצה %1$s</string>
@@ -616,5 +617,6 @@
     <string name="for_1_dollar">עבור 1$</string>
   <string name="they_still_have_time_to_rescue_the_group">אתה עדיין צריך להציל את הקבוצה</string>
     <string name="rescue_timer">%1$s</string>
+    <string name="walked10k">Walked 10K for %1$d days</string>
 
 </resources>

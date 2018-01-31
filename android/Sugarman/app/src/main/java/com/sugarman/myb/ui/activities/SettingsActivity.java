@@ -2,13 +2,16 @@ package com.sugarman.myb.ui.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.ListPreference;
+import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import com.appsflyer.AFInAppEventParameterName;
 import com.appsflyer.AppsFlyerLib;
 import com.sugarman.myb.App;
 import com.sugarman.myb.R;
+import com.sugarman.myb.constants.Config;
 import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import java.util.HashMap;
@@ -29,6 +32,35 @@ public class SettingsActivity extends PreferenceActivity
     super.onCreate(savedInstanceState);
     addPreferencesFromResource(R.xml.language_preferences);
     lang = (ListPreference) findPreference("pref_app_language");
+    Preference termsOfUse = findPreference("terms_of_use");
+    termsOfUse.setOnPreferenceClickListener(preference -> {
+      String url = Config.TERMS_OF_USE_URL;
+      Intent i = new Intent(Intent.ACTION_VIEW);
+      i.setData(Uri.parse(url));
+      startActivity(i);
+      Map<String, Object> eventValue = new HashMap<>();
+      eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+      eventValue.put(AFInAppEventParameterName.SCORE, 100);
+      AppsFlyerLib.getInstance()
+          .trackEvent(App.getInstance().getApplicationContext(), "af_open_terms_of_use",
+              eventValue);
+      return true;
+    });
+
+    Preference privacyPolicy = findPreference("privacy_policy");
+    privacyPolicy.setOnPreferenceClickListener(preference -> {
+      Map<String, Object> eventValues = new HashMap<>();
+      eventValues.put(AFInAppEventParameterName.LEVEL, 9);
+      eventValues.put(AFInAppEventParameterName.SCORE, 100);
+      AppsFlyerLib.getInstance()
+          .trackEvent(App.getInstance().getApplicationContext(), "af_open_private_policy",
+              eventValues);
+      String url = Config.PRIVACY_POLICY;
+      Intent i = new Intent(Intent.ACTION_VIEW);
+      i.setData(Uri.parse(url));
+      startActivity(i);
+      return true;
+    });
   }
 
   @Override protected void onResume() {

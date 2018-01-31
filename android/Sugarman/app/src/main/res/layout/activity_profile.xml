@@ -118,15 +118,15 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/tvWalked10k"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
             android:gravity="center"
-            android:letterSpacing="0.175"
-            android:textColor="#FC0107"
-            android:text="LEVEL 0"
-            android:textSize="18sp"
-            android:visibility="gone"
+            android:textColor="#333"
+            android:text=""
+            android:textSize="12sp"
+            android:visibility="visible"
+            android:layout_marginBottom="10dp"
             />
 
         <com.sugarman.myb.ui.views.CustomFontTextView
@@ -429,40 +429,6 @@
                 </RelativeLayout>
 
                 </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/profile_divider_size"
-                    android:background="@color/divider_color"
-                    android:layout_marginStart="@dimen/profile_padding"/>
-
-                <com.sugarman.myb.ui.views.CustomFontTextView
-                    android:id="@+id/tv_privacy_policy"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/profile_item_height"
-                    android:gravity="left|center_vertical"
-                    android:paddingStart="@dimen/profile_padding"
-                    android:text="@string/privacy_policy"
-                    android:textColor="@color/dark_gray"
-                    android:textSize="@dimen/profile_item_text_size"
-                    app:font="@string/font_roboto_regular" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/profile_divider_size"
-                    android:background="@color/divider_color"
-                    android:layout_marginStart="@dimen/profile_padding"/>
-
-                <com.sugarman.myb.ui.views.CustomFontTextView
-                    android:id="@+id/tv_terms_of_use"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/profile_item_height"
-                    android:gravity="left|center_vertical"
-                    android:text="@string/terms_of_use"
-                    android:paddingStart="@dimen/profile_padding"
-                    android:textColor="@color/dark_gray"
-                    android:textSize="@dimen/profile_item_text_size"
-                    app:font="@string/font_roboto_regular" />
 
                 <View
                     android:layout_width="match_parent"
