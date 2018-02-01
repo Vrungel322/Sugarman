@@ -457,26 +457,18 @@ public class MainActivity extends GetUserInfoActivity
         public void onApiGetMyTrackingSuccess(Tracking[] trackings, List<Tracking> mentorsGroup,
             boolean isRefreshNotifications) {
           Timber.e("trackings:" + trackings.length + " mentorsGroup:" + mentorsGroup.size());
+          myTrackings = trackings;
           mMentorsGroups = mentorsGroup;
+          List<BaseChallengeItem> converted = prepareTrackingItems();
 
-          if (myTrackings != null && myTrackings.length != trackings.length) {
-            Timber.e("onApiGetMyTrackingSuccess to update");
-            myTrackings = trackings;
-            updatePagerTrackings();
-          }
-          else {
-            Timber.e("onApiGetMyTrackingSuccess to notify");
-            trackingsAdapter.notifyDataSetChanged();
-          }
-
+          updatePagerTrackings();
           updateAnimations(todaySteps);
           updateTodaySteps(todaySteps);
+
 
           if (swipedTracking != null) {
             ChallengeWillStartItem item = new ChallengeWillStartItem();
             item.setTracking(swipedTracking);
-            List<BaseChallengeItem> converted = prepareTrackingItems();
-
             createdTrackingPosition = converted.indexOf(item);
 
             App.getHandlerInstance()
