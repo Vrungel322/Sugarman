@@ -39,35 +39,36 @@ public class FetchingAnimationServicePresenter
 
         .concatMap(getAnimationResponseResponse -> {
           GetAnimationResponse getAnimationResponseFromDB = mDataManager.getAnimationFromBd();
-          Timber.e("getAnimations db_anim_side:"
-              + getAnimationResponseFromDB.getAnimations().size()
-              + "   server_anim_size:"
-              + getAnimationResponseResponse.body().getAnimations().size());
+          if (getAnimationResponseFromDB != null) {
+            Timber.e("getAnimations db_anim_side:"
+                + getAnimationResponseFromDB.getAnimations().size()
+                + "   server_anim_size:"
+                + getAnimationResponseResponse.body().getAnimations().size());
 
-          if (getAnimationResponseFromDB != null
-              && getAnimationResponseFromDB.getAnimations().size()
-              > getAnimationResponseResponse.body().getAnimations().size()) {
-            for (ImageModel im : getAnimationResponseFromDB.getAnimations()) {
+            if (getAnimationResponseFromDB != null
+                && getAnimationResponseFromDB.getAnimations().size()
+                > getAnimationResponseResponse.body().getAnimations().size()) {
+              for (ImageModel im : getAnimationResponseFromDB.getAnimations()) {
 
-              Timber.e("getAnimations isInternet anim list contain "
-                  + im.getName()
-                  + "  bool:"
-                  + (!getAnimationResponseResponse.body().getAnimations().contains(im)));
-              // если в ответе с интернета есть та анимация которая содержится в бд то все ок, иначе  нужно удалить с памяти телефона эту анимацию
-              if (!getAnimationResponseResponse.body().getAnimations().contains(im)) {
-                for (String stringUrl : im.getImageUrl()) {
-                  Timber.e("getAnimations url_to_delete " + stringUrl);
-                  URL urlToDel = null;
-                  try {
-                    urlToDel = new URL(stringUrl);
-                  } catch (MalformedURLException e) {
-                    e.printStackTrace();
+                Timber.e("getAnimations isInternet anim list contain "
+                    + im.getName()
+                    + "  bool:"
+                    + (!getAnimationResponseResponse.body().getAnimations().contains(im)));
+                // если в ответе с интернета есть та анимация которая содержится в бд то все ок, иначе  нужно удалить с памяти телефона эту анимацию
+                if (!getAnimationResponseResponse.body().getAnimations().contains(im)) {
+                  for (String stringUrl : im.getImageUrl()) {
+                    Timber.e("getAnimations url_to_delete " + stringUrl);
+                    URL urlToDel = null;
+                    try {
+                      urlToDel = new URL(stringUrl);
+                    } catch (MalformedURLException e) {
+                      e.printStackTrace();
+                    }
+                    File file =
+                        new File(filesDir + "/" + AnimationHelper.getFilenameFromURL(urlToDel));
+                    boolean deleted = file.delete();
+                    Timber.e("getAnimations deleted " + deleted + "   url:" + stringUrl);
                   }
-                  File file =
-                      new File(filesDir + "/" + AnimationHelper.getFilenameFromURL(urlToDel));
-                  boolean deleted = file.delete();
-                  Timber.e("getAnimations deleted " + deleted+"   url:"+stringUrl);
-
                 }
               }
             }
