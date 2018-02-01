@@ -804,10 +804,12 @@ public class GroupDetailsActivity extends BaseActivity
       rescueCircle.setVisibility(View.VISIBLE);
       mTextViewRescueTimer.setVisibility(View.VISIBLE);
 
-      tvTotalGroupSteps.setText(getResources().getString(R.string.rescues_needed));
+      tvTotalGroupSteps.setText(getResources().getString(R.string.challenge_days));
     }
 
-    membersAdapter = new GroupMembersAdapter(getMvpDelegate(), this, this, trackingId, amIMentor, isMentorGroup, mentorId);
+    membersAdapter =
+        new GroupMembersAdapter(getMvpDelegate(), this, this, trackingId, amIMentor, isMentorGroup,
+            mentorId);
     rcvMembers.setLayoutManager(
         new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
     rcvMembers.setAdapter(membersAdapter);
@@ -1944,15 +1946,13 @@ public class GroupDetailsActivity extends BaseActivity
         mTimer = new CountDownTimer(
             mTracking.getRemainToFailUTCDate().getTime() - System.currentTimeMillis(), 1000) {
           @Override public void onTick(long l) {
-            mTextViewRescueTimer.setText(
-                String.format(getString(R.string.rescue_timer),
-                    Converters.timeFromMilliseconds(getApplicationContext(), l)));
+            mTextViewRescueTimer.setText(String.format(getString(R.string.rescue_timer),
+                Converters.timeFromMilliseconds(getApplicationContext(), l)));
           }
 
           @Override public void onFinish() {
-            mTextViewRescueTimer.setText(
-                String.format(getString(R.string.rescue_timer),
-                    Converters.timeFromMilliseconds(getApplicationContext(), 1L)));
+            mTextViewRescueTimer.setText(String.format(getString(R.string.rescue_timer),
+                Converters.timeFromMilliseconds(getApplicationContext(), 1L)));
           }
         }.start();
       }
@@ -1998,6 +1998,17 @@ public class GroupDetailsActivity extends BaseActivity
       }
 
       tvSteps.setText("" + failers.size());
+
+      if (isFailedGroup) {
+        final float day = (System.currentTimeMillis() - tracking.getStartUTCDate().getTime())
+            / (float) Constants.MS_IN_DAY;
+        if (day <= 0) {
+        } else if (day - (int) day > 0) {
+          tvSteps.setText(Integer.toString((int) (day + 1)) + "/21");
+        } else {
+          tvSteps.setText(Integer.toString((int) (day)) + "/21");
+        }
+      }
 
       if (!thread.isAlive()) {
         thread = new Thread(new MyThread(tracking));
@@ -2102,7 +2113,7 @@ public class GroupDetailsActivity extends BaseActivity
       tvAsses.setText(Integer.toString(assesCount));
 
       groupStepsWithoutMe = tracking.getGroupStepsCountWithoutMe();
-      if(!isFailedGroup)setNumberOfUsers();
+      if (!isFailedGroup) setNumberOfUsers();
       membersAdapter.setMySteps(todaySteps);
 
       groupPictureUrl = group.getPictureUrl();

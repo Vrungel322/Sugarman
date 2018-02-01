@@ -49,6 +49,8 @@ import timber.log.Timber;
 
     String finalLastMessageId = lastMessageId;
     Subscription subscription = mDataManager.fetchMessagesSpika(roomId, finalLastMessageId, token)
+        .filter(getMessagesModelRefactored -> (getMessagesModelRefactored != null
+            && getMessagesModelRefactored.getData() != null))
         .concatMap(getMessagesModelRefactored -> {
           List<String> unReadMessagesIds =
               getUnSeenMessages(getMessagesModelRefactored.getData().getMessages(),

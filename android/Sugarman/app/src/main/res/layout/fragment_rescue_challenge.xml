@@ -151,6 +151,16 @@
             android:src="@drawable/rescue_button_card"
             />
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/tvLeftText"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:textSize="6sp"
+            android:textColor="@color/white"
+            android:text="@string/rescue_group"
+            />
+        <TextView
             android:id="@+id/tvLeftText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

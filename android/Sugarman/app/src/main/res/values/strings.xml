@@ -182,8 +182,8 @@
   <string name="kicked_users">Kicked %1$d users!</string>
   <string name="cant_kick_anybody">You can\'t kick anybody in this group!</string>
   <string name="cant_kick_not_in_group">You can\'t kick people if you are not a part of the group!</string>
-  <string name="my_steps_today">My steps\nToday</string>
-  <string name="total_assess_kicked">Total asses\nKicked</string>
+  <string name="my_steps_today">My steps\ntoday</string>
+  <string name="total_assess_kicked">Asses\nKicked</string>
   <string name="total_group_steps">Total users\nin group</string>
   <string name="wake_them_up">Type to wake them up…</string>
   <string name="steps">Steps</string>
@@ -599,7 +599,7 @@
   <string name="now">NOW!!!</string>
   <string name="you">  you and </string>
   <string name="empty"> </string>
-  <string name="rescues_needed">Rescues needed</string>
+  <string name="challenge_days">Challenge days</string>
   <string name="you_got_x_rescues">You got %1$d rescues</string>
   <string name="name_can_not_be_empty">Name can not be empty!</string>
   <string name="for_invites">FOR INVITES</string>
@@ -607,5 +607,6 @@
   <string name="rescue_timer">%1$s</string>
   <string name="walked10k">Walked 10K for %1$d days</string>
   <string name="invite">Invite</string>
+  <string name="rescue_group">Rescue \ngroup</string>
 
 </resources>
