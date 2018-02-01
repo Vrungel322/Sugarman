@@ -457,17 +457,26 @@ public class MainActivity extends GetUserInfoActivity
         public void onApiGetMyTrackingSuccess(Tracking[] trackings, List<Tracking> mentorsGroup,
             boolean isRefreshNotifications) {
           Timber.e("trackings:" + trackings.length + " mentorsGroup:" + mentorsGroup.size());
-          myTrackings = trackings;
           mMentorsGroups = mentorsGroup;
-          List<BaseChallengeItem> converted = prepareTrackingItems();
 
-          updatePagerTrackings();
+          if (myTrackings != null && myTrackings.length != trackings.length) {
+            Timber.e("onApiGetMyTrackingSuccess to update");
+            myTrackings = trackings;
+            updatePagerTrackings();
+          }
+          else {
+            Timber.e("onApiGetMyTrackingSuccess to notify");
+            trackingsAdapter.notifyDataSetChanged();
+          }
+
           updateAnimations(todaySteps);
           updateTodaySteps(todaySteps);
 
           if (swipedTracking != null) {
             ChallengeWillStartItem item = new ChallengeWillStartItem();
             item.setTracking(swipedTracking);
+            List<BaseChallengeItem> converted = prepareTrackingItems();
+
             createdTrackingPosition = converted.indexOf(item);
 
             App.getHandlerInstance()
@@ -935,7 +944,7 @@ public class MainActivity extends GetUserInfoActivity
         //ivAnimatedMan.setBackgroundResource(R.drawable.animation_sugarman_twelve);
         //animationMan = (AnimationDrawable) ivAnimatedMan.getBackground();
       }
-      if (animationMan!=null && !animationMan.isRunning()) animationMan.start();
+      if (animationMan != null && !animationMan.isRunning()) animationMan.start();
     }
   }
 
@@ -1060,7 +1069,6 @@ public class MainActivity extends GetUserInfoActivity
     super.onDestroy();
 
     if (mHelper != null) mHelper.dispose();
-
 
     mSendFirebaseTokenClient.unregisterListener();
     mGetMyTrackingsClient.unregisterListener();
@@ -2000,26 +2008,26 @@ public class MainActivity extends GetUserInfoActivity
   }
 
   @Override public void setAnimation(List<Drawable> drawable, int duration, String animName) {
-      Timber.e("setAnimation size" + drawable.size());
-      AnimationDrawable animation = new AnimationDrawable();
-      for (Drawable d : drawable) {
-        if (d != null) {
-          animation.addFrame(d, duration);
-        }
+    Timber.e("setAnimation size" + drawable.size() + "  animName: " + animName);
+    AnimationDrawable animation = new AnimationDrawable();
+    for (Drawable d : drawable) {
+      if (d != null) {
+        animation.addFrame(d, duration);
       }
+    }
 
-      runOnUiThread(() -> {
-        ivAnimatedMan.setBackgroundDrawable(null);
-        if (ivAnimatedMan.getAnimation() != null) {
-          ivAnimatedMan.getAnimation().cancel();
-        }
-        Timber.e("isAppForeground = " + App.isAppForeground());
-        if (!App.isAppForeground()) { // так написать сказал Егор
-          ivAnimatedMan.setImageDrawable(animation);
-          animation.start();
-        }
-        // Picasso.with(this).load("1").placeholder(animation).error(animation).into(ivAnimatedMan);
-      });
+    runOnUiThread(() -> {
+      ivAnimatedMan.setBackgroundDrawable(null);
+      if (ivAnimatedMan.getAnimation() != null) {
+        ivAnimatedMan.getAnimation().cancel();
+      }
+      Timber.e("isAppForeground = " + App.isAppForeground());
+      if (!App.isAppForeground()) { // так написать сказал Егор
+        ivAnimatedMan.setImageDrawable(animation);
+        animation.start();
+      }
+      // Picasso.with(this).load("1").placeholder(animation).error(animation).into(ivAnimatedMan);
+    });
   }
   //@Override public void setAnimation(AnimationDrawable animation) {
   //
