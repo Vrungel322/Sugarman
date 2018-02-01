@@ -118,9 +118,9 @@ public class DataManager {
         Arrays.asList(String.valueOf(R.drawable.belt1), String.valueOf(R.drawable.belt2),
             String.valueOf(R.drawable.belt3))));
     entities.add(new ShopProductEntity("2", productName.get(2), "", "10",
-        Arrays.asList(String.valueOf(R.drawable.com_1), String.valueOf(R.drawable.com_2),
+        Arrays.asList(String.valueOf(R.drawable.com_5), String.valueOf(R.drawable.com_2),
             String.valueOf(R.drawable.com_3), String.valueOf(R.drawable.com_4),
-            String.valueOf(R.drawable.com_5))));
+            String.valueOf(R.drawable.com_1))));
     entities.add(new ShopProductEntity("3", productName.get(3), "", "1",
         Arrays.asList(String.valueOf(R.drawable.mentor_shop))));
     return Observable.just(entities);
