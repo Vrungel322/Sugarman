@@ -77,7 +77,7 @@ ViewGroup insertPoint = (ViewGroup) findViewById(R.id.insert_point);
 insertPoint.addView(v, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
 */
 
-//Это очень хороший кусок кода) Тут что-то типа адаптера, но просто через инфлейтер создаются вьюшки
+//Это такой себе кусок кода) Тут что-то типа адаптера, но просто через инфлейтер создаются вьюшки
 
 public class ShopInviteFriendsActivity extends BasicActivity
     implements OnFBGetFriendsListener, IShopInviteFriendsActivityView {
@@ -189,7 +189,7 @@ public class ShopInviteFriendsActivity extends BasicActivity
     fbApiClient = new FBApiClient();
     //  mAddMembersClient = new AddMembersClient();
 
-    membersAdapter = new MembersAdapter(getMvpDelegate(), this);
+    membersAdapter = new MembersAdapter(getMvpDelegate(), this, true);
 
     fbCallbackManager = CallbackManager.Factory.create();
     fbInviteDialog = new GameRequestDialog(this);

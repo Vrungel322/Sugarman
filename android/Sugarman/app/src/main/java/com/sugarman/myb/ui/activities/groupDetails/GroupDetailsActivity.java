@@ -2014,6 +2014,7 @@ public class GroupDetailsActivity extends BaseActivity
         if (member.getId().equals(SharedPreferenceHelper.getUserId())) amIInGroup = true;
         if (member.getSteps() < SharedPreferenceHelper.getShowedSteps() && !member.getId()
             .equals(SharedPreferenceHelper.getUserId()) && member.getSteps() < 10000) {
+          if(!mentorId.equals(member.getId()))
           lessThanYou.add(member);
           Log.e("LESS THAN YOU", "" + member.getName());
         }

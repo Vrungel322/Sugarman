@@ -245,7 +245,7 @@ public class AddMemberActivity extends BaseActivity
     mCheckPhoneClient = new CheckPhonesClient();
     mCheckVkClient = new CheckVkClient();
 
-    membersAdapter = new MembersAdapter(getMvpDelegate(), this);
+    membersAdapter = new MembersAdapter(getMvpDelegate(), this, false);
     vkFriendsAdapter = new VkFriendsAdapter(this);
 
     fbCallbackManager = CallbackManager.Factory.create();

@@ -1,5 +1,7 @@
 package com.sugarman.myb.ui.dialogs.dialogCuteRule;
 
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;

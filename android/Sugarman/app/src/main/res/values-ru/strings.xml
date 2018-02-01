@@ -524,9 +524,9 @@
     <string name="daily_success_rate">Успешность сегодня</string>
     <string name="weekly_success_rate">Успешность на этой неделе</string>
     <string name="monthly_success_rate">Успешность в этом месяце</string>
-    <string name="calories">КАЛОРИИ</string>
-    <string name="distance">ДИСТАНЦИЯ</string>
-    <string name="steps_caps">ШАГИ</string>
+    <string name="calories">КАЛОРИИ СЕГОДНЯ</string>
+    <string name="distance">ДИСТАНЦИЯ СЕГОДНЯ</string>
+    <string name="steps_caps">ШАГИ СЕГОДНЯ</string>
     <string name="slots_error">У вас может быть только 3 наставника</string>
   <string name="address">Адрес</string>
     <string name="apply_now_for">Купить сейчас за</string>
@@ -573,6 +573,6 @@
   <string name="they_still_have_time_to_rescue_the_group">У вас все еще есть время для спасения!</string>
     <string name="rescue_timer">%1$s</string>
     <string name="walked10k">Walked 10K for %1$d days</string>
-  <string name="invite">Invite</string>
+  <string name="invite">Пригласить</string>
 
 </resources>

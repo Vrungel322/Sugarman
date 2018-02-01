@@ -44,10 +44,13 @@ public class MembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.ViewHold
   private final int colorWhite;
   private final int colorRed;
 
-  public MembersAdapter(MvpDelegate<?> parentDelegate, Context context) {
+  public MembersAdapter(MvpDelegate<?> parentDelegate, Context context, boolean invite) {
     super(parentDelegate, "MembersAdapter");
     this.context = context;
 
+    if(invite)
+      add = context.getString(R.string.invite);
+      else
     add = context.getString(R.string.add);
     added = context.getString(R.string.added);
     remove = context.getString(R.string.remove);
