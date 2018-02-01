@@ -315,6 +315,16 @@ public class DataManager {
     mDbHelper.save(getAnimationResponseResponse);
   }
 
+  public GetAnimationResponse getAnimationFromBd() {
+    Timber.e("getAnimationFromBd");
+    List<GetAnimationResponse> gar = mDbHelper.getAll(GetAnimationResponse.class);
+    if (gar != null && !gar.isEmpty()){
+      return gar.get(0);
+    }else {
+      return null;
+    }
+  }
+
   public ImageModel getAnimationByNameFromRealm(String name) {
     for (ImageModel im : mDbHelper.getElementsFromDBByQuery(ImageModel.class, "name", name)) {
       Timber.e("imageModel name" + im.getName());
