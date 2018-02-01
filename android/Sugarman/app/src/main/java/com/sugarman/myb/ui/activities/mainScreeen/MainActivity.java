@@ -505,36 +505,6 @@ public class MainActivity extends GetUserInfoActivity
         }
       };
 
-  public void download() throws Exception {
-    List<File> results = new ArrayList<>();
-    final int[] done = { 0 };
-    List<String> urls = new ArrayList<>();
-
-    for (int i = 0; i < 2000; i++) {
-      urls.add(String.valueOf(2000 - i - 1));
-    }
-
-    new AnimationHelper(null, urls).download(new AnimationHelper.Callback() {
-      @Override public void onEach(File image) {
-        results.add(image);
-        try {
-          FileOutputStream out = new FileOutputStream(image);
-          out.flush();
-          out.close();
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-      }
-
-      @Override public void onDone(File imagesDir) {
-        done[0]++;
-      }
-    });
-
-    while (results.size() < 2000) {
-      Thread.sleep(10);
-    }
-  }
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_main);
@@ -2001,14 +1971,15 @@ public class MainActivity extends GetUserInfoActivity
 
   @Override public void setAnimation(List<Drawable> drawable, int duration, String animName) {
     Timber.e("setAnimation size" + drawable.size() + "  animName: " + animName);
-    AnimationDrawable animation = new AnimationDrawable();
+    runOnUiThread(() -> {
+
+      AnimationDrawable animation = new AnimationDrawable();
     for (Drawable d : drawable) {
       if (d != null) {
         animation.addFrame(d, duration);
       }
     }
 
-    runOnUiThread(() -> {
       ivAnimatedMan.setBackgroundDrawable(null);
       if (ivAnimatedMan.getAnimation() != null) {
         ivAnimatedMan.getAnimation().cancel();

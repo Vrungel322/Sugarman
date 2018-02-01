@@ -17,16 +17,17 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AnimationHelper {
 
-  public static final int WORKERS = 10;
+  public int workers = 10;
 
   private AtomicBoolean done;
   private File imagesDir;
   private Stack<String> urls;
 
-  public AnimationHelper(File imagesDir, List<String> urls) {
+  public AnimationHelper(File imagesDir, List<String> urls, int workersThread) {
     this.imagesDir = imagesDir;
     this.urls = new Stack<>();
     this.urls.addAll(urls);
+    this.workers = workersThread;
     done = new AtomicBoolean(false);
   }
 
@@ -42,7 +43,7 @@ public class AnimationHelper {
   private List<Thread> newWorkers(Callback callback) {
     ArrayList<Thread> workers = new ArrayList<>();
 
-    for (int i = 0; i < WORKERS; i++) {
+    for (int i = 0; i < this.workers; i++) {
       workers.add(new Thread(newWorker(callback), "ConcurrentRequestSourceWorker-" + i));
     }
 

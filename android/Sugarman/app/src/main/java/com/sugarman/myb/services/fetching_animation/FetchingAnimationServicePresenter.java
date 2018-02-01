@@ -113,7 +113,7 @@ public class FetchingAnimationServicePresenter
             Timber.e("getAnimations urls to download " + u);
           }
 
-          AnimationHelper animationHelper = new AnimationHelper(filesDir, new ArrayList<>(urls));
+          AnimationHelper animationHelper = new AnimationHelper(filesDir, new ArrayList<>(urls),30);
           //AnimationDrawable animationDrawable = new AnimationDrawable();
 
           animationHelper.download(new AnimationHelper.Callback() {

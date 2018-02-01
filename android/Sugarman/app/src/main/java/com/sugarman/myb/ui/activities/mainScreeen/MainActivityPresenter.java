@@ -22,11 +22,8 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import rx.Observable;
 import rx.Subscription;
@@ -257,66 +254,6 @@ import timber.log.Timber;
     }
   }
 
-  public void getAnimations(File filesDir) {
-
-    List<Drawable> animationList = new ArrayList<>();
-    Subscription subscription =
-        mDataManager.getAnimations().concatMap(getAnimationResponseResponse -> {
-          mDataManager.saveAnimation(getAnimationResponseResponse.body());
-          return Observable.just(getAnimationResponseResponse);
-        }).compose(ThreadSchedulers.applySchedulers()).subscribe(animations -> {
-
-          Timber.e("Got inside animations");
-          if (!filesDir.exists()) filesDir.mkdirs();
-          Set<String> urls = new HashSet<>();
-
-          List<ImageModel> anims = animations.body().getAnimations();
-          for (int i = 0; i < anims.size(); i++) {
-            duration = anims.get(i).getDuration();
-            //  скачиваются все анимации у которых статус "now"=true
-            if (anims.get(i).getDownloadImmediately()) {
-              for (int j = 0; j < anims.get(i).getImageUrl().size(); j++) {
-                urls.add(anims.get(i).getImageUrl().get(j));
-                Timber.e("getAnimations urls from server " + anims.get(i).getImageUrl().get(j));
-              }
-            }
-          }
-          if (filesDir.listFiles() != null) {
-            List<File> files = Arrays.asList(filesDir.listFiles());
-            for (File f : files) {
-              Timber.e("getAnimations " + f.getName());
-              if (urls.contains("https://sugarman-myb.s3.amazonaws.com/" + f.getName())) {
-                urls.remove("https://sugarman-myb.s3.amazonaws.com/" + f.getName());
-              }
-            }
-          }
-          //test
-          for (String u : urls) {
-            Timber.e("getAnimations urls to download " + u);
-          }
-
-          AnimationHelper animationHelper = new AnimationHelper(filesDir, new ArrayList<>(urls));
-          AnimationDrawable animationDrawable = new AnimationDrawable();
-
-          animationHelper.download(new AnimationHelper.Callback() {
-
-            @Override public void onEach(File image) {
-              animationList.add(Drawable.createFromPath(image.getAbsolutePath()));
-            }
-
-            @Override public void onDone(File imagesDir) {
-              Timber.e("Everything is downloaded");
-              Collections.reverse(animationList);
-              for (Drawable drawable : animationList) {
-                animationDrawable.addFrame(drawable, duration);
-              }
-              //getViewState().setAnimation(animationDrawable);
-            }
-          });
-        }, Throwable::printStackTrace);
-    addToUnsubscription(subscription);
-  }
-
   public void clearCachedImages(File filesDir) {
 
     if (filesDir.exists() && filesDir.isDirectory()) {
@@ -374,7 +311,7 @@ import timber.log.Timber;
 
             AnimationHelper animationHelper =
                 new AnimationHelper(new File(filesDir + "/animations/"),
-                    new ArrayList<>(anim.getImageUrl()));
+                    new ArrayList<>(anim.getImageUrl()),1);
             SharedPreferenceHelper.blockGetAnimsByName();
 
             animationHelper.download(new AnimationHelper.Callback() {
