@@ -606,5 +606,6 @@
   <string name="for_1_dollar">FOR 1$</string>
   <string name="rescue_timer">%1$s</string>
   <string name="walked10k">Walked 10K for %1$d days</string>
+  <string name="rescue_group">Rescue \ngroup</string>
 
 </resources>
