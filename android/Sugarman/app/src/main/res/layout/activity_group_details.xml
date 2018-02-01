@@ -290,7 +290,7 @@
                             <com.sugarman.myb.ui.views.CustomFontTextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:textColor="#5A5A5A"
+                                android:textColor="@color/red"
                                 android:textAlignment="center"
                                 android:layout_gravity="center"
                                 android:gravity="center"
@@ -468,7 +468,7 @@
                         <com.clover_studio.spikachatmodule.view.CustomEditText
                             android:id="@+id/etMessage"
                             android:layout_width="match_parent"
-                            android:textColorHint="#f45353"
+                            android:textColorHint="#ccc"
                             android:layout_height="wrap_content"
                             android:padding="15dp"
                             android:hint="@string/wake_them_up"

@@ -105,7 +105,7 @@ public class ShopInviteFriendsActivity extends BasicActivity
     }
   };
   @InjectPresenter ShopInviteFriendsActivityPresenter mPresenter;
-  @BindView(R.id.bAddFriends) ImageView bAddFriends;
+  @BindView(R.id.bAddFriends) TextView bAddFriends;
   @BindView(R.id.cfetSearchFriends) CustomFontEditText mEditTextSearch;
   @BindView(R.id.fb_filter) ImageView fbFilter;
   @BindView(R.id.vk_filter) ImageView vkFilter;
@@ -168,7 +168,7 @@ public class ShopInviteFriendsActivity extends BasicActivity
   @Override protected void onCreate(Bundle savedStateInstance) {
     setContentView(R.layout.activity_shop_invite_friends);
     super.onCreate(savedStateInstance);
-    bAddFriends.setEnabled(true);
+    bAddFriends.setEnabled(false);
 
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
@@ -634,8 +634,11 @@ public class ShopInviteFriendsActivity extends BasicActivity
   }
 
   @OnClick(R.id.bAddFriends) public void bAddFriendsClicked() {
-    bAddFriends.setEnabled(false);
-    sendInvitation();
+    if(bAddFriends.isEnabled()) {
+      sendInvitation();
+      bAddFriends.setEnabled(false);
+    }
+
   }
 
   @OnClick(R.id.iv_back) public void bBackClicked() {
@@ -657,11 +660,15 @@ public class ShopInviteFriendsActivity extends BasicActivity
   }
 
   @Override public void hideAddFriendButton() {
-    bAddFriends.setVisibility(View.GONE);
+    //bAddFriends.setVisibility(View.GONE);
+    bAddFriends.setTextColor(0xff999999);
+    bAddFriends.setEnabled(false);
   }
 
   @Override public void showAddFriendBtn() {
-    bAddFriends.setVisibility(View.VISIBLE);
+    bAddFriends.setTextColor(0xffffffff);
+    bAddFriends.setEnabled(true);
+    //bAddFriends.setVisibility(View.VISIBLE);
   }
 
   @Override public void addVkFriends(List<FacebookFriend> friends) {

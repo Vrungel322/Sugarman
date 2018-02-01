@@ -42,7 +42,7 @@
 
   <!-- MAIN ACTIVITY -->
   <string name="steps_today_caps">STEPS TODAY</string>
-  <string name="search_groups">Search groups</string>
+  <string name="search_groups">Search to join new groups...</string>
 
   <!-- PROFILE ACTIVITY -->
   <string name="invites">Invites</string>
@@ -606,5 +606,6 @@
   <string name="for_1_dollar">FOR 1$</string>
   <string name="rescue_timer">%1$s</string>
   <string name="walked10k">Walked 10K for %1$d days</string>
+  <string name="invite">Invite</string>
 
 </resources>

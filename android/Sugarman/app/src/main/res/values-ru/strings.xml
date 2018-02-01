@@ -573,5 +573,6 @@
   <string name="they_still_have_time_to_rescue_the_group">У вас все еще есть время для спасения!</string>
     <string name="rescue_timer">%1$s</string>
     <string name="walked10k">Walked 10K for %1$d days</string>
+  <string name="invite">Invite</string>
 
 </resources>

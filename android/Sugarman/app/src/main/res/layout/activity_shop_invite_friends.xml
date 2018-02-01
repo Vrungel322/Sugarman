@@ -68,16 +68,18 @@
                         android:textSize="17sp"
                         app:font="@string/font_roboto_medium"
                         />
-                    <ImageView
+                    <TextView
                         android:id="@+id/bAddFriends"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:padding="7dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="7dp"
+                        android:paddingBottom="7dp"
+                        android:paddingRight="15dp"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:tint="#FFF"
+                        android:text="@string/invite"
+                        android:textColor="#999"
                         android:src="@drawable/ic_apply"
-                        android:visibility="gone"
                         />
                 </RelativeLayout>
             </LinearLayout>

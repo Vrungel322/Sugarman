@@ -278,7 +278,9 @@ public class MentorsChallengeFragment extends BasicFragment
     }
     mTextViewAllSteps.setText(String.format(Locale.US, "%,d", mAllSteps));
     //steps total
-    mTextViewTotalSteps.setText(String.format(Locale.US, "%,d", mAllSteps));
+    mTextViewTotalSteps.setText(
+        "" + String.format(Locale.US, "%,d", mAllSteps) + "/" + String.format(Locale.US,
+            "%,d", (mMembers.length * 10000)));;
   }
 
   @Override public void setUnreadMessages(int size) {
