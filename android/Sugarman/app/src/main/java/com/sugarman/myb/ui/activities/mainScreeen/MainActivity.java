@@ -463,7 +463,7 @@ public class MainActivity extends GetUserInfoActivity
 
           updatePagerTrackings();
           updateAnimations(todaySteps);
-          updateTodaySteps(todaySteps);
+          //updateTodaySteps(todaySteps);
 
 
           if (swipedTracking != null) {
