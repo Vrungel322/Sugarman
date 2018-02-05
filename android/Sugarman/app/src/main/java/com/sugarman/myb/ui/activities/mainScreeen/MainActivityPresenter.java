@@ -67,7 +67,7 @@ import timber.log.Timber;
           if (!SharedPreferenceHelper.isEventGroupWithXNewUsersDone()) {
             getViewState().doEventActionResponse(customUserEvent);
           }
-        },Throwable::printStackTrace);
+        }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 
@@ -300,7 +300,7 @@ import timber.log.Timber;
         if (new File(framePath).exists() && !SharedPreferenceHelper.isBlockedGetAnimationByName()) {
           animationList.add(Drawable.createFromPath(framePath));
 
-          if (!animationList.isEmpty()) {
+          if (!animationList.isEmpty() && animationList.size() == anim.getImageUrl().size()) {
             Timber.e("getAnimationByName from storage " + animationList.size());
             getViewState().setAnimation(animationList, duration, name);
           }
@@ -311,7 +311,7 @@ import timber.log.Timber;
 
             AnimationHelper animationHelper =
                 new AnimationHelper(new File(filesDir + "/animations/"),
-                    new ArrayList<>(anim.getImageUrl()),1);
+                    new ArrayList<>(anim.getImageUrl()), 1);
             SharedPreferenceHelper.blockGetAnimsByName();
 
             animationHelper.download(new AnimationHelper.Callback() {
