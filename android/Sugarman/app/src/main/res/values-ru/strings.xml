@@ -564,7 +564,7 @@
     <string name="rescue">Спасти</string>
     <string name="now">сейчас</string>
     <string name="you"> вам и </string>
-    <string name="challenge_days">Нужно спасений</string>
+    <string name="challenge_days">Дней испытания</string>
     <string name="you_got_x_rescues">У Вас спасений: %1$d</string>
     <string name="empty"> </string>
     <string name="name_can_not_be_empty">Имя не может быть пустым!</string>
@@ -572,7 +572,9 @@
     <string name="for_1_dollar">ЗА 1$</string>
   <string name="they_still_have_time_to_rescue_the_group">У вас все еще есть время для спасения!</string>
     <string name="rescue_timer">%1$s</string>
-    <string name="walked10k">Walked 10K for %1$d days</string>
+    <string name="walked10k">Прошел 10К шагов %1$d дней</string>
+    <string name="you_cant_kick_mentor">Нельзя подтолкнуть наставника!</string>
   <string name="invite">Пригласить</string>
+    <string name="rescue_group">Rescue \ngroup</string>
 
 </resources>

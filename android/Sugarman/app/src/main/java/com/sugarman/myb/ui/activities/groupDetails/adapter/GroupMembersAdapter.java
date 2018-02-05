@@ -496,12 +496,6 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
             }).create().show();
       }
     }
-    Timber.e("My ID "
-        + SharedPreferenceHelper.getUserId()
-        + ", myPosition = "
-        + myPosition
-        + " user clicked "
-        + mData.get(position).getId());
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
     eventValue.put(AFInAppEventParameterName.SCORE, 100);

@@ -639,7 +639,6 @@ public class GroupDetailsActivity extends BaseActivity
   private MentorsCommentsEntity mComment;
   private IabHelper mHelper;
   private List<SubscriptionEntity> subscribeList = new ArrayList<>();
-  private float successRateFloat;
   private CountDownTimer mTimer;
 
   @OnClick(R.id.ivEditMentor) public void editMentorClicked() {
@@ -791,12 +790,51 @@ public class GroupDetailsActivity extends BaseActivity
       } else {
         ivCancelSubscription.setVisibility(View.VISIBLE);
       }
+
+      // TODO: 2/5/18 move to onresponse
+      int successCount=0, totalCount = members.length-1;
+
+      for(Member m : members)
+      {
+        if(!mentorId.equals(m.getId()))
+        {
+          if(m.getSteps()>10000)
+          {
+            successCount++;
+          }
+        }
+      }
+
+      float successRateFloat = (float)successCount/(float)totalCount;
+
+      List<PieEntry> entries = new ArrayList<>();
+
+      entries.add(new PieEntry(successRateFloat * 100f, ""));
+      entries.add(new PieEntry(100 - successRateFloat * 100f, ""));
+
+      PieDataSet set = new PieDataSet(entries, "");
+
+      set.setColors(new int[] { 0xffdc0c0c, 0xffffffff });
+      set.setValueTextColor(0x00000000);
+      PieData data = new PieData(set);
+
+      pieChart.setOnTouchListener(null);
+      pieChart.getLegend().setEnabled(false);
+      pieChart.setDrawEntryLabels(false);
+      pieChart.setDrawSliceText(false);
+      pieChart.setDrawHoleEnabled(false);
+      pieChart.getDescription().setText("");
+      pieChart.setCenterTextSize(9);
+      pieChart.setDrawCenterText(false);
+      pieChart.setData(data);
+      pieChart.invalidate();
+
     } else {
       mentorId = "";
       pieChart.setVisibility(View.GONE);
       successRateStroke.setVisibility(View.GONE);
       groupSteps.setVisibility(View.VISIBLE);
-      tvTotalGroupSteps.setText(getResources().getString(R.string.total_group_steps));
+      tvTotalGroupSteps.setText(getResources().getString(R.string.challenge_days));
     }
 
     isFailedGroup = getIntent().getBooleanExtra("isRescueGroup", false);
@@ -987,7 +1025,6 @@ public class GroupDetailsActivity extends BaseActivity
       @Override public void run() {
         rlComments.clearAnimation();
         rlComments.setVisibility(View.GONE);
-        Timber.e("is it visible? " + rlComments.getVisibility());
       }
     }).start();
   }
@@ -1957,31 +1994,7 @@ public class GroupDetailsActivity extends BaseActivity
         }.start();
       }
 
-      if (successRate != null && !successRate.isEmpty()) {
-        successRateFloat = Float.valueOf(successRate);
 
-        List<PieEntry> entries = new ArrayList<>();
-
-        entries.add(new PieEntry(successRateFloat * 100f, ""));
-        entries.add(new PieEntry(100 - successRateFloat * 100f, ""));
-
-        PieDataSet set = new PieDataSet(entries, "");
-
-        set.setColors(new int[] { 0xffdc0c0c, 0xffffffff });
-        set.setValueTextColor(0x00000000);
-        PieData data = new PieData(set);
-
-        pieChart.setOnTouchListener(null);
-        pieChart.getLegend().setEnabled(false);
-        pieChart.setDrawEntryLabels(false);
-        pieChart.setDrawSliceText(false);
-        pieChart.setDrawHoleEnabled(false);
-        pieChart.getDescription().setText("");
-        pieChart.setCenterTextSize(9);
-        pieChart.setDrawCenterText(false);
-        pieChart.setData(data);
-        pieChart.invalidate();
-      }
 
       Group group = tracking.getGroup();
       members = tracking.getMembers();
@@ -1999,16 +2012,7 @@ public class GroupDetailsActivity extends BaseActivity
 
       tvSteps.setText("" + failers.size());
 
-      if (isFailedGroup) {
-        final float day = (System.currentTimeMillis() - tracking.getStartUTCDate().getTime())
-            / (float) Constants.MS_IN_DAY;
-        if (day <= 0) {
-        } else if (day - (int) day > 0) {
-          tvSteps.setText(Integer.toString((int) (day + 1)) + "/21");
-        } else {
-          tvSteps.setText(Integer.toString((int) (day)) + "/21");
-        }
-      }
+
 
       if (!thread.isAlive()) {
         thread = new Thread(new MyThread(tracking));
@@ -2036,6 +2040,15 @@ public class GroupDetailsActivity extends BaseActivity
       } else {
         chatToHide.setVisibility(View.GONE);
         chatNotAvailable.setVisibility(View.VISIBLE);
+      }
+
+      final float day = (System.currentTimeMillis() - tracking.getStartUTCDate().getTime())
+          / (float) Constants.MS_IN_DAY;
+      if (day <= 0) {
+      } else if (day - (int) day > 0) {
+        tvSteps.setText(Integer.toString((int) (day + 1)) + "/21");
+      } else {
+        tvSteps.setText(Integer.toString((int) (day)) + "/21");
       }
 
       if (!activeUser.roomID.equals(groupId)) {
@@ -2303,7 +2316,7 @@ public class GroupDetailsActivity extends BaseActivity
   }
 
   private void setNumberOfUsers() {
-    tvSteps.setText("" + mTracking.getMembers().length);
+    //tvSteps.setText("" + mTracking.getMembers().length);
   }
 
   private void openAddMembersActivity() {

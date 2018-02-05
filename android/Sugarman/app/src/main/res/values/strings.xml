@@ -201,6 +201,7 @@
 
   <!-- STATS ACTIVITY -->
   <string name="pref_language_options">Language</string>
+  <string name="pref_language">Language</string>
 
 
   <!-- SHOP ACTIVITY -->

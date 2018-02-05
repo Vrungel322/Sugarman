@@ -80,7 +80,7 @@
   <string name="photo">תמונה</string>
   <string name="create_group_et_hint">הכנס שם קבוצה</string>
   <string name="search">חפש</string>
-  <string name="search_and_invite">Search and invite...</string>
+  <string name="search_and_invite">חפש והזמן...</string>
   <string name="add_photo">הוסף תמונה</string>
   <string name="no_friends_found">לא נמצאו חברים</string>
   <string name="group_name_template">קבוצה %1$s</string>
@@ -346,9 +346,9 @@
   <string name="daily_success_rate">הישג אתמול</string>
   <string name="weekly_success_rate">הישג שבוע אחרון</string>
 
-  <string name="calories">קלוריות</string>
-  <string name="distance">מרחק</string>
-  <string name="steps_caps">צעדים</string>
+  <string name="calories">קלוריות היום</string>
+  <string name="distance">מרחק היום</string>
+  <string name="steps_caps">צעדים היום</string>
 
 
   <string-array name="CountryCodes" >
@@ -609,15 +609,17 @@
   <string name="rescue">להציל</string>
   <string name="now">עכשיו</string>
   <string name="you_are_failuer">נכשלתה :(</string>
-  <string name="challenge_days">נדרשת הצלה</string>
+  <string name="challenge_days">ימים לאתגר</string>
   <string name="you_got_x_rescues">קיבלתה %1$d הצלות</string>
   <string name="empty"> </string>
-  <string name="name_can_not_be_empty">Name can not be empty!</string>
-  <string name="for_invites">FOR INVITES</string>
-  <string name="for_1_dollar">FOR 1$</string>
+  <string name="name_can_not_be_empty">אנא הזן את שמך!</string>
+  <string name="for_invites">עבור הזמנות</string>
+  <string name="for_1_dollar">עבור 1$</string>
   <string name="they_still_have_time_to_rescue_the_group">אתה עדיין צריך להציל את הקבוצה</string>
   <string name="rescue_timer">%1$s</string>
-  <string name="walked10k">Walked 10K for %1$d days</string>
-  <string name="invite">Invite</string>
+  <string name="walked10k">הלך 10 אלף צעדים %1$d</string>
+  <string name="invite">הזמנה</string>
+  <string name="you_cant_kick_mentor">אי אפשר לבעוט במנטור!</string>
+  <string name="rescue_group">Rescue \ngroup</string>
 
 </resources>

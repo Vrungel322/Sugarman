@@ -187,18 +187,12 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
         && mMentorEntity.getWeeklySuccessRate() == 0
         && mMentorEntity.getMonthlySuccessRate() == 0));
 
-    if (mMentorEntity.getDailySuccessRate() == 0
-        && mMentorEntity.getWeeklySuccessRate() == 0
-        && mMentorEntity.getMonthlySuccessRate() == 0) {
-      llSuccessRateContainer.setVisibility(View.GONE);
-      successRate.setVisibility(View.GONE);
-    } else {
       setSuccessRateData(successRateToday, mMentorEntity.getDailySuccessRate(), tvSuccessRateToday);
       setSuccessRateData(successRateWeekly, mMentorEntity.getWeeklySuccessRate(),
           tvSuccessRateWeek);
       setSuccessRateData(successRateMonthly, mMentorEntity.getMonthlySuccessRate(),
           tvSuccessRateMonth);
-    }
+
 
     LayoutInflater vi =
         (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);

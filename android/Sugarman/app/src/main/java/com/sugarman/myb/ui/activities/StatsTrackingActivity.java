@@ -147,11 +147,7 @@ public class StatsTrackingActivity extends BaseActivity
     statsAdapter.setStats(stats);
     vpStats.setOffscreenPageLimit(statsAdapter.getCount());
     spiStats.setViewPager(vpStats, 0);
-    vpStats.post(new Runnable() {
-      @Override public void run() {
-        vpStats.setCurrentItem(statsAdapter.getTodayIndex());
-      }
-    });
+    vpStats.post(() -> vpStats.setCurrentItem(statsAdapter.getTodayIndex()));
     closeProgressFragment();
   }
 
