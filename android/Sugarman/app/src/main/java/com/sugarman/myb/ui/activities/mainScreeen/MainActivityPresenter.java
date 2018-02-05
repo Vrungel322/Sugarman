@@ -67,7 +67,7 @@ import timber.log.Timber;
           if (!SharedPreferenceHelper.isEventGroupWithXNewUsersDone()) {
             getViewState().doEventActionResponse(customUserEvent);
           }
-        });
+        },Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 
