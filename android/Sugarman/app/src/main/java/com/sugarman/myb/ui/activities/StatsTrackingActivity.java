@@ -146,6 +146,11 @@ public class StatsTrackingActivity extends BaseActivity
   }
 
   @Override public void onApiGetTrackingStatsSuccess(Stats[] stats) {
+    for (Stats s : stats) {
+      Timber.e("onApiGetTrackingStatsSuccess " +s.getDayTimestamp());
+      s.setDayTimestamp( s.getDayTimestamp() - 14400000);
+      Timber.e("onApiGetTrackingStatsSuccess " +s.getDayTimestamp());
+    }
     statsAdapter.setStats(stats,mTracking.isMentors());
     vpStats.setOffscreenPageLimit(statsAdapter.getCount());
     spiStats.setViewPager(vpStats, 0);
