@@ -266,11 +266,13 @@
 
         <ProgressBar
 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
             android:layout_gravity="center"
             android:layout_centerInParent="true"
             style="?android:attr/progressBarStyle"
+            android:indeterminateDrawable="@drawable/animation_progress_bar"
+
             />
     </RelativeLayout>
     <LinearLayout

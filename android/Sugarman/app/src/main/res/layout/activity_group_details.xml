@@ -421,12 +421,14 @@
                             android:layout_above="@id/etMessage"
                             android:background="#DEDEDE"/>
                         <ProgressBar
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="60dp"
+                            android:layout_height="40dp"
                             android:id="@+id/loadingAboveSendButton"
                             android:layout_alignRight="@id/btnSend"
                             android:layout_centerVertical="true"
-                            android:visibility="gone"/>
+                            android:visibility="gone"
+                            android:indeterminateDrawable="@drawable/animation_progress_bar"
+                            />
                         <ImageButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

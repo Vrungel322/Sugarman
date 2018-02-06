@@ -352,8 +352,8 @@
   </LinearLayout>
   <ProgressBar
       android:id="@+id/pb_spinner"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
+      android:layout_width="60dp"
+      android:layout_height="40dp"
       android:layout_marginBottom="8dp"
       android:layout_marginLeft="8dp"
       android:layout_marginRight="8dp"
@@ -365,5 +365,6 @@
       app:layout_constraintTop_toTopOf="@+id/linearLayout2"
       app:layout_constraintVertical_bias="0.5"
       style="?android:attr/progressBarStyle"
+      android:indeterminateDrawable="@drawable/animation_progress_bar"
       />
 </android.support.constraint.ConstraintLayout>
