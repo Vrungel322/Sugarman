@@ -1943,12 +1943,15 @@ public class GroupDetailsActivity extends BaseActivity
     DataForMainActivity dataForMainActivity = SharedPreferenceHelper.getSavedDataForMainActivity();
     Intent intent = new Intent(GroupDetailsActivity.this, MainActivity.class);
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-    intent.putExtra(Constants.INTENT_MY_TRACKINGS, dataForMainActivity.getTrackings());
-    intent.putExtra(Constants.INTENT_MY_INVITES, dataForMainActivity.getInvites());
-    intent.putExtra(Constants.INTENT_MY_REQUESTS, dataForMainActivity.getRequests());
-    intent.putExtra(Constants.INTENT_OPEN_ACTIVITY, dataForMainActivity.getOpenActivityCode());
-    intent.putExtra(Constants.INTENT_FCM_TRACKING_ID, dataForMainActivity.getTrackingIdFromFcm());
-    intent.putExtra(Constants.INTENT_MY_NOTIFICATIONS, dataForMainActivity.getNotifications());
+    if (dataForMainActivity != null) {
+      intent.putExtra(Constants.INTENT_MY_TRACKINGS, dataForMainActivity.getTrackings());
+      intent.putExtra(Constants.INTENT_MY_INVITES, dataForMainActivity.getInvites());
+      intent.putExtra(Constants.INTENT_MY_REQUESTS, dataForMainActivity.getRequests());
+      intent.putExtra(Constants.INTENT_OPEN_ACTIVITY, dataForMainActivity.getOpenActivityCode());
+      intent.putExtra(Constants.INTENT_FCM_TRACKING_ID, dataForMainActivity.getTrackingIdFromFcm());
+      intent.putExtra(Constants.INTENT_MY_NOTIFICATIONS, dataForMainActivity.getNotifications());
+    }
+
     startActivity(intent);
     setResult(Activity.RESULT_CANCELED);
     finishAffinity();
