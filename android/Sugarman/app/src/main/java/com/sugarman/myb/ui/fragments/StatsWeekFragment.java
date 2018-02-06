@@ -45,12 +45,13 @@ public class StatsWeekFragment extends BaseFragment {
   private boolean isAnimationRunned = false;
   private boolean isToday = false;
 
-  public static StatsWeekFragment newInstance(Stats[] item, int position) {
+  public static StatsWeekFragment newInstance(Stats[] item, int position, boolean isMentors) {
     StatsWeekFragment fragment = new StatsWeekFragment();
 
     Bundle args = new Bundle();
     args.putParcelableArray(Constants.BUNDLE_MY_STATS, item);
     args.putInt(Constants.BUNDLE_POSITION, position);
+    args.putBoolean(Constants.IS_MENTORS, isMentors);
     fragment.setArguments(args);
 
     return fragment;
@@ -128,7 +129,15 @@ public class StatsWeekFragment extends BaseFragment {
         day.setTimeInMillis(dayTimestamp);
         int year = day.get(Calendar.YEAR);
         int month = day.get(Calendar.MONTH);
-        int dayOfMonth = day.get(Calendar.DAY_OF_MONTH);
+        int dayOfMonth = 0;
+
+        // TODO: 06.02.2018 нужно убрать проверку и отнимание 10 дней 
+        if (getArguments().getBoolean(Constants.IS_MENTORS)){
+           dayOfMonth = day.get(Calendar.DAY_OF_MONTH)-10;
+        }
+        else {
+           dayOfMonth = day.get(Calendar.DAY_OF_MONTH);
+        }
 
         if (todayYear == year && todayMonth == month && todayDayOfMonth == dayOfMonth) {
           isToday = true;

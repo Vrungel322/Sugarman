@@ -106,6 +106,7 @@ public abstract class Constants {
   public static final String INVITE_FRIENDS_PAYMENT_TYPE = "friends";
   public static final int ALL_SLOTS_NOT_EMPTY_ERROR = 222;
   public static final String EVENT_X_NEW_USERS_INVITE = "event_type_group_with_new_x_users";
+  public static final String IS_MENTORS = "IS_MENTORS";
 
   static {
     ORIENTATIONS.append(Surface.ROTATION_0, 90);

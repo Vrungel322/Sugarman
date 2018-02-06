@@ -17,6 +17,7 @@ public class StatsPagerAdapter extends FragmentStatePagerAdapter {
       new Hashtable<>();
 
   private Stats[] stats = new Stats[0];
+  private boolean isMentors;
 
   public StatsPagerAdapter(FragmentManager fm) {
     super(fm);
@@ -32,7 +33,7 @@ public class StatsPagerAdapter extends FragmentStatePagerAdapter {
       statsList.addAll(Arrays.asList(stats).subList(from, to));
 
       fragment =
-          StatsWeekFragment.newInstance(statsList.toArray(new Stats[statsList.size()]), position);
+          StatsWeekFragment.newInstance(statsList.toArray(new Stats[statsList.size()]), position,isMentors);
       cashedFragments.put(position, new SoftReference<>(fragment));
     }
     return fragment;
@@ -43,8 +44,15 @@ public class StatsPagerAdapter extends FragmentStatePagerAdapter {
         stats.length % Config.DAYS_ON_STATS_SCREEN == 0 ? 0 : 1);
   }
 
+  public void setStats(Stats[] stats, boolean isMentors) {
+    this.stats = stats;
+    this.isMentors = isMentors;
+    notifyDataSetChanged();
+  }
+
   public void setStats(Stats[] stats) {
     this.stats = stats;
+    this.isMentors = isMentors;
     notifyDataSetChanged();
   }
 

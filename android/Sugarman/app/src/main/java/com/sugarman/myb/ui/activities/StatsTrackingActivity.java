@@ -25,6 +25,7 @@ import com.sugarman.myb.ui.views.SquarePageIndicator;
 import com.sugarman.myb.ui.views.SwipeGestureListener.Direction;
 import com.sugarman.myb.utils.DeviceHelper;
 import com.sugarman.myb.utils.IntentExtractorHelper;
+import timber.log.Timber;
 
 public class StatsTrackingActivity extends BaseActivity
     implements View.OnClickListener, OnSwipeListener, ApiGetTrackingStatsListener {
@@ -46,6 +47,7 @@ public class StatsTrackingActivity extends BaseActivity
       App.getEventBus().post(new StatsOpenedEvent());
     }
   };
+  private Tracking mTracking;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_tracking_stats);
@@ -57,13 +59,13 @@ public class StatsTrackingActivity extends BaseActivity
     TextView tvGroupName = (TextView) findViewById(R.id.tv_group_name);
     TextView tvDay = (TextView) findViewById(R.id.tv_day);
 
-    Tracking tracking = IntentExtractorHelper.getTracking(getIntent());
-    if (tracking != null) {
-      trackingId = tracking.getId();
-      Group group = tracking.getGroup();
+    mTracking = IntentExtractorHelper.getTracking(getIntent());
+    if (mTracking != null) {
+      trackingId = mTracking.getId();
+      Group group = mTracking.getGroup();
       tvGroupName.setText(group.getName());
 
-      float day = ((System.currentTimeMillis() - tracking.getStartUTCDate().getTime())
+      float day = ((System.currentTimeMillis() - mTracking.getStartUTCDate().getTime())
           / (float) Constants.MS_IN_DAY);
       if (day <= 0) {
         tvDay.setText(R.string.warming_up);
@@ -144,9 +146,10 @@ public class StatsTrackingActivity extends BaseActivity
   }
 
   @Override public void onApiGetTrackingStatsSuccess(Stats[] stats) {
-    statsAdapter.setStats(stats);
+    statsAdapter.setStats(stats,mTracking.isMentors());
     vpStats.setOffscreenPageLimit(statsAdapter.getCount());
     spiStats.setViewPager(vpStats, 0);
+    Timber.e("onApiGetTrackingStatsSuccess "+statsAdapter.getTodayIndex());
     vpStats.post(() -> vpStats.setCurrentItem(statsAdapter.getTodayIndex()));
     closeProgressFragment();
   }
