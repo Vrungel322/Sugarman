@@ -778,6 +778,7 @@ public class GroupDetailsActivity extends BaseActivity
     trackingId = IntentExtractorHelper.getTrackingId(getIntent());
 
     isMentorGroup = getIntent().getBooleanExtra("isMentorGroup", false);
+    Timber.e("qqqq " + members.length);
     if (isMentorGroup) {
 
       pieChart.setVisibility(View.VISIBLE);
@@ -792,40 +793,6 @@ public class GroupDetailsActivity extends BaseActivity
         ivCancelSubscription.setVisibility(View.VISIBLE);
       }
 
-      // TODO: 2/5/18 move to onresponse
-      int successCount = 0, totalCount = members.length - 1;
-
-      for (Member m : members) {
-        if (!mentorId.equals(m.getId())) {
-          if (m.getSteps() > 10000) {
-            successCount++;
-          }
-        }
-      }
-
-      float successRateFloat = (float) successCount / (float) totalCount;
-
-      List<PieEntry> entries = new ArrayList<>();
-
-      entries.add(new PieEntry(successRateFloat * 100f, ""));
-      entries.add(new PieEntry(100 - successRateFloat * 100f, ""));
-
-      PieDataSet set = new PieDataSet(entries, "");
-
-      set.setColors(new int[] { 0xffdc0c0c, 0xffffffff });
-      set.setValueTextColor(0x00000000);
-      PieData data = new PieData(set);
-
-      pieChart.setOnTouchListener(null);
-      pieChart.getLegend().setEnabled(false);
-      pieChart.setDrawEntryLabels(false);
-      pieChart.setDrawSliceText(false);
-      pieChart.setDrawHoleEnabled(false);
-      pieChart.getDescription().setText("");
-      pieChart.setCenterTextSize(9);
-      pieChart.setDrawCenterText(false);
-      pieChart.setData(data);
-      pieChart.invalidate();
     } else {
       mentorId = "";
       pieChart.setVisibility(View.GONE);
@@ -981,6 +948,46 @@ public class GroupDetailsActivity extends BaseActivity
     //END CHAT ************************************************************************************************************
 
     setupInAppPurchase();
+  }
+
+  private void setUpPieChart() {
+    int successCount = 0, totalCount = members.length - 1;
+
+    for (Member m : members) {
+      Timber.e("member qqqq" + m.getName() + " " + m.getSteps());
+      if (!mentorId.equals(m.getId())) {
+        if (m.getSteps() > 10) {
+          successCount++;
+        }
+      }
+    }
+
+    Timber.e("successCount:" + successCount);
+
+    float successRateFloat = (float) successCount / (float) totalCount;
+    Timber.e("successRateFloat "+successRateFloat);
+
+    List<PieEntry> entries = new ArrayList<>();
+
+    entries.add(new PieEntry(successRateFloat * 100f, ""));
+    entries.add(new PieEntry(100 - successRateFloat * 100f, ""));
+
+    PieDataSet set = new PieDataSet(entries, "");
+
+    set.setColors(new int[] { 0xffdc0c0c, 0xffffffff });
+    set.setValueTextColor(0x00000000);
+    PieData data = new PieData(set);
+
+    pieChart.setOnTouchListener(null);
+    pieChart.getLegend().setEnabled(false);
+    pieChart.setDrawEntryLabels(false);
+    pieChart.setDrawSliceText(false);
+    pieChart.setDrawHoleEnabled(false);
+    pieChart.getDescription().setText("");
+    pieChart.setCenterTextSize(9);
+    pieChart.setDrawCenterText(false);
+    pieChart.setData(data);
+    pieChart.invalidate();
   }
 
   private void setupInAppPurchase() {
@@ -1989,8 +1996,12 @@ public class GroupDetailsActivity extends BaseActivity
 
   @Override public void onApiGetTrackingInfoSuccess(Tracking tracking,
       List<MentorsCommentsEntity> commentsEntities, String successRate) {
+    Timber.e("onApiGetTrackingInfoSuccess "+ successRate);
     if (tracking != null) {
       mTracking = tracking;
+      setUpPieChart();
+
+
       if (commentsEntities != null && commentsEntities.size() > 0) {
         mComment = commentsEntities.get(0);
       }
