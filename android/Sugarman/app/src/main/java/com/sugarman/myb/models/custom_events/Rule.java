@@ -19,6 +19,7 @@ import lombok.Setter;
   @Getter @Setter @SerializedName("name_of_animation") @Expose private String nameOfAnim;
   @Getter @Setter @SerializedName("sequence") @Expose private Integer sequence;
   @Getter @Setter @SerializedName("group_count") @Expose private Integer groupCount;
+  @Getter @Setter @SerializedName("pop_up_img") @Expose private String popUpImg;
 
   @Override public String toString() {
     return "  action = "

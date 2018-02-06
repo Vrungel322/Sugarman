@@ -135,6 +135,8 @@ import timber.log.Timber;
                   .nameOfAnim(rule.getNameOfAnim())
                   .numValue(rule.getCount())
                   .groupCount(rule.getGroupCount())
+                  .strValue(rule.getPopUpImg())
+                  //.strValue("http://fs.kinomania.ru/file/person/1/95/195688ae35f80d6aca00e2fb5cd80b90.jpeg")
                   .build());
             } else {
               if (SharedPreferenceHelper.isCanLaunchLastAnim()) {

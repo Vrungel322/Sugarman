@@ -53,7 +53,7 @@ public abstract class BasicActivity extends MvpAppCompatActivity {
         body.append(customEvent.getEventText());
         SharedPreferenceHelper.setEventXStepsDone(customEvent.getNumValue());
         Timber.e("doEventAction", +customEvent.getNumValue());
-        DialogCuteRule.newInstance(body.toString(), () -> {
+        DialogCuteRule.newInstance(body.toString(), customEvent.getStrValue() ,() -> {
           if (customEvent.getEventName().equals(Constants.EVENT_X_NEW_USERS_INVITE)) {
             SharedPreferenceHelper.setEventGroupWithXNewUsersDone();
           }
