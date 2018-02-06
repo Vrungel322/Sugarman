@@ -79,7 +79,7 @@ public class DbHelper {
     realm.beginTransaction();
     list = query.findAll();
     realm.commitTransaction();
-    return realm.copyFromRealm(list);
+    return realm.copyFromRealm(list); // Returns List , NOT RealmList
   }
 
   public <T extends RealmObject> void dropRealmTable(Class<T> clazz) {
