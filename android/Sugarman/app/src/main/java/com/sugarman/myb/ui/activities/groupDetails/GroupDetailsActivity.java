@@ -130,6 +130,7 @@ import com.sugarman.myb.listeners.OnStepMembersActionListener;
 import com.sugarman.myb.models.GroupMember;
 import com.sugarman.myb.models.iab.SubscriptionEntity;
 import com.sugarman.myb.models.mentor.comments.MentorsCommentsEntity;
+import com.sugarman.myb.models.splash_activity.DataForMainActivity;
 import com.sugarman.myb.ui.activities.addMember.AddMemberActivity;
 import com.sugarman.myb.ui.activities.base.BaseActivity;
 import com.sugarman.myb.ui.activities.groupDetails.adapter.GroupMembersAdapter;
@@ -792,20 +793,17 @@ public class GroupDetailsActivity extends BaseActivity
       }
 
       // TODO: 2/5/18 move to onresponse
-      int successCount=0, totalCount = members.length-1;
+      int successCount = 0, totalCount = members.length - 1;
 
-      for(Member m : members)
-      {
-        if(!mentorId.equals(m.getId()))
-        {
-          if(m.getSteps()>10000)
-          {
+      for (Member m : members) {
+        if (!mentorId.equals(m.getId())) {
+          if (m.getSteps() > 10000) {
             successCount++;
           }
         }
       }
 
-      float successRateFloat = (float)successCount/(float)totalCount;
+      float successRateFloat = (float) successCount / (float) totalCount;
 
       List<PieEntry> entries = new ArrayList<>();
 
@@ -828,7 +826,6 @@ public class GroupDetailsActivity extends BaseActivity
       pieChart.setDrawCenterText(false);
       pieChart.setData(data);
       pieChart.invalidate();
-
     } else {
       mentorId = "";
       pieChart.setVisibility(View.GONE);
@@ -1938,8 +1935,23 @@ public class GroupDetailsActivity extends BaseActivity
       Intent data = new Intent();
       data.putExtra(Constants.INTENT_TRACKING_ID, trackingId);
       setResult(RESULT_OK, data);
-      finish();
+      startMainActivity();
     }
+  }
+
+  private void startMainActivity() {
+    DataForMainActivity dataForMainActivity = SharedPreferenceHelper.getSavedDataForMainActivity();
+    Intent intent = new Intent(GroupDetailsActivity.this, MainActivity.class);
+    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    intent.putExtra(Constants.INTENT_MY_TRACKINGS, dataForMainActivity.getTrackings());
+    intent.putExtra(Constants.INTENT_MY_INVITES, dataForMainActivity.getInvites());
+    intent.putExtra(Constants.INTENT_MY_REQUESTS, dataForMainActivity.getRequests());
+    intent.putExtra(Constants.INTENT_OPEN_ACTIVITY, dataForMainActivity.getOpenActivityCode());
+    intent.putExtra(Constants.INTENT_FCM_TRACKING_ID, dataForMainActivity.getTrackingIdFromFcm());
+    intent.putExtra(Constants.INTENT_MY_NOTIFICATIONS, dataForMainActivity.getNotifications());
+    startActivity(intent);
+    setResult(Activity.RESULT_CANCELED);
+    finishAffinity();
   }
 
   @Override public void onClick(View v) {
@@ -1994,8 +2006,6 @@ public class GroupDetailsActivity extends BaseActivity
         }.start();
       }
 
-
-
       Group group = tracking.getGroup();
       members = tracking.getMembers();
       pendings = tracking.getPending();
@@ -2012,8 +2022,6 @@ public class GroupDetailsActivity extends BaseActivity
 
       tvSteps.setText("" + failers.size());
 
-
-
       if (!thread.isAlive()) {
         thread = new Thread(new MyThread(tracking));
         thread.start();
@@ -2029,8 +2037,7 @@ public class GroupDetailsActivity extends BaseActivity
         if (member.getId().equals(SharedPreferenceHelper.getUserId())) amIInGroup = true;
         if (member.getSteps() < SharedPreferenceHelper.getShowedSteps() && !member.getId()
             .equals(SharedPreferenceHelper.getUserId()) && member.getSteps() < 10000) {
-          if(!mentorId.equals(member.getId()))
-          lessThanYou.add(member);
+          if (!mentorId.equals(member.getId())) lessThanYou.add(member);
           Log.e("LESS THAN YOU", "" + member.getName());
         }
       }

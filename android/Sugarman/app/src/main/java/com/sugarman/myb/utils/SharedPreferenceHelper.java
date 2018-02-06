@@ -12,6 +12,7 @@ import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.constants.SharedPreferenceConstants;
 import com.sugarman.myb.models.iab.SubscriptionEntity;
 import com.sugarman.myb.models.mentor.MentorEntity;
+import com.sugarman.myb.models.splash_activity.DataForMainActivity;
 import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -676,12 +677,10 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
 
   public static void blockGetAnimsByName() {
     putBoolean(SharedPreferenceConstants.BLOCK_GET_ANIMS_BY_NAME, true);
-
   }
 
   public static boolean isBlockedGetAnimationByName() {
     return getBoolean(SharedPreferenceConstants.BLOCK_GET_ANIMS_BY_NAME, false);
-
   }
 
   public static void saveNumberOfContacts(int size) {
@@ -693,7 +692,7 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
   }
 
   public static void putMentorEntity(String s) {
-    putString(SharedPreferenceConstants.CACHED_MENTORS,s);
+    putString(SharedPreferenceConstants.CACHED_MENTORS, s);
   }
 
   public static List<MentorEntity> getCachedMentors() {
@@ -703,7 +702,7 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
   }
 
   public static void saveNameOfCurrentAnim(String animName) {
-    putString(SharedPreferenceConstants.NAME_OF_CURRENT_ANIM,animName);
+    putString(SharedPreferenceConstants.NAME_OF_CURRENT_ANIM, animName);
   }
 
   public static String getNameOfCurrentAnim() {
@@ -715,6 +714,16 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
   }
 
   public static void canLaunchLastAnim(boolean b) {
-    putBoolean(SharedPreferenceConstants.CAN_LAUNCH_LAST_ANIM,b);
+    putBoolean(SharedPreferenceConstants.CAN_LAUNCH_LAST_ANIM, b);
+  }
+
+  public static void saveDataForMainActivity(DataForMainActivity dataForMainActivity) {
+    putString(SharedPreferenceConstants.DATA_FOR_MAIN_ACTIVITY,
+        new Gson().toJson(dataForMainActivity));
+  }
+
+  public static DataForMainActivity getSavedDataForMainActivity() {
+    return new Gson().fromJson(getString(SharedPreferenceConstants.DATA_FOR_MAIN_ACTIVITY, ""),
+        DataForMainActivity.class);
   }
 }

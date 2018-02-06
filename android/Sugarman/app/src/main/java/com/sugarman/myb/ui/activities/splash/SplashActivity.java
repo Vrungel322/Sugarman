@@ -34,6 +34,7 @@ import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.constants.DialogConstants;
 import com.sugarman.myb.eventbus.events.NeedOpenSpecificActivityEvent;
 import com.sugarman.myb.models.iab.SubscriptionEntity;
+import com.sugarman.myb.models.splash_activity.DataForMainActivity;
 import com.sugarman.myb.tasks.DeleteFileAsyncTask;
 import com.sugarman.myb.ui.activities.GetUserInfoActivity;
 import com.sugarman.myb.ui.activities.LoginActivity;
@@ -61,12 +62,11 @@ public class SplashActivity extends GetUserInfoActivity
       .show();
   IabHelper mHelper;
   @InjectPresenter SplashActivityPresenter mPresenter;
+  InstallReferrerClient mReferrerClient;
   private int openedActivityCode = -1;
   private String trackingIdFromFcm = "";
   private CompositeSubscription mCompositeSubscription = new CompositeSubscription();
   private boolean done;
-  InstallReferrerClient mReferrerClient;
-
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_splash);
@@ -156,13 +156,13 @@ public class SplashActivity extends GetUserInfoActivity
           //Timber.e(inventory.getSkuDetails(subscriptionEntity.getSlot()).getSku());
 
           String skuName = "";
-          if(inventory.getSkuDetails(subscriptionEntity.getSlot())==null)
-            skuName="null";
-          else
+          if (inventory.getSkuDetails(subscriptionEntity.getSlot()) == null) {
+            skuName = "null";
+          } else {
             skuName = inventory.getSkuDetails(subscriptionEntity.getSlot()).getTitle();
-          mPresenter.checkInAppBilling(inventory.getPurchase(subscriptionEntity.getSlot()),
-              skuName, null,
-              subscriptionEntity.getSlot());
+          }
+          mPresenter.checkInAppBilling(inventory.getPurchase(subscriptionEntity.getSlot()), skuName,
+              null, subscriptionEntity.getSlot());
         }
       }
     });
@@ -321,6 +321,10 @@ public class SplashActivity extends GetUserInfoActivity
     intent.putExtra(Constants.INTENT_OPEN_ACTIVITY, openedActivityCode);
     intent.putExtra(Constants.INTENT_FCM_TRACKING_ID, trackingIdFromFcm);
     intent.putExtra(Constants.INTENT_MY_NOTIFICATIONS, actualNotifications);
+    SharedPreferenceHelper.saveDataForMainActivity(
+        new DataForMainActivity(actualTrackings, actualInvites,
+            actualRequests, openedActivityCode, trackingIdFromFcm,
+            actualNotifications));
     startActivity(intent);
     finish();
   }
@@ -342,20 +346,18 @@ public class SplashActivity extends GetUserInfoActivity
         Timber.e("InstallReferrer not supported");
         break;
       case InstallReferrerClient.InstallReferrerResponse.SERVICE_UNAVAILABLE:
-        Timber.e( "Unable to connect to the service");
+        Timber.e("Unable to connect to the service");
         break;
       default:
-        Timber.e( "responseCode not found.");
+        Timber.e("responseCode not found.");
     }
-
   }
 
   @Override public void onInstallReferrerServiceDisconnected() {
     Timber.e("Referrer service disconnected");
   }
 
-  private void handleReferrer(ReferrerDetails response)
-  {
+  private void handleReferrer(ReferrerDetails response) {
 
     String referrerStr = response.getInstallReferrer();
     Timber.e(SharedPreferenceHelper.getCampaign());
@@ -366,17 +368,14 @@ public class SplashActivity extends GetUserInfoActivity
     searchInString("utm_campaign", referrerStr);
   }
 
-  private void searchInString(String query, String origin)
-  {
-    if(origin.contains(query))
-    {
+  private void searchInString(String query, String origin) {
+    if (origin.contains(query)) {
       String temp = origin.split(query)[1];
       int index = temp.indexOf("&");
-      if(index==-1) index = temp.length();
-      temp = temp.substring(1,index);
+      if (index == -1) index = temp.length();
+      temp = temp.substring(1, index);
       Timber.e("Found in referrer " + query + " " + temp);
       SharedPreferenceHelper.setCampaignParam(query, temp);
     }
   }
-
 }

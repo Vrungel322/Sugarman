@@ -86,6 +86,7 @@ public abstract class SharedPreferenceConstants {
   public static final String CACHED_MENTORS = "CACHED_MENTORS";
   public static final String NAME_OF_CURRENT_ANIM = "NAME_OF_CURRENT_ANIM";
   public static final String CAN_LAUNCH_LAST_ANIM = "CAN_LAUNCH_LAST_ANIM";
+  public static final String DATA_FOR_MAIN_ACTIVITY = "DATA_FOR_MAIN_ACTIVITY";
 
   private SharedPreferenceConstants() {
     // only static methods and fields
