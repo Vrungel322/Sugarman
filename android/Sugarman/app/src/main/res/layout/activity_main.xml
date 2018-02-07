@@ -74,12 +74,6 @@
                                 android:textSize="12sp"
                                 app:font="@string/font_roboto_medium"
                                 tools:text="12" />
-
-                                <ProgressBar
-                                    android:layout_width="60dp"
-                                    android:layout_height="40dp"
-                                    android:indeterminateDrawable="@drawable/animation_progress_bar"
-                                    />
                             </RelativeLayout>
 
                         </FrameLayout>
