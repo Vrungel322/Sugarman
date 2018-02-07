@@ -165,6 +165,16 @@ public class ShopInviteFriendsActivity extends BasicActivity
   private boolean isFbLoggedIn;
   private String currentFilter = "";
 
+  // number of total count/ number of count people with app BY PH
+  private int numberOfMemberTotalAppPh;
+  private int numberOfMemberWithAppPh;
+  // number of total count/ number of count people with app BY FB
+  private int numberOfMemberTotalAppFb;
+  private int numberOfMemberWithAppFb;
+  // number of total count/ number of count people with app BY VK
+  private int numberOfMemberTotalAppVk;
+  private int numberOfMemberWithAppVk;
+
   @Override protected void onCreate(Bundle savedStateInstance) {
     setContentView(R.layout.activity_shop_invite_friends);
     super.onCreate(savedStateInstance);
@@ -403,6 +413,11 @@ public class ShopInviteFriendsActivity extends BasicActivity
   @Override public void onGetFacebookFriendsSuccess(List<FacebookFriend> friends,
       List<FacebookFriend> invitable) {
 
+    numberOfMemberWithAppFb = friends.size();
+    numberOfMemberTotalAppFb = invitable.size();
+    Timber.e("numberOfMemberWithAppFb size " + numberOfMemberWithAppFb);
+    Timber.e("numberOfMemberTotalAppFb size " + numberOfMemberTotalAppFb);
+
     hideLoader();
     isFriendsFound = true;
 
@@ -634,11 +649,10 @@ public class ShopInviteFriendsActivity extends BasicActivity
   }
 
   @OnClick(R.id.bAddFriends) public void bAddFriendsClicked() {
-    if(bAddFriends.isEnabled()) {
+    if (bAddFriends.isEnabled()) {
       sendInvitation();
       bAddFriends.setEnabled(false);
     }
-
   }
 
   @OnClick(R.id.iv_back) public void bBackClicked() {
@@ -646,6 +660,15 @@ public class ShopInviteFriendsActivity extends BasicActivity
   }
 
   @Override public void addPhoneContact(List<FacebookFriend> facebookFriends) {
+    for (FacebookFriend temp : facebookFriends) {
+      if (temp.getIsInvitable() == FacebookFriend.CODE_NOT_INVITABLE) {
+        numberOfMemberWithAppPh++;
+      }
+    }
+    numberOfMemberTotalAppPh = facebookFriends.size();
+    Timber.e("numberOfMemberTotalAppPh size " + numberOfMemberTotalAppPh);
+    Timber.e("numberOfMemberWithAppPh size " + numberOfMemberWithAppPh);
+
     allFriends.addAll(facebookFriends);
     toFilterList.addAll(facebookFriends);
     Timber.e("addPhoneContact " + facebookFriends.size());
@@ -672,6 +695,14 @@ public class ShopInviteFriendsActivity extends BasicActivity
   }
 
   @Override public void addVkFriends(List<FacebookFriend> friends) {
+    for (FacebookFriend temp : friends) {
+      if (temp.getIsInvitable() == FacebookFriend.CODE_NOT_INVITABLE) {
+        numberOfMemberWithAppVk++;
+      }
+    }
+    numberOfMemberTotalAppVk = friends.size();
+    Timber.e("numberOfMemberWithAppVk size " + numberOfMemberWithAppVk);
+    Timber.e("numberOfMemberTotalAppVk size " + numberOfMemberTotalAppVk);
     allFriends.addAll(friends);
     toFilterList.addAll(friends);
     membersAdapter.addVkFriends(friends);
