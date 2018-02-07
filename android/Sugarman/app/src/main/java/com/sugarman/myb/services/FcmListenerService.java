@@ -140,7 +140,7 @@ public class FcmListenerService extends FirebaseMessagingService {
     int type = StringHelper.getNotificationMessageType(flags, text);
     Intent intent = new Intent(this, SplashActivity.class);
     String trackingId = getTrackingId(notification);
-    Timber.e("Message" + type);
+    Timber.e(" processMessage Message " + text);
 
     switch (type) {
       case NotificationMessageType.GROUP_NAME_GOOD_LUCK:
@@ -236,6 +236,19 @@ public class FcmListenerService extends FirebaseMessagingService {
     }
 
     return notification == null ? "" : notification.getTrackingId();
+  }
+
+  @Override public void onCreate() {
+    super.onCreate();
+    Timber.e("processMessage onCreate");
+
+  }
+
+  @Override public void onDestroy() {
+    super.onDestroy();
+    Timber.e("processMessage onDestroy");
+    startService(new Intent(getApplicationContext(), FcmListenerService.class));
+
   }
 }
 
