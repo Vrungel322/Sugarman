@@ -110,9 +110,13 @@ public class GoogleLoginHiddenActivity extends GetUserInfoActivity
       SharedPreferenceHelper.saveUserName(user.profile.name);
       SharedPreferenceHelper.saveAvatar(user.photoUrl);
       SharedPreferenceHelper.saveGCMToken(user.accessToken);
-      refreshUserData("none", "none", user.accessToken, "none",
-          SharedPreferenceHelper.getEmail(), SharedPreferenceHelper.getUserName(),
-          SharedPreferenceHelper.getVkId(), SharedPreferenceHelper.getFbId(),
+      SharedPreferenceHelper.saveFBAccessToken(user.accessToken);
+      SharedPreferenceHelper.saveFbId(user.userId);
+      // TODO: 07.02.2018 тут костыль с сохранениием номера, если его убрать то при перезаходе в приложение будет екран логина, а если оставить так как есть то норм 
+      SharedPreferenceHelper.savePhoneNumber("123");
+      Timber.e("handleSignInResult " + user.userId);
+      refreshUserData("none", "none", user.accessToken, "none", SharedPreferenceHelper.getEmail(),
+          SharedPreferenceHelper.getUserName(), SharedPreferenceHelper.getVkId(), user.userId,
           SharedPreferenceHelper.getAvatar());
     } else {
       Throwable throwable = new Throwable(result.getStatus().getStatusMessage());
