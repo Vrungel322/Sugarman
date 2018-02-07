@@ -1,7 +1,6 @@
 package com.sugarman.myb.ui.activities.splash;
 
 import com.arellomobile.mvp.InjectViewState;
-import com.google.gson.Gson;
 import com.sugarman.myb.App;
 import com.sugarman.myb.base.BasicPresenter;
 import com.sugarman.myb.models.iab.PurchaseForServer;
@@ -22,19 +21,16 @@ import timber.log.Timber;
   public void checkInAppBilling(Purchase purchase, String productName, String userId,
       String freeSku) {
     Timber.e("checkInAppBilling productName" + productName);
-//    Timber.e("checkInAppBilling getSku" + purchase.getSku());
+    //    Timber.e("checkInAppBilling getSku" + purchase.getSku());
     //Timber.e("checkInAppBilling getToken" + purchase.getToken());
 
     String skuName = "";
     String skuToken = "";
 
-    if(purchase==null)
-    {
+    if (purchase == null) {
       skuName = "";
       skuToken = "";
-    }
-    else
-    {
+    } else {
       skuName = purchase.getSku();
       skuToken = purchase.getToken();
     }
@@ -45,10 +41,14 @@ import timber.log.Timber;
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(subscriptionsResponse -> {
           Timber.e(String.valueOf(subscriptionsResponse.code()));
-          Timber.e("save json " + String.valueOf(
-              new Gson().toJson(subscriptionsResponse.body().getSubscriptionEntities())));
-          SharedPreferenceHelper.saveListSubscriptionEntity(
-              subscriptionsResponse.body().getSubscriptionEntities());
+          //Timber.e("save json " + String.valueOf(
+          //    new Gson().toJson(subscriptionsResponse.body().getSubscriptionEntities())));
+          if (subscriptionsResponse.code() < 399) {
+
+            SharedPreferenceHelper.saveListSubscriptionEntity(
+                subscriptionsResponse.body().getSubscriptionEntities());
+          }
+
           if (subscriptionsResponse.code() == 229) {
             // no money no honey
           }
