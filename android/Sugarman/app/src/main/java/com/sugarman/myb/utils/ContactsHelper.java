@@ -49,15 +49,15 @@ public class ContactsHelper {
                   pCur.getInt(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE));
               switch (type) {
                 case ContactsContract.CommonDataKinds.Phone.TYPE_HOME:
-                  //Log.e("Not Inserted", "Not inserted");
-                  break;
                 case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE:
-
-                  //Timber.e(name+ " " + lastnumber);
-                  contacts.put(name, lastnumber);
-                  break;
                 case ContactsContract.CommonDataKinds.Phone.TYPE_WORK:
-                  //Log.e("Not Inserted", "Not inserted");
+                case ContactsContract.CommonDataKinds.Phone.TYPE_WORK_MOBILE:
+                case ContactsContract.CommonDataKinds.Phone.TYPE_OTHER:
+                case ContactsContract.CommonDataKinds.Phone.TYPE_CAR:
+                case ContactsContract.CommonDataKinds.Phone.TYPE_COMPANY_MAIN:
+                case ContactsContract.CommonDataKinds.Phone.TYPE_PAGER:
+                     contacts.put(name, lastnumber);
+
                   break;
               }
             }
@@ -68,7 +68,7 @@ public class ContactsHelper {
     }
 
     for (String key : contacts.keySet()) {
-      //Timber.e(key + " " + contacts.get(key));
+      Timber.e("getContactList "+key + " " + contacts.get(key));
     }
     return contacts;
   }
