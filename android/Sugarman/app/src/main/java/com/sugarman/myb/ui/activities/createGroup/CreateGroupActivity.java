@@ -193,6 +193,16 @@ public class CreateGroupActivity extends BaseActivity
   private boolean vkPeopleAdd;
   private List<Phones> mDistinktorList = new ArrayList<>();
 
+  // number of total count/ number of count people with app BY PH
+  private int numberOfMemberTotalAppPh;
+  private int numberOfMemberWithAppPh;
+  // number of total count/ number of count people with app BY FB
+  private int numberOfMemberTotalAppFb;
+  private int numberOfMemberWithAppFb;
+  // number of total count/ number of count people with app BY VK
+  private int numberOfMemberTotalAppVk;
+  private int numberOfMemberWithAppVk;
+
   @Override protected void onDestroy() {
     super.onDestroy();
     //if(mCheckPhoneClient.isRequestRunning())
@@ -304,6 +314,8 @@ public class CreateGroupActivity extends BaseActivity
           phonesToCheck.add(contactList.get(key).replace(" ", ""));
           //  Timber.e(contactList.get(key));
         }
+        numberOfMemberTotalAppPh = contactList.size();
+        Timber.e("numberOfMemberTotalAppPh size " + numberOfMemberTotalAppPh);
 
         mCheckPhoneClient.checkPhones(phonesToCheck);
 
@@ -670,6 +682,11 @@ public class CreateGroupActivity extends BaseActivity
 
   @Override public void onGetFacebookFriendsSuccess(List<FacebookFriend> friends,
       List<FacebookFriend> invitable) {
+    numberOfMemberWithAppFb = friends.size();
+    numberOfMemberTotalAppFb = invitable.size();
+    Timber.e("numberOfMemberWithAppFb size " + numberOfMemberWithAppFb);
+    Timber.e("numberOfMemberTotalAppFb size " + numberOfMemberTotalAppFb);
+
     isFriendsFound = true;
 
     int size = friends.size();
@@ -1068,7 +1085,10 @@ public class CreateGroupActivity extends BaseActivity
   }
 
   @Override public void onApiCheckPhoneSuccess(List<Phones> phones) {
+    Timber.e("onApiCheckPhoneSuccess phones size " + phones.size());
     mDistinktorList = phones;
+    numberOfMemberWithAppPh= phones.size();
+    Timber.e("numberOfMemberWithAppPh size " + numberOfMemberWithAppPh);
 
     //Timber.e("Check phones " + mDistinktorList.size());
 
@@ -1111,14 +1131,18 @@ public class CreateGroupActivity extends BaseActivity
       for (FacebookFriend friend : allFriends) {
         //   Timber.e("SET INVITABLE for 2 " + friend.getName());
         if (friend.getSocialNetwork().equals("vk")) {
+          numberOfMemberTotalAppVk++;
           //     Timber.e("SET INVITABLE IF 3 " + friend.getName());
           if (friend.getId().equals(s)) {
+            numberOfMemberWithAppVk++;
             //      Timber.e("SET INVITABLE IF 4 " + friend.getName());
             friend.setIsInvitable(FacebookFriend.CODE_NOT_INVITABLE);
           }
         }
       }
     }
+    Timber.e("numberOfMemberWithAppVk size "+numberOfMemberWithAppVk);
+    Timber.e("numberOfMemberTotalAppVk size "+numberOfMemberTotalAppVk);
 
     runOnUiThread(new Runnable() {
       @Override public void run() {
