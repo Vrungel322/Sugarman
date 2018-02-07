@@ -13,6 +13,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import timber.log.Timber;
 
 public class SendFirebaseTokenClient extends BaseApiClient {
 
@@ -24,10 +25,12 @@ public class SendFirebaseTokenClient extends BaseApiClient {
     public void onResponse(Call<DevicesResponse> call, Response<DevicesResponse> response) {
       DevicesResponse dataResponse = response.body();
       ResponseBody errorBody = response.errorBody();
-      Log.d("fcm", "fcm token sent. Error: " + errorBody);
+        Log.d("fcm", "fcm token sent. Error: " + errorBody);
+
 
       if (clientListener.get() != null) {
         if (dataResponse != null) {
+          Timber.e("dataResponse OK");
           ((ApiSendFirebaseTokenListener) clientListener.get()).onApiSendFirebaseTokenSuccess();
         } else if (errorBody != null) {
           String errorMessage = parseErrorBody(errorBody);

@@ -26,7 +26,7 @@ import timber.log.Timber;
     RefreshUserDataRequest request = new RefreshUserDataRequest();
     request.setToken(fbAccessToken);
     request.setVkToken(vkToken);
-    request.setgToken("none");
+    request.setgToken(SharedPreferenceHelper.getAccessToken());
     request.setPhoneToken(phoneNumber);
     request.setPhoneNumber(phoneNumber);
     request.setEmail("none@mail.com");

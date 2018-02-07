@@ -39,9 +39,9 @@ import com.google.android.gms.common.SignInButton;
 import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.requests.ReportStats;
-import com.sugarman.myb.constants.Config;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.constants.DialogConstants;
+import com.sugarman.myb.ui.activities.googleLogin.GoogleLoginHiddenActivity;
 import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
 import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
@@ -89,7 +89,7 @@ public class LoginActivity extends GetUserInfoActivity implements View.OnClickLi
     }
   };
   SignInButton gplus;
-  RelativeLayout rlfb, rlvk, rlphone;
+  RelativeLayout rlfb, rlvk, rlphone,rlGoogle;
   AlphaAnimation animation1;
   Thread t;
   int zeroPointY;
@@ -148,6 +148,7 @@ public class LoginActivity extends GetUserInfoActivity implements View.OnClickLi
     rlfb = (RelativeLayout) findViewById(R.id.rv_fb);
     rlvk = (RelativeLayout) findViewById(R.id.rv_vk);
     rlphone = (RelativeLayout) findViewById(R.id.rv_phone);
+    rlGoogle = (RelativeLayout) findViewById(R.id.rv_google);
 
     Display display = getWindowManager().getDefaultDisplay();
     Point size = new Point();
@@ -159,6 +160,17 @@ public class LoginActivity extends GetUserInfoActivity implements View.OnClickLi
     rlfb.setY(5000);
     rlvk.setY(5000);
     rlphone.setY(5000);
+    rlGoogle.setY(5000);
+
+    rlGoogle.setOnClickListener(view -> {
+      Intent intent = new Intent(this, GoogleLoginHiddenActivity.class);
+      intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+      //https://console.developers.google.com/apis/credentials?project=api-7925429546426385753-346830
+      // need to paste WEB- Client key from that link
+      intent.putExtra(GoogleLoginHiddenActivity.EXTRA_CLIENT_ID,
+          "665166717862-sv96md550gqprv1nmak21rmd3rcfl5r7.apps.googleusercontent.com");
+      startActivity(intent);
+    });
 
     rlphone.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
@@ -208,6 +220,16 @@ public class LoginActivity extends GetUserInfoActivity implements View.OnClickLi
         runOnUiThread(new Runnable() {
           @Override public void run() {
             rlphone.animate().y(mCoeficient * 2 + zeroPointY).setDuration(1000);
+          }
+        });
+        try {
+          Thread.currentThread().sleep(150);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+        runOnUiThread(new Runnable() {
+          @Override public void run() {
+            rlGoogle.animate().y(mCoeficient * 3 + zeroPointY).setDuration(900);
           }
         });
       }
@@ -459,6 +481,7 @@ public class LoginActivity extends GetUserInfoActivity implements View.OnClickLi
   }
 
   private void showNextActivity() {
+    Timber.e("showNextActivity");
     createLocalStats();
     if (SharedPreferenceHelper.introIsShown()) {
       openMainActivity();

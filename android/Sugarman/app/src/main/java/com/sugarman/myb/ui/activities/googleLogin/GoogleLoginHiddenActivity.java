@@ -19,14 +19,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.sugarman.myb.api.models.requests.ReportStats;
+import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.models.googleLoginModel.SocialUser;
+import com.sugarman.myb.ui.activities.GetUserInfoActivity;
+import com.sugarman.myb.ui.activities.IntroActivity;
+import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
+import com.sugarman.myb.utils.SharedPreferenceHelper;
 import timber.log.Timber;
 
 /**
@@ -40,7 +46,7 @@ import timber.log.Timber;
  * startActivity(intent);
  */
 
-public class GoogleLoginHiddenActivity extends AppCompatActivity
+public class GoogleLoginHiddenActivity extends GetUserInfoActivity
     implements GoogleApiClient.OnConnectionFailedListener {
 
   public static final String EXTRA_CLIENT_ID = "EXTRA_CLIENT_ID";
@@ -99,11 +105,66 @@ public class GoogleLoginHiddenActivity extends AppCompatActivity
       user.profile = profile;
       Auth.GoogleSignInApi.signOut(mGoogleApiClient);
       Timber.e(user.toString());
+
+      SharedPreferenceHelper.saveEmail(user.profile.email);
+      SharedPreferenceHelper.saveUserName(user.profile.name);
+      SharedPreferenceHelper.saveAvatar(user.photoUrl);
+      SharedPreferenceHelper.saveGCMToken(user.accessToken);
+      refreshUserData("none", "none", user.accessToken, "none",
+          SharedPreferenceHelper.getEmail(), SharedPreferenceHelper.getUserName(),
+          SharedPreferenceHelper.getVkId(), SharedPreferenceHelper.getFbId(),
+          SharedPreferenceHelper.getAvatar());
     } else {
       Throwable throwable = new Throwable(result.getStatus().getStatusMessage());
       Timber.e(throwable);
     }
 
     //finish();
+  }
+
+  @Override public void haveTokensAndUserData() {
+    closeSugarmanProgressFragment();
+    showNextActivity();
+  }
+
+  private void showNextActivity() {
+    Timber.e("showNextActivity");
+    createLocalStats();
+    if (SharedPreferenceHelper.introIsShown()) {
+      openMainActivity();
+    } else {
+      openIntroActivity();
+    }
+  }
+
+  private void openIntroActivity() {
+    Intent intent = new Intent(getApplicationContext(), IntroActivity.class);
+    intent.putExtra(IntroActivity.CODE_IS_OPEN_LOGIN_ACTIVITY, true);
+    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+    intent.putExtra(Constants.INTENT_MY_TRACKINGS, actualTrackings);
+    intent.putExtra(Constants.INTENT_MY_INVITES, actualInvites);
+    intent.putExtra(Constants.INTENT_MY_REQUESTS, actualRequests);
+    intent.putExtra(Constants.INTENT_MY_NOTIFICATIONS, actualNotifications);
+    startActivity(intent);
+  }
+
+  private void openMainActivity() {
+    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+    intent.putExtra(Constants.INTENT_MY_TRACKINGS, actualTrackings);
+    intent.putExtra(Constants.INTENT_MY_INVITES, actualInvites);
+    intent.putExtra(Constants.INTENT_MY_REQUESTS, actualRequests);
+    intent.putExtra(Constants.INTENT_MY_NOTIFICATIONS, actualNotifications);
+    startActivity(intent);
+  }
+
+  private void createLocalStats() {
+    String userId = SharedPreferenceHelper.getUserId();
+    ReportStats[] stats = SharedPreferenceHelper.getReportStatsLocal(userId);
+    Log.e("stats length", "" + stats + " l: " + stats.length);
+    if (stats == null || stats.length == 0) {
+      SharedPreferenceHelper.saveReportStatsLocal(SharedPreferenceHelper.getReportStats(userId));
+      stats = SharedPreferenceHelper.getReportStatsLocal(userId);
+    }
   }
 }

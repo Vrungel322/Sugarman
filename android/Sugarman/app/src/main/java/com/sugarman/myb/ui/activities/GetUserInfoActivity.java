@@ -87,6 +87,7 @@ public class GetUserInfoActivity extends BaseActivity
   }
 
   @Override public void onApiSendFirebaseTokenSuccess() {
+    Timber.e("onApiSendFirebaseTokenSuccess");
     SharedPreferenceHelper.saveGCMToken("");
     mGetMyAllUserData.getMyAllUserData();
   }
@@ -188,7 +189,7 @@ public class GetUserInfoActivity extends BaseActivity
   public void refreshUserData(String accessToken, String vkToken, String gToken, String phoneNumber,
       String email, String name, String vkId, String fbId, String pictureUrl) {
     Timber.e("refreshUserData");
-    SharedPreferenceHelper.saveFBAccessToken(accessToken);
+    SharedPreferenceHelper.saveGCMToken(gToken);
     mRefreshUserDataClient.refreshUserData(accessToken, vkToken, gToken, phoneNumber, email, name,
         vkId, fbId, pictureUrl); //test
   }
@@ -221,12 +222,14 @@ public class GetUserInfoActivity extends BaseActivity
 
   private void checkFirebaseToken() {
     String gcmToken = SharedPreferenceHelper.getGCMToken();
+    Timber.e("checkFirebaseToken " + gcmToken);
     if (TextUtils.isEmpty(gcmToken)) {
       new RefreshFCMTokenAsyncTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
       if (actualTrackings == null) {
+        Timber.e("checkFirebaseToken actualTrackings == null");
         mGetMyAllUserData.getMyAllUserData();
       } else {
-
+        Timber.e("checkFirebaseToken actualTrackings != null");
         haveTokensAndUserData();
       }
     } else {

@@ -10,7 +10,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
@@ -103,13 +102,13 @@ import com.sugarman.myb.ui.activities.GetUserInfoActivity;
 import com.sugarman.myb.ui.activities.SearchGroupsActivity;
 import com.sugarman.myb.ui.activities.StatsTrackingActivity;
 import com.sugarman.myb.ui.activities.createGroup.CreateGroupActivity;
+import com.sugarman.myb.ui.activities.googleLogin.GoogleLoginHiddenActivity;
 import com.sugarman.myb.ui.activities.groupDetails.GroupDetailsActivity;
 import com.sugarman.myb.ui.activities.mentorList.MentorListActivity;
 import com.sugarman.myb.ui.activities.profile.ProfileActivity;
 import com.sugarman.myb.ui.activities.shop.ShopActivity;
 import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
-import com.sugarman.myb.ui.dialogs.dialogCuteRule.DialogCuteRule;
 import com.sugarman.myb.ui.dialogs.dialogRescueBoldMan.DialogRescueBoldMan;
 import com.sugarman.myb.ui.dialogs.dialogRescueBoldManKick.DialogRescueBoldManKick;
 import com.sugarman.myb.ui.dialogs.dialogRescueGirl.DialogRescueGirl;
@@ -128,14 +127,12 @@ import com.sugarman.myb.utils.RxBusHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.SoundHelper;
 import com.sugarman.myb.utils.StringHelper;
-import com.sugarman.myb.utils.animation.AnimationHelper;
 import com.sugarman.myb.utils.inapp.IabHelper;
 import com.sugarman.myb.utils.inapp.IabResult;
 import com.sugarman.myb.utils.inapp.Inventory;
 import com.sugarman.myb.utils.licence.LicenceChecker;
 import com.sugarman.myb.utils.md5.MD5Util;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -467,7 +464,6 @@ public class MainActivity extends GetUserInfoActivity
           updateAnimations(todaySteps);
           //updateTodaySteps(todaySteps);
 
-
           if (swipedTracking != null) {
             ChallengeWillStartItem item = new ChallengeWillStartItem();
             item.setTracking(swipedTracking);
@@ -506,7 +502,6 @@ public class MainActivity extends GetUserInfoActivity
           showUpdateOldVersionDialog();
         }
       };
-
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_main);
@@ -1976,11 +1971,11 @@ public class MainActivity extends GetUserInfoActivity
     runOnUiThread(() -> {
 
       AnimationDrawable animation = new AnimationDrawable();
-    for (Drawable d : drawable) {
-      if (d != null) {
-        animation.addFrame(d, duration);
+      for (Drawable d : drawable) {
+        if (d != null) {
+          animation.addFrame(d, duration);
+        }
       }
-    }
 
       ivAnimatedMan.setBackgroundDrawable(null);
       if (ivAnimatedMan.getAnimation() != null) {
