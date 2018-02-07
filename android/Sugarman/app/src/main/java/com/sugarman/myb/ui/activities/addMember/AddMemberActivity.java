@@ -203,6 +203,16 @@ public class AddMemberActivity extends BaseActivity
       };
   private List<Phones> mDistinktorList;
 
+  // number of total count/ number of count people with app BY PH
+  private int numberOfMemberTotalAppPh;
+  private int numberOfMemberWithAppPh;
+  // number of total count/ number of count people with app BY FB
+  private int numberOfMemberTotalAppFb;
+  private int numberOfMemberWithAppFb;
+  // number of total count/ number of count people with app BY VK
+  private int numberOfMemberTotalAppVk;
+  private int numberOfMemberWithAppVk;
+
   @Override protected void onCreate(Bundle savedStateInstance) {
     setContentView(R.layout.activity_add_member);
     super.onCreate(savedStateInstance);
@@ -318,6 +328,9 @@ public class AddMemberActivity extends BaseActivity
           //phoneFriends.add(friend);
           phToCheck.add(contactList.get(key).replace(" ", ""));
         }
+
+        numberOfMemberTotalAppPh = contactList.size();
+        Timber.e("numberOfMemberTotalAppPh size " + numberOfMemberTotalAppPh);
         checkForUnique();
         networksToLoad++;
         mCheckPhoneClient.checkPhones(phToCheck);
@@ -777,6 +790,11 @@ public class AddMemberActivity extends BaseActivity
 
   @Override public void onGetFacebookFriendsSuccess(List<FacebookFriend> friends,
       List<FacebookFriend> invitable) {
+    numberOfMemberWithAppFb = friends.size();
+    numberOfMemberTotalAppFb = invitable.size();
+    Timber.e("numberOfMemberWithAppFb size " + numberOfMemberWithAppFb);
+    Timber.e("numberOfMemberTotalAppFb size " + numberOfMemberTotalAppFb);
+
     isFriendsFound = true;
 
     for (int i = 0; i < friends.size(); i++) {
@@ -1160,14 +1178,19 @@ public class AddMemberActivity extends BaseActivity
       for (FacebookFriend friend : allFriends) {
         Timber.e("SET INVITABLE for 2 " + friend.getName());
         if (friend.getSocialNetwork().equals("vk")) {
+          numberOfMemberTotalAppVk++;
           Timber.e("SET INVITABLE IF 3 " + friend.getName());
           if (friend.getId().equals(s)) {
+            numberOfMemberWithAppVk++;
             Timber.e("SET INVITABLE IF 4 " + friend.getName());
             friend.setIsInvitable(FacebookFriend.CODE_NOT_INVITABLE);
           }
         }
       }
     }
+
+    Timber.e("numberOfMemberWithAppVk size "+numberOfMemberWithAppVk);
+    Timber.e("numberOfMemberTotalAppVk size "+numberOfMemberTotalAppVk);
 
     runOnUiThread(new Runnable() {
       @Override public void run() {
@@ -1183,6 +1206,8 @@ public class AddMemberActivity extends BaseActivity
   }
 
   @Override public void onApiCheckPhoneSuccess(List<Phones> phones) {
+    numberOfMemberWithAppPh= phones.size();
+    Timber.e("numberOfMemberWithAppPh size " + numberOfMemberWithAppPh);
 
     mDistinktorList = phones;
 
