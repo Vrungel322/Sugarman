@@ -112,6 +112,7 @@ public class GoogleLoginHiddenActivity extends GetUserInfoActivity
       SharedPreferenceHelper.saveGCMToken(user.accessToken);
       SharedPreferenceHelper.saveFBAccessToken(user.accessToken);
       SharedPreferenceHelper.saveFbId(user.userId);
+      SharedPreferenceHelper.saveGoogleId(user.userId);
       // TODO: 07.02.2018 тут костыль с сохранениием номера, если его убрать то при перезаходе в приложение будет екран логина, а если оставить так как есть то норм
       //SharedPreferenceHelper.savePhoneNumber("123");
       // TODO: 08.02.2018 вроде исправил вчерашний баг с номером - создал свою переменную в ШП и проверяю по ней есть ли токен в GetUserInfoActivity: getUserDataWithDelay, к чему это приведет  не знаю  -время покажет
@@ -119,7 +120,7 @@ public class GoogleLoginHiddenActivity extends GetUserInfoActivity
       SharedPreferenceHelper.saveGoogleToken(user.accessToken);
       Timber.e("handleSignInResult " + user.userId);
       refreshUserData("none", "none", user.accessToken, "none", SharedPreferenceHelper.getEmail(),
-          SharedPreferenceHelper.getUserName(), SharedPreferenceHelper.getVkId(), user.userId,
+          SharedPreferenceHelper.getUserName(), SharedPreferenceHelper.getVkId(), "none",
           SharedPreferenceHelper.getAvatar());
     } else {
       Throwable throwable = new Throwable(result.getStatus().getStatusMessage());

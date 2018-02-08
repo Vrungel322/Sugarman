@@ -92,6 +92,7 @@ public class RefreshUserDataClient extends BaseApiClient {
     request.setTimezone(TimeZone.getDefault().getID());
     request.setVOS(Build.VERSION.RELEASE);
     request.setImei(SharedPreferenceHelper.getIMEI());
+    request.setGoogleId(SharedPreferenceHelper.getGoogleId());
     request.setCampaign(SharedPreferenceHelper.getCampaignParam("utm_campaign"));
     request.setContent(SharedPreferenceHelper.getCampaignParam("utm_content"));
     request.setSource(SharedPreferenceHelper.getCampaignParam("utm_source"));

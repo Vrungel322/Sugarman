@@ -178,6 +178,8 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
 
     putString(SharedPreferenceConstants.ACCESS_TOKEN, "");
 
+    putString(SharedPreferenceConstants.GOOGLE_ID, "");
+
     putString(SharedPreferenceConstants.GOOGLE_TOKEN, "none");
     putString(SharedPreferenceConstants.REFRESH_TOKEN, "");
     putInt(SharedPreferenceConstants.SHOWED_STEPS, 0);
@@ -735,5 +737,12 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
 
   public static String getGoogleToken() {
     return getString(SharedPreferenceConstants.GOOGLE_TOKEN, "none");
+  }
+
+  public static void saveGoogleId(String userId) {
+    putString(SharedPreferenceConstants.GOOGLE_ID, userId);
+  }
+  public static String getGoogleId() {
+    return getString(SharedPreferenceConstants.GOOGLE_ID, "none");
   }
 }

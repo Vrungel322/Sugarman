@@ -22,8 +22,6 @@ public class RefreshUserDataRequest {
 
   @SerializedName("vkid") private String vkId;
 
-  @SerializedName("googleid") private String googleId;
-
   @SerializedName("email") private String email;
 
   @SerializedName("link") private String link;
@@ -37,6 +35,8 @@ public class RefreshUserDataRequest {
   @Getter @Setter @SerializedName("vOS") private String vOS;
 
   @Getter @Setter @SerializedName("IMEI") private String imei;
+
+  @Getter @Setter @SerializedName("googleid") private String googleId;
 
   @Getter @Setter @SerializedName("utm_source") private String source;
   @Getter @Setter @SerializedName("utm_medium") private String medium;
@@ -67,10 +67,6 @@ public class RefreshUserDataRequest {
 
   public void setEmail(String email) {
     this.email = email;
-  }
-
-  public void setGoogleId(String googleId) {
-    this.googleId = googleId;
   }
 
   public void setVkId(String vkId) {

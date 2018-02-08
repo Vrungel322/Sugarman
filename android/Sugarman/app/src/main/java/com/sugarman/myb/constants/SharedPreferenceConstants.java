@@ -88,6 +88,7 @@ public abstract class SharedPreferenceConstants {
   public static final String CAN_LAUNCH_LAST_ANIM = "CAN_LAUNCH_LAST_ANIM";
   public static final String DATA_FOR_MAIN_ACTIVITY = "DATA_FOR_MAIN_ACTIVITY";
   public static final String GOOGLE_TOKEN = "GOOGLE_TOKEN";
+  public static final String GOOGLE_ID = "GOOGLE_ID";
 
   private SharedPreferenceConstants() {
     // only static methods and fields
