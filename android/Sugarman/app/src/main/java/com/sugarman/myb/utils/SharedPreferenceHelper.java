@@ -177,6 +177,8 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     putInt(SharedPreferenceConstants.TODAY_STEPS_COUNT, 0);
 
     putString(SharedPreferenceConstants.ACCESS_TOKEN, "");
+
+    putString(SharedPreferenceConstants.GOOGLE_TOKEN, "none");
     putString(SharedPreferenceConstants.REFRESH_TOKEN, "");
     putInt(SharedPreferenceConstants.SHOWED_STEPS, 0);
     putString(SharedPreferenceConstants.SUBSCRIPTIONS_JSON, "");
@@ -725,5 +727,13 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
   public static DataForMainActivity getSavedDataForMainActivity() {
     return new Gson().fromJson(getString(SharedPreferenceConstants.DATA_FOR_MAIN_ACTIVITY, ""),
         DataForMainActivity.class);
+  }
+
+  public static void saveGoogleToken(String gToken){
+    putString(SharedPreferenceConstants.GOOGLE_TOKEN, gToken);
+  }
+
+  public static String getGoogleToken() {
+    return getString(SharedPreferenceConstants.GOOGLE_TOKEN, "none");
   }
 }
