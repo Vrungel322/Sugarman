@@ -102,7 +102,6 @@ import com.sugarman.myb.ui.activities.GetUserInfoActivity;
 import com.sugarman.myb.ui.activities.SearchGroupsActivity;
 import com.sugarman.myb.ui.activities.StatsTrackingActivity;
 import com.sugarman.myb.ui.activities.createGroup.CreateGroupActivity;
-import com.sugarman.myb.ui.activities.googleLogin.GoogleLoginHiddenActivity;
 import com.sugarman.myb.ui.activities.groupDetails.GroupDetailsActivity;
 import com.sugarman.myb.ui.activities.mentorList.MentorListActivity;
 import com.sugarman.myb.ui.activities.profile.ProfileActivity;
@@ -506,6 +505,8 @@ public class MainActivity extends GetUserInfoActivity
   @Override protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_main);
     super.onCreate(savedInstanceState);
+    Timber.e("deepLinks onCreate");
+
     Resources resources = getResources();
     img = new ImageToDraw(MainActivity.this);
     SharedPreferenceHelper.saveNameOfCurrentAnim("NoNe anim");
@@ -1337,6 +1338,7 @@ public class MainActivity extends GetUserInfoActivity
   }
 
   @Subscribe public void onEvent(NeedOpenSpecificActivityEvent event) {
+    Timber.e("deepLinks onEvent");
     int activityCode = event.getActivityCode();
     switch (activityCode) {
       case Constants.OPEN_INVITES_ACTIVITY:
@@ -1363,11 +1365,17 @@ public class MainActivity extends GetUserInfoActivity
       case Constants.OPEN_FAILED_ACTIVITY:
         openFailedActivity(event.getTrackingId());
         break;
+      case Constants.OPEN_GROPEDETAILS_ACTIVITY_WHERE_WAS_POKE:
+        Timber.e("deepLinks inEvent");
+        openGroupDetailsActivity(event.getTrackingId());
+        break;
       default:
         Log.e(TAG, "not supported activity code: " + activityCode);
         break;
     }
   }
+
+
 
   @Subscribe public void onEvent(DebugRealStepAddedEvent event) {
     App.appendLog(Constants.TAG_TEST_GO_TO_NEXT_DAY,
@@ -1478,6 +1486,13 @@ public class MainActivity extends GetUserInfoActivity
     Intent intent = new Intent(this, GroupDetailsActivity.class);
     intent.putExtra(Constants.INTENT_TRACKING_ID, trackingId);
     intent.putExtra("isRescueGroup", isRescueGroup);
+    startActivityForResult(intent, Constants.GROUP_DETAILS_ACTIVITY_REQUEST_CODE);
+  }
+
+  private void openGroupDetailsActivity(String trackingId) {
+    Timber.e("deepLinks openGroupDetailsActivity " + trackingId);
+    Intent intent = new Intent(this, GroupDetailsActivity.class);
+    intent.putExtra(Constants.INTENT_TRACKING_ID, trackingId);
     startActivityForResult(intent, Constants.GROUP_DETAILS_ACTIVITY_REQUEST_CODE);
   }
 

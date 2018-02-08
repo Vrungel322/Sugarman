@@ -656,6 +656,7 @@ public class GroupDetailsActivity extends BaseActivity
   @Override protected void onCreate(Bundle savedStateInstance) {
     setContentView(R.layout.activity_group_details);
     super.onCreate(savedStateInstance);
+    Timber.e("deepLinks onCreate");
 
     Clear.clearCache(CustomPicasso.with(this));
     brokenGlassIds = SharedPreferenceHelper.getBrokenGlassIds();
@@ -778,6 +779,10 @@ public class GroupDetailsActivity extends BaseActivity
     trackingId = IntentExtractorHelper.getTrackingId(getIntent());
 
     isMentorGroup = getIntent().getBooleanExtra("isMentorGroup", false);
+    mTrackingInfoClient = new GetTrackingInfoClient();
+    mTrackingInfoClient.registerListener(this);
+    mTrackingInfoClient.getTrackingInfo(trackingId);
+
     Timber.e("qqqq " + members.length);
     if (isMentorGroup) {
 

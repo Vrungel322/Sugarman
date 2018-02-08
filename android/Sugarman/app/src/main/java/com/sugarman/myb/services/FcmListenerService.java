@@ -140,7 +140,7 @@ public class FcmListenerService extends FirebaseMessagingService {
     int type = StringHelper.getNotificationMessageType(flags, text);
     Intent intent = new Intent(this, SplashActivity.class);
     String trackingId = getTrackingId(notification);
-    Timber.e(" processMessage Message " + text);
+    Timber.e(" processMessage Message " + text + " type " + type);
 
     switch (type) {
       case NotificationMessageType.GROUP_NAME_GOOD_LUCK:
@@ -153,8 +153,9 @@ public class FcmListenerService extends FirebaseMessagingService {
       case NotificationMessageType.USER_NAME_HAS_POKED_YOU:
       case NotificationMessageType.GROUP_NAME_IN_HOUR:
         App.getEventBus().post(new GetInAppNotificationsEvent());
-        intent.putExtra(Constants.INTENT_OPEN_ACTIVITY, Constants.OPEN_MAIN_ACTIVITY);
+        intent.putExtra(Constants.INTENT_OPEN_ACTIVITY, Constants.OPEN_GROPEDETAILS_ACTIVITY_WHERE_WAS_POKE);
         intent.putExtra(Constants.INTENT_FCM_TRACKING_ID, trackingId);
+        Timber.e("deepLinks "+trackingId);
         break;
       case NotificationMessageType.USER_NAME_JOINED:
       case NotificationMessageType.CREATOR_NAME_APPROVED:
@@ -240,13 +241,13 @@ public class FcmListenerService extends FirebaseMessagingService {
 
   @Override public void onCreate() {
     super.onCreate();
-    Timber.e("processMessage onCreate");
+    //Timber.e("processMessage onCreate");
 
   }
 
   @Override public void onDestroy() {
     super.onDestroy();
-    Timber.e("processMessage onDestroy");
+    //Timber.e("processMessage onDestroy");
     startService(new Intent(getApplicationContext(), FcmListenerService.class));
 
   }

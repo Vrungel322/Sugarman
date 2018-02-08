@@ -33,12 +33,14 @@ import com.sugarman.myb.constants.Config;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.constants.DialogConstants;
 import com.sugarman.myb.eventbus.events.NeedOpenSpecificActivityEvent;
+import com.sugarman.myb.eventbus.events.RefreshTrackingsEvent;
 import com.sugarman.myb.models.iab.SubscriptionEntity;
 import com.sugarman.myb.models.splash_activity.DataForMainActivity;
 import com.sugarman.myb.tasks.DeleteFileAsyncTask;
 import com.sugarman.myb.ui.activities.GetUserInfoActivity;
 import com.sugarman.myb.ui.activities.LoginActivity;
 import com.sugarman.myb.ui.activities.approveOtp.ApproveOtpActivity;
+import com.sugarman.myb.ui.activities.groupDetails.GroupDetailsActivity;
 import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
 import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
@@ -266,6 +268,7 @@ public class SplashActivity extends GetUserInfoActivity
   }
 
   private boolean openSpecificActivity() {
+    Timber.e("deepLinks openSpecificActivity");
     Intent intent = getIntent();
     openedActivityCode = intent.getIntExtra(Constants.INTENT_OPEN_ACTIVITY, -1);
     trackingIdFromFcm = intent.getStringExtra(Constants.INTENT_FCM_TRACKING_ID);
@@ -274,6 +277,18 @@ public class SplashActivity extends GetUserInfoActivity
     Activity current = App.getInstance().getCurrentActivity();
 
     if (current == null) {
+      Timber.e("deepLinks openSpecificActivity current == null");
+      // for open GroupDetaila on poke
+      if (openedActivityCode == Constants.OPEN_GROPEDETAILS_ACTIVITY_WHERE_WAS_POKE) {
+        Timber.e("deepLinks openGroupDetailsActivity " + trackingIdFromFcm);
+        Intent intent1 = new Intent(this, GroupDetailsActivity.class);
+        intent1.putExtra(Constants.INTENT_TRACKING_ID, trackingIdFromFcm);
+        intent.putExtra("isRescueGroup", false);
+        intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivityForResult(intent1, Constants.GROUP_DETAILS_ACTIVITY_REQUEST_CODE);
+        App.getEventBus().post(new RefreshTrackingsEvent(trackingIdFromFcm));
+
+      }
       // application is closed. usually run splash activity
       return false;
     } else {
@@ -284,6 +299,7 @@ public class SplashActivity extends GetUserInfoActivity
             .post(new NeedOpenSpecificActivityEvent(openedActivityCode, trackingIdFromFcm));
         return true;
       } else {
+        Timber.e("deepLinks openSpecificActivity else");
         // usually run splash activity
         return false;
       }
@@ -307,26 +323,27 @@ public class SplashActivity extends GetUserInfoActivity
   }
 
   private void openMainActivity() {
-    Timber.e("openMainActivity");
-    actualTrackings = actualTrackings == null ? new Tracking[0] : actualTrackings;
-    actualNotifications = actualNotifications == null ? new Notification[0] : actualNotifications;
-    actualInvites = actualInvites == null ? new Invite[0] : actualInvites;
-    actualRequests = actualRequests == null ? new Request[0] : actualRequests;
+    Timber.e("openMainActivity " + openedActivityCode);
+    if (openedActivityCode != Constants.OPEN_GROPEDETAILS_ACTIVITY_WHERE_WAS_POKE) {
+      actualTrackings = actualTrackings == null ? new Tracking[0] : actualTrackings;
+      actualNotifications = actualNotifications == null ? new Notification[0] : actualNotifications;
+      actualInvites = actualInvites == null ? new Invite[0] : actualInvites;
+      actualRequests = actualRequests == null ? new Request[0] : actualRequests;
 
-    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-    intent.putExtra(Constants.INTENT_MY_TRACKINGS, actualTrackings);
-    intent.putExtra(Constants.INTENT_MY_INVITES, actualInvites);
-    intent.putExtra(Constants.INTENT_MY_REQUESTS, actualRequests);
-    intent.putExtra(Constants.INTENT_OPEN_ACTIVITY, openedActivityCode);
-    intent.putExtra(Constants.INTENT_FCM_TRACKING_ID, trackingIdFromFcm);
-    intent.putExtra(Constants.INTENT_MY_NOTIFICATIONS, actualNotifications);
-    SharedPreferenceHelper.saveDataForMainActivity(
-        new DataForMainActivity(actualTrackings, actualInvites,
-            actualRequests, openedActivityCode, trackingIdFromFcm,
-            actualNotifications));
-    startActivity(intent);
-    finish();
+      Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+      intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+      intent.putExtra(Constants.INTENT_MY_TRACKINGS, actualTrackings);
+      intent.putExtra(Constants.INTENT_MY_INVITES, actualInvites);
+      intent.putExtra(Constants.INTENT_MY_REQUESTS, actualRequests);
+      intent.putExtra(Constants.INTENT_OPEN_ACTIVITY, openedActivityCode);
+      intent.putExtra(Constants.INTENT_FCM_TRACKING_ID, trackingIdFromFcm);
+      intent.putExtra(Constants.INTENT_MY_NOTIFICATIONS, actualNotifications);
+      SharedPreferenceHelper.saveDataForMainActivity(
+          new DataForMainActivity(actualTrackings, actualInvites, actualRequests,
+              openedActivityCode, trackingIdFromFcm, actualNotifications));
+      startActivity(intent);
+      finish();
+    }
   }
 
   @Override public void onInstallReferrerSetupFinished(int responseCode) {
