@@ -956,7 +956,7 @@ public class GroupDetailsActivity extends BaseActivity
     for (Member m : members) {
       Timber.e("member qqqq" + m.getName() + " " + m.getSteps());
       if (!mentorId.equals(m.getId())) {
-        if (m.getSteps() > 10) {
+        if (m.getSteps() > 10000) {
           successCount++;
         }
       }
