@@ -119,7 +119,7 @@ public class GoogleLoginHiddenActivity extends GetUserInfoActivity
 
       SharedPreferenceHelper.saveGoogleToken(user.accessToken);
       Timber.e("handleSignInResult " + user.userId);
-      refreshUserData("none", "none", user.accessToken, "none", SharedPreferenceHelper.getEmail(),
+      refreshUserData("none", "none", user.userId, "none", SharedPreferenceHelper.getEmail(),
           SharedPreferenceHelper.getUserName(), SharedPreferenceHelper.getVkId(), "none",
           SharedPreferenceHelper.getAvatar());
     } else {
