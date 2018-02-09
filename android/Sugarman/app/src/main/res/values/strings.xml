@@ -340,7 +340,7 @@
   <string name="apply_now">Apply now for</string>
   <string name="type_your_comment">Type your comment here...</string>
   <string name="mentors">Mentors</string>
-  <string name="success_rate">Success rate</string>
+  <string name="success_rate">Today\nsuccess rate</string>
   <string name="daily_success_rate">Success rate today</string>
   <string name="weekly_success_rate">Success rate this week</string>
   <string name="monthly_success_rate">Success rate this month</string>
