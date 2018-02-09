@@ -1183,6 +1183,7 @@ public class CreateGroupActivity extends BaseActivity
 
   @Override public void fillListByCachedData(List<FacebookFriend> facebookFriends) {
     if (facebookFriends != null) {
+      facebookFriends.addAll(allFriends);
       Timber.e("fillListByCachedData " + facebookFriends.size());
       for (FacebookFriend fb : facebookFriends) {
         Timber.e("fillListByCachedData " + fb.getPicture());
