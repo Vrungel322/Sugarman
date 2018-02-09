@@ -10,9 +10,12 @@ import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.di.scopes.AppScope;
 import com.sugarman.myb.utils.DeviceHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
+import com.sugarman.myb.utils.apps_Fly.AppsFlyRemoteLogger;
 import dagger.Module;
 import dagger.Provides;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Named;
@@ -33,8 +36,8 @@ import timber.log.Timber;
  */
 @Module public class RetrofitModule {
 
-  @Provides @AppScope @Named("Spika") Retrofit provideSpikaRetrofit(Converter.Factory converterFactory,
-      OkHttpClient okClient) {
+  @Provides @AppScope @Named("Spika") Retrofit provideSpikaRetrofit(
+      Converter.Factory converterFactory, OkHttpClient okClient) {
     return new Retrofit.Builder().baseUrl("https://sugarman-spika.herokuapp.com/spika/v1/")
         //return new Retrofit.Builder().baseUrl(Config.SERVER_URL)
         .client(okClient)
@@ -43,8 +46,8 @@ import timber.log.Timber;
         .build();
   }
 
-  @Provides @AppScope @Named("Sugarman") Retrofit provideRetrofit(Converter.Factory converterFactory,
-      OkHttpClient okClient) {
+  @Provides @AppScope @Named("Sugarman") Retrofit provideRetrofit(
+      Converter.Factory converterFactory, OkHttpClient okClient) {
     return new Retrofit.Builder().baseUrl(SharedPreferenceHelper.getBaseUrl())
         //return new Retrofit.Builder().baseUrl(Config.SERVER_URL)
         .client(okClient)
@@ -93,7 +96,8 @@ import timber.log.Timber;
   //  return cache;
   //}
   //
-  @Provides @AppScope @Named("HeaderInterceptor") Interceptor provideHeaderInterceptor() {
+  @Provides @AppScope @Named("HeaderInterceptor") Interceptor provideHeaderInterceptor(
+      AppsFlyRemoteLogger appsFlyRemoteLogger) {
     Timber.e("Got into interceptor");
     okhttp3.Interceptor requestInterceptor = new okhttp3.Interceptor() {
       @Override public Response intercept(Chain chain) throws IOException {
@@ -114,8 +118,14 @@ import timber.log.Timber;
         }
 
         request = requestBuilder.build();
-
-        return chain.proceed(request);
+        Response response = chain.proceed(request);
+        //Remote Logger
+        Map<String, Object> map = new HashMap<>();
+        map.put("url" ,original.url().toString());
+        map.put("response_code" ,response.code());
+        map.put("response_body" ,response.body());
+        appsFlyRemoteLogger.report("server_request", map);
+        return response;
       }
     };
     return requestInterceptor;

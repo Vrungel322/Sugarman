@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import com.sugarman.myb.di.scopes.AppScope;
 import com.sugarman.myb.utils.RxBus;
+import com.sugarman.myb.utils.apps_Fly.AppsFlyRemoteLogger;
 import dagger.Module;
 import dagger.Provides;
 
@@ -25,5 +26,9 @@ import dagger.Provides;
 
   @Provides @AppScope RxBus provideRxBus() {
     return new RxBus();
+  }
+
+  @Provides @AppScope AppsFlyRemoteLogger provideRemoteLogger(Context context) {
+    return new AppsFlyRemoteLogger(context);
   }
 }

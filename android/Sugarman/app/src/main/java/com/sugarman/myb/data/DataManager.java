@@ -46,6 +46,7 @@ import com.sugarman.myb.models.mentor.comments.CommentEntity;
 import com.sugarman.myb.models.mentor.comments.MentorsCommentsEntity;
 import com.sugarman.myb.utils.ContactsHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
+import com.sugarman.myb.utils.apps_Fly.AppsFlyRemoteLogger;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -67,14 +68,16 @@ public class DataManager {
   private DbHelper mDbHelper;
   private PreferencesHelper mPref;
   private ContentResolver mContentResolver;
+  private AppsFlyRemoteLogger mAppsFlyRemoteLogger;
 
   public DataManager(RestApiSpika restApiSpika, RestApi restApi, PreferencesHelper pref,
-      ContentResolver contentResolver, DbHelper dbHelper) {
+      ContentResolver contentResolver, DbHelper dbHelper, AppsFlyRemoteLogger appsFlyRemoteLogger) {
     mRestApi = restApi;
     mRestApiSpika = restApiSpika;
     mPref = pref;
     mContentResolver = contentResolver;
     mDbHelper = dbHelper;
+    mAppsFlyRemoteLogger = appsFlyRemoteLogger;
   }
 
   ///////////////////////////////////////////////////////////////////////////
@@ -162,7 +165,6 @@ public class DataManager {
     //        membersOfMentorsGroup));
     //  }
     //return Observable.just(mentorEntities);
-
     return mRestApi.fetchMentors();
   }
 
@@ -205,8 +207,9 @@ public class DataManager {
   }
 
   public Observable<Response<Object>> poke(String memberId, String trakingId) {
+    Observable<Response<Object>> responseObservable = mRestApi.poke(new PokeRequest(memberId, trakingId));
     Timber.e("poke memberId " + memberId + " trakingId " + trakingId);
-    return mRestApi.poke(new PokeRequest(memberId, trakingId));
+    return responseObservable;
   }
 
   ///////////////////////////////////////////////////////////////////////////

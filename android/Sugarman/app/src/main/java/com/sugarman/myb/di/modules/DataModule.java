@@ -11,6 +11,7 @@ import com.sugarman.myb.data.DataManager;
 import com.sugarman.myb.data.db.DbHelper;
 import com.sugarman.myb.data.local.PreferencesHelper;
 import com.sugarman.myb.di.scopes.AppScope;
+import com.sugarman.myb.utils.apps_Fly.AppsFlyRemoteLogger;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Named;
@@ -47,8 +48,8 @@ import retrofit2.Retrofit;
   }
 
   @Provides @AppScope DataManager provideDataManager(RestApiSpika restApiSpika, RestApi restApi,
-      PreferencesHelper preferencesHelper, ContentResolver contentResolver, DbHelper dbHelper) {
-    return new DataManager(restApiSpika,restApi, preferencesHelper, contentResolver, dbHelper);
+      PreferencesHelper preferencesHelper, ContentResolver contentResolver, DbHelper dbHelper, AppsFlyRemoteLogger appsFlyRemoteLogger) {
+    return new DataManager(restApiSpika,restApi, preferencesHelper, contentResolver, dbHelper,appsFlyRemoteLogger);
   }
 
   @Provides @AppScope PreferencesHelper providePreferencesHelper(Context context, Gson gson) {
