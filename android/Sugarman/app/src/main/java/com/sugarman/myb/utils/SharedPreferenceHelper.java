@@ -181,6 +181,9 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
 
     putString(SharedPreferenceConstants.GOOGLE_ID, "");
 
+    putString(SharedPreferenceConstants.CACHED_FRIENDS,new Gson().toJson(null));
+    putInt(SharedPreferenceConstants.COUNT_FB_MEMBERS, 0);
+
     putString(SharedPreferenceConstants.GOOGLE_TOKEN, "none");
     putString(SharedPreferenceConstants.REFRESH_TOKEN, "");
     putInt(SharedPreferenceConstants.SHOWED_STEPS, 0);
