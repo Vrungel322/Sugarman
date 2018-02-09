@@ -213,19 +213,12 @@ public class DataManager {
   // DB
   ///////////////////////////////////////////////////////////////////////////
   public void cacheFriends(List<FacebookFriend> friends) {
-    mDbHelper.dropRealmTable(FacebookFriend.class);
-    for (int i = 0; i < friends.size(); i++) {
-
-      if (friends.get(i).getPhotoUrl() == null) {
-        friends.get(i).setPhotoUrl("https://sugarman-myb.s3.amazonaws.com/Group_New.png");
-      }
-      mDbHelper.save(friends.get(i));
-    }
+    SharedPreferenceHelper.cacheFriends(friends);
   }
 
   public Observable<List<FacebookFriend>> getCachedFriends() {
 
-    return Observable.just(mDbHelper.getAll(FacebookFriend.class));
+    return Observable.just(SharedPreferenceHelper.getCachedFriends());
   }
 
   public Observable<List<FacebookFriend>> loadContactsFromContactBook() {

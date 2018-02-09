@@ -4,6 +4,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sugarman.myb.api.models.requests.ReportStats;
+import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.api.models.responses.me.stats.Stats;
 import com.sugarman.myb.api.models.responses.users.Tokens;
 import com.sugarman.myb.api.models.responses.users.User;
@@ -742,7 +743,43 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
   public static void saveGoogleId(String userId) {
     putString(SharedPreferenceConstants.GOOGLE_ID, userId);
   }
+
   public static String getGoogleId() {
     return getString(SharedPreferenceConstants.GOOGLE_ID, "none");
+  }
+
+  public static void saveCountOfMembersFb(String countOfFbMembers){
+    putInt(SharedPreferenceConstants.COUNT_FB_MEMBERS, Integer.valueOf(countOfFbMembers));
+  }
+
+  public static int getCountOfMembersFb(){
+    return getInt(SharedPreferenceConstants.COUNT_FB_MEMBERS,0);
+  }
+
+  public static void saveCountOfMembersPh(String countOfPhMembers){
+    putInt(SharedPreferenceConstants.COUNT_PH_MEMBERS, Integer.valueOf(countOfPhMembers));
+  }
+
+  public static int getCountOfMembersPh(){
+    return getInt(SharedPreferenceConstants.COUNT_PH_MEMBERS,0);
+  }
+
+  public static void saveCountOfMembersVk(String countOfVkMembers){
+    putInt(SharedPreferenceConstants.COUNT_VK_MEMBERS, Integer.valueOf(countOfVkMembers));
+  }
+
+  public static int getCountOfMembersVk(){
+    return getInt(SharedPreferenceConstants.COUNT_VK_MEMBERS,0);
+  }
+
+  public static void cacheFriends(List<FacebookFriend> friends) {
+    Timber.e("cacheFriends "+friends.size());
+    putString(SharedPreferenceConstants.CACHED_FRIENDS,new Gson().toJson(friends));
+  }
+
+  public static List<FacebookFriend> getCachedFriends() {
+    Type type = new TypeToken<List<FacebookFriend>>() {
+    }.getType();
+    return new Gson().fromJson(getString(SharedPreferenceConstants.CACHED_FRIENDS, ""), type);
   }
 }

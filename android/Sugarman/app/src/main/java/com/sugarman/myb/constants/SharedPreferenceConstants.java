@@ -89,6 +89,10 @@ public abstract class SharedPreferenceConstants {
   public static final String DATA_FOR_MAIN_ACTIVITY = "DATA_FOR_MAIN_ACTIVITY";
   public static final String GOOGLE_TOKEN = "GOOGLE_TOKEN";
   public static final String GOOGLE_ID = "GOOGLE_ID";
+  public static final String COUNT_FB_MEMBERS = "COUNT_FB_MEMBERS";
+  public static final String COUNT_PH_MEMBERS = "COUNT_PH_MEMBERS";
+  public static final String COUNT_VK_MEMBERS = "COUNT_VK_MEMBERS";
+  public static final String CACHED_FRIENDS = "CACHED_FRIENDS";
 
   private SharedPreferenceConstants() {
     // only static methods and fields

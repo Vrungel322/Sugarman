@@ -328,7 +328,7 @@ public class CreateGroupActivity extends BaseActivity
         mCheckPhoneClient.checkPhones(phonesToCheck);
 
         Timber.e("Contacts loaded");
-        runOnUiThread(() -> setFriends(allFriends));
+        //runOnUiThread(() -> setFriends(allFriends));
       });
     } else {
       phFilter.setAlpha(0.5f);
@@ -528,8 +528,7 @@ public class CreateGroupActivity extends BaseActivity
           networksLoaded + " out of " + networksToLoad + "allFriends side is " + allFriends.size());
       //closeProgressFragment();
       hideProgress();
-      //Cache friends
-      mPresenter.cacheFriends(allFriends);
+
     }
   }
 
@@ -694,6 +693,9 @@ public class CreateGroupActivity extends BaseActivity
     numberOfMemberTotalAppFb = invitable.size();
     tvInAppFbCount.setText(String.valueOf(numberOfMemberWithAppFb));
     tvTotalFbCount.setText(String.valueOf(numberOfMemberTotalAppFb));
+    List<FacebookFriend> temp = new ArrayList<>();
+    temp.addAll(friends);
+    temp.addAll(invitable);
     Timber.e("numberOfMemberWithAppFb size " + numberOfMemberWithAppFb);
     Timber.e("numberOfMemberTotalAppFb size " + numberOfMemberTotalAppFb);
 
@@ -717,6 +719,12 @@ public class CreateGroupActivity extends BaseActivity
       if (friend.getSocialNetwork() == null) friend.setSocialNetwork("fb");
     for (FacebookFriend friend : invitable)
       if (friend.getSocialNetwork() == null) friend.setSocialNetwork("fb");
+
+    List<FacebookFriend> facebookFriendList = new ArrayList<>();
+    facebookFriendList.addAll(friends);
+    facebookFriendList.addAll(invitable);
+    mPresenter.cacheFriends(facebookFriendList);
+    facebookFriendList.clear();
     //allFriends.clear();
     allFriends.addAll(friends);
     allFriends.addAll(invitable);
@@ -727,6 +735,7 @@ public class CreateGroupActivity extends BaseActivity
     networksLoaded++;
     Timber.e("FB LOADED");
     checkNetworksLoaded();
+
   }
 
   @Override public void onGetFacebookFriendsFailure(String message) {
@@ -1097,7 +1106,7 @@ public class CreateGroupActivity extends BaseActivity
   @Override public void onApiCheckPhoneSuccess(List<Phones> phones) {
     Timber.e("onApiCheckPhoneSuccess phones size " + phones.size());
     mDistinktorList = phones;
-    numberOfMemberWithAppPh= phones.size();
+    numberOfMemberWithAppPh = phones.size();
     tvInAppPhCount.setText(String.valueOf(numberOfMemberWithAppPh));
 
     Timber.e("numberOfMemberWithAppPh size " + numberOfMemberWithAppPh);
@@ -1155,8 +1164,8 @@ public class CreateGroupActivity extends BaseActivity
     }
     tvTotalVkCount.setText(String.valueOf(numberOfMemberTotalAppVk));
     tvInAppVkCount.setText(String.valueOf(numberOfMemberWithAppVk));
-    Timber.e("numberOfMemberWithAppVk size "+numberOfMemberWithAppVk);
-    Timber.e("numberOfMemberTotalAppVk size "+numberOfMemberTotalAppVk);
+    Timber.e("numberOfMemberWithAppVk size " + numberOfMemberWithAppVk);
+    Timber.e("numberOfMemberTotalAppVk size " + numberOfMemberTotalAppVk);
 
     runOnUiThread(new Runnable() {
       @Override public void run() {
@@ -1173,19 +1182,24 @@ public class CreateGroupActivity extends BaseActivity
   }
 
   @Override public void fillListByCachedData(List<FacebookFriend> facebookFriends) {
-    List<FacebookFriend> notRealmList = new ArrayList<>();
-    for (int i = 0; i < facebookFriends.size(); i++) {
-      notRealmList.add(new FacebookFriend(facebookFriends.get(i).getSocialNetwork(),
-          facebookFriends.get(i).getPhotoUrl(), facebookFriends.get(i).getId(),
-          facebookFriends.get(i).getName(), facebookFriends.get(i).getIsInvitable(), false, false,
-          false
-          //facebookFriends.get(i).isSelected(),
-          //facebookFriends.get(i).isAdded(),
-          //facebookFriends.get(i).isPending()
-      ));
+    if (facebookFriends != null) {
+      Timber.e("fillListByCachedData " + facebookFriends.size());
+      for (FacebookFriend fb : facebookFriends) {
+        Timber.e("fillListByCachedData " + fb.getPicture());
+        if (fb.getIsInvitable() == FacebookFriend.CODE_NOT_INVITABLE){
+          numberOfMemberWithAppFb++;
+        }
+      }
+      for (FacebookFriend fTemp : facebookFriends) {
+        if (!allFriends.contains(fTemp)) {
+          allFriends.add(fTemp);
+        }
+        friendsAdapter.setValue(facebookFriends);
+        friendsAdapter.notifyDataSetChanged();
+      }
+      tvInAppFbCount.setText(String.valueOf(numberOfMemberWithAppFb));
+      tvTotalFbCount.setText(String.valueOf(facebookFriends.size()));
     }
-    friendsAdapter.setValue(notRealmList);
-    System.out.println("хуй собачий");
   }
 
   @Override public void showProgress() {

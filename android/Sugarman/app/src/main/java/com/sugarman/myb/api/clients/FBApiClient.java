@@ -14,6 +14,7 @@ import com.sugarman.myb.api.models.responses.facebook.FacebookInvitableResponse;
 import com.sugarman.myb.constants.Config;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.listeners.OnFBGetFriendsListener;
+import com.sugarman.myb.utils.SharedPreferenceHelper;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,31 +29,11 @@ public class FBApiClient {
   private static final String TAG = FBApiClient.class.getName();
 
   private final Gson gson;
-
-  private FacebookRequestError friendsError;
-
-  private WeakReference<OnFBGetFriendsListener> clientListener = new WeakReference<>(null);
-
   private final List<FacebookFriend> friends = new ArrayList<>();
-
   private final List<FacebookFriend> invaliable = new ArrayList<>();
-
   private final List<String> recipients = new ArrayList<>();
-
-  private int expectedCountFriends;
-
-  public FBApiClient() {
-    gson = new Gson();
-  }
-
-  public void registerListener(OnFBGetFriendsListener listener) {
-    clientListener = new WeakReference<>(listener);
-  }
-
-  public void unregisterListener() {
-    clientListener.clear();
-  }
-
+  private FacebookRequestError friendsError;
+  private WeakReference<OnFBGetFriendsListener> clientListener = new WeakReference<>(null);
   private final GraphRequest.Callback infoCallback = new GraphRequest.Callback() {
 
     @Override public void onCompleted(GraphResponse response) {
@@ -70,7 +51,33 @@ public class FBApiClient {
       }
     }
   };
+  private int expectedCountFriends;
+  private final GraphRequest.Callback invitableFriendsCallback = new GraphRequest.Callback() {
+    @Override public void onCompleted(GraphResponse response) {
+      String rawResponse = response.getRawResponse();
+      Log.d(TAG, "invitable friends: " + rawResponse);
 
+      FacebookRequestError invitableError = response.getError();
+
+      parseInvitableFriendsResponse(rawResponse);
+
+      if (clientListener.get() != null) {
+        if (friends.isEmpty() && invaliable.isEmpty()) {
+          if (friendsError != null || invitableError != null) {
+            String message = friendsError == null ? ""
+                : friendsError.getErrorMessage() + " " + invitableError.getErrorMessage();
+            clientListener.get().onGetFacebookFriendsFailure(message);
+          } else {
+            logFriendsCount();
+            clientListener.get().onGetFacebookFriendsSuccess(friends, invaliable);
+          }
+        } else {
+          logFriendsCount();
+          clientListener.get().onGetFacebookFriendsSuccess(friends, invaliable);
+        }
+      }
+    }
+  };
   private final GraphRequest.Callback friendsCallback = new GraphRequest.Callback() {
     @Override public void onCompleted(GraphResponse response) {
       String rawResponse = response.getRawResponse();
@@ -104,35 +111,51 @@ public class FBApiClient {
     }
   };
 
-  private final GraphRequest.Callback invitableFriendsCallback = new GraphRequest.Callback() {
-    @Override public void onCompleted(GraphResponse response) {
-      String rawResponse = response.getRawResponse();
-      Log.d(TAG, "invitable friends: " + rawResponse);
+  public FBApiClient() {
+    gson = new Gson();
+  }
 
-      FacebookRequestError invitableError = response.getError();
+  public void registerListener(OnFBGetFriendsListener listener) {
+    clientListener = new WeakReference<>(listener);
+  }
 
-      parseInvitableFriendsResponse(rawResponse);
-
-      if (clientListener.get() != null) {
-        if (friends.isEmpty() && invaliable.isEmpty()) {
-          if (friendsError != null || invitableError != null) {
-            String message = friendsError == null ? ""
-                : friendsError.getErrorMessage() + " " + invitableError.getErrorMessage();
-            clientListener.get().onGetFacebookFriendsFailure(message);
-          } else {
-            logFriendsCount();
-            clientListener.get().onGetFacebookFriendsSuccess(friends, invaliable);
-          }
-        } else {
-          logFriendsCount();
-          clientListener.get().onGetFacebookFriendsSuccess(friends, invaliable);
-        }
-      }
-    }
-  };
+  public void unregisterListener() {
+    clientListener.clear();
+  }
 
   public void searchFriends() {
-    getFriends();
+    canLoadFriends();
+  }
+
+  private void canLoadFriends() {
+    AccessToken accessToken = AccessToken.getCurrentAccessToken();
+
+    if (accessToken != null) {
+      String graphPathCountFriends = "me/friends";
+
+      Bundle parameters = new Bundle();
+      parameters.putString(Constants.FB_FIELDS, Config.FB_FRIENDS_FIELDS);
+
+      new GraphRequest(accessToken, graphPathCountFriends, parameters, HttpMethod.GET, response -> {
+        JSONObject jsonResponse = response.getJSONObject();
+        Integer countOfFbFriends = 11;
+        try {
+          Timber.e(
+              "canLoadFriends " + jsonResponse.getJSONObject("summary").getString("total_count"));
+          countOfFbFriends =
+              Integer.parseInt(jsonResponse.getJSONObject("summary").getString("total_count"));
+        } catch (JSONException e) {
+          e.printStackTrace();
+        }
+        Timber.e("canLoadFriends SHP: " + SharedPreferenceHelper.getCountOfMembersFb() + " bool " + (
+            SharedPreferenceHelper.getCountOfMembersFb()
+                != countOfFbFriends));
+        if (SharedPreferenceHelper.getCountOfMembersFb() != countOfFbFriends) {
+          getFriends();
+        }
+        SharedPreferenceHelper.saveCountOfMembersFb(String.valueOf(countOfFbFriends));
+      }).executeAsync();
+    }
   }
 
   // ids: "id1,id2,id3,..."
