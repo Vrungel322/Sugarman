@@ -342,7 +342,7 @@
     <string name="type_your_comment">כתוב את התגובה שלך פה</string>
     <string name="learn_more">ללמוד עוד</string>
     <string name="mentors">מנטור</string>
-    <string name="success_rate">אחוז הצלחה</string>
+    <string name="success_rate">﻿אחוזי הצלחה היום</string>
     <string name="daily_success_rate">הישג אתמול</string>
     <string name="weekly_success_rate">הישג שבוע אחרון</string>
 
