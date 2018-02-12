@@ -65,7 +65,8 @@ public class RealmMigrations implements RealmMigration {
       Timber.e("Entered migration");
       if (schema.contains("ImageModel")) {
         RealmObjectSchema schema1 = schema.get("ImageModel")
-            .addField("id_tmp", String.class, FieldAttribute.PRIMARY_KEY, FieldAttribute.INDEXED)
+            .removePrimaryKey()
+            .addField("id_tmp", String.class, FieldAttribute.PRIMARY_KEY)
             .transform(obj -> {
               try {
                 int oldType = obj.getInt("id");
@@ -75,7 +76,10 @@ public class RealmMigrations implements RealmMigration {
                 needToChange[0] = true;
               }
             });
-        if (needToChange[0]) schema1.removeField("id").renameField("id_tmp", "id");
+        if (needToChange[0])
+        {
+          schema1.removePrimaryKey().removeField("id").renameField("id_temp", "id");
+        }
         if (!schema.get("ImageModel").getFieldNames().contains("name")) {
           schema.get("ImageModel")
               .addField("name", String.class)
