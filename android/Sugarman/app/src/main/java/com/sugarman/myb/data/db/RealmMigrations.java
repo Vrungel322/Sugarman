@@ -61,12 +61,21 @@ public class RealmMigrations implements RealmMigration {
     }
 
     if (oldVersion == 2) {
+      final boolean[] needToChange = { true };
       Timber.e("Entered migration");
       if (schema.contains("ImageModel")) {
-        schema.get("ImageModel").addField("id_tmp", String.class).transform(obj -> {
-          int oldType = obj.getInt("id");
-          obj.setString("id_tmp", Integer.toString(oldType));
-        }).removeField("id").renameField("id_tmp", "id");
+        RealmObjectSchema schema1 = schema.get("ImageModel").addField("id_tmp", String.class).transform(obj -> {
+          try {
+            int oldType = obj.getInt("id");
+            obj.setString("id_tmp", Integer.toString(oldType));
+          }
+          catch (IllegalArgumentException ex)
+          {
+            needToChange[0] = false;
+          }
+        });
+        if(needToChange[0])
+            schema1.removeField("id").renameField("id_tmp", "id");
         schema.get("ImageModel")
             .addField("name", String.class)
             .addField("downloadImmediately", Boolean.class);
