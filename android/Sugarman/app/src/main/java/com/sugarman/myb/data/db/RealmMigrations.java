@@ -76,6 +76,7 @@ public class RealmMigrations implements RealmMigration {
         });
         if(needToChange[0])
             schema1.removeField("id").renameField("id_tmp", "id");
+        if(!schema.get("ImageModel").getFieldNames().contains("name"))
         schema.get("ImageModel")
             .addField("name", String.class)
             .addField("downloadImmediately", Boolean.class);
@@ -93,7 +94,8 @@ public class RealmMigrations implements RealmMigration {
         realmObjectSchema.addField("groupCount", Integer.class);
         realmObjectSchema.addField("popUpImg", String.class);
       } else {
-        schema.get("Rule").addField("popUpImg", String.class);
+
+        schema.get("Rule").addField("popUpImg", String.class).addField("id", Integer.class, FieldAttribute.PRIMARY_KEY);
       }
 
       if(!schema.contains("RuleSet"))
