@@ -61,7 +61,7 @@ public class RealmMigrations implements RealmMigration {
     }
 
     if (oldVersion == 2) {
-      final boolean[] needToChange = { true };
+      final boolean[] needToChange = { false };
       Timber.e("Entered migration");
       if (schema.contains("ImageModel")) {
         RealmObjectSchema schema1 = schema.get("ImageModel").addField("id_tmp", String.class).transform(obj -> {
@@ -71,7 +71,8 @@ public class RealmMigrations implements RealmMigration {
           }
           catch (IllegalArgumentException ex)
           {
-            needToChange[0] = false;
+            Timber.e("Illegal argument!");
+            needToChange[0] = true;
           }
         });
         if(needToChange[0])
@@ -83,7 +84,7 @@ public class RealmMigrations implements RealmMigration {
       }
       if (!schema.contains("Rule")) {
         final RealmObjectSchema realmObjectSchema = schema.create("Rule");
-        realmObjectSchema.addField("id", Integer.class, FieldAttribute.PRIMARY_KEY);
+        realmObjectSchema.addField("id", String.class, FieldAttribute.PRIMARY_KEY);
         realmObjectSchema.addField("action", String.class);
         realmObjectSchema.addField("ruleType", Integer.class);
         realmObjectSchema.addField("count", Integer.class);
@@ -97,7 +98,11 @@ public class RealmMigrations implements RealmMigration {
 
         if(!schema.get("Rule").getFieldNames().contains("id"))
         schema.get("Rule")
-            .addField("id", Integer.class, FieldAttribute.PRIMARY_KEY);
+            .addField("id", String.class, FieldAttribute.PRIMARY_KEY);
+        else
+        {
+          
+        }
         if(!schema.get("Rule").getFieldNames().contains("popUpImg"))
           schema.get("Rule").addField("popUpImg", String.class);
       }
