@@ -182,8 +182,27 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
     }).build().show();
   }
 
-  @Override public void setFriends(List<FacebookFriend> friends) {
+  @Override public void setFriendsFb(List<FacebookFriend> friends) {
     showCounters(friends, tvTotalFbCount, tvInAppFbCount);
+    friendsAdapter.setValue(friends);
+  }
+
+  @Override public void setFriendsVk(List<FacebookFriend> friends) {
+    showCounters(friends, tvTotalVkCount, tvInAppVkCount);
+    friendsAdapter.setValue(friends);
+  }
+
+  @Override
+  public void setFriendsPh(List<FacebookFriend> facebookFriends) {
+    showCounters(facebookFriends,tvTotalPhCount,tvInAppPhCount);
+    friendsAdapter.setValue(facebookFriends);
+  }
+
+  @Override public void setFriendsFilter(List<FacebookFriend> friends) {
+    friendsAdapter.setValue(friends);
+  }
+
+  @Override public void setFriends(List<FacebookFriend> friends) {
     friendsAdapter.setValue(friends);
   }
 
@@ -205,12 +224,6 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
   @Override public void createGroupViaListener(List<FacebookFriend> toSendList) {
     Timber.e("createGroupViaListener " + toSendList.size());
     listener.createGroup(toSendList, mEditTextGroupName.getText().toString());
-  }
-
-  @Override
-  public void addFriendsWithFromPhone(List<FacebookFriend> facebookFriends) {
-    showCounters(facebookFriends,tvTotalPhCount,tvInAppPhCount);
-    friendsAdapter.setValue(facebookFriends);
   }
 
   @Override public void onDestroyView() {

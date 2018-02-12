@@ -11,15 +11,21 @@ import java.util.List;
  */
 @StateStrategyType(AddToEndSingleStrategy.class) public interface IFriendListFragmentView
     extends MvpView {
-  void setFriends(List<FacebookFriend> allFriends);
+  void setFriendsFb(List<FacebookFriend> allFriends);
 
   void onGetFriendInfoFailure(String errorMessage);
 
   void onGetFriendInfoSuccess(List<FacebookFriend> parsedFriends);
 
-  void addFriendsWithFromPhone(List<FacebookFriend> facebookFriends);
+  void setFriendsPh(List<FacebookFriend> facebookFriends);
 
   void createGroupViaListener(List<FacebookFriend> toSendList);
 
   void setUpUI();
+
+  void setFriends(List<FacebookFriend> allFriendsToShow);
+
+  void setFriendsFilter(List<FacebookFriend> facebookFriends);
+
+  void setFriendsVk(List<FacebookFriend> allFriendsToShow);
 }

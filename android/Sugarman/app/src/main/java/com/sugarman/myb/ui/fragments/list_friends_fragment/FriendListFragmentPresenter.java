@@ -76,7 +76,7 @@ import timber.log.Timber;
             Timber.e("rawResponse friends: " + rawResponse);
             FacebookFriend[] parsedFriends = parseFriendsResponse(rawResponse);
             boolean isInvitable = parsedFriends.length != expectedCountFriends;
-            getViewState().setFriends(allFriendsToShow);
+            getViewState().setFriendsFb(allFriendsToShow);
           });
 
       GraphRequest invitableFriends =
@@ -85,7 +85,7 @@ import timber.log.Timber;
                 String rawResponse = response.getRawResponse();
                 Timber.e("invitable friends: " + rawResponse);
                 parseInvitableFriendsResponse(rawResponse);
-                getViewState().setFriends(allFriendsToShow);
+                getViewState().setFriendsFb(allFriendsToShow);
               });
 
       friends.executeAsync();
@@ -123,7 +123,7 @@ import timber.log.Timber;
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(facebookFriends -> {
           allFriendsToShow.addAll(facebookFriends);
-          getViewState().addFriendsWithFromPhone(allFriendsToShow);
+          getViewState().setFriendsPh(allFriendsToShow);
         }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
@@ -193,7 +193,7 @@ import timber.log.Timber;
             }
           }
           Timber.e("checkVkFriends after checking" + allFriendsToShow.size());
-          getViewState().setFriends(allFriendsToShow);
+          getViewState().setFriendsVk(allFriendsToShow);
         });
     addToUnsubscription(subscription);
   }
@@ -326,7 +326,7 @@ import timber.log.Timber;
                 .isSelected()))
         .toList()
         .subscribe(facebookFriends -> {
-          getViewState().setFriends(facebookFriends);
+          getViewState().setFriendsFilter(facebookFriends);
         });
     addToUnsubscription(subscription);
   }
@@ -339,7 +339,7 @@ import timber.log.Timber;
             .contains(friendName.toLowerCase()) || facebookFriend.isSelected()))
         .toList()
         .subscribe(facebookFriends -> {
-          getViewState().setFriends(facebookFriends);
+          getViewState().setFriendsFilter(facebookFriends);
         });
     addToUnsubscription(subscription);
   }
