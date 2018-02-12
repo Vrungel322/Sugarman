@@ -17,8 +17,7 @@ import java.util.List;
 
   void onGetFriendInfoSuccess(List<FacebookFriend> parsedFriends);
 
-  void addFriendsWithFromPhone(List<FacebookFriend> facebookFriends, int totalCountPh,
-      int inAppMemberCountPh);
+  void addFriendsWithFromPhone(List<FacebookFriend> facebookFriends);
 
   void createGroupViaListener(List<FacebookFriend> toSendList);
 

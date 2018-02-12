@@ -183,6 +183,7 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
   }
 
   @Override public void setFriends(List<FacebookFriend> friends) {
+    showCounters(friends, tvTotalFbCount, tvInAppFbCount);
     friendsAdapter.setValue(friends);
   }
 
@@ -203,13 +204,12 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
 
   @Override public void createGroupViaListener(List<FacebookFriend> toSendList) {
     Timber.e("createGroupViaListener " + toSendList.size());
-    listener.createGroup(toSendList,mEditTextGroupName.getText().toString());
+    listener.createGroup(toSendList, mEditTextGroupName.getText().toString());
   }
 
-  @Override public void addFriendsWithFromPhone(List<FacebookFriend> facebookFriends,
-      int totalCountPh, int inAppMemberCountPh) {
-    tvInAppPhCount.setText(String.valueOf(inAppMemberCountPh));
-    tvTotalPhCount.setText(String.valueOf(totalCountPh));
+  @Override
+  public void addFriendsWithFromPhone(List<FacebookFriend> facebookFriends) {
+    showCounters(facebookFriends,tvTotalPhCount,tvInAppPhCount);
     friendsAdapter.setValue(facebookFriends);
   }
 
@@ -221,6 +221,20 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
   @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
     fbCallbackManager.onActivityResult(requestCode, resultCode, data);
+  }
+
+  private void showCounters(List<FacebookFriend> friends, TextView tvTotalCount,
+      TextView tvInAppCount) {
+    int inAppMemberCountPh = 0;
+    int totalCountPh = 0;
+    for (FacebookFriend fb : friends) {
+      if (fb.getIsInvitable() == FacebookFriend.CODE_NOT_INVITABLE) {
+        inAppMemberCountPh++;
+      }
+      totalCountPh++;
+    }
+    tvInAppCount.setText(String.valueOf(inAppMemberCountPh));
+    tvTotalCount.setText(String.valueOf(totalCountPh));
   }
 
   @Override public void setUpUI() {

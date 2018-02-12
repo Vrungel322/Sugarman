@@ -123,15 +123,7 @@ import timber.log.Timber;
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(facebookFriends -> {
           allFriendsToShow.addAll(facebookFriends);
-          int inAppMemberCountPh=0;
-          int totalCountPh=0;
-          for (FacebookFriend fb : allFriendsToShow) {
-            if (fb.getIsInvitable() == FacebookFriend.CODE_NOT_INVITABLE) {
-              inAppMemberCountPh++;
-            }
-            totalCountPh++;
-          }
-          getViewState().addFriendsWithFromPhone(allFriendsToShow,totalCountPh, inAppMemberCountPh);
+          getViewState().addFriendsWithFromPhone(allFriendsToShow);
         }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
