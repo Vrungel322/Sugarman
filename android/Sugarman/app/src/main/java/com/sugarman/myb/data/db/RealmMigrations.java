@@ -6,6 +6,7 @@ import io.realm.FieldAttribute;
 import io.realm.RealmMigration;
 import io.realm.RealmObjectSchema;
 import io.realm.RealmSchema;
+import timber.log.Timber;
 
 /**
  * Created by nikita on 18.10.2017.
@@ -36,6 +37,8 @@ public class RealmMigrations implements RealmMigration {
     //userSchema1.addField("text", String.class);
     //userSchema1.addRealmListField("children", schema.get("GoodsSubCategoryEntity"));
 
+    Timber.e("old_version "  + oldVersion);
+
     if (oldVersion == 1) {
       if (!schema.contains("ImageModel")) {
         final RealmObjectSchema realmObjectSchema = schema.create("ImageModel");
@@ -54,9 +57,11 @@ public class RealmMigrations implements RealmMigration {
         realmObjectSchema1.addField("id", Integer.class, FieldAttribute.PRIMARY_KEY);
         realmObjectSchema1.addRealmListField("animations", schema.get("ImageModel"));
       }
+      oldVersion++;
     }
 
     if (oldVersion == 2) {
+      Timber.e("Entered migration");
       if (schema.contains("ImageModel")) {
         schema.get("ImageModel").addField("id_tmp", String.class).transform(obj -> {
           int oldType = obj.getInt("id");
@@ -88,6 +93,7 @@ public class RealmMigrations implements RealmMigration {
         realmObjectSchema.addField("id", Integer.class, FieldAttribute.PRIMARY_KEY);
         realmObjectSchema.addRealmListField("rules", schema.get("Rule"));
       }
+      oldVersion++;
     }
   }
 }
