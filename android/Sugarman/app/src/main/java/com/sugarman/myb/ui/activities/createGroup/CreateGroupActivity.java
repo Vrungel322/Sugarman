@@ -71,6 +71,7 @@ import com.sugarman.myb.ui.activities.editProfile.EditProfileActivity;
 import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.ui.dialogs.sendVkInvitation.SendVkInvitationDialog;
+import com.sugarman.myb.ui.fragments.list_friends_fragment.FriendListFragment;
 import com.sugarman.myb.ui.views.MaskImage;
 import com.sugarman.myb.utils.AnalyticsHelper;
 import com.sugarman.myb.utils.BitmapUtils;
@@ -209,6 +210,7 @@ public class CreateGroupActivity extends BaseActivity
   // number of total count/ number of count people with app BY VK
   private int numberOfMemberTotalAppVk;
   private int numberOfMemberWithAppVk;
+  private FriendListFragment mFriendListFragment;
 
   @Override protected void onDestroy() {
     super.onDestroy();
@@ -227,6 +229,20 @@ public class CreateGroupActivity extends BaseActivity
 
       }
     });
+
+    //-----------------------------------------------------------------------------------------------
+    //Если этот код раскоментирован то работает новый фрагмент, иначе все по старому
+    mFriendListFragment = FriendListFragment.newInstance(R.layout.fragment_friend_list_test);
+    mFriendListFragment = FriendListFragment.newInstance(R.layout.activity_create_group_v2);
+    getSupportFragmentManager().beginTransaction()
+        .add(R.id.llContainer, mFriendListFragment)
+        .commit();
+    mFriendListFragment.setListener((friendList, groupName) -> {
+      mCreateGroupClient.createGroup(friendList, groupName, selectedFile,
+          CreateGroupActivity.this);
+    });
+
+    //===============================================================================================
     Timber.e("VK TOKEN " + SharedPreferenceHelper.getVkToken());
 
     if (!SharedPreferenceHelper.getFacebookId().equals("none")) {
