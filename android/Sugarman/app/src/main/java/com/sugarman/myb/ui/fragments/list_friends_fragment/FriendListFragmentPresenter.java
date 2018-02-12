@@ -118,12 +118,20 @@ import timber.log.Timber;
           return Observable.just(friendsFromPhone);
         })
         .concatMap(Observable::from)
-        .filter(friend -> friend.getIsInvitable() != FacebookFriend.CODE_NOT_INVITABLE)
+        //.filter(friend -> friend.getIsInvitable() != FacebookFriend.CODE_NOT_INVITABLE)
         .toList()
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(facebookFriends -> {
           allFriendsToShow.addAll(facebookFriends);
-          getViewState().addFriendsWithFromPhone(allFriendsToShow);
+          int inAppMemberCountPh=0;
+          int totalCountPh=0;
+          for (FacebookFriend fb : allFriendsToShow) {
+            if (fb.getIsInvitable() == FacebookFriend.CODE_NOT_INVITABLE) {
+              inAppMemberCountPh++;
+            }
+            totalCountPh++;
+          }
+          getViewState().addFriendsWithFromPhone(allFriendsToShow,totalCountPh, inAppMemberCountPh);
         }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }

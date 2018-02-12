@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
@@ -38,6 +39,22 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
 
   @BindView(R.id.rcv_friends) RecyclerView mRecyclerViewListOfFriends;
   @BindView(R.id.et_group_name) EditText mEditTextGroupName;
+
+  @BindView(R.id.tvInAppFbCount) TextView tvInAppFbCount;
+  @BindView(R.id.tvTotalFbCount) TextView tvTotalFbCount;
+  @BindView(R.id.tvInAppVkCount) TextView tvInAppVkCount;
+  @BindView(R.id.tvTotalVkCount) TextView tvTotalVkCount;
+  @BindView(R.id.tvInAppPhCount) TextView tvInAppPhCount;
+  @BindView(R.id.tvTotalPhCount) TextView tvTotalPhCount;
+  // number of total count/ number of count people with app BY PH
+  private int numberOfMemberTotalAppPh;
+  private int numberOfMemberWithAppPh;
+  // number of total count/ number of count people with app BY FB
+  private int numberOfMemberTotalAppFb;
+  private int numberOfMemberWithAppFb;
+  // number of total count/ number of count people with app BY VK
+  private int numberOfMemberTotalAppVk;
+  private int numberOfMemberWithAppVk;
   private FriendsAdapter friendsAdapter;
   private CallbackManager fbCallbackManager;
   private GameRequestDialog fbInviteDialog;
@@ -189,7 +206,10 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
     listener.createGroup(toSendList,mEditTextGroupName.getText().toString());
   }
 
-  @Override public void addFriendsWithFromPhone(List<FacebookFriend> facebookFriends) {
+  @Override public void addFriendsWithFromPhone(List<FacebookFriend> facebookFriends,
+      int totalCountPh, int inAppMemberCountPh) {
+    tvInAppPhCount.setText(String.valueOf(inAppMemberCountPh));
+    tvTotalPhCount.setText(String.valueOf(totalCountPh));
     friendsAdapter.setValue(facebookFriends);
   }
 

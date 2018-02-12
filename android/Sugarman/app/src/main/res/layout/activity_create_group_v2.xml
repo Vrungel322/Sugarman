@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="#f5f5f5"
     android:orientation="vertical"
     >
@@ -129,6 +130,57 @@
               android:alpha="0.5"
               android:src="@drawable/fb_filter"
               />
+          <LinearLayout
+              android:id="@+id/llFbMembersCalculations"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="8dp"
+              android:layout_marginRight="8dp"
+              android:orientation="vertical"
+              >
+            <LinearLayout
+                android:id="@+id/llFbTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+              <ImageView
+                  android:layout_width="8dp"
+                  android:layout_height="8dp"
+                  android:background="@drawable/friend_icon"
+                  />
+              <TextView
+                  android:id="@+id/tvTotalFbCount"
+                  tools:text="1555"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:textSize="8sp"
+                  />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llPhFbApp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp"
+                >
+              <ImageView
+                  android:layout_width="8dp"
+                  android:layout_height="8dp"
+                  android:background="@drawable/suger_friend_icon"
+                  />
+              <TextView
+                  android:id="@+id/tvInAppFbCount"
+                  tools:text="1555"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:textSize="8sp"
+                  />
+
+            </LinearLayout>
+          </LinearLayout>
           <ImageView
               android:id="@+id/vkFilter"
               android:layout_width="25dp"
@@ -137,6 +189,57 @@
               android:alpha="0.5"
               android:src="@drawable/vk_filter"
               />
+          <LinearLayout
+              android:id="@+id/llVkMembersCalculations"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="8dp"
+              android:layout_marginRight="8dp"
+              android:orientation="vertical"
+              >
+            <LinearLayout
+                android:id="@+id/llVkTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+              <ImageView
+                  android:layout_width="8dp"
+                  android:layout_height="8dp"
+                  android:background="@drawable/friend_icon"
+                  />
+              <TextView
+                  android:id="@+id/tvTotalVkCount"
+                  tools:text="1555"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:textSize="8sp"
+                  />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llInAppVkCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp"
+                >
+              <ImageView
+                  android:layout_width="8dp"
+                  android:layout_height="8dp"
+                  android:background="@drawable/suger_friend_icon"
+                  />
+              <TextView
+                  android:id="@+id/tvInAppVkCount"
+                  tools:text="1555"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:textSize="8sp"
+                  />
+
+            </LinearLayout>
+          </LinearLayout>
           <ImageView
               android:id="@+id/phFilter"
               android:layout_width="25dp"
@@ -144,6 +247,57 @@
               android:layout_marginLeft="10dp"
               android:src="@drawable/ph_filter"
               />
+          <LinearLayout
+              android:id="@+id/llPhMembersCalculations"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="8dp"
+              android:layout_marginRight="8dp"
+              android:orientation="vertical"
+              >
+            <LinearLayout
+                android:id="@+id/llPhTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+              <ImageView
+                  android:layout_width="8dp"
+                  android:layout_height="8dp"
+                  android:background="@drawable/friend_icon"
+                  />
+              <TextView
+                  android:id="@+id/tvTotalPhCount"
+                  tools:text="1555"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:textSize="8sp"
+                  />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llPhInApp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp"
+                >
+              <ImageView
+                  android:layout_width="8dp"
+                  android:layout_height="8dp"
+                  android:background="@drawable/suger_friend_icon"
+                  />
+              <TextView
+                  android:id="@+id/tvInAppPhCount"
+                  tools:text="1555"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:textSize="8sp"
+                  />
+
+            </LinearLayout>
+          </LinearLayout>
         </LinearLayout>
       </LinearLayout>
 
