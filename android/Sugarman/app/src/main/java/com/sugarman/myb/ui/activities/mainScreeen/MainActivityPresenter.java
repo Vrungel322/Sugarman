@@ -56,7 +56,7 @@ import timber.log.Timber;
         .subscribe(aLong -> {
           Timber.e("startFetchingTrackingsPeriodically");
           getViewState().refreshTrackings();
-        });
+        }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 

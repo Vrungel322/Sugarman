@@ -29,7 +29,7 @@ import timber.log.Timber;
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(eventAboutInAppPurchase -> getViewState().handleActivityResult(
             eventAboutInAppPurchase.requestCode, eventAboutInAppPurchase.resultCode,
-            eventAboutInAppPurchase.data));
+            eventAboutInAppPurchase.data), Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 

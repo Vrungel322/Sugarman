@@ -25,7 +25,7 @@ import rx.Subscription;
           if (Integer.valueOf(countInvitesResponse.getCount())>= 5){
             getViewState().startCheckoutActivityWithFreePrice();
           }
-        });
+        }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 }

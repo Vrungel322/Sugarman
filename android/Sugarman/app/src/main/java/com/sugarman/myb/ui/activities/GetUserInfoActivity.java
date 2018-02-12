@@ -195,7 +195,7 @@ public class GetUserInfoActivity extends BaseActivity
   }
 
   public void getUserDataWithDelay(long delayMs) {
-    Timber.e("getUserDataWithDelay "+SharedPreferenceHelper.getGoogleToken());
+    Timber.e("getUserDataWithDelay " + SharedPreferenceHelper.getGoogleToken());
     clearData();
     facebookToken = AccessToken.getCurrentAccessToken();
     if (facebookToken != null) {
@@ -211,7 +211,8 @@ public class GetUserInfoActivity extends BaseActivity
       //App.getHandlerInstance().postDelayed(updateDate, delayMs);
     } else {
       if (!SharedPreferenceHelper.getVkToken().equals("none")
-          || !SharedPreferenceHelper.getPhoneNumber().equals("none")|| !SharedPreferenceHelper.getGoogleToken().equals("none")) {
+          || !SharedPreferenceHelper.getPhoneNumber().equals("none")
+          || !SharedPreferenceHelper.getGoogleToken().equals("none")) {
         checkFirebaseToken();
       } else {
         Timber.e("GetUserInfo clean token");
