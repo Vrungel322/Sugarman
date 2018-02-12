@@ -95,7 +95,11 @@ public class RealmMigrations implements RealmMigration {
         realmObjectSchema.addField("popUpImg", String.class);
       } else {
 
-        schema.get("Rule").addField("popUpImg", String.class).addField("id", Integer.class, FieldAttribute.PRIMARY_KEY);
+        if(!schema.get("Rule").getFieldNames().contains("id"))
+        schema.get("Rule")
+            .addField("id", Integer.class, FieldAttribute.PRIMARY_KEY);
+        if(!schema.get("Rule").getFieldNames().contains("popUpImg"))
+          schema.get("Rule").addField("popUpImg", String.class);
       }
 
       if(!schema.contains("RuleSet"))
