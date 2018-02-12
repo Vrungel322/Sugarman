@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:background="#f5f5f5"
     >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:focusableInTouchMode="true"
-        android:orientation="vertical"
-        >
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -61,7 +57,18 @@
                 />
 
         </LinearLayout>
+    <FrameLayout
+        android:id="@+id/llContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        >
         <View
             android:layout_width="match_parent"
             android:layout_height="2px"
@@ -462,5 +469,5 @@
         android:id="@+id/layout_conn_error"
         layout="@layout/layout_connection_error"
         android:visibility="gone" />
-
-</FrameLayout>
+    </FrameLayout>
+</LinearLayout>

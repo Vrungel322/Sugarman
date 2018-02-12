@@ -18,7 +18,6 @@ import com.sugarman.myb.api.models.responses.RescueFriendResponse;
 import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.animation.GetAnimationResponse;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
-import com.sugarman.myb.api.models.responses.me.groups.CreateGroupResponse;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.models.ContactListForServer;
@@ -274,4 +273,6 @@ public class RestApi {
   public Observable<Response<ABTesting>> fetchAorBtesting() {
     return api.fetchAorBtesting();
   }
+
+  public Observable<Response<CheckVkResponse>> checkVks(List<String> vks) { CheckVkRequest request = new CheckVkRequest(); request.setVks(vks); return api.checkVks(request); }
 }

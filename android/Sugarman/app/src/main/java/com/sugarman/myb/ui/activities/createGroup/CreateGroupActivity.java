@@ -419,7 +419,7 @@ public class CreateGroupActivity extends BaseActivity
     AnalyticsHelper.reportInvite();
   }
 
-  @OnClick(R.id.fb_filter) public void showFbFriends() {
+  @OnClick(R.id.fbFilter) public void showFbFriends() {
     if (isFbLoggedIn) {
       if (!currentFilter.equals("fb")) {
         filtered.clear();

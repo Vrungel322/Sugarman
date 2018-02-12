@@ -372,4 +372,6 @@ public class DataManager {
   public Observable<Login> loginSpika(User user) {
     return mRestApiSpika.loginSpika(user);
   }
+
+  public Observable<Response<CheckVkResponse>> checkVks(List<String> vkToCheck) { return mRestApi.checkVks(vkToCheck); }
 }
