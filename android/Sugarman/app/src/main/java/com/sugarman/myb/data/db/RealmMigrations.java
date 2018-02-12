@@ -37,7 +37,7 @@ public class RealmMigrations implements RealmMigration {
     //userSchema1.addField("text", String.class);
     //userSchema1.addRealmListField("children", schema.get("GoodsSubCategoryEntity"));
 
-    Timber.e("old_version "  + oldVersion);
+    Timber.e("old_version " + oldVersion);
 
     if (oldVersion == 1) {
       if (!schema.contains("ImageModel")) {
@@ -64,23 +64,23 @@ public class RealmMigrations implements RealmMigration {
       final boolean[] needToChange = { false };
       Timber.e("Entered migration");
       if (schema.contains("ImageModel")) {
-        RealmObjectSchema schema1 = schema.get("ImageModel").addField("id_tmp", String.class).transform(obj -> {
-          try {
-            int oldType = obj.getInt("id");
-            obj.setString("id_tmp", Integer.toString(oldType));
-          }
-          catch (IllegalArgumentException ex)
-          {
-            Timber.e("Illegal argument!");
-            needToChange[0] = true;
-          }
-        });
-        if(needToChange[0])
-            schema1.removeField("id").renameField("id_tmp", "id");
-        if(!schema.get("ImageModel").getFieldNames().contains("name"))
-        schema.get("ImageModel")
-            .addField("name", String.class)
-            .addField("downloadImmediately", Boolean.class);
+        RealmObjectSchema schema1 = schema.get("ImageModel")
+            .addField("id_tmp", String.class, FieldAttribute.PRIMARY_KEY, FieldAttribute.INDEXED)
+            .transform(obj -> {
+              try {
+                int oldType = obj.getInt("id");
+                obj.setString("id_tmp", Integer.toString(oldType));
+              } catch (IllegalArgumentException ex) {
+                Timber.e("Illegal argument!");
+                needToChange[0] = true;
+              }
+            });
+        if (needToChange[0]) schema1.removeField("id").renameField("id_tmp", "id");
+        if (!schema.get("ImageModel").getFieldNames().contains("name")) {
+          schema.get("ImageModel")
+              .addField("name", String.class)
+              .addField("downloadImmediately", Boolean.class);
+        }
       }
       if (!schema.contains("Rule")) {
         final RealmObjectSchema realmObjectSchema = schema.create("Rule");
@@ -96,19 +96,17 @@ public class RealmMigrations implements RealmMigration {
         realmObjectSchema.addField("popUpImg", String.class);
       } else {
 
-        if(!schema.get("Rule").getFieldNames().contains("id"))
-        schema.get("Rule")
-            .addField("id", String.class, FieldAttribute.PRIMARY_KEY);
-        else
-        {
-          
+        if (!schema.get("Rule").getFieldNames().contains("id")) {
+          schema.get("Rule").addField("id", String.class, FieldAttribute.PRIMARY_KEY);
+        } else {
+
         }
-        if(!schema.get("Rule").getFieldNames().contains("popUpImg"))
+        if (!schema.get("Rule").getFieldNames().contains("popUpImg")) {
           schema.get("Rule").addField("popUpImg", String.class);
+        }
       }
 
-      if(!schema.contains("RuleSet"))
-      {
+      if (!schema.contains("RuleSet")) {
         final RealmObjectSchema realmObjectSchema = schema.create("RuleSet");
         realmObjectSchema.addField("id", Integer.class, FieldAttribute.PRIMARY_KEY);
         realmObjectSchema.addRealmListField("rules", schema.get("Rule"));
