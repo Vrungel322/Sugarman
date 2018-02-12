@@ -171,7 +171,7 @@
                     >
 
                     <ImageView
-                        android:id="@+id/fb_filter"
+                        android:id="@+id/fbFilter"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:alpha="0.5"
@@ -229,7 +229,7 @@
                         </LinearLayout>
                     </LinearLayout>
                     <ImageView
-                        android:id="@+id/vk_filter"
+                        android:id="@+id/vkFilter"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:layout_marginLeft="10dp"
@@ -288,7 +288,7 @@
                         </LinearLayout>
                     </LinearLayout>
                     <ImageView
-                        android:id="@+id/ph_filter"
+                        android:id="@+id/phFilter"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:layout_marginLeft="10dp"

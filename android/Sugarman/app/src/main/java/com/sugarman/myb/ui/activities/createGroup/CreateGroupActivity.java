@@ -108,9 +108,9 @@ public class CreateGroupActivity extends BaseActivity
   private final List<FacebookFriend> members = new ArrayList<>();
   public CheckPhonesClient mCheckPhoneClient;
   public CheckVkClient mCheckVkClient;
-  @BindView(R.id.fb_filter) ImageView fbFilter;
-  @BindView(R.id.vk_filter) ImageView vkFilter;
-  @BindView(R.id.ph_filter) ImageView phFilter;
+  @BindView(R.id.fbFilter) ImageView fbFilter;
+  @BindView(R.id.vkFilter) ImageView vkFilter;
+  @BindView(R.id.phFilter) ImageView phFilter;
   @BindView(R.id.pb_spinner) RelativeLayout pb;
   @BindView(R.id.tvInAppFbCount) TextView tvInAppFbCount;
   @BindView(R.id.tvTotalFbCount) TextView tvTotalFbCount;
@@ -232,7 +232,7 @@ public class CreateGroupActivity extends BaseActivity
 
     //-----------------------------------------------------------------------------------------------
     //Если этот код раскоментирован то работает новый фрагмент, иначе все по старому
-    mFriendListFragment = FriendListFragment.newInstance(R.layout.fragment_friend_list_test);
+    //mFriendListFragment = FriendListFragment.newInstance(R.layout.fragment_friend_list_test);
     mFriendListFragment = FriendListFragment.newInstance(R.layout.activity_create_group_v2);
     getSupportFragmentManager().beginTransaction()
         .add(R.id.llContainer, mFriendListFragment)
@@ -464,7 +464,7 @@ public class CreateGroupActivity extends BaseActivity
     }
   }
 
-  @OnClick(R.id.vk_filter) public void showVkFriends() {
+  @OnClick(R.id.vkFilter) public void showVkFriends() {
     if (isVkLoggedIn) {
       if (!currentFilter.equals("vk")) {
         filtered.clear();
@@ -508,7 +508,7 @@ public class CreateGroupActivity extends BaseActivity
     }
   }
 
-  @OnClick(R.id.ph_filter) public void showPhFriends() {
+  @OnClick(R.id.phFilter) public void showPhFriends() {
     if (!currentFilter.equals("ph")) {
       filtered.clear();
 
@@ -650,7 +650,8 @@ public class CreateGroupActivity extends BaseActivity
         eventValues.put(AFInAppEventParameterName.SCORE, 100);
         AppsFlyerLib.getInstance()
             .trackEvent(getApplicationContext(), "af_create_group_inside", eventValues);
-        checkFilledData();
+        //checkFilledData();
+        mFriendListFragment.startCreateGroupFlow();
         break;
       case R.id.ll_add_photo_container:
         tryChooseGroupAvatar();
