@@ -238,6 +238,7 @@ public class CreateGroupActivity extends BaseActivity
         .add(R.id.llContainer, mFriendListFragment)
         .commit();
     mFriendListFragment.setListener((friendList, groupName) -> {
+      mPresenter.sendInvitationInVk(friendList,getString(R.string.invite_message));
       mCreateGroupClient.createGroup(friendList, groupName, selectedFile,
           CreateGroupActivity.this);
     });

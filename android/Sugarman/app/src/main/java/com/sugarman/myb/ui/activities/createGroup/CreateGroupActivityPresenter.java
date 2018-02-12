@@ -49,23 +49,25 @@ import timber.log.Timber;
   }
 
   public void sendInvitationInVk(List<FacebookFriend> selectedFriends, String inviteMsg) {
-    for (FacebookFriend friend : selectedFriends) {
-      if (friend.getSocialNetwork().equals("vk")) {
-        VKRequest request = new VKRequest("messages.send",
-            VKParameters.from(VKApiConst.USER_ID, Integer.parseInt(friend.getId()),
-                VKApiConst.MESSAGE, inviteMsg));
-        request.executeWithListener(new VKRequest.VKRequestListener() {
-          @Override public void onComplete(VKResponse response) {
-            super.onComplete(response);
-            JSONObject resp = response.json;
-            Log.e("VK response", response.responseString);
-          }
+    if (selectedFriends != null && selectedFriends.isEmpty()) {
+      for (FacebookFriend friend : selectedFriends) {
+        if (friend.getSocialNetwork().equals("vk")) {
+          VKRequest request = new VKRequest("messages.send",
+              VKParameters.from(VKApiConst.USER_ID, Integer.parseInt(friend.getId()),
+                  VKApiConst.MESSAGE, inviteMsg));
+          request.executeWithListener(new VKRequest.VKRequestListener() {
+            @Override public void onComplete(VKResponse response) {
+              super.onComplete(response);
+              JSONObject resp = response.json;
+              Log.e("VK response", response.responseString);
+            }
 
-          @Override public void onError(VKError error) {
-            super.onError(error);
-            Log.e("VK response", " " + error.errorCode + error.toString());
-          }
-        });
+            @Override public void onError(VKError error) {
+              super.onError(error);
+              Log.e("VK response", " " + error.errorCode + error.toString());
+            }
+          });
+        }
       }
     }
   }

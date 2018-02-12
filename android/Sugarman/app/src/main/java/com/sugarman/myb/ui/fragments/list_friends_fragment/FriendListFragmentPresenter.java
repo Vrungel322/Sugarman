@@ -1,7 +1,6 @@
 package com.sugarman.myb.ui.fragments.list_friends_fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import com.arellomobile.mvp.InjectViewState;
 import com.facebook.AccessToken;
 import com.facebook.FacebookRequestError;
@@ -129,13 +128,15 @@ import timber.log.Timber;
   }
 
   private void loadVkFriends() {
+    Timber.e("loadVkFriends");
+
     VKRequest request = new VKRequest("friends.get",
         VKParameters.from(VKApiConst.FIELDS, "photo_100", "order", "name"));
     request.executeWithListener(new VKRequest.VKRequestListener() {
       @Override public void onComplete(VKResponse response) {
         super.onComplete(response);
         JSONObject resp = response.json;
-        Log.e("VK response", response.responseString);
+        Timber.e("loadVkFriends VK response"+ response.responseString);
         List<String> vkToCheck = new ArrayList<String>();
         try {
           JSONArray items = resp.getJSONObject("response").getJSONArray("items");
@@ -159,7 +160,7 @@ import timber.log.Timber;
           checkVkFriends(vkToCheck);
           //mCheckVkClient.checkVks(vkToCheck);
 
-          Timber.e("VK LOADED");
+          Timber.e("loadVkFriends VK LOADED");
         } catch (JSONException e) {
           e.printStackTrace();
         }
@@ -167,6 +168,7 @@ import timber.log.Timber;
 
       @Override public void onError(VKError error) {
         super.onError(error);
+        Timber.e("loadVkFriends vkError msg: "+error.errorMessage + " code:"+ error.errorCode + " all:" + error.toString());
       }
     });
   }
