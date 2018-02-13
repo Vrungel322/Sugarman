@@ -35,6 +35,7 @@ import timber.log.Timber;
  */
 
 public class FriendListFragment extends BasicFragment implements IFriendListFragmentView {
+  private static final String GROUP_NAME = "GROUP_NAME";
   @InjectPresenter FriendListFragmentPresenter mPresenter;
 
   @BindView(R.id.rcv_friends) RecyclerView mRecyclerViewListOfFriends;
@@ -72,9 +73,10 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
     super(R.layout.fragment_friend_list_test);
   }
 
-  public static FriendListFragment newInstance(int layoutId) {
+  public static FriendListFragment newInstance(int layoutId, String groupName) {
     Bundle args = new Bundle();
     FriendListFragment fragment = new FriendListFragment(layoutId);
+    args.putString(GROUP_NAME, groupName);
     fragment.setArguments(args);
     return fragment;
   }
@@ -88,6 +90,7 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
     friendsAdapter = new FriendsAdapter(getContext());
     mRecyclerViewListOfFriends.setLayoutManager(new LinearLayoutManager(getActivity()));
     mRecyclerViewListOfFriends.setAdapter(friendsAdapter);
+    mEditTextGroupName.setText(getArguments().getString(GROUP_NAME, ""));
   }
 
   public void startCreateGroupFlow() {

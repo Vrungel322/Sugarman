@@ -227,7 +227,7 @@ public class AddMemberActivity extends BaseActivity
     //-----------------------------------------------------------------------------------------------
     //Если этот код раскоментирован то работает новый фрагмент, иначе все по старому
     //mFriendListFragment = FriendListFragment.newInstance(R.layout.fragment_friend_list_test);
-     mFriendListFragment = FriendListFragment.newInstance(R.layout.activity_add_member_v2);
+     mFriendListFragment = FriendListFragment.newInstance(R.layout.activity_add_member_v2,IntentExtractorHelper.getGroupName(getIntent()));
     getSupportFragmentManager().beginTransaction()
         .add(R.id.flContainer, mFriendListFragment)
         .commit();

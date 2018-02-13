@@ -78,6 +78,7 @@ import com.sugarman.myb.utils.AnalyticsHelper;
 import com.sugarman.myb.utils.BitmapUtils;
 import com.sugarman.myb.utils.ContactsHelper;
 import com.sugarman.myb.utils.DeviceHelper;
+import com.sugarman.myb.utils.IntentExtractorHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.vk.sdk.VKSdk;
 import com.vk.sdk.api.VKApiConst;
@@ -236,7 +237,8 @@ public class CreateGroupActivity extends BaseActivity
     //-----------------------------------------------------------------------------------------------
     //Если этот код раскоментирован то работает новый фрагмент, иначе все по старому
     //mFriendListFragment = FriendListFragment.newInstance(R.layout.fragment_friend_list_test);
-    mFriendListFragment = FriendListFragment.newInstance(R.layout.activity_create_group_v2);
+    mFriendListFragment = FriendListFragment.newInstance(R.layout.activity_create_group_v2,
+        IntentExtractorHelper.getGroupName(getIntent()));
     getSupportFragmentManager().beginTransaction()
         .add(R.id.llContainer, mFriendListFragment)
         .commit();
