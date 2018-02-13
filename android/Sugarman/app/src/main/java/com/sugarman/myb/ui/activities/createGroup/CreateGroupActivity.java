@@ -72,6 +72,7 @@ import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.ui.dialogs.sendVkInvitation.SendVkInvitationDialog;
 import com.sugarman.myb.ui.fragments.list_friends_fragment.FriendListFragment;
+import com.sugarman.myb.ui.fragments.list_friends_fragment.IFriendListFragmentListener;
 import com.sugarman.myb.ui.views.MaskImage;
 import com.sugarman.myb.utils.AnalyticsHelper;
 import com.sugarman.myb.utils.BitmapUtils;
@@ -239,17 +240,23 @@ public class CreateGroupActivity extends BaseActivity
     getSupportFragmentManager().beginTransaction()
         .add(R.id.llContainer, mFriendListFragment)
         .commit();
-    mFriendListFragment.setListener((friendList, groupName) -> {
-      //mPresenter.sendInvitationInVk(friendList,getString(R.string.invite_message));
-      mIntiteByVk.clear();
-      for (FacebookFriend f : friendList) {
-        if (f.getSocialNetwork().equals("vk")) {
-          mIntiteByVk.addAll(friendList);
-          flowByFragmentForVk = true;
+    mFriendListFragment.setListener(new IFriendListFragmentListener() {
+      @Override public void createGroup(List<FacebookFriend> friendList, String groupName) {
+        //mPresenter.sendInvitationInVk(friendList,getString(R.string.invite_message));
+        mIntiteByVk.clear();
+        for (FacebookFriend f : friendList) {
+          if (f.getSocialNetwork().equals("vk")) {
+            mIntiteByVk.addAll(friendList);
+            flowByFragmentForVk = true;
+          }
         }
+        mCreateGroupClient.createGroup(friendList, groupName, selectedFile,
+            CreateGroupActivity.this);
       }
-      mCreateGroupClient.createGroup(friendList, groupName, selectedFile,
-          CreateGroupActivity.this);
+
+      @Override public void editGroup(List<FacebookFriend> membersToSendByEditing, String string) {
+        //Will be filled only on AddMembersActivity
+      }
     });
 
     //===============================================================================================

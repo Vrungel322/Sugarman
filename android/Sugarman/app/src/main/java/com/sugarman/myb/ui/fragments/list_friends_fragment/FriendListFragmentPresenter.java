@@ -242,6 +242,11 @@ import timber.log.Timber;
     getViewState().createGroupViaListener(toSendList);
   }
 
+  public void editGroupSendDataToServer(List<FacebookFriend> membersToSendByEditing) {
+    getViewState().editGroupViaListener(membersToSendByEditing);
+
+  }
+
   private List<FacebookFriend> parseConvertedFriends(String rawResponse) {
     List<FacebookFriend> friends = new ArrayList<>();
     int countRecipients = recipients.size();
@@ -345,4 +350,5 @@ import timber.log.Timber;
         });
     addToUnsubscription(subscription);
   }
+
 }

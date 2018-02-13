@@ -9,4 +9,6 @@ import java.util.List;
 
 public interface IFriendListFragmentListener {
   void createGroup(List<FacebookFriend> friendList, String groupName);
+
+  void editGroup(List<FacebookFriend> membersToSendByEditing, String groupName);
 }

@@ -60,6 +60,9 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
   private GameRequestDialog fbInviteDialog;
   private IFriendListFragmentListener listener;
   private List<FacebookFriend> membersToSend = new ArrayList<>();
+  private List<FacebookFriend> membersToSendByEditing = new ArrayList<>();
+  private boolean createGroupFlow;
+  private boolean editGroupFlow;
 
   @SuppressLint("ValidFragment") public FriendListFragment(int layoutId) {
     super(layoutId);
@@ -88,7 +91,8 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
   }
 
   public void startCreateGroupFlow() {
-    Timber.e("startCreateGroupFlow");
+    createGroupFlow = true;
+    Timber.e("startCreateGroupFlow " + createGroupFlow);
     List<String> ids = new ArrayList<>();
     for (FacebookFriend fbf : friendsAdapter.getSelectedFriends()) {
       if (fbf.getIsInvitable() == FacebookFriend.CODE_INVITABLE && !fbf.getSocialNetwork()
@@ -107,9 +111,25 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
     }
   }
 
-  public void startEditGroupFlow(){
-    Timber.e("startCreateGroupFlow");
+  public void startEditGroupFlow() {
+    editGroupFlow = true;
+    Timber.e("startCreateGroupFlow " + editGroupFlow);
+    List<String> ids = new ArrayList<>();
+    for (FacebookFriend fbf : friendsAdapter.getSelectedFriends()) {
+      if (fbf.getIsInvitable() == FacebookFriend.CODE_INVITABLE && !fbf.getSocialNetwork()
+          .equals("ph") && !fbf.getSocialNetwork().equals("vk")) {
+        ids.add(fbf.getId());
+        Timber.e("startCreateGroupFlow id " + fbf.getId());
+      } else {
+        membersToSendByEditing.add(fbf);
+      }
+    }
 
+    if (ids.isEmpty()) {
+      mPresenter.editGroupSendDataToServer(membersToSendByEditing);
+    } else {
+      convertFbInvitebleFrientdsIdsAndCreateGroup(ids);
+    }
   }
 
   @OnClick(R.id.fbFilter) public void filterFb() {
@@ -197,9 +217,8 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
     friendsAdapter.setValue(friends);
   }
 
-  @Override
-  public void setFriendsPh(List<FacebookFriend> facebookFriends) {
-    showCounters(facebookFriends,tvTotalPhCount,tvInAppPhCount);
+  @Override public void setFriendsPh(List<FacebookFriend> facebookFriends) {
+    showCounters(facebookFriends, tvTotalPhCount, tvInAppPhCount);
     friendsAdapter.setValue(facebookFriends);
   }
 
@@ -222,13 +241,24 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
   }
 
   @Override public void onGetFriendInfoSuccess(List<FacebookFriend> convertedFriends) {
-    membersToSend.addAll(convertedFriends);
-    mPresenter.createGroupSendDataToServer(membersToSend);
+    if (editGroupFlow) {
+      membersToSendByEditing.addAll(convertedFriends);
+      mPresenter.editGroupSendDataToServer(membersToSendByEditing);
+    }
+    if (createGroupFlow) {
+      membersToSend.addAll(convertedFriends);
+      mPresenter.createGroupSendDataToServer(membersToSend);
+    }
   }
 
   @Override public void createGroupViaListener(List<FacebookFriend> toSendList) {
     Timber.e("createGroupViaListener " + toSendList.size());
     listener.createGroup(toSendList, mEditTextGroupName.getText().toString());
+  }
+
+  @Override public void editGroupViaListener(List<FacebookFriend> membersToSendByEditing) {
+    Timber.e("editGroupViaListener " + membersToSendByEditing.size());
+    listener.editGroup(membersToSendByEditing, mEditTextGroupName.getText().toString());
   }
 
   @Override public void onDestroyView() {

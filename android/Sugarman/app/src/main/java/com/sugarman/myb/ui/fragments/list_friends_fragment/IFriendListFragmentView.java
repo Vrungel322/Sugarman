@@ -21,6 +21,8 @@ import java.util.List;
 
   void createGroupViaListener(List<FacebookFriend> toSendList);
 
+  void editGroupViaListener(List<FacebookFriend> membersToSendByEditing);
+
   void setUpUI();
 
   void setFriends(List<FacebookFriend> allFriendsToShow);
