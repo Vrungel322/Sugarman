@@ -211,6 +211,8 @@ public class CreateGroupActivity extends BaseActivity
   private int numberOfMemberTotalAppVk;
   private int numberOfMemberWithAppVk;
   private FriendListFragment mFriendListFragment;
+  private boolean flowByFragment;
+  private ArrayList<FacebookFriend> mIntiteByVk = new ArrayList<>();
 
   @Override protected void onDestroy() {
     super.onDestroy();
@@ -238,7 +240,10 @@ public class CreateGroupActivity extends BaseActivity
         .add(R.id.llContainer, mFriendListFragment)
         .commit();
     mFriendListFragment.setListener((friendList, groupName) -> {
-      mPresenter.sendInvitationInVk(friendList,getString(R.string.invite_message));
+      //mPresenter.sendInvitationInVk(friendList,getString(R.string.invite_message));
+      mIntiteByVk.clear();
+      mIntiteByVk.addAll(friendList);
+      flowByFragment = true;
       mCreateGroupClient.createGroup(friendList, groupName, selectedFile,
           CreateGroupActivity.this);
     });
@@ -803,6 +808,7 @@ public class CreateGroupActivity extends BaseActivity
   }
 
   @Override public void onApiJoinGroupSuccess(Tracking result) {
+    Timber.e("onApiJoinGroupSuccess "+result.getGroupOnwerName());
     //closeProgressFragment();
     hideProgress();
     int activeTrackings = SharedPreferenceHelper.getActiveTrackingsCreated();
@@ -815,7 +821,6 @@ public class CreateGroupActivity extends BaseActivity
 
     List<String> idsFb = new ArrayList<>();
     List<FacebookFriend> intiteByPh = new ArrayList<>();
-    ArrayList<FacebookFriend> intiteByVk = new ArrayList<>();
     for (FacebookFriend friend : friendsAdapter.getSelectedFriends()) {
       if (friend.getSocialNetwork().equals("fb")) {
         idsFb.add(friend.getId());
@@ -824,25 +829,28 @@ public class CreateGroupActivity extends BaseActivity
         intiteByPh.add(friend);
       }
       if (friend.getSocialNetwork().equals("vk")) {
-        intiteByVk.add(friend);
+        mIntiteByVk.add(friend);
       }
     }
-    if (!intiteByVk.isEmpty()) {
+    if (!mIntiteByVk.isEmpty() || flowByFragment) {
       //finish();
+      Timber.e("onApiJoinGroupSuccess  0");
       SendVkInvitationDialog sendVkInvitationDialog =
-          SendVkInvitationDialog.newInstance(intiteByVk, (Dialog dialog) -> {
+          SendVkInvitationDialog.newInstance(mIntiteByVk, (Dialog dialog) -> {
+            Timber.e("onApiJoinGroupSuccess vk listener");
             dialog.dismiss();
             finish();
           });
       sendVkInvitationDialog.show(getFragmentManager(), "SendVkInvitationDialog");
     } else {
-      Timber.e("1");
+      Timber.e("onApiJoinGroupSuccess  1");
       finish();
     }
-    if (intiteByVk.isEmpty() && idsFb.isEmpty()) {
-      Timber.e("2");
+    if (!flowByFragment){
+    if ((mIntiteByVk.isEmpty() && idsFb.isEmpty()) ) {
+      Timber.e("onApiJoinGroupSuccess 2");
       finish();
-    }
+    }}
   }
 
   @Override public void onApiJoinGroupFailure(String message) {

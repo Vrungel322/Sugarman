@@ -92,7 +92,7 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
     List<String> ids = new ArrayList<>();
     for (FacebookFriend fbf : friendsAdapter.getSelectedFriends()) {
       if (fbf.getIsInvitable() == FacebookFriend.CODE_INVITABLE && !fbf.getSocialNetwork()
-          .equals("ph")) {
+          .equals("ph") && !fbf.getSocialNetwork().equals("vk")) {
         ids.add(fbf.getId());
         Timber.e("startCreateGroupFlow id " + fbf.getId());
       } else {

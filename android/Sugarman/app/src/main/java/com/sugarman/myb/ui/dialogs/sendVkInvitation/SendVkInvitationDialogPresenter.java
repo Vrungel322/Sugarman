@@ -1,6 +1,5 @@
 package com.sugarman.myb.ui.dialogs.sendVkInvitation;
 
-import android.util.Log;
 import com.arellomobile.mvp.InjectViewState;
 import com.sugarman.myb.App;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
@@ -15,6 +14,7 @@ import com.vk.sdk.api.VKResponse;
 import java.util.ArrayList;
 import javax.inject.Inject;
 import org.json.JSONObject;
+import timber.log.Timber;
 
 /**
  * Created by nikita on 29.09.2017.
@@ -28,6 +28,7 @@ import org.json.JSONObject;
   }
 
   public void sendInvitations(ArrayList<FacebookFriend> friends, String invitationMsg) {
+    Timber.e("sendInvitations " + friends.get(0).getSocialNetwork());
     mRxBus.post(new RxBusHelper.AddMemberVkEvent(friends));
 
     for (FacebookFriend friend : friends) {
@@ -40,12 +41,12 @@ import org.json.JSONObject;
             super.onComplete(response);
             JSONObject resp = response.json;
             getViewState().doAction();
-            Log.e("VK response", response.responseString);
+            Timber.e("sendInvitations VK response "+ response.responseString);
           }
 
           @Override public void onError(VKError error) {
             super.onError(error);
-            Log.e("VK response", " " + error.errorCode + error.toString());
+            Timber.e("sendInvitations VK response " + error.errorCode + error.toString());
           }
         });
       }

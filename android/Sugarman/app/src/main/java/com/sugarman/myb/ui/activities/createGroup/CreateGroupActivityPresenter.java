@@ -1,6 +1,5 @@
 package com.sugarman.myb.ui.activities.createGroup;
 
-import android.util.Log;
 import com.arellomobile.mvp.InjectViewState;
 import com.sugarman.myb.App;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
@@ -59,12 +58,12 @@ import timber.log.Timber;
             @Override public void onComplete(VKResponse response) {
               super.onComplete(response);
               JSONObject resp = response.json;
-              Log.e("VK response", response.responseString);
+              Timber.e("sendInvitationInVk VK response"+ response.responseString);
             }
 
             @Override public void onError(VKError error) {
               super.onError(error);
-              Log.e("VK response", " " + error.errorCode + error.toString());
+              Timber.e(" sendInvitationInVk VK response "  + error.errorCode + error.toString());
             }
           });
         }
