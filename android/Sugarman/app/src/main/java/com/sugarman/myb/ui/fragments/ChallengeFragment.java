@@ -273,8 +273,11 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
 
           str = fastest.getName();
           str = str.replaceAll("( +)", " ").trim();
-          if (str.length() > 0) name = str.substring(0, (fastest.getName().indexOf(" ")));
-
+          if (str.length() > 0 ) {
+            if(str.contains(" "))
+            name = str.substring(0, (fastest.getName().indexOf(" ")));
+            else name = str;
+          }
 
           fastestName.setText(name);
           fastestSteps.setText(String.format(Locale.US, "%,d", fastest.getSteps()));

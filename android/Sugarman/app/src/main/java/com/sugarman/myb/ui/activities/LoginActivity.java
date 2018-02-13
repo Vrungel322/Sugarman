@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
@@ -100,10 +101,19 @@ public class LoginActivity extends GetUserInfoActivity implements View.OnClickLi
   private VKRequest.VKRequestListener vkListener;
   private float mCoeficient = 250f;
 
+  private void saveIMEI() {
+    String androidId = Settings.Secure.getString(getContentResolver(),
+        Settings.Secure.ANDROID_ID);
+
+    Timber.e("Secure ID " + androidId);
+    SharedPreferenceHelper.setIMEI(androidId);
+  }
+
   @SuppressLint("SetJavaScriptEnabled") @Override
   protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_login);
     super.onCreate(savedInstanceState);
+    saveIMEI();
     //vkButton = (TextView) findViewById(R.id.vkButton);
     blurry = (ImageView) findViewById(R.id.blurry_background);
     FrameLayout rootView = (FrameLayout) findViewById(R.id.rootView);

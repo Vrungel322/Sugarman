@@ -43,7 +43,7 @@ import rx.Subscription;
     Subscription subscription = mRxBus.filteredObservable(RxBusHelper.AddMemberVkEvent.class)
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(addMemberVkEvent -> getViewState().addMemberToServer(
-            addMemberVkEvent.mFacebookFriends));
+            addMemberVkEvent.mFacebookFriends), Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 

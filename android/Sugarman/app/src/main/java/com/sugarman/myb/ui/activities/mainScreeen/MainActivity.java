@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
 import android.telephony.TelephonyManager;
@@ -34,6 +35,9 @@ import com.appsflyer.AFInAppEventParameterName;
 import com.appsflyer.AppsFlyerLib;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.facebook.FacebookException;
+import com.google.android.gms.ads.identifier.AdvertisingIdClient;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.mzelzoghbi.zgallery.CustomViewPager;
 import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.App;
@@ -132,6 +136,7 @@ import com.sugarman.myb.utils.inapp.Inventory;
 import com.sugarman.myb.utils.licence.LicenceChecker;
 import com.sugarman.myb.utils.md5.MD5Util;
 import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -502,10 +507,40 @@ public class MainActivity extends GetUserInfoActivity
         }
       };
 
+  public static synchronized String getAdId (Context context) {
+
+    if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.KITKAT) {
+      return null;
+    }
+
+    AdvertisingIdClient.Info idInfo = null;
+    try {
+      idInfo = AdvertisingIdClient.getAdvertisingIdInfo(context);
+    } catch (GooglePlayServicesNotAvailableException e) {
+      e.printStackTrace();
+    } catch (GooglePlayServicesRepairableException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    String advertId = null;
+    try{
+      advertId = idInfo.getId();
+      Timber.e("Avert " + advertId);
+    }catch (NullPointerException e){
+      e.printStackTrace();
+    }
+
+    return advertId;
+  }
+
   @Override protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_main);
     super.onCreate(savedInstanceState);
     Timber.e("deepLinks onCreate");
+
+    saveIMEI();
+
 
     Resources resources = getResources();
     img = new ImageToDraw(MainActivity.this);
@@ -819,7 +854,7 @@ public class MainActivity extends GetUserInfoActivity
             mPresenter.sendContacts(list);
           });
 
-          saveIMEI();
+
         }
         break;
 
@@ -829,9 +864,11 @@ public class MainActivity extends GetUserInfoActivity
   }
 
   private void saveIMEI() {
-    TelephonyManager telephonyManager =
-        (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
-    SharedPreferenceHelper.setIMEI(telephonyManager.getDeviceId());
+    String androidId = Settings.Secure.getString(getContentResolver(),
+        Settings.Secure.ANDROID_ID);
+
+    Timber.e("Secure ID " + androidId);
+    SharedPreferenceHelper.setIMEI(androidId);
   }
 
   private void updateAnimations(int todaySteps) {

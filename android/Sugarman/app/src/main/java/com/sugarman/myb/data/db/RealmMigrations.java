@@ -1,10 +1,12 @@
 package com.sugarman.myb.data.db;
 
 import io.realm.DynamicRealm;
+import io.realm.DynamicRealmObject;
 import io.realm.FieldAttribute;
 import io.realm.RealmMigration;
 import io.realm.RealmObjectSchema;
 import io.realm.RealmSchema;
+import timber.log.Timber;
 
 /**
  * Created by nikita on 18.10.2017.
@@ -14,6 +16,8 @@ public class RealmMigrations implements RealmMigration {
 
   @Override public void migrate(DynamicRealm realm, long oldVersion, long newVersion) {
     final RealmSchema schema = realm.getSchema();
+
+    Timber.e("Entered migration! " + oldVersion + ":" + newVersion);
 
     // NOT DELETE - THIS IS SPAAARTA... EXAMPLE
 
@@ -35,6 +39,8 @@ public class RealmMigrations implements RealmMigration {
     //userSchema1.addField("text", String.class);
     //userSchema1.addRealmListField("children", schema.get("GoodsSubCategoryEntity"));
 
+    Timber.e("old_version " + oldVersion);
+
     if (oldVersion == 1) {
       if (!schema.contains("ImageModel")) {
         final RealmObjectSchema realmObjectSchema = schema.create("ImageModel");
@@ -53,7 +59,72 @@ public class RealmMigrations implements RealmMigration {
         realmObjectSchema1.addField("id", Integer.class, FieldAttribute.PRIMARY_KEY);
         realmObjectSchema1.addRealmListField("animations", schema.get("ImageModel"));
       }
+      oldVersion++;
+    }
+
+    if (oldVersion == 2) {
+      final boolean[] needToChange = { false };
+      Timber.e("Entered migration");
+      if (schema.contains("ImageModel")) {
+        RealmObjectSchema schema1 = schema.get("ImageModel")
+            .removePrimaryKey()
+            .addField("id_tmp", String.class)
+            .transform(obj -> {
+              try {
+                int oldType = obj.getInt("id");
+                obj.setString("id_tmp", Integer.toString(oldType));
+                Timber.e("ID_TMP_REALM = " + Integer.toString(oldType) + " ; int = " +oldType);
+              } catch (IllegalArgumentException ex) {
+                Timber.e("Illegal argument!");
+                obj.setString(obj.getString("id"),"");
+                needToChange[0] = true;
+              }
+            });
+        if (needToChange[0])
+        {
+          schema1.addIndex("id_tmp").addPrimaryKey("id_tmp").removeField("id").renameField("id_tmp", "id");
+        }
+        if (!schema.get("ImageModel").getFieldNames().contains("name")) {
+          schema.get("ImageModel")
+              .addField("name", String.class)
+              .addField("downloadImmediately", Boolean.class);
+        }
+      }
+      if (!schema.contains("Rule")) {
+        final RealmObjectSchema realmObjectSchema = schema.create("Rule");
+        realmObjectSchema.addField("id", String.class, FieldAttribute.PRIMARY_KEY);
+        realmObjectSchema.addField("action", String.class);
+        realmObjectSchema.addField("ruleType", Integer.class);
+        realmObjectSchema.addField("count", Integer.class);
+        realmObjectSchema.addField("message", String.class);
+        realmObjectSchema.addField("name", String.class);
+        realmObjectSchema.addField("nameOfAnim", String.class);
+        realmObjectSchema.addField("sequence", Integer.class);
+        realmObjectSchema.addField("groupCount", Integer.class);
+        realmObjectSchema.addField("popUpImg", String.class);
+      } else {
+
+        if (!schema.get("Rule").getFieldNames().contains("id")) {
+          schema.get("Rule").addField("id", String.class, FieldAttribute.PRIMARY_KEY);
+        } else {
+
+        }
+        if (!schema.get("Rule").getFieldNames().contains("popUpImg")) {
+          schema.get("Rule").addField("popUpImg", String.class);
+        }
+      }
+
+      if (!schema.contains("RuleSet")) {
+        final RealmObjectSchema realmObjectSchema = schema.create("RuleSet");
+        realmObjectSchema.addField("id", Integer.class, FieldAttribute.PRIMARY_KEY);
+        realmObjectSchema.addRealmListField("rules", schema.get("Rule"));
+      }
+      oldVersion++;
     }
   }
 }
 
+/*
+  @PrimaryKey private Integer id;
+  @Getter @Setter @SerializedName("rules") private RealmList<Rule> rules;
+  */
