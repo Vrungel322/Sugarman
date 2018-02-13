@@ -17,6 +17,8 @@ public class RealmMigrations implements RealmMigration {
   @Override public void migrate(DynamicRealm realm, long oldVersion, long newVersion) {
     final RealmSchema schema = realm.getSchema();
 
+    Timber.e("Entered migration! " + oldVersion + ":" + newVersion);
+
     // NOT DELETE - THIS IS SPAAARTA... EXAMPLE
 
     //migration mechanism
