@@ -74,6 +74,7 @@ public class RealmMigrations implements RealmMigration {
                 Timber.e("ID_TMP_REALM = " + Integer.toString(oldType) + " ; int = " +oldType);
               } catch (IllegalArgumentException ex) {
                 Timber.e("Illegal argument!");
+                obj.setString(obj.getString("id"),"");
                 needToChange[0] = true;
               }
             });

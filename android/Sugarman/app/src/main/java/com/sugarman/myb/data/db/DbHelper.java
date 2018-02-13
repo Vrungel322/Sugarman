@@ -19,8 +19,9 @@ public class DbHelper {
   public DbHelper() {
     mConfiguration = new RealmConfiguration.Builder().name("com.sugarman.myb")
         //new version
-        .schemaVersion(3).migration(new RealmMigrations()).build();
+        .schemaVersion(3).deleteRealmIfMigrationNeeded().build();
     Realm.setDefaultConfiguration(mConfiguration);
+    Realm.getInstance(mConfiguration);
   }
 
   public <T extends RealmObject> void save(T object) {
