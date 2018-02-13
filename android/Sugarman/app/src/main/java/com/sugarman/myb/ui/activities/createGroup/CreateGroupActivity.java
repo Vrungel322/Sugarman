@@ -211,7 +211,7 @@ public class CreateGroupActivity extends BaseActivity
   private int numberOfMemberTotalAppVk;
   private int numberOfMemberWithAppVk;
   private FriendListFragment mFriendListFragment;
-  private boolean flowByFragment;
+  private boolean flowByFragmentForVk;
   private ArrayList<FacebookFriend> mIntiteByVk = new ArrayList<>();
 
   @Override protected void onDestroy() {
@@ -242,8 +242,12 @@ public class CreateGroupActivity extends BaseActivity
     mFriendListFragment.setListener((friendList, groupName) -> {
       //mPresenter.sendInvitationInVk(friendList,getString(R.string.invite_message));
       mIntiteByVk.clear();
-      mIntiteByVk.addAll(friendList);
-      flowByFragment = true;
+      for (FacebookFriend f : friendList) {
+        if (f.getSocialNetwork().equals("vk")) {
+          mIntiteByVk.addAll(friendList);
+          flowByFragmentForVk = true;
+        }
+      }
       mCreateGroupClient.createGroup(friendList, groupName, selectedFile,
           CreateGroupActivity.this);
     });
@@ -832,7 +836,7 @@ public class CreateGroupActivity extends BaseActivity
         mIntiteByVk.add(friend);
       }
     }
-    if (!mIntiteByVk.isEmpty() || flowByFragment) {
+    if (!mIntiteByVk.isEmpty() || flowByFragmentForVk) {
       //finish();
       Timber.e("onApiJoinGroupSuccess  0");
       SendVkInvitationDialog sendVkInvitationDialog =
@@ -846,7 +850,7 @@ public class CreateGroupActivity extends BaseActivity
       Timber.e("onApiJoinGroupSuccess  1");
       finish();
     }
-    if (!flowByFragment){
+    if (!flowByFragmentForVk){
     if ((mIntiteByVk.isEmpty() && idsFb.isEmpty()) ) {
       Timber.e("onApiJoinGroupSuccess 2");
       finish();

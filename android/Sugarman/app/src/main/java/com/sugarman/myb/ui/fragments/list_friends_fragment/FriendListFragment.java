@@ -107,6 +107,11 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
     }
   }
 
+  public void startEditGroupFlow(){
+    Timber.e("startCreateGroupFlow");
+
+  }
+
   @OnClick(R.id.fbFilter) public void filterFb() {
     mPresenter.filterBySocial(friendsAdapter.getAllList(), "fb");
   }
