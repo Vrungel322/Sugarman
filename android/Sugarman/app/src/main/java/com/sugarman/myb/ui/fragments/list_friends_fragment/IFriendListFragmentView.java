@@ -23,6 +23,8 @@ import java.util.List;
 
   void editGroupViaListener(List<FacebookFriend> membersToSendByEditing);
 
+  void inviteToShopViaListener(List<FacebookFriend> membersToSendByInviteToShop);
+
   void setUpUI();
 
   void setFriends(List<FacebookFriend> allFriendsToShow);

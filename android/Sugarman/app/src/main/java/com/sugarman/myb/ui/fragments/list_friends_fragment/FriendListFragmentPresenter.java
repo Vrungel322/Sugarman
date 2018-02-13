@@ -136,7 +136,7 @@ import timber.log.Timber;
       @Override public void onComplete(VKResponse response) {
         super.onComplete(response);
         JSONObject resp = response.json;
-        Timber.e("loadVkFriends VK response"+ response.responseString);
+        Timber.e("loadVkFriends VK response" + response.responseString);
         List<String> vkToCheck = new ArrayList<String>();
         try {
           JSONArray items = resp.getJSONObject("response").getJSONArray("items");
@@ -168,7 +168,12 @@ import timber.log.Timber;
 
       @Override public void onError(VKError error) {
         super.onError(error);
-        Timber.e("loadVkFriends vkError msg: "+error.errorMessage + " code:"+ error.errorCode + " all:" + error.toString());
+        Timber.e("loadVkFriends vkError msg: "
+            + error.errorMessage
+            + " code:"
+            + error.errorCode
+            + " all:"
+            + error.toString());
       }
     });
   }
@@ -244,7 +249,10 @@ import timber.log.Timber;
 
   public void editGroupSendDataToServer(List<FacebookFriend> membersToSendByEditing) {
     getViewState().editGroupViaListener(membersToSendByEditing);
+  }
 
+  public void inviteToShopSendDataToServer(List<FacebookFriend> membersToSendByInviteToShop) {
+    getViewState().inviteToShopViaListener(membersToSendByInviteToShop);
   }
 
   private List<FacebookFriend> parseConvertedFriends(String rawResponse) {
@@ -350,5 +358,4 @@ import timber.log.Timber;
         });
     addToUnsubscription(subscription);
   }
-
 }

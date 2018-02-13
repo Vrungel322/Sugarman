@@ -259,6 +259,10 @@ public class CreateGroupActivity extends BaseActivity
       @Override public void editGroup(List<FacebookFriend> membersToSendByEditing, String string) {
         //Will be filled only on AddMembersActivity
       }
+
+      @Override public void inviteFriendToShop(List<FacebookFriend> friendList) {
+        //Will be filled only on ShopInviteFriendsActivity
+      }
     });
 
     //===============================================================================================

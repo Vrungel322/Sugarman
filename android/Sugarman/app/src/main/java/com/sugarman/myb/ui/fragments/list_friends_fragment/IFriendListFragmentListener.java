@@ -11,4 +11,6 @@ public interface IFriendListFragmentListener {
   void createGroup(List<FacebookFriend> friendList, String groupName);
 
   void editGroup(List<FacebookFriend> membersToSendByEditing, String groupName);
+
+  void inviteFriendToShop(List<FacebookFriend> friendList);
 }

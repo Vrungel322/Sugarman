@@ -51,6 +51,8 @@ import com.sugarman.myb.listeners.OnFBGetFriendsListener;
 import com.sugarman.myb.ui.activities.editProfile.EditProfileActivity;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.ui.dialogs.sendVkInvitation.SendVkInvitationDialog;
+import com.sugarman.myb.ui.fragments.list_friends_fragment.FriendListFragment;
+import com.sugarman.myb.ui.fragments.list_friends_fragment.IFriendListFragmentListener;
 import com.sugarman.myb.ui.views.CropCircleTransformation;
 import com.sugarman.myb.ui.views.CustomFontEditText;
 import com.sugarman.myb.utils.AnalyticsHelper;
@@ -175,10 +177,40 @@ public class ShopInviteFriendsActivity extends BasicActivity
   private int numberOfMemberTotalAppVk;
   private int numberOfMemberWithAppVk;
 
+  FriendListFragment mFriendListFragment;
+
   @Override protected void onCreate(Bundle savedStateInstance) {
     setContentView(R.layout.activity_shop_invite_friends);
     super.onCreate(savedStateInstance);
     bAddFriends.setEnabled(false);
+
+    //-----------------------------------------------------------------------------------------------
+    //Если этот код раскоментирован то работает новый фрагмент, иначе все по старому
+    //mFriendListFragment = FriendListFragment.newInstance(R.layout.fragment_friend_list_test);
+    mFriendListFragment = FriendListFragment.newInstance(R.layout.activity_shop_invite_friends_v2,
+        IntentExtractorHelper.getGroupName(getIntent()));
+    getSupportFragmentManager().beginTransaction()
+        .add(R.id.flContaiter, mFriendListFragment)
+        .commit();
+    mFriendListFragment.setListener(new IFriendListFragmentListener() {
+      @Override public void createGroup(List<FacebookFriend> friendList, String groupName) {
+        //mPresenter.sendInvitationInVk(friendList,getString(R.string.invite_message));
+      }
+
+      @Override public void editGroup(List<FacebookFriend> membersToSendByEditing, String string) {
+        //Will be filled only on AddMembersActivity
+      }
+
+      @Override public void inviteFriendToShop(List<FacebookFriend> friendList) {
+        if (bAddFriends.isEnabled()) {
+          sendInvitation(friendList);
+          bAddFriends.setEnabled(false);
+        }
+      }
+    });
+    showAddFriendBtn();
+
+    //===============================================================================================
 
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put(AFInAppEventParameterName.LEVEL, 9);
@@ -545,13 +577,14 @@ public class ShopInviteFriendsActivity extends BasicActivity
         R.string.need_your_permission).positiveText(R.string.okay).show();
   }
 
-  private void sendInvitation() {
+  private void sendInvitation(List<FacebookFriend> membersToSendInvite) {
+    Timber.e("sendInvitation " + membersToSendInvite.size());
 
     mInviteByFbIds = new ArrayList<>();
     mIntiteByVk = new ArrayList<>();
     mIntiteByPh = new ArrayList<>();
     String id;
-    for (FacebookFriend friend : membersAdapter.getSelectedMembers()) {
+    for (FacebookFriend friend : membersToSendInvite) {
 
       id = friend.getId();
       if (friend.getSocialNetwork().equals("fb")) {
@@ -650,7 +683,10 @@ public class ShopInviteFriendsActivity extends BasicActivity
 
   @OnClick(R.id.bAddFriends) public void bAddFriendsClicked() {
     if (bAddFriends.isEnabled()) {
-      sendInvitation();
+      //Если фрагмент закомментирован , то следующюю строчку раскоментировать
+      //sendInvitation(membersAdapter.getSelectedMembers());
+      //Если фрагмент раскоментирован , то следующюю строчку не комментировать
+      mFriendListFragment.startInvitetoShopFlow();
       bAddFriends.setEnabled(false);
     }
   }

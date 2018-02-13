@@ -62,8 +62,10 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
   private IFriendListFragmentListener listener;
   private List<FacebookFriend> membersToSend = new ArrayList<>();
   private List<FacebookFriend> membersToSendByEditing = new ArrayList<>();
+  private List<FacebookFriend> membersToSendByInviteToShop = new ArrayList<>();
   private boolean createGroupFlow;
   private boolean editGroupFlow;
+  private boolean inviteToShopFlow;
 
   @SuppressLint("ValidFragment") public FriendListFragment(int layoutId) {
     super(layoutId);
@@ -130,6 +132,27 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
 
     if (ids.isEmpty()) {
       mPresenter.editGroupSendDataToServer(membersToSendByEditing);
+    } else {
+      convertFbInvitebleFrientdsIdsAndCreateGroup(ids);
+    }
+  }
+
+  public void startInvitetoShopFlow() {
+    inviteToShopFlow = true;
+    Timber.e("startInvitetoShopFlow " + inviteToShopFlow);
+    List<String> ids = new ArrayList<>();
+    for (FacebookFriend fbf : friendsAdapter.getSelectedFriends()) {
+      if (fbf.getIsInvitable() == FacebookFriend.CODE_INVITABLE && !fbf.getSocialNetwork()
+          .equals("ph") && !fbf.getSocialNetwork().equals("vk")) {
+        ids.add(fbf.getId());
+        Timber.e("startCreateGroupFlow id " + fbf.getId());
+      } else {
+        membersToSendByInviteToShop.add(fbf);
+      }
+    }
+
+    if (ids.isEmpty()) {
+      mPresenter.inviteToShopSendDataToServer(membersToSendByInviteToShop);
     } else {
       convertFbInvitebleFrientdsIdsAndCreateGroup(ids);
     }
@@ -262,6 +285,11 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
   @Override public void editGroupViaListener(List<FacebookFriend> membersToSendByEditing) {
     Timber.e("editGroupViaListener " + membersToSendByEditing.size());
     listener.editGroup(membersToSendByEditing, mEditTextGroupName.getText().toString());
+  }
+
+  @Override public void inviteToShopViaListener(List<FacebookFriend> membersToSendByInviteToShop) {
+    Timber.e("inviteToShopViaListener " + membersToSendByInviteToShop.size());
+    listener.inviteFriendToShop(membersToSendByInviteToShop);
   }
 
   @Override public void onDestroyView() {

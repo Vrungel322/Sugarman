@@ -242,6 +242,10 @@ public class AddMemberActivity extends BaseActivity
         mEditGroupClient.editGroup(IntentExtractorHelper.getTrackingId( getIntent()), membersToSendByEditing, groupName, selectedFile);
         mAddMembersClient.addMembers(IntentExtractorHelper.getTrackingId( getIntent()), membersToSendByEditing);
       }
+
+      @Override public void inviteFriendToShop(List<FacebookFriend> friendList) {
+        //Will be filled only on ShopInviteFriendsActivity
+      }
     });
 
     //===============================================================================================
