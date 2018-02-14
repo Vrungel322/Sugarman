@@ -275,4 +275,8 @@ public class RestApi {
   }
 
   public Observable<Response<CheckVkResponse>> checkVks(List<String> vks) { CheckVkRequest request = new CheckVkRequest(); request.setVks(vks); return api.checkVks(request); }
+
+  public Observable<Response<Void>> purchaseMentorForFree(String mentorId) {
+    return api.purchaseMentorForFree(mentorId);
+  }
 }

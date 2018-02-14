@@ -60,10 +60,8 @@ import timber.log.Timber;
             if (tracking != null) {
               Timber.e("checkInAppBilling tracking != null");
               getViewState().moveToMentorsDetailActivity(tracking);
-            }
-            else {
+            } else {
               Timber.e("checkInAppBilling tracking == null");
-
             }
           }
         }, Throwable::printStackTrace);
@@ -81,6 +79,16 @@ import timber.log.Timber;
               && !nextFreeSkuEntityResponse.body().getFreeSku().isEmpty()) {
             getViewState().startPurchaseFlow(nextFreeSkuEntityResponse.body().getFreeSku());
           }
+        }, Throwable::printStackTrace);
+    addToUnsubscription(subscription);
+  }
+
+  public void purchaseMentorForFree(String mentorId) {
+    Timber.e("purchaseMentorForFree mentorId: " + mentorId);
+    Subscription subscription = mDataManager.purchaseMentorForFree(mentorId)
+        .compose(ThreadSchedulers.applySchedulers())
+        .subscribe(voidResponse -> {
+          Timber.e("purchaseMentorForFree code: " + voidResponse.code());
         }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }

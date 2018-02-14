@@ -374,4 +374,8 @@ public class DataManager {
   }
 
   public Observable<Response<CheckVkResponse>> checkVks(List<String> vkToCheck) { return mRestApi.checkVks(vkToCheck); }
+
+  public Observable<Response<Void>> purchaseMentorForFree(String mentorId) {
+    return mRestApi.purchaseMentorForFree(mentorId);
+  }
 }

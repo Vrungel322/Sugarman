@@ -87,6 +87,19 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   @BindView(R.id.llVideos) LinearLayout llVideos;
   @BindView(R.id.rvVideos) RecyclerView mRecyclerViewVideos;
   private String mFreeSku;
+  IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = (result, purchase) -> {
+    Timber.e("mFreeSku mPurchaseFinishedListener " + mFreeSku);
+
+    if (result.isFailure()) {
+      // Handle error
+      return;
+    } else if (purchase.getSku().equals(mFreeSku)) {
+      consumeItem();
+      Timber.e(mHelper.getMDataSignature());
+    } else {
+      Timber.e(result.getMessage());
+    }
+  };
   private MentorEntity mMentorEntity;
   //IabHelper.OnConsumeMultiFinishedListener mOnConsumeMultiFinishedListener = (purchases, results) -> {
   //
@@ -110,19 +123,6 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
           }
         }
       };
-  IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = (result, purchase) -> {
-    Timber.e("mFreeSku mPurchaseFinishedListener " + mFreeSku);
-
-    if (result.isFailure()) {
-      // Handle error
-      return;
-    } else if (purchase.getSku().equals(mFreeSku)) {
-      consumeItem();
-      Timber.e(mHelper.getMDataSignature());
-    } else {
-      Timber.e(result.getMessage());
-    }
-  };
   private MentorsFriendAdapter mMentorsFriendAdapter;
   private MentorsCommentsAdapter mMentorsCommentsAdapter;
   private MentorsVideosAdapter mMentorsVideosAdapter;
@@ -152,7 +152,12 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
 
     ratingBar.setRating(Float.valueOf(mMentorEntity.getMentorRating()));
     mentorName.setText(mMentorEntity.getMentorName());
-    mentorPrice.setText(getResources().getString(R.string.apply_now) + " 2$");
+    if (mMentorEntity.getPrice() != null) {
+      mentorPrice.setText(
+          getResources().getString(R.string.apply_now) + " " + mMentorEntity.getPrice() + "$");
+    } else {
+      mentorPrice.setText(getResources().getString(R.string.apply_now) + " 2$");
+    }
 
     List<PieEntry> entries = new ArrayList<>();
 
@@ -187,12 +192,10 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
         && mMentorEntity.getWeeklySuccessRate() == 0
         && mMentorEntity.getMonthlySuccessRate() == 0));
 
-      setSuccessRateData(successRateToday, mMentorEntity.getDailySuccessRate(), tvSuccessRateToday);
-      setSuccessRateData(successRateWeekly, mMentorEntity.getWeeklySuccessRate(),
-          tvSuccessRateWeek);
-      setSuccessRateData(successRateMonthly, mMentorEntity.getMonthlySuccessRate(),
-          tvSuccessRateMonth);
-
+    setSuccessRateData(successRateToday, mMentorEntity.getDailySuccessRate(), tvSuccessRateToday);
+    setSuccessRateData(successRateWeekly, mMentorEntity.getWeeklySuccessRate(), tvSuccessRateWeek);
+    setSuccessRateData(successRateMonthly, mMentorEntity.getMonthlySuccessRate(),
+        tvSuccessRateMonth);
 
     LayoutInflater vi =
         (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -360,7 +363,12 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   }
 
   @OnClick(R.id.ivSubscribeMentor) public void ivSubscribeMentorClicked() {
-    mPresenter.getNextFreeSku();
+    Timber.e("ivSubscribeMentorClicked mentorsPrice: " + mMentorEntity.getPrice());
+    if (mMentorEntity.getPrice() != null && mMentorEntity.getPrice().equals(0f)) {
+      mPresenter.purchaseMentorForFree(mMentorEntity.getMentorId());
+    } else {
+      mPresenter.getNextFreeSku();
+    }
   }
 
   @Override public void startPurchaseFlow(String freeSku) {

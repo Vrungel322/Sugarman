@@ -29,6 +29,7 @@ import lombok.Setter;
   @Getter @Setter @SerializedName("assessment_of_week") private float weeklySuccessRate;
   @Getter @Setter @SerializedName("assessment_of_month") private float monthlySuccessRate;
   @Getter @Setter @SerializedName("is_already_owned") private boolean isOwned;
+  @Getter @Setter private Float price;
 
   protected MentorEntity(Parcel in) {
     mentorId = in.readString();
@@ -45,6 +46,11 @@ import lombok.Setter;
     weeklySuccessRate = in.readFloat();
     monthlySuccessRate = in.readFloat();
     isOwned = in.readByte() != 0;
+    if (in.readByte() == 0) {
+      price = null;
+    } else {
+      price = in.readFloat();
+    }
   }
 
   public static final Creator<MentorEntity> CREATOR = new Creator<MentorEntity>() {
@@ -76,5 +82,11 @@ import lombok.Setter;
     parcel.writeFloat(weeklySuccessRate);
     parcel.writeFloat(monthlySuccessRate);
     parcel.writeByte((byte) (isOwned ? 1 : 0));
+    if (price == null) {
+      parcel.writeByte((byte) 0);
+    } else {
+      parcel.writeByte((byte) 1);
+      parcel.writeFloat(price);
+    }
   }
 }
