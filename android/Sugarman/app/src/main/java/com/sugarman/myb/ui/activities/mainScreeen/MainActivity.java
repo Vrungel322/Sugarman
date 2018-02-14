@@ -1,6 +1,8 @@
 package com.sugarman.myb.ui.activities.mainScreeen;
 
 import android.Manifest;
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -538,6 +540,15 @@ public class MainActivity extends GetUserInfoActivity
     setContentView(R.layout.activity_main);
     super.onCreate(savedInstanceState);
     Timber.e("deepLinks onCreate");
+
+    //AccountManager accManager = AccountManager.get(getApplicationContext());
+    //Account acc[] = accManager.getAccountsByType("com.google");
+    //int accCount = acc.length;
+    //
+    //for(int i = 0; i < accCount; i++)
+    //{
+    //  Timber.e(acc[i].name);
+    //}
 
     saveIMEI();
 
