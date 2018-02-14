@@ -82,8 +82,8 @@
 
                     <ImageView
                         android:id="@+id/ivCancelSubscription"
-                        android:layout_width="47dp"
-                        android:layout_height="47dp"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
                         android:padding="9dp"
                         android:layout_gravity="center"
                         android:scaleType="fitCenter"
