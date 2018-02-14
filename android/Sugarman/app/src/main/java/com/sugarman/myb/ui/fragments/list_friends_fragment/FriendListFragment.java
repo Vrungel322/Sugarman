@@ -21,12 +21,14 @@ import com.facebook.share.model.GameRequestContent;
 import com.facebook.share.widget.GameRequestDialog;
 import com.sugarman.myb.R;
 import com.sugarman.myb.adapters.FriendsAdapter;
+import com.sugarman.myb.api.models.responses.Member;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.base.BasicFragment;
 import com.sugarman.myb.constants.DialogConstants;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.utils.DeviceHelper;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import timber.log.Timber;
 
@@ -66,6 +68,8 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
   private boolean createGroupFlow;
   private boolean editGroupFlow;
   private boolean inviteToShopFlow;
+  private List<Member> mPendingsMembers = new ArrayList<>();
+  private List<Member> mAddedMembers = new ArrayList<>();
 
   @SuppressLint("ValidFragment") public FriendListFragment(int layoutId) {
     super(layoutId);
@@ -235,25 +239,50 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
 
   @Override public void setFriendsFb(List<FacebookFriend> friends) {
     showCounters(friends, tvTotalFbCount, tvInAppFbCount);
-    friendsAdapter.setValue(friends);
+    if (!mPendingsMembers.isEmpty() && !mAddedMembers.isEmpty()) {
+      friendsAdapter.setValue(mPresenter.checkForUniqueMembers(mPendingsMembers, mAddedMembers, friends));
+    }
+    else {
+      friendsAdapter.setValue(friends);
+    }
   }
 
   @Override public void setFriendsVk(List<FacebookFriend> friends) {
     showCounters(friends, tvTotalVkCount, tvInAppVkCount);
-    friendsAdapter.setValue(friends);
+    if (!mPendingsMembers.isEmpty() && !mAddedMembers.isEmpty()) {
+      friendsAdapter.setValue(mPresenter.checkForUniqueMembers(mPendingsMembers, mAddedMembers, friends));
+    }
+    else {
+      friendsAdapter.setValue(friends);
+    }
   }
 
-  @Override public void setFriendsPh(List<FacebookFriend> facebookFriends) {
-    showCounters(facebookFriends, tvTotalPhCount, tvInAppPhCount);
-    friendsAdapter.setValue(facebookFriends);
+  @Override public void setFriendsPh(List<FacebookFriend> friends) {
+    showCounters(friends, tvTotalPhCount, tvInAppPhCount);
+    if (!mPendingsMembers.isEmpty() && !mAddedMembers.isEmpty()) {
+      friendsAdapter.setValue(mPresenter.checkForUniqueMembers(mPendingsMembers, mAddedMembers, friends));
+    }
+    else {
+      friendsAdapter.setValue(friends);
+    }
   }
 
   @Override public void setFriendsFilter(List<FacebookFriend> friends) {
-    friendsAdapter.setValue(friends);
+    if (!mPendingsMembers.isEmpty() && !mAddedMembers.isEmpty()) {
+      friendsAdapter.setValue(mPresenter.checkForUniqueMembers(mPendingsMembers, mAddedMembers, friends));
+    }
+    else {
+      friendsAdapter.setValue(friends);
+    }
   }
 
   @Override public void setFriends(List<FacebookFriend> friends) {
-    friendsAdapter.setValue(friends);
+    if (!mPendingsMembers.isEmpty() && !mAddedMembers.isEmpty()) {
+      friendsAdapter.setValue(mPresenter.checkForUniqueMembers(mPendingsMembers, mAddedMembers, friends));
+    }
+    else {
+      friendsAdapter.setValue(friends);
+    }
   }
 
   @Override public void onGetFriendInfoFailure(String message) {
@@ -318,5 +347,14 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
 
   @Override public void setUpUI() {
 
+  }
+
+  public void checkForUniqueMembers(Member[] pendingsMembers, Member[] addedMembers) {
+    Timber.e("checkForUniqueMembers pendingsMembers: "
+        + pendingsMembers.length
+        + " addedMembers:"
+        + addedMembers.length);
+    Collections.addAll(mPendingsMembers, pendingsMembers);
+    Collections.addAll(mAddedMembers, addedMembers);
   }
 }

@@ -1,6 +1,7 @@
 package com.sugarman.myb.ui.fragments.list_friends_fragment;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import com.arellomobile.mvp.InjectViewState;
 import com.facebook.AccessToken;
 import com.facebook.FacebookRequestError;
@@ -8,6 +9,7 @@ import com.facebook.GraphRequest;
 import com.facebook.HttpMethod;
 import com.google.gson.Gson;
 import com.sugarman.myb.App;
+import com.sugarman.myb.api.models.responses.Member;
 import com.sugarman.myb.api.models.responses.Phones;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriendResponse;
@@ -357,5 +359,44 @@ import timber.log.Timber;
           getViewState().setFriendsFilter(facebookFriends);
         });
     addToUnsubscription(subscription);
+  }
+
+  public List<FacebookFriend> checkForUniqueMembers(List<Member> pendingsMembers, List<Member> addedMembers,
+      List<FacebookFriend> friends) {
+    Timber.e("checkForUnique pendingsMembers: "+ pendingsMembers.size() + " addedMembers:" + addedMembers.size());
+    for (int i = 0; i < friends.size(); i++) {
+      for (Member member : addedMembers) {
+        if (member.getPhoneNumber() == null) member.setPhoneNumber("");
+        if (member.getFbid() == null) member.setFbid("");
+        if (member.getVkId() == null) member.setVkId("");
+        if (TextUtils.equals(member.getName(), friends.get(i).getName())
+            || member.getFbid()
+            .equals(friends.get(i).getId())
+            || member.getVkId().equals(friends.get(i).getId())
+            || member.getPhoneNumber().equals(friends.get(i).getId())) {
+          Timber.e("checkForUniqueMembers 1");
+
+          friends.get(i).setAdded(true);
+        }
+      }
+
+      for (Member member : pendingsMembers) {
+        if (member.getPhoneNumber() == null) member.setPhoneNumber("");
+        if (member.getFbid() == null) member.setFbid("");
+        if (member.getVkId() == null) member.setVkId("");
+        //if (TextUtils.equals(member.getName(), friends.get(i).getName())) {
+        if (TextUtils.equals(member.getName(), friends.get(i).getName())
+            || member.getFbid()
+            .equals(friends.get(i).getId())
+            || member.getVkId().equals(friends.get(i).getId())
+            || member.getPhoneNumber().equals(friends.get(i).getId())) {
+          Timber.e("checkForUniqueMembers 2");
+
+          friends.get(i).setPending(true);
+        }
+      }
+      Timber.e(String.valueOf(friends.get(i).isAdded()));
+    }
+    return friends;
   }
 }

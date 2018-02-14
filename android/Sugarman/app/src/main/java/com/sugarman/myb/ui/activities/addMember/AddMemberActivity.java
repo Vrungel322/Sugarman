@@ -248,6 +248,7 @@ public class AddMemberActivity extends BaseActivity
       }
     });
 
+    mFriendListFragment.checkForUniqueMembers(IntentExtractorHelper.getPendings(getIntent()),IntentExtractorHelper.getMembers(getIntent()));
     //===============================================================================================
 
     if (!SharedPreferenceHelper.getFbId().equals("none")) {
