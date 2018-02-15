@@ -115,6 +115,7 @@ public class MembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.ViewHold
         boolean isPending = friend.isPending();
         boolean isAdded = friend.isAdded();
         boolean isSelected = friend.isSelected();
+        Timber.e("onBindViewHolder " + name + " isPending:"+isPending);
         if (isPending || isAdded || isSelected) {
           if (isPending) membersHolder.tvActionBtn.setText(pending);
           if (isAdded) membersHolder.tvActionBtn.setText(added);

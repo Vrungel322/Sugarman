@@ -71,11 +71,14 @@ import com.sugarman.myb.ui.activities.editProfile.EditProfileActivity;
 import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.ui.dialogs.sendVkInvitation.SendVkInvitationDialog;
+import com.sugarman.myb.ui.fragments.list_friends_fragment.FriendListFragment;
+import com.sugarman.myb.ui.fragments.list_friends_fragment.IFriendListFragmentListener;
 import com.sugarman.myb.ui.views.MaskImage;
 import com.sugarman.myb.utils.AnalyticsHelper;
 import com.sugarman.myb.utils.BitmapUtils;
 import com.sugarman.myb.utils.ContactsHelper;
 import com.sugarman.myb.utils.DeviceHelper;
+import com.sugarman.myb.utils.IntentExtractorHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.apps_Fly.AppsFlyerEventSender;
 import com.vk.sdk.VKSdk;
@@ -108,9 +111,9 @@ public class CreateGroupActivity extends BaseActivity
   private final List<FacebookFriend> members = new ArrayList<>();
   public CheckPhonesClient mCheckPhoneClient;
   public CheckVkClient mCheckVkClient;
-  @BindView(R.id.fb_filter) ImageView fbFilter;
-  @BindView(R.id.vk_filter) ImageView vkFilter;
-  @BindView(R.id.ph_filter) ImageView phFilter;
+  @BindView(R.id.fbFilter) ImageView fbFilter;
+  @BindView(R.id.vkFilter) ImageView vkFilter;
+  @BindView(R.id.phFilter) ImageView phFilter;
   @BindView(R.id.pb_spinner) RelativeLayout pb;
   @BindView(R.id.tvInAppFbCount) TextView tvInAppFbCount;
   @BindView(R.id.tvTotalFbCount) TextView tvTotalFbCount;
@@ -210,6 +213,9 @@ public class CreateGroupActivity extends BaseActivity
   // number of total count/ number of count people with app BY VK
   private int numberOfMemberTotalAppVk;
   private int numberOfMemberWithAppVk;
+  private FriendListFragment mFriendListFragment;
+  private boolean flowByFragmentForVk;
+  private ArrayList<FacebookFriend> mIntiteByVk = new ArrayList<>();
 
   @Override protected void onDestroy() {
     super.onDestroy();
@@ -228,6 +234,39 @@ public class CreateGroupActivity extends BaseActivity
 
       }
     });
+
+    //-----------------------------------------------------------------------------------------------
+    //Если этот код раскоментирован то работает новый фрагмент, иначе все по старому
+    //mFriendListFragment = FriendListFragment.newInstance(R.layout.fragment_friend_list_test);
+    mFriendListFragment = FriendListFragment.newInstance(R.layout.activity_create_group_v2,
+        IntentExtractorHelper.getGroupName(getIntent()));
+    getSupportFragmentManager().beginTransaction()
+        .add(R.id.llContainer, mFriendListFragment)
+        .commit();
+    mFriendListFragment.setListener(new IFriendListFragmentListener() {
+      @Override public void createGroup(List<FacebookFriend> friendList, String groupName) {
+        //mPresenter.sendInvitationInVk(friendList,getString(R.string.invite_message));
+        mIntiteByVk.clear();
+        for (FacebookFriend f : friendList) {
+          if (f.getSocialNetwork().equals("vk")) {
+            mIntiteByVk.addAll(friendList);
+            flowByFragmentForVk = true;
+          }
+        }
+        mCreateGroupClient.createGroup(friendList, groupName, selectedFile,
+            CreateGroupActivity.this);
+      }
+
+      @Override public void editGroup(List<FacebookFriend> membersToSendByEditing, String string) {
+        //Will be filled only on AddMembersActivity
+      }
+
+      @Override public void inviteFriendToShop(List<FacebookFriend> friendList) {
+        //Will be filled only on ShopInviteFriendsActivity
+      }
+    });
+
+    //===============================================================================================
     Timber.e("VK TOKEN " + SharedPreferenceHelper.getVkToken());
 
     if (!SharedPreferenceHelper.getFacebookId().equals("none")) {
@@ -404,7 +443,7 @@ public class CreateGroupActivity extends BaseActivity
     AnalyticsHelper.reportInvite();
   }
 
-  @OnClick(R.id.fb_filter) public void showFbFriends() {
+  @OnClick(R.id.fbFilter) public void showFbFriends() {
     if (isFbLoggedIn) {
       if (!currentFilter.equals("fb")) {
         filtered.clear();
@@ -449,7 +488,7 @@ public class CreateGroupActivity extends BaseActivity
     }
   }
 
-  @OnClick(R.id.vk_filter) public void showVkFriends() {
+  @OnClick(R.id.vkFilter) public void showVkFriends() {
     if (isVkLoggedIn) {
       if (!currentFilter.equals("vk")) {
         filtered.clear();
@@ -493,7 +532,7 @@ public class CreateGroupActivity extends BaseActivity
     }
   }
 
-  @OnClick(R.id.ph_filter) public void showPhFriends() {
+  @OnClick(R.id.phFilter) public void showPhFriends() {
     if (!currentFilter.equals("ph")) {
       filtered.clear();
 
@@ -618,8 +657,11 @@ public class CreateGroupActivity extends BaseActivity
     switch (id) {
       case R.id.iv_cross:
         Timber.e("iv_cross");
-
-        AppsFlyerEventSender.sendEvent("af_cancel_group_creation");
+        Map<String, Object> eventValue = new HashMap<>();
+        eventValue.put(AFInAppEventParameterName.LEVEL, 9);
+        eventValue.put(AFInAppEventParameterName.SCORE, 100);
+        AppsFlyerLib.getInstance()
+            .trackEvent(getApplicationContext(), "af_cancel_group_creation", eventValue);
 
         setResult(RESULT_CANCELED);
         hideProgress();
@@ -628,10 +670,13 @@ public class CreateGroupActivity extends BaseActivity
         break;
       case R.id.iv_apply:
         DeviceHelper.hideKeyboard(this);
-
-        AppsFlyerEventSender.sendEvent("af_create_group_inside");
-
-        checkFilledData();
+        Map<String, Object> eventValues = new HashMap<>();
+        eventValues.put(AFInAppEventParameterName.LEVEL, 9);
+        eventValues.put(AFInAppEventParameterName.SCORE, 100);
+        AppsFlyerLib.getInstance()
+            .trackEvent(getApplicationContext(), "af_create_group_inside", eventValues);
+        //checkFilledData();
+        mFriendListFragment.startCreateGroupFlow();
         break;
       case R.id.ll_add_photo_container:
         tryChooseGroupAvatar();
@@ -782,6 +827,7 @@ public class CreateGroupActivity extends BaseActivity
   }
 
   @Override public void onApiJoinGroupSuccess(Tracking result) {
+    Timber.e("onApiJoinGroupSuccess "+result.getGroupOnwerName());
     //closeProgressFragment();
     hideProgress();
     int activeTrackings = SharedPreferenceHelper.getActiveTrackingsCreated();
@@ -794,7 +840,6 @@ public class CreateGroupActivity extends BaseActivity
 
     List<String> idsFb = new ArrayList<>();
     List<FacebookFriend> intiteByPh = new ArrayList<>();
-    ArrayList<FacebookFriend> intiteByVk = new ArrayList<>();
     for (FacebookFriend friend : friendsAdapter.getSelectedFriends()) {
       if (friend.getSocialNetwork().equals("fb")) {
         idsFb.add(friend.getId());
@@ -803,25 +848,28 @@ public class CreateGroupActivity extends BaseActivity
         intiteByPh.add(friend);
       }
       if (friend.getSocialNetwork().equals("vk")) {
-        intiteByVk.add(friend);
+        mIntiteByVk.add(friend);
       }
     }
-    if (!intiteByVk.isEmpty()) {
+    if (!mIntiteByVk.isEmpty() || flowByFragmentForVk) {
       //finish();
+      Timber.e("onApiJoinGroupSuccess  0");
       SendVkInvitationDialog sendVkInvitationDialog =
-          SendVkInvitationDialog.newInstance(intiteByVk, (Dialog dialog) -> {
+          SendVkInvitationDialog.newInstance(mIntiteByVk, (Dialog dialog) -> {
+            Timber.e("onApiJoinGroupSuccess vk listener");
             dialog.dismiss();
             finish();
           });
       sendVkInvitationDialog.show(getFragmentManager(), "SendVkInvitationDialog");
     } else {
-      Timber.e("1");
+      Timber.e("onApiJoinGroupSuccess  1");
       finish();
     }
-    if (intiteByVk.isEmpty() && idsFb.isEmpty()) {
-      Timber.e("2");
+    if (!flowByFragmentForVk){
+    if ((mIntiteByVk.isEmpty() && idsFb.isEmpty()) ) {
+      Timber.e("onApiJoinGroupSuccess 2");
       finish();
-    }
+    }}
   }
 
   @Override public void onApiJoinGroupFailure(String message) {

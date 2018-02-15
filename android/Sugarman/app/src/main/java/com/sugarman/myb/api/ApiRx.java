@@ -144,4 +144,9 @@ public interface ApiRx {
       @Part("tracking_id") String trackingId);
 
   @GET("v1/ab_testing") Observable<Response<ABTesting>> fetchAorBtesting();
+
+  @POST("v3/check_vk") Observable<Response<CheckVkResponse>> checkVks( @Body CheckVkRequest request);
+
+  @POST("")
+  Observable<Response<Void>> purchaseMentorForFree(String mentorId);
 }

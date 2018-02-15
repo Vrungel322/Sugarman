@@ -115,6 +115,33 @@ public class FriendsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         friendsHolder.tvUserName.setTextColor(colorGrey);
         //friendsHolder.ivAvatar.setBackgroundColor(colorGrey);
       }
+
+      boolean isPending = friend.isPending();
+      boolean isAdded = friend.isAdded();
+      boolean isSelected = friend.isSelected();
+      if (isPending || isAdded || isSelected) {
+        if (isPending) {
+          friendsHolder.tvActionBtn.setText(
+              friendsHolder.tvActionBtn.getContext().getString(R.string.pending));
+          friendsHolder.container.setEnabled(false);
+        }
+        if (isAdded) {
+          friendsHolder.tvActionBtn.setText(
+              friendsHolder.tvActionBtn.getContext().getString(R.string.added));
+          friendsHolder.container.setEnabled(false);
+        }
+        if (isSelected) {
+          friendsHolder.tvActionBtn.setText(remove);
+        }
+        //friendsHolder.tvActionBtn.setBackgroundResource(R.drawable.gray_double_stroke_background);
+        friendsHolder.tvActionBtn.setBackgroundResource(R.drawable.remove);
+        friendsHolder.tvActionBtn.setTextColor(colorRed);
+      } else {
+        friendsHolder.tvActionBtn.setText(add);
+        //friendsHolder.tvActionBtn.setBackgroundResource(R.drawable.dark_gray_double_stroke_background);
+        friendsHolder.tvActionBtn.setBackgroundResource(R.drawable.add_and_remove);
+        friendsHolder.tvActionBtn.setTextColor(colorWhite);
+      }
     }
   }
 
@@ -223,13 +250,14 @@ public class FriendsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private final ImageView ivAvatar;
     private final ImageView ivIndicatorInvitable;
     private final ImageView ivSocialNetwork;
+    private final View container;
 
     FriendsHolder(View itemView, ItemUsersActionListener clickItemListener) {
       super(itemView);
 
       mActionItemListener = new WeakReference<>(clickItemListener);
 
-      View container = itemView.findViewById(R.id.ll_friend_container);
+      container = itemView.findViewById(R.id.ll_friend_container);
       ivIndicatorInvitable = (ImageView) itemView.findViewById(R.id.iv_indicataor_invitable);
       tvUserName = (TextView) itemView.findViewById(R.id.tv_user_name);
       tvActionBtn = (TextView) itemView.findViewById(R.id.tv_remove_add);

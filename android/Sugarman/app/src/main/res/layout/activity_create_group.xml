@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:background="#f5f5f5"
     >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:focusableInTouchMode="true"
-        android:orientation="vertical"
-        >
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -61,7 +57,18 @@
                 />
 
         </LinearLayout>
+    <FrameLayout
+        android:id="@+id/llContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        >
         <View
             android:layout_width="match_parent"
             android:layout_height="2px"
@@ -171,7 +178,7 @@
                     >
 
                     <ImageView
-                        android:id="@+id/fb_filter"
+                        android:id="@+id/fbFilter"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:alpha="0.5"
@@ -229,7 +236,7 @@
                         </LinearLayout>
                     </LinearLayout>
                     <ImageView
-                        android:id="@+id/vk_filter"
+                        android:id="@+id/vkFilter"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:layout_marginLeft="10dp"
@@ -288,7 +295,7 @@
                         </LinearLayout>
                     </LinearLayout>
                     <ImageView
-                        android:id="@+id/ph_filter"
+                        android:id="@+id/phFilter"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:layout_marginLeft="10dp"
@@ -462,5 +469,5 @@
         android:id="@+id/layout_conn_error"
         layout="@layout/layout_connection_error"
         android:visibility="gone" />
-
-</FrameLayout>
+    </FrameLayout>
+</LinearLayout>

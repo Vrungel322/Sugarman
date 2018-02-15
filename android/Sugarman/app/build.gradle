@@ -140,6 +140,9 @@ dependencies {
   //pie chart
   compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
 
+  //firebase db
+  compile 'com.google.firebase:firebase-database:10.0.1'
+
   compile 'com.android.support:support-compat:25.1.1'
   compile 'com.daimajia.easing:library:2.0@aar'
   compile 'com.daimajia.androidanimations:library:2.3@aar'

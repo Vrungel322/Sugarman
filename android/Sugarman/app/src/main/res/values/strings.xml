@@ -336,7 +336,7 @@
   <string name="delete_user_from_group">Do you really want to delete user?</string>
   <string name="slots_error">You can have only 3 mentors</string>
 
-  
+
   <string name="apply_now">Apply now for</string>
   <string name="type_your_comment">Type your comment here...</string>
   <string name="mentors">Mentors</string>
@@ -348,7 +348,7 @@
   <string name="calories">CALORIES TODAY</string>
   <string name="distance">KILOMETERS TODAY</string>
   <string name="steps_caps">STEPS TODAY</string>
-  
+
   <!-- Country Codes -->
   <string-array name="CountryCodes">
     <item>93,AF</item>

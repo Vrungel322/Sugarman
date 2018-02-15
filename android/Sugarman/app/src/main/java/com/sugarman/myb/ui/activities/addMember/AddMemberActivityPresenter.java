@@ -35,7 +35,7 @@ import rx.Subscription;
         .subscribe(facebookFriends -> {
           getViewState().fillListByCachedData(facebookFriends);
           getViewState().hideProgress();
-        }, Throwable::printStackTrace);
+        },Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 

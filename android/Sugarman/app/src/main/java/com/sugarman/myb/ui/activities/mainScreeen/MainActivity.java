@@ -22,7 +22,6 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
-import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -510,7 +509,7 @@ public class MainActivity extends GetUserInfoActivity
         }
       };
 
-  public static synchronized String getAdId (Context context) {
+  public static synchronized String getAdId(Context context) {
 
     if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.KITKAT) {
       return null;
@@ -527,10 +526,10 @@ public class MainActivity extends GetUserInfoActivity
       e.printStackTrace();
     }
     String advertId = null;
-    try{
+    try {
       advertId = idInfo.getId();
       Timber.e("Avert " + advertId);
-    }catch (NullPointerException e){
+    } catch (NullPointerException e) {
       e.printStackTrace();
     }
 
@@ -552,7 +551,6 @@ public class MainActivity extends GetUserInfoActivity
     //}
 
     saveIMEI();
-
 
     Resources resources = getResources();
     img = new ImageToDraw(MainActivity.this);
@@ -858,8 +856,6 @@ public class MainActivity extends GetUserInfoActivity
 
             mPresenter.sendContacts(list);
           });
-
-
         }
         break;
 
@@ -869,8 +865,7 @@ public class MainActivity extends GetUserInfoActivity
   }
 
   private void saveIMEI() {
-    String androidId = Settings.Secure.getString(getContentResolver(),
-        Settings.Secure.ANDROID_ID);
+    String androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
     Timber.e("Secure ID " + androidId);
     SharedPreferenceHelper.setIMEI(androidId);
@@ -1145,7 +1140,8 @@ public class MainActivity extends GetUserInfoActivity
     int id = v.getId();
     switch (id) {
       case R.id.iv_avatar:
-
+        List<String> toCrash = new ArrayList<>();
+        toCrash.get(0);
         openProfileActivity();
         //DialogRescueBoldMan.newInstance(myTrackings[0],DialogRescueBoldMan.MONEY).show(getFragmentManager(),"DialogRescueBoldMan");
         //DialogRescueGirl.newInstance(myTrackings[0]).show(getFragmentManager(), "DialogRescueGirl");
@@ -1416,8 +1412,6 @@ public class MainActivity extends GetUserInfoActivity
         break;
     }
   }
-
-
 
   @Subscribe public void onEvent(DebugRealStepAddedEvent event) {
     App.appendLog(Constants.TAG_TEST_GO_TO_NEXT_DAY,

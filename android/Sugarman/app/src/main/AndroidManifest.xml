@@ -3,20 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.sugarman.myb">
 
-  <uses-permission android:name="android.permission.INTERNET"/>
-  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-  <uses-permission android:name="android.permission.VIBRATE"/>
-  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-  <uses-permission android:name="android.permission.QUICKBOOT_POWERON"/>
-  <uses-permission android:name="android.permission.WAKE_LOCK"/>
-  <uses-permission android:name="android.permission.READ_CONTACTS"/>
-  <uses-permission android:name="android.permission.CAMERA"/>
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  <uses-permission android:name="android.permission.VIBRATE" />
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+  <uses-permission android:name="android.permission.QUICKBOOT_POWERON" />
+  <uses-permission android:name="android.permission.WAKE_LOCK" />
+  <uses-permission android:name="android.permission.READ_CONTACTS" />
+  <uses-permission android:name="android.permission.CAMERA" />
   <uses-permission android:name="android.permission.READ_PHONE_STATE" />
   <uses-permission android:name="com.android.vending.BILLING" />
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
 
   <!--
      <uses-feature
@@ -38,13 +37,13 @@
       tools:replace="android:allowBackup,android:supportsRtl">
     <meta-data
         android:name="com.google.android.gms.version"
-        android:value="@integer/google_play_services_version"/>
+        android:value="@integer/google_play_services_version" />
     <meta-data
         android:name="com.facebook.sdk.ApplicationId"
-        android:value="@string/facebook_app_id"/>
+        android:value="@string/facebook_app_id" />
     <meta-data
         android:name="io.fabric.ApiKey"
-        android:value="b8561e734f90816ed452395df5e20583a37df1be"/>
+        android:value="b8561e734f90816ed452395df5e20583a37df1be" />
 
     <provider
         android:name=".utils.GenericFileProvider"
@@ -53,7 +52,7 @@
         android:grantUriPermissions="true">
       <meta-data
           android:name="android.support.FILE_PROVIDER_PATHS"
-          android:resource="@xml/provider_paths"/>
+          android:resource="@xml/provider_paths" />
     </provider>
     <provider
         android:name="android.support.v4.content.FileProvider"
@@ -62,185 +61,190 @@
         android:grantUriPermissions="true">
       <meta-data
           android:name="android.support.FILE_PROVIDER_PATHS"
-          android:resource="@xml/file_paths"/>
+          android:resource="@xml/file_paths" />
     </provider>
     <provider
         android:name="com.facebook.FacebookContentProvider"
         android:authorities="com.facebook.app.FacebookContentProvider736895943117763"
-        android:exported="true"/>
+        android:exported="true" />
 
     <activity
         android:name="com.vk.sdk.VKServiceActivity"
         android:label="ServiceActivity"
-        android:theme="@style/VK.Transparent"/>
+        android:theme="@style/VK.Transparent" />
     <activity
         android:name=".ui.activities.splash.SplashActivity"
         android:screenOrientation="portrait"
         android:theme="@style/SugarmanBackgroundActivityTheme">
       <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
+        <action android:name="android.intent.action.MAIN" />
 
-        <category android:name="android.intent.category.LAUNCHER"/>
+        <category android:name="android.intent.category.LAUNCHER" />
       </intent-filter>
     </activity>
     <activity
         android:name=".ui.activities.LoginActivity"
         android:screenOrientation="portrait"
-        android:theme="@style/SugarmanBackgroundActivityTheme"/>
+        android:theme="@style/SugarmanBackgroundActivityTheme" />
     <activity
         android:name=".ui.activities.SettingsActivity"
-        android:screenOrientation="portrait"/>
+        android:screenOrientation="portrait" />
     <activity
         android:name=".ui.activities.mainScreeen.MainActivity"
         android:screenOrientation="portrait"
-        android:theme="@style/SugarmanBackgroundActivityTheme"/>
+        android:theme="@style/SugarmanBackgroundActivityTheme" />
     <activity
         android:name=".ui.activities.profile.ProfileActivity"
         android:screenOrientation="portrait"
-        android:theme="@style/SugarmanBackgroundActivityTheme"/>
+        android:theme="@style/SugarmanBackgroundActivityTheme" />
     <activity
         android:name=".ui.activities.HighScoreActivity"
         android:screenOrientation="portrait"
-        android:theme="@style/SugarmanBackgroundActivityTheme"/>
+        android:theme="@style/SugarmanBackgroundActivityTheme" />
     <activity
         android:name=".ui.activities.InvitesActivity"
         android:screenOrientation="portrait"
-        android:theme="@style/SugarmanBackgroundActivityTheme"/>
+        android:theme="@style/SugarmanBackgroundActivityTheme" />
     <activity
         android:name=".ui.activities.RequestsActivity"
         android:screenOrientation="portrait"
-        android:theme="@style/SugarmanBackgroundActivityTheme"/>
+        android:theme="@style/SugarmanBackgroundActivityTheme" />
     <activity
         android:name=".ui.activities.createGroup.CreateGroupActivity"
         android:screenOrientation="portrait"
-        android:theme="@style/SugarmanActivityTheme"/>
+        android:theme="@style/SugarmanActivityTheme" />
     <activity
         android:name=".ui.activities.inviteForRescue.InviteForRescueActivity"
         android:screenOrientation="portrait"
-        android:theme="@style/SugarmanActivityTheme"/>
+        android:theme="@style/SugarmanActivityTheme" />
     <activity
         android:name=".ui.activities.SearchGroupsActivity"
         android:screenOrientation="portrait"
-        android:theme="@style/SugarmanActivityTheme"/>
+        android:theme="@style/SugarmanActivityTheme" />
     <activity
         android:name=".ui.activities.CongratulationsActivity"
         android:screenOrientation="portrait"
-        android:theme="@style/SugarmanBackgroundActivityTheme"/>
+        android:theme="@style/SugarmanBackgroundActivityTheme" />
     <activity
         android:name=".ui.activities.DailyActivity"
         android:screenOrientation="portrait"
-        android:theme="@style/SugarmanBackgroundActivityTheme"/>
+        android:theme="@style/SugarmanBackgroundActivityTheme" />
     <activity
         android:name=".ui.activities.FailedActivity"
         android:screenOrientation="portrait"
-        android:theme="@style/SugarmanBackgroundActivityTheme"/>
+        android:theme="@style/SugarmanBackgroundActivityTheme" />
     <activity
         android:name=".ui.activities.groupDetails.GroupDetailsActivity"
         android:screenOrientation="portrait"
         android:theme="@style/SugarmanBackgroundActivityTheme"
-        android:windowSoftInputMode="adjustPan"/>
+        android:windowSoftInputMode="adjustPan" />
     <activity
         android:name=".ui.activities.addMember.AddMemberActivity"
         android:screenOrientation="portrait"
-        android:theme="@style/SugarmanActivityTheme"/>
+        android:theme="@style/SugarmanActivityTheme" />
     <activity
         android:name=".ui.activities.StatsTrackingActivity"
         android:screenOrientation="portrait"
-        android:theme="@style/StatsActivityTheme"/>
+        android:theme="@style/StatsActivityTheme" />
     <activity
         android:name=".ui.activities.IntroActivity"
         android:screenOrientation="portrait"
-        android:theme="@style/SugarmanBackgroundActivityTheme"/>
+        android:theme="@style/SugarmanBackgroundActivityTheme" />
     <activity
         android:name=".ui.activities.MyStatsActivity"
         android:screenOrientation="portrait"
-        android:theme="@style/StatsActivityTheme"/>
+        android:theme="@style/StatsActivityTheme" />
 
     <service
         android:name=".services.FcmListenerService"
         android:exported="true">
       <intent-filter>
-        <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+        <action android:name="com.google.firebase.MESSAGING_EVENT" />
       </intent-filter>
     </service>
     <service
         android:name=".services.InstanceIDListenerService"
         android:exported="false">
       <intent-filter>
-        <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+        <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
       </intent-filter>
     </service>
     <service
         android:name=".services.StepDetectorService"
-        android:enabled="true"/>
+        android:enabled="true" />
     <service
         android:name=".services.MasterStepDetectorService"
-        android:enabled="true"/>
+        android:enabled="true" />
 
     <receiver
         android:name="com.appsflyer.MultipleInstallBroadcastReceiver"
         android:exported="true">
       <intent-filter>
-        <action android:name="com.android.vending.INSTALL_REFERRER"/>
+        <action android:name="com.android.vending.INSTALL_REFERRER" />
       </intent-filter>
     </receiver>
     <receiver android:name=".receivers.BootReceiver">
       <intent-filter>
-        <action android:name="android.intent.action.BOOT_COMPLETED"/>
-        <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
+        <action android:name="android.intent.action.BOOT_COMPLETED" />
+        <action android:name="android.intent.action.QUICKBOOT_POWERON" />
       </intent-filter>
     </receiver>
-    <receiver android:name=".receivers.SwitchToNextDayReceiver"/>
+    <receiver android:name=".receivers.SwitchToNextDayReceiver" />
     <receiver android:name=".receivers.NetworkConnectionReceiver">
       <intent-filter>
-        <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
-        <action android:name="android.net.wifi.WIFI_STATE_CHANGED"/>
+        <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+        <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
       </intent-filter>
     </receiver>
 
     <activity
         android:name=".ui.activities.shop.ShopActivity"
-        android:screenOrientation="portrait"/>
+        android:screenOrientation="portrait" />
     <activity
         android:name=".ui.activities.productDetail.ProductDetailsActivity"
-        android:screenOrientation="portrait"/>
+        android:screenOrientation="portrait" />
     <activity
         android:name=".ui.activities.checkout.CheckoutActivity"
-        android:screenOrientation="portrait"/>
+        android:screenOrientation="portrait" />
     <activity
         android:name=".ui.activities.shopInviteFriend.ShopInviteFriendsActivity"
-        android:screenOrientation="portrait"/>
+        android:screenOrientation="portrait" />
     <activity
         android:name=".ui.activities.PhoneLoginActivity"
-        android:screenOrientation="portrait"/>
+        android:screenOrientation="portrait" />
     <activity
         android:name=".ui.activities.editProfile.EditProfileActivity"
-        android:screenOrientation="portrait"/>
+        android:screenOrientation="portrait" />
     <activity
         android:name=".ui.activities.approveOtp.ApproveOtpActivity"
         android:label="@string/title_activity_approve_otp"
         android:screenOrientation="portrait"
-        android:theme="@style/AppTheme"/>
+        android:theme="@style/AppTheme" />
     <activity
         android:name="com.paypal.android.MEP.PayPalActivity"
         android:configChanges="keyboardHidden|orientation"
-        android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        android:theme="@android:style/Theme.Translucent.NoTitleBar" />
     <activity
         android:name=".ui.activities.googleLogin.GoogleLoginHiddenActivity"
         android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
         android:theme="@style/Theme.AppCompat.Translucent" />
-    <activity android:name=".ui.activities.checkout.test_paypal.ConfirmationActivity"/>
-    <activity android:name=".ui.activities.mentorList.MentorListActivity"
-        android:screenOrientation="portrait">
-    </activity>
-    <activity android:name=".ui.activities.mentorDetail.MentorDetailActivity"
-        android:screenOrientation="portrait">
-    </activity>
+    <activity android:name=".ui.activities.checkout.test_paypal.ConfirmationActivity" />
+    <activity
+        android:name=".ui.activities.mentorList.MentorListActivity"
+        android:screenOrientation="portrait" />
+    <activity
+        android:name=".ui.activities.mentorDetail.MentorDetailActivity"
+        android:screenOrientation="portrait" />
 
-    <service android:name=".services.fetching_animation.FetchingAnimationService"
-        android:exported="true"
-        android:enabled="true">
-    </service>
+    <service
+        android:name=".services.fetching_animation.FetchingAnimationService"
+        android:enabled="true"
+        android:exported="true" />
+
+    <activity
+        android:name=".ui.activities.exceptionHidenActivity.SendExceptionHiddenActivity"
+        android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+        android:theme="@style/Theme.AppCompat.Translucent" />
   </application>
 
 </manifest>

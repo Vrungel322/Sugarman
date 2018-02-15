@@ -82,13 +82,13 @@
 
                     <ImageView
                         android:id="@+id/ivCancelSubscription"
-                        android:layout_width="47dp"
-                        android:layout_height="47dp"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
                         android:padding="9dp"
                         android:layout_gravity="center"
                         android:scaleType="fitCenter"
                         android:tint="@color/red"
-                        android:src="@drawable/sub_cancel_min"
+                        android:background="@drawable/sub_cancel_min"
                         android:visibility="gone"
                         tools:visibility="gone"
                         />

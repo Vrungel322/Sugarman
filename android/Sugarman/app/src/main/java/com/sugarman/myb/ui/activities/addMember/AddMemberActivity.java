@@ -2,7 +2,6 @@ package com.sugarman.myb.ui.activities.addMember;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -35,7 +34,6 @@ import com.clover_studio.spikachatmodule.utils.Const;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.share.model.GameRequestContent;
 import com.facebook.share.widget.GameRequestDialog;
 import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.R;
@@ -64,7 +62,8 @@ import com.sugarman.myb.tasks.SaveBitmapToFileAsyncTask;
 import com.sugarman.myb.ui.activities.base.BaseActivity;
 import com.sugarman.myb.ui.activities.editProfile.EditProfileActivity;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
-import com.sugarman.myb.ui.dialogs.sendVkInvitation.SendVkInvitationDialog;
+import com.sugarman.myb.ui.fragments.list_friends_fragment.FriendListFragment;
+import com.sugarman.myb.ui.fragments.list_friends_fragment.IFriendListFragmentListener;
 import com.sugarman.myb.ui.views.MaskImage;
 import com.sugarman.myb.ui.views.MaskTransformation;
 import com.sugarman.myb.utils.AnalyticsHelper;
@@ -212,6 +211,7 @@ public class AddMemberActivity extends BaseActivity
   // number of total count/ number of count people with app BY VK
   private int numberOfMemberTotalAppVk;
   private int numberOfMemberWithAppVk;
+  FriendListFragment mFriendListFragment;
 
   @Override protected void onCreate(Bundle savedStateInstance) {
     setContentView(R.layout.activity_add_member);
@@ -223,6 +223,33 @@ public class AddMemberActivity extends BaseActivity
 
       }
     });
+
+    //-----------------------------------------------------------------------------------------------
+    //Если этот код раскоментирован то работает новый фрагмент, иначе все по старому
+    //mFriendListFragment = FriendListFragment.newInstance(R.layout.fragment_friend_list_test);
+     mFriendListFragment = FriendListFragment.newInstance(R.layout.activity_add_member_v2,IntentExtractorHelper.getGroupName(getIntent()));
+    getSupportFragmentManager().beginTransaction()
+        .add(R.id.flContainer, mFriendListFragment)
+        .commit();
+    mFriendListFragment.setListener(new IFriendListFragmentListener() {
+      @Override public void createGroup(List<FacebookFriend> friendList, String groupName) {
+        //Will be filled only on CreateGroupActivity
+
+      }
+
+      @Override public void editGroup(List<FacebookFriend> membersToSendByEditing, String groupName) {
+        Timber.e("editGroup name: " + groupName + "membersToSendByEditing: " + membersToSendByEditing.size());
+        mEditGroupClient.editGroup(IntentExtractorHelper.getTrackingId( getIntent()), membersToSendByEditing, groupName, selectedFile);
+        mAddMembersClient.addMembers(IntentExtractorHelper.getTrackingId( getIntent()), membersToSendByEditing);
+      }
+
+      @Override public void inviteFriendToShop(List<FacebookFriend> friendList) {
+        //Will be filled only on ShopInviteFriendsActivity
+      }
+    });
+
+    mFriendListFragment.checkForUniqueMembers(IntentExtractorHelper.getPendings(getIntent()),IntentExtractorHelper.getMembers(getIntent()));
+    //===============================================================================================
 
     if (!SharedPreferenceHelper.getFbId().equals("none")) {
       networksToLoad++;
@@ -713,63 +740,66 @@ public class AddMemberActivity extends BaseActivity
         DeviceHelper.hideKeyboard(this);
         //vApply.setEnabled(false);
 
-        showProgress();
+        //showProgress();
+        //Закоментировать Если Все связанное с фрагментом раскоментировано
+        mFriendListFragment.startEditGroupFlow();
 
-        for (FacebookFriend friend : allFriends) {
-          if (friend.isSelected()) {
-            if (friend.getSocialNetwork().equals("fb")) {
-              if (friend.getIsInvitable() == FacebookFriend.CODE_INVITABLE) {
-                mIdsFb.add(friend.getId());
-                Timber.e("friend added fb");
-              }
-            }
-            if (friend.getSocialNetwork().equals("ph")) {
-              mInviteByPh.add(friend);
-              Timber.e("friend added ph");
-            }
-            if (friend.getSocialNetwork().equals("vk")) {
-              mInviteByVk.add(friend);
-              Timber.e("friend added vk");
-            }
-          }
-        }
-        if (mIdsFb.isEmpty() && mInviteByPh.isEmpty() && mInviteByVk.isEmpty()) {
-          mEditGroupClient.editGroup(trackingId, members, etGroupName.getText().toString(),
-              selectedFile);
-          finish();
-        }
-        if (!mInviteByPh.isEmpty()) {
-          Timber.e("ph here");
-          addMembersPh(mInviteByPh);
-        }
-        if (!mIdsFb.isEmpty()) {
-          Timber.e("fb here");
-
-          Timber.e(String.valueOf(membersAdapter.getSelectedMembers().size()));
-          GameRequestContent content =
-              new GameRequestContent.Builder().setMessage(getString(R.string.play_with_me))
-                  .setRecipients(mIdsFb)
-                  .build();
-          fbInviteDialog.show(content);
-        } else {
-          Timber.e("!mIdsFb.isEmpty()");
-          // TODO: 12.10.2017 check Fb invite and create group
-          checkFilledData();
-        }
-
-        if (!mInviteByVk.isEmpty()) {
-          Timber.e("vk here");
-
-          SendVkInvitationDialog sendVkInvitationDialog =
-              SendVkInvitationDialog.newInstance(mInviteByVk, (Dialog dialog) -> {
-                dialog.dismiss();
-                addMembersVk(mInviteByVk);
-              });
-          sendVkInvitationDialog.show(getFragmentManager(), "SendVkInvitationDialog");
-          //mPresenter.sendInvitationInVk(mInviteByVk,
-          //    getResources().getString(R.string.invite_message));
-          vkIntitationSend = true;
-        }
+        //Раскоментировать Если Все связанное с фрагментом закоментированно
+        //for (FacebookFriend friend : allFriends) {
+        //  if (friend.isSelected()) {
+        //    if (friend.getSocialNetwork().equals("fb")) {
+        //      if (friend.getIsInvitable() == FacebookFriend.CODE_INVITABLE) {
+        //        mIdsFb.add(friend.getId());
+        //        Timber.e("friend added fb");
+        //      }
+        //    }
+        //    if (friend.getSocialNetwork().equals("ph")) {
+        //      mInviteByPh.add(friend);
+        //      Timber.e("friend added ph");
+        //    }
+        //    if (friend.getSocialNetwork().equals("vk")) {
+        //      mInviteByVk.add(friend);
+        //      Timber.e("friend added vk");
+        //    }
+        //  }
+        //}
+        //if (mIdsFb.isEmpty() && mInviteByPh.isEmpty() && mInviteByVk.isEmpty()) {
+        //  mEditGroupClient.editGroup(trackingId, members, etGroupName.getText().toString(),
+        //      selectedFile);
+        //  finish();
+        //}
+        //if (!mInviteByPh.isEmpty()) {
+        //  Timber.e("ph here");
+        //  addMembersPh(mInviteByPh);
+        //}
+        //if (!mIdsFb.isEmpty()) {
+        //  Timber.e("fb here");
+        //
+        //  Timber.e(String.valueOf(membersAdapter.getSelectedMembers().size()));
+        //  GameRequestContent content =
+        //      new GameRequestContent.Builder().setMessage(getString(R.string.play_with_me))
+        //          .setRecipients(mIdsFb)
+        //          .build();
+        //  fbInviteDialog.show(content);
+        //} else {
+        //  Timber.e("!mIdsFb.isEmpty()");
+        //  // TODO: 12.10.2017 check Fb invite and create group
+        //  checkFilledData();
+        //}
+        //
+        //if (!mInviteByVk.isEmpty()) {
+        //  Timber.e("vk here");
+        //
+        //  SendVkInvitationDialog sendVkInvitationDialog =
+        //      SendVkInvitationDialog.newInstance(mInviteByVk, (Dialog dialog) -> {
+        //        dialog.dismiss();
+        //        addMembersVk(mInviteByVk);
+        //      });
+        //  sendVkInvitationDialog.show(getFragmentManager(), "SendVkInvitationDialog");
+        //  //mPresenter.sendInvitationInVk(mInviteByVk,
+        //  //    getResources().getString(R.string.invite_message));
+        //  vkIntitationSend = true;
+        //}
         break;
       case R.id.iv_cross:
         finish();

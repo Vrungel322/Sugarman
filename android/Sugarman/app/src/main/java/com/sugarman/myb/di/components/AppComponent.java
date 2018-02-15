@@ -12,6 +12,7 @@ import com.sugarman.myb.ui.activities.base.BasicActivityPresenter;
 import com.sugarman.myb.ui.activities.checkout.CheckoutActivityPresenter;
 import com.sugarman.myb.ui.activities.createGroup.CreateGroupActivityPresenter;
 import com.sugarman.myb.ui.activities.editProfile.EditProfileActivityPresenter;
+import com.sugarman.myb.ui.activities.exceptionHidenActivity.SendExceptionHiddenPresenter;
 import com.sugarman.myb.ui.activities.groupDetails.GroupDetailsActivityPresenter;
 import com.sugarman.myb.ui.activities.groupDetails.adapter.GroupMembersAdapterPresenter;
 import com.sugarman.myb.ui.activities.inviteForRescue.InviteForRescueActivityPresenter;
@@ -29,6 +30,7 @@ import com.sugarman.myb.ui.dialogs.dialogRescueBoldManKick.DialogRescueBoldManKi
 import com.sugarman.myb.ui.dialogs.dialogRescueGirl.DialogRescueGirlPresenter;
 import com.sugarman.myb.ui.dialogs.dialogRescueGirlCongratulations.DialogRescueGirCongratulationsPresenter;
 import com.sugarman.myb.ui.dialogs.sendVkInvitation.SendVkInvitationDialogPresenter;
+import com.sugarman.myb.ui.fragments.list_friends_fragment.FriendListFragmentPresenter;
 import com.sugarman.myb.ui.fragments.mentors_challenge.MentorsChallengeFragmentPresenter;
 import com.sugarman.myb.ui.fragments.no_mentors_challenge.NoMentorsChallengeFragmentPresenter;
 import com.sugarman.myb.ui.fragments.rescue_challenge.ChallengeRescueFragmentPresenter;
@@ -98,4 +100,8 @@ import dagger.Component;
   void inject(FetchingAnimationServicePresenter presenter);
 
   void inject(DialogCuteRulePresenter presenter);
+
+  void inject(FriendListFragmentPresenter presenter);
+
+  void inject(SendExceptionHiddenPresenter presenter);
 }
