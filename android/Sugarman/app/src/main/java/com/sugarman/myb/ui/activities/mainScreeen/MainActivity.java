@@ -132,6 +132,7 @@ import com.sugarman.myb.utils.RxBusHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.SoundHelper;
 import com.sugarman.myb.utils.StringHelper;
+import com.sugarman.myb.utils.apps_Fly.AppsFlyerEventSender;
 import com.sugarman.myb.utils.inapp.IabHelper;
 import com.sugarman.myb.utils.inapp.IabResult;
 import com.sugarman.myb.utils.inapp.Inventory;
@@ -597,12 +598,9 @@ public class MainActivity extends GetUserInfoActivity
       finishAffinity();
       System.exit(0);
     }
-    ;
 
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance().trackEvent(getApplicationContext(), "af_launch_main", eventValue);
+    AppsFlyerEventSender.sendEvent("af_launch_main");
+
 
     ////Get IMEI
     //int permissionCheck =
@@ -647,11 +645,7 @@ public class MainActivity extends GetUserInfoActivity
     vShopButton = findViewById(R.id.iv_shop);
     vShopButton.setOnClickListener(view -> {
 
-      Map<String, Object> eventValues = new HashMap<>();
-      eventValues.put(AFInAppEventParameterName.LEVEL, 9);
-      eventValues.put(AFInAppEventParameterName.SCORE, 100);
-      AppsFlyerLib.getInstance()
-          .trackEvent(App.getInstance().getApplicationContext(), "af_open_shop", eventValues);
+      AppsFlyerEventSender.sendEvent("af_open_shop");
 
       Intent intent = new Intent(MainActivity.this, ShopActivity.class);
       startActivity(intent);
@@ -1506,10 +1500,7 @@ public class MainActivity extends GetUserInfoActivity
 
   public void openCreateGroupActivity() {
 
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance().trackEvent(getApplicationContext(), "af_create_group", eventValue);
+    AppsFlyerEventSender.sendEvent("af_create_group");
 
     Intent intent = new Intent(this, CreateGroupActivity.class);
     //Intent intent = new Intent(this, InviteForRescueActivity.class);
@@ -1599,11 +1590,7 @@ public class MainActivity extends GetUserInfoActivity
 
   private void openProfileActivity() {
 
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance()
-        .trackEvent(App.getInstance().getApplicationContext(), "af_go_to_menu", eventValue);
+    AppsFlyerEventSender.sendEvent("af_go_to_menu");
 
     Intent intent = new Intent(this, ProfileActivity.class);
     intent.putExtra(Constants.INTENT_MY_INVITES, myInvites.toArray(new Invite[myInvites.size()]));
@@ -1613,10 +1600,8 @@ public class MainActivity extends GetUserInfoActivity
   }
 
   private void openSearchGroupActivity() {
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance().trackEvent(getApplicationContext(), "af_group_search", eventValue);
+
+    AppsFlyerEventSender.sendEvent("af_group_search");
     Intent intent = new Intent(this, SearchGroupsActivity.class);
     startActivity(intent);
   }

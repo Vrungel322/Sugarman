@@ -17,6 +17,7 @@ import com.sugarman.myb.ui.activities.base.BaseActivity;
 import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
 import com.sugarman.myb.utils.IntentExtractorHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
+import com.sugarman.myb.utils.apps_Fly.AppsFlyerEventSender;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -79,11 +80,7 @@ public class IntroActivity extends BaseActivity implements View.OnClickListener 
   public void goToNextScreen() {
     SharedPreferenceHelper.showedIntro();
 
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance()
-        .trackEvent(App.getInstance().getApplicationContext(), "af_finish_tutorial", eventValue);
+    AppsFlyerEventSender.sendEvent("af_finish_tutorial");
 
     Intent intent = new Intent(IntroActivity.this, MainActivity.class);
     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -98,11 +95,7 @@ public class IntroActivity extends BaseActivity implements View.OnClickListener 
   public void skipOrClose() {
     SharedPreferenceHelper.showedIntro();
 
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance()
-        .trackEvent(App.getInstance().getApplicationContext(), "af_skip_tutorial", eventValue);
+    AppsFlyerEventSender.sendEvent("af_skip_tutorial");
 
     if (this.intent != null && intent.getBooleanExtra(CODE_IS_OPEN_LOGIN_ACTIVITY, false)) {
       Intent intent = new Intent(IntroActivity.this, MainActivity.class);

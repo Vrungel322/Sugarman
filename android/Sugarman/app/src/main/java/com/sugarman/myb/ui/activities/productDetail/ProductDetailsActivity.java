@@ -18,6 +18,7 @@ import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.ui.activities.checkout.CheckoutActivity;
 import com.sugarman.myb.ui.activities.shop.ShopActivity;
 import com.sugarman.myb.ui.activities.shopInviteFriend.ShopInviteFriendsActivity;
+import com.sugarman.myb.utils.apps_Fly.AppsFlyerEventSender;
 import java.util.HashMap;
 import java.util.Map;
 import timber.log.Timber;
@@ -40,11 +41,7 @@ public class ProductDetailsActivity extends BasicActivity implements IProductDet
     setContentView(R.layout.activity_product_details);
     super.onCreate(savedInstanceState);
 
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance()
-        .trackEvent(App.getInstance().getApplicationContext(), "af_product_details", eventValue);
+    AppsFlyerEventSender.sendEvent("af_product_details");
 
     mShopProductEntity = getIntent().getParcelableExtra(ShopActivity.PRODUCT);
 

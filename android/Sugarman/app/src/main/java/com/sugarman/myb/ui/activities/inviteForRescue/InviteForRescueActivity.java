@@ -76,6 +76,7 @@ import com.sugarman.myb.utils.BitmapUtils;
 import com.sugarman.myb.utils.ContactsHelper;
 import com.sugarman.myb.utils.DeviceHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
+import com.sugarman.myb.utils.apps_Fly.AppsFlyerEventSender;
 import com.vk.sdk.VKSdk;
 import com.vk.sdk.api.VKApiConst;
 import com.vk.sdk.api.VKError;
@@ -587,21 +588,15 @@ public class InviteForRescueActivity extends BaseActivity
     int id = v.getId();
     switch (id) {
       case R.id.iv_cross:
-        Map<String, Object> eventValue = new HashMap<>();
-        eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-        eventValue.put(AFInAppEventParameterName.SCORE, 100);
-        AppsFlyerLib.getInstance()
-            .trackEvent(getApplicationContext(), "af_cancel_group_creation", eventValue);
+        AppsFlyerEventSender.sendEvent("af_cancel_group_creation");
         setResult(RESULT_CANCELED);
         finish();
         break;
       case R.id.iv_apply:
         DeviceHelper.hideKeyboard(this);
-        Map<String, Object> eventValues = new HashMap<>();
-        eventValues.put(AFInAppEventParameterName.LEVEL, 9);
-        eventValues.put(AFInAppEventParameterName.SCORE, 100);
-        AppsFlyerLib.getInstance()
-            .trackEvent(getApplicationContext(), "af_create_group_inside", eventValues);
+
+        AppsFlyerEventSender.sendEvent("af_create_group_inside");
+
         checkFilledData();
         break;
       case R.id.ll_add_photo_container:

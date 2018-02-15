@@ -57,6 +57,7 @@ import com.sugarman.myb.utils.AnalyticsHelper;
 import com.sugarman.myb.utils.DeviceHelper;
 import com.sugarman.myb.utils.IntentExtractorHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
+import com.sugarman.myb.utils.apps_Fly.AppsFlyerEventSender;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -180,12 +181,7 @@ public class ShopInviteFriendsActivity extends BasicActivity
     super.onCreate(savedStateInstance);
     bAddFriends.setEnabled(false);
 
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance()
-        .trackEvent(App.getInstance().getApplicationContext(), "af_tap_free_for_invites",
-            eventValue);
+    AppsFlyerEventSender.sendEvent("af_tap_free_for_invites");
 
     ConstraintLayout mainLayout = (ConstraintLayout) findViewById(R.id.mainLayout);
 

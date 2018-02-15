@@ -39,6 +39,7 @@ import com.sugarman.myb.ui.fragments.BaseFragment;
 import com.sugarman.myb.ui.fragments.ProgressFragment;
 import com.sugarman.myb.ui.fragments.SugarmanProgressFragment;
 import com.sugarman.myb.utils.DeviceHelper;
+import com.sugarman.myb.utils.ExceptionHandler;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.vk.sdk.VKSdk;
 import java.io.IOException;
@@ -111,6 +112,7 @@ public abstract class BaseActivity extends BasicActivity
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     // initializeTrueTime();
+   // Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
     SharedPreferences prefs =
         PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 

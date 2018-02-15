@@ -40,6 +40,7 @@ import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
 import com.sugarman.myb.ui.views.MaskTransformation;
 import com.sugarman.myb.utils.DialogHelper;
 import com.sugarman.myb.utils.ItemClickSupport;
+import com.sugarman.myb.utils.apps_Fly.AppsFlyerEventSender;
 import com.sugarman.myb.utils.inapp.IabHelper;
 import com.sugarman.myb.utils.inapp.IabResult;
 import com.sugarman.myb.utils.inapp.Inventory;
@@ -132,11 +133,7 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
     setContentView(R.layout.activity_mentor_detail);
     super.onCreate(savedInstanceState);
 
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance()
-        .trackEvent(App.getInstance().getApplicationContext(), "af_open_mentor_detail", eventValue);
+    AppsFlyerEventSender.sendEvent("af_open_mentor_detail");
 
     mMentorEntity = getIntent().getExtras().getParcelable(MentorEntity.MENTOR_ENTITY);
     Timber.e("daily rate " + mMentorEntity.getDailySuccessRate());
@@ -366,12 +363,8 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   @Override public void startPurchaseFlow(String freeSku) {
     mFreeSku = freeSku;
     Timber.e("mFreeSku startPurchaseFlow " + mFreeSku);
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance()
-        .trackEvent(App.getInstance().getApplicationContext(), "af_tap_apply_for_mentor",
-            eventValue);
+
+    AppsFlyerEventSender.sendEvent("af_tap_apply_for_mentor");
 
     mHelper.launchSubscriptionPurchaseFlow(this, freeSku, 10001, mPurchaseFinishedListener,
         "mypurchasetoken");

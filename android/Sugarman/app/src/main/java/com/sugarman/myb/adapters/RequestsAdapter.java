@@ -23,6 +23,7 @@ import com.sugarman.myb.listeners.ItemRequestsActionListener;
 import com.sugarman.myb.listeners.OnRequestsActionListener;
 import com.sugarman.myb.ui.views.StrokeImage;
 import com.sugarman.myb.utils.StringHelper;
+import com.sugarman.myb.utils.apps_Fly.AppsFlyerEventSender;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -102,11 +103,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
   @Override public void onClickApprove(int position) {
 
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance()
-        .trackEvent(App.getInstance().getApplicationContext(), "af_accept_request", eventValue);
+    AppsFlyerEventSender.sendEvent("af_accept_request");
 
     if (position >= 0 && position < mData.size()) {
       if (mActionListener.get() != null) {
@@ -119,11 +116,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
   @Override public void onClickDecline(int position) {
 
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance()
-        .trackEvent(App.getInstance().getApplicationContext(), "af_decline_request", eventValue);
+    AppsFlyerEventSender.sendEvent("af_decline_request");
 
     if (position >= 0 && position < mData.size()) {
       if (mActionListener.get() != null) {
