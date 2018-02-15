@@ -4,11 +4,13 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -25,8 +27,11 @@ import com.sugarman.myb.api.models.responses.Member;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.base.BasicFragment;
 import com.sugarman.myb.constants.DialogConstants;
+import com.sugarman.myb.ui.activities.editProfile.EditProfileActivity;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.utils.DeviceHelper;
+import com.sugarman.myb.utils.SharedPreferenceHelper;
+import com.vk.sdk.VKSdk;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -49,6 +54,9 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
   @BindView(R.id.tvTotalVkCount) TextView tvTotalVkCount;
   @BindView(R.id.tvInAppPhCount) TextView tvInAppPhCount;
   @BindView(R.id.tvTotalPhCount) TextView tvTotalPhCount;
+  @BindView(R.id.fbFilter) ImageView ivFbFilter;
+  @BindView(R.id.vkFilter) ImageView ivVkFilter;
+  @BindView(R.id.phFilter) ImageView ivphFilter;
   // number of total count/ number of count people with app BY PH
   private int numberOfMemberTotalAppPh;
   private int numberOfMemberWithAppPh;
@@ -97,6 +105,7 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
     mRecyclerViewListOfFriends.setLayoutManager(new LinearLayoutManager(getActivity()));
     mRecyclerViewListOfFriends.setAdapter(friendsAdapter);
     mEditTextGroupName.setText(getArguments().getString(GROUP_NAME, ""));
+    highlightConnectedSocialNetworks();
   }
 
   public void startCreateGroupFlow() {
@@ -163,7 +172,11 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
   }
 
   @OnClick(R.id.fbFilter) public void filterFb() {
-    mPresenter.filterBySocial(friendsAdapter.getAllList(), "fb");
+    if (SharedPreferenceHelper.getFacebookId().equals("none")) {
+      askToConnect("fb");
+    } else {
+      mPresenter.filterBySocial(friendsAdapter.getAllList(), "fb");
+    }
   }
 
   @OnClick(R.id.phFilter) public void filterPh() {
@@ -171,7 +184,28 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
   }
 
   @OnClick(R.id.vkFilter) public void filterVk() {
-    mPresenter.filterBySocial(friendsAdapter.getAllList(), "vk");
+    if (!VKSdk.isLoggedIn()) {
+      askToConnect("vk");
+    } else {
+      mPresenter.filterBySocial(friendsAdapter.getAllList(), "vk");
+    }
+  }
+
+  private void askToConnect(String socialTag) {
+    String message = "";
+    if (socialTag.equals("vk")) {
+      message = getResources().getString(R.string.log_in_to_vk);
+    }
+    if (socialTag.equals("fb")) {
+      message = getResources().getString(R.string.log_in_to_fb);
+    }
+
+    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+    builder.setMessage(message).setTitle(getResources().getString(R.string.not_logged_in));
+    builder.setPositiveButton(R.string.OK, (dialog, id) -> {
+      Intent intent = new Intent(getActivity().getApplicationContext(), EditProfileActivity.class);
+      startActivity(intent);
+    }).create().show();
   }
 
   @OnTextChanged(value = R.id.et_search, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
@@ -230,6 +264,19 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
     }
   }
 
+  private void highlightConnectedSocialNetworks() {
+    if (!SharedPreferenceHelper.getFacebookId().equals("none")) {
+      ivFbFilter.setAlpha(1.0f);
+    } else {
+      ivFbFilter.setAlpha(0.5f);
+    }
+    if (VKSdk.isLoggedIn()) {
+      ivVkFilter.setAlpha(1.0f);
+    } else {
+      ivVkFilter.setAlpha(0.5f);
+    }
+  }
+
   private void showNoInternetConnectionDialog() {
     new SugarmanDialog.Builder(getActivity(), DialogConstants.NO_INTERNET_CONNECTION_ID).content(
         R.string.no_internet_connection).btnCallback((dialog, button) -> {
@@ -240,9 +287,9 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
   @Override public void setFriendsFb(List<FacebookFriend> friends) {
     showCounters(friends, tvTotalFbCount, tvInAppFbCount);
     if (!mPendingsMembers.isEmpty() && !mAddedMembers.isEmpty()) {
-      friendsAdapter.setValue(mPresenter.checkForUniqueMembers(mPendingsMembers, mAddedMembers, friends));
-    }
-    else {
+      friendsAdapter.setValue(
+          mPresenter.checkForUniqueMembers(mPendingsMembers, mAddedMembers, friends));
+    } else {
       friendsAdapter.setValue(friends);
     }
   }
@@ -250,9 +297,9 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
   @Override public void setFriendsVk(List<FacebookFriend> friends) {
     showCounters(friends, tvTotalVkCount, tvInAppVkCount);
     if (!mPendingsMembers.isEmpty() && !mAddedMembers.isEmpty()) {
-      friendsAdapter.setValue(mPresenter.checkForUniqueMembers(mPendingsMembers, mAddedMembers, friends));
-    }
-    else {
+      friendsAdapter.setValue(
+          mPresenter.checkForUniqueMembers(mPendingsMembers, mAddedMembers, friends));
+    } else {
       friendsAdapter.setValue(friends);
     }
   }
@@ -260,27 +307,27 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
   @Override public void setFriendsPh(List<FacebookFriend> friends) {
     showCounters(friends, tvTotalPhCount, tvInAppPhCount);
     if (!mPendingsMembers.isEmpty() && !mAddedMembers.isEmpty()) {
-      friendsAdapter.setValue(mPresenter.checkForUniqueMembers(mPendingsMembers, mAddedMembers, friends));
-    }
-    else {
+      friendsAdapter.setValue(
+          mPresenter.checkForUniqueMembers(mPendingsMembers, mAddedMembers, friends));
+    } else {
       friendsAdapter.setValue(friends);
     }
   }
 
   @Override public void setFriendsFilter(List<FacebookFriend> friends) {
     if (!mPendingsMembers.isEmpty() && !mAddedMembers.isEmpty()) {
-      friendsAdapter.setValue(mPresenter.checkForUniqueMembers(mPendingsMembers, mAddedMembers, friends));
-    }
-    else {
+      friendsAdapter.setValue(
+          mPresenter.checkForUniqueMembers(mPendingsMembers, mAddedMembers, friends));
+    } else {
       friendsAdapter.setValue(friends);
     }
   }
 
   @Override public void setFriends(List<FacebookFriend> friends) {
     if (!mPendingsMembers.isEmpty() && !mAddedMembers.isEmpty()) {
-      friendsAdapter.setValue(mPresenter.checkForUniqueMembers(mPendingsMembers, mAddedMembers, friends));
-    }
-    else {
+      friendsAdapter.setValue(
+          mPresenter.checkForUniqueMembers(mPendingsMembers, mAddedMembers, friends));
+    } else {
       friendsAdapter.setValue(friends);
     }
   }
