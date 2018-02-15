@@ -46,6 +46,8 @@ public class MentorsChallengeFragment extends BasicFragment
   @BindView(R.id.fastest_steps) TextView mTextViewFastestSteps;
   @BindView(R.id.iv_fastest_avatar) ImageView mImageViewFastestAvatar;
   @BindView(R.id.indicator_fastest) ImageView mImageViewIndicatorFastest;
+  @BindView(R.id.iv_fastest_avatar_border) ImageView mImageViewFastestAvatarBorder;
+  @BindView(R.id.iv_laziest_avatar_border) ImageView mImageViewLaziestAvatarBorder;
   @BindView(R.id.laziest_name) TextView mTextViewLaziestName;
   @BindView(R.id.laziest_steps) TextView mTextViewLaziestSteps;
   @BindView(R.id.iv_laziest_avatar) ImageView mImageViewLaziestAvatar;
@@ -167,6 +169,15 @@ public class MentorsChallengeFragment extends BasicFragment
             Timber.e("fastestSteps=" + mTracking.getMembers()[i].getSteps());
           }
         }
+        int color = 0xff54cc14;
+        if (mTracking.getDailySugarman().getUser().getSteps() < 5000) {
+          color = 0xffe10f0f;
+        } else if (mTracking.getDailySugarman().getUser().getSteps() >= 5000 && mTracking.getDailySugarman().getUser().getSteps() < 7500) {
+          color = 0xffeb6117;
+        } else if (mTracking.getDailySugarman().getUser().getSteps() >= 7500 && mTracking.getDailySugarman().getUser().getSteps() < 10000) color = 0xffF6B147;
+        mImageViewFastestAvatarBorder.setBackgroundColor(color);
+        mTextViewFastestName.setBackgroundColor(color);
+        mTextViewFastestSteps.setBackgroundColor(color);
       } else {
         mTextViewFastestName.setText(getResources().getString(R.string.sugarman_is));
         mTextViewFastestSteps.setText(getResources().getString(R.string.todays_fastest));
@@ -207,6 +218,16 @@ public class MentorsChallengeFragment extends BasicFragment
           .transform(new CropSquareTransformation())
           .transform(new CropCircleTransformation(0xffff0000, 1))
           .into(mImageViewLaziestAvatar);
+
+      int color = 0xff54cc14;
+      if (laziest.getSteps() < 5000) {
+        color = 0xffe10f0f;
+      } else if (laziest.getSteps() >= 5000 && laziest.getSteps() < 7500) {
+        color = 0xffeb6117;
+      } else if (laziest.getSteps() >= 7500 && laziest.getSteps() < 10000) color = 0xffF6B147;
+      mImageViewLaziestAvatarBorder.setBackgroundColor(color);
+      mTextViewLaziestName.setBackgroundColor(color);
+      mTextViewLaziestSteps.setBackgroundColor(color);
     }
     //set up all
     setToUiAllSteps();
