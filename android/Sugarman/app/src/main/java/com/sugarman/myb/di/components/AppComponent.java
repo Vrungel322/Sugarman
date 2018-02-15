@@ -12,6 +12,7 @@ import com.sugarman.myb.ui.activities.base.BasicActivityPresenter;
 import com.sugarman.myb.ui.activities.checkout.CheckoutActivityPresenter;
 import com.sugarman.myb.ui.activities.createGroup.CreateGroupActivityPresenter;
 import com.sugarman.myb.ui.activities.editProfile.EditProfileActivityPresenter;
+import com.sugarman.myb.ui.activities.exceptionHidenActivity.SendExceptionHiddenPresenter;
 import com.sugarman.myb.ui.activities.groupDetails.GroupDetailsActivityPresenter;
 import com.sugarman.myb.ui.activities.groupDetails.adapter.GroupMembersAdapterPresenter;
 import com.sugarman.myb.ui.activities.inviteForRescue.InviteForRescueActivityPresenter;
@@ -101,4 +102,6 @@ import dagger.Component;
   void inject(DialogCuteRulePresenter presenter);
 
   void inject(FriendListFragmentPresenter presenter);
+
+  void inject(SendExceptionHiddenPresenter presenter);
 }
