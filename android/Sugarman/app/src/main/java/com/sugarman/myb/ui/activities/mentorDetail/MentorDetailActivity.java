@@ -364,11 +364,7 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
 
   @OnClick(R.id.ivSubscribeMentor) public void ivSubscribeMentorClicked() {
     Timber.e("ivSubscribeMentorClicked mentorsPrice: " + mMentorEntity.getPrice());
-    if (mMentorEntity.getPrice() != null && mMentorEntity.getPrice().equals(0f)) {
-      mPresenter.purchaseMentorForFree(mMentorEntity.getMentorId());
-    } else {
-      mPresenter.getNextFreeSku();
-    }
+      mPresenter.getMentorsVendor(mMentorEntity.getMentorId());
   }
 
   @Override public void startPurchaseFlow(String freeSku) {

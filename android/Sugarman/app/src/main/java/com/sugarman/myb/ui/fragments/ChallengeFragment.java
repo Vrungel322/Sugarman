@@ -334,13 +334,13 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
             }
           }
 
-          if (tracking.getDailySugarman().getUser().getSteps() < 5000) {
+          if (fastest.getSteps() < 5000) {
             color = 0xffe10f0f;
-          } else if (tracking.getDailySugarman().getUser().getSteps() >= 5000
-              && tracking.getDailySugarman().getUser().getSteps() < 7500) {
+          } else if (fastest.getSteps() >= 5000
+              && fastest.getSteps() < 7500) {
             color = 0xffeb6117;
-          } else if (tracking.getDailySugarman().getUser().getSteps() >= 7500
-              && tracking.getDailySugarman().getUser().getSteps() < 10000) {
+          } else if (fastest.getSteps() >= 7500
+              && fastest.getSteps() < 10000) {
             color = 0xffF6B147;
           }
           fastestBorderAvatar.setBackgroundColor(color);

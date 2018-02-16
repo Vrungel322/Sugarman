@@ -21,6 +21,7 @@ import com.sugarman.myb.api.models.responses.CheckPhoneResponse;
 import com.sugarman.myb.api.models.responses.CheckVkResponse;
 import com.sugarman.myb.api.models.responses.CountInvitesResponse;
 import com.sugarman.myb.api.models.responses.InvitersImgUrls;
+import com.sugarman.myb.api.models.responses.MentorsVendor;
 import com.sugarman.myb.api.models.responses.RescueFriendResponse;
 import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.animation.GetAnimationResponse;
@@ -47,6 +48,7 @@ import com.sugarman.myb.models.mentor.comments.MentorsCommentsEntity;
 import com.sugarman.myb.utils.ContactsHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.apps_Fly.AppsFlyRemoteLogger;
+import com.sugarman.myb.utils.purchase.ProviderManager;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,6 +65,7 @@ import timber.log.Timber;
 
 public class DataManager {
 
+  private final ProviderManager mProviderManager;
   private RestApi mRestApi;
   private RestApiSpika mRestApiSpika;
   private DbHelper mDbHelper;
@@ -71,13 +74,15 @@ public class DataManager {
   private AppsFlyRemoteLogger mAppsFlyRemoteLogger;
 
   public DataManager(RestApiSpika restApiSpika, RestApi restApi, PreferencesHelper pref,
-      ContentResolver contentResolver, DbHelper dbHelper, AppsFlyRemoteLogger appsFlyRemoteLogger) {
+      ContentResolver contentResolver, DbHelper dbHelper, AppsFlyRemoteLogger appsFlyRemoteLogger,
+      ProviderManager providerManager) {
     mRestApi = restApi;
     mRestApiSpika = restApiSpika;
     mPref = pref;
     mContentResolver = contentResolver;
     mDbHelper = dbHelper;
     mAppsFlyRemoteLogger = appsFlyRemoteLogger;
+    mProviderManager = providerManager;
   }
 
   ///////////////////////////////////////////////////////////////////////////
@@ -207,7 +212,8 @@ public class DataManager {
   }
 
   public Observable<Response<Object>> poke(String memberId, String trakingId) {
-    Observable<Response<Object>> responseObservable = mRestApi.poke(new PokeRequest(memberId, trakingId));
+    Observable<Response<Object>> responseObservable =
+        mRestApi.poke(new PokeRequest(memberId, trakingId));
     Timber.e("poke memberId " + memberId + " trakingId " + trakingId);
     return responseObservable;
   }
@@ -314,9 +320,9 @@ public class DataManager {
   public GetAnimationResponse getAnimationFromBd() {
     Timber.e("getAnimationFromBd");
     List<GetAnimationResponse> gar = mDbHelper.getAll(GetAnimationResponse.class);
-    if (gar != null && !gar.isEmpty()){
+    if (gar != null && !gar.isEmpty()) {
       return gar.get(0);
-    }else {
+    } else {
       return null;
     }
   }
@@ -364,8 +370,8 @@ public class DataManager {
     return SharedPreferenceHelper.getCachedMentors();
   }
 
-  public Observable<GetMessagesModelRefactored> fetchMessagesSpika(String roomId, String lastMessageId,
-      String token) {
+  public Observable<GetMessagesModelRefactored> fetchMessagesSpika(String roomId,
+      String lastMessageId, String token) {
     return mRestApiSpika.fetchMessagesSpika(roomId, lastMessageId, token);
   }
 
@@ -373,9 +379,22 @@ public class DataManager {
     return mRestApiSpika.loginSpika(user);
   }
 
-  public Observable<Response<CheckVkResponse>> checkVks(List<String> vkToCheck) { return mRestApi.checkVks(vkToCheck); }
+  public Observable<Response<CheckVkResponse>> checkVks(List<String> vkToCheck) {
+    return mRestApi.checkVks(vkToCheck);
+  }
 
-  public Observable<Response<Void>> purchaseMentorForFree(String mentorId) {
+  public Observable<Response<Subscriptions>> purchaseMentorForFree(String mentorId) {
     return mRestApi.purchaseMentorForFree(mentorId);
+  }
+
+  public Observable<Response<MentorsVendor>> getMentorsVendor(String mentorId) {
+    return mRestApi.getMentorsVendor(mentorId);
+  }
+
+  public Observable<Response<Void>> startMentorPurchaseFlow(String mentorId) {
+    return mRestApi.getMentorsVendor(mentorId)
+        .concatMap(mentorsVendorResponse -> mProviderManager.startPurchaseFlowByVendor(
+            mentorsVendorResponse.body().getVendor(), mentorId))
+        .concatMap(purchaseTransaction -> mRestApi.checkPurchaseTransaction(purchaseTransaction));
   }
 }

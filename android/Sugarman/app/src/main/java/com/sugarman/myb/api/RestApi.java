@@ -14,6 +14,7 @@ import com.sugarman.myb.api.models.responses.CheckPhoneResponse;
 import com.sugarman.myb.api.models.responses.CheckVkResponse;
 import com.sugarman.myb.api.models.responses.CountInvitesResponse;
 import com.sugarman.myb.api.models.responses.InvitersImgUrls;
+import com.sugarman.myb.api.models.responses.MentorsVendor;
 import com.sugarman.myb.api.models.responses.RescueFriendResponse;
 import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.animation.GetAnimationResponse;
@@ -31,6 +32,7 @@ import com.sugarman.myb.models.mentor.MentorStupidAbstraction;
 import com.sugarman.myb.models.mentor.MentorsCommentsStupidAbstraction;
 import com.sugarman.myb.models.mentor.comments.CommentEntity;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
+import com.sugarman.myb.utils.purchase.PurchaseTransaction;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -276,7 +278,15 @@ public class RestApi {
 
   public Observable<Response<CheckVkResponse>> checkVks(List<String> vks) { CheckVkRequest request = new CheckVkRequest(); request.setVks(vks); return api.checkVks(request); }
 
-  public Observable<Response<Void>> purchaseMentorForFree(String mentorId) {
+  public Observable<Response<Subscriptions>> purchaseMentorForFree(String mentorId) {
     return api.purchaseMentorForFree(mentorId);
+  }
+
+  public Observable<Response<MentorsVendor>> getMentorsVendor(String mentorId) {
+    return api.getMentorsVendor( mentorId);
+  }
+
+  public Observable<Response<Void>> checkPurchaseTransaction(PurchaseTransaction purchaseTransaction) {
+    return api.checkPurchaseTransaction( purchaseTransaction);
   }
 }
