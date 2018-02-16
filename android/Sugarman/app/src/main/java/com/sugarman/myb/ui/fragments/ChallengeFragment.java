@@ -231,18 +231,18 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
             .into(bestAvatar);
 
         int color = 0xff54cc14;
-        if (tracking.getDailySugarman().getUser().getSteps() < 5000) {
+        if (best.getSteps() < 5000) {
           color = 0xffe10f0f;
-        } else if (tracking.getDailySugarman().getUser().getSteps() >= 5000
-            && tracking.getDailySugarman().getUser().getSteps() < 7500) {
+        } else if (best.getSteps() >= 5000
+            && best.getSteps() < 7500) {
           color = 0xffeb6117;
-        } else if (tracking.getDailySugarman().getUser().getSteps() >= 7500
-            && tracking.getDailySugarman().getUser().getSteps() < 10000) {
+        } else if (best.getSteps() >= 7500
+            && best.getSteps() < 10000) {
           color = 0xffF6B147;
         }
         fastestAvatarBorder.setBackgroundColor(color);
-        bestName.setBackgroundColor(color);
-        bestSteps.setBackgroundColor(color);
+        bestName.setTextColor(color);
+        bestSteps.setTextColor(color);
 
         Member laziest = members[0];
 
@@ -285,18 +285,18 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
             .transform(new CropCircleTransformation(0xffff0000, 1))
             .into(laziestAvatar);
 
-        if (tracking.getDailySugarman().getUser().getSteps() < 5000) {
+        if (laziest.getSteps() < 5000) {
           color = 0xffe10f0f;
-        } else if (tracking.getDailySugarman().getUser().getSteps() >= 5000
-            && tracking.getDailySugarman().getUser().getSteps() < 7500) {
+        } else if (laziest.getSteps() >= 5000
+            && laziest.getSteps() < 7500) {
           color = 0xffeb6117;
-        } else if (tracking.getDailySugarman().getUser().getSteps() >= 7500
-            && tracking.getDailySugarman().getUser().getSteps() < 10000) {
+        } else if (laziest.getSteps() >= 7500
+            && laziest.getSteps() < 10000) {
           color = 0xffF6B147;
         }
         laziestAvatarBorder.setBackgroundColor(color);
-        laziestName.setBackgroundColor(color);
-        laziestSteps.setBackgroundColor(color);
+        laziestName.setTextColor(color);
+        laziestSteps.setTextColor(color);
 
         TextView fastestName = (TextView) (root.findViewById(R.id.fastest_name));
         TextView fastestSteps = (TextView) root.findViewById(R.id.fastest_steps);
@@ -334,18 +334,18 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
             }
           }
 
-          if (tracking.getDailySugarman().getUser().getSteps() < 5000) {
+          if (fastest.getSteps() < 5000) {
             color = 0xffe10f0f;
-          } else if (tracking.getDailySugarman().getUser().getSteps() >= 5000
-              && tracking.getDailySugarman().getUser().getSteps() < 7500) {
+          } else if (fastest.getSteps() >= 5000
+              && fastest.getSteps() < 7500) {
             color = 0xffeb6117;
-          } else if (tracking.getDailySugarman().getUser().getSteps() >= 7500
-              && tracking.getDailySugarman().getUser().getSteps() < 10000) {
+          } else if (fastest.getSteps() >= 7500
+              && fastest.getSteps() < 10000) {
             color = 0xffF6B147;
           }
           fastestBorderAvatar.setBackgroundColor(color);
-          fastestName.setBackgroundColor(color);
-          fastestSteps.setBackgroundColor(color);
+          fastestName.setTextColor(color);
+          fastestSteps.setTextColor(color);
         } else {
           fastestName.setText(getResources().getString(R.string.sugarman_is));
           fastestSteps.setText(getResources().getString(R.string.todays_fastest));
