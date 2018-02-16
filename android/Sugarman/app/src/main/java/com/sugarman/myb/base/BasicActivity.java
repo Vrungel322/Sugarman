@@ -13,7 +13,6 @@ import com.sugarman.myb.models.custom_events.CustomUserEvent;
 import com.sugarman.myb.models.custom_events.IActionOnCurrentScreen;
 import com.sugarman.myb.ui.dialogs.dialogCuteRule.DialogCuteRule;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
-import com.sugarman.myb.utils.handlingExceptions.ExceptionHandler;
 import javax.inject.Inject;
 import timber.log.Timber;
 
@@ -32,7 +31,7 @@ public abstract class BasicActivity extends MvpAppCompatActivity {
     ButterKnife.bind(this);
     App.getAppComponent().inject(this);
 
-    Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+    //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
   }
 
   protected void showToastMessage(String message) {

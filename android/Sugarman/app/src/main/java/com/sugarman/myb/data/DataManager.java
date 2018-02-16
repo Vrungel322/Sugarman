@@ -49,6 +49,7 @@ import com.sugarman.myb.utils.ContactsHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.apps_Fly.AppsFlyRemoteLogger;
 import com.sugarman.myb.utils.purchase.ProviderManager;
+import com.sugarman.myb.utils.purchase.PurchaseTransaction;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -391,10 +392,9 @@ public class DataManager {
     return mRestApi.getMentorsVendor(mentorId);
   }
 
-  public Observable<Response<Void>> startMentorPurchaseFlow(String mentorId) {
-    return mRestApi.getMentorsVendor(mentorId)
-        .concatMap(mentorsVendorResponse -> mProviderManager.startPurchaseFlowByVendor(
-            mentorsVendorResponse.body().getVendor(), mentorId))
-        .concatMap(purchaseTransaction -> mRestApi.checkPurchaseTransaction(purchaseTransaction));
+  public Observable<Response<Void>> checkPurchaseTransaction(
+      PurchaseTransaction purchaseTransaction) {
+    return mRestApi.
+        checkPurchaseTransaction(purchaseTransaction);
   }
 }

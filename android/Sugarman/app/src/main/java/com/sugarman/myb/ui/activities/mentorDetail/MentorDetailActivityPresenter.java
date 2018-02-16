@@ -10,6 +10,7 @@ import com.sugarman.myb.utils.ThreadSchedulers;
 import com.sugarman.myb.utils.inapp.Purchase;
 import com.sugarman.myb.utils.purchase.ProviderManager;
 import javax.inject.Inject;
+import rx.Observable;
 import rx.Subscription;
 import timber.log.Timber;
 
@@ -72,14 +73,27 @@ import timber.log.Timber;
   }
 
   public void getMentorsVendor(String mentorId) {
-    Subscription subscription = mDataManager.startMentorPurchaseFlow(mentorId)
-        .filter(mentorsVendorResponse -> mentorsVendorResponse.body() != null)
-        .compose(ThreadSchedulers.applySchedulers())
-        .subscribe(mentorsVendorResponse -> {
-          //Timber.e("getMentorsVendor code: " + mentorsVendorResponse.code());
-          //mProviderManager.startPurchaseFlowByVendor(mentorsVendorResponse.body().getVendor(),
-          //    mentorId);
-        }, Throwable::printStackTrace);
+    Subscription subscription =
+        mDataManager.getMentorsVendor(mentorId)
+            .concatMap(mentorsVendorResponse -> {
+              if (mentorsVendorResponse.body().getVendor().equals(ProviderManager.FREE)) {
+                return mProviderManager.startFreePurchaseFlowByVendor(
+                    mentorsVendorResponse.body().getVendor(), mentorId);
+              }
+              if (mentorsVendorResponse.body().getVendor().equals(ProviderManager.GOOGLE)) {
+                mProviderManager.startGooglePurchaseFlowByVendor(
+                    mentorsVendorResponse.body().getVendor(), mentorId, Observable::just);
+              }
+              return Observable.empty();
+            })
+            .concatMap(
+                purchaseTransaction -> mDataManager.checkPurchaseTransaction(purchaseTransaction))
+            .compose(ThreadSchedulers.applySchedulers())
+            .subscribe(voidResponse -> {
+              mProviderManager.clearListeners();
+              Timber.e("getMentorsVendor code: " + voidResponse.code());
+              Timber.e("getMentorsVendor Need to do smth on UI if checkPurchaseTransaction is OK");
+            }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
 
     //Subscription subscription = mDataManager.getNextFreeSku()

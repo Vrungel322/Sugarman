@@ -363,7 +363,7 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   }
 
   @OnClick(R.id.ivSubscribeMentor) public void ivSubscribeMentorClicked() {
-    Timber.e("ivSubscribeMentorClicked mentorsPrice: " + mMentorEntity.getPrice());
+    Timber.e("ivSubscribeMentorClicked mentorsId: " + mMentorEntity.getMentorId());
       mPresenter.getMentorsVendor(mMentorEntity.getMentorId());
   }
 
