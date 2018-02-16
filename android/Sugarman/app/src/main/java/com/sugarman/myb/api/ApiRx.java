@@ -13,6 +13,7 @@ import com.sugarman.myb.api.models.responses.CheckPhoneResponse;
 import com.sugarman.myb.api.models.responses.CheckVkResponse;
 import com.sugarman.myb.api.models.responses.CountInvitesResponse;
 import com.sugarman.myb.api.models.responses.InvitersImgUrls;
+import com.sugarman.myb.api.models.responses.MentorsVendor;
 import com.sugarman.myb.api.models.responses.RescueFriendResponse;
 import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.animation.GetAnimationResponse;
@@ -27,6 +28,7 @@ import com.sugarman.myb.models.iab.Subscriptions;
 import com.sugarman.myb.models.mentor.MentorStupidAbstraction;
 import com.sugarman.myb.models.mentor.MentorsCommentsStupidAbstraction;
 import com.sugarman.myb.models.mentor.comments.CommentEntity;
+import com.sugarman.myb.utils.purchase.PurchaseTransaction;
 import java.util.List;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -145,8 +147,12 @@ public interface ApiRx {
 
   @GET("v1/ab_testing") Observable<Response<ABTesting>> fetchAorBtesting();
 
-  @POST("v3/check_vk") Observable<Response<CheckVkResponse>> checkVks( @Body CheckVkRequest request);
+  @POST("v3/check_vk") Observable<Response<CheckVkResponse>> checkVks(@Body CheckVkRequest request);
 
-  @POST("")
-  Observable<Response<Void>> purchaseMentorForFree(String mentorId);
+  @POST("") Observable<Response<Subscriptions>> purchaseMentorForFree(String mentorId);
+
+  @POST("") Observable<Response<MentorsVendor>> getMentorsVendor(String mentorId);
+
+  @POST("") Observable<Response<Void>> checkPurchaseTransaction(
+      PurchaseTransaction purchaseTransaction);
 }
