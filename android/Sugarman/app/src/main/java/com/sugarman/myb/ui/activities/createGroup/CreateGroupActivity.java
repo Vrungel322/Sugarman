@@ -245,6 +245,7 @@ public class CreateGroupActivity extends BaseActivity
     mFriendListFragment.setListener(new IFriendListFragmentListener() {
       @Override public void createGroup(List<FacebookFriend> friendList, String groupName) {
         //mPresenter.sendInvitationInVk(friendList,getString(R.string.invite_message));
+        mFriendListFragment.showProgress();
         mIntiteByVk.clear();
         for (FacebookFriend f : friendList) {
           if (f.getSocialNetwork().equals("vk")) {
@@ -827,7 +828,7 @@ public class CreateGroupActivity extends BaseActivity
   @Override public void onApiJoinGroupSuccess(Tracking result) {
     Timber.e("onApiJoinGroupSuccess "+result.getGroupOnwerName());
     //closeProgressFragment();
-    hideProgress();
+    mFriendListFragment.hideProgress();
     int activeTrackings = SharedPreferenceHelper.getActiveTrackingsCreated();
     SharedPreferenceHelper.saveActiveTrackingsCreated(++activeTrackings);
 

@@ -11,6 +11,7 @@ import android.text.Editable;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -57,6 +58,7 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
   @BindView(R.id.fbFilter) ImageView ivFbFilter;
   @BindView(R.id.vkFilter) ImageView ivVkFilter;
   @BindView(R.id.phFilter) ImageView ivphFilter;
+  @BindView(R.id.pb) ProgressBar mProgressBar;
   // number of total count/ number of count people with app BY PH
   private int numberOfMemberTotalAppPh;
   private int numberOfMemberWithAppPh;
@@ -403,5 +405,13 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
         + addedMembers.length);
     Collections.addAll(mPendingsMembers, pendingsMembers);
     Collections.addAll(mAddedMembers, addedMembers);
+  }
+
+  public void hideProgress() {
+    mProgressBar.setVisibility(View.GONE);
+  }
+
+  public void showProgress() {
+    mProgressBar.setVisibility(View.VISIBLE);
   }
 }
