@@ -98,55 +98,60 @@ import timber.log.Timber;
       // выбор того правила у которого значение шагов ближе всего к текущему количеству шагов
       // TODO: 07.12.2017 простестить с 1 рулом на количество шагов
       Rule rule = getRuleApproximatelyToCurrentSteps(todaySteps, groupsCount, rules);
+      if (rule.getCount() != null) {
 
-      Timber.e(" checkIfRuleStepsDone rule "
-          + rule.getName()
-          + " animation name "
-          + rule.getNameOfAnim()
-          + " todaySteps "
-          + todaySteps
-          + " getCount()"
-          + rule.getCount() + " RuleGroupsCount:" + rule.getGroupCount());
-      if (todaySteps >= rule.getCount()) {
-        Timber.e("checkIfRuleStepsDone groupsCount:" + groupsCount);
+        Timber.e(" checkIfRuleStepsDone rule "
+            + rule.getName()
+            + " animation name "
+            + rule.getNameOfAnim()
+            + " todaySteps "
+            + todaySteps
+            + " getCount()"
+            + rule.getCount()
+            + " RuleGroupsCount:"
+            + rule.getGroupCount());
+        if (todaySteps >= rule.getCount()) {
+          Timber.e("checkIfRuleStepsDone groupsCount:" + groupsCount);
 
-        if ((rule.getGroupCount() == 0 && groupsCount == 0) || (rule.getGroupCount() > 0
-            && groupsCount > 0)) {
-          Timber.e("checkIfRuleStepsDone rule true &&" + !SharedPreferenceHelper.isEventXStepsDone(rule.getCount()));
-          if (!SharedPreferenceHelper.isEventXStepsDone(rule.getCount())) {
-            Timber.e("checkIfRuleStepsDone rule true and SHP OK");
+          if ((rule.getGroupCount() == 0 && groupsCount == 0) || (rule.getGroupCount() > 0
+              && groupsCount > 0)) {
+            Timber.e(
+                "checkIfRuleStepsDone rule true &&" + !SharedPreferenceHelper.isEventXStepsDone(
+                    rule.getCount()));
+            if (!SharedPreferenceHelper.isEventXStepsDone(rule.getCount())) {
+              Timber.e("checkIfRuleStepsDone rule true and SHP OK");
 
-            Timber.e("checkIfRuleStepsDone setAnimation bool: "
-                + (!SharedPreferenceHelper.getNameOfCurrentAnim()
-                .equals(rule.getNameOfAnim()))
-                + " storedname:"
-                + SharedPreferenceHelper.getNameOfCurrentAnim()
-                + " animName:"
-                + rule.getNameOfAnim()
-                + "  isCanLaunchLastAnim: "
-                + SharedPreferenceHelper.isCanLaunchLastAnim());
+              Timber.e("checkIfRuleStepsDone setAnimation bool: "
+                  + (!SharedPreferenceHelper.getNameOfCurrentAnim().equals(rule.getNameOfAnim()))
+                  + " storedname:"
+                  + SharedPreferenceHelper.getNameOfCurrentAnim()
+                  + " animName:"
+                  + rule.getNameOfAnim()
+                  + "  isCanLaunchLastAnim: "
+                  + SharedPreferenceHelper.isCanLaunchLastAnim());
 
-            if ((rule.getAction().equals(BasicActivity.ANIMATION_ACTION)
-                && !SharedPreferenceHelper.getNameOfCurrentAnim().equals(rule.getNameOfAnim()))
-                || rule.getAction().equals(BasicActivity.POPUP_ACTION)) {
-              getViewState().doEventActionResponse(CustomUserEvent.builder()
-                  .strType(rule.getAction())
-                  .eventText(rule.getMessage())
-                  .eventName(rule.getName())
-                  .nameOfAnim(rule.getNameOfAnim())
-                  .numValue(rule.getCount())
-                  .groupCount(rule.getGroupCount())
-                  .strValue(rule.getPopUpImg())
-                  //.strValue("http://fs.kinomania.ru/file/person/1/95/195688ae35f80d6aca00e2fb5cd80b90.jpeg")
-                  .build());
+              if ((rule.getAction().equals(BasicActivity.ANIMATION_ACTION)
+                  && !SharedPreferenceHelper.getNameOfCurrentAnim().equals(rule.getNameOfAnim()))
+                  || rule.getAction().equals(BasicActivity.POPUP_ACTION)) {
+                getViewState().doEventActionResponse(CustomUserEvent.builder()
+                    .strType(rule.getAction())
+                    .eventText(rule.getMessage())
+                    .eventName(rule.getName())
+                    .nameOfAnim(rule.getNameOfAnim())
+                    .numValue(rule.getCount())
+                    .groupCount(rule.getGroupCount())
+                    .strValue(rule.getPopUpImg())
+                    //.strValue("http://fs.kinomania.ru/file/person/1/95/195688ae35f80d6aca00e2fb5cd80b90.jpeg")
+                    .build());
+              } else {
+                if (SharedPreferenceHelper.isCanLaunchLastAnim()) {
+                  launchLastAnim(rulesTempo, todaySteps);
+                }
+              }
             } else {
               if (SharedPreferenceHelper.isCanLaunchLastAnim()) {
                 launchLastAnim(rulesTempo, todaySteps);
               }
-            }
-          } else {
-            if (SharedPreferenceHelper.isCanLaunchLastAnim()) {
-              launchLastAnim(rulesTempo, todaySteps);
             }
           }
         }
@@ -157,7 +162,7 @@ import timber.log.Timber;
   private void launchLastAnim(List<Rule> rulesTempo, int todaySteps) {
     Rule rule = new Rule();
     int min = Integer.MAX_VALUE;
-    Collections.sort(rulesTempo,(rule1, t1) -> t1.getGroupCount()-rule1.getGroupCount());
+    Collections.sort(rulesTempo, (rule1, t1) -> t1.getGroupCount() - rule1.getGroupCount());
     for (Rule r : rulesTempo) {
       final int diff = Math.abs(r.getCount() - todaySteps);
 
@@ -175,7 +180,9 @@ import timber.log.Timber;
         + " todaySteps "
         + todaySteps
         + " getCount()"
-        + rule.getCount()+ " RuleGroupsCount:" + rule.getGroupCount());
+        + rule.getCount()
+        + " RuleGroupsCount:"
+        + rule.getGroupCount());
     getViewState().doEventActionResponse(CustomUserEvent.builder()
         .strType(rule.getAction())
         .eventText(rule.getMessage())

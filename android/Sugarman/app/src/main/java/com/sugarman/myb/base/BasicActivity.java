@@ -32,7 +32,7 @@ public abstract class BasicActivity extends MvpAppCompatActivity {
     ButterKnife.bind(this);
     App.getAppComponent().inject(this);
 
-    Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+    //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
   }
 
   protected void showToastMessage(String message) {

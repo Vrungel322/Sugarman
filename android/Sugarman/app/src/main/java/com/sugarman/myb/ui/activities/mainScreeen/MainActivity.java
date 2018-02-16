@@ -1140,8 +1140,6 @@ public class MainActivity extends GetUserInfoActivity
     int id = v.getId();
     switch (id) {
       case R.id.iv_avatar:
-        List<String> toCrash = new ArrayList<>();
-        toCrash.get(0);
         openProfileActivity();
         //DialogRescueBoldMan.newInstance(myTrackings[0],DialogRescueBoldMan.MONEY).show(getFragmentManager(),"DialogRescueBoldMan");
         //DialogRescueGirl.newInstance(myTrackings[0]).show(getFragmentManager(), "DialogRescueGirl");

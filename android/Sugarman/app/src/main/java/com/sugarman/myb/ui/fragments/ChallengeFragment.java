@@ -192,6 +192,8 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
 
         TextView bestName = (TextView) (root.findViewById(R.id.best_name));
         TextView bestSteps = (TextView) root.findViewById(R.id.best_steps);
+        ImageView fastestAvatarBorder =
+            (ImageView) root.findViewById(R.id.iv_fastest_avatar_border);
         ImageView bestAvatar = (ImageView) root.findViewById(R.id.iv_best_avatar);
 
         String str = "";
@@ -215,9 +217,9 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
 
         for (int i = 0; i < tracking.getMembers().length; i++) {
           if (best.getId().equals(SharedPreferenceHelper.getUserId())) {
-            bestSteps.setText(
-                String.format(Locale.US, "%,d", SharedPreferenceHelper.getReportStatsLocal(SharedPreferenceHelper.getUserId())[0]
-                    .getStepsCount()));
+            bestSteps.setText(String.format(Locale.US, "%,d",
+                SharedPreferenceHelper.getReportStatsLocal(
+                    SharedPreferenceHelper.getUserId())[0].getStepsCount()));
           }
         }
 
@@ -229,10 +231,27 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
             .transform(new CropCircleTransformation(0xff7ECC10, 1))
             .into(bestAvatar);
 
+        int color = 0xff54cc14;
+        if (best.getSteps() < 5000) {
+          color = 0xffe10f0f;
+        } else if (best.getSteps() >= 5000
+            && best.getSteps() < 7500) {
+          color = 0xffeb6117;
+        } else if (best.getSteps() >= 7500
+            && best.getSteps() < 10000) {
+          color = 0xffF6B147;
+        }
+        fastestAvatarBorder.setBackgroundColor(color);
+        bestName.setTextColor(color);
+        bestSteps.setTextColor(color);
+
         Member laziest = members[0];
 
         TextView laziestName = (TextView) (root.findViewById(R.id.laziest_name));
         TextView laziestSteps = (TextView) root.findViewById(R.id.laziest_steps);
+        ImageView laziestAvatarBorder =
+            (ImageView) root.findViewById(R.id.iv_laziest_avatar_border);
+
         ImageView laziestAvatar = (ImageView) root.findViewById(R.id.iv_laziest_avatar);
 
         str = laziest.getName();
@@ -248,9 +267,9 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
 
         for (int i = 0; i < tracking.getMembers().length; i++) {
           if (laziest.getId().equals(SharedPreferenceHelper.getUserId())) {
-            laziestSteps.setText(
-                String.format(Locale.US, "%,d", SharedPreferenceHelper.getReportStatsLocal(SharedPreferenceHelper.getUserId())[0]
-                    .getStepsCount()));
+            laziestSteps.setText(String.format(Locale.US, "%,d",
+                SharedPreferenceHelper.getReportStatsLocal(
+                    SharedPreferenceHelper.getUserId())[0].getStepsCount()));
           }
         }
 
@@ -266,18 +285,35 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
             .error(R.drawable.ic_red_avatar)
             .transform(new CropCircleTransformation(0xffff0000, 1))
             .into(laziestAvatar);
+
+        if (laziest.getSteps() < 5000) {
+          color = 0xffe10f0f;
+        } else if (laziest.getSteps() >= 5000
+            && laziest.getSteps() < 7500) {
+          color = 0xffeb6117;
+        } else if (laziest.getSteps() >= 7500
+            && laziest.getSteps() < 10000) {
+          color = 0xffF6B147;
+        }
+        laziestAvatarBorder.setBackgroundColor(color);
+        laziestName.setTextColor(color);
+        laziestSteps.setTextColor(color);
+
         TextView fastestName = (TextView) (root.findViewById(R.id.fastest_name));
         TextView fastestSteps = (TextView) root.findViewById(R.id.fastest_steps);
         ImageView fastestAvatar = (ImageView) root.findViewById(R.id.iv_fastest_avatar);
+        ImageView fastestBorderAvatar = (ImageView) root.findViewById(R.id.iv_fastest_avatar_border);
         if (tracking.hasDailyWinner()) {
           Member fastest = tracking.getDailySugarman().getUser();
 
           str = fastest.getName();
           str = str.replaceAll("( +)", " ").trim();
-          if (str.length() > 0 ) {
-            if(str.contains(" "))
-            name = str.substring(0, (fastest.getName().indexOf(" ")));
-            else name = str;
+          if (str.length() > 0) {
+            if (str.contains(" ")) {
+              name = str.substring(0, (fastest.getName().indexOf(" ")));
+            } else {
+              name = str;
+            }
           }
 
           fastestName.setText(name);
@@ -293,11 +329,24 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
           //this is fixing of server bug, but on client
           for (int i = 0; i < tracking.getMembers().length; i++) {
             if (fastest.getId().equals(SharedPreferenceHelper.getUserId())) {
-              fastestSteps.setText(
-                  String.format(Locale.US, "%,d", SharedPreferenceHelper.getReportStatsLocal(SharedPreferenceHelper.getUserId())[0]
-                      .getStepsCount()));
+              fastestSteps.setText(String.format(Locale.US, "%,d",
+                  SharedPreferenceHelper.getReportStatsLocal(
+                      SharedPreferenceHelper.getUserId())[0].getStepsCount()));
             }
           }
+
+          if (tracking.getDailySugarman().getUser().getSteps() < 5000) {
+            color = 0xffe10f0f;
+          } else if (tracking.getDailySugarman().getUser().getSteps() >= 5000
+              && tracking.getDailySugarman().getUser().getSteps() < 7500) {
+            color = 0xffeb6117;
+          } else if (tracking.getDailySugarman().getUser().getSteps() >= 7500
+              && tracking.getDailySugarman().getUser().getSteps() < 10000) {
+            color = 0xffF6B147;
+          }
+          fastestBorderAvatar.setBackgroundColor(color);
+          fastestName.setTextColor(color);
+          fastestSteps.setTextColor(color);
         } else {
           fastestName.setText(getResources().getString(R.string.sugarman_is));
           fastestSteps.setText(getResources().getString(R.string.todays_fastest));

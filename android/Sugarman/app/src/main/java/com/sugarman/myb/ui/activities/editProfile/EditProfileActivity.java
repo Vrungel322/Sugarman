@@ -317,7 +317,7 @@ public class EditProfileActivity extends BasicActivity
   @OnClick(R.id.iv_next) public void ivNextClicked() {
 
     AppsFlyerEventSender.sendEvent("af_save_settings_changes");
-
+    nextButton.setEnabled(false);
     editProfile();
   }
 
@@ -514,6 +514,7 @@ public class EditProfileActivity extends BasicActivity
 
   @Override protected void onResume() {
     super.onResume();
+    nextButton.setEnabled(true);
     if (SharedPreferenceHelper.getOTPStatus()) {
       etPhone.setError(String.format(getString(R.string.approve_phone_pls)));
     }

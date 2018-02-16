@@ -203,7 +203,7 @@ import timber.log.Timber;
           }
           Timber.e("checkVkFriends after checking" + allFriendsToShow.size());
           getViewState().setFriendsVk(allFriendsToShow);
-        });
+        },Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 
@@ -344,7 +344,7 @@ import timber.log.Timber;
         .toList()
         .subscribe(facebookFriends -> {
           getViewState().setFriendsFilter(facebookFriends);
-        });
+        },Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 
@@ -357,7 +357,7 @@ import timber.log.Timber;
         .toList()
         .subscribe(facebookFriends -> {
           getViewState().setFriendsFilter(facebookFriends);
-        });
+        },Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 
