@@ -241,8 +241,8 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
           color = 0xffF6B147;
         }
         fastestAvatarBorder.setBackgroundColor(color);
-        bestName.setBackgroundColor(color);
-        bestSteps.setBackgroundColor(color);
+        bestName.setTextColor(color);
+        bestSteps.setTextColor(color);
 
         Member laziest = members[0];
 
