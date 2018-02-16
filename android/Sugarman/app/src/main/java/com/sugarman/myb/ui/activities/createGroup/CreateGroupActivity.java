@@ -657,12 +657,7 @@ public class CreateGroupActivity extends BaseActivity
     switch (id) {
       case R.id.iv_cross:
         Timber.e("iv_cross");
-        Map<String, Object> eventValue = new HashMap<>();
-        eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-        eventValue.put(AFInAppEventParameterName.SCORE, 100);
-        AppsFlyerLib.getInstance()
-            .trackEvent(getApplicationContext(), "af_cancel_group_creation", eventValue);
-
+        AppsFlyerEventSender.sendEvent("af_cancel_group_creation");
         setResult(RESULT_CANCELED);
         hideProgress();
         //closeProgressFragment();
@@ -670,11 +665,8 @@ public class CreateGroupActivity extends BaseActivity
         break;
       case R.id.iv_apply:
         DeviceHelper.hideKeyboard(this);
-        Map<String, Object> eventValues = new HashMap<>();
-        eventValues.put(AFInAppEventParameterName.LEVEL, 9);
-        eventValues.put(AFInAppEventParameterName.SCORE, 100);
-        AppsFlyerLib.getInstance()
-            .trackEvent(getApplicationContext(), "af_create_group_inside", eventValues);
+        AppsFlyerEventSender.sendEvent("af_create_group_inside");
+
         //checkFilledData();
         mFriendListFragment.startCreateGroupFlow();
         break;

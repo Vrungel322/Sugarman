@@ -214,7 +214,7 @@ public class ShopInviteFriendsActivity extends BasicActivity
     //===============================================================================================
 
     AppsFlyerEventSender.sendEvent("af_tap_free_for_invites");
-    
+
     ConstraintLayout mainLayout = (ConstraintLayout) findViewById(R.id.mainLayout);
 
     //getWindow().setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.background));
