@@ -47,6 +47,7 @@ import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.utils.AnalyticsHelper;
 import com.sugarman.myb.utils.DeviceHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
+import com.sugarman.myb.utils.apps_Fly.AppsFlyerEventSender;
 import com.sugarman.myb.utils.inapp.IabHelper;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -93,10 +94,7 @@ public class SplashActivity extends GetUserInfoActivity
 
     AppsFlyerLib.getInstance().trackAppLaunch(getApplicationContext(), "PtjAzTP7TzPLhFZRJW3ouk");
 
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance().trackEvent(getApplicationContext(), "af_launch_splash", eventValue);
+    AppsFlyerEventSender.sendEvent("af_launch_splash");
 
     SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
     Sensor accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);

@@ -22,6 +22,7 @@ import com.sugarman.myb.listeners.OnGroupsActionListener;
 import com.sugarman.myb.models.SearchTracking;
 import com.sugarman.myb.ui.views.MaskTransformation;
 import com.sugarman.myb.ui.views.StrokeImage;
+import com.sugarman.myb.utils.apps_Fly.AppsFlyerEventSender;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -165,11 +166,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
   @Override public void onClickJoinGroup(int position) {
 
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance()
-        .trackEvent(App.getInstance().getApplicationContext(), "af_join_group", eventValue);
+    AppsFlyerEventSender.sendEvent("af_join_group");
 
     if (position >= 0 && position < mData.size()) {
       if (actionListener.get() != null) {
@@ -186,12 +183,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
   @Override public void onClickGroup(int position) {
 
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance()
-        .trackEvent(App.getInstance().getApplicationContext(), "af_open_group_details_from_search",
-            eventValue);
+    AppsFlyerEventSender.sendEvent("af_open_group_details_from_search");
 
     if (position >= 0 && position < mData.size()) {
       if (actionListener.get() != null) {

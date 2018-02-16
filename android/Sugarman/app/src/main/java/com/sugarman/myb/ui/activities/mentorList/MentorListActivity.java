@@ -16,6 +16,7 @@ import com.sugarman.myb.base.BasicActivity;
 import com.sugarman.myb.models.mentor.MentorEntity;
 import com.sugarman.myb.ui.activities.mentorDetail.MentorDetailActivity;
 import com.sugarman.myb.utils.ItemClickSupport;
+import com.sugarman.myb.utils.apps_Fly.AppsFlyerEventSender;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,12 +31,8 @@ public class MentorListActivity extends BasicActivity implements IMentorListActi
     setContentView(R.layout.activity_mentor_list);
     super.onCreate(savedInstanceState);
 
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance()
-        .trackEvent(App.getInstance().getApplicationContext(), "af_shop_open_mentor_item",
-            eventValue);
+    AppsFlyerEventSender.sendEvent("af_shop_open_mentor_item");
+
   }
 
   @Override public void setUpUI() {

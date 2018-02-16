@@ -14,6 +14,7 @@ import com.sugarman.myb.R;
 import com.sugarman.myb.constants.Config;
 import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
+import com.sugarman.myb.utils.apps_Fly.AppsFlyerEventSender;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,23 +39,17 @@ public class SettingsActivity extends PreferenceActivity
       Intent i = new Intent(Intent.ACTION_VIEW);
       i.setData(Uri.parse(url));
       startActivity(i);
-      Map<String, Object> eventValue = new HashMap<>();
-      eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-      eventValue.put(AFInAppEventParameterName.SCORE, 100);
-      AppsFlyerLib.getInstance()
-          .trackEvent(App.getInstance().getApplicationContext(), "af_open_terms_of_use",
-              eventValue);
+
+      AppsFlyerEventSender.sendEvent("af_open_terms_of_use");
+
       return true;
     });
 
     Preference privacyPolicy = findPreference("privacy_policy");
     privacyPolicy.setOnPreferenceClickListener(preference -> {
-      Map<String, Object> eventValues = new HashMap<>();
-      eventValues.put(AFInAppEventParameterName.LEVEL, 9);
-      eventValues.put(AFInAppEventParameterName.SCORE, 100);
-      AppsFlyerLib.getInstance()
-          .trackEvent(App.getInstance().getApplicationContext(), "af_open_private_policy",
-              eventValues);
+
+      AppsFlyerEventSender.sendEvent("af_open_private_policy");
+
       String url = Config.PRIVACY_POLICY;
       Intent i = new Intent(Intent.ACTION_VIEW);
       i.setData(Uri.parse(url));
@@ -77,11 +72,7 @@ public class SettingsActivity extends PreferenceActivity
     super.onBackPressed();
     if (needsRestart) {
 
-      Map<String, Object> eventValue = new HashMap<>();
-      eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-      eventValue.put(AFInAppEventParameterName.SCORE, 100);
-      AppsFlyerLib.getInstance()
-          .trackEvent(App.getInstance().getApplicationContext(), "af_change_language", eventValue);
+      AppsFlyerEventSender.sendEvent("af_change_language");
 
       Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
       intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

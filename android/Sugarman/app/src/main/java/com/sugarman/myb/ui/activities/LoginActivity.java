@@ -49,6 +49,7 @@ import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.utils.AnalyticsHelper;
 import com.sugarman.myb.utils.DeviceHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
+import com.sugarman.myb.utils.apps_Fly.AppsFlyerEventSender;
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCallback;
 import com.vk.sdk.VKSdk;
@@ -182,19 +183,12 @@ public class LoginActivity extends GetUserInfoActivity implements View.OnClickLi
       startActivity(intent);
     });
 
-    rlphone.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
+    rlphone.setOnClickListener(v -> {
 
-        Map<String, Object> eventValue = new HashMap<>();
-        eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-        eventValue.put(AFInAppEventParameterName.SCORE, 100);
-        AppsFlyerLib.getInstance()
-            .trackEvent(App.getInstance().getApplicationContext(), "af_login_with_phone",
-                eventValue);
+      AppsFlyerEventSender.sendEvent("af_login_with_phone");
 
-        Intent intent = new Intent(LoginActivity.this, PhoneLoginActivity.class);
-        startActivity(intent);
-      }
+      Intent intent = new Intent(LoginActivity.this, PhoneLoginActivity.class);
+      startActivity(intent);
     });
 
     //Schedule a task to run every 5 seconds (or however long you want)
@@ -246,18 +240,12 @@ public class LoginActivity extends GetUserInfoActivity implements View.OnClickLi
     });
     t.start();
 
-    rlvk.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        //showSugarmanProgressFragment();
+    rlvk.setOnClickListener(v -> {
+      //showSugarmanProgressFragment();
 
-        Map<String, Object> eventValue = new HashMap<>();
-        eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-        eventValue.put(AFInAppEventParameterName.SCORE, 100);
-        AppsFlyerLib.getInstance()
-            .trackEvent(App.getInstance().getApplicationContext(), "af_login_with_vk", eventValue);
+      AppsFlyerEventSender.sendEvent("af_login_with_vk");
 
-        VKSdk.login(LoginActivity.this, "friends,email,messages");
-      }
+      VKSdk.login(LoginActivity.this, "friends,email,messages");
     });
 
     Log.e("VK", "" + VKSdk.isLoggedIn());
@@ -322,11 +310,7 @@ public class LoginActivity extends GetUserInfoActivity implements View.OnClickLi
         });
     rlfb.setOnClickListener(view -> {
 
-      Map<String, Object> eventValue = new HashMap<>();
-      eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-      eventValue.put(AFInAppEventParameterName.SCORE, 100);
-      AppsFlyerLib.getInstance()
-          .trackEvent(App.getInstance().getApplicationContext(), "af_login_with_fb", eventValue);
+      AppsFlyerEventSender.sendEvent("af_login_with_fb");
 
       LoginManager.getInstance()
           .logInWithReadPermissions(this,

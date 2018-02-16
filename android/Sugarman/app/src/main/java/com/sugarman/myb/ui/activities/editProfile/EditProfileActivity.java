@@ -55,6 +55,7 @@ import com.sugarman.myb.utils.DeviceHelper;
 import com.sugarman.myb.utils.DialogHelper;
 import com.sugarman.myb.utils.SaveFileHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
+import com.sugarman.myb.utils.apps_Fly.AppsFlyerEventSender;
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCallback;
 import com.vk.sdk.VKSdk;
@@ -238,11 +239,7 @@ public class EditProfileActivity extends BasicActivity
   @OnClick(R.id.cb_facebook) public void cbFacebookClicked() {
     Log.e("EditProfileActivity", "is checked: " + cbFb.isChecked());
 
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance()
-        .trackEvent(App.getInstance().getApplicationContext(), "af_switch_social_fb", eventValue);
+    AppsFlyerEventSender.sendEvent("af_switch_social_fb");
 
     if (!cbFb.isChecked()) {
       logoutFacebook();
@@ -252,13 +249,8 @@ public class EditProfileActivity extends BasicActivity
   }
 
   @OnClick(R.id.tv_facebook) public void tvFacebookClicked() {
-    Log.e("EditProfileActivity", "is checked: " + cbFb.isChecked());
 
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance()
-        .trackEvent(App.getInstance().getApplicationContext(), "af_switch_social_fb", eventValue);
+    AppsFlyerEventSender.sendEvent("af_switch_social_fb");
 
     if (cbFb.isChecked()) {
       logoutFacebook();
@@ -269,11 +261,7 @@ public class EditProfileActivity extends BasicActivity
 
   @OnClick(R.id.cb_vk) public void cbVkClicked() {
 
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance()
-        .trackEvent(App.getInstance().getApplicationContext(), "af_switch_social_vk", eventValue);
+    AppsFlyerEventSender.sendEvent("af_switch_social_vk");
 
     if (VKSdk.isLoggedIn()) {
       logoutVk();
@@ -284,11 +272,7 @@ public class EditProfileActivity extends BasicActivity
 
   @OnClick(R.id.tv_vk) public void tvVkClicked() {
 
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance()
-        .trackEvent(App.getInstance().getApplicationContext(), "af_switch_social_vk", eventValue);
+    AppsFlyerEventSender.sendEvent("af_switch_social_vk");
 
     if (VKSdk.isLoggedIn()) {
       logoutVk();
@@ -300,11 +284,7 @@ public class EditProfileActivity extends BasicActivity
 
   @OnClick(R.id.cb_ph) public void cbPhClicked() {
 
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance()
-        .trackEvent(App.getInstance().getApplicationContext(), "af_switch_phone", eventValue);
+    AppsFlyerEventSender.sendEvent("af_switch_phone");
 
     if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
       Intent intent = new Intent();
@@ -320,11 +300,7 @@ public class EditProfileActivity extends BasicActivity
 
   @OnClick(R.id.tv_ph) public void tvPhClicked() {
 
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance()
-        .trackEvent(App.getInstance().getApplicationContext(), "af_switch_phone", eventValue);
+    AppsFlyerEventSender.sendEvent("af_switch_phone");
 
     if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
       Intent intent = new Intent();
@@ -340,12 +316,7 @@ public class EditProfileActivity extends BasicActivity
 
   @OnClick(R.id.iv_next) public void ivNextClicked() {
 
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance()
-        .trackEvent(App.getInstance().getApplicationContext(), "af_save_settings_changes",
-            eventValue);
+    AppsFlyerEventSender.sendEvent("af_save_settings_changes");
     nextButton.setEnabled(false);
     editProfile();
   }
@@ -357,36 +328,36 @@ public class EditProfileActivity extends BasicActivity
     String displayEmail = etEmail.getText().toString();
     displayNumber = etPhone.getText().toString();
 
-    if (!etName.getText().toString().trim().isEmpty()){
-    if (isEmailValid(displayEmail) || displayEmail.equals("")) {
-      if (displayNumber.equals("")) {
-        Timber.e("Got in here 1");
-        editProfileClient.editUser(displayNumber, displayEmail, displayName,
-            SharedPreferenceHelper.getFbId(), SharedPreferenceHelper.getVkId(),
-            SharedPreferenceHelper.getAvatar(), selectedFile); //brand.png
-        SharedPreferenceHelper.saveEmail(displayEmail);
-        //nextButton.setEnabled(false);
-        //showNextActivity();
-      } else {
-        if (isPhoneValid(displayNumber) && !etPhone.getText().toString().isEmpty()) {
-          Timber.e("Got in here 2");
+    if (!etName.getText().toString().trim().isEmpty()) {
+      if (isEmailValid(displayEmail) || displayEmail.equals("")) {
+        if (displayNumber.equals("")) {
+          Timber.e("Got in here 1");
           editProfileClient.editUser(displayNumber, displayEmail, displayName,
               SharedPreferenceHelper.getFbId(), SharedPreferenceHelper.getVkId(),
               SharedPreferenceHelper.getAvatar(), selectedFile); //brand.png
           SharedPreferenceHelper.saveEmail(displayEmail);
-          Timber.e(displayNumber);
           //nextButton.setEnabled(false);
           //showNextActivity();
         } else {
-          new SugarmanDialog.Builder(this, "Phone").content(
-              getResources().getString(R.string.the_phone_is_not_valid)).build().show();
+          if (isPhoneValid(displayNumber) && !etPhone.getText().toString().isEmpty()) {
+            Timber.e("Got in here 2");
+            editProfileClient.editUser(displayNumber, displayEmail, displayName,
+                SharedPreferenceHelper.getFbId(), SharedPreferenceHelper.getVkId(),
+                SharedPreferenceHelper.getAvatar(), selectedFile); //brand.png
+            SharedPreferenceHelper.saveEmail(displayEmail);
+            Timber.e(displayNumber);
+            //nextButton.setEnabled(false);
+            //showNextActivity();
+          } else {
+            new SugarmanDialog.Builder(this, "Phone").content(
+                getResources().getString(R.string.the_phone_is_not_valid)).build().show();
+          }
         }
+      } else {
+        new SugarmanDialog.Builder(this, "Email").content(
+            getResources().getString(R.string.the_email_is_not_valid)).build().show();
       }
     } else {
-      new SugarmanDialog.Builder(this, "Email").content(
-          getResources().getString(R.string.the_email_is_not_valid)).build().show();
-    }
-  } else {
       new SugarmanDialog.Builder(this, "Name").content(
           getResources().getString(R.string.name_can_not_be_empty)).build().show();
     }
@@ -395,12 +366,7 @@ public class EditProfileActivity extends BasicActivity
 
   @OnClick(R.id.rlBackContainer) public void ivBackClicked() {
 
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance()
-        .trackEvent(App.getInstance().getApplicationContext(), "af_cancel_settings_changes",
-            eventValue);
+    AppsFlyerEventSender.sendEvent("af_cancel_settings_changes");
 
     if (VKSdk.isLoggedIn() != mBundleUserSettings.getBoolean(IS_VK_LOGGED_IN_FROM_SETTINGS)) {
       networkTotalCount++;
@@ -657,12 +623,7 @@ public class EditProfileActivity extends BasicActivity
 
   private void chooseGroupAvatar() {
 
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance()
-        .trackEvent(App.getInstance().getApplicationContext(), "af_settings_edit_avatar",
-            eventValue);
+    AppsFlyerEventSender.sendEvent("af_settings_edit_avatar");
 
     Intent galleryIntent = DeviceHelper.getGalleryIntent();
     Pair<String[], Parcelable[]> cameraData = DeviceHelper.getCameraData();
