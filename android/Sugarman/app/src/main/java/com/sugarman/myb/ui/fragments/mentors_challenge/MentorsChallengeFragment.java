@@ -226,8 +226,8 @@ public class MentorsChallengeFragment extends BasicFragment
         color = 0xffeb6117;
       } else if (laziest.getSteps() >= 7500 && laziest.getSteps() < 10000) color = 0xffF6B147;
       mImageViewLaziestAvatarBorder.setBackgroundColor(color);
-      mTextViewLaziestName.setBackgroundColor(color);
-      mTextViewLaziestSteps.setBackgroundColor(color);
+      mTextViewLaziestName.setTextColor(color);
+      mTextViewLaziestSteps.setTextColor(color);
     }
     //set up all
     setToUiAllSteps();
