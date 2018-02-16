@@ -72,17 +72,19 @@ import timber.log.Timber;
     addToUnsubscription(subscription);
   }
 
-  public void getMentorsVendor(String mentorId) {
+  public void getMentorsVendor(String mentorId, MentorDetailActivity activity) {
     Subscription subscription =
         mDataManager.getMentorsVendor(mentorId)
             .concatMap(mentorsVendorResponse -> {
               if (mentorsVendorResponse.body().getVendor().equals(ProviderManager.FREE)) {
+                Timber.e("getMentorsVendor free");
                 return mProviderManager.startFreePurchaseFlowByVendor(
                     mentorsVendorResponse.body().getVendor(), mentorId);
               }
               if (mentorsVendorResponse.body().getVendor().equals(ProviderManager.GOOGLE)) {
+              Timber.e("getMentorsVendor google");
                 mProviderManager.startGooglePurchaseFlowByVendor(
-                    mentorsVendorResponse.body().getVendor(), mentorId, Observable::just);
+                    ProviderManager.GOOGLE, mentorId, Observable::just, activity);
               }
               return Observable.empty();
             })
@@ -90,7 +92,7 @@ import timber.log.Timber;
                 purchaseTransaction -> mDataManager.checkPurchaseTransaction(purchaseTransaction))
             .compose(ThreadSchedulers.applySchedulers())
             .subscribe(voidResponse -> {
-              mProviderManager.clearListeners();
+              mProviderManager.clearListenersFreeObj();
               Timber.e("getMentorsVendor code: " + voidResponse.code());
               Timber.e("getMentorsVendor Need to do smth on UI if checkPurchaseTransaction is OK");
             }, Throwable::printStackTrace);

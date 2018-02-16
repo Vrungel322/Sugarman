@@ -81,11 +81,13 @@ public class ProviderManager {
   }
 
   public void startGooglePurchaseFlowByVendor(String vendor, String mentorId,
-      GooglePurchaseListener googlePurchaseListener) {
+      GooglePurchaseListener googlePurchaseListener,
+      MentorDetailActivity activity) {
+    Timber.e("startGooglePurchaseFlowByVendor");
     mMentorId = mentorId;
     mGooglePurchaseListener = googlePurchaseListener;
     mRestApi.getNextFreeSku().concatMap(nextFreeSkuEntityResponse -> {
-      startPurchaseFlow(nextFreeSkuEntityResponse.body().getFreeSku());
+      startPurchaseFlow(nextFreeSkuEntityResponse.body().getFreeSku(),activity);
       return Observable.empty();
     }).subscribe();
   }
@@ -103,11 +105,11 @@ public class ProviderManager {
     mHelper.enableDebugLogging(true);
   }
 
-  public void startPurchaseFlow(String freeSku) {
+  public void startPurchaseFlow(String freeSku, MentorDetailActivity activity) {
     mFreeSku = freeSku;
     Timber.e("mFreeSku startPurchaseFlow " + freeSku);
 
-    mHelper.launchSubscriptionPurchaseFlow((MentorDetailActivity) mContext, freeSku, 10001,
+    mHelper.launchSubscriptionPurchaseFlow(activity, freeSku, 10001,
         mPurchaseFinishedListener, "mypurchasetoken");
   }
 
@@ -115,7 +117,7 @@ public class ProviderManager {
     mHelper.queryInventoryAsync(true, Arrays.asList(mFreeSku), mReceivedInventoryListener);
   }
 
-  public void clearListeners() {
+  public void clearListenersFreeObj() {
     mGooglePurchaseListener = null;
   }
 }
