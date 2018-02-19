@@ -796,4 +796,15 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     }.getType();
     return new Gson().fromJson(getString(SharedPreferenceConstants.CACHED_FB_FRIENDS, ""), type);
   }
+
+  public static void cachePhFriends(List<FacebookFriend> friends) {
+    Timber.e("cacheFriends "+friends.size());
+    putString(SharedPreferenceConstants.CACHED_PH_FRIENDS,new Gson().toJson(friends));
+  }
+
+  public static List<FacebookFriend> getCachedPhFriends() {
+    Type type = new TypeToken<List<FacebookFriend>>() {
+    }.getType();
+    return new Gson().fromJson(getString(SharedPreferenceConstants.CACHED_PH_FRIENDS, ""), type);
+  }
 }

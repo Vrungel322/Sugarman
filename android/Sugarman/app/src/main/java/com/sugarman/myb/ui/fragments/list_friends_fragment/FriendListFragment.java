@@ -310,6 +310,8 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
 
   @Override public void setFriendsPh(List<FacebookFriend> friends) {
     showCounters(friends, tvTotalPhCount, tvInAppPhCount);
+    mPresenter.savePhCounters(friends);
+    mPresenter.savePhMembers(friends);
     if (!mPendingsMembers.isEmpty() && !mAddedMembers.isEmpty()) {
       friendsAdapter.setValue(
           mPresenter.checkForUniqueMembers(mPendingsMembers, mAddedMembers, friends));
@@ -384,6 +386,10 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
 
   @Override public void showFBCounters(List<FacebookFriend> friends) {
     showCounters(friends, tvTotalFbCount, tvInAppFbCount);
+  }
+
+  @Override public void showPHCounters(List<FacebookFriend> friends) {
+    showCounters(friends, tvTotalPhCount, tvInAppPhCount);
   }
 
   private void showCounters(List<FacebookFriend> friends, TextView tvTotalCount,

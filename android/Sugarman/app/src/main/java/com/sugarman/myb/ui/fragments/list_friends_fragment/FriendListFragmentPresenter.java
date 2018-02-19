@@ -82,8 +82,8 @@ import timber.log.Timber;
             if (allFriendsToShow.size() == SharedPreferenceHelper.getCachedFbFriends().size()) {
               getViewState().setFriendsFb(allFriendsToShow);
             }
-            if (rawResponse == null){
-              getViewState().setFriendsFb(SharedPreferenceHelper.getCachedFriends());
+            if (rawResponse == null) {
+              getViewState().setFriendsFb(SharedPreferenceHelper.getCachedFbFriends());
             }
           });
 
@@ -96,8 +96,8 @@ import timber.log.Timber;
                 if (allFriendsToShow.size() == SharedPreferenceHelper.getCachedFbFriends().size()) {
                   getViewState().setFriendsFb(allFriendsToShow);
                 }
-                if (rawResponse == null){
-                  getViewState().setFriendsFb(SharedPreferenceHelper.getCachedFriends());
+                if (rawResponse == null) {
+                  getViewState().setFriendsFb(SharedPreferenceHelper.getCachedFbFriends());
                 }
               });
 
@@ -107,6 +107,7 @@ import timber.log.Timber;
   }
 
   private void loadPhFriends() {
+    getViewState().showPHCounters(SharedPreferenceHelper.getCachedPhFriends());
     List<FacebookFriend> friendsFromPhone = new ArrayList<>();
     Subscription subscription = mDataManager.loadContactsFromContactBook()
         .concatMap(friends -> {
@@ -136,8 +137,16 @@ import timber.log.Timber;
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(facebookFriends -> {
           allFriendsToShow.addAll(facebookFriends);
-          getViewState().setFriendsPh(allFriendsToShow);
-        }, Throwable::printStackTrace);
+          if (SharedPreferenceHelper.getCachedPhFriends() != null && (allFriendsToShow.size()
+              == SharedPreferenceHelper.getCachedPhFriends().size())) {
+            getViewState().setFriendsPh(allFriendsToShow);
+          }
+        }, throwable -> {
+          if (SharedPreferenceHelper.getCachedPhFriends() != null) {
+            getViewState().setFriendsPh(SharedPreferenceHelper.getCachedPhFriends());
+          }
+          throwable.printStackTrace();
+        });
     addToUnsubscription(subscription);
   }
 
@@ -421,5 +430,13 @@ import timber.log.Timber;
 
   public void saveFBMembers(List<FacebookFriend> friends) {
     SharedPreferenceHelper.cacheFbFriends(friends);
+  }
+
+  public void savePhCounters(List<FacebookFriend> friends) {
+    SharedPreferenceHelper.saveCountOfMembersPh(String.valueOf(friends.size()));
+  }
+
+  public void savePhMembers(List<FacebookFriend> friends) {
+    SharedPreferenceHelper.cachePhFriends(friends);
   }
 }
