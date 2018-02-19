@@ -11,6 +11,7 @@ import android.text.Editable;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -57,6 +58,7 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
   @BindView(R.id.fbFilter) ImageView ivFbFilter;
   @BindView(R.id.vkFilter) ImageView ivVkFilter;
   @BindView(R.id.phFilter) ImageView ivphFilter;
+  @BindView(R.id.pb) ProgressBar mProgressBar;
   // number of total count/ number of count people with app BY PH
   private int numberOfMemberTotalAppPh;
   private int numberOfMemberWithAppPh;
@@ -286,6 +288,8 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
 
   @Override public void setFriendsFb(List<FacebookFriend> friends) {
     showCounters(friends, tvTotalFbCount, tvInAppFbCount);
+    mPresenter.saveFBCounters(friends);
+    mPresenter.saveFBMembers(friends);
     if (!mPendingsMembers.isEmpty() && !mAddedMembers.isEmpty()) {
       friendsAdapter.setValue(
           mPresenter.checkForUniqueMembers(mPendingsMembers, mAddedMembers, friends));
@@ -378,18 +382,24 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
     fbCallbackManager.onActivityResult(requestCode, resultCode, data);
   }
 
+  @Override public void showFBCounters(List<FacebookFriend> friends) {
+    showCounters(friends, tvTotalFbCount, tvInAppFbCount);
+  }
+
   private void showCounters(List<FacebookFriend> friends, TextView tvTotalCount,
       TextView tvInAppCount) {
-    int inAppMemberCountPh = 0;
-    int totalCountPh = 0;
-    for (FacebookFriend fb : friends) {
-      if (fb.getIsInvitable() == FacebookFriend.CODE_NOT_INVITABLE) {
-        inAppMemberCountPh++;
+    if (friends != null) {
+      int inAppMemberCountPh = 0;
+      int totalCountPh = 0;
+      for (FacebookFriend fb : friends) {
+        if (fb.getIsInvitable() == FacebookFriend.CODE_NOT_INVITABLE) {
+          inAppMemberCountPh++;
+        }
+        totalCountPh++;
       }
-      totalCountPh++;
+      tvInAppCount.setText(String.valueOf(inAppMemberCountPh));
+      tvTotalCount.setText(String.valueOf(totalCountPh));
     }
-    tvInAppCount.setText(String.valueOf(inAppMemberCountPh));
-    tvTotalCount.setText(String.valueOf(totalCountPh));
   }
 
   @Override public void setUpUI() {
@@ -403,5 +413,13 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
         + addedMembers.length);
     Collections.addAll(mPendingsMembers, pendingsMembers);
     Collections.addAll(mAddedMembers, addedMembers);
+  }
+
+  public void hideProgress() {
+    mProgressBar.setVisibility(View.GONE);
+  }
+
+  public void showProgress() {
+    mProgressBar.setVisibility(View.VISIBLE);
   }
 }

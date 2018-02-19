@@ -238,6 +238,7 @@ public class AddMemberActivity extends BaseActivity
       }
 
       @Override public void editGroup(List<FacebookFriend> membersToSendByEditing, String groupName) {
+        mFriendListFragment.showProgress();
         Timber.e("editGroup name: " + groupName + "membersToSendByEditing: " + membersToSendByEditing.size());
         mEditGroupClient.editGroup(IntentExtractorHelper.getTrackingId( getIntent()), membersToSendByEditing, groupName, selectedFile);
         mAddMembersClient.addMembers(IntentExtractorHelper.getTrackingId( getIntent()), membersToSendByEditing);
@@ -915,6 +916,7 @@ public class AddMemberActivity extends BaseActivity
   }
 
   @Override public void onApiAddMembersSuccess() {
+    mFriendListFragment.hideProgress();
     Timber.e("onApiAddMembersSuccess");
     membersAdapter.markSelectedAsPending();
     closeProgressFragment();

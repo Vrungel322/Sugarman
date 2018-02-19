@@ -53,6 +53,7 @@ import com.sugarman.myb.ui.views.MaskTransformation;
 import com.sugarman.myb.utils.DeviceHelper;
 import com.sugarman.myb.utils.IntentExtractorHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
+import com.sugarman.myb.utils.apps_Fly.AppsFlyerEventSender;
 import com.vk.sdk.VKSdk;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -357,12 +358,7 @@ public class ProfileActivity extends BaseActivity
             break;
           case R.id.ll_invite_friends_container:
 
-            Map<String, Object> eventValueq = new HashMap<>();
-            eventValueq.put(AFInAppEventParameterName.LEVEL, 9);
-            eventValueq.put(AFInAppEventParameterName.SCORE, 100);
-            AppsFlyerLib.getInstance()
-                .trackEvent(App.getInstance().getApplicationContext(), "af_invite_friends",
-                    eventValueq);
+            AppsFlyerEventSender.sendEvent("af_invite_friends");
 
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
@@ -379,11 +375,7 @@ public class ProfileActivity extends BaseActivity
             break;
           case R.id.ll_logout_container:
 
-            Map<String, Object> eventValueg = new HashMap<>();
-            eventValueg.put(AFInAppEventParameterName.LEVEL, 9);
-            eventValueg.put(AFInAppEventParameterName.SCORE, 100);
-            AppsFlyerLib.getInstance()
-                .trackEvent(App.getInstance().getApplicationContext(), "af_log_out", eventValueg);
+            AppsFlyerEventSender.sendEvent("af_log_out");
 
             logout();
             VKSdk.logout();
@@ -393,12 +385,8 @@ public class ProfileActivity extends BaseActivity
             closeActivity();
             break;
           case R.id.ll_edit_profile_container:
-            Map<String, Object> eventValuew = new HashMap<>();
-            eventValuew.put(AFInAppEventParameterName.LEVEL, 9);
-            eventValuew.put(AFInAppEventParameterName.SCORE, 100);
-            AppsFlyerLib.getInstance()
-                .trackEvent(App.getInstance().getApplicationContext(), "af_go_to_profile_settings",
-                    eventValuew);
+            AppsFlyerEventSender.sendEvent("af_go_to_profile_settings");
+
             Intent intent = new Intent(ProfileActivity.this, EditProfileActivity.class);
             startActivity(intent);
             break;
@@ -512,24 +500,13 @@ public class ProfileActivity extends BaseActivity
   }
 
   private void openHighScoreActivity() {
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance()
-        .trackEvent(App.getInstance().getApplicationContext(), "af_open_high_score", eventValue);
+    AppsFlyerEventSender.sendEvent("af_open_high_score");
     Intent intent = new Intent(ProfileActivity.this, HighScoreActivity.class);
     startActivity(intent);
   }
 
   private void openInvitesActivity() {
-
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance()
-        .trackEvent(App.getInstance().getApplicationContext(), "af_open_invites_screen",
-            eventValue);
-
+    AppsFlyerEventSender.sendEvent("af_open_invites_screen");
     Intent intent = new Intent(ProfileActivity.this, InvitesActivity.class);
     intent.putExtra(Constants.INTENT_MY_INVITES, invites.toArray(new Invite[invites.size()]));
     startActivityForResult(intent, Constants.OPEN_INVITES_ACTIVITY_REQUEST_CODE);
@@ -537,12 +514,7 @@ public class ProfileActivity extends BaseActivity
 
   private void openIntroActivity() {
 
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance()
-        .trackEvent(App.getInstance().getApplicationContext(), "af_open_tutorial_from_menu",
-            eventValue);
+    AppsFlyerEventSender.sendEvent("af_open_tutorial_from_menu");
 
     Intent intent = new Intent(ProfileActivity.this, IntroActivity.class);
     intent.putExtra(IntroActivity.CODE_IS_OPEN_LOGIN_ACTIVITY, false);
@@ -551,11 +523,7 @@ public class ProfileActivity extends BaseActivity
 
   private void openSettingsActivity() {
 
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance()
-        .trackEvent(App.getInstance().getApplicationContext(), "af_open_settings", eventValue);
+    AppsFlyerEventSender.sendEvent("af_open_settings");
 
     Intent intent = new Intent(ProfileActivity.this, SettingsActivity.class);
     startActivity(intent);
@@ -563,12 +531,7 @@ public class ProfileActivity extends BaseActivity
 
   private void openRequestsActivity() {
 
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance()
-        .trackEvent(App.getInstance().getApplicationContext(), "af_open_requests_screen",
-            eventValue);
+    AppsFlyerEventSender.sendEvent("af_open_requests_screen");
 
     Intent intent = new Intent(ProfileActivity.this, RequestsActivity.class);
     intent.putExtra(Constants.INTENT_MY_REQUESTS, requests.toArray(new Request[requests.size()]));
@@ -585,11 +548,7 @@ public class ProfileActivity extends BaseActivity
 
   private void openMyStatsActivity() {
 
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance()
-        .trackEvent(App.getInstance().getApplicationContext(), "af_open_my_stats", eventValue);
+    AppsFlyerEventSender.sendEvent("af_open_my_stats");
 
     Intent intent = new Intent(ProfileActivity.this, MyStatsActivity.class);
     startActivity(intent);

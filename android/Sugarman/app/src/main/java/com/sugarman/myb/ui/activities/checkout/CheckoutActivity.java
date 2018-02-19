@@ -29,6 +29,7 @@ import com.sugarman.myb.R;
 import com.sugarman.myb.base.BasicActivity;
 import com.sugarman.myb.constants.Config;
 import com.sugarman.myb.ui.views.CropCircleTransformation;
+import com.sugarman.myb.utils.apps_Fly.AppsFlyerEventSender;
 import java.util.HashMap;
 import java.util.Map;
 import timber.log.Timber;
@@ -58,11 +59,7 @@ public class CheckoutActivity extends BasicActivity
     setContentView(R.layout.activity_checkout);
     super.onCreate(savedInstanceState);
 
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance()
-        .trackEvent(App.getInstance().getApplicationContext(), "af_tap_buy_for_money", eventValue);
+    AppsFlyerEventSender.sendEvent("af_tap_buy_for_money");
 
     initPayPal();
 
@@ -203,11 +200,7 @@ public class CheckoutActivity extends BasicActivity
         && etFullName.getText().length() > 0
         && etPhoneNumber.getText().length() > 0) {
 
-      Map<String, Object> eventValue = new HashMap<>();
-      eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-      eventValue.put(AFInAppEventParameterName.SCORE, 100);
-      AppsFlyerLib.getInstance()
-          .trackEvent(App.getInstance().getApplicationContext(), "af_tap_buy_checkout", eventValue);
+      AppsFlyerEventSender.sendEvent("af_tap_buy_checkout");
 
       presenter.sendPurchaseData(etCountryName.getText().toString(),
           etCityName.getText().toString(), etStreetName.getText().toString(),

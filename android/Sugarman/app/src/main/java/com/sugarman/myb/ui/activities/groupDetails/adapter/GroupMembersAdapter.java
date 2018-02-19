@@ -33,6 +33,7 @@ import com.sugarman.myb.ui.views.MaskTransformation;
 import com.sugarman.myb.utils.DialogHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.SoundHelper;
+import com.sugarman.myb.utils.apps_Fly.AppsFlyerEventSender;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -485,22 +486,15 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
             context.getString(R.string.discard), context.getString(R.string.warning),
             context.getString(R.string.delete_user_from_group), context, (dialogInterface, i) -> {
               mAdapterPresenter.deleteUser(mTrackingId, toDelete.getId(), position);
-              Map<String, Object> eventValue = new HashMap<>();
-              eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-              eventValue.put(AFInAppEventParameterName.SCORE, 100);
-              AppsFlyerLib.getInstance()
-                  .trackEvent(App.getInstance().getApplicationContext(),
-                      "af_delete_person_from_group", eventValue);
+
+              AppsFlyerEventSender.sendEvent("af_delete_person_from_group");
             }, (dialogInterface, i) -> {
               dialogInterface.dismiss();
             }).create().show();
       }
     }
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance()
-        .trackEvent(App.getInstance().getApplicationContext(), "af_kick_single_person", eventValue);
+
+    AppsFlyerEventSender.sendEvent("af_kick_single_person");
 
     if(isMentorGroup) {
       if (amIMentor) {

@@ -49,6 +49,7 @@ import com.sugarman.myb.ui.views.CropSquareTransformation;
 import com.sugarman.myb.ui.views.MaskTransformation;
 import com.sugarman.myb.utils.IntentExtractorHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
+import com.sugarman.myb.utils.apps_Fly.AppsFlyerEventSender;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -676,12 +677,8 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
   }
 
   private void openGroupDetailsActivity(boolean isMentorGroup) {
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance()
-        .trackEvent(App.getInstance().getApplicationContext(),
-            "af_open_group_details_from_main_screen", eventValue);
+
+    AppsFlyerEventSender.sendEvent("af_open_group_details_from_main_screen");
 
     Activity activity = getActivity();
     if (activity != null

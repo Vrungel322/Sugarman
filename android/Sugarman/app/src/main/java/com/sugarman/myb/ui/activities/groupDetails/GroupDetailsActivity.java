@@ -145,6 +145,7 @@ import com.sugarman.myb.utils.DialogHelper;
 import com.sugarman.myb.utils.IntentExtractorHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.SoundHelper;
+import com.sugarman.myb.utils.apps_Fly.AppsFlyerEventSender;
 import com.sugarman.myb.utils.inapp.IabHelper;
 import java.io.File;
 import java.io.FileInputStream;
@@ -643,11 +644,9 @@ public class GroupDetailsActivity extends BaseActivity
   private CountDownTimer mTimer;
 
   @OnClick(R.id.ivEditMentor) public void editMentorClicked() {
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance()
-        .trackEvent(App.getInstance().getApplicationContext(), "af_edit_mode", eventValue);
+
+    AppsFlyerEventSender.sendEvent("af_edit_mode");
+
     editMode = !editMode;
     Timber.e("clicked edit " + editMode);
     membersAdapter.setEditMode(editMode);
@@ -703,11 +702,9 @@ public class GroupDetailsActivity extends BaseActivity
     tvEditGroup = (TextView) findViewById(R.id.tv_edit_group);
     tvEditGroup.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
-        Map<String, Object> eventValue = new HashMap<>();
-        eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-        eventValue.put(AFInAppEventParameterName.SCORE, 100);
-        AppsFlyerLib.getInstance()
-            .trackEvent(App.getInstance().getApplicationContext(), "af_edit_group", eventValue);
+
+        AppsFlyerEventSender.sendEvent("af_edit_group");
+
         openAddMembersActivity();
       }
     });
@@ -1009,11 +1006,9 @@ public class GroupDetailsActivity extends BaseActivity
   }
 
   @OnClick(R.id.tvOk) public void tvOkClicked() {
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance()
-        .trackEvent(App.getInstance().getApplicationContext(), "af_send_comment", eventValue);
+
+    AppsFlyerEventSender.sendEvent("af_send_comment");
+
     mPresenter.sendComment(mentorId, mAppCompatRatingBarMentor.getRating(),
         mEditTextCommentBody.getText().toString());
   }
@@ -1025,11 +1020,9 @@ public class GroupDetailsActivity extends BaseActivity
     //rlComments.setAlpha(0.0f);
     //rlComments.startAnimation(animation1);
     //rlComments.setVisibility(View.GONE);
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance()
-        .trackEvent(App.getInstance().getApplicationContext(), "af_cancel_comment", eventValue);
+
+    AppsFlyerEventSender.sendEvent("af_cancel_comment");
+
     rlComments.animate().alpha(0.0f).setDuration(350).withEndAction(new Runnable() {
       @Override public void run() {
         rlComments.clearAnimation();
@@ -1041,12 +1034,8 @@ public class GroupDetailsActivity extends BaseActivity
   private void openCommentDialog() {
     // TODO: 03.11.2017 check if comments already exist for this mentor
 
-    Map<String, Object> eventValue = new HashMap<>();
-    eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-    eventValue.put(AFInAppEventParameterName.SCORE, 100);
-    AppsFlyerLib.getInstance()
-        .trackEvent(App.getInstance().getApplicationContext(), "af_open_comment_screen",
-            eventValue);
+    AppsFlyerEventSender.sendEvent("af_open_comment_screen");
+
     AlphaAnimation animation1 = new AlphaAnimation(0.0f, 1.0f);
     animation1.setDuration(350);
     animation1.setFillAfter(true);
@@ -2241,11 +2230,7 @@ public class GroupDetailsActivity extends BaseActivity
     } else {
       if (amIInGroup) {
 
-        Map<String, Object> eventValue = new HashMap<>();
-        eventValue.put(AFInAppEventParameterName.LEVEL, 9);
-        eventValue.put(AFInAppEventParameterName.SCORE, 100);
-        AppsFlyerLib.getInstance()
-            .trackEvent(App.getInstance().getApplicationContext(), "af_kick_all", eventValue);
+        AppsFlyerEventSender.sendEvent("af_kick_all");
 
         if (lessThanYou.size() > 0) {
           for (Member m : lessThanYou) {
