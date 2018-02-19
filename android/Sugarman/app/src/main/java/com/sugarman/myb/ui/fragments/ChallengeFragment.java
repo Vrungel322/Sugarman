@@ -18,8 +18,6 @@ import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.appsflyer.AFInAppEventParameterName;
-import com.appsflyer.AppsFlyerLib;
 import com.clover_studio.spikachatmodule.api.retrofit.CustomResponse;
 import com.clover_studio.spikachatmodule.api.retrofit.SpikaOSRetroApiInterface;
 import com.clover_studio.spikachatmodule.base.SingletonLikeApp;
@@ -35,7 +33,6 @@ import com.clover_studio.spikachatmodule.utils.EmitJsonCreator;
 import com.clover_studio.spikachatmodule.utils.LogCS;
 import com.clover_studio.spikachatmodule.utils.SeenByUtils;
 import com.squareup.picasso.CustomPicasso;
-import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.Group;
 import com.sugarman.myb.api.models.responses.Member;
@@ -52,10 +49,8 @@ import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.apps_Fly.AppsFlyerEventSender;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import org.json.JSONObject;
@@ -127,6 +122,7 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
 
     }
   };
+  private Timer mTimerToGetMsg;
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
@@ -526,13 +522,23 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
     super.onResume();
     Log.e("KEK", "onResume() called");
 
-    Timer t = new Timer();
-    t.scheduleAtFixedRate(new TimerTask() {
+    mTimerToGetMsg = new Timer();
+    mTimerToGetMsg.scheduleAtFixedRate(new TimerTask() {
       @Override public void run() {
         Log.e("Tas", "Called");
         getMessages(lastMessageId);
       }
     }, 0, 300000);
+  }
+
+  @Override public void onPause() {
+    super.onPause();
+    Timber.e("onPause");
+    if (mTimerToGetMsg!=null){
+      mTimerToGetMsg.cancel();
+      mTimerToGetMsg.purge();
+      mTimerToGetMsg = null;
+    }
   }
 
   private void login(User user) {

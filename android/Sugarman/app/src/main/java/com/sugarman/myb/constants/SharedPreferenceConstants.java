@@ -94,6 +94,9 @@ public abstract class SharedPreferenceConstants {
   public static final String COUNT_VK_MEMBERS = "COUNT_VK_MEMBERS";
   public static final String CACHED_FRIENDS = "CACHED_FRIENDS";
   public static final String CACHED_FB_FRIENDS = "CACHED_FB_FRIENDS";
+  public static final String CACHED_PH_FRIENDS= "CACHED_PH_FRIENDS";
+  public static final String CACHED_FB_FRIENDS_INVITEBLE = "CACHED_FB_FRIENDS_INVITEBLE";
+  public static final String CACHED_FB_FRIENDS_NOT_INVITEBLE = "CACHED_FB_FRIENDS_NOT_INVITEBLE";
 
   private SharedPreferenceConstants() {
     // only static methods and fields

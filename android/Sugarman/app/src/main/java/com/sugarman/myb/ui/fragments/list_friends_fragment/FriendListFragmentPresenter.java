@@ -59,7 +59,9 @@ import timber.log.Timber;
   }
 
   private void loadFbFriends() {
-    getViewState().showFBCounters(SharedPreferenceHelper.getCachedFbFriends());
+    if (SharedPreferenceHelper.getCachedFbFriends()!=null) {
+      getViewState().showFBCounters(SharedPreferenceHelper.getCachedFbFriends());
+    }
 
     Bundle parameters = new Bundle();
     parameters.putString(Constants.FB_FIELDS, Config.FB_FRIENDS_FIELDS);
@@ -76,29 +78,28 @@ import timber.log.Timber;
       GraphRequest friends =
           new GraphRequest(accessToken, graphPath, parameters, HttpMethod.GET, response -> {
             String rawResponse = response.getRawResponse();
-            Timber.e("rawResponse friends: " + rawResponse);
+            Timber.e("loadFbFriends rawResponse friends: " + rawResponse);
             FacebookFriend[] parsedFriends = parseFriendsResponse(rawResponse);
             boolean isInvitable = parsedFriends.length != expectedCountFriends;
-            if (allFriendsToShow.size() == SharedPreferenceHelper.getCachedFbFriends().size()) {
-              getViewState().setFriendsFb(allFriendsToShow);
+            if (SharedPreferenceHelper.getCachedFbFriends() != null && rawResponse == null) {
+              Timber.e("loadFbFriends " + SharedPreferenceHelper.getCachedFbFriends().size());
+              getViewState().setFriendsFb(SharedPreferenceHelper.getCachedFbFriends());
+              allFriendsToShow.addAll(SharedPreferenceHelper.getCachedFbFriendsNotInviteble());
             }
-            if (rawResponse == null){
-              getViewState().setFriendsFb(SharedPreferenceHelper.getCachedFriends());
-            }
+            getViewState().setFriendsFb(allFriendsToShow);
           });
 
       GraphRequest invitableFriends =
           new GraphRequest(accessToken, graphPathInviteble, parameters, HttpMethod.GET,
               response -> {
                 String rawResponse = response.getRawResponse();
-                Timber.e("invitable friends: " + rawResponse);
+                Timber.e("loadFbFriends invitable friends: " + rawResponse);
                 parseInvitableFriendsResponse(rawResponse);
-                if (allFriendsToShow.size() == SharedPreferenceHelper.getCachedFbFriends().size()) {
-                  getViewState().setFriendsFb(allFriendsToShow);
+                if (SharedPreferenceHelper.getCachedFbFriends() != null && rawResponse == null) {
+                  getViewState().setFriendsFb(SharedPreferenceHelper.getCachedFbFriends());
+                  allFriendsToShow.addAll(SharedPreferenceHelper.getCachedFbFriendsInviteble());
                 }
-                if (rawResponse == null){
-                  getViewState().setFriendsFb(SharedPreferenceHelper.getCachedFriends());
-                }
+                getViewState().setFriendsFb(allFriendsToShow);
               });
 
       friends.executeAsync();
@@ -107,6 +108,7 @@ import timber.log.Timber;
   }
 
   private void loadPhFriends() {
+    getViewState().showPHCounters(SharedPreferenceHelper.getCachedPhFriends());
     List<FacebookFriend> friendsFromPhone = new ArrayList<>();
     Subscription subscription = mDataManager.loadContactsFromContactBook()
         .concatMap(friends -> {
@@ -137,7 +139,16 @@ import timber.log.Timber;
         .subscribe(facebookFriends -> {
           allFriendsToShow.addAll(facebookFriends);
           getViewState().setFriendsPh(allFriendsToShow);
-        }, Throwable::printStackTrace);
+        }, throwable -> {
+          Timber.e("loadPhFriends onError");
+          if (SharedPreferenceHelper.getCachedPhFriends() != null) {
+            Timber.e("loadPhFriends onError !=null " + SharedPreferenceHelper.getCachedPhFriends()
+                .size());
+            allFriendsToShow.addAll(SharedPreferenceHelper.getCachedPhFriends());
+            getViewState().setFriendsPh(SharedPreferenceHelper.getCachedPhFriends());
+          }
+          throwable.printStackTrace();
+        });
     addToUnsubscription(subscription);
   }
 
@@ -321,6 +332,7 @@ import timber.log.Timber;
         fbf.setSocialNetwork("fb");
       }
       allFriendsToShow.addAll(Arrays.asList(friends));
+      SharedPreferenceHelper.cacheFbFriendsNotInviteble(Arrays.asList(friends));
     } else {
       Timber.e("failure parse facebook friends response");
     }
@@ -339,6 +351,8 @@ import timber.log.Timber;
           fbf.setSocialNetwork("fb");
         }
         allFriendsToShow.addAll(Arrays.asList(friends));
+        SharedPreferenceHelper.cacheFbFriendsInviteble(Arrays.asList(friends));
+
       } else {
         Timber.e("facebook invitable friends list is empty");
       }
@@ -419,7 +433,27 @@ import timber.log.Timber;
     SharedPreferenceHelper.saveCountOfMembersFb(String.valueOf(friends.size()));
   }
 
-  public void saveFBMembers(List<FacebookFriend> friends) {
-    SharedPreferenceHelper.cacheFbFriends(friends);
+  //public void saveFBMembers(List<FacebookFriend> friends) {
+  //  List<FacebookFriend> tempCollection = new ArrayList<>();
+  //  for (FacebookFriend f : friends) {
+  //    if (f.getSocialNetwork().equals("fb")) {
+  //      tempCollection.add(f);
+  //    }
+  //  }
+  //  SharedPreferenceHelper.cacheFbFriends(tempCollection);
+  //}
+
+  public void savePhCounters(List<FacebookFriend> friends) {
+    SharedPreferenceHelper.saveCountOfMembersPh(String.valueOf(friends.size()));
+  }
+
+  public void savePhMembers(List<FacebookFriend> friends) {
+    List<FacebookFriend> tempCollection = new ArrayList<>();
+    for (FacebookFriend f : friends) {
+      if (f.getSocialNetwork().equals("ph")) {
+        tempCollection.add(f);
+      }
+    }
+    SharedPreferenceHelper.cachePhFriends(tempCollection);
   }
 }

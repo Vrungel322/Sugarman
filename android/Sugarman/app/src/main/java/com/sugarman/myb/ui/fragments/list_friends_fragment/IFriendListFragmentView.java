@@ -34,4 +34,6 @@ import java.util.List;
   void setFriendsVk(List<FacebookFriend> allFriendsToShow);
 
   void showFBCounters(List<FacebookFriend> friends);
+
+  void showPHCounters(List<FacebookFriend> friends);
 }

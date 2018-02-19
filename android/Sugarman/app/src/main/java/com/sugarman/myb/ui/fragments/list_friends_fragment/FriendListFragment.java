@@ -287,9 +287,9 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
   }
 
   @Override public void setFriendsFb(List<FacebookFriend> friends) {
-    showCounters(friends, tvTotalFbCount, tvInAppFbCount);
+    showCounters(friends, tvTotalFbCount, tvInAppFbCount,"fb");
     mPresenter.saveFBCounters(friends);
-    mPresenter.saveFBMembers(friends);
+    //mPresenter.saveFBMembers(friends);
     if (!mPendingsMembers.isEmpty() && !mAddedMembers.isEmpty()) {
       friendsAdapter.setValue(
           mPresenter.checkForUniqueMembers(mPendingsMembers, mAddedMembers, friends));
@@ -299,7 +299,7 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
   }
 
   @Override public void setFriendsVk(List<FacebookFriend> friends) {
-    showCounters(friends, tvTotalVkCount, tvInAppVkCount);
+    showCounters(friends, tvTotalVkCount, tvInAppVkCount,"vk");
     if (!mPendingsMembers.isEmpty() && !mAddedMembers.isEmpty()) {
       friendsAdapter.setValue(
           mPresenter.checkForUniqueMembers(mPendingsMembers, mAddedMembers, friends));
@@ -309,7 +309,9 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
   }
 
   @Override public void setFriendsPh(List<FacebookFriend> friends) {
-    showCounters(friends, tvTotalPhCount, tvInAppPhCount);
+    showCounters(friends, tvTotalPhCount, tvInAppPhCount,"ph");
+    mPresenter.savePhCounters(friends);
+    mPresenter.savePhMembers(friends);
     if (!mPendingsMembers.isEmpty() && !mAddedMembers.isEmpty()) {
       friendsAdapter.setValue(
           mPresenter.checkForUniqueMembers(mPendingsMembers, mAddedMembers, friends));
@@ -383,19 +385,25 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
   }
 
   @Override public void showFBCounters(List<FacebookFriend> friends) {
-    showCounters(friends, tvTotalFbCount, tvInAppFbCount);
+    showCounters(friends, tvTotalFbCount, tvInAppFbCount,"fb");
+  }
+
+  @Override public void showPHCounters(List<FacebookFriend> friends) {
+    showCounters(friends, tvTotalPhCount, tvInAppPhCount,"ph");
   }
 
   private void showCounters(List<FacebookFriend> friends, TextView tvTotalCount,
-      TextView tvInAppCount) {
+      TextView tvInAppCount, String socialTag) {
     if (friends != null) {
       int inAppMemberCountPh = 0;
       int totalCountPh = 0;
       for (FacebookFriend fb : friends) {
-        if (fb.getIsInvitable() == FacebookFriend.CODE_NOT_INVITABLE) {
+        if (fb.getIsInvitable() == FacebookFriend.CODE_NOT_INVITABLE && fb.getSocialNetwork().equals(socialTag)) {
           inAppMemberCountPh++;
         }
-        totalCountPh++;
+        if (fb.getSocialNetwork().equals(socialTag)){
+          totalCountPh++;
+        }
       }
       tvInAppCount.setText(String.valueOf(inAppMemberCountPh));
       tvTotalCount.setText(String.valueOf(totalCountPh));
