@@ -269,24 +269,29 @@ public class RestApi {
       }
     }
     return api.sendInvitersForRescue(uId, ids, vkids, phoneNumbers, names, vkNames, phoneNames,
-        pictures, vkpictures, phonePictures,trackingId);
+        pictures, vkpictures, phonePictures, trackingId);
   }
 
   public Observable<Response<ABTesting>> fetchAorBtesting() {
     return api.fetchAorBtesting();
   }
 
-  public Observable<Response<CheckVkResponse>> checkVks(List<String> vks) { CheckVkRequest request = new CheckVkRequest(); request.setVks(vks); return api.checkVks(request); }
+  public Observable<Response<CheckVkResponse>> checkVks(List<String> vks) {
+    CheckVkRequest request = new CheckVkRequest();
+    request.setVks(vks);
+    return api.checkVks(request);
+  }
 
   public Observable<Response<Subscriptions>> purchaseMentorForFree(String mentorId) {
     return api.purchaseMentorForFree(mentorId);
   }
 
   public Observable<Response<MentorsVendor>> getMentorsVendor(String mentorId) {
-    return api.getMentorsVendor( mentorId);
+    return api.getMentorsVendor("android", mentorId);
   }
 
-  public Observable<Response<Void>> checkPurchaseTransaction(PurchaseTransaction purchaseTransaction) {
-    return api.checkPurchaseTransaction( purchaseTransaction);
+  public Observable<Response<Void>> checkPurchaseTransaction(
+      PurchaseTransaction purchaseTransaction) {
+    return api.checkPurchaseTransaction(purchaseTransaction);
   }
 }

@@ -81,10 +81,12 @@ import timber.log.Timber;
                 return mProviderManager.startFreePurchaseFlowByVendor(
                     mentorsVendorResponse.body().getVendor(), mentorId);
               }
-              if (mentorsVendorResponse.body().getVendor().equals(ProviderManager.GOOGLE)) {
-              Timber.e("getMentorsVendor google");
+              if (mentorsVendorResponse.body().getVendor().equals(ProviderManager.GOOGLE)
+                  && mentorsVendorResponse.body().getIsAvailable()) {
+                Timber.e(
+                    "getMentorsVendor google vendor: " + mentorsVendorResponse.body().toString());
                 mProviderManager.startGooglePurchaseFlowByVendor(
-                    ProviderManager.GOOGLE, mentorId, Observable::just, activity);
+                    mentorsVendorResponse.body().getSlot(), mentorId, Observable::just, activity);
               }
               return Observable.empty();
             })

@@ -34,6 +34,8 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Response;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Multipart;
@@ -151,7 +153,9 @@ public interface ApiRx {
 
   @POST("") Observable<Response<Subscriptions>> purchaseMentorForFree(String mentorId);
 
-  @POST("") Observable<Response<MentorsVendor>> getMentorsVendor(String mentorId);
+  @POST("v1/get_provider_data") @FormUrlEncoded
+  Observable<Response<MentorsVendor>> getMentorsVendor(@Header("os") String os,
+      @Field("id_mentor") String mentorId);
 
   @POST("") Observable<Response<Void>> checkPurchaseTransaction(
       PurchaseTransaction purchaseTransaction);

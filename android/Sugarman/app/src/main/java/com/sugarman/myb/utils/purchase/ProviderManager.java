@@ -18,25 +18,12 @@ import timber.log.Timber;
 
 public class ProviderManager {
   public static final String FREE = "free";
-  public static final String GOOGLE = "googlePlay";
+  public static final String GOOGLE = "google";
   private final Context mContext;
   private final RestApi mRestApi;
   IabHelper mHelper;
   private GooglePurchaseListener mGooglePurchaseListener;
   private String mFreeSku;
-  IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = (result, purchase) -> {
-    Timber.e("mFreeSku mPurchaseFinishedListener " + mFreeSku);
-
-    if (result.isFailure()) {
-      // Handle error
-      return;
-    } else if (purchase.getSku().equals(mFreeSku)) {
-      consumeItem();
-      Timber.e(mHelper.getMDataSignature());
-    } else {
-      Timber.e(result.getMessage());
-    }
-  };
   private String mMentorId;
   IabHelper.QueryInventoryFinishedListener mReceivedInventoryListener =
       new IabHelper.QueryInventoryFinishedListener() {
@@ -64,6 +51,19 @@ public class ProviderManager {
           }
         }
       };
+  IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = (result, purchase) -> {
+    Timber.e("mFreeSku mPurchaseFinishedListener " + mFreeSku);
+
+    if (result.isFailure()) {
+      // Handle error
+      return;
+    } else if (purchase.getSku().equals(mFreeSku)) {
+      consumeItem();
+      Timber.e(mHelper.getMDataSignature());
+    } else {
+      Timber.e(result.getMessage());
+    }
+  };
 
   public ProviderManager(Context context, RestApi restApi, IabHelper iabHelper) {
     mContext = context;
@@ -80,16 +80,15 @@ public class ProviderManager {
             .build()));
   }
 
-  public void startGooglePurchaseFlowByVendor(String vendor, String mentorId,
-      GooglePurchaseListener googlePurchaseListener,
-      MentorDetailActivity activity) {
-    Timber.e("startGooglePurchaseFlowByVendor");
+  public void startGooglePurchaseFlowByVendor(String slot, String mentorId,
+      GooglePurchaseListener googlePurchaseListener, MentorDetailActivity activity) {
+    Timber.e("startGooglePurchaseFlowByVendor slot:" + slot + " mentorId: " + mentorId);
     mMentorId = mentorId;
     mGooglePurchaseListener = googlePurchaseListener;
-    mRestApi.getNextFreeSku().concatMap(nextFreeSkuEntityResponse -> {
-      startPurchaseFlow(nextFreeSkuEntityResponse.body().getFreeSku(),activity);
-      return Observable.empty();
-    }).subscribe();
+    //mRestApi.getNextFreeSku().concatMap(nextFreeSkuEntityResponse -> {
+    startPurchaseFlow(slot, activity);
+    //return Observable.empty();
+    //}).subscribe();
   }
 
   private void setupInAppPurchase() {
@@ -109,8 +108,8 @@ public class ProviderManager {
     mFreeSku = freeSku;
     Timber.e("mFreeSku startPurchaseFlow " + freeSku);
 
-    mHelper.launchSubscriptionPurchaseFlow(activity, freeSku, 10001,
-        mPurchaseFinishedListener, "mypurchasetoken");
+    mHelper.launchSubscriptionPurchaseFlow(activity, freeSku, 10001, mPurchaseFinishedListener,
+        "mypurchasetoken");
   }
 
   public void consumeItem() {
