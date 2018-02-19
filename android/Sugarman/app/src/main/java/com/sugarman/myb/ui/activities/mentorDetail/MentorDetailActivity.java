@@ -18,15 +18,12 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
-import com.appsflyer.AFInAppEventParameterName;
-import com.appsflyer.AppsFlyerLib;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.squareup.picasso.CustomPicasso;
-import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.base.BasicActivity;
@@ -46,9 +43,7 @@ import com.sugarman.myb.utils.inapp.IabResult;
 import com.sugarman.myb.utils.inapp.Inventory;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import timber.log.Timber;
 
 public class MentorDetailActivity extends BasicActivity implements IMentorDetailActivityView {

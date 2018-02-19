@@ -17,6 +17,7 @@ import com.sugarman.myb.api.models.responses.facebook.FacebookInvitableResponse;
 import com.sugarman.myb.base.BasicPresenter;
 import com.sugarman.myb.constants.Config;
 import com.sugarman.myb.constants.Constants;
+import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.ThreadSchedulers;
 import com.vk.sdk.api.VKApiConst;
 import com.vk.sdk.api.VKError;
@@ -58,6 +59,7 @@ import timber.log.Timber;
   }
 
   private void loadFbFriends() {
+    getViewState().showFBCounters(SharedPreferenceHelper.getCachedFbFriends());
 
     Bundle parameters = new Bundle();
     parameters.putString(Constants.FB_FIELDS, Config.FB_FRIENDS_FIELDS);
@@ -77,7 +79,12 @@ import timber.log.Timber;
             Timber.e("rawResponse friends: " + rawResponse);
             FacebookFriend[] parsedFriends = parseFriendsResponse(rawResponse);
             boolean isInvitable = parsedFriends.length != expectedCountFriends;
-            getViewState().setFriendsFb(allFriendsToShow);
+            if (allFriendsToShow.size() == SharedPreferenceHelper.getCachedFbFriends().size()) {
+              getViewState().setFriendsFb(allFriendsToShow);
+            }
+            if (rawResponse == null){
+              getViewState().setFriendsFb(SharedPreferenceHelper.getCachedFriends());
+            }
           });
 
       GraphRequest invitableFriends =
@@ -86,7 +93,12 @@ import timber.log.Timber;
                 String rawResponse = response.getRawResponse();
                 Timber.e("invitable friends: " + rawResponse);
                 parseInvitableFriendsResponse(rawResponse);
-                getViewState().setFriendsFb(allFriendsToShow);
+                if (allFriendsToShow.size() == SharedPreferenceHelper.getCachedFbFriends().size()) {
+                  getViewState().setFriendsFb(allFriendsToShow);
+                }
+                if (rawResponse == null){
+                  getViewState().setFriendsFb(SharedPreferenceHelper.getCachedFriends());
+                }
               });
 
       friends.executeAsync();
@@ -203,7 +215,7 @@ import timber.log.Timber;
           }
           Timber.e("checkVkFriends after checking" + allFriendsToShow.size());
           getViewState().setFriendsVk(allFriendsToShow);
-        },Throwable::printStackTrace);
+        }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 
@@ -344,7 +356,7 @@ import timber.log.Timber;
         .toList()
         .subscribe(facebookFriends -> {
           getViewState().setFriendsFilter(facebookFriends);
-        },Throwable::printStackTrace);
+        }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 
@@ -357,13 +369,16 @@ import timber.log.Timber;
         .toList()
         .subscribe(facebookFriends -> {
           getViewState().setFriendsFilter(facebookFriends);
-        },Throwable::printStackTrace);
+        }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 
-  public List<FacebookFriend> checkForUniqueMembers(List<Member> pendingsMembers, List<Member> addedMembers,
-      List<FacebookFriend> friends) {
-    Timber.e("checkForUnique pendingsMembers: "+ pendingsMembers.size() + " addedMembers:" + addedMembers.size());
+  public List<FacebookFriend> checkForUniqueMembers(List<Member> pendingsMembers,
+      List<Member> addedMembers, List<FacebookFriend> friends) {
+    Timber.e("checkForUnique pendingsMembers: "
+        + pendingsMembers.size()
+        + " addedMembers:"
+        + addedMembers.size());
     for (int i = 0; i < friends.size(); i++) {
       for (Member member : addedMembers) {
         if (member.getPhoneNumber() == null) member.setPhoneNumber("");
@@ -398,5 +413,13 @@ import timber.log.Timber;
       Timber.e(String.valueOf(friends.get(i).isAdded()));
     }
     return friends;
+  }
+
+  public void saveFBCounters(List<FacebookFriend> friends) {
+    SharedPreferenceHelper.saveCountOfMembersFb(String.valueOf(friends.size()));
+  }
+
+  public void saveFBMembers(List<FacebookFriend> friends) {
+    SharedPreferenceHelper.cacheFbFriends(friends);
   }
 }

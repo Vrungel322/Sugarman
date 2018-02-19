@@ -288,6 +288,8 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
 
   @Override public void setFriendsFb(List<FacebookFriend> friends) {
     showCounters(friends, tvTotalFbCount, tvInAppFbCount);
+    mPresenter.saveFBCounters(friends);
+    mPresenter.saveFBMembers(friends);
     if (!mPendingsMembers.isEmpty() && !mAddedMembers.isEmpty()) {
       friendsAdapter.setValue(
           mPresenter.checkForUniqueMembers(mPendingsMembers, mAddedMembers, friends));
@@ -380,18 +382,24 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
     fbCallbackManager.onActivityResult(requestCode, resultCode, data);
   }
 
+  @Override public void showFBCounters(List<FacebookFriend> friends) {
+    showCounters(friends, tvTotalFbCount, tvInAppFbCount);
+  }
+
   private void showCounters(List<FacebookFriend> friends, TextView tvTotalCount,
       TextView tvInAppCount) {
-    int inAppMemberCountPh = 0;
-    int totalCountPh = 0;
-    for (FacebookFriend fb : friends) {
-      if (fb.getIsInvitable() == FacebookFriend.CODE_NOT_INVITABLE) {
-        inAppMemberCountPh++;
+    if (friends != null) {
+      int inAppMemberCountPh = 0;
+      int totalCountPh = 0;
+      for (FacebookFriend fb : friends) {
+        if (fb.getIsInvitable() == FacebookFriend.CODE_NOT_INVITABLE) {
+          inAppMemberCountPh++;
+        }
+        totalCountPh++;
       }
-      totalCountPh++;
+      tvInAppCount.setText(String.valueOf(inAppMemberCountPh));
+      tvTotalCount.setText(String.valueOf(totalCountPh));
     }
-    tvInAppCount.setText(String.valueOf(inAppMemberCountPh));
-    tvTotalCount.setText(String.valueOf(totalCountPh));
   }
 
   @Override public void setUpUI() {
