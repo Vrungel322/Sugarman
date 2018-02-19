@@ -52,8 +52,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
-import com.appsflyer.AFInAppEventParameterName;
-import com.appsflyer.AppsFlyerLib;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.clover_studio.spikachatmodule.CameraPhotoPreviewActivity;
 import com.clover_studio.spikachatmodule.ChatActivity;
@@ -163,10 +161,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Random;
 import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONObject;
@@ -642,6 +638,7 @@ public class GroupDetailsActivity extends BaseActivity
   private IabHelper mHelper;
   private List<SubscriptionEntity> subscribeList = new ArrayList<>();
   private CountDownTimer mTimer;
+  private CountDownTimer mCountDownGroupTimer;
 
   @OnClick(R.id.ivEditMentor) public void editMentorClicked() {
 
@@ -1602,6 +1599,10 @@ public class GroupDetailsActivity extends BaseActivity
     if (mTimer != null) {
       mTimer.cancel();
     }
+    if (mCountDownGroupTimer != null) {
+      mCountDownGroupTimer.cancel();
+      mCountDownGroupTimer=null;
+    }
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -2030,10 +2031,12 @@ public class GroupDetailsActivity extends BaseActivity
 
       tvSteps.setText("" + failers.size());
 
-      if (!thread.isAlive()) {
-        thread = new Thread(new MyThread(tracking));
-        thread.start();
-      }
+      //if (!thread.isAlive()) {
+      //  thread = new Thread(new MyThread(tracking));
+      //  thread.start();
+      //}
+
+      startCountDownTimer(tracking);
 
       if (mComment != null && rlComments.getVisibility() == View.GONE) {
         mEditTextCommentBody.setText(mComment.getAuthorsComment());
@@ -2187,6 +2190,33 @@ public class GroupDetailsActivity extends BaseActivity
       closeProgressFragment();
       handler.postDelayed(runnable, DELAY_REFRESH_GROUP_INFO);
     }
+  }
+
+  private void startCountDownTimer(Tracking tracking) {
+    mCountDownGroupTimer = new CountDownTimer(tracking.getStartUTCDate().getTime(),1000L) {
+      @Override public void onTick(long l) {
+        long startTimestamp = tracking.getStartUTCDate().getTime();
+        long timeMs = startTimestamp - System.currentTimeMillis();
+
+        NumberFormat timeFormatter = new DecimalFormat("00");
+        float day = (System.currentTimeMillis() - tracking.getStartUTCDate().getTime())
+            / (float) Constants.MS_IN_DAY;
+        int days = (int) (timeMs / Constants.MS_IN_DAY);
+        int hours = (int) ((timeMs % Constants.MS_IN_DAY) / Constants.MS_IN_HOUR);
+        int minutes = (int) ((timeMs % Constants.MS_IN_HOUR) / Constants.MS_IN_MIN);
+        int sec = (int) ((timeMs % Constants.MS_IN_MIN) / Constants.MS_IN_SEC);
+        String timerTemplate = getString(R.string.timer_template);
+        timeFormatted =
+            String.format(timerTemplate, timeFormatter.format(days), timeFormatter.format(hours),
+                timeFormatter.format(minutes), timeFormatter.format(sec));
+        tvTimer.setText(timeFormatted);
+
+      }
+
+      @Override public void onFinish() {
+
+      }
+    }.start();
   }
 
   @Override public void onApiGetTrackingInfoFailure(String message) {
@@ -2451,6 +2481,9 @@ public class GroupDetailsActivity extends BaseActivity
         int hours = (int) ((timeMs % Constants.MS_IN_DAY) / Constants.MS_IN_HOUR);
         int minutes = (int) ((timeMs % Constants.MS_IN_HOUR) / Constants.MS_IN_MIN);
         int sec = (int) ((timeMs % Constants.MS_IN_MIN) / Constants.MS_IN_SEC);
+        Timber.e("timer in groupDetails " + days + " " + hours+" " + minutes+" "+ sec );
+        Timber.e("timer in groupDetails milis :" + timeMs);
+        Timber.e("timer in groupDetails date from tracking :" + tracking.getStartUTCDate().getTime());
         String timerTemplate = getString(R.string.timer_template);
         timeFormatted =
             String.format(timerTemplate, timeFormatter.format(days), timeFormatter.format(hours),
