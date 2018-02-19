@@ -181,7 +181,7 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
 
     putString(SharedPreferenceConstants.GOOGLE_ID, "");
 
-    putString(SharedPreferenceConstants.CACHED_FRIENDS,new Gson().toJson(null));
+    putString(SharedPreferenceConstants.CACHED_FRIENDS, new Gson().toJson(null));
     putInt(SharedPreferenceConstants.COUNT_FB_MEMBERS, 0);
 
     putString(SharedPreferenceConstants.GOOGLE_TOKEN, "none");
@@ -735,7 +735,7 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
         DataForMainActivity.class);
   }
 
-  public static void saveGoogleToken(String gToken){
+  public static void saveGoogleToken(String gToken) {
     putString(SharedPreferenceConstants.GOOGLE_TOKEN, gToken);
   }
 
@@ -751,33 +751,33 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     return getString(SharedPreferenceConstants.GOOGLE_ID, "none");
   }
 
-  public static void saveCountOfMembersFb(String countOfFbMembers){
+  public static void saveCountOfMembersFb(String countOfFbMembers) {
     putInt(SharedPreferenceConstants.COUNT_FB_MEMBERS, Integer.valueOf(countOfFbMembers));
   }
 
-  public static int getCountOfMembersFb(){
-    return getInt(SharedPreferenceConstants.COUNT_FB_MEMBERS,0);
+  public static int getCountOfMembersFb() {
+    return getInt(SharedPreferenceConstants.COUNT_FB_MEMBERS, 0);
   }
 
-  public static void saveCountOfMembersPh(String countOfPhMembers){
+  public static void saveCountOfMembersPh(String countOfPhMembers) {
     putInt(SharedPreferenceConstants.COUNT_PH_MEMBERS, Integer.valueOf(countOfPhMembers));
   }
 
-  public static int getCountOfMembersPh(){
-    return getInt(SharedPreferenceConstants.COUNT_PH_MEMBERS,0);
+  public static int getCountOfMembersPh() {
+    return getInt(SharedPreferenceConstants.COUNT_PH_MEMBERS, 0);
   }
 
-  public static void saveCountOfMembersVk(String countOfVkMembers){
+  public static void saveCountOfMembersVk(String countOfVkMembers) {
     putInt(SharedPreferenceConstants.COUNT_VK_MEMBERS, Integer.valueOf(countOfVkMembers));
   }
 
-  public static int getCountOfMembersVk(){
-    return getInt(SharedPreferenceConstants.COUNT_VK_MEMBERS,0);
+  public static int getCountOfMembersVk() {
+    return getInt(SharedPreferenceConstants.COUNT_VK_MEMBERS, 0);
   }
 
   public static void cacheFriends(List<FacebookFriend> friends) {
-    Timber.e("cacheFriends "+friends.size());
-    putString(SharedPreferenceConstants.CACHED_FRIENDS,new Gson().toJson(friends));
+    Timber.e("cacheFriends " + friends.size());
+    putString(SharedPreferenceConstants.CACHED_FRIENDS, new Gson().toJson(friends));
   }
 
   public static List<FacebookFriend> getCachedFriends() {
@@ -786,20 +786,85 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     return new Gson().fromJson(getString(SharedPreferenceConstants.CACHED_FRIENDS, ""), type);
   }
 
-  public static void cacheFbFriends(List<FacebookFriend> friends) {
-    Timber.e("cacheFriends "+friends.size());
-    putString(SharedPreferenceConstants.CACHED_FB_FRIENDS,new Gson().toJson(friends));
+  public static void cacheFbFriendsInviteble(List<FacebookFriend> friends) {
+    Timber.e("cacheFbFriendsInviteble cacheFriends " + friends.size());
+    putString(SharedPreferenceConstants.CACHED_FB_FRIENDS_INVITEBLE,
+        new Gson().toJson(friends.toArray()));
   }
+
+  public static void cacheFbFriendsNotInviteble(List<FacebookFriend> friends) {
+    Timber.e("cacheFbFriendsNotInviteble cacheFriends " + friends.size());
+    putString(SharedPreferenceConstants.CACHED_FB_FRIENDS_NOT_INVITEBLE,
+        new Gson().toJson(friends.toArray()));
+  }
+
+  public static List<FacebookFriend> getCachedFbFriendsInviteble() {
+    Type type = new TypeToken<List<FacebookFriend>>() {
+    }.getType();
+    List<FacebookFriend> list = new ArrayList<>();
+    List<FacebookFriend> list_inv = new ArrayList<>();
+
+    if (new Gson().fromJson(getString(SharedPreferenceConstants.CACHED_FB_FRIENDS_INVITEBLE, ""),
+        type) != null) {
+      list_inv.addAll(
+          new Gson().fromJson(getString(SharedPreferenceConstants.CACHED_FB_FRIENDS_INVITEBLE, ""),
+              type));
+      list.addAll(list_inv);
+    }
+
+    Timber.e("cacheFriends getCachedFbFriendsInviteble size: " + list.size());
+    return list;
+  }
+
+  public static List<FacebookFriend> getCachedFbFriendsNotInviteble() {
+    Type type = new TypeToken<List<FacebookFriend>>() {
+    }.getType();
+    List<FacebookFriend> list = new ArrayList<>();
+    List<FacebookFriend> list_not_inv = new ArrayList<>();
+
+    if (new Gson().fromJson(
+        getString(SharedPreferenceConstants.CACHED_FB_FRIENDS_NOT_INVITEBLE, ""), type) != null) {
+      list_not_inv.addAll(new Gson().fromJson(
+          getString(SharedPreferenceConstants.CACHED_FB_FRIENDS_NOT_INVITEBLE, ""), type));
+      list.addAll(list_not_inv);
+    }
+
+    Timber.e("cacheFriends getCachedFbFriendsNotInviteble size: " + list.size());
+    return list;
+  }
+
+
+
 
   public static List<FacebookFriend> getCachedFbFriends() {
     Type type = new TypeToken<List<FacebookFriend>>() {
     }.getType();
-    return new Gson().fromJson(getString(SharedPreferenceConstants.CACHED_FB_FRIENDS, ""), type);
+    List<FacebookFriend> list = new ArrayList<>();
+    List<FacebookFriend> list_inv = new ArrayList<>();
+    List<FacebookFriend> list_not_inv = new ArrayList<>();
+
+    if (new Gson().fromJson(getString(SharedPreferenceConstants.CACHED_FB_FRIENDS_INVITEBLE, ""),
+        type) != null) {
+      list_inv.addAll(
+          new Gson().fromJson(getString(SharedPreferenceConstants.CACHED_FB_FRIENDS_INVITEBLE, ""),
+              type));
+      list.addAll(list_inv);
+    }
+
+    if (new Gson().fromJson(
+        getString(SharedPreferenceConstants.CACHED_FB_FRIENDS_NOT_INVITEBLE, ""), type) != null) {
+      list_not_inv.addAll(new Gson().fromJson(
+          getString(SharedPreferenceConstants.CACHED_FB_FRIENDS_NOT_INVITEBLE, ""), type));
+      list.addAll(list_not_inv);
+    }
+
+    Timber.e("cacheFriends list size: " + list.size());
+    return list;
   }
 
   public static void cachePhFriends(List<FacebookFriend> friends) {
-    Timber.e("cacheFriends "+friends.size());
-    putString(SharedPreferenceConstants.CACHED_PH_FRIENDS,new Gson().toJson(friends));
+    Timber.e("cacheFriends " + friends.size());
+    putString(SharedPreferenceConstants.CACHED_PH_FRIENDS, new Gson().toJson(friends));
   }
 
   public static List<FacebookFriend> getCachedPhFriends() {
