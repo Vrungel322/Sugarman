@@ -176,8 +176,8 @@ public class MentorsChallengeFragment extends BasicFragment
           color = 0xffeb6117;
         } else if (mTracking.getDailySugarman().getUser().getSteps() >= 7500 && mTracking.getDailySugarman().getUser().getSteps() < 10000) color = 0xffF6B147;
         mImageViewFastestAvatarBorder.setBackgroundColor(color);
-        mTextViewFastestName.setBackgroundColor(color);
-        mTextViewFastestSteps.setBackgroundColor(color);
+        mTextViewFastestName.setTextColor(color);
+        mTextViewFastestSteps.setTextColor(color);
       } else {
         mTextViewFastestName.setText(getResources().getString(R.string.sugarman_is));
         mTextViewFastestSteps.setText(getResources().getString(R.string.todays_fastest));
