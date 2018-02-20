@@ -14,6 +14,6 @@ public class MentorsVendor {
   @Getter @Setter @SerializedName("is_available") private Boolean isAvailable;
 
   @Override public String toString() {
-    return "MentorsVendor vendor: " + vendor + " slot: " + slot + " is_available: " + isAvailable;
+    return "MentorsVendor vendor: " + vendor + " slot: " + slot + " isAvailable: " + isAvailable;
   }
 }

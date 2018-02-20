@@ -151,12 +151,13 @@ public interface ApiRx {
 
   @POST("v3/check_vk") Observable<Response<CheckVkResponse>> checkVks(@Body CheckVkRequest request);
 
+  @Deprecated
   @POST("") Observable<Response<Subscriptions>> purchaseMentorForFree(String mentorId);
 
   @POST("v1/get_provider_data") @FormUrlEncoded
   Observable<Response<MentorsVendor>> getMentorsVendor(@Header("os") String os,
       @Field("id_mentor") String mentorId);
 
-  @POST("") Observable<Response<Void>> checkPurchaseTransaction(
+  @POST("v1/subscribe_for_mentor") Observable<Response<Void>> checkPurchaseTransaction(
       PurchaseTransaction purchaseTransaction);
 }
