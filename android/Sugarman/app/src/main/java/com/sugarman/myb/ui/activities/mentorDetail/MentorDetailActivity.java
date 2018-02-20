@@ -1,5 +1,6 @@
 package com.sugarman.myb.ui.activities.mentorDetail;
 
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -123,6 +124,13 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   private MentorsCommentsAdapter mMentorsCommentsAdapter;
   private MentorsVideosAdapter mMentorsVideosAdapter;
   private List<String> youtubeVideos;
+
+  public static void startPurchaseFlow(Activity activity,IabHelper mHelper, String freeSku,
+      IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener, String mypurchasetoken) {
+    Timber.e("startPurchaseFlow");
+    mHelper.launchSubscriptionPurchaseFlow((MentorDetailActivity)activity, freeSku, 10001, mPurchaseFinishedListener,
+        "mypurchasetoken");
+  }
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_mentor_detail);
@@ -356,7 +364,7 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
 
   @OnClick(R.id.ivSubscribeMentor) public void ivSubscribeMentorClicked() {
     Timber.e("ivSubscribeMentorClicked mentorsId: " + mMentorEntity.getMentorId());
-      mPresenter.getMentorsVendor(mMentorEntity.getMentorId(),this);
+    mPresenter.getMentorsVendor(mMentorEntity.getMentorId(), this);
   }
 
   @Override public void startPurchaseFlow(String freeSku) {
@@ -385,6 +393,7 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    Timber.e("onActivityResult ");
     if (!mHelper.handleActivityResult(requestCode, resultCode, data)) {
       super.onActivityResult(requestCode, resultCode, data);
     }

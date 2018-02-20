@@ -9,11 +9,11 @@ import lombok.Setter;
  */
 
 public class MentorsVendor {
-  @Getter @Setter @SerializedName("provider") private String vendor;
+  @Getter @Setter @SerializedName("server") private String vendor;
   @Getter @Setter @SerializedName("slot") private String slot;
   @Getter @Setter @SerializedName("is_available") private Boolean isAvailable;
 
   @Override public String toString() {
-    return "MentorsVendor vendor: " + vendor + " slot: " + slot + " isAvailable: " + isAvailable;
+    return "MentorsVendor server: " + vendor + " slot: " + slot + " isAvailable: " + isAvailable;
   }
 }

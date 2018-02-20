@@ -175,7 +175,7 @@ public class MentorsChallengeFragment extends BasicFragment
         } else if (mTracking.getDailySugarman().getUser().getSteps() >= 5000 && mTracking.getDailySugarman().getUser().getSteps() < 7500) {
           color = 0xffeb6117;
         } else if (mTracking.getDailySugarman().getUser().getSteps() >= 7500 && mTracking.getDailySugarman().getUser().getSteps() < 10000) color = 0xffF6B147;
-        mImageViewFastestAvatarBorder.setBackgroundColor(color);
+        //mImageViewFastestAvatarBorder.setBackgroundColor(color);
         mTextViewFastestName.setTextColor(color);
         mTextViewFastestSteps.setTextColor(color);
       } else {
@@ -225,7 +225,7 @@ public class MentorsChallengeFragment extends BasicFragment
       } else if (laziest.getSteps() >= 5000 && laziest.getSteps() < 7500) {
         color = 0xffeb6117;
       } else if (laziest.getSteps() >= 7500 && laziest.getSteps() < 10000) color = 0xffF6B147;
-      mImageViewLaziestAvatarBorder.setBackgroundColor(color);
+      //mImageViewLaziestAvatarBorder.setBackgroundColor(color);
       mTextViewLaziestName.setTextColor(color);
       mTextViewLaziestSteps.setTextColor(color);
     }

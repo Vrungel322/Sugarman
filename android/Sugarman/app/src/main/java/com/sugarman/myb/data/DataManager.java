@@ -49,7 +49,6 @@ import com.sugarman.myb.utils.ContactsHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.apps_Fly.AppsFlyRemoteLogger;
 import com.sugarman.myb.utils.purchase.ProviderManager;
-import com.sugarman.myb.utils.purchase.PurchaseTransaction;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -384,17 +383,17 @@ public class DataManager {
     return mRestApi.checkVks(vkToCheck);
   }
 
-  public Observable<Response<Subscriptions>> purchaseMentorForFree(String mentorId) {
-    return mRestApi.purchaseMentorForFree(mentorId);
-  }
+  //public Observable<Response<Subscriptions>> purchaseMentorForFree(String mentorId) {
+  //  return mRestApi.purchaseMentorForFree(mentorId);
+  //}
 
   public Observable<Response<MentorsVendor>> getMentorsVendor(String mentorId) {
     return mRestApi.getMentorsVendor(mentorId);
   }
 
-  public Observable<Response<Void>> checkPurchaseTransaction(
-      PurchaseTransaction purchaseTransaction) {
-    return mRestApi.
-        checkPurchaseTransaction(purchaseTransaction);
-  }
+  //public Observable<Response<Void>> checkPurchaseTransaction(
+  //    PurchaseTransaction purchaseTransaction) {
+  //  return mRestApi.
+  //      checkPurchaseTransaction(purchaseTransaction);
+  //}
 }

@@ -8,14 +8,15 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Created by nikita on 16.02.2018.
  */
-@AllArgsConstructor @NoArgsConstructor @Builder public class PurchaseTransaction {
+@AllArgsConstructor @NoArgsConstructor @ToString @Builder public class PurchaseTransaction {
   @Getter @Setter @SerializedName("slot") private String freeSku;
   @Getter @Setter private Tracking tracking;
-  @Getter @Setter @SerializedName("provider") private String vendor;
+  @Getter @Setter @SerializedName("server") private String vendor;
   @Getter @Setter private String productTitle;
   @Getter @Setter @SerializedName("id_mentor") private String mentorId;
   @Getter @Setter private Purchase purchase;

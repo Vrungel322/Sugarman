@@ -25,6 +25,8 @@ import com.sugarman.myb.models.iab.InAppSinglePurchase;
 import com.sugarman.myb.models.iab.NextFreeSkuEntity;
 import com.sugarman.myb.models.iab.PurchaseForServer;
 import com.sugarman.myb.models.iab.Subscriptions;
+import com.sugarman.myb.models.mentor.MentorFreeResponce;
+import com.sugarman.myb.models.mentor.MentorFreeSomeLayer;
 import com.sugarman.myb.models.mentor.MentorStupidAbstraction;
 import com.sugarman.myb.models.mentor.MentorsCommentsStupidAbstraction;
 import com.sugarman.myb.models.mentor.comments.CommentEntity;
@@ -151,13 +153,12 @@ public interface ApiRx {
 
   @POST("v3/check_vk") Observable<Response<CheckVkResponse>> checkVks(@Body CheckVkRequest request);
 
-  @Deprecated
-  @POST("") Observable<Response<Subscriptions>> purchaseMentorForFree(String mentorId);
+   @POST("v1/get_free_subscription_data") Observable<Response<MentorFreeResponce>> purchaseMentorForFree(@Body PurchaseTransaction purchaseTransaction);
 
   @POST("v1/get_provider_data") @FormUrlEncoded
   Observable<Response<MentorsVendor>> getMentorsVendor(@Header("os") String os,
       @Field("id_mentor") String mentorId);
 
-  @POST("v1/subscribe_for_mentor") Observable<Response<Void>> checkPurchaseTransaction(
-      PurchaseTransaction purchaseTransaction);
+  @POST("v1/subscribe_for_mentor") Observable<Response<Subscriptions>> checkPurchaseTransaction(
+      @Body MentorFreeSomeLayer mentorFreeResponce);
 }

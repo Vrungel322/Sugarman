@@ -5,6 +5,7 @@ import com.sugarman.myb.App;
 import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.base.BasicPresenter;
 import com.sugarman.myb.models.iab.PurchaseForServer;
+import com.sugarman.myb.models.iab.Subscriptions;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.ThreadSchedulers;
 import com.sugarman.myb.utils.inapp.Purchase;
@@ -73,36 +74,45 @@ import timber.log.Timber;
   }
 
   public void getMentorsVendor(String mentorId, MentorDetailActivity activity) {
-    Subscription subscription =
-        mDataManager.getMentorsVendor(mentorId).concatMap(mentorsVendorResponse -> {
+    Subscription subscription = mDataManager.getMentorsVendor(mentorId) //v1/get_provider_data
+        .concatMap(mentorsVendorResponse -> {
+          Observable<Subscriptions> observable = Observable.empty();
           if (mentorsVendorResponse.body().getSlot().equals(ProviderManager.FREE)) {
             Timber.e("getMentorsVendor free " + mentorsVendorResponse.body().toString());
-            return mProviderManager.startFreePurchaseFlowByVendor(
+            observable= mProviderManager.startFreePurchaseFlowByVendor(
                 mentorsVendorResponse.body().getVendor(), mentorId,
                 mentorsVendorResponse.body().getSlot());
           }
           if (mentorsVendorResponse.body().getVendor().equals(ProviderManager.GOOGLE)
               && mentorsVendorResponse.body().getIsAvailable()) {
             Timber.e("getMentorsVendor google vendor: " + mentorsVendorResponse.body().toString());
-            mProviderManager.setupInAppPurchase(mentorsVendorResponse.body().getSlot(),
-                mentorId, activity, mentorsVendorResponse.body().getVendor(), Observable::just);
+            mProviderManager.setupInAppPurchase(mentorsVendorResponse.body().getSlot(), mentorId,
+                activity, mentorsVendorResponse.body().getVendor(), Observable::just);
           }
-          return Observable.empty();
-        }).concatMap(purchaseTransaction -> {
-          if (!purchaseTransaction.getFreeSku().equals(ProviderManager.FREE)) {
-            return mDataManager.checkPurchaseTransaction(purchaseTransaction);
-          } else {
-            return Observable.empty();
-          }
-        }).compose(ThreadSchedulers.applySchedulers()).subscribe(voidResponse -> {
+          return observable;
+        })
+        //.filter(
+        //    purchaseTransaction -> !purchaseTransaction.getFreeSku().equals(ProviderManager.FREE))
+
+        //.concatMap(purchaseTransaction -> {
+        //  Timber.e("getMentorsVendor purchaseTransaction: " + purchaseTransaction.toString());
+        //  return mDataManager.checkPurchaseTransaction(purchaseTransaction);
+        //})
+        .compose(ThreadSchedulers.applySchedulers())
+        .subscribe(subscriptions -> {
+          Timber.e("getMentorsVendor subscribe");
+          getViewState().moveToMentorsDetailActivity(subscriptions.getTracking());
+
+
           mProviderManager.clearListenersFreeObj();
-          if (voidResponse != null && voidResponse.body() != null) {
-            Timber.e("getMentorsVendor code: " + voidResponse.code());
-            Timber.e("getMentorsVendor Need to do smth on UI if checkPurchaseTransaction is OK");
-          }
+          Timber.e("getMentorsVendor Need to do smth on UI if checkPurchaseTransaction is OK");
         }, throwable -> {
+          Timber.e("getMentorsVendor throwable");
           mProviderManager.clearListenersFreeObj();
           throwable.printStackTrace();
+        },() -> {
+          Timber.e("getMentorsVendor compleate");
+
         });
     addToUnsubscription(subscription);
 
