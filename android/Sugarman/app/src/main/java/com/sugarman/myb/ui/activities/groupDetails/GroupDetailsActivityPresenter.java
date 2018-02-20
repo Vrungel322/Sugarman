@@ -4,6 +4,7 @@ import com.arellomobile.mvp.InjectViewState;
 import com.sugarman.myb.App;
 import com.sugarman.myb.base.BasicPresenter;
 import com.sugarman.myb.utils.ThreadSchedulers;
+import com.sugarman.myb.utils.inapp.Purchase;
 import rx.Subscription;
 
 /**
@@ -51,8 +52,17 @@ import rx.Subscription;
   //  addToUnsubscription(subscription);
   //}
 
-  public void cancelSubscription(String mentorId) {
-    Subscription subscription = mDataManager.closeSubscription(mentorId)
+  public void getSlotToUnsubscribe(String mentorId) {
+    Subscription subscription = mDataManager.getMentorsVendor(mentorId)
+        .compose(ThreadSchedulers.applySchedulers())
+        .subscribe(mentorsVendorResponse -> {
+          getViewState().unsubscribeMEntor(mentorsVendorResponse.body().getSlot());
+        });
+    addToUnsubscription(subscription);
+  }
+
+  public void cancelSubscription(String mentorId, Purchase purchase) {
+    Subscription subscription = mDataManager.closeSubscription(mentorId,purchase.getToken())
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(voidResponse -> {
           if (voidResponse.code() == 200) {

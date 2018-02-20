@@ -1239,7 +1239,17 @@ public class GroupDetailsActivity extends BaseActivity
   }
 
   private void startCancelSubscribeFlowNewStyle(String mentorId) {
-    mPresenter.cancelSubscription(mentorId);
+    mPresenter.getSlotToUnsubscribe(mentorId);
+  }
+
+  @Override public void unsubscribeMEntor(String slot) {
+    mHelper.queryInventoryAsync(true, (result, inventory) -> {
+      Timber.e(result.getMessage());
+      Timber.e(inventory.getSkuDetails(slot).getTitle());
+      Timber.e(inventory.getSkuDetails(slot).getSku());
+
+      mPresenter.cancelSubscription(mentorId, inventory.getPurchase(slot));
+    });
   }
 
   private void loginWithSocket() {

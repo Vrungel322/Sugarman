@@ -14,4 +14,6 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
   void removeUser();
 
   void moveToMainActivity();
+
+  void unsubscribeMEntor(String slot);
 }

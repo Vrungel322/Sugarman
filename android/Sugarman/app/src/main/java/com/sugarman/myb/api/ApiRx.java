@@ -161,11 +161,9 @@ public interface ApiRx {
   Observable<Response<MentorsVendor>> getMentorsVendor(@Header("os") String os,
       @Field("id_mentor") String mentorId);
 
-  @POST("v1/subscribe_for_mentor")
-  Observable<Response<Subscriptions>> checkPurchaseTransaction(
+  @POST("v1/subscribe_for_mentor") Observable<Response<Subscriptions>> checkPurchaseTransaction(
       @Body StringAbstraction abstraction);
 
-  @FormUrlEncoded
-  @POST("v1/free_subscription/cancel")  Observable<Response<Void>> closeSubscription(
-      @Field("id_mentor") String mentorId);
+  @FormUrlEncoded @POST("v1/subscription/cancel") Observable<Response<Void>> closeSubscription(
+      @Field("id_mentor") String mentorId, @Field("token") String token,@Header("os") String os);
 }

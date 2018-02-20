@@ -305,7 +305,7 @@ public class RestApi {
         StringAbstraction.builder().data(new Gson().toJson(purchaseTransaction)).build());
   }
 
-  public Observable<Response<Void>> closeSubscription(String mentorId) {
-    return api.closeSubscription(mentorId);
+  public Observable<Response<Void>> closeSubscription(String mentorId, String token) {
+    return api.closeSubscription(mentorId,token,"android");
   }
 }

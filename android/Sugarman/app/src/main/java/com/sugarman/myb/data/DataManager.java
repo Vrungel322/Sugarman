@@ -406,7 +406,7 @@ public class DataManager {
     checkPurchaseTransaction(purchaseTransaction);
   }
 
-  public Observable<Response<Void>> closeSubscription(String mentorId) {
-    return mRestApi.closeSubscription(mentorId);
+  public Observable<Response<Void>> closeSubscription(String mentorId, String token) {
+    return mRestApi.closeSubscription(mentorId,token);
   }
 }
