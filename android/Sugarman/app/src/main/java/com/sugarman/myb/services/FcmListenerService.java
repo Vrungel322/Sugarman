@@ -45,9 +45,16 @@ public class FcmListenerService extends FirebaseMessagingService {
     if (TextUtils.isEmpty(SharedPreferenceHelper.getUserId())) {
       return;
     }
+
+    if(message.getData().containsKey("remote_logging_enable")) {
+      SharedPreferenceHelper.setRemoteLoggingEnabled(Boolean.valueOf(message.getData().get("remote_logging_enable")));
+      return;
+    }
+
     if (flags == null) {
       flags = getResources().getStringArray(R.array.notifications_types);
     }
+
 
     Timber.e("message : "
         + message.getData().get(Constants.FCM_MESSAGE)
