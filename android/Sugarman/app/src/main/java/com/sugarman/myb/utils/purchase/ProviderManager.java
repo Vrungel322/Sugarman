@@ -19,7 +19,6 @@ import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.inapp.IabHelper;
 import com.sugarman.myb.utils.inapp.IabResult;
 import com.sugarman.myb.utils.inapp.Inventory;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
@@ -77,6 +76,8 @@ public class ProviderManager {
       };
   IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = (result, purchase) -> {
     Timber.e("mFreeSku mPurchaseFinishedListener " + mFreeSku);
+    Timber.e("mFreeSku mPurchaseFinishedListener  result: " + result.getMessage());
+    Timber.e("mFreeSku mPurchaseFinishedListener  result isFailure:" + result.isFailure());
 
     if (result.isFailure()) {
       // Handle error
@@ -159,7 +160,7 @@ public class ProviderManager {
   public void startPurchaseFlow(String freeSku, MentorDetailActivity activity) {
     mFreeSku = freeSku;
     Timber.e("mFreeSku startPurchaseFlow " + freeSku);
-    MentorDetailActivity.startPurchaseFlow(activity, mHelper, freeSku, mPurchaseFinishedListener,
+    activity.startPurchaseFlow((MentorDetailActivity)activity, mHelper, freeSku, mPurchaseFinishedListener,
         "mypurchasetoken");
 
     //mHelper.launchSubscriptionPurchaseFlow(activity, freeSku, 10001, mPurchaseFinishedListener,
@@ -179,28 +180,26 @@ public class ProviderManager {
 
   Interceptor provideHeaderInterceptor() {
     Timber.e("Got into interceptor");
-    okhttp3.Interceptor requestInterceptor = new okhttp3.Interceptor() {
-      @Override public Response intercept(Chain chain) throws IOException {
-        Request original = chain.request();
-        Request request;
+    okhttp3.Interceptor requestInterceptor = chain -> {
+      Request original = chain.request();
+      Request request;
 
-        String token = SharedPreferenceHelper.getAccessToken();
-        Log.e("APP", "Token = " + token);
-        Request.Builder requestBuilder = original.newBuilder();
-        // .header("content-type", "application/json");
+      String token = SharedPreferenceHelper.getAccessToken();
+      Log.e("APP", "Token = " + token);
+      Request.Builder requestBuilder = original.newBuilder();
+      // .header("content-type", "application/json");
 
-        if (!TextUtils.isEmpty(token)) {
-          requestBuilder.header(Constants.AUTHORIZATION, Constants.BEARER + token);
-          requestBuilder.header(Constants.TIMEZONE, TimeZone.getDefault().getID());
-          requestBuilder.header(Constants.TIMESTAMP, System.currentTimeMillis() + "");
-          requestBuilder.header(Constants.VERSION, DeviceHelper.getAppVersionName());
-          requestBuilder.header(Constants.IMEI, SharedPreferenceHelper.getIMEI());
-        }
-
-        request = requestBuilder.build();
-        Response response = chain.proceed(request);
-        return response;
+      if (!TextUtils.isEmpty(token)) {
+        requestBuilder.header(Constants.AUTHORIZATION, Constants.BEARER + token);
+        requestBuilder.header(Constants.TIMEZONE, TimeZone.getDefault().getID());
+        requestBuilder.header(Constants.TIMESTAMP, System.currentTimeMillis() + "");
+        requestBuilder.header(Constants.VERSION, DeviceHelper.getAppVersionName());
+        requestBuilder.header(Constants.IMEI, SharedPreferenceHelper.getIMEI());
       }
+
+      request = requestBuilder.build();
+      Response response = chain.proceed(request);
+      return response;
     };
     return requestInterceptor;
   }

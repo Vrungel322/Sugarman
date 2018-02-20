@@ -1,6 +1,7 @@
 package com.sugarman.myb.api;
 
 import android.util.Log;
+import com.google.gson.Gson;
 import com.sugarman.myb.api.models.levelSystem.TaskEntity;
 import com.sugarman.myb.api.models.requests.ApproveOtpRequest;
 import com.sugarman.myb.api.models.requests.CheckPhoneRequest;
@@ -31,8 +32,10 @@ import com.sugarman.myb.models.iab.Subscriptions;
 import com.sugarman.myb.models.mentor.MentorFreeSomeLayer;
 import com.sugarman.myb.models.mentor.MentorStupidAbstraction;
 import com.sugarman.myb.models.mentor.MentorsCommentsStupidAbstraction;
+import com.sugarman.myb.models.mentor.StringAbstraction;
 import com.sugarman.myb.models.mentor.comments.CommentEntity;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
+import com.sugarman.myb.utils.purchase.PurchaseTransaction;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -195,7 +198,7 @@ public class RestApi {
     return api.getNextFreeSku("Android");
   }
 
-  public Observable<Response<Subscriptions>> closeSubscription(
+  @Deprecated public Observable<Response<Subscriptions>> closeSubscription(
       PurchaseForServer purchaseForServer) {
     return api.closeSubscription(purchaseForServer);
   }
@@ -292,6 +295,17 @@ public class RestApi {
 
   public Observable<Response<Subscriptions>> checkPurchaseTransaction(
       MentorFreeSomeLayer mentorFreeResponce) {
-    return api.checkPurchaseTransaction(mentorFreeResponce);
+    return api.checkPurchaseTransaction(
+        StringAbstraction.builder().data(new Gson().toJson(mentorFreeResponce)).build());
+  }
+
+  public Observable<Response<Subscriptions>> checkPurchaseTransaction(
+      PurchaseTransaction purchaseTransaction) {
+    return api.checkPurchaseTransaction(
+        StringAbstraction.builder().data(new Gson().toJson(purchaseTransaction)).build());
+  }
+
+  public Observable<Response<Void>> closeSubscription(String mentorId) {
+    return api.closeSubscription(mentorId);
   }
 }

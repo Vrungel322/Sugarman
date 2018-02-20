@@ -26,9 +26,9 @@ import com.sugarman.myb.models.iab.NextFreeSkuEntity;
 import com.sugarman.myb.models.iab.PurchaseForServer;
 import com.sugarman.myb.models.iab.Subscriptions;
 import com.sugarman.myb.models.mentor.MentorFreeResponce;
-import com.sugarman.myb.models.mentor.MentorFreeSomeLayer;
 import com.sugarman.myb.models.mentor.MentorStupidAbstraction;
 import com.sugarman.myb.models.mentor.MentorsCommentsStupidAbstraction;
+import com.sugarman.myb.models.mentor.StringAbstraction;
 import com.sugarman.myb.models.mentor.comments.CommentEntity;
 import com.sugarman.myb.utils.purchase.PurchaseTransaction;
 import java.util.List;
@@ -115,8 +115,8 @@ public interface ApiRx {
   @GET("v1/check_slots") Observable<Response<NextFreeSkuEntity>> getNextFreeSku(
       @Query("device") String device);
 
-  @POST("v1/in_app_purchases/cancel") Observable<Response<Subscriptions>> closeSubscription(
-      @Body PurchaseForServer purchaseForServer);
+  @Deprecated @POST("v1/in_app_purchases/cancel")
+  Observable<Response<Subscriptions>> closeSubscription(@Body PurchaseForServer purchaseForServer);
 
   @POST("v1/contact_list") Observable<Response<Void>> sendContacts(
       @Body ContactListForServer contactsForServer);
@@ -153,12 +153,19 @@ public interface ApiRx {
 
   @POST("v3/check_vk") Observable<Response<CheckVkResponse>> checkVks(@Body CheckVkRequest request);
 
-   @POST("v1/get_free_subscription_data") Observable<Response<MentorFreeResponce>> purchaseMentorForFree(@Body PurchaseTransaction purchaseTransaction);
+  @POST("v1/get_free_subscription_data")
+  Observable<Response<MentorFreeResponce>> purchaseMentorForFree(
+      @Body PurchaseTransaction purchaseTransaction);
 
   @POST("v1/get_provider_data") @FormUrlEncoded
   Observable<Response<MentorsVendor>> getMentorsVendor(@Header("os") String os,
       @Field("id_mentor") String mentorId);
 
-  @POST("v1/subscribe_for_mentor") Observable<Response<Subscriptions>> checkPurchaseTransaction(
-      @Body MentorFreeSomeLayer mentorFreeResponce);
+  @POST("v1/subscribe_for_mentor")
+  Observable<Response<Subscriptions>> checkPurchaseTransaction(
+      @Body StringAbstraction abstraction);
+
+  @FormUrlEncoded
+  @POST("v1/free_subscription/cancel")  Observable<Response<Void>> closeSubscription(
+      @Field("id_mentor") String mentorId);
 }

@@ -41,6 +41,7 @@ import com.sugarman.myb.models.iab.NextFreeSkuEntity;
 import com.sugarman.myb.models.iab.PurchaseForServer;
 import com.sugarman.myb.models.iab.Subscriptions;
 import com.sugarman.myb.models.mentor.MentorEntity;
+import com.sugarman.myb.models.mentor.MentorFreeSomeLayer;
 import com.sugarman.myb.models.mentor.MentorStupidAbstraction;
 import com.sugarman.myb.models.mentor.MentorsCommentsStupidAbstraction;
 import com.sugarman.myb.models.mentor.comments.CommentEntity;
@@ -49,6 +50,7 @@ import com.sugarman.myb.utils.ContactsHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.apps_Fly.AppsFlyRemoteLogger;
 import com.sugarman.myb.utils.purchase.ProviderManager;
+import com.sugarman.myb.utils.purchase.PurchaseTransaction;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -198,6 +200,7 @@ public class DataManager {
     return mRestApi.sendContacts(contactsForServer);
   }
 
+  @Deprecated
   public Observable<Response<Subscriptions>> closeSubscription(
       PurchaseForServer purchaseForServer) {
     return mRestApi.closeSubscription(purchaseForServer);
@@ -391,9 +394,19 @@ public class DataManager {
     return mRestApi.getMentorsVendor(mentorId);
   }
 
-  //public Observable<Response<Void>> checkPurchaseTransaction(
-  //    PurchaseTransaction purchaseTransaction) {
-  //  return mRestApi.
-  //      checkPurchaseTransaction(purchaseTransaction);
-  //}
+  public Observable<Response<Subscriptions>> checkPurchaseTransaction(
+      MentorFreeSomeLayer mentorFreeResponce) {
+    return mRestApi.
+        checkPurchaseTransaction(mentorFreeResponce);
+  }
+
+  public Observable<Response<Subscriptions>> checkPurchaseTransaction(
+      PurchaseTransaction purchaseTransaction) {
+    return mRestApi.
+    checkPurchaseTransaction(purchaseTransaction);
+  }
+
+  public Observable<Response<Void>> closeSubscription(String mentorId) {
+    return mRestApi.closeSubscription(mentorId);
+  }
 }

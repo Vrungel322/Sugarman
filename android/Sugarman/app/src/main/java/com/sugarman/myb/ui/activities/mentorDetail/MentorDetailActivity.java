@@ -42,6 +42,7 @@ import com.sugarman.myb.utils.apps_Fly.AppsFlyerEventSender;
 import com.sugarman.myb.utils.inapp.IabHelper;
 import com.sugarman.myb.utils.inapp.IabResult;
 import com.sugarman.myb.utils.inapp.Inventory;
+import com.sugarman.myb.utils.purchase.PurchaseTransaction;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -125,10 +126,11 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   private MentorsVideosAdapter mMentorsVideosAdapter;
   private List<String> youtubeVideos;
 
-  public static void startPurchaseFlow(Activity activity,IabHelper mHelper, String freeSku,
+  public void startPurchaseFlow(Activity activity,IabHelper mHelper, String freeSku,
       IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener, String mypurchasetoken) {
     Timber.e("startPurchaseFlow");
-    mHelper.launchSubscriptionPurchaseFlow((MentorDetailActivity)activity, freeSku, 10001, mPurchaseFinishedListener,
+    this.mHelper = mHelper;
+    mHelper.launchSubscriptionPurchaseFlow(this, freeSku, 10001, mPurchaseFinishedListener,
         "mypurchasetoken");
   }
 
@@ -390,6 +392,10 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
     intent.putExtra("isMentorGroup", tracking.isMentors());
     intent.putExtra("mentorId", tracking.getGroupOwnerId());
     startActivityForResult(intent, Constants.GROUP_DETAILS_ACTIVITY_REQUEST_CODE);
+  }
+
+  @Override public void checkGPurchase(PurchaseTransaction purchaseTransaction) {
+    mPresenter.checkGPurchase( purchaseTransaction);
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {

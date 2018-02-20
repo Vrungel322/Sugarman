@@ -5,6 +5,7 @@ import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.models.mentor.comments.MentorsCommentsEntity;
+import com.sugarman.myb.utils.purchase.PurchaseTransaction;
 import java.util.List;
 
 /**
@@ -28,4 +29,6 @@ import java.util.List;
   void showAllSlotsNotEmptyDialog();
 
   void moveToMentorsDetailActivity(Tracking tracking);
+
+  void checkGPurchase(PurchaseTransaction purchaseTransaction);
 }

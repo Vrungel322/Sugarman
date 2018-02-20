@@ -791,7 +791,6 @@ public class GroupDetailsActivity extends BaseActivity
       } else {
         ivCancelSubscription.setVisibility(View.VISIBLE);
       }
-
     } else {
       mentorId = "";
       pieChart.setVisibility(View.GONE);
@@ -964,7 +963,7 @@ public class GroupDetailsActivity extends BaseActivity
     Timber.e("successCount:" + successCount);
 
     float successRateFloat = (float) successCount / (float) totalCount;
-    Timber.e("successRateFloat "+successRateFloat);
+    Timber.e("successRateFloat " + successRateFloat);
 
     List<PieEntry> entries = new ArrayList<>();
 
@@ -1233,8 +1232,14 @@ public class GroupDetailsActivity extends BaseActivity
   @OnClick(R.id.ivCancelSubscription) void cancelSubscription() {
     DialogHelper.createSimpleDialog(getString(R.string.okay), getString(R.string.discard),
         getString(R.string.warning), getString(R.string.cancel_subscription_warning), this,
-        (dialogInterface, i) -> startCancelSubscribeFlow(),
+        //(dialogInterface, i) -> startCancelSubscribeFlow(),
+        (dialogInterface, i) -> startCancelSubscribeFlowNewStyle(
+            mTracking.getGroup().getOwner().getId()),
         (dialogInterface, i) -> dialogInterface.dismiss()).create().show();
+  }
+
+  private void startCancelSubscribeFlowNewStyle(String mentorId) {
+    mPresenter.cancelSubscription(mentorId);
   }
 
   private void loginWithSocket() {
@@ -1601,7 +1606,7 @@ public class GroupDetailsActivity extends BaseActivity
     }
     if (mCountDownGroupTimer != null) {
       mCountDownGroupTimer.cancel();
-      mCountDownGroupTimer=null;
+      mCountDownGroupTimer = null;
     }
   }
 
@@ -1991,11 +1996,10 @@ public class GroupDetailsActivity extends BaseActivity
 
   @Override public void onApiGetTrackingInfoSuccess(Tracking tracking,
       List<MentorsCommentsEntity> commentsEntities, String successRate) {
-    Timber.e("onApiGetTrackingInfoSuccess "+ successRate);
+    Timber.e("onApiGetTrackingInfoSuccess " + successRate);
     if (tracking != null) {
       mTracking = tracking;
       setUpPieChart();
-
 
       if (commentsEntities != null && commentsEntities.size() > 0) {
         mComment = commentsEntities.get(0);
@@ -2193,7 +2197,7 @@ public class GroupDetailsActivity extends BaseActivity
   }
 
   private void startCountDownTimer(Tracking tracking) {
-    mCountDownGroupTimer = new CountDownTimer(tracking.getStartUTCDate().getTime(),1000L) {
+    mCountDownGroupTimer = new CountDownTimer(tracking.getStartUTCDate().getTime(), 1000L) {
       @Override public void onTick(long l) {
         long startTimestamp = tracking.getStartUTCDate().getTime();
         long timeMs = startTimestamp - System.currentTimeMillis();
@@ -2210,7 +2214,6 @@ public class GroupDetailsActivity extends BaseActivity
             String.format(timerTemplate, timeFormatter.format(days), timeFormatter.format(hours),
                 timeFormatter.format(minutes), timeFormatter.format(sec));
         tvTimer.setText(timeFormatted);
-
       }
 
       @Override public void onFinish() {
@@ -2395,28 +2398,28 @@ public class GroupDetailsActivity extends BaseActivity
     startActivity(intent);
   }
 
-  private void startCancelSubscribeFlow() {
-
-    subscribeList = SharedPreferenceHelper.getListSubscriptionEntity();
-    Timber.e("startUnSubscribeFlow size " + subscribeList.size());
-    String slot = "";
-    for (int i = 0; i < subscribeList.size(); i++) {
-      if (subscribeList.get(i).getMentorId().equals(mTracking.getGroupOwnerId())) {
-        slot = subscribeList.get(i).getSlot();
-        Timber.e("startUnSubscribeFlow slot " + slot);
-        String finalSlot = slot;
-        mHelper.queryInventoryAsync(true, (result, inventory) -> {
-          Timber.e(result.getMessage());
-          Timber.e(inventory.getSkuDetails(finalSlot).getTitle());
-          Timber.e(inventory.getSkuDetails(finalSlot).getSku());
-
-          mPresenter.cancelSubscription(inventory.getPurchase(finalSlot),
-              inventory.getSkuDetails(finalSlot).getTitle(), mTracking.getGroupOwnerId(),
-              finalSlot);
-        });
-      }
-    }
-  }
+  //private void startCancelSubscribeFlow() {
+  //
+  //  subscribeList = SharedPreferenceHelper.getListSubscriptionEntity();
+  //  Timber.e("startUnSubscribeFlow size " + subscribeList.size());
+  //  String slot = "";
+  //  for (int i = 0; i < subscribeList.size(); i++) {
+  //    if (subscribeList.get(i).getMentorId().equals(mTracking.getGroupOwnerId())) {
+  //      slot = subscribeList.get(i).getSlot();
+  //      Timber.e("startUnSubscribeFlow slot " + slot);
+  //      String finalSlot = slot;
+  //      mHelper.queryInventoryAsync(true, (result, inventory) -> {
+  //        Timber.e(result.getMessage());
+  //        Timber.e(inventory.getSkuDetails(finalSlot).getTitle());
+  //        Timber.e(inventory.getSkuDetails(finalSlot).getSku());
+  //
+  //        mPresenter.cancelSubscription(inventory.getPurchase(finalSlot),
+  //            inventory.getSkuDetails(finalSlot).getTitle(), mTracking.getGroupOwnerId(),
+  //            finalSlot);
+  //      });
+  //    }
+  //  }
+  //}
 
   public enum ButtonType {
     MENU, SEND, MENU_OPENED, IN_ANIMATION;
@@ -2481,9 +2484,10 @@ public class GroupDetailsActivity extends BaseActivity
         int hours = (int) ((timeMs % Constants.MS_IN_DAY) / Constants.MS_IN_HOUR);
         int minutes = (int) ((timeMs % Constants.MS_IN_HOUR) / Constants.MS_IN_MIN);
         int sec = (int) ((timeMs % Constants.MS_IN_MIN) / Constants.MS_IN_SEC);
-        Timber.e("timer in groupDetails " + days + " " + hours+" " + minutes+" "+ sec );
+        Timber.e("timer in groupDetails " + days + " " + hours + " " + minutes + " " + sec);
         Timber.e("timer in groupDetails milis :" + timeMs);
-        Timber.e("timer in groupDetails date from tracking :" + tracking.getStartUTCDate().getTime());
+        Timber.e(
+            "timer in groupDetails date from tracking :" + tracking.getStartUTCDate().getTime());
         String timerTemplate = getString(R.string.timer_template);
         timeFormatted =
             String.format(timerTemplate, timeFormatter.format(days), timeFormatter.format(hours),
