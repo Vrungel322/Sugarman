@@ -57,7 +57,7 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
   @BindView(R.id.tvTotalPhCount) TextView tvTotalPhCount;
   @BindView(R.id.fbFilter) ImageView ivFbFilter;
   @BindView(R.id.vkFilter) ImageView ivVkFilter;
-  @BindView(R.id.phFilter) ImageView ivphFilter;
+  @BindView(R.id.phFilter) ImageView ivPhFilter;
   @BindView(R.id.pb) ProgressBar mProgressBar;
   // number of total count/ number of count people with app BY PH
   private int numberOfMemberTotalAppPh;
@@ -178,11 +178,13 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
       askToConnect("fb");
     } else {
       mPresenter.filterBySocial(friendsAdapter.getAllList(), "fb");
+      setSelectedFilter("fb");
     }
   }
 
   @OnClick(R.id.phFilter) public void filterPh() {
     mPresenter.filterBySocial(friendsAdapter.getAllList(), "ph");
+    setSelectedFilter("ph");
   }
 
   @OnClick(R.id.vkFilter) public void filterVk() {
@@ -190,6 +192,30 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
       askToConnect("vk");
     } else {
       mPresenter.filterBySocial(friendsAdapter.getAllList(), "vk");
+      setSelectedFilter("vk");
+    }
+  }
+
+  private void setSelectedFilter(String socialTag) {
+    switch (socialTag) {
+      case "fb": {
+        ivFbFilter.setAlpha(1f);
+        ivVkFilter.setAlpha(0.5f);
+        ivPhFilter.setAlpha(0.5f);
+        break;
+      }
+      case "ph": {
+        ivFbFilter.setAlpha(0.5f);
+        ivVkFilter.setAlpha(0.5f);
+        ivPhFilter.setAlpha(1f);
+        break;
+      }
+      case "vk": {
+        ivFbFilter.setAlpha(0.5f);
+        ivVkFilter.setAlpha(1f);
+        ivPhFilter.setAlpha(0.5f);
+        break;
+      }
     }
   }
 
