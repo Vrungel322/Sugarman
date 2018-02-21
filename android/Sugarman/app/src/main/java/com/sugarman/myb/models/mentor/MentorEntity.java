@@ -11,17 +11,10 @@ import lombok.Setter;
 /**
  * Created by nikita on 27.10.2017.
  */
+
 @AllArgsConstructor public class MentorEntity implements Parcelable {
   public static final String MENTOR_ENTITY = "MENTOR_ENTITY";
-  public static final Creator<MentorEntity> CREATOR = new Creator<MentorEntity>() {
-    @Override public MentorEntity createFromParcel(Parcel in) {
-      return new MentorEntity(in);
-    }
 
-    @Override public MentorEntity[] newArray(int size) {
-      return new MentorEntity[size];
-    }
-  };
   @Getter @Setter @SerializedName("id") private String mentorId;
   @Getter @Setter @SerializedName("id_user") private String userId;
   @Getter @Setter @SerializedName("picture_url") private String mentorImgUrl;
@@ -38,6 +31,7 @@ import lombok.Setter;
   @Getter @Setter @SerializedName("assessment_of_month") private float monthlySuccessRate;
   @Getter @Setter @SerializedName("is_already_owned") private boolean isOwned;
   @Getter @Setter @SerializedName("price") private Float price;
+  @Getter @Setter @SerializedName("subscription_duration") private Integer subscriptionDuration;
 
   protected MentorEntity(Parcel in) {
     mentorId = in.readString();
@@ -59,7 +53,22 @@ import lombok.Setter;
     } else {
       price = in.readFloat();
     }
+    if (in.readByte() == 0) {
+      subscriptionDuration = null;
+    } else {
+      subscriptionDuration = in.readInt();
+    }
   }
+
+  public static final Creator<MentorEntity> CREATOR = new Creator<MentorEntity>() {
+    @Override public MentorEntity createFromParcel(Parcel in) {
+      return new MentorEntity(in);
+    }
+
+    @Override public MentorEntity[] newArray(int size) {
+      return new MentorEntity[size];
+    }
+  };
 
   @Override public int describeContents() {
     return 0;
@@ -85,6 +94,12 @@ import lombok.Setter;
     } else {
       parcel.writeByte((byte) 1);
       parcel.writeFloat(price);
+    }
+    if (subscriptionDuration == null) {
+      parcel.writeByte((byte) 0);
+    } else {
+      parcel.writeByte((byte) 1);
+      parcel.writeInt(subscriptionDuration);
     }
   }
 }

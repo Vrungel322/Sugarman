@@ -1,218 +1,413 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.sugarman.myb.ui.activities.mentorDetail.MentorDetailActivity"
     >
-<ScrollView
-    android:layout_width="0dp"
-    android:layout_height="0dp"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    >
-  <LinearLayout
-      android:id="@+id/ll_container_root"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:orientation="vertical"
+  <ScrollView
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintLeft_toLeftOf="parent"
+      app:layout_constraintRight_toRightOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
       >
-
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        >
-      <ImageView
-          android:id="@+id/iv_back"
-          android:layout_width="wrap_content"
-          android:layout_height="50dp"
-          android:layout_alignParentStart="true"
-          android:layout_alignParentTop="true"
-          android:src="@drawable/back_arrow"
-          android:contentDescription="@string/content_description"
-          android:adjustViewBounds="true"
-          android:padding="13dp"/>
-
-      <ImageView
-          android:id="@+id/wave1"
-          android:layout_marginTop="40dp"
-          android:layout_marginBottom="30dp"
-          android:layout_width="@dimen/profile_avatar_size"
-          android:layout_height="@dimen/profile_avatar_size"
-          android:layout_centerHorizontal="true"
-          android:src="@drawable/border_anim"
-          />
-      <ImageView
-          android:id="@+id/wave2"
-          android:layout_marginTop="40dp"
-          android:layout_marginBottom="30dp"
-          android:layout_width="@dimen/profile_avatar_size"
-          android:layout_height="@dimen/profile_avatar_size"
-          android:layout_centerHorizontal="true"
-          android:src="@drawable/border_anim"
-          />
-      <ImageView
-          android:id="@+id/wave3"
-          android:layout_marginTop="40dp"
-          android:layout_marginBottom="30dp"
-          android:layout_width="@dimen/profile_avatar_size"
-          android:layout_height="@dimen/profile_avatar_size"
-          android:layout_centerHorizontal="true"
-          android:src="@drawable/border_anim"
-          />
-      <ImageView
-          android:id="@+id/iv_avatar"
-          android:layout_marginTop="40dp"
-          android:layout_marginBottom="30dp"
-          android:layout_width="@dimen/profile_avatar_size"
-          android:layout_height="@dimen/profile_avatar_size"
-          android:layout_centerHorizontal="true"
-          android:src="@drawable/ic_gray_avatar" />
-      <ImageView
-          android:layout_marginTop="40dp"
-          android:layout_marginBottom="30dp"
-          android:layout_width="@dimen/profile_avatar_size"
-          android:layout_height="@dimen/profile_avatar_size"
-          android:layout_centerHorizontal="true"
-          android:src="@drawable/border_anim"
-          />
-    </RelativeLayout>
-
-
-  <LinearLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:orientation="horizontal"
-      >
-
-    <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/piechartSuccessRate"
-        android:layout_width="76dp"
-        android:layout_height="76dp"
-        android:layout_marginLeft="35dp"
-        android:layout_marginStart="35dp"
-        android:layout_gravity="center_vertical|right"
-        />
-    <RelativeLayout
-        android:layout_width="@dimen/high_group_icon_size"
-        android:layout_height="100dp"
-        android:layout_weight="5"
-        android:layout_gravity="center"
-        android:gravity="center"
-        >
-
     <LinearLayout
+        android:id="@+id/ll_container_root"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginRight="35dp"
-        android:layout_marginEnd="35dp"
-        >
-    <TextView
-        android:id="@+id/tv_mentor_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Phil Jackson"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_gravity="center"
-        />
-
-    <android.support.v7.widget.AppCompatRatingBar
-        android:id="@+id/appCompatRatingBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:isIndicator="true"
-        android:layout_gravity="center"
-        android:numStars="5"
-        android:stepSize="0.5"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_name"
-        style="?android:attr/ratingBarStyleIndicator"
-        />
-    </LinearLayout>
-    </RelativeLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_marginTop="10dp"
-        android:id="@+id/ll_container_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         >
 
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_marginTop="10dp"
-        android:id="@+id/llSuccessRateContainer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
-      <LinearLayout
-          android:orientation="horizontal"
+      <RelativeLayout
           android:layout_width="match_parent"
-          android:layout_height="match_parent">
+          android:layout_height="wrap_content"
+          android:layout_weight="1"
+          >
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/content_description"
+            android:padding="13dp"
+            android:src="@drawable/back_arrow"
+            />
+
+        <ImageView
+            android:id="@+id/wave1"
+            android:layout_width="@dimen/profile_avatar_size"
+            android:layout_height="@dimen/profile_avatar_size"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="40dp"
+            android:src="@drawable/border_anim"
+            />
+        <ImageView
+            android:id="@+id/wave2"
+            android:layout_width="@dimen/profile_avatar_size"
+            android:layout_height="@dimen/profile_avatar_size"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="40dp"
+            android:src="@drawable/border_anim"
+            />
+        <ImageView
+            android:id="@+id/wave3"
+            android:layout_width="@dimen/profile_avatar_size"
+            android:layout_height="@dimen/profile_avatar_size"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="40dp"
+            android:src="@drawable/border_anim"
+            />
+        <ImageView
+            android:id="@+id/iv_avatar"
+            android:layout_width="@dimen/profile_avatar_size"
+            android:layout_height="@dimen/profile_avatar_size"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="40dp"
+            android:src="@drawable/ic_gray_avatar"
+            />
+        <ImageView
+            android:layout_width="@dimen/profile_avatar_size"
+            android:layout_height="@dimen/profile_avatar_size"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="40dp"
+            android:src="@drawable/border_anim"
+            />
+      </RelativeLayout>
+
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          >
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/piechartSuccessRate"
+            android:layout_width="76dp"
+            android:layout_height="76dp"
+            android:layout_gravity="center_vertical|right"
+            android:layout_marginLeft="35dp"
+            android:layout_marginStart="35dp"
+            />
+        <RelativeLayout
+            android:layout_width="@dimen/high_group_icon_size"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_weight="5"
+            android:gravity="center"
+            >
+
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginEnd="35dp"
+              android:layout_marginRight="35dp"
+              android:orientation="vertical"
+              >
+            <TextView
+                android:id="@+id/tv_mentor_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Phil Jackson"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                />
+
+            <android.support.v7.widget.AppCompatRatingBar
+                android:id="@+id/appCompatRatingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:stepSize="0.5"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_name"
+                style="?android:attr/ratingBarStyleIndicator"
+                />
+          </LinearLayout>
+        </RelativeLayout>
+      </LinearLayout>
+      <LinearLayout
+          android:id="@+id/ll_container_layout"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+          android:orientation="vertical"
+          >
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:id="@+id/llSuccessRateContainer"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="10dp"
+          android:orientation="vertical"
+          >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            >
+
+          <RelativeLayout
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_marginRight="12dp"
+              android:layout_weight="5"
+              >
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/skill_border"
+                />
+            <TextView
+                android:id="@+id/tvSuccessRateHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/success_rate"
+                android:textColor="#FA3E3D"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                />
+          </RelativeLayout>
+          <RelativeLayout
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="12dp"
+              android:layout_weight="1"
+              >
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:src="@drawable/skill_icon"
+                />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_centerInParent="true"
+                android:adjustViewBounds="true"
+                android:paddingBottom="10dp"
+                android:paddingEnd="10dp"
+                android:paddingLeft="12dp"
+                android:paddingTop="10dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/muscle"
+                />
+          </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            >
+
+          <RelativeLayout
+              android:layout_width="0dp"
+              android:layout_height="50dp"
+              android:layout_marginRight="12dp"
+              android:layout_weight="2"
+              >
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pcSuccessRateToday"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/muscle"
+                />
+          </RelativeLayout>
+
+          <RelativeLayout
+              android:layout_width="0dp"
+              android:layout_height="50dp"
+              android:layout_marginLeft="12dp"
+              android:layout_weight="7"
+              >
+            <TextView
+                android:id="@+id/tvSuccessRateToday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:text="@string/daily_success_rate"
+                android:textColor="#000"
+                android:textSize="16sp"
+                />
+          </RelativeLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            >
+
+          <RelativeLayout
+              android:layout_width="0dp"
+              android:layout_height="50dp"
+              android:layout_marginRight="12dp"
+              android:layout_weight="2"
+              >
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pcSuccessRateWeekly"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/muscle"
+                />
+          </RelativeLayout>
+
+          <RelativeLayout
+              android:layout_width="0dp"
+              android:layout_height="50dp"
+              android:layout_marginLeft="12dp"
+              android:layout_weight="7"
+              >
+            <TextView
+                android:id="@+id/tvSuccessRateWeekly"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:text="@string/weekly_success_rate"
+                android:textColor="#000"
+                android:textSize="16sp"
+                />
+          </RelativeLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            >
+
+          <RelativeLayout
+              android:layout_width="0dp"
+              android:layout_height="50dp"
+              android:layout_marginRight="12dp"
+              android:layout_weight="2"
+              >
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/pcSuccessRateMonthly"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/muscle"
+                />
+          </RelativeLayout>
+
+          <RelativeLayout
+              android:layout_width="0dp"
+              android:layout_height="50dp"
+              android:layout_marginLeft="12dp"
+              android:layout_weight="7"
+              >
+            <TextView
+                android:id="@+id/tvSuccessRateMonthly"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:text="@string/monthly_success_rate"
+                android:textColor="#000"
+                android:textSize="16sp"
+                />
+          </RelativeLayout>
+
+
+        </LinearLayout>
+
+
+      </LinearLayout>
+
+      <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+          android:id="@+id/llCommentsContainer"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:orientation="horizontal"
+          android:visibility="gone"
+          >
 
         <RelativeLayout
-            android:layout_weight="5"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="12dp"
+            android:layout_weight="5"
             >
           <ImageView
               android:layout_width="match_parent"
               android:layout_height="50dp"
-              android:src="@drawable/skill_border"
               android:adjustViewBounds="true"
               android:scaleType="fitCenter"
+              android:src="@drawable/skill_border"
               />
           <TextView
-              android:id="@+id/tvSuccessRateHeader"
+              android:id="@+id/tv_skill_name"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:text="@string/success_rate"
               android:layout_centerInParent="true"
+              android:text="@string/comments"
               android:textColor="#FA3E3D"
-              android:textStyle="bold"
               android:textSize="16sp"
+              android:textStyle="bold"
               />
         </RelativeLayout>
         <RelativeLayout
-            android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
+            android:layout_weight="1"
             >
           <ImageView
               android:layout_width="match_parent"
               android:layout_height="50dp"
-              android:paddingTop="5dp"
               android:paddingBottom="5dp"
+              android:paddingTop="5dp"
               android:src="@drawable/skill_icon"
               />
           <ImageView
               android:layout_width="match_parent"
               android:layout_height="45dp"
-              android:paddingLeft="12dp"
-              android:paddingEnd="10dp"
-              android:paddingTop="10dp"
-              android:paddingBottom="10dp"
               android:layout_centerInParent="true"
               android:adjustViewBounds="true"
+              android:paddingBottom="10dp"
+              android:paddingEnd="10dp"
+              android:paddingLeft="12dp"
+              android:paddingTop="10dp"
               android:scaleType="fitCenter"
               android:src="@drawable/muscle"
               />
@@ -220,367 +415,197 @@
 
       </LinearLayout>
 
-      <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-          android:orientation="horizontal"
+      <android.support.v7.widget.RecyclerView
+          android:id="@+id/rcv_comments"
           android:layout_width="match_parent"
-          android:layout_height="match_parent">
+          android:layout_height="wrap_content"
+          tools:visibility="gone"
+          />
+
+
+      <LinearLayout
+          android:id="@+id/llFriends"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:orientation="horizontal"
+          android:visibility="gone"
+          >
 
         <RelativeLayout
-            android:layout_weight="2"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginRight="12dp"
+            android:layout_weight="5"
             >
-          <com.github.mikephil.charting.charts.PieChart
-              android:id="@+id/pcSuccessRateToday"
-              android:layout_width="wrap_content"
+          <ImageView
+              android:layout_width="match_parent"
               android:layout_height="50dp"
-              android:src="@drawable/muscle"
-              android:layout_centerVertical="true"
-              android:layout_alignParentRight="true"
+              android:adjustViewBounds="true"
+              android:scaleType="fitCenter"
+              android:src="@drawable/skill_border"
               />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_weight="7"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="12dp"
-            >
           <TextView
-              android:id="@+id/tvSuccessRateToday"
+              android:id="@+id/tvFriends"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:text="@string/daily_success_rate"
-              android:layout_alignParentStart="true"
-              android:layout_centerVertical="true"
-              android:textColor="#000"
+              android:layout_centerInParent="true"
+              android:text="Friends"
+              android:textColor="#FA3E3D"
               android:textSize="16sp"
+              android:textStyle="bold"
               />
         </RelativeLayout>
-
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_weight="1"
+            >
+          <ImageView
+              android:layout_width="match_parent"
+              android:layout_height="50dp"
+              android:paddingBottom="5dp"
+              android:paddingTop="5dp"
+              android:src="@drawable/skill_icon"
+              />
+          <ImageView
+              android:layout_width="match_parent"
+              android:layout_height="45dp"
+              android:layout_centerInParent="true"
+              android:adjustViewBounds="true"
+              android:paddingBottom="10dp"
+              android:paddingEnd="10dp"
+              android:paddingLeft="12dp"
+              android:paddingTop="10dp"
+              android:scaleType="fitCenter"
+              android:src="@drawable/muscle"
+              />
+        </RelativeLayout>
 
       </LinearLayout>
-
-      <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-          android:orientation="horizontal"
+      <android.support.v7.widget.RecyclerView
+          android:id="@+id/rvFriends"
           android:layout_width="match_parent"
-          android:layout_height="match_parent">
+
+          android:layout_height="match_parent"
+          tools:visibility="gone"
+          />
+
+      <LinearLayout
+          android:id="@+id/llVideos"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:orientation="horizontal"
+          android:visibility="gone"
+          >
 
         <RelativeLayout
-            android:layout_weight="2"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginRight="12dp"
+            android:layout_weight="5"
             >
-          <com.github.mikephil.charting.charts.PieChart
-              android:id="@+id/pcSuccessRateWeekly"
-              android:layout_width="wrap_content"
+          <ImageView
+              android:layout_width="match_parent"
               android:layout_height="50dp"
-              android:src="@drawable/muscle"
-              android:layout_centerVertical="true"
-              android:layout_alignParentRight="true"
+              android:adjustViewBounds="true"
+              android:scaleType="fitCenter"
+              android:src="@drawable/skill_border"
               />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_weight="7"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="12dp"
-            >
           <TextView
-              android:id="@+id/tvSuccessRateWeekly"
+              android:id="@+id/tvVideos"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:text="@string/weekly_success_rate"
-              android:layout_alignParentStart="true"
-              android:layout_centerVertical="true"
-              android:textColor="#000"
+              android:layout_centerInParent="true"
+              android:text="Videos"
+              android:textColor="#FA3E3D"
               android:textSize="16sp"
+              android:textStyle="bold"
               />
         </RelativeLayout>
-
-
-      </LinearLayout>
-
-      <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-          android:orientation="horizontal"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent">
-
         <RelativeLayout
-            android:layout_weight="2"
             android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginRight="12dp"
-            >
-          <com.github.mikephil.charting.charts.PieChart
-              android:id="@+id/pcSuccessRateMonthly"
-              android:layout_width="wrap_content"
-              android:layout_height="50dp"
-              android:src="@drawable/muscle"
-              android:layout_centerVertical="true"
-              android:layout_alignParentRight="true"
-              />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_weight="7"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
+            android:layout_weight="1"
             >
-          <TextView
-              android:id="@+id/tvSuccessRateMonthly"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="@string/monthly_success_rate"
-              android:layout_alignParentStart="true"
-              android:layout_centerVertical="true"
-              android:textColor="#000"
-              android:textSize="16sp"
+          <ImageView
+              android:layout_width="match_parent"
+              android:layout_height="50dp"
+              android:paddingBottom="5dp"
+              android:paddingTop="5dp"
+              android:src="@drawable/skill_icon"
+              />
+          <ImageView
+              android:layout_width="match_parent"
+              android:layout_height="45dp"
+              android:layout_centerInParent="true"
+              android:adjustViewBounds="true"
+              android:paddingBottom="10dp"
+              android:paddingEnd="10dp"
+              android:paddingLeft="12dp"
+              android:paddingTop="10dp"
+              android:scaleType="fitCenter"
+              android:src="@drawable/mentor_clips_icon"
               />
         </RelativeLayout>
 
-
       </LinearLayout>
+      <android.support.v7.widget.RecyclerView
+          android:id="@+id/rvVideos"
+          android:layout_width="match_parent"
 
-
-
-    </LinearLayout>
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/llCommentsContainer"
-        android:visibility="gone"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+          android:layout_height="match_parent"
+          android:layout_alignParentBottom="true"
+          android:layout_alignParentStart="true"
+          android:layout_marginBottom="442dp"
+          android:layout_marginStart="8dp"
+          tools:visibility="gone"
+          />
 
       <RelativeLayout
-          android:layout_weight="5"
-          android:layout_width="0dp"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginRight="12dp"
           >
         <ImageView
+            android:id="@+id/ivSubscribeMentor"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:src="@drawable/skill_border"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
+            android:layout_height="70dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/buy_mentor"
             />
         <TextView
-            android:id="@+id/tv_skill_name"
+            android:id="@+id/tvMentorPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/comments"
+            android:layout_alignParentTop="true"
             android:layout_centerInParent="true"
-            android:textColor="#FA3E3D"
+            android:layout_marginTop="15dp"
+            android:text="@string/apply_now"
+            android:textColor="@color/red"
+            android:textSize="18sp"
             android:textStyle="bold"
-            android:textSize="16sp"
-            />
-      </RelativeLayout>
-      <RelativeLayout
-          android:layout_weight="1"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginLeft="12dp"
-          >
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:src="@drawable/skill_icon"
-            />
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:paddingLeft="12dp"
-            android:paddingEnd="10dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:layout_centerInParent="true"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            android:src="@drawable/muscle"
-            />
-      </RelativeLayout>
-
-    </LinearLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rcv_comments"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
-
-
-    <LinearLayout
-        android:id="@+id/llFriends"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:visibility="gone"
-        >
-
-      <RelativeLayout
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginRight="12dp"
-          android:layout_weight="5"
-          >
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            android:src="@drawable/skill_border"
             />
         <TextView
-            android:id="@+id/tvFriends"
+            android:id="@+id/tvSubscriptionDuration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Friends"
-            android:textColor="#FA3E3D"
-            android:textSize="16sp"
-            android:textStyle="bold"
+            android:layout_below="@+id/tvMentorPrice"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:text="@string/subscription_duration"
+            android:textSize="8sp"
             />
       </RelativeLayout>
-      <RelativeLayout
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginLeft="12dp"
-          android:layout_weight="1"
-          >
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:src="@drawable/skill_icon"
-            />
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_centerInParent="true"
-            android:adjustViewBounds="true"
-            android:paddingBottom="10dp"
-            android:paddingEnd="10dp"
-            android:paddingLeft="12dp"
-            android:paddingTop="10dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/muscle"
-            />
-      </RelativeLayout>
-
-    </LinearLayout>
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvFriends"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
-
-    <LinearLayout
-        android:id="@+id/llVideos"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:visibility="gone"
-        >
-
-      <RelativeLayout
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginRight="12dp"
-          android:layout_weight="5"
-          >
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            android:src="@drawable/skill_border"
-            />
-        <TextView
-            android:id="@+id/tvVideos"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="Videos"
-            android:textColor="#FA3E3D"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            />
-      </RelativeLayout>
-      <RelativeLayout
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:layout_marginLeft="12dp"
-          android:layout_weight="1"
-          >
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:src="@drawable/skill_icon"
-            />
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_centerInParent="true"
-            android:adjustViewBounds="true"
-            android:paddingBottom="10dp"
-            android:paddingEnd="10dp"
-            android:paddingLeft="12dp"
-            android:paddingTop="10dp"
-            android:scaleType="fitCenter"
-            android:src="@drawable/mentor_clips_icon"
-            />
-      </RelativeLayout>
-
-    </LinearLayout>
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvVideos"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
       <ImageView
-          android:id="@+id/ivSubscribeMentor"
-          android:layout_width="match_parent"
-          android:layout_height="70dp"
-          android:layout_centerInParent="true"
-          android:src="@drawable/buy_mentor"
+          android:layout_width="50dp"
+          android:layout_height="50dp"
+          android:layout_gravity="center_horizontal"
+          android:src="@drawable/mentor_screen_medal"
           />
-      <TextView
-          android:id="@+id/tvMentorPrice"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_centerInParent="true"
-          android:textColor="@color/red"
-          android:textSize="18sp"
-          android:textStyle="bold"
-          android:text="@string/apply_now"
-          />
-    </RelativeLayout>
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_height="50dp"
-        android:src="@drawable/mentor_screen_medal"
-        />
 
 
+    </LinearLayout>
 
-  </LinearLayout>
-
-</ScrollView>
+  </ScrollView>
 </android.support.constraint.ConstraintLayout>

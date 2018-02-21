@@ -621,5 +621,6 @@
     <string name="invite">הזמנה</string>
     <string name="you_cant_kick_mentor">אי אפשר לבעוט במנטור!</string>
     <string name="rescue_group">Rescue \ngroup</string>
+  <string name="subscription_duration">תוקף המנוי:</string>
 
 </resources>

@@ -576,5 +576,6 @@
     <string name="you_cant_kick_mentor">Нельзя подтолкнуть наставника!</string>
   <string name="invite">Пригласить</string>
     <string name="rescue_group">Rescue \ngroup</string>
+  <string name="subscription_duration">Длительность подписки:</string>
 
 </resources>

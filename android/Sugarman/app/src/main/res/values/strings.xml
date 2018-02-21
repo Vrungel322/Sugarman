@@ -337,7 +337,6 @@
   <string name="slots_error">You can have only 3 mentors</string>
 
 
-  <string name="apply_now">Apply now for</string>
   <string name="type_your_comment">Type your comment here...</string>
   <string name="mentors">Mentors</string>
   <string name="success_rate">Today\nsuccess rate</string>
@@ -609,5 +608,7 @@
   <string name="walked10k">Walked 10K for %1$d days</string>
   <string name="invite">Invite</string>
   <string name="rescue_group">Rescue \ngroup</string>
+  <string name="subscription_duration">Subscription duration is:</string>
+  <string name="apply_now">Apply now for</string>
 
 </resources>
