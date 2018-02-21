@@ -14,8 +14,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.appsflyer.AFInAppEventParameterName;
-import com.appsflyer.AppsFlyerLib;
 import com.arellomobile.mvp.MvpDelegate;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.squareup.picasso.CustomPicasso;
@@ -37,10 +35,8 @@ import com.sugarman.myb.utils.apps_Fly.AppsFlyerEventSender;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Random;
 import lombok.Getter;
 import timber.log.Timber;
@@ -670,12 +666,17 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
   }
 
   private void setMyStepsAndResortMembers(List<Member> members) {
-    Member memberWithMyId = new Member();
-    memberWithMyId.setId(userId);
-    int position = members.indexOf(memberWithMyId);
-    if (position != -1) {
-      members.get(position).setSteps(userSteps);
+    for (int i = 0; i < members.size(); i++) {
+      if (members.get(i).getId().equals(userId)){
+        members.get(i).setSteps(userSteps);
+      }
     }
+    //Member memberWithMyId = new Member();
+    //memberWithMyId.setId(userId);
+    //int position = members.indexOf(memberWithMyId);
+    //if (position != -1) {
+    //  members.get(position).setSteps(userSteps);
+    //}
 
     Collections.sort(members, Member.BY_STEPS_DESC);
     Timber.e("setMyStepsAndResortMembers");
