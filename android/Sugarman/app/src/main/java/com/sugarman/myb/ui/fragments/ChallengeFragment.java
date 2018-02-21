@@ -188,8 +188,8 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
 
         TextView bestName = (TextView) (root.findViewById(R.id.best_name));
         TextView bestSteps = (TextView) root.findViewById(R.id.best_steps);
-        ImageView fastestAvatarBorder =
-            (ImageView) root.findViewById(R.id.iv_fastest_avatar_border);
+        ImageView bestAvatarBorder =
+            (ImageView) root.findViewById(R.id.iv_best_avatar_border);
         ImageView bestAvatar = (ImageView) root.findViewById(R.id.iv_best_avatar);
 
         String str = "";
@@ -237,7 +237,7 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
             && best.getSteps() < 10000) {
           color = 0xffF6B147;
         }
-        //fastestAvatarBorder.setBackgroundColor(color);
+        bestAvatarBorder.setColorFilter(color);
         bestName.setTextColor(color);
         bestSteps.setTextColor(color);
 
@@ -291,7 +291,7 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
             && laziest.getSteps() < 10000) {
           color = 0xffF6B147;
         }
-        //laziestAvatarBorder.setBackgroundColor(color);
+        laziestAvatarBorder.setColorFilter(color);
         laziestName.setTextColor(color);
         laziestSteps.setTextColor(color);
 
@@ -340,7 +340,7 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
               && fastest.getSteps() < 10000) {
             color = 0xffF6B147;
           }
-          fastestBorderAvatar.setBackgroundColor(color);
+          fastestBorderAvatar.setColorFilter(color);
           fastestName.setTextColor(color);
           fastestSteps.setTextColor(color);
         } else {
