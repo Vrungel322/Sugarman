@@ -833,9 +833,6 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     return list;
   }
 
-
-
-
   public static List<FacebookFriend> getCachedFbFriends() {
     Type type = new TypeToken<List<FacebookFriend>>() {
     }.getType();
@@ -871,5 +868,13 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     Type type = new TypeToken<List<FacebookFriend>>() {
     }.getType();
     return new Gson().fromJson(getString(SharedPreferenceConstants.CACHED_PH_FRIENDS, ""), type);
+  }
+
+  public static boolean getRemoteLoggingEnabled() {
+    return getBoolean(SharedPreferenceConstants.REMOTE_LOGGING_ENABLED, false);
+  }
+
+  public static void setRemoteLoggingEnabled(boolean b) {
+    putBoolean(SharedPreferenceConstants.REMOTE_LOGGING_ENABLED, b);
   }
 }
