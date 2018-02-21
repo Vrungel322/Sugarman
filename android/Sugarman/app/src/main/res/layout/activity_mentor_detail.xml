@@ -419,7 +419,6 @@
           android:id="@+id/rcv_comments"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          tools:visibility="gone"
           />
 
 
@@ -488,7 +487,6 @@
           android:layout_width="match_parent"
 
           android:layout_height="match_parent"
-          tools:visibility="gone"
           />
 
       <LinearLayout
@@ -558,9 +556,6 @@
           android:layout_height="match_parent"
           android:layout_alignParentBottom="true"
           android:layout_alignParentStart="true"
-          android:layout_marginBottom="442dp"
-          android:layout_marginStart="8dp"
-          tools:visibility="gone"
           />
 
       <RelativeLayout
