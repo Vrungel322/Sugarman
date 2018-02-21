@@ -85,19 +85,6 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   @BindView(R.id.llVideos) LinearLayout llVideos;
   @BindView(R.id.rvVideos) RecyclerView mRecyclerViewVideos;
   private String mFreeSku;
-  IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = (result, purchase) -> {
-    Timber.e("mFreeSku mPurchaseFinishedListener " + mFreeSku);
-
-    if (result.isFailure()) {
-      // Handle error
-      return;
-    } else if (purchase.getSku().equals(mFreeSku)) {
-      consumeItem();
-      Timber.e(mHelper.getMDataSignature());
-    } else {
-      Timber.e(result.getMessage());
-    }
-  };
   private MentorEntity mMentorEntity;
   //IabHelper.OnConsumeMultiFinishedListener mOnConsumeMultiFinishedListener = (purchases, results) -> {
   //
@@ -121,12 +108,25 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
           }
         }
       };
+  IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = (result, purchase) -> {
+    Timber.e("mFreeSku mPurchaseFinishedListener " + mFreeSku);
+
+    if (result.isFailure()) {
+      // Handle error
+      return;
+    } else if (purchase.getSku().equals(mFreeSku)) {
+      consumeItem();
+      Timber.e(mHelper.getMDataSignature());
+    } else {
+      Timber.e(result.getMessage());
+    }
+  };
   private MentorsFriendAdapter mMentorsFriendAdapter;
   private MentorsCommentsAdapter mMentorsCommentsAdapter;
   private MentorsVideosAdapter mMentorsVideosAdapter;
   private List<String> youtubeVideos;
 
-  public void startPurchaseFlow(Activity activity,IabHelper mHelper, String freeSku,
+  public void startPurchaseFlow(Activity activity, IabHelper mHelper, String freeSku,
       IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener, String mypurchasetoken) {
     Timber.e("startPurchaseFlow");
     this.mHelper = mHelper;
@@ -395,7 +395,7 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   }
 
   @Override public void checkGPurchase(PurchaseTransaction purchaseTransaction) {
-    mPresenter.checkGPurchase( purchaseTransaction);
+    mPresenter.checkGPurchase(purchaseTransaction);
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {

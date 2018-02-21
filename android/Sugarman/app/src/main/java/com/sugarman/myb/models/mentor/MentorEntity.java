@@ -13,7 +13,15 @@ import lombok.Setter;
  */
 @AllArgsConstructor public class MentorEntity implements Parcelable {
   public static final String MENTOR_ENTITY = "MENTOR_ENTITY";
+  public static final Creator<MentorEntity> CREATOR = new Creator<MentorEntity>() {
+    @Override public MentorEntity createFromParcel(Parcel in) {
+      return new MentorEntity(in);
+    }
 
+    @Override public MentorEntity[] newArray(int size) {
+      return new MentorEntity[size];
+    }
+  };
   @Getter @Setter @SerializedName("id") private String mentorId;
   @Getter @Setter @SerializedName("id_user") private String userId;
   @Getter @Setter @SerializedName("picture_url") private String mentorImgUrl;
@@ -29,7 +37,7 @@ import lombok.Setter;
   @Getter @Setter @SerializedName("assessment_of_week") private float weeklySuccessRate;
   @Getter @Setter @SerializedName("assessment_of_month") private float monthlySuccessRate;
   @Getter @Setter @SerializedName("is_already_owned") private boolean isOwned;
-  @Getter @Setter private Float price;
+  @Getter @Setter @SerializedName("price") private Float price;
 
   protected MentorEntity(Parcel in) {
     mentorId = in.readString();
@@ -52,16 +60,6 @@ import lombok.Setter;
       price = in.readFloat();
     }
   }
-
-  public static final Creator<MentorEntity> CREATOR = new Creator<MentorEntity>() {
-    @Override public MentorEntity createFromParcel(Parcel in) {
-      return new MentorEntity(in);
-    }
-
-    @Override public MentorEntity[] newArray(int size) {
-      return new MentorEntity[size];
-    }
-  };
 
   @Override public int describeContents() {
     return 0;
