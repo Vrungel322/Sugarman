@@ -424,6 +424,11 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
     mProgressBar.setVisibility(View.GONE);
   }
 
+  @Override public void tryAgainLaterDialog() {
+    new SugarmanDialog.Builder(MentorDetailActivity.this, DialogConstants.TRY_AGAIN_LATTER).content(
+        getString(R.string.try_again_later)).show();
+  }
+
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     Timber.e("onActivityResult ");
     if (!mHelper.handleActivityResult(requestCode, resultCode, data)) {

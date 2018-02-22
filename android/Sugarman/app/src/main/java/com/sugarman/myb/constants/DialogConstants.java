@@ -93,6 +93,7 @@ public abstract class DialogConstants {
 
   public static final String UPDATE_OLD_VERSION = "update_old_version";
   public static final String SLOT_UNAVAILABLE = "SLOT_UNAVAILABLE";
+  public static final String TRY_AGAIN_LATTER = "TRY_AGAIN_LATTER";
 
   private DialogConstants() {
     // only static methods and fields

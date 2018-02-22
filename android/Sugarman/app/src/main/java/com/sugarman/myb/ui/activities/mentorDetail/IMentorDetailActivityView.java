@@ -37,4 +37,6 @@ import java.util.List;
   void showProgress();
 
   void hideProgress();
+
+  void tryAgainLaterDialog();
 }
