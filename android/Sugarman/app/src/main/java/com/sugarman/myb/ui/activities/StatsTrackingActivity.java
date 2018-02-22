@@ -174,7 +174,6 @@ public class StatsTrackingActivity extends BaseActivity
     for (Stats s : stats) {
       Timber.e("onApiGetTrackingStatsSuccess " +s.getDayTimestamp());
       Timber.e("index " + i++ + " " + s.getStepsCount());
-      Timber.e("onApiGetTrackingStatsSuccess " +s.getDayTimestamp());
     }
     statsAdapter.setStats(stats,mTracking.isMentors());
     vpStats.setOffscreenPageLimit(statsAdapter.getCount());
