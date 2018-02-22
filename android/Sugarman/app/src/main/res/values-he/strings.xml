@@ -620,5 +620,9 @@
   <string name="you_cant_kick_mentor">אי אפשר לבעוט במנטור!</string>
   <string name="rescue_group">Rescue \ngroup</string>
   <string name="subscription_duration">תוקף המנוי:</string>
+  <string name="try_again_later">﻿מאוחר יותר</string>
+  <string name="you_have_x_time_to_rescue_the_group">﻿יש לך עוד %1$s להצלת הקבוצה</string>
+  <string name="they_have_x_time_to_rescue_the_group">﻿יש להם עוד %1$s להצלת הקבוצה</string>
+  <string name="slot_unavailable_dialog">"﻿מנטור ברמה הנוכחית לא זמין אנא נסה "</string>
 
 </resources>
