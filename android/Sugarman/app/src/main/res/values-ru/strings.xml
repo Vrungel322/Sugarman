@@ -577,5 +577,7 @@
   <string name="invite">Пригласить</string>
     <string name="rescue_group">Rescue \ngroup</string>
   <string name="subscription_duration">Длительность подписки:</string>
+    <string name="try_again_later">Попробуйте позже!</string>
+    <string name="slot_unavailable_dialog">Ментор текущего уровня недоступен</string>
 
 </resources>
