@@ -34,8 +34,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
-import com.appsflyer.AFInAppEventParameterName;
-import com.appsflyer.AppsFlyerLib;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.clover_studio.spikachatmodule.utils.Const;
 import com.facebook.CallbackManager;
@@ -91,7 +89,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -814,6 +811,7 @@ public class CreateGroupActivity extends BaseActivity
     if (DeviceHelper.isNetworkConnected()) {
       new SugarmanDialog.Builder(this, DialogConstants.API_CREATE_GROUP_FAILURE_ID).content(message)
           .show();
+      mFriendListFragment.hideProgress();
     } else {
       showNoInternetConnectionDialog();
     }

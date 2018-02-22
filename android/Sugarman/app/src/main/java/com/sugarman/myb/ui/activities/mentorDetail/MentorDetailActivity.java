@@ -64,6 +64,7 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   @BindView(R.id.rcv_comments) RecyclerView mRecyclerViewComments;
   @BindView(R.id.llCommentsContainer) LinearLayout mCommentsContainer;
   @BindView(R.id.tvMentorPrice) TextView mentorPrice;
+  @BindView(R.id.tvSubscriptionDuration) TextView tvSubscriptionDuration;
   @BindView(R.id.piechartSuccessRate) PieChart successRate;
   @BindView(R.id.pcSuccessRateToday) PieChart successRateToday;
   @BindView(R.id.pcSuccessRateWeekly) PieChart successRateWeekly;
@@ -159,6 +160,14 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
           getResources().getString(R.string.apply_now) + " " + mMentorEntity.getPrice() + "$");
     } else {
       mentorPrice.setText(getResources().getString(R.string.apply_now) + " 2$");
+    }
+
+    if (mMentorEntity.getSubscriptionDuration() != null) {
+      tvSubscriptionDuration.setText(getResources().getString(R.string.subscription_duration)
+          + " "
+          + mMentorEntity.getSubscriptionDuration());
+    } else {
+      tvSubscriptionDuration.setText("");
     }
 
     List<PieEntry> entries = new ArrayList<>();

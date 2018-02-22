@@ -41,6 +41,7 @@ public class MentorsChallengeFragment extends BasicFragment
   @BindView(R.id.best_name) TextView mTextViewBestName;
   @BindView(R.id.best_steps) TextView mTextViewBestSteps;
   @BindView(R.id.iv_best_avatar) ImageView mImageViewBestAvatar;
+  @BindView(R.id.iv_best_avatar_border) ImageView mImageViewBestAvatarBorder;
   @BindView(R.id.indicator_best) ImageView mImageViewIndicatorBest;
   @BindView(R.id.fastest_name) TextView mTextViewFastestName;
   @BindView(R.id.fastest_steps) TextView mTextViewFastestSteps;
@@ -126,6 +127,15 @@ public class MentorsChallengeFragment extends BasicFragment
                   SharedPreferenceHelper.getUserId())[0].getStepsCount()));
         }
       }
+      int color = 0xff54cc14;
+      if (best.getSteps() < 5000) {
+        color = 0xffe10f0f;
+      } else if (best.getSteps() >= 5000 && best.getSteps() < 7500) {
+        color = 0xffeb6117;
+      } else if (best.getSteps() >= 7500 && best.getSteps() < 10000) color = 0xffF6B147;
+      mImageViewBestAvatarBorder.setColorFilter(color);
+      mTextViewBestName.setTextColor(color);
+      mTextViewBestSteps.setTextColor(color);
 
       CustomPicasso.with(getActivity())
           .load(best.getPictureUrl())
@@ -169,7 +179,7 @@ public class MentorsChallengeFragment extends BasicFragment
             Timber.e("fastestSteps=" + mTracking.getMembers()[i].getSteps());
           }
         }
-        int color = 0xff54cc14;
+         color = 0xff54cc14;
         if (mTracking.getDailySugarman().getUser().getSteps() < 5000) {
           color = 0xffe10f0f;
         } else if (mTracking.getDailySugarman().getUser().getSteps() >= 5000 && mTracking.getDailySugarman().getUser().getSteps() < 7500) {
@@ -219,7 +229,7 @@ public class MentorsChallengeFragment extends BasicFragment
           .transform(new CropCircleTransformation(0xffff0000, 1))
           .into(mImageViewLaziestAvatar);
 
-      int color = 0xff54cc14;
+       color = 0xff54cc14;
       if (laziest.getSteps() < 5000) {
         color = 0xffe10f0f;
       } else if (laziest.getSteps() >= 5000 && laziest.getSteps() < 7500) {

@@ -57,7 +57,7 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
   @BindView(R.id.tvTotalPhCount) TextView tvTotalPhCount;
   @BindView(R.id.fbFilter) ImageView ivFbFilter;
   @BindView(R.id.vkFilter) ImageView ivVkFilter;
-  @BindView(R.id.phFilter) ImageView ivphFilter;
+  @BindView(R.id.phFilter) ImageView ivPhFilter;
   @BindView(R.id.pb) ProgressBar mProgressBar;
   // number of total count/ number of count people with app BY PH
   private int numberOfMemberTotalAppPh;
@@ -178,11 +178,13 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
       askToConnect("fb");
     } else {
       mPresenter.filterBySocial(friendsAdapter.getAllList(), "fb");
+      setSelectedFilter("fb");
     }
   }
 
   @OnClick(R.id.phFilter) public void filterPh() {
     mPresenter.filterBySocial(friendsAdapter.getAllList(), "ph");
+    setSelectedFilter("ph");
   }
 
   @OnClick(R.id.vkFilter) public void filterVk() {
@@ -190,6 +192,30 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
       askToConnect("vk");
     } else {
       mPresenter.filterBySocial(friendsAdapter.getAllList(), "vk");
+      setSelectedFilter("vk");
+    }
+  }
+
+  private void setSelectedFilter(String socialTag) {
+    switch (socialTag) {
+      case "fb": {
+        ivFbFilter.setAlpha(1f);
+        ivVkFilter.setAlpha(0.5f);
+        ivPhFilter.setAlpha(0.5f);
+        break;
+      }
+      case "ph": {
+        ivFbFilter.setAlpha(0.5f);
+        ivVkFilter.setAlpha(0.5f);
+        ivPhFilter.setAlpha(1f);
+        break;
+      }
+      case "vk": {
+        ivFbFilter.setAlpha(0.5f);
+        ivVkFilter.setAlpha(1f);
+        ivPhFilter.setAlpha(0.5f);
+        break;
+      }
     }
   }
 
@@ -287,7 +313,7 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
   }
 
   @Override public void setFriendsFb(List<FacebookFriend> friends) {
-    showCounters(friends, tvTotalFbCount, tvInAppFbCount,"fb");
+    showCounters(friends, tvTotalFbCount, tvInAppFbCount, "fb");
     mPresenter.saveFBCounters(friends);
     //mPresenter.saveFBMembers(friends);
     if (!mPendingsMembers.isEmpty() && !mAddedMembers.isEmpty()) {
@@ -299,7 +325,7 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
   }
 
   @Override public void setFriendsVk(List<FacebookFriend> friends) {
-    showCounters(friends, tvTotalVkCount, tvInAppVkCount,"vk");
+    showCounters(friends, tvTotalVkCount, tvInAppVkCount, "vk");
     if (!mPendingsMembers.isEmpty() && !mAddedMembers.isEmpty()) {
       friendsAdapter.setValue(
           mPresenter.checkForUniqueMembers(mPendingsMembers, mAddedMembers, friends));
@@ -309,7 +335,7 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
   }
 
   @Override public void setFriendsPh(List<FacebookFriend> friends) {
-    showCounters(friends, tvTotalPhCount, tvInAppPhCount,"ph");
+    showCounters(friends, tvTotalPhCount, tvInAppPhCount, "ph");
     mPresenter.savePhCounters(friends);
     mPresenter.savePhMembers(friends);
     if (!mPendingsMembers.isEmpty() && !mAddedMembers.isEmpty()) {
@@ -385,11 +411,11 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
   }
 
   @Override public void showFBCounters(List<FacebookFriend> friends) {
-    showCounters(friends, tvTotalFbCount, tvInAppFbCount,"fb");
+    showCounters(friends, tvTotalFbCount, tvInAppFbCount, "fb");
   }
 
   @Override public void showPHCounters(List<FacebookFriend> friends) {
-    showCounters(friends, tvTotalPhCount, tvInAppPhCount,"ph");
+    showCounters(friends, tvTotalPhCount, tvInAppPhCount, "ph");
   }
 
   private void showCounters(List<FacebookFriend> friends, TextView tvTotalCount,
@@ -398,10 +424,11 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
       int inAppMemberCountPh = 0;
       int totalCountPh = 0;
       for (FacebookFriend fb : friends) {
-        if (fb.getIsInvitable() == FacebookFriend.CODE_NOT_INVITABLE && fb.getSocialNetwork().equals(socialTag)) {
+        if (fb.getIsInvitable() == FacebookFriend.CODE_NOT_INVITABLE && fb.getSocialNetwork()
+            .equals(socialTag)) {
           inAppMemberCountPh++;
         }
-        if (fb.getSocialNetwork().equals(socialTag)){
+        if (fb.getSocialNetwork().equals(socialTag)) {
           totalCountPh++;
         }
       }
@@ -411,7 +438,8 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
   }
 
   @Override public void setUpUI() {
-
+    mEditTextGroupName.setText(String.format(getString(R.string.group_name_template),
+        SharedPreferenceHelper.getUserName()));
   }
 
   public void checkForUniqueMembers(Member[] pendingsMembers, Member[] addedMembers) {

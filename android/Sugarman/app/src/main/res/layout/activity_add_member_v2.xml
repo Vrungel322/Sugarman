@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f5f5f5"
     android:orientation="vertical"
     >
 
@@ -51,7 +50,8 @@
               android:contentDescription="@string/content_description"
               android:scaleType="centerCrop"
               android:src="@drawable/ic_group"
-              android:visibility="visible"
+              android:background="@color/trans"
+              android:visibility="invisible"
               />
 
           <com.sugarman.myb.ui.views.CustomFontTextView
@@ -132,8 +132,7 @@
                 android:id="@+id/fbFilter"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:alpha="0.5"
-                android:src="@drawable/fb_filter"
+                android:background="@drawable/fb_filter"
                 />
             <LinearLayout
                 android:id="@+id/llFbMembersCalculations"
@@ -191,8 +190,7 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginLeft="10dp"
-                android:alpha="0.5"
-                android:src="@drawable/vk_filter"
+                android:background="@drawable/vk_filter"
                 />
             <LinearLayout
                 android:id="@+id/llVkMembersCalculations"
@@ -250,7 +248,7 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginLeft="10dp"
-                android:src="@drawable/ph_filter"
+                android:background="@drawable/ph_filter"
                 />
             <LinearLayout
                 android:id="@+id/llPhMembersCalculations"
