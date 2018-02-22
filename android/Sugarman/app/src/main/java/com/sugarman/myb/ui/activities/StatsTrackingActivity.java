@@ -25,6 +25,11 @@ import com.sugarman.myb.ui.views.SquarePageIndicator;
 import com.sugarman.myb.ui.views.SwipeGestureListener.Direction;
 import com.sugarman.myb.utils.DeviceHelper;
 import com.sugarman.myb.utils.IntentExtractorHelper;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import timber.log.Timber;
 
 public class StatsTrackingActivity extends BaseActivity
@@ -146,8 +151,29 @@ public class StatsTrackingActivity extends BaseActivity
   }
 
   @Override public void onApiGetTrackingStatsSuccess(Stats[] stats) {
+    int i = 0;
+    //mTracking.getStartDate().equals()
+
+    //long startTime =
+
+    Timber.e("Start date " + mTracking.getStartDate());
+
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
+    try {
+      Date date = sdf.parse(mTracking.getStartDate());
+      Timber.e("Start time: " + date.getTime());
+    } catch (ParseException e) {
+      e.printStackTrace();
+    }
+
+    Calendar today = Calendar.getInstance();
+
+    //long difference = today.getTimeInMillis() - calendar.getTimeInMillis();
+    //int days = (int) (difference/ (1000*60*60*24));
+
     for (Stats s : stats) {
       Timber.e("onApiGetTrackingStatsSuccess " +s.getDayTimestamp());
+      Timber.e("index " + i++ + " " + s.getStepsCount());
       s.setDayTimestamp( s.getDayTimestamp() - 14400000);
       Timber.e("onApiGetTrackingStatsSuccess " +s.getDayTimestamp());
     }

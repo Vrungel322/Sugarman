@@ -39,15 +39,10 @@ public class FcmListenerService extends FirebaseMessagingService {
 
   private static final String TAG = FcmListenerService.class.getName();
 
-  private String[] flags; // 14 types of notifications
+  private String[] flags; // 18 types of notifications
 
   @Override public void onMessageReceived(RemoteMessage message) {
     if (TextUtils.isEmpty(SharedPreferenceHelper.getUserId())) {
-      return;
-    }
-
-    if(message.getData().containsKey("remote_logging_enable")) {
-      SharedPreferenceHelper.setRemoteLoggingEnabled(Boolean.valueOf(message.getData().get("remote_logging_enable")));
       return;
     }
 
@@ -70,6 +65,11 @@ public class FcmListenerService extends FirebaseMessagingService {
     try {
       JSONObject notificationJSON = new JSONObject(notification);
       Timber.e(notificationJSON.toString());
+      if(notificationJSON.has("remote_logging_enable")) {
+        SharedPreferenceHelper.setRemoteLoggingEnabled(
+            notificationJSON.getBoolean("remote_logging_enable"));
+        return;
+      }
       url = notificationJSON.getString("url");
     } catch (JSONException e) {
       e.printStackTrace();

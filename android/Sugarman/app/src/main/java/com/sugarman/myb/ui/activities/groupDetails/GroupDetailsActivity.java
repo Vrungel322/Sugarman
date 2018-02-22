@@ -1610,6 +1610,7 @@ public class GroupDetailsActivity extends BaseActivity
   @Override protected void onDestroy() {
     super.onDestroy();
     SocketManager.getInstance().closeAndDisconnectSocket();
+    if(mTrackingInfoClient!=null)
     mTrackingInfoClient.unregisterListener();
     if (mTimer != null) {
       mTimer.cancel();
