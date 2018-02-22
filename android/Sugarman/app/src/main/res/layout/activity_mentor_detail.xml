@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     tools:context="com.sugarman.myb.ui.activities.mentorDetail.MentorDetailActivity"
     >
+  <ProgressBar
+      android:id="@+id/progressBar"
+      android:layout_width="60dp"
+      android:layout_height="40dp"
+      android:indeterminateDrawable="@drawable/animation_progress_bar"
+      android:translationZ="10dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintLeft_toLeftOf="parent"
+      app:layout_constraintRight_toRightOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
   <ScrollView
       android:layout_width="0dp"
       android:layout_height="0dp"

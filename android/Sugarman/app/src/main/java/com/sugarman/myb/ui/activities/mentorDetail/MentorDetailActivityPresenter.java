@@ -75,6 +75,7 @@ import timber.log.Timber;
   }
 
   public void getMentorsVendor(String mentorId, MentorDetailActivity activity) {
+    getViewState().showProgress();
     Subscription subscription = mDataManager.getMentorsVendor(mentorId) //v1/get_provider_data
         .concatMap(mentorsVendorResponse -> {
           Observable<Subscriptions> observable = Observable.empty();
@@ -84,13 +85,17 @@ import timber.log.Timber;
                 mentorsVendorResponse.body().getVendor(), mentorId,
                 mentorsVendorResponse.body().getSlot());
           }
-          if (mentorsVendorResponse.body().getVendor().equals(ProviderManager.GOOGLE)
-              && mentorsVendorResponse.body().getIsAvailable()) {
-            Timber.e("getMentorsVendor google vendor: " + mentorsVendorResponse.body().toString());
-            mProviderManager.setupInAppPurchase(mentorsVendorResponse.body().getSlot(), mentorId,
-                activity, mentorsVendorResponse.body().getVendor(), purchaseTransaction -> {
-                  getViewState().checkGPurchase(purchaseTransaction);
-                });
+          if (mentorsVendorResponse.body().getVendor().equals(ProviderManager.GOOGLE)) {
+            if (mentorsVendorResponse.body().getIsAvailable()) {
+              Timber.e(
+                  "getMentorsVendor google vendor: " + mentorsVendorResponse.body().toString());
+              mProviderManager.setupInAppPurchase(mentorsVendorResponse.body().getSlot(), mentorId,
+                  activity, mentorsVendorResponse.body().getVendor(), purchaseTransaction -> {
+                    getViewState().checkGPurchase(purchaseTransaction);
+                  });
+            } else {
+              getViewState().slotUnavailableDialog();
+            }
           }
           return observable;
         })
@@ -102,17 +107,18 @@ import timber.log.Timber;
         //  return mDataManager.checkPurchaseTransaction(purchaseTransaction);
         //})
         .compose(ThreadSchedulers.applySchedulers()).subscribe(subscriptions -> {
+          getViewState().hideProgress();
           Timber.e("getMentorsVendor subscribe");
           getViewState().moveToMentorsDetailActivity(subscriptions.getTracking());
 
           mProviderManager.clearListenersFreeObj();
           Timber.e("getMentorsVendor Need to do smth on UI if checkPurchaseTransaction is OK");
         }, throwable -> {
+          getViewState().hideProgress();
+          getViewState().tryAgainLaterDialog();
           Timber.e("getMentorsVendor throwable");
           mProviderManager.clearListenersFreeObj();
           throwable.printStackTrace();
-        }, () -> {
-          Timber.e("getMentorsVendor compleate");
         });
     addToUnsubscription(subscription);
 

@@ -31,4 +31,12 @@ import java.util.List;
   void moveToMentorsDetailActivity(Tracking tracking);
 
   void checkGPurchase(PurchaseTransaction purchaseTransaction);
+
+  void slotUnavailableDialog();
+
+  void showProgress();
+
+  void hideProgress();
+
+  void tryAgainLaterDialog();
 }

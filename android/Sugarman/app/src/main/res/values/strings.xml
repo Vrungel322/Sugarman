@@ -598,7 +598,7 @@
   <string name="rescue">RESCUE</string>
   <string name="now">NOW!!!</string>
   <string name="you">  you and </string>
-  <string name="empty"> </string>
+  <string name="empty" translatable="false"> </string>
   <string name="challenge_days">Challenge days</string>
   <string name="you_got_x_rescues">You got %1$d rescues</string>
   <string name="name_can_not_be_empty">Name can not be empty!</string>
@@ -610,5 +610,7 @@
   <string name="rescue_group">Rescue \ngroup</string>
   <string name="subscription_duration">Subscription duration is:</string>
   <string name="apply_now">Apply now for</string>
+  <string name="slot_unavailable_dialog">Mentor of current level is unavailable ;(</string>
+  <string name="try_again_later">Try again later!</string>
 
 </resources>
