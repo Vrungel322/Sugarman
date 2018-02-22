@@ -15,6 +15,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import butterknife.BindView;
@@ -30,11 +31,13 @@ import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.base.BasicActivity;
 import com.sugarman.myb.constants.Config;
 import com.sugarman.myb.constants.Constants;
+import com.sugarman.myb.constants.DialogConstants;
 import com.sugarman.myb.models.mentor.MentorEntity;
 import com.sugarman.myb.models.mentor.MentorsSkills;
 import com.sugarman.myb.models.mentor.comments.MentorsCommentsEntity;
 import com.sugarman.myb.ui.activities.groupDetails.GroupDetailsActivity;
 import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
+import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.ui.views.MaskTransformation;
 import com.sugarman.myb.utils.DialogHelper;
 import com.sugarman.myb.utils.ItemClickSupport;
@@ -73,6 +76,7 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   @BindView(R.id.tvSuccessRateWeekly) TextView tvSuccessRateWeek;
   @BindView(R.id.tvSuccessRateMonthly) TextView tvSuccessRateMonth;
   @BindView(R.id.llSuccessRateContainer) LinearLayout llSuccessRateContainer;
+  @BindView(R.id.progressBar) ProgressBar mProgressBar;
   IabHelper mHelper;
   IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = (purchase, result) -> {
     Timber.e("mConsumeFinishedListener" + purchase.toString());
@@ -405,6 +409,19 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
 
   @Override public void checkGPurchase(PurchaseTransaction purchaseTransaction) {
     mPresenter.checkGPurchase(purchaseTransaction);
+  }
+
+  @Override public void slotUnavailableDialog() {
+    new SugarmanDialog.Builder(MentorDetailActivity.this, DialogConstants.SLOT_UNAVAILABLE).content(
+        getString(R.string.slot_unavailable_dialog)).show();
+  }
+
+  @Override public void showProgress() {
+    mProgressBar.setVisibility(View.VISIBLE);
+  }
+
+  @Override public void hideProgress() {
+    mProgressBar.setVisibility(View.GONE);
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {

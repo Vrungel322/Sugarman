@@ -610,5 +610,6 @@
   <string name="rescue_group">Rescue \ngroup</string>
   <string name="subscription_duration">Subscription duration is:</string>
   <string name="apply_now">Apply now for</string>
+  <string name="slot_unavailable_dialog">Mentor of current level is unavailable ;(</string>
 
 </resources>
