@@ -20,6 +20,7 @@ import com.sugarman.myb.ui.views.OnSwipeTouchListener;
 import com.sugarman.myb.ui.views.SquarePageIndicator;
 import com.sugarman.myb.ui.views.SwipeGestureListener;
 import com.sugarman.myb.utils.DeviceHelper;
+import timber.log.Timber;
 
 public class MyStatsActivity extends BaseActivity
     implements View.OnClickListener, OnSwipeListener, ApiGetMyStatsListener {
@@ -119,6 +120,10 @@ public class MyStatsActivity extends BaseActivity
 
   @Override public void onApiGetMyStatsSuccess(Stats[] stats) {
     statsAdapter.setStats(stats);
+    for(Stats s : stats)
+    {
+      Timber.e(s.getDate() + " " +s.getStepsCount());
+    }
     vpStats.setOffscreenPageLimit(statsAdapter.getCount());
     spiStats.setViewPager(vpStats, 0);
     vpStats.post(new Runnable() {
