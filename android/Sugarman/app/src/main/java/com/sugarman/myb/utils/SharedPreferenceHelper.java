@@ -44,6 +44,7 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
       putString(SharedPreferenceConstants.UPDATED_AT, user.getUpdatedAt());
       putInt(SharedPreferenceConstants.COMPLETED_DAYS_COUNT, user.getCompletedDaysCount());
       putInt(SharedPreferenceConstants.TODAY_STEPS_COUNT, user.getTodayStepsCount());
+      putBoolean(SharedPreferenceConstants.REMOTE_LOGGING_ENABLED, user.isRemoteLoggingEnabled());
       putString(SharedPreferenceConstants.SUBSCRIPTIONS_JSON,
           new Gson().toJson(user.getSubscriptionEntities()));
       Timber.e("user json " + new Gson().toJson(user.getSubscriptionEntities()).toString());

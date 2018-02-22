@@ -56,6 +56,8 @@ public class User {
 
   @SerializedName("ab_testing") @Getter @Setter private Integer aOrB;
 
+  @SerializedName("remote_logging_enabled") @Getter @Setter private boolean remoteLoggingEnabled;
+
   @SerializedName("subscriptions") @Getter @Setter private List<SubscriptionEntity>
       subscriptionEntities;
 
