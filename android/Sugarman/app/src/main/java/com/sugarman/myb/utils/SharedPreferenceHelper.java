@@ -871,11 +871,12 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     return new Gson().fromJson(getString(SharedPreferenceConstants.CACHED_PH_FRIENDS, ""), type);
   }
 
-  public static boolean getRemoteLoggingEnabled() {
+  public static boolean isRemoteLoggingEnabled() {
     return getBoolean(SharedPreferenceConstants.REMOTE_LOGGING_ENABLED, false);
   }
 
   public static void setRemoteLoggingEnabled(boolean b) {
     putBoolean(SharedPreferenceConstants.REMOTE_LOGGING_ENABLED, b);
   }
+
 }

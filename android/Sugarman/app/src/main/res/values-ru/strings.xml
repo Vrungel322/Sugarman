@@ -566,7 +566,7 @@
     <string name="you"> вам и </string>
     <string name="challenge_days">Дней испытания</string>
     <string name="you_got_x_rescues">У Вас спасений: %1$d</string>
-    <string name="empty"> </string>
+    <string name="empty">" "</string>
     <string name="name_can_not_be_empty">Имя не может быть пустым!</string>
     <string name="for_invites">ЗА ДРУЗЕЙ</string>
     <string name="for_1_dollar">ЗА 1$</string>
@@ -579,5 +579,6 @@
   <string name="subscription_duration">Длительность подписки:</string>
     <string name="try_again_later">Попробуйте позже!</string>
     <string name="slot_unavailable_dialog">Ментор текущего уровня недоступен</string>
+    <string name="facebook">Facebook</string>
 
 </resources>

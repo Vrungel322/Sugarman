@@ -39,4 +39,6 @@ import java.util.List;
   void hideProgress();
 
   void tryAgainLaterDialog();
+
+  void enableButtons();
 }

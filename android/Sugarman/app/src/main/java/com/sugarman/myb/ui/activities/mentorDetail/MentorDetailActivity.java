@@ -380,7 +380,12 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   @OnClick(R.id.ivSubscribeMentor) public void ivSubscribeMentorClicked() {
     Timber.e("ivSubscribeMentorClicked mentorsId: " + mMentorEntity.getMentorId());
     mPresenter.getMentorsVendor(mMentorEntity.getMentorId(), this);
+    disableButtons();
+
+
   }
+
+
 
   @Override public void startPurchaseFlow(String freeSku) {
     mFreeSku = freeSku;
@@ -427,6 +432,15 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   @Override public void tryAgainLaterDialog() {
     new SugarmanDialog.Builder(MentorDetailActivity.this, DialogConstants.TRY_AGAIN_LATTER).content(
         getString(R.string.try_again_later)).show();
+  }
+
+  @Override public void enableButtons() {
+    ivSubscribeMentor.setEnabled(true);
+  }
+
+  public void disableButtons()
+  {
+    ivSubscribeMentor.setEnabled(false);
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -342,7 +342,7 @@
   <string name="type_your_comment">כתוב את התגובה שלך פה</string>
   <string name="learn_more">ללמוד עוד</string>
   <string name="mentors">מנטור</string>
-  <string name="success_rate">﻿אחוזי הצלחה היום</string>
+  <string name="success_rate">הישג היום</string>
   <string name="daily_success_rate">הישג אתמול</string>
   <string name="weekly_success_rate">הישג שבוע אחרון</string>
 
@@ -592,6 +592,7 @@
   <string name="your_group_has_failed_thanks_to">הקבוצה %1$s נכשלה תודות ל:</string>
   <string name="you_still_have_time_to_rescue_the_group">אתה עדיין צריך להציל את הקבוצה</string>
   <string name="the_group_needs_x_more_rescues">הקבוצה צריכה עוד %1$d הצלות</string>
+  <string name="they_have_x_time_to_rescue_the_group">יש להם עוד %1$s להצלת הקבוצה</string>
   <string name="you_group_has_been_rescued">הקבוצבה שלך %1$s ניצלה</string>
   <string name="mentor_already_owned">אתה רשום כבר על המנטור</string>
   <string name="you_cant_kick_yourself">אתה לא יכול לבעוט בעצמך!</string>
@@ -609,7 +610,7 @@
   <string name="you_are_failuer">נכשלתה :(</string>
   <string name="challenge_days">ימים לאתגר</string>
   <string name="you_got_x_rescues">קיבלתה %1$d הצלות</string>
-  <string name="empty"> </string>
+  <string name="empty">" "</string>
   <string name="name_can_not_be_empty">אנא הזן את שמך!</string>
   <string name="for_invites">עבור הזמנות</string>
   <string name="for_1_dollar">עבור 1$</string>
@@ -620,9 +621,9 @@
   <string name="you_cant_kick_mentor">אי אפשר לבעוט במנטור!</string>
   <string name="rescue_group">Rescue \ngroup</string>
   <string name="subscription_duration">תוקף המנוי:</string>
-  <string name="try_again_later">﻿מאוחר יותר</string>
-  <string name="you_have_x_time_to_rescue_the_group">﻿יש לך עוד %1$s להצלת הקבוצה</string>
-  <string name="they_have_x_time_to_rescue_the_group">﻿יש להם עוד %1$s להצלת הקבוצה</string>
-  <string name="slot_unavailable_dialog">"﻿מנטור ברמה הנוכחית לא זמין אנא נסה "</string>
+  <string name="slot_unavailable_dialog">מנטור ברמה הנוכחית לא זמין אנא נסה</string>
+  <string name="you_have_x_time_to_rescue_the_group">יש לך עוד 1%$s להצלת הקבוצה</string>
+  <string name="try_again_later">תנסה מאוחר יותר</string>
+  <string name="facebook">Facebook</string>
 
 </resources>
