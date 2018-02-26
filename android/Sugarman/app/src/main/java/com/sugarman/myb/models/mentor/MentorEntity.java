@@ -34,7 +34,6 @@ import lombok.Setter;
   @Getter @Setter @SerializedName("subscription_duration") private Integer subscriptionDuration;
   @Getter @Setter @SerializedName("duration_modifier") private String durationModifier;
 
-
   protected MentorEntity(Parcel in) {
     mentorId = in.readString();
     userId = in.readString();
@@ -60,6 +59,7 @@ import lombok.Setter;
     } else {
       subscriptionDuration = in.readInt();
     }
+    durationModifier = in.readString();
   }
 
   public static final Creator<MentorEntity> CREATOR = new Creator<MentorEntity>() {
@@ -103,5 +103,6 @@ import lombok.Setter;
       parcel.writeByte((byte) 1);
       parcel.writeInt(subscriptionDuration);
     }
+    parcel.writeString(durationModifier);
   }
 }
