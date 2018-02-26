@@ -141,7 +141,7 @@
           android:tint="@color/white"
           android:layout_marginRight="15dp"
           android:layout_toLeftOf="@+id/tvGoogleConnect"
-          android:background="@drawable/common_google_signin_btn_icon_dark_pressed"
+          android:background="@drawable/google_icon"
           />
       <TextView
           android:id="@+id/tvGoogleConnect"

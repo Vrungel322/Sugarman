@@ -113,6 +113,7 @@ import timber.log.Timber;
 
           mProviderManager.clearListenersFreeObj();
           Timber.e("getMentorsVendor Need to do smth on UI if checkPurchaseTransaction is OK");
+          getViewState().enableButtons();
         }, throwable -> {
           getViewState().hideProgress();
           getViewState().tryAgainLaterDialog();

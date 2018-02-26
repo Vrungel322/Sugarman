@@ -65,9 +65,9 @@ public class FcmListenerService extends FirebaseMessagingService {
     try {
       JSONObject notificationJSON = new JSONObject(notification);
       Timber.e(notificationJSON.toString());
-      if(notificationJSON.has("remote_logging_enable")) {
+      if(notificationJSON.has("remote_logging_enabled")) {
         SharedPreferenceHelper.setRemoteLoggingEnabled(
-            notificationJSON.getBoolean("remote_logging_enable"));
+            notificationJSON.getBoolean("remote_logging_enabled"));
         return;
       }
       url = notificationJSON.getString("url");

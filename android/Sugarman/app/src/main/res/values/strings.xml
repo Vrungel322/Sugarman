@@ -567,7 +567,7 @@
   <string name="no_mentors_text_3">that will lead</string>
   <string name="no_mentors_text_4">you to your</string>
   <string name="no_mentors_text_5">Perfect Body</string>
-  <string name="facebook" translatable="false">Facebook</string>
+<string name="facebook">Facebook</string>
   <string name="social_media">SOCIAL MEDIA</string>
   <string name="error_code_otp">Please check the code you have entered!</string>
   <string name="price_total">Price total</string>
@@ -598,7 +598,7 @@
   <string name="rescue">RESCUE</string>
   <string name="now">NOW!!!</string>
   <string name="you">  you and </string>
-  <string name="empty" translatable="false"> </string>
+  <string name="empty"> </string>
   <string name="challenge_days">Challenge days</string>
   <string name="you_got_x_rescues">You got %1$d rescues</string>
   <string name="name_can_not_be_empty">Name can not be empty!</string>

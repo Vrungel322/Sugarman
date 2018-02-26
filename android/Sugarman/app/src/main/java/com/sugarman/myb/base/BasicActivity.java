@@ -32,7 +32,11 @@ public abstract class BasicActivity extends MvpAppCompatActivity {
     ButterKnife.bind(this);
     App.getAppComponent().inject(this);
 
-    Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+    if(SharedPreferenceHelper.isRemoteLoggingEnabled()) {
+      Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+    }
+
+    Timber.e("Remote logging enabled "+ SharedPreferenceHelper.isRemoteLoggingEnabled());
   }
 
   protected void showToastMessage(String message) {

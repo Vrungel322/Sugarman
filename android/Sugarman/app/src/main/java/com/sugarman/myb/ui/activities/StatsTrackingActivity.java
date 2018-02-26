@@ -73,8 +73,19 @@ public class StatsTrackingActivity extends BaseActivity
       float day = ((System.currentTimeMillis() - mTracking.getStartUTCDate().getTime())
           / (float) Constants.MS_IN_DAY);
       if (day <= 0) {
-        tvDay.setText(R.string.warming_up);
+        // TODO: 2/23/18 here
+        if(mTracking.getChallengeName().equals("Mentors Chalange")) {
+          tvDay.setText(String.format(getString(R.string.challenge_day_template), (int) (day + 1)));
+          Timber.e("MENTORS CHALANGE BLYAD");
+        }
+        else {
+              tvDay.setText(R.string.warming_up);
+          Timber.e("HUY PIZDA SCOVORODA MENTORS");
+        }
       } else if (day - (int) day > 0) {
+        if(mTracking.getChallengeName().equals("Mentors Chalange"))
+          tvDay.setText(String.format(getString(R.string.challenge_day_template), (int) (day)));
+        else
         tvDay.setText(String.format(getString(R.string.challenge_day_template), (int) (day + 1)));
       } else {
         tvDay.setText(String.format(getString(R.string.challenge_day_template), (int) (day)));
@@ -174,7 +185,6 @@ public class StatsTrackingActivity extends BaseActivity
     for (Stats s : stats) {
       Timber.e("onApiGetTrackingStatsSuccess " +s.getDayTimestamp());
       Timber.e("index " + i++ + " " + s.getStepsCount());
-      Timber.e("onApiGetTrackingStatsSuccess " +s.getDayTimestamp());
     }
     statsAdapter.setStats(stats,mTracking.isMentors());
     vpStats.setOffscreenPageLimit(statsAdapter.getCount());

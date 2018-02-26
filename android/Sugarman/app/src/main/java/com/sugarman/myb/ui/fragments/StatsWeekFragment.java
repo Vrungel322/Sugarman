@@ -31,6 +31,7 @@ import com.sugarman.myb.utils.IntentExtractorHelper;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import org.greenrobot.eventbus.Subscribe;
+import timber.log.Timber;
 
 public class StatsWeekFragment extends BaseFragment {
 
@@ -105,6 +106,7 @@ public class StatsWeekFragment extends BaseFragment {
         new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 1f);
 
     int totalStats = stats.length;
+
     for (int i = 0; i < totalStats; i++) {
       Stats dayStats = stats[i];
       View vDayStats = inflater.inflate(R.layout.layout_stats_indicator, null);
@@ -131,13 +133,8 @@ public class StatsWeekFragment extends BaseFragment {
         int month = day.get(Calendar.MONTH);
         int dayOfMonth = 0;
 
-        // TODO: 06.02.2018 нужно убрать проверку и отнимание 10 дней 
-        if (getArguments().getBoolean(Constants.IS_MENTORS)){
-           dayOfMonth = day.get(Calendar.DAY_OF_MONTH)-10;
-        }
-        else {
            dayOfMonth = day.get(Calendar.DAY_OF_MONTH);
-        }
+
 
         if (todayYear == year && todayMonth == month && todayDayOfMonth == dayOfMonth) {
           isToday = true;
@@ -172,10 +169,10 @@ public class StatsWeekFragment extends BaseFragment {
       Activity activity = getActivity();
       String textFirstItem = "";
       int numberRow = 0;
-      if (activity != null && activity instanceof StatsTrackingActivity) {
+      if (activity != null && activity instanceof StatsTrackingActivity && !getArguments().getBoolean(Constants.IS_MENTORS)) {
         textFirstItem = activity.getString(R.string.warming_up_caps);
         numberRow = i;
-      } else if (activity != null && activity instanceof MyStatsActivity) {
+      } else if ((activity != null && activity instanceof MyStatsActivity) || getArguments().getBoolean(Constants.IS_MENTORS)) {
         textFirstItem = String.format(dayTemplate, 1);
         numberRow = i + 1;
       }
