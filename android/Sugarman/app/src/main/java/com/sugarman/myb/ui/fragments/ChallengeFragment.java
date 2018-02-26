@@ -184,6 +184,7 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
       if (members.length > 0) {
         Arrays.sort(members, Member.BY_STEPS_ASC);
 
+        //------------------------------------------------------------------------------------------
         Member best = members[members.length - 1];
 
         TextView bestName = (TextView) (root.findViewById(R.id.best_name));
@@ -241,6 +242,7 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
         bestName.setTextColor(color);
         bestSteps.setTextColor(color);
 
+        //------------------------------------------------------------------------------------------
         Member laziest = members[0];
 
         TextView laziestName = (TextView) (root.findViewById(R.id.laziest_name));
@@ -294,6 +296,7 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
         laziestAvatarBorder.setColorFilter(color);
         laziestName.setTextColor(color);
         laziestSteps.setTextColor(color);
+        //------------------------------------------------------------------------------------------
 
         TextView fastestName = (TextView) (root.findViewById(R.id.fastest_name));
         TextView fastestSteps = (TextView) root.findViewById(R.id.fastest_steps);
@@ -313,7 +316,11 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
           }
 
           fastestName.setText(name);
-          fastestSteps.setText(String.format(Locale.US, "%,d", fastest.getSteps()));
+          for (Member f: members) {
+            if (fastest.getId().equals(f.getId())){
+              fastestSteps.setText(String.format(Locale.US, "%,d", f.getSteps()));
+            }
+          }
           CustomPicasso.with(getActivity())
               .load(fastest.getPictureUrl())
               //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
@@ -355,6 +362,7 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
               .into(fastestAvatar);
         }
       }
+      //--------------------------------------------------------------------------------------------
 
       TextView allName = (TextView) (root.findViewById(R.id.all_name));
       final TextView tv_allSteps = (TextView) root.findViewById(R.id.all_steps);
