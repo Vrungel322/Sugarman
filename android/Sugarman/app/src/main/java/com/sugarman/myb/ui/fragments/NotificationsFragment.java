@@ -39,6 +39,7 @@ import com.sugarman.myb.utils.DeviceHelper;
 import com.sugarman.myb.utils.IntentExtractorHelper;
 import java.util.Arrays;
 import java.util.Locale;
+import timber.log.Timber;
 
 public class NotificationsFragment extends BaseFragment
     implements View.OnClickListener, OnNotificationActionListener, ApiMarkNotificationListener {
@@ -74,6 +75,7 @@ public class NotificationsFragment extends BaseFragment
       };
 
   public static NotificationsFragment newInstance(Notification[] notifications, Context context) {
+    Timber.e("notifications size " + notifications.length);
 
     NotificationsFragment fragment = new NotificationsFragment();
 

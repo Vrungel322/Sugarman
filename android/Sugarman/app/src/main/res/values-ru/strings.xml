@@ -580,6 +580,7 @@
     <string name="try_again_later">Попробуйте позже!</string>
     <string name="slot_unavailable_dialog">Ментор текущего уровня недоступен</string>
     <string name="facebook">Facebook</string>
+  <string name="apply_now_for_free">Приобрести</string>
 
     <string name="days">дней</string>
     <string name="weeks">недель</string>

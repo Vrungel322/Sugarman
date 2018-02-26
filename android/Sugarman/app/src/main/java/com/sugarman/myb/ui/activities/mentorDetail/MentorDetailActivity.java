@@ -163,7 +163,7 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
       mentorPrice.setText(
           getResources().getString(R.string.apply_now) + " " + mMentorEntity.getPrice() + "$");
     } else {
-      mentorPrice.setText(getResources().getString(R.string.apply_now) + " 2$");
+      mentorPrice.setText(getResources().getString(R.string.apply_now_for_free));
     }
 
     if (mMentorEntity.getSubscriptionDuration() != null) {

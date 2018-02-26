@@ -624,11 +624,12 @@
     <string name="slot_unavailable_dialog">מנטור ברמה הנוכחית לא זמין אנא נסה</string>
     <string name="you_have_x_time_to_rescue_the_group">יש לך עוד 1%$s להצלת הקבוצה</string>
     <string name="try_again_later">תנסה מאוחר יותר</string>
-    <string name="facebook">Facebook</string>
 
     <string name="days">ימים</string>
     <string name="weeks">שבועות</string>
     <string name="months">חודשים</string>
     <string name="years">שנים</string>
+  <string name="facebook">Facebook</string>
+  <string name="apply_now_for_free">החל עכשיו בחינם</string>
 
 </resources>
