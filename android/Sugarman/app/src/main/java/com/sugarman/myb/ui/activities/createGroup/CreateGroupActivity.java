@@ -244,15 +244,22 @@ public class CreateGroupActivity extends BaseActivity
       @Override public void createGroup(List<FacebookFriend> friendList, String groupName) {
         //mPresenter.sendInvitationInVk(friendList,getString(R.string.invite_message));
         mFriendListFragment.showProgress();
-        mIntiteByVk.clear();
-        for (FacebookFriend f : friendList) {
-          if (f.getSocialNetwork().equals("vk")) {
-            mIntiteByVk.addAll(friendList);
-            flowByFragmentForVk = true;
+        if (friendList.size() > 0) {
+          mIntiteByVk.clear();
+          for (FacebookFriend f : friendList) {
+            if (f.getSocialNetwork().equals("vk")) {
+              mIntiteByVk.addAll(friendList);
+              flowByFragmentForVk = true;
+            }
           }
+          mCreateGroupClient.createGroup(friendList, groupName, selectedFile,
+              CreateGroupActivity.this);
+        } else {
+          new SugarmanDialog.Builder(CreateGroupActivity.this,
+              DialogConstants.FRIENDS_LIST_IS_IMPTY_ID).content(R.string.members_list_is_empty)
+              .show();
+          mFriendListFragment.hideProgress();
         }
-        mCreateGroupClient.createGroup(friendList, groupName, selectedFile,
-            CreateGroupActivity.this);
       }
 
       @Override public void editGroup(List<FacebookFriend> membersToSendByEditing, String string) {
@@ -566,7 +573,6 @@ public class CreateGroupActivity extends BaseActivity
           networksLoaded + " out of " + networksToLoad + "allFriends side is " + allFriends.size());
       //closeProgressFragment();
       hideProgress();
-
     }
   }
 
@@ -767,7 +773,6 @@ public class CreateGroupActivity extends BaseActivity
     networksLoaded++;
     Timber.e("FB LOADED");
     checkNetworksLoaded();
-
   }
 
   @Override public void onGetFacebookFriendsFailure(String message) {
@@ -818,7 +823,7 @@ public class CreateGroupActivity extends BaseActivity
   }
 
   @Override public void onApiJoinGroupSuccess(Tracking result) {
-    Timber.e("onApiJoinGroupSuccess "+result.getGroupOnwerName());
+    Timber.e("onApiJoinGroupSuccess " + result.getGroupOnwerName());
     //closeProgressFragment();
     mFriendListFragment.hideProgress();
     int activeTrackings = SharedPreferenceHelper.getActiveTrackingsCreated();
@@ -856,11 +861,12 @@ public class CreateGroupActivity extends BaseActivity
       Timber.e("onApiJoinGroupSuccess  1");
       finish();
     }
-    if (!flowByFragmentForVk){
-    if ((mIntiteByVk.isEmpty() && idsFb.isEmpty()) ) {
-      Timber.e("onApiJoinGroupSuccess 2");
-      finish();
-    }}
+    if (!flowByFragmentForVk) {
+      if ((mIntiteByVk.isEmpty() && idsFb.isEmpty())) {
+        Timber.e("onApiJoinGroupSuccess 2");
+        finish();
+      }
+    }
   }
 
   @Override public void onApiJoinGroupFailure(String message) {
@@ -1223,7 +1229,7 @@ public class CreateGroupActivity extends BaseActivity
       Timber.e("fillListByCachedData " + facebookFriends.size());
       for (FacebookFriend fb : facebookFriends) {
         Timber.e("fillListByCachedData " + fb.getPicture());
-        if (fb.getIsInvitable() == FacebookFriend.CODE_NOT_INVITABLE){
+        if (fb.getIsInvitable() == FacebookFriend.CODE_NOT_INVITABLE) {
           numberOfMemberWithAppFb++;
         }
       }

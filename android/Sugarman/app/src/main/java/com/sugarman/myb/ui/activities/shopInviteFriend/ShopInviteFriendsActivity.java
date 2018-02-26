@@ -23,6 +23,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
@@ -184,6 +185,7 @@ public class ShopInviteFriendsActivity extends BasicActivity
     setContentView(R.layout.activity_shop_invite_friends);
     super.onCreate(savedStateInstance);
     bAddFriends.setEnabled(false);
+    mEditTextSearch.setFocusable(false);
 
     //-----------------------------------------------------------------------------------------------
     //Если этот код раскоментирован то работает новый фрагмент, иначе все по старому
