@@ -612,5 +612,7 @@
   <string name="apply_now">Apply now for</string>
   <string name="slot_unavailable_dialog">Mentor of current level is unavailable ;(</string>
   <string name="try_again_later">Try again later!</string>
+  <string name="free">free</string>
+  <string name="apply_now_for_free">Apply now for free</string>
 
 </resources>
