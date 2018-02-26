@@ -438,8 +438,10 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
   }
 
   @Override public void setUpUI() {
-    mEditTextGroupName.setText(String.format(getString(R.string.group_name_template),
-        SharedPreferenceHelper.getUserName()));
+    if(getArguments().getString(GROUP_NAME, "").isEmpty()) {
+      mEditTextGroupName.setText(String.format(getString(R.string.group_name_template),
+          SharedPreferenceHelper.getUserName()));
+    }
   }
 
   public void checkForUniqueMembers(Member[] pendingsMembers, Member[] addedMembers) {

@@ -581,4 +581,9 @@
     <string name="slot_unavailable_dialog">Ментор текущего уровня недоступен</string>
     <string name="facebook">Facebook</string>
 
+    <string name="days">дней</string>
+    <string name="weeks">недель</string>
+    <string name="months">месяцев</string>
+    <string name="years">лет</string>
+
 </resources>

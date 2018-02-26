@@ -32,6 +32,8 @@ import lombok.Setter;
   @Getter @Setter @SerializedName("is_already_owned") private boolean isOwned;
   @Getter @Setter @SerializedName("price") private Float price;
   @Getter @Setter @SerializedName("subscription_duration") private Integer subscriptionDuration;
+  @Getter @Setter @SerializedName("duration_modifier") private String durationModifier;
+
 
   protected MentorEntity(Parcel in) {
     mentorId = in.readString();

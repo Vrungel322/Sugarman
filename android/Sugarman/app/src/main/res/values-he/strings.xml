@@ -626,4 +626,9 @@
   <string name="try_again_later">תנסה מאוחר יותר</string>
   <string name="facebook">Facebook</string>
 
+  <string name="days">ימים</string>
+  <string name="weeks">שבועות</string>
+  <string name="months">חודשים</string>
+  <string name="years">שנים</string>
+
 </resources>

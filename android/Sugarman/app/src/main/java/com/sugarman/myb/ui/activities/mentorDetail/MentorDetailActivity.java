@@ -167,9 +167,26 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
     }
 
     if (mMentorEntity.getSubscriptionDuration() != null) {
+      String durationModifier = "";
+      if(mMentorEntity.getDurationModifier()!=null)
+      switch (mMentorEntity.getDurationModifier().toLowerCase())
+      {
+        case "d":
+          durationModifier = getString(R.string.days);
+          break;
+        case "w":
+          durationModifier = getString(R.string.weeks);
+          break;
+        case "m":
+          durationModifier = getString(R.string.months);
+          break;
+        case "y":
+          durationModifier = getString(R.string.years);
+      }
       tvSubscriptionDuration.setText(getResources().getString(R.string.subscription_duration)
           + " "
-          + mMentorEntity.getSubscriptionDuration());
+          + mMentorEntity.getSubscriptionDuration() + " "
+      + durationModifier);
     } else {
       tvSubscriptionDuration.setText("");
     }

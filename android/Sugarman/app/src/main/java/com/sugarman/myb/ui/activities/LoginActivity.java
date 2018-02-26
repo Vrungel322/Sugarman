@@ -179,7 +179,7 @@ public class LoginActivity extends GetUserInfoActivity implements View.OnClickLi
       //https://console.developers.google.com/apis/credentials?project=api-7925429546426385753-346830
       // need to paste WEB- Client key from that link
       intent.putExtra(GoogleLoginHiddenActivity.EXTRA_CLIENT_ID,
-          "665166717862-sv96md550gqprv1nmak21rmd3rcfl5r7.apps.googleusercontent.com");
+          "214670354742-ukahj46me93mssuaui3eeovkqf1987o6.apps.googleusercontent.com");
       startActivity(intent);
     });
 

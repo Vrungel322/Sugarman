@@ -217,6 +217,9 @@ public class AddMemberActivity extends BaseActivity
     setContentView(R.layout.activity_add_member);
     super.onCreate(savedStateInstance);
 
+    groupName = IntentExtractorHelper.getGroupName(getIntent());
+
+    Timber.e("GROUP NAME " + groupName);
     pb.setVisibility(View.GONE);
     pb.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
@@ -227,7 +230,7 @@ public class AddMemberActivity extends BaseActivity
     //-----------------------------------------------------------------------------------------------
     //Если этот код раскоментирован то работает новый фрагмент, иначе все по старому
     //mFriendListFragment = FriendListFragment.newInstance(R.layout.fragment_friend_list_test);
-     mFriendListFragment = FriendListFragment.newInstance(R.layout.activity_add_member_v2,IntentExtractorHelper.getGroupName(getIntent()));
+     mFriendListFragment = FriendListFragment.newInstance(R.layout.activity_add_member_v2,groupName);
     getSupportFragmentManager().beginTransaction()
         .add(R.id.flContainer, mFriendListFragment)
         .commit();
@@ -273,7 +276,7 @@ public class AddMemberActivity extends BaseActivity
     Timber.e("Added Members " + addedMembers.length);
     trackingId = IntentExtractorHelper.getTrackingId(intent);
     pendingMembers = IntentExtractorHelper.getPendings(intent);
-    groupName = IntentExtractorHelper.getGroupName(intent);
+
     groupPictureUrl = IntentExtractorHelper.getGroupPicture(intent);
 
     mEditGroupClient = new EditGroupClient();
@@ -304,6 +307,7 @@ public class AddMemberActivity extends BaseActivity
     etGroupName.addTextChangedListener(groupNameWatcher);
 
     etGroupName.setText(groupName);
+    etGroupName.setText("HUY PIZDA");
 
     if (TextUtils.isEmpty(groupPictureUrl)) {
       Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.ic_group);

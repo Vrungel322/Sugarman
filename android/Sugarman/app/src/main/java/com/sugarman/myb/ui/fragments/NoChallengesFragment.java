@@ -49,27 +49,7 @@ public class NoChallengesFragment extends BaseChallengeFragment implements View.
     position = IntentExtractorHelper.getTrackingPosition(getArguments());
 
     //View ivCreateGroup = root.findViewById(R.id.iv_create_group);
-    ViewTreeObserver vto = root.getViewTreeObserver();
-    vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-      @Override public void onGlobalLayout() {
-
-        root.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-        int width = root.getMeasuredWidth();
-        int height = root.getMeasuredHeight();
-        Log.e("root", "" + width + " " + height);
-        float scale = 0.4f;
-        Log.e("root scale", "" + scale);
-        //RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(width*(int)scale, height*(int)scale);
-        //p.addRule(RelativeLayout.ALIGN_BOTTOM, background.getId());
-
-        background.getLayoutParams().width = (int) (width * (scale * 1.7f));
-        background.getLayoutParams().height = (int) (height * scale);
-
-        //background.setLayoutParams(p);
-
-      }
-    });
-
+    ViewTreeObserver vto;
     vto = textContainer.getViewTreeObserver();
     vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
       @Override public void onGlobalLayout() {

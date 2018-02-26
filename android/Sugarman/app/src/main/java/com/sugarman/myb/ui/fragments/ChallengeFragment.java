@@ -282,6 +282,8 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
             .transform(new CropCircleTransformation(0xffff0000, 1))
             .into(laziestAvatar);
 
+        color = 0xff54cc14;
+
         if (laziest.getSteps() < 5000) {
           color = 0xffe10f0f;
         } else if (laziest.getSteps() >= 5000
@@ -331,6 +333,8 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
             }
           }
 
+          color = 0xff54cc14;
+
           if (fastest.getSteps() < 5000) {
             color = 0xffe10f0f;
           } else if (fastest.getSteps() >= 5000
@@ -340,6 +344,7 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
               && fastest.getSteps() < 10000) {
             color = 0xffF6B147;
           }
+
           fastestBorderAvatar.setColorFilter(color);
           fastestName.setTextColor(color);
           fastestSteps.setTextColor(color);
