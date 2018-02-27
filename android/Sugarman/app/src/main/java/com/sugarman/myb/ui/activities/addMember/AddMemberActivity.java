@@ -107,6 +107,7 @@ public class AddMemberActivity extends BaseActivity
   String currentFilter = "";
   View vApply;
   boolean isFbLoggedIn = false, isVkLoggedIn = false;
+  FriendListFragment mFriendListFragment;
   private AddMembersClient mAddMembersClient;
   private EditGroupClient mEditGroupClient;
   private CheckVkClient mCheckVkClient;
@@ -201,7 +202,6 @@ public class AddMemberActivity extends BaseActivity
         }
       };
   private List<Phones> mDistinktorList;
-
   // number of total count/ number of count people with app BY PH
   private int numberOfMemberTotalAppPh;
   private int numberOfMemberWithAppPh;
@@ -211,7 +211,6 @@ public class AddMemberActivity extends BaseActivity
   // number of total count/ number of count people with app BY VK
   private int numberOfMemberTotalAppVk;
   private int numberOfMemberWithAppVk;
-  FriendListFragment mFriendListFragment;
 
   @Override protected void onCreate(Bundle savedStateInstance) {
     setContentView(R.layout.activity_add_member);
@@ -230,7 +229,8 @@ public class AddMemberActivity extends BaseActivity
     //-----------------------------------------------------------------------------------------------
     //Если этот код раскоментирован то работает новый фрагмент, иначе все по старому
     //mFriendListFragment = FriendListFragment.newInstance(R.layout.fragment_friend_list_test);
-     mFriendListFragment = FriendListFragment.newInstance(R.layout.activity_add_member_v2,groupName);
+    mFriendListFragment =
+        FriendListFragment.newInstance(R.layout.activity_add_member_v2, groupName);
     getSupportFragmentManager().beginTransaction()
         .add(R.id.flContainer, mFriendListFragment)
         .commit();
@@ -240,11 +240,22 @@ public class AddMemberActivity extends BaseActivity
 
       }
 
-      @Override public void editGroup(List<FacebookFriend> membersToSendByEditing, String groupName) {
-        mFriendListFragment.showProgress();
-        Timber.e("editGroup name: " + groupName + "membersToSendByEditing: " + membersToSendByEditing.size());
-        mEditGroupClient.editGroup(IntentExtractorHelper.getTrackingId( getIntent()), membersToSendByEditing, groupName, selectedFile);
-        mAddMembersClient.addMembers(IntentExtractorHelper.getTrackingId( getIntent()), membersToSendByEditing);
+      @Override
+      public void editGroup(List<FacebookFriend> membersToSendByEditing, String groupName) {
+        if (!groupName.isEmpty()) {
+          mFriendListFragment.showProgress();
+          Timber.e("editGroup name: "
+              + groupName
+              + "membersToSendByEditing: "
+              + membersToSendByEditing.size());
+          mEditGroupClient.editGroup(IntentExtractorHelper.getTrackingId(getIntent()),
+              membersToSendByEditing, groupName, selectedFile);
+          mAddMembersClient.addMembers(IntentExtractorHelper.getTrackingId(getIntent()),
+              membersToSendByEditing);
+        } else {
+          new SugarmanDialog.Builder(AddMemberActivity.this, DialogConstants.GROUP_NAME_IS_EMPTY_ID).content(
+              R.string.group_name_is_empty).show();
+        }
       }
 
       @Override public void inviteFriendToShop(List<FacebookFriend> friendList) {
@@ -252,7 +263,8 @@ public class AddMemberActivity extends BaseActivity
       }
     });
 
-    mFriendListFragment.checkForUniqueMembers(IntentExtractorHelper.getPendings(getIntent()),IntentExtractorHelper.getMembers(getIntent()));
+    mFriendListFragment.checkForUniqueMembers(IntentExtractorHelper.getPendings(getIntent()),
+        IntentExtractorHelper.getMembers(getIntent()));
     //===============================================================================================
 
     if (!SharedPreferenceHelper.getFbId().equals("none")) {
@@ -1069,50 +1081,49 @@ public class AddMemberActivity extends BaseActivity
       mPresenter.sendInvitationInVk(vkElements, getString(R.string.invite_message));
     }
     //if (!facebookElements.isEmpty()) {
-      Timber.e("Fb Unique Send");
-      //GameRequestDialog tempDialog = new GameRequestDialog(this);
-      //tempDialog.registerCallback(fbCallbackManager,
-      //    new FacebookCallback<GameRequestDialog.Result>() {
-      //      @Override public void onSuccess(GameRequestDialog.Result result) {
-      //        finish();
-      //      }
-      //
-      //      @Override public void onCancel() {
-      //
-      //      }
-      //
-      //      @Override public void onError(FacebookException error) {
-      //
-      //      }
-      //    });
-      //GameRequestContent content =
-      //    new GameRequestContent.Builder().setMessage(getString(R.string.play_with_me))
-      //        .setRecipients(facebookElements)
-      //        .build();
-      //tempDialog.show(content);
-      //}
-      //if (!members.isEmpty()) {
-      Timber.e("Fb Unique Send , members " + members.size());
-      mEditGroupClient.editGroup(trackingId, members, etGroupName.getText().toString(),
-          selectedFile);
-      mAddMembersClient.registerListener(new ApiAddMembersListener() {
-        @Override public void onApiAddMembersSuccess() {
-          //finish();
-        }
+    Timber.e("Fb Unique Send");
+    //GameRequestDialog tempDialog = new GameRequestDialog(this);
+    //tempDialog.registerCallback(fbCallbackManager,
+    //    new FacebookCallback<GameRequestDialog.Result>() {
+    //      @Override public void onSuccess(GameRequestDialog.Result result) {
+    //        finish();
+    //      }
+    //
+    //      @Override public void onCancel() {
+    //
+    //      }
+    //
+    //      @Override public void onError(FacebookException error) {
+    //
+    //      }
+    //    });
+    //GameRequestContent content =
+    //    new GameRequestContent.Builder().setMessage(getString(R.string.play_with_me))
+    //        .setRecipients(facebookElements)
+    //        .build();
+    //tempDialog.show(content);
+    //}
+    //if (!members.isEmpty()) {
+    Timber.e("Fb Unique Send , members " + members.size());
+    mEditGroupClient.editGroup(trackingId, members, etGroupName.getText().toString(), selectedFile);
+    mAddMembersClient.registerListener(new ApiAddMembersListener() {
+      @Override public void onApiAddMembersSuccess() {
+        //finish();
+      }
 
-        @Override public void onApiAddMembersFailure(String message) {
+      @Override public void onApiAddMembersFailure(String message) {
 
-        }
+      }
 
-        @Override public void onApiUnauthorized() {
+      @Override public void onApiUnauthorized() {
 
-        }
+      }
 
-        @Override public void onUpdateOldVersion() {
+      @Override public void onUpdateOldVersion() {
 
-        }
-      });
-      mAddMembersClient.addMembers(trackingId, members);
+      }
+    });
+    mAddMembersClient.addMembers(trackingId, members);
     mInviteByPh.clear();
 
     //}
@@ -1168,7 +1179,7 @@ public class AddMemberActivity extends BaseActivity
     Timber.e("onApiEditGroupSuccess");
 
     hideProgress();
-    if (mInviteByPh.isEmpty() && mInviteByVk.isEmpty()&& mIdsFb.isEmpty()) {
+    if (mInviteByPh.isEmpty() && mInviteByVk.isEmpty() && mIdsFb.isEmpty()) {
       Timber.e("all lists empty - activity finished");
       finish();
     }
@@ -1225,8 +1236,8 @@ public class AddMemberActivity extends BaseActivity
       }
     }
 
-    Timber.e("numberOfMemberWithAppVk size "+numberOfMemberWithAppVk);
-    Timber.e("numberOfMemberTotalAppVk size "+numberOfMemberTotalAppVk);
+    Timber.e("numberOfMemberWithAppVk size " + numberOfMemberWithAppVk);
+    Timber.e("numberOfMemberTotalAppVk size " + numberOfMemberTotalAppVk);
 
     runOnUiThread(new Runnable() {
       @Override public void run() {
@@ -1242,7 +1253,7 @@ public class AddMemberActivity extends BaseActivity
   }
 
   @Override public void onApiCheckPhoneSuccess(List<Phones> phones) {
-    numberOfMemberWithAppPh= phones.size();
+    numberOfMemberWithAppPh = phones.size();
     Timber.e("numberOfMemberWithAppPh size " + numberOfMemberWithAppPh);
 
     mDistinktorList = phones;
