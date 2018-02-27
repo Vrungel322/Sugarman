@@ -1,8 +1,6 @@
 package com.sugarman.myb.ui.activities.mainScreeen;
 
 import android.Manifest;
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -32,8 +30,6 @@ import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
-import com.appsflyer.AFInAppEventParameterName;
-import com.appsflyer.AppsFlyerLib;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.facebook.FacebookException;
 import com.google.android.gms.ads.identifier.AdvertisingIdClient;
@@ -67,6 +63,7 @@ import com.sugarman.myb.eventbus.events.DebugRealStepAddedEvent;
 import com.sugarman.myb.eventbus.events.DebugRefreshStepsEvent;
 import com.sugarman.myb.eventbus.events.DebugRequestStepsEvent;
 import com.sugarman.myb.eventbus.events.GetInAppNotificationsEvent;
+import com.sugarman.myb.eventbus.events.HideDots;
 import com.sugarman.myb.eventbus.events.InviteRemovedEvent;
 import com.sugarman.myb.eventbus.events.InvitesUpdatedEvent;
 import com.sugarman.myb.eventbus.events.NeedOpenSpecificActivityEvent;
@@ -598,7 +595,6 @@ public class MainActivity extends GetUserInfoActivity
     }
 
     AppsFlyerEventSender.sendEvent("af_launch_main");
-
 
     ////Get IMEI
     //int permissionCheck =
@@ -1456,6 +1452,14 @@ public class MainActivity extends GetUserInfoActivity
         "MainActivity StepServiceStartedEvent todaySteps " + todaySteps);
     App.getEventBus().post(new DebugRequestStepsEvent(todaySteps));
     App.getEventBus().post(new ReportStepsEvent());
+  }
+
+  @Subscribe public void onEvent(HideDots hideDots) {
+    if (hideDots.getHideDots()) {
+      spiChallenges.setVisibility(View.GONE);
+    } else {
+      spiChallenges.setVisibility(View.VISIBLE);
+    }
   }
 
   private void setActualDataToViews() {

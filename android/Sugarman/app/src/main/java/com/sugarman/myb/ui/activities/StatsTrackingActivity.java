@@ -14,6 +14,7 @@ import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.api.models.responses.me.stats.Stats;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.constants.DialogConstants;
+import com.sugarman.myb.eventbus.events.HideDots;
 import com.sugarman.myb.eventbus.events.StatsOpenedEvent;
 import com.sugarman.myb.listeners.ApiGetTrackingStatsListener;
 import com.sugarman.myb.listeners.OnSwipeListener;
@@ -57,6 +58,10 @@ public class StatsTrackingActivity extends BaseActivity
   @Override protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_tracking_stats);
     super.onCreate(savedInstanceState);
+
+    Timber.e("onCreate");
+    App.getEventBus().post(new HideDots(true));
+
 
     rootContainer = findViewById(R.id.ll_root_container);
     vpStats = (ViewPager) findViewById(R.id.vp_stats);
@@ -111,6 +116,9 @@ public class StatsTrackingActivity extends BaseActivity
 
   @Override protected void onStop() {
     super.onStop();
+    Timber.e("onStop");
+    App.getEventBus().post(new HideDots(false));
+
 
     getTrackingStatsClient.unregisterListener();
   }
