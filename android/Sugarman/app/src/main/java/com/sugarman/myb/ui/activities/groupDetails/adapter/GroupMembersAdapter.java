@@ -646,7 +646,7 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
     memberWithMyId.setId(userId);
     for (int i = 0; i < mData.size(); i++) {
       Timber.e("Position " + i + " mdata " + mData.get(i).getId());
-      if (mData.get(i).getId().equals(userId)) {
+      if (mData.get(i).getId().equals(userId) && !mData.get(i).getStatus().equals("pending")) {
         Timber.e("EUREKA");
         myPosition = i;
         break;

@@ -509,6 +509,8 @@ public class GroupDetailsActivity extends BaseActivity
         }
 
         private void confirmDeleteMessage(final Message message) {
+          Timber.e("CONFIRM DELETE MESSAGE CALLED");
+          sendDeleteMessage(message._id);
           NotifyDialog dialog = NotifyDialog.startConfirm(GroupDetailsActivity.this,
               getString(com.clover_studio.spikachatmodule.R.string.delete_message_title),
               getString(com.clover_studio.spikachatmodule.R.string.delete_message_text));
@@ -518,11 +520,13 @@ public class GroupDetailsActivity extends BaseActivity
               sendDeleteMessage(message._id);
             }
 
+
             @Override public void onCancelClicked(NotifyDialog dialog) {
               dialog.dismiss();
             }
           });
-          //dialog.setButtonsText(getString(com.clover_studio.spikachatmodule.R.string.NO_CAPITAL), getString(com.clover_studio.spikachatmodule.R.string.YES_CAPITAL));
+          dialog.setButtonsText(getString(com.clover_studio.spikachatmodule.R.string.NO_CAPITAL), getString(com.clover_studio.spikachatmodule.R.string.YES_CAPITAL));
+          dialog.show();
         }
 
         @Override public void onLongClick(Message item) {
@@ -548,6 +552,7 @@ public class GroupDetailsActivity extends BaseActivity
           InfoMessageDialog.startDialogWithOptions(GroupDetailsActivity.this, item, activeUser,
               showCopy, showDelete, showShare, new InfoMessageDialog.OnInfoListener() {
                 @Override public void onDeleteMessage(Message message, Dialog dialog) {
+                  Timber.e("ON DELETE MESSAGE CALLED");
                   confirmDeleteMessage(message);
                 }
 

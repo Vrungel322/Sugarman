@@ -390,30 +390,8 @@ public class EditProfileActivity extends BasicActivity
       DialogHelper.createSimpleDialog(getResources().getString(R.string.save),
           getResources().getString(R.string.discard),
           getResources().getString(R.string.save_changes),
-          getResources().getString(R.string.changes_have_been_made), this, (dialogInterface, i) -> {
-            SharedPreferenceHelper.savePhoneNumber(etPhone.getText().toString());
-            SharedPreferenceHelper.saveEmail(etEmail.getText().toString());
-            SharedPreferenceHelper.saveUserName(etName.getText().toString());
-            networkCount = networkTotalCount;
-
-            //ph
-            if (!etPhone.getText().equals("") && !etPhone.getText().toString().isEmpty() && !etPhone
-                .equals(" ") && !etPhone.equals("none") && isPhoneValid(
-                etPhone.getText().toString()) && !mBundleUserSettings.getString(PHONE_FROM_SETTINGS)
-                .equals(etPhone.getText().toString())) {
-              Intent intent = new Intent(EditProfileActivity.this, ApproveOtpActivity.class);
-              intent.putExtra("otp", otp);
-              intent.putExtra("showSettings", false);
-              intent.putExtra("phone", etPhone.getText().toString());
-              intent.putExtra("nameParentActivity", EditProfileActivity.class.getName());
-              startActivity(intent);
-            }
-
-            mPresenter.sendUserDataToServer(etPhone.getText().toString(),
-                etEmail.getText().toString(), etName.getText().toString(),
-                SharedPreferenceHelper.getFbId(), SharedPreferenceHelper.getVkId(),
-                SharedPreferenceHelper.getAvatar(), selectedFile);
-          }, (dialogInterface, i) -> {
+          getResources().getString(R.string.changes_have_been_made), this,
+          (dialogInterface, i) -> ivNextClicked(), (dialogInterface, i) -> {
 
             //VK
             if (VKSdk.isLoggedIn()) {
