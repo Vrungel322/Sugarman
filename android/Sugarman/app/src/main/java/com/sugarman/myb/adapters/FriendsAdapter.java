@@ -20,6 +20,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import timber.log.Timber;
 
 public class FriendsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     implements ItemUsersActionListener {
@@ -157,6 +158,8 @@ public class FriendsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
       } else {
         friend = mUnselected.get(position - mSelected.size());
       }
+      Timber.e("click friendName:" + friend.getName());
+
 
       boolean isSelected = !friend.isSelected();
       Realm.getDefaultInstance().executeTransaction(realm -> {
@@ -270,6 +273,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override public void onClick(View v) {
       int id = v.getId();
       int position = getAdapterPosition();
+      Timber.e("click position:" + position);
 
       switch (id) {
         case R.id.ll_friend_container:
