@@ -21,10 +21,12 @@ public class DbRepositoryStats {
   }
 
   public void saveStats(List<Stats> statsList) {
-    dropStatsTable();
-    Timber.e("saveStats " + (mDbHelper != null));
-    for (Stats s : statsList) {
-      mDbHelper.save(s);
+    if (statsList != null) {
+      dropStatsTable();
+      Timber.e("saveStats " + (mDbHelper != null));
+      for (Stats s : statsList) {
+        mDbHelper.save(s);
+      }
     }
   }
 }
