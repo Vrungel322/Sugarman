@@ -1580,8 +1580,10 @@ public class MainActivity extends GetUserInfoActivity
   }
 
   public void refreshTrackings() {
-    showProgressFragment();
-    mGetMyTrackingsClient.getMyTrackings();
+    if (myTrackings.length != 0) {
+      showProgressFragment();
+      mGetMyTrackingsClient.getMyTrackings();
+    }
   }
 
   private void openProfileActivity() {
