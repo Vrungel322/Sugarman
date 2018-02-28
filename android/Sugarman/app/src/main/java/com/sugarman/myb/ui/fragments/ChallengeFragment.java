@@ -123,6 +123,8 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
     }
   };
   private Timer mTimerToGetMsg;
+  private SpikaOSRetroApiInterface mRetroApiInterface;
+  private Call<GetMessagesModel> mCall;
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
@@ -189,8 +191,7 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
 
         TextView bestName = (TextView) (root.findViewById(R.id.best_name));
         TextView bestSteps = (TextView) root.findViewById(R.id.best_steps);
-        ImageView bestAvatarBorder =
-            (ImageView) root.findViewById(R.id.iv_best_avatar_border);
+        ImageView bestAvatarBorder = (ImageView) root.findViewById(R.id.iv_best_avatar_border);
         ImageView bestAvatar = (ImageView) root.findViewById(R.id.iv_best_avatar);
 
         String str = "";
@@ -231,11 +232,9 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
         int color = 0xff54cc14;
         if (best.getSteps() < 5000) {
           color = 0xffe10f0f;
-        } else if (best.getSteps() >= 5000
-            && best.getSteps() < 7500) {
+        } else if (best.getSteps() >= 5000 && best.getSteps() < 7500) {
           color = 0xffeb6117;
-        } else if (best.getSteps() >= 7500
-            && best.getSteps() < 10000) {
+        } else if (best.getSteps() >= 7500 && best.getSteps() < 10000) {
           color = 0xffF6B147;
         }
         bestAvatarBorder.setColorFilter(color);
@@ -288,11 +287,9 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
 
         if (laziest.getSteps() < 5000) {
           color = 0xffe10f0f;
-        } else if (laziest.getSteps() >= 5000
-            && laziest.getSteps() < 7500) {
+        } else if (laziest.getSteps() >= 5000 && laziest.getSteps() < 7500) {
           color = 0xffeb6117;
-        } else if (laziest.getSteps() >= 7500
-            && laziest.getSteps() < 10000) {
+        } else if (laziest.getSteps() >= 7500 && laziest.getSteps() < 10000) {
           color = 0xffF6B147;
         }
         laziestAvatarBorder.setColorFilter(color);
@@ -303,7 +300,8 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
         TextView fastestName = (TextView) (root.findViewById(R.id.fastest_name));
         TextView fastestSteps = (TextView) root.findViewById(R.id.fastest_steps);
         ImageView fastestAvatar = (ImageView) root.findViewById(R.id.iv_fastest_avatar);
-        ImageView fastestBorderAvatar = (ImageView) root.findViewById(R.id.iv_fastest_avatar_border);
+        ImageView fastestBorderAvatar =
+            (ImageView) root.findViewById(R.id.iv_fastest_avatar_border);
         if (tracking.hasDailyWinner()) {
           Member fastest = tracking.getDailySugarman().getUser();
 
@@ -318,8 +316,8 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
           }
 
           fastestName.setText(name);
-          for (Member f: members) {
-            if (fastest.getId().equals(f.getId())){
+          for (Member f : members) {
+            if (fastest.getId().equals(f.getId())) {
               fastestSteps.setText(String.format(Locale.US, "%,d", f.getSteps()));
             }
           }
@@ -344,11 +342,9 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
 
           if (fastest.getSteps() < 5000) {
             color = 0xffe10f0f;
-          } else if (fastest.getSteps() >= 5000
-              && fastest.getSteps() < 7500) {
+          } else if (fastest.getSteps() >= 5000 && fastest.getSteps() < 7500) {
             color = 0xffeb6117;
-          } else if (fastest.getSteps() >= 7500
-              && fastest.getSteps() < 10000) {
+          } else if (fastest.getSteps() >= 7500 && fastest.getSteps() < 10000) {
             color = 0xffF6B147;
           }
 
@@ -547,7 +543,7 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
   @Override public void onPause() {
     super.onPause();
     Timber.e("onPause");
-    if (mTimerToGetMsg!=null){
+    if (mTimerToGetMsg != null) {
       mTimerToGetMsg.cancel();
       mTimerToGetMsg.purge();
       mTimerToGetMsg = null;
@@ -595,38 +591,52 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
     if (TextUtils.isEmpty(lastMessageId)) {
       lastMessageId = "0";
     }
-    SpikaOSRetroApiInterface retroApiInterface =
-        getRetrofit().create(SpikaOSRetroApiInterface.class);
-    Call<GetMessagesModel> call = retroApiInterface.getMessages(user.roomID, lastMessageId,
-        SingletonLikeApp.getInstance().getSharedPreferences(getActivity()).getToken());
-    call.enqueue(new CustomResponse<GetMessagesModel>(getActivity(), true, true) {
+    Timber.e("getMessages mRetroApiInterface == null is: "
+        + (mRetroApiInterface == null)
+        + "  mCall ==null is: "
+        + (mCall == null));
+    if (mRetroApiInterface == null || mCall == null) {
+      mRetroApiInterface = getRetrofit().create(SpikaOSRetroApiInterface.class);
+      mCall = mRetroApiInterface.getMessages(user.roomID, lastMessageId,
+          SingletonLikeApp.getInstance().getSharedPreferences(getActivity()).getToken());
+    }
+    if (!mCall.isExecuted()) {
+      mCall.enqueue(new CustomResponse<GetMessagesModel>(getActivity(), true, true) {
 
-      @Override public void onCustomSuccess(Call<GetMessagesModel> call,
-          Response<GetMessagesModel> response) {
-        super.onCustomSuccess(call, response);
-        lastDataFromServer.clear();
-        lastDataFromServer.addAll(response.body().data.messages);
+        @Override public void onCustomSuccess(Call<GetMessagesModel> call,
+            Response<GetMessagesModel> response) {
+          super.onCustomSuccess(call, response);
+          lastDataFromServer.clear();
+          lastDataFromServer.addAll(response.body().data.messages);
 
-        List<String> unReadMessages =
-            SeenByUtils.getUnSeenMessages(response.body().data.messages, user);
-        for (String s : unReadMessages) {
-          Log.e("MESSAGE", s);
+          List<String> unReadMessages =
+              SeenByUtils.getUnSeenMessages(response.body().data.messages, user);
+          for (String s : unReadMessages) {
+            Log.e("MESSAGE", s);
+          }
+
+          if (unReadMessages.size() > 0) {
+            messageCounter.setVisibility(View.VISIBLE);
+          } else {
+            messageCounter.setVisibility(View.GONE);
+          }
+
+          messageCounter.setText(Integer.toString(unReadMessages.size()));
+          Log.e("MESSAGE COUNT", "" + unReadMessages.size());
         }
-
-        if (unReadMessages.size() > 0) {
-          messageCounter.setVisibility(View.VISIBLE);
-        } else {
-          messageCounter.setVisibility(View.GONE);
-        }
-
-        messageCounter.setText(Integer.toString(unReadMessages.size()));
-        Log.e("MESSAGE COUNT", "" + unReadMessages.size());
-      }
-    });
+      });
+    } 
   }
 
   public Retrofit getRetrofit() {
     return client;
+  }
+
+  @Override public void onDestroy() {
+    super.onDestroy();
+    if (mCall != null) {
+      mCall.cancel();
+    }
   }
 
   @Override public void onClick(View v) {
