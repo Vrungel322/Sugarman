@@ -9,7 +9,6 @@ import io.realm.annotations.PrimaryKey;
 import java.util.Comparator;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 public class Stats extends RealmObject implements Parcelable {
 
   public static final Comparator<Stats> BY_DATE_DESC = new Comparator<Stats>() {
@@ -26,6 +25,8 @@ public class Stats extends RealmObject implements Parcelable {
   @SerializedName("steps_count") private int stepsCount;
 
   @SerializedName("timestamp") private long dayTimestamp;
+
+  public Stats(){}
 
   private Stats(Parcel in) {
     dayTimestamp = in.readLong();

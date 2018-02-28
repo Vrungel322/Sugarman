@@ -19,6 +19,7 @@ import com.sugarman.myb.ui.activities.inviteForRescue.InviteForRescueActivityPre
 import com.sugarman.myb.ui.activities.mainScreeen.MainActivityPresenter;
 import com.sugarman.myb.ui.activities.mentorDetail.MentorDetailActivityPresenter;
 import com.sugarman.myb.ui.activities.mentorList.MentorListActivityPresenter;
+import com.sugarman.myb.ui.activities.myStats.MyStatsPresenter;
 import com.sugarman.myb.ui.activities.productDetail.ProductDetailsActivityPresenter;
 import com.sugarman.myb.ui.activities.profile.ProfileActivityPresenter;
 import com.sugarman.myb.ui.activities.shop.ShopActivityPresenter;
@@ -104,4 +105,6 @@ import dagger.Component;
   void inject(FriendListFragmentPresenter presenter);
 
   void inject(SendExceptionHiddenPresenter presenter);
+
+  void inject(MyStatsPresenter myStatsPresenter);
 }

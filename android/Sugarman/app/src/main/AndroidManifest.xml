@@ -151,7 +151,7 @@
         android:screenOrientation="portrait"
         android:theme="@style/SugarmanBackgroundActivityTheme" />
     <activity
-        android:name=".ui.activities.MyStatsActivity"
+        android:name=".ui.activities.myStats.MyStatsActivity"
         android:screenOrientation="portrait"
         android:theme="@style/StatsActivityTheme" />
 

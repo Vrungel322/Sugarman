@@ -1,9 +1,10 @@
-package com.sugarman.myb.ui.activities;
+package com.sugarman.myb.ui.activities.myStats;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.adapters.StatsPagerAdapter;
@@ -13,7 +14,9 @@ import com.sugarman.myb.constants.DialogConstants;
 import com.sugarman.myb.eventbus.events.StatsOpenedEvent;
 import com.sugarman.myb.listeners.ApiGetMyStatsListener;
 import com.sugarman.myb.listeners.OnSwipeListener;
+import com.sugarman.myb.ui.activities.StatsTrackingActivity;
 import com.sugarman.myb.ui.activities.base.BaseActivity;
+import com.sugarman.myb.ui.activities.profile.ProfileActivityPresenter;
 import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.ui.views.OnSwipeTouchListener;
@@ -23,10 +26,12 @@ import com.sugarman.myb.utils.DeviceHelper;
 import timber.log.Timber;
 
 public class MyStatsActivity extends BaseActivity
-    implements View.OnClickListener, OnSwipeListener, ApiGetMyStatsListener {
+    implements View.OnClickListener, OnSwipeListener, ApiGetMyStatsListener, IMyStatsActivityView {
 
   private static final String TAG = StatsTrackingActivity.class.getName();
   private StatsPagerAdapter statsAdapter;
+
+  @InjectPresenter MyStatsPresenter mPresenter;
 
   private ViewPager vpStats;
   private SquarePageIndicator spiStats;

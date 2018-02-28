@@ -278,7 +278,7 @@ public class CheckoutActivity extends BasicActivity
 
   private void initPayPal() {
     //For real pay change ENVIRONMENT_SANDBOX and PAYPAL_CLIENT_ID
-    config = new PayPalConfiguration().environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
+    config = new PayPalConfiguration().environment(PayPalConfiguration.ENVIRONMENT_PRODUCTION)
         .clientId(Config.PAYPAL_CLIENT_ID)
         .acceptCreditCards(false);
   }
