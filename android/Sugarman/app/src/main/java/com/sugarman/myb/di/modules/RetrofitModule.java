@@ -1,5 +1,6 @@
 package com.sugarman.myb.di.modules;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 import com.google.gson.FieldNamingPolicy;
@@ -9,16 +10,20 @@ import com.sugarman.myb.BuildConfig;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.di.scopes.AppScope;
 import com.sugarman.myb.utils.DeviceHelper;
+import com.sugarman.myb.utils.IgnoreRequestUtils;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.apps_Fly.AppsFlyRemoteLogger;
 import dagger.Module;
 import dagger.Provides;
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 import javax.inject.Named;
+import okhttp3.Cache;
+import okhttp3.CacheControl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -68,10 +73,18 @@ import timber.log.Timber;
   }
 
   @Provides @AppScope OkHttpClient provideOkClient(HttpLoggingInterceptor httpLoggingInterceptor,
+      Cache cache,
+      @Named("CacheInterceptor") Interceptor cacheInterceptor,
+      @Named("OfflineCacheInterceptor") Interceptor offlineCacheInterceptor,
       @Named("HeaderInterceptor") Interceptor headerInterceptor) {
     return new OkHttpClient.Builder().readTimeout(30, TimeUnit.SECONDS)
         .addInterceptor(headerInterceptor)
         .addInterceptor(httpLoggingInterceptor)
+
+        //To turn on caching response - uncomment next three lines
+        //.addInterceptor(offlineCacheInterceptor)
+        //.addNetworkInterceptor(cacheInterceptor)
+        //.cache(cache)
         .build();
   }
 
@@ -83,19 +96,6 @@ import timber.log.Timber;
     return interceptor;
   }
 
-  /**
-   * For Cache
-   */
-  //@Provides @AppScope Cache provideCache(Context context) {
-  //  Cache cache = null;
-  //  try {
-  //    cache = new Cache(new File(context.getCacheDir(), "http-cache"), 10 * 1024 * 1024); // 10 MB
-  //  } catch (Exception e) {
-  //    Timber.e(e, "Could not create Cache!");
-  //  }
-  //  return cache;
-  //}
-  //
   @Provides @AppScope @Named("HeaderInterceptor") Interceptor provideHeaderInterceptor(
       AppsFlyRemoteLogger appsFlyRemoteLogger) {
     Timber.e("Got into interceptor");
@@ -121,8 +121,8 @@ import timber.log.Timber;
         Response response = chain.proceed(request);
         //Remote Logger
         Map<String, String> map = new HashMap<>();
-        map.put("url" ,original.url().toString());
-        map.put("response_code" ,""+response.code());
+        map.put("url", original.url().toString());
+        map.put("response_code", "" + response.code());
         //if(response.body()!=null)
         //map.put("response_body" ,""+response.body().string());
         appsFlyRemoteLogger.report("server_request", map);
@@ -131,16 +131,46 @@ import timber.log.Timber;
     };
     return requestInterceptor;
   }
-  //
-  //@Provides @AppScope @Named("OfflineCacheInterceptor") Interceptor provideOfflineCacheInterceptor(
-  //    Context context) {
-  //  return chain -> {
-  //    Request request = chain.request();
-  //    if (!NetworkUtil.isNetworkConnected(context)) {
-  //      CacheControl cacheControl = new CacheControl.Builder().maxStale(7, TimeUnit.DAYS).build();
-  //      request = request.newBuilder().cacheControl(cacheControl).build();
-  //    }
-  //    return chain.proceed(request);
-  //  };
-  //}
+
+  /**
+   * For Cache
+   */
+  @Provides @AppScope Cache provideCache(Context context) {
+    Cache cache = null;
+    try {
+      cache = new Cache(new File(context.getCacheDir(), "http-cache"), 10 * 1024 * 1024); // 10 MB
+    } catch (Exception e) {
+      Timber.e(e, "Could not create Cache!");
+    }
+    return cache;
+  }
+
+  @Provides @AppScope @Named("CacheInterceptor") Interceptor provideCacheInterceptor() {
+    return chain -> {
+      Request request = chain.request();
+      Response response = chain.proceed(chain.request());
+
+      if (IgnoreRequestUtils.ignoreRequests(request, "POST",
+          SharedPreferenceHelper.getBaseUrl() + "v2/users")) {
+        CacheControl cacheControl = new CacheControl.Builder().build();
+        response = response.newBuilder()
+            .removeHeader("Pragma")
+            .header("Cache-Control", cacheControl.toString())
+            .build();
+      }
+      return response;
+    };
+  }
+
+  @Provides @AppScope @Named("OfflineCacheInterceptor") Interceptor provideOfflineCacheInterceptor(
+      Context context) {
+    return chain -> {
+      Request request = chain.request();
+      if (!DeviceHelper.isNetworkConnected()) {
+        CacheControl cacheControl = new CacheControl.Builder().maxStale(7, TimeUnit.DAYS).build();
+        request = request.newBuilder().cacheControl(cacheControl).build();
+      }
+      return chain.proceed(request);
+    };
+  }
 }
