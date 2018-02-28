@@ -4,9 +4,13 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 import com.sugarman.myb.utils.StringHelper;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 import java.util.Comparator;
+import lombok.NoArgsConstructor;
 
-public class Stats implements Parcelable {
+@NoArgsConstructor
+public class Stats extends RealmObject implements Parcelable {
 
   public static final Comparator<Stats> BY_DATE_DESC = new Comparator<Stats>() {
     @Override public int compare(Stats o1, Stats o2) {
@@ -14,6 +18,7 @@ public class Stats implements Parcelable {
     }
   };
 
+  @PrimaryKey Integer id;
   @SerializedName("date") private String date; // format 2017-01-04
 
   @SerializedName("label") private String label;

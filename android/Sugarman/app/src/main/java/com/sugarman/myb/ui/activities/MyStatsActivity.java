@@ -26,7 +26,6 @@ public class MyStatsActivity extends BaseActivity
     implements View.OnClickListener, OnSwipeListener, ApiGetMyStatsListener {
 
   private static final String TAG = StatsTrackingActivity.class.getName();
-
   private StatsPagerAdapter statsAdapter;
 
   private ViewPager vpStats;
