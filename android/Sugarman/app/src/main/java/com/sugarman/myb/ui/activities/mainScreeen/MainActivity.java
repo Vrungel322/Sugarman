@@ -265,6 +265,34 @@ public class MainActivity extends GetUserInfoActivity
   private TrackingsPagerAdapter trackingsAdapter;
   private SendFirebaseTokenClient mSendFirebaseTokenClient;
   private GetMyTrackingsClient mGetMyTrackingsClient;
+  private GetMyInvitesClient mGetMyInvitesClient;
+  private GetMyRequestsClient mGetMyRequestsClient;
+  private GetNotificationsClient mGetNotificationsClient;
+  private MarkNotificationClient mMarkNotificationsClient;
+  private AnimationDrawable animationMan;
+  private int nextMilestone = 0;
+  private SensorManager mSensorManager;
+  private Sensor stepCounter;
+  private int vpTrackingPadding;
+  private int todaySteps = 0;
+  private int animationTodaySteps = 0;
+  private int animationIndex = 0;
+  private boolean isAnimationRunned;
+  private int createdTrackingPosition = -1;
+  private Tracking swipedTracking;
+  private final Runnable showCreatedTracking = new Runnable() {
+    @Override public void run() {
+      if (vpTrackings != null
+          && createdTrackingPosition >= 0
+          && createdTrackingPosition < trackingsAdapter.getCount()) {
+        vpTrackings.setCurrentItem(createdTrackingPosition, false);
+      }
+
+      swipedTracking = null;
+      closeProgressFragment();
+    }
+  };
+  private List<Tracking> mMentorsGroups = new ArrayList<>();
   private final ApiGetMyInvitesListener apiGetMyInvitesListener = new ApiGetMyInvitesListener() {
     @Override public void onApiGetMyInvitesSuccess(Invite[] invites, boolean isRefreshTrackings) {
       Timber.e("invites lendth " + invites.length);
@@ -340,34 +368,6 @@ public class MainActivity extends GetUserInfoActivity
 
     }
   };
-  private GetMyInvitesClient mGetMyInvitesClient;
-  private GetMyRequestsClient mGetMyRequestsClient;
-  private GetNotificationsClient mGetNotificationsClient;
-  private MarkNotificationClient mMarkNotificationsClient;
-  private AnimationDrawable animationMan;
-  private int nextMilestone = 0;
-  private SensorManager mSensorManager;
-  private Sensor stepCounter;
-  private int vpTrackingPadding;
-  private int todaySteps = 0;
-  private int animationTodaySteps = 0;
-  private int animationIndex = 0;
-  private boolean isAnimationRunned;
-  private int createdTrackingPosition = -1;
-  private Tracking swipedTracking;
-  private final Runnable showCreatedTracking = new Runnable() {
-    @Override public void run() {
-      if (vpTrackings != null
-          && createdTrackingPosition >= 0
-          && createdTrackingPosition < trackingsAdapter.getCount()) {
-        vpTrackings.setCurrentItem(createdTrackingPosition, false);
-      }
-
-      swipedTracking = null;
-      closeProgressFragment();
-    }
-  };
-  private List<Tracking> mMentorsGroups = new ArrayList<>();
   private File cachedImagesFolder;
   private String userId;
   private int[] brokenGlassSoundIds;
@@ -1580,7 +1580,13 @@ public class MainActivity extends GetUserInfoActivity
   }
 
   public void refreshTrackings() {
-    if (myTrackings.length != 0) {
+    Timber.e("refreshTrackings myTrackings= "
+        + myTrackings.length
+        + " mMentorsGroups.size()= "
+        + mMentorsGroups.size()
+        + " bool= "
+        + (myTrackings.length + mMentorsGroups.size() != 0));
+    if (myTrackings.length + mMentorsGroups.size() != 0) {
       showProgressFragment();
       mGetMyTrackingsClient.getMyTrackings();
     }
