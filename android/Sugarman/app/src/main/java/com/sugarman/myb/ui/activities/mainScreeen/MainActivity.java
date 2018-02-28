@@ -1456,7 +1456,7 @@ public class MainActivity extends GetUserInfoActivity
 
   @Subscribe public void onEvent(HideDots hideDots) {
     if (hideDots.getHideDots()) {
-      spiChallenges.setVisibility(View.GONE);
+      spiChallenges.setVisibility(View.INVISIBLE);
     } else {
       spiChallenges.setVisibility(View.VISIBLE);
     }
