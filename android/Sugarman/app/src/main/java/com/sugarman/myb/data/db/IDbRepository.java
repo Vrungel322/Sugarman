@@ -1,6 +1,6 @@
 package com.sugarman.myb.data.db;
 
-import com.sugarman.myb.api.models.responses.me.stats.StatsResponse;
+import java.util.List;
 
 /**
  * Created by nikita on 01.03.2018.
@@ -9,10 +9,10 @@ import com.sugarman.myb.api.models.responses.me.stats.StatsResponse;
 public interface IDbRepository<T> {
   void dropTable();
 
-  void saveEntityList(StatsResponse entityList);
+  void saveEntity(T entityList);
 
   //void appendEntities(List<T> entityList);
 
-  T getAllEntities();
+  List<T> getAllEntities(int previousCountDays);
 
 }
