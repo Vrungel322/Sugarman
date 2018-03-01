@@ -24,7 +24,7 @@ import com.sugarman.myb.eventbus.events.DebugRealStepAddedEvent;
 import com.sugarman.myb.eventbus.events.DebugRefreshStepsEvent;
 import com.sugarman.myb.eventbus.events.DebugRequestStepsEvent;
 import com.sugarman.myb.ui.activities.myStats.MyStatsActivity;
-import com.sugarman.myb.ui.activities.StatsTrackingActivity;
+import com.sugarman.myb.ui.activities.statsTracking.StatsTrackingActivity;
 import com.sugarman.myb.ui.views.CustomFontTextView;
 import com.sugarman.myb.ui.views.VerticalIndicatorView;
 import com.sugarman.myb.utils.IntentExtractorHelper;

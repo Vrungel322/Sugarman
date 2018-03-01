@@ -1,10 +1,11 @@
-package com.sugarman.myb.ui.activities;
+package com.sugarman.myb.ui.activities.statsTracking;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.adapters.StatsPagerAdapter;
@@ -28,32 +29,29 @@ import com.sugarman.myb.utils.DeviceHelper;
 import com.sugarman.myb.utils.IntentExtractorHelper;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import timber.log.Timber;
 
 public class StatsTrackingActivity extends BaseActivity
-    implements View.OnClickListener, OnSwipeListener, ApiGetTrackingStatsListener {
+    implements View.OnClickListener, OnSwipeListener, ApiGetTrackingStatsListener,
+    IStatsTrackingActivityView {
+  @InjectPresenter StatsTrackingActivityPresenter mPresenter;
 
   private static final String TAG = StatsTrackingActivity.class.getName();
-
-  private StatsPagerAdapter statsAdapter;
-
-  private ViewPager vpStats;
-  private SquarePageIndicator spiStats;
-  private View rootContainer;
-
-  private GetTrackingStatsClient getTrackingStatsClient;
-
-  private String trackingId;
-
   private final Runnable opened = new Runnable() {
     @Override public void run() {
       App.getEventBus().post(new StatsOpenedEvent());
     }
   };
+  private StatsPagerAdapter statsAdapter;
+  private ViewPager vpStats;
+  private SquarePageIndicator spiStats;
+  private View rootContainer;
+  private GetTrackingStatsClient getTrackingStatsClient;
+  private String trackingId;
   private Tracking mTracking;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +60,6 @@ public class StatsTrackingActivity extends BaseActivity
 
     Timber.e("onCreate");
     App.getEventBus().post(new HideDots(true));
-
 
     rootContainer = findViewById(R.id.ll_root_container);
     vpStats = (ViewPager) findViewById(R.id.vp_stats);
@@ -80,19 +77,19 @@ public class StatsTrackingActivity extends BaseActivity
           / (float) Constants.MS_IN_DAY);
       if (day <= 0) {
         // TODO: 2/23/18 here
-        if(mTracking.getChallengeName().equals("Mentors Chalange")) {
+        if (mTracking.getChallengeName().equals("Mentors Chalange")) {
           tvDay.setText(String.format(getString(R.string.challenge_day_template), (int) (day + 1)));
           Timber.e("MENTORS CHALANGE BLYAD");
-        }
-        else {
-              tvDay.setText(R.string.warming_up);
+        } else {
+          tvDay.setText(R.string.warming_up);
           Timber.e("HUY PIZDA SCOVORODA MENTORS");
         }
       } else if (day - (int) day > 0) {
-        if(mTracking.getChallengeName().equals("Mentors Chalange"))
+        if (mTracking.getChallengeName().equals("Mentors Chalange")) {
           tvDay.setText(String.format(getString(R.string.challenge_day_template), (int) (day)));
-        else
-        tvDay.setText(String.format(getString(R.string.challenge_day_template), (int) (day + 1)));
+        } else {
+          tvDay.setText(String.format(getString(R.string.challenge_day_template), (int) (day + 1)));
+        }
       } else {
         tvDay.setText(String.format(getString(R.string.challenge_day_template), (int) (day)));
       }
@@ -112,14 +109,18 @@ public class StatsTrackingActivity extends BaseActivity
 
     getTrackingStatsClient.registerListener(this);
     showProgressFragment();
-    getTrackingStatsClient.getTrackingStats(trackingId);
+    try {
+      mPresenter.fetchTrackingStats(trackingId,mTracking);
+    } catch (ParseException e) {
+      e.printStackTrace();
+    }
+    //getTrackingStatsClient.getTrackingStats(trackingId);
   }
 
   @Override protected void onStop() {
     super.onStop();
     Timber.e("onStop");
     App.getEventBus().post(new HideDots(false));
-
 
     getTrackingStatsClient.unregisterListener();
   }
@@ -171,36 +172,72 @@ public class StatsTrackingActivity extends BaseActivity
   }
 
   @Override public void onApiGetTrackingStatsSuccess(Stats[] stats) {
-    int i = 0;
-    //mTracking.getStartDate().equals()
+    //int i = 0;
+    ////mTracking.getStartDate().equals()
+    //
+    ////long startTime =
+    //
+    //Timber.e("Start date " + mTracking.getStartDate());
+    //
+    //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
+    //try {
+    //  Date date = sdf.parse(mTracking.getStartDate());
+    //  Timber.e("Start time: " + date.getTime());
+    //} catch (ParseException e) {
+    //  e.printStackTrace();
+    //}
+    //
+    //Calendar today = Calendar.getInstance();
+    //
+    ////long difference = today.getTimeInMillis() - calendar.getTimeInMillis();
+    ////int days = (int) (difference/ (1000*60*60*24));
+    //
+    //for (Stats s : stats) {
+    //  Timber.e("onApiGetTrackingStatsSuccess " + s.getDayTimestamp());
+    //  Timber.e("index " + i++ + " " + s.getStepsCount());
+    //}
+    //statsAdapter.setStats(Arrays.asList(stats), mTracking.isMentors());
+    //vpStats.setOffscreenPageLimit(statsAdapter.getCount());
+    //spiStats.setViewPager(vpStats, 0);
+    //Timber.e("onApiGetTrackingStatsSuccess " + statsAdapter.getTodayIndex());
+    //vpStats.post(() -> vpStats.setCurrentItem(statsAdapter.getTodayIndex()));
+    //closeProgressFragment();
+  }
 
-    //long startTime =
+  @Override public void showTrackingStats(List<Stats> stats) {
+    if (stats != null && stats.size() != 0) {
+      Timber.e("showStats size = " + stats.size());
+      int i = 0;
+      //mTracking.getStartDate().equals()
 
-    Timber.e("Start date " + mTracking.getStartDate());
+      //long startTime =
 
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
-    try {
-      Date date = sdf.parse(mTracking.getStartDate());
-      Timber.e("Start time: " + date.getTime());
-    } catch (ParseException e) {
-      e.printStackTrace();
+      Timber.e("Start date " + mTracking.getStartDate());
+
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
+      try {
+        Date date = sdf.parse(mTracking.getStartDate());
+        Timber.e("showTrackingStats Start time: " + date.getTime());
+      } catch (ParseException e) {
+        e.printStackTrace();
+      }
+
+      Calendar today = Calendar.getInstance();
+
+      //long difference = today.getTimeInMillis() - calendar.getTimeInMillis();
+      //int days = (int) (difference/ (1000*60*60*24));
+
+      for (Stats s : stats) {
+        Timber.e("showTrackingStats " + s.getDayTimestamp());
+        Timber.e("index " + i++ + " " + s.getStepsCount());
+      }
+      statsAdapter.setStats(stats, mTracking.isMentors());
+      vpStats.setOffscreenPageLimit(statsAdapter.getCount());
+      spiStats.setViewPager(vpStats, 0);
+      Timber.e(" showTrackingStats " + statsAdapter.getTodayIndex());
+      vpStats.post(() -> vpStats.setCurrentItem(statsAdapter.getTodayIndex()));
+      closeProgressFragment();
     }
-
-    Calendar today = Calendar.getInstance();
-
-    //long difference = today.getTimeInMillis() - calendar.getTimeInMillis();
-    //int days = (int) (difference/ (1000*60*60*24));
-
-    for (Stats s : stats) {
-      Timber.e("onApiGetTrackingStatsSuccess " +s.getDayTimestamp());
-      Timber.e("index " + i++ + " " + s.getStepsCount());
-    }
-    statsAdapter.setStats(Arrays.asList(stats),mTracking.isMentors());
-    vpStats.setOffscreenPageLimit(statsAdapter.getCount());
-    spiStats.setViewPager(vpStats, 0);
-    Timber.e("onApiGetTrackingStatsSuccess "+statsAdapter.getTodayIndex());
-    vpStats.post(() -> vpStats.setCurrentItem(statsAdapter.getTodayIndex()));
-    closeProgressFragment();
   }
 
   @Override public void onApiGetTrackingStatsFailure(String message) {

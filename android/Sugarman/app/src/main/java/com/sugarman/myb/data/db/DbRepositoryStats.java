@@ -38,7 +38,7 @@ public class DbRepositoryStats /*implements IDbRepository<StatsResponse> */ {
   //}
   //}
 
-  public List<Stats> getAllEntities() {
-    return SharedPreferenceHelper.getStats();
+  public List<Stats> getAllEntities(int i) {
+    return SharedPreferenceHelper.getStats(i);
   }
 }

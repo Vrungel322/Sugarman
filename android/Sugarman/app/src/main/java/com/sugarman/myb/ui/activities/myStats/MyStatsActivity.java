@@ -14,7 +14,7 @@ import com.sugarman.myb.constants.DialogConstants;
 import com.sugarman.myb.eventbus.events.StatsOpenedEvent;
 import com.sugarman.myb.listeners.ApiGetMyStatsListener;
 import com.sugarman.myb.listeners.OnSwipeListener;
-import com.sugarman.myb.ui.activities.StatsTrackingActivity;
+import com.sugarman.myb.ui.activities.statsTracking.StatsTrackingActivity;
 import com.sugarman.myb.ui.activities.base.BaseActivity;
 import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;

@@ -30,7 +30,7 @@ import timber.log.Timber;
   }
 
   public void fetchStats() {
-    List<Stats> statsCached = mDbRepositoryStats.getAllEntities();
+    List<Stats> statsCached = mDbRepositoryStats.getAllEntities(21);
     for (Stats s : statsCached) {
       if (s.getStepsCount() == Constants.FAKE_STEPS_COUNT) {
         needToupdateData = true;
@@ -59,11 +59,6 @@ import timber.log.Timber;
           .toList()
           .compose(ThreadSchedulers.applySchedulers())
           .subscribe(statsList -> {
-            //mDbRepositoryStats.saveEntityList(statsResponseResponse.body());
-            for (Stats s : mDbRepositoryStats.getAllEntities()) {
-              Timber.e("fetchStats stats from SHP " + s.toString());
-            }
-
             getViewState().showStats(statsList);
           }, Throwable::printStackTrace);
       addToUnsubscription(subscription);

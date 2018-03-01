@@ -21,6 +21,7 @@ import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.animation.GetAnimationResponse;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.api.models.responses.me.stats.StatsResponse;
+import com.sugarman.myb.api.models.responses.trackings.TrackingStatsResponse;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.models.ContactListForServer;
@@ -312,5 +313,9 @@ public class RestApi {
 
   public Observable<Response<StatsResponse>> fetchStats() {
     return api.fetchStats();
+  }
+
+  public Observable<Response<TrackingStatsResponse>> fetchTrackingStats(String trackingId) {
+    return api.fetchTrackingStats( trackingId);
   }
 }

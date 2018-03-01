@@ -18,6 +18,7 @@ import com.sugarman.myb.api.models.responses.RescueFriendResponse;
 import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.animation.GetAnimationResponse;
 import com.sugarman.myb.api.models.responses.me.stats.StatsResponse;
+import com.sugarman.myb.api.models.responses.trackings.TrackingStatsResponse;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.models.ContactListForServer;
 import com.sugarman.myb.models.ab_testing.ABTesting;
@@ -169,4 +170,8 @@ public interface ApiRx {
       @Field("id_mentor") String mentorId, @Field("token") String token, @Header("os") String os);
 
   @GET("/v2/me/stats") Observable<Response<StatsResponse>> fetchStats();
+
+  @GET("/v1/me/trackings/{tracking_id}/stats")
+  Observable<Response<TrackingStatsResponse>> fetchTrackingStats(
+      @Path("tracking_id") String trackingId);
 }
