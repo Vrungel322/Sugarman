@@ -9,16 +9,16 @@ import timber.log.Timber;
  * Created by nikita on 28.02.2018.
  */
 
-public class DbRepositoryStats /*implements IDbRepository<StatsResponse> */ {
+public class DbRepositoryStats implements IDbRepository<Stats> {
 
   public DbRepositoryStats() {
   }
 
-  public void dropTable() {
+  @Override public void dropTable() {
     Timber.e("dropTable");
   }
 
-  public void saveEntity(Stats statsList) {
+  @Override public void saveEntity(Stats statsList) {
     if (statsList != null) {
       Timber.e("saveEntityList entityList list size = " + statsList.getDate());
       dropTable();
@@ -37,8 +37,7 @@ public class DbRepositoryStats /*implements IDbRepository<StatsResponse> */ {
   //  saveEntityList(new StatsResponse(appendedList));
   //}
   //}
-
-  public List<Stats> getAllEntities(int i) {
-    return SharedPreferenceHelper.getStats(i);
+  @Override public List<Stats> getAllEntities(int previousCountDays) {
+    return SharedPreferenceHelper.getStats(previousCountDays);
   }
 }
