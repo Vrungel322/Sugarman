@@ -16,7 +16,6 @@ import com.sugarman.myb.listeners.ApiGetMyStatsListener;
 import com.sugarman.myb.listeners.OnSwipeListener;
 import com.sugarman.myb.ui.activities.StatsTrackingActivity;
 import com.sugarman.myb.ui.activities.base.BaseActivity;
-import com.sugarman.myb.ui.activities.profile.ProfileActivityPresenter;
 import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.ui.views.OnSwipeTouchListener;
@@ -29,21 +28,17 @@ public class MyStatsActivity extends BaseActivity
     implements View.OnClickListener, OnSwipeListener, ApiGetMyStatsListener, IMyStatsActivityView {
 
   private static final String TAG = StatsTrackingActivity.class.getName();
-  private StatsPagerAdapter statsAdapter;
-
-  @InjectPresenter MyStatsPresenter mPresenter;
-
-  private ViewPager vpStats;
-  private SquarePageIndicator spiStats;
-  private View rootContainer;
-
-  private GetMyStatsClient getMyStatsClient;
-
   private final Runnable opened = new Runnable() {
     @Override public void run() {
       App.getEventBus().post(new StatsOpenedEvent());
     }
   };
+  @InjectPresenter MyStatsPresenter mPresenter;
+  private StatsPagerAdapter statsAdapter;
+  private ViewPager vpStats;
+  private SquarePageIndicator spiStats;
+  private View rootContainer;
+  private GetMyStatsClient getMyStatsClient;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_my_stats);
@@ -67,7 +62,8 @@ public class MyStatsActivity extends BaseActivity
 
     getMyStatsClient.registerListener(this);
     showProgressFragment();
-    getMyStatsClient.getStats();
+    //getMyStatsClient.fetchStats();
+    mPresenter.fetchStats();
   }
 
   @Override protected void onStop() {
@@ -123,19 +119,18 @@ public class MyStatsActivity extends BaseActivity
   }
 
   @Override public void onApiGetMyStatsSuccess(Stats[] stats) {
-    statsAdapter.setStats(stats);
-    for(Stats s : stats)
-    {
-      Timber.e(s.getDate() + " " +s.getStepsCount());
-    }
-    vpStats.setOffscreenPageLimit(statsAdapter.getCount());
-    spiStats.setViewPager(vpStats, 0);
-    vpStats.post(new Runnable() {
-      @Override public void run() {
-        vpStats.setCurrentItem(statsAdapter.getTodayIndex());
-      }
-    });
-    closeProgressFragment();
+    //statsAdapter.setStats(stats);
+    //for (Stats s : stats) {
+    //  Timber.e("onApiGetMyStatsSuccess " + s.getDate() + " " + s.getStepsCount());
+    //}
+    //vpStats.setOffscreenPageLimit(statsAdapter.getCount());
+    //spiStats.setViewPager(vpStats, 0);
+    //vpStats.post(new Runnable() {
+    //  @Override public void run() {
+    //    vpStats.setCurrentItem(statsAdapter.getTodayIndex());
+    //  }
+    //});
+    //closeProgressFragment();
   }
 
   @Override public void onApiGetMyStatsFailure(String message) {
@@ -146,6 +141,21 @@ public class MyStatsActivity extends BaseActivity
     } else {
       showNoInternetConnectionDialog();
     }
+  }
+
+  @Override public void showStats(Stats[] stats) {
+    statsAdapter.setStats(stats);
+    for (Stats s : stats) {
+      Timber.e("onApiGetMyStatsSuccess " + s.getDate() + " " + s.getStepsCount());
+    }
+    vpStats.setOffscreenPageLimit(statsAdapter.getCount());
+    spiStats.setViewPager(vpStats, 0);
+    vpStats.post(new Runnable() {
+      @Override public void run() {
+        vpStats.setCurrentItem(statsAdapter.getTodayIndex());
+      }
+    });
+    closeProgressFragment();
   }
 }
 

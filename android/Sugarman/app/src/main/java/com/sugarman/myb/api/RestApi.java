@@ -20,6 +20,7 @@ import com.sugarman.myb.api.models.responses.RescueFriendResponse;
 import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.animation.GetAnimationResponse;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
+import com.sugarman.myb.api.models.responses.me.stats.StatsResponse;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.models.ContactListForServer;
@@ -307,5 +308,9 @@ public class RestApi {
 
   public Observable<Response<Void>> closeSubscription(String mentorId, String token) {
     return api.closeSubscription(mentorId,token,"android");
+  }
+
+  public Observable<Response<StatsResponse>> fetchStats() {
+    return api.fetchStats();
   }
 }

@@ -26,6 +26,7 @@ import com.sugarman.myb.api.models.responses.RescueFriendResponse;
 import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.animation.GetAnimationResponse;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
+import com.sugarman.myb.api.models.responses.me.stats.StatsResponse;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.data.db.DbHelper;
@@ -408,5 +409,9 @@ public class DataManager {
 
   public Observable<Response<Void>> closeSubscription(String mentorId, String token) {
     return mRestApi.closeSubscription(mentorId,token);
+  }
+
+  public Observable<Response<StatsResponse>> fetchStats() {
+    return mRestApi.fetchStats();
   }
 }

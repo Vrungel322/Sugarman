@@ -49,7 +49,7 @@ public class DbHelper {
     realm.beginTransaction();
     list = realm.where(clazz).findAll();
     realm.commitTransaction();
-    return list;
+    return realm.copyFromRealm(list); // Returns List , NOT RealmList
   }
 
   public <T extends RealmObject> T getElementById(Class<T> clazz, int id) {
