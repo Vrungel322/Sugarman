@@ -10,6 +10,7 @@ import com.sugarman.myb.api.SpikaOSRetroApiInterfaceRx;
 import com.sugarman.myb.constants.Config;
 import com.sugarman.myb.data.DataManager;
 import com.sugarman.myb.data.db.DbHelper;
+import com.sugarman.myb.data.db.DbRepositoryStats;
 import com.sugarman.myb.data.local.PreferencesHelper;
 import com.sugarman.myb.di.scopes.AppScope;
 import com.sugarman.myb.utils.apps_Fly.AppsFlyRemoteLogger;
@@ -80,5 +81,9 @@ import timber.log.Timber;
 
   @Provides @AppScope PreferencesHelper providePreferencesHelper(Context context, Gson gson) {
     return new PreferencesHelper(context, gson);
+  }
+
+  @Provides @AppScope DbRepositoryStats provideDbRepositoryStats(){
+    return new DbRepositoryStats();
   }
 }

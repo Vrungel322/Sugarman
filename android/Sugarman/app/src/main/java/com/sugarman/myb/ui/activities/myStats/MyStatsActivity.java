@@ -10,6 +10,7 @@ import com.sugarman.myb.R;
 import com.sugarman.myb.adapters.StatsPagerAdapter;
 import com.sugarman.myb.api.clients.GetMyStatsClient;
 import com.sugarman.myb.api.models.responses.me.stats.Stats;
+import com.sugarman.myb.api.models.responses.me.stats.StatsResponse;
 import com.sugarman.myb.constants.DialogConstants;
 import com.sugarman.myb.eventbus.events.StatsOpenedEvent;
 import com.sugarman.myb.listeners.ApiGetMyStatsListener;
@@ -143,19 +144,22 @@ public class MyStatsActivity extends BaseActivity
     }
   }
 
-  @Override public void showStats(Stats[] stats) {
-    statsAdapter.setStats(stats);
-    for (Stats s : stats) {
-      Timber.e("onApiGetMyStatsSuccess " + s.getDate() + " " + s.getStepsCount());
-    }
-    vpStats.setOffscreenPageLimit(statsAdapter.getCount());
-    spiStats.setViewPager(vpStats, 0);
-    vpStats.post(new Runnable() {
-      @Override public void run() {
-        vpStats.setCurrentItem(statsAdapter.getTodayIndex());
+  @Override public void showStats(StatsResponse stats) {
+    if (stats != null && stats.getResult() != null && stats.getResult().length != 0) {
+      Timber.e("showStats size = " + stats.getResult().length);
+      statsAdapter.setStats(stats.getResult());
+      for (Stats s : stats.getResult()) {
+        Timber.e("onApiGetMyStatsSuccess " + s.getDate() + " " + s.getStepsCount());
       }
-    });
-    closeProgressFragment();
+      vpStats.setOffscreenPageLimit(statsAdapter.getCount());
+      spiStats.setViewPager(vpStats, 0);
+      vpStats.post(new Runnable() {
+        @Override public void run() {
+          vpStats.setCurrentItem(statsAdapter.getTodayIndex());
+        }
+      });
+      closeProgressFragment();
+    }
   }
 }
 

@@ -1,48 +1,44 @@
 package com.sugarman.myb.data.db;
 
-import com.sugarman.myb.api.models.responses.me.stats.Stats;
-import java.util.ArrayList;
-import java.util.List;
-import javax.inject.Inject;
+import com.sugarman.myb.api.models.responses.me.stats.StatsResponse;
+import com.sugarman.myb.utils.SharedPreferenceHelper;
 import timber.log.Timber;
 
 /**
  * Created by nikita on 28.02.2018.
  */
 
-public class DbRepositoryStats {
-  private DbHelper mDbHelper;
+public class DbRepositoryStats implements IDbRepository<StatsResponse> {
 
-  @Inject public DbRepositoryStats(DbHelper dbHelper) {
-    mDbHelper = dbHelper;
+  public DbRepositoryStats() {
   }
 
-  private void dropStatsTable() {
-    mDbHelper.dropRealmTable(Stats.class);
+  @Override public void dropTable() {
+    Timber.e("dropTable");
+    SharedPreferenceHelper.clearStats();
   }
 
-  public void saveStats(List<Stats> statsList) {
-    if (statsList != null) {
-      Timber.e("saveStats statsList list size = " + statsList.size());
-
-      dropStatsTable();
-      Timber.e("saveStats " + (mDbHelper != null));
-      for (Stats s : statsList) {
-        mDbHelper.save(s);
-      }
+  @Override public void saveEntityList(StatsResponse entityList) {
+    if (entityList != null) {
+      Timber.e("saveEntityList entityList list size = " + entityList.getResult().length);
+      dropTable();
+      SharedPreferenceHelper.saveStats(entityList);
     }
   }
 
-  public void appendStats(List<Stats> statsList) {
-    if (statsList != null) {
-      Timber.e("appendStats statsList list size = " + statsList.size());
-      List<Stats> appendedList = new ArrayList<>();
-      appendedList.addAll(mDbHelper.getAll(Stats.class));
-      Timber.e("appendStats previous list size = " + (mDbHelper.getAll(Stats.class).size()));
-      appendedList.addAll(statsList);
-      Timber.e("appendStats appendedList list size = " + appendedList.size());
-      saveStats(appendedList);
-    }
-  }
+  //@Override public void appendEntities(List<Stats> entityList) {
+    //if (entityList != null) {
+    //  Timber.e("appendEntities entityList list size = " + entityList.size());
+    //  List<Stats> appendedList = new ArrayList<>();
+    //  appendedList.addAll(mDbHelper.getAll(Stats.class));
+    //  Timber.e("appendEntities previous list size = " + (mDbHelper.getAll(Stats.class).size()));
+    //  appendedList.addAll(entityList);
+    //  Timber.e("appendEntities appendedList list size = " + appendedList.size());
+    //  saveEntityList(new StatsResponse(appendedList));
+    //}
+  //}
 
+  @Override public StatsResponse getAllEntities() {
+    return SharedPreferenceHelper.getStats();
+  }
 }

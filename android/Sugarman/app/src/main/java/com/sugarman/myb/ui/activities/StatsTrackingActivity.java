@@ -28,6 +28,7 @@ import com.sugarman.myb.utils.DeviceHelper;
 import com.sugarman.myb.utils.IntentExtractorHelper;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -194,7 +195,7 @@ public class StatsTrackingActivity extends BaseActivity
       Timber.e("onApiGetTrackingStatsSuccess " +s.getDayTimestamp());
       Timber.e("index " + i++ + " " + s.getStepsCount());
     }
-    statsAdapter.setStats(stats,mTracking.isMentors());
+    statsAdapter.setStats(Arrays.asList(stats),mTracking.isMentors());
     vpStats.setOffscreenPageLimit(statsAdapter.getCount());
     spiStats.setViewPager(vpStats, 0);
     Timber.e("onApiGetTrackingStatsSuccess "+statsAdapter.getTodayIndex());

@@ -16,7 +16,7 @@ public class StatsPagerAdapter extends FragmentStatePagerAdapter {
   private final Hashtable<Integer, SoftReference<StatsWeekFragment>> cashedFragments =
       new Hashtable<>();
 
-  private Stats[] stats = new Stats[0];
+  private List<Stats> stats = new ArrayList<>();
   private boolean isMentors;
 
   public StatsPagerAdapter(FragmentManager fm) {
@@ -29,29 +29,39 @@ public class StatsPagerAdapter extends FragmentStatePagerAdapter {
       List<Stats> statsList = new ArrayList<>(Config.DAYS_ON_STATS_SCREEN);
       int from = position * Config.DAYS_ON_STATS_SCREEN;
       int tmp = from + Config.DAYS_ON_STATS_SCREEN;
-      int to = tmp > stats.length ? stats.length : tmp;
-      statsList.addAll(Arrays.asList(stats).subList(from, to));
+      int to = tmp > stats.size() ? stats.size() : tmp;
+      statsList.addAll(stats.subList(from, to));
 
       fragment =
-          StatsWeekFragment.newInstance(statsList.toArray(new Stats[statsList.size()]), position,isMentors);
+          StatsWeekFragment.newInstance(statsList.toArray(new Stats[statsList.size()]), position,
+              isMentors);
       cashedFragments.put(position, new SoftReference<>(fragment));
     }
     return fragment;
   }
 
   @Override public int getCount() {
-    return stats.length / Config.DAYS_ON_STATS_SCREEN + (
-        stats.length % Config.DAYS_ON_STATS_SCREEN == 0 ? 0 : 1);
+    return stats.size() / Config.DAYS_ON_STATS_SCREEN + (
+        stats.size() % Config.DAYS_ON_STATS_SCREEN == 0 ? 0 : 1);
   }
 
-  public void setStats(Stats[] stats, boolean isMentors) {
-    this.stats = stats;
+  public void setStats(List<Stats> stats, boolean isMentors) {
+    this.stats.clear();
+    this.stats.addAll(stats);
+    this.isMentors = isMentors;
+    notifyDataSetChanged();
+  }
+
+  public void setStats(List<Stats> stats) {
+    this.stats.clear();
+    this.stats.addAll(stats);
     this.isMentors = isMentors;
     notifyDataSetChanged();
   }
 
   public void setStats(Stats[] stats) {
-    this.stats = stats;
+    this.stats.clear();
+    this.stats.addAll(Arrays.asList(stats));
     this.isMentors = isMentors;
     notifyDataSetChanged();
   }

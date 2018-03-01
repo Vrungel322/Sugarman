@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import com.sugarman.myb.api.models.requests.ReportStats;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.api.models.responses.me.stats.Stats;
+import com.sugarman.myb.api.models.responses.me.stats.StatsResponse;
 import com.sugarman.myb.api.models.responses.users.Tokens;
 import com.sugarman.myb.api.models.responses.users.User;
 import com.sugarman.myb.constants.Config;
@@ -255,6 +256,18 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     for (int i = 0; i < Constants.REPORTED_DAYS; i++) {
       SharedPreferenceHelper.saveStatsToPrefs(userId, stats[i]);
     }
+  }
+
+  public static void saveStats(StatsResponse statsResponse) {
+    putString("myStats", new Gson().toJson(statsResponse));
+  }
+
+  public static StatsResponse getStats() {
+    return new Gson().fromJson(getString("myStats", ""), StatsResponse.class);
+  }
+
+  public static void clearStats() {
+    putString("myStats", "");
   }
 
   public static void saveBaseline(int baseline) {
@@ -878,5 +891,4 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
   public static void setRemoteLoggingEnabled(boolean b) {
     putBoolean(SharedPreferenceConstants.REMOTE_LOGGING_ENABLED, b);
   }
-
 }

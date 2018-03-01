@@ -1,16 +1,12 @@
 package com.sugarman.myb.api.models.responses.me.stats;
 
 import com.google.gson.annotations.SerializedName;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-public class StatsResponse {
+@AllArgsConstructor @NoArgsConstructor public class StatsResponse {
 
-  @SerializedName("result") private Stats[] result;
-
-  public Stats[] getResult() {
-    return result;
-  }
-
-  public void setResult(Stats[] result) {
-    this.result = result;
-  }
+  @Getter @Setter @SerializedName("result") private Stats[] result;
 }

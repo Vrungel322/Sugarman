@@ -50,7 +50,7 @@ import timber.log.Timber;
     fetchRules();
     subscribeShowDialogEvent();
     startFetchingTrackingsPeriodically();
-    mDbRepositoryStats.saveStats(null);
+    mDbRepositoryStats.saveEntityList(null);
   }
 
   private void startFetchingTrackingsPeriodically() {
