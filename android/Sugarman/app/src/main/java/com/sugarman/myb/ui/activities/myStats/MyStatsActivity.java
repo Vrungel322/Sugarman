@@ -23,6 +23,7 @@ import com.sugarman.myb.ui.views.OnSwipeTouchListener;
 import com.sugarman.myb.ui.views.SquarePageIndicator;
 import com.sugarman.myb.ui.views.SwipeGestureListener;
 import com.sugarman.myb.utils.DeviceHelper;
+import java.util.List;
 import timber.log.Timber;
 
 public class MyStatsActivity extends BaseActivity
@@ -144,11 +145,11 @@ public class MyStatsActivity extends BaseActivity
     }
   }
 
-  @Override public void showStats(StatsResponse stats) {
-    if (stats != null && stats.getResult() != null && stats.getResult().length != 0) {
-      Timber.e("showStats size = " + stats.getResult().length);
-      statsAdapter.setStats(stats.getResult());
-      for (Stats s : stats.getResult()) {
+  @Override public void showStats(List<Stats> stats) {
+    if (stats != null && stats.size() != 0) {
+      Timber.e("showStats size = " + stats.size());
+      statsAdapter.setStats(stats);
+      for (Stats s : stats) {
         Timber.e("onApiGetMyStatsSuccess " + s.getDate() + " " + s.getStepsCount());
       }
       vpStats.setOffscreenPageLimit(statsAdapter.getCount());

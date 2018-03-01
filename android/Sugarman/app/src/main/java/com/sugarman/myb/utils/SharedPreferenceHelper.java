@@ -6,7 +6,6 @@ import com.google.gson.reflect.TypeToken;
 import com.sugarman.myb.api.models.requests.ReportStats;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.api.models.responses.me.stats.Stats;
-import com.sugarman.myb.api.models.responses.me.stats.StatsResponse;
 import com.sugarman.myb.api.models.responses.users.Tokens;
 import com.sugarman.myb.api.models.responses.users.User;
 import com.sugarman.myb.constants.Config;
@@ -258,16 +257,22 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     }
   }
 
-  public static void saveStats(StatsResponse statsResponse) {
-    putString("myStats", new Gson().toJson(statsResponse));
+  public static void saveStats(Stats s) {
+    Timber.e("saveStats " + s.getDate());
+      putInt(s.getDate(), s.getStepsCount());
+
   }
 
-  public static StatsResponse getStats() {
-    return new Gson().fromJson(getString("myStats", ""), StatsResponse.class);
-  }
+  public static List<Stats> getStats() {
+    List<Stats> stats = new ArrayList<>();
 
-  public static void clearStats() {
-    putString("myStats", "");
+    for (int i = 0; i < DataUtils.getLastXDays(21).size(); i++) {
+      String data = DataUtils.getLastXDays(21).get(i);
+      Timber.e("saveStats getStats " + data);
+      stats.add(new Stats(i, data,"day "+data,getInt(data,999),0));
+
+    }
+    return stats;
   }
 
   public static void saveBaseline(int baseline) {

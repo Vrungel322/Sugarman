@@ -8,7 +8,6 @@ import com.sugarman.myb.App;
 import com.sugarman.myb.base.BasicActivity;
 import com.sugarman.myb.base.BasicPresenter;
 import com.sugarman.myb.constants.Constants;
-import com.sugarman.myb.data.db.DbRepositoryStats;
 import com.sugarman.myb.models.ContactListForServer;
 import com.sugarman.myb.models.animation.ImageModel;
 import com.sugarman.myb.models.custom_events.CustomUserEvent;
@@ -26,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import javax.inject.Inject;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -37,7 +35,6 @@ import timber.log.Timber;
  */
 @InjectViewState public class MainActivityPresenter extends BasicPresenter<IMainActivityView> {
   int duration = 30;
-  @Inject DbRepositoryStats mDbRepositoryStats;
 
   @Override protected void inject() {
     App.getAppComponent().inject(this);
@@ -50,7 +47,6 @@ import timber.log.Timber;
     fetchRules();
     subscribeShowDialogEvent();
     startFetchingTrackingsPeriodically();
-    mDbRepositoryStats.saveEntityList(null);
   }
 
   private void startFetchingTrackingsPeriodically() {
