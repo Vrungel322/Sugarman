@@ -11,7 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@NoArgsConstructor @AllArgsConstructor @ToString public class Stats extends RealmObject
+@AllArgsConstructor public class Stats extends RealmObject
     implements Parcelable {
 
   public static final Comparator<Stats> BY_DATE_DESC = new Comparator<Stats>() {
@@ -35,6 +35,11 @@ import lombok.ToString;
 
   //public Stats(){}
   @SerializedName("timestamp") private long dayTimestamp;
+
+  public Stats()
+  {
+
+  }
 
   private Stats(Parcel in) {
     dayTimestamp = in.readLong();
