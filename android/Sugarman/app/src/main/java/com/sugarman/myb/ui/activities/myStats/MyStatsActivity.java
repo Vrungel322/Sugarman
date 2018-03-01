@@ -10,7 +10,6 @@ import com.sugarman.myb.R;
 import com.sugarman.myb.adapters.StatsPagerAdapter;
 import com.sugarman.myb.api.clients.GetMyStatsClient;
 import com.sugarman.myb.api.models.responses.me.stats.Stats;
-import com.sugarman.myb.api.models.responses.me.stats.StatsResponse;
 import com.sugarman.myb.constants.DialogConstants;
 import com.sugarman.myb.eventbus.events.StatsOpenedEvent;
 import com.sugarman.myb.listeners.ApiGetMyStatsListener;
@@ -45,6 +44,7 @@ public class MyStatsActivity extends BaseActivity
   @Override protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_my_stats);
     super.onCreate(savedInstanceState);
+    Timber.e("onCreate");
 
     rootContainer = findViewById(R.id.fl_root_container);
     vpStats = (ViewPager) findViewById(R.id.vp_stats);
@@ -61,6 +61,7 @@ public class MyStatsActivity extends BaseActivity
 
   @Override protected void onStart() {
     super.onStart();
+    Timber.e("onStart");
 
     getMyStatsClient.registerListener(this);
     showProgressFragment();
@@ -76,6 +77,7 @@ public class MyStatsActivity extends BaseActivity
 
   @Override protected void onResume() {
     super.onResume();
+    Timber.e("onResume");
 
     rootContainer.post(opened);
   }

@@ -108,6 +108,7 @@ public abstract class Constants {
   public static final String EVENT_X_NEW_USERS_INVITE = "event_type_group_with_new_x_users";
   public static final String IS_MENTORS = "IS_MENTORS";
   public static final int OPEN_GROPEDETAILS_ACTIVITY_WHERE_WAS_POKE = 1112;
+  public static final int FAKE_STEPS_COUNT = -1;
 
   static {
     ORIENTATIONS.append(Surface.ROTATION_0, 90);

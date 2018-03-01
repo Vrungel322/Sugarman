@@ -269,7 +269,7 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     for (int i = 0; i < DataUtils.getLastXDays(21).size(); i++) {
       String data = DataUtils.getLastXDays(21).get(i);
       Timber.e("saveStats getStats " + data);
-      stats.add(new Stats(i, data,"day "+data,getInt(data,999),0));
+      stats.add(new Stats(i, data,"day "+data,getInt(data,Constants.FAKE_STEPS_COUNT),0));
 
     }
     return stats;
