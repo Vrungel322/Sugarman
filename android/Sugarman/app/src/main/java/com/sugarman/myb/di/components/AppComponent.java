@@ -16,6 +16,7 @@ import com.sugarman.myb.ui.activities.exceptionHidenActivity.SendExceptionHidden
 import com.sugarman.myb.ui.activities.groupDetails.GroupDetailsActivityPresenter;
 import com.sugarman.myb.ui.activities.groupDetails.adapter.GroupMembersAdapterPresenter;
 import com.sugarman.myb.ui.activities.inviteForRescue.InviteForRescueActivityPresenter;
+import com.sugarman.myb.ui.activities.invitesScreen.InvitesActivityPresenter;
 import com.sugarman.myb.ui.activities.mainScreeen.MainActivityPresenter;
 import com.sugarman.myb.ui.activities.mentorDetail.MentorDetailActivityPresenter;
 import com.sugarman.myb.ui.activities.mentorList.MentorListActivityPresenter;
@@ -107,7 +108,9 @@ import dagger.Component;
 
   void inject(SendExceptionHiddenPresenter presenter);
 
-  void inject(MyStatsPresenter myStatsPresenter);
+  void inject(MyStatsPresenter presenter);
 
-  void inject(StatsTrackingActivityPresenter myStatsPresenter);
+  void inject(StatsTrackingActivityPresenter presenter);
+
+  void inject(InvitesActivityPresenter presenter);
 }

@@ -102,7 +102,7 @@
         android:screenOrientation="portrait"
         android:theme="@style/SugarmanBackgroundActivityTheme" />
     <activity
-        android:name=".ui.activities.InvitesActivity"
+        android:name=".ui.activities.invitesScreen.InvitesActivity"
         android:screenOrientation="portrait"
         android:theme="@style/SugarmanBackgroundActivityTheme" />
     <activity

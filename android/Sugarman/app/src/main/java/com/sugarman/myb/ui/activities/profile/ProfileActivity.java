@@ -37,7 +37,7 @@ import com.sugarman.myb.eventbus.events.RequestsRemovedEvent;
 import com.sugarman.myb.eventbus.events.RequestsUpdatedEvent;
 import com.sugarman.myb.ui.activities.HighScoreActivity;
 import com.sugarman.myb.ui.activities.IntroActivity;
-import com.sugarman.myb.ui.activities.InvitesActivity;
+import com.sugarman.myb.ui.activities.invitesScreen.InvitesActivity;
 import com.sugarman.myb.ui.activities.myStats.MyStatsActivity;
 import com.sugarman.myb.ui.activities.RequestsActivity;
 import com.sugarman.myb.ui.activities.SettingsActivity;
