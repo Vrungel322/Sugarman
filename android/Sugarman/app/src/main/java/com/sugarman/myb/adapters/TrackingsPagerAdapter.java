@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
+import timber.log.Timber;
 
 public class TrackingsPagerAdapter extends FragmentStatePagerAdapter {
 
@@ -38,6 +39,8 @@ public class TrackingsPagerAdapter extends FragmentStatePagerAdapter {
   }
 
   @Override public BaseFragment getItem(int position) {
+    Timber.e("updateCurTra getItem position: "+ position);
+
     BaseChallengeFragment requestedFragment = getFragment(position);
     if (requestedFragment == null) {
       BaseChallengeItem item = mData.get(position);

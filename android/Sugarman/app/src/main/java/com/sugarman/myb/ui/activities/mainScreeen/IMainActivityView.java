@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable;
 import com.arellomobile.mvp.MvpView;
 import com.arellomobile.mvp.viewstate.strategy.AddToEndSingleStrategy;
 import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
+import com.sugarman.myb.api.models.responses.trackings.TrackingInfoResponse;
 import com.sugarman.myb.models.custom_events.CustomUserEvent;
 import java.util.List;
 
@@ -19,4 +20,8 @@ import java.util.List;
   void setAnimation(List<Drawable> drawable, int duration, String animName);
 
   void refreshTrackings();
+
+  void updateCurrentTracking(TrackingInfoResponse body);
+
+  //void refreshCurrentTracking(Tracking tracking);
 }

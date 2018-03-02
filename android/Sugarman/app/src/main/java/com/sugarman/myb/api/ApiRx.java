@@ -19,6 +19,7 @@ import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.animation.GetAnimationResponse;
 import com.sugarman.myb.api.models.responses.me.stats.Stats;
 import com.sugarman.myb.api.models.responses.me.stats.StatsResponse;
+import com.sugarman.myb.api.models.responses.trackings.TrackingInfoResponse;
 import com.sugarman.myb.api.models.responses.trackings.TrackingStatsResponse;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.models.ContactListForServer;
@@ -177,4 +178,8 @@ public interface ApiRx {
       @Path("tracking_id") String trackingId);
 
   @GET("") Observable<Response<Stats>> fetchStatByDate(String date);
+
+  @GET("/v1/me/trackings/{tracking_id}")
+  Observable<Response<TrackingInfoResponse>> fetchCurrentTracking(
+      @Path("tracking_id") String trackingId);
 }

@@ -53,6 +53,7 @@ import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.api.models.responses.me.invites.Invite;
 import com.sugarman.myb.api.models.responses.me.notifications.Notification;
 import com.sugarman.myb.api.models.responses.me.requests.Request;
+import com.sugarman.myb.api.models.responses.trackings.TrackingInfoResponse;
 import com.sugarman.myb.constants.Config;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.constants.DialogConstants;
@@ -261,7 +262,7 @@ public class MainActivity extends GetUserInfoActivity
   private View vShopButton;
   private NotificationsFragment notificationsFragment;
   private String[] notificationsFlags;
-  private Tracking[] myTrackings = new Tracking[0];
+  private List<Tracking> myTrackings = new ArrayList<>();
   private TrackingsPagerAdapter trackingsAdapter;
   private SendFirebaseTokenClient mSendFirebaseTokenClient;
   private GetMyTrackingsClient mGetMyTrackingsClient;
@@ -459,7 +460,8 @@ public class MainActivity extends GetUserInfoActivity
         public void onApiGetMyTrackingSuccess(Tracking[] trackings, List<Tracking> mentorsGroup,
             boolean isRefreshNotifications) {
           Timber.e("trackings:" + trackings.length + " mentorsGroup:" + mentorsGroup.size());
-          myTrackings = trackings;
+          myTrackings.clear();
+          myTrackings .addAll( Arrays.asList(trackings));
           mMentorsGroups = mentorsGroup;
           List<BaseChallengeItem> converted = prepareTrackingItems();
 
@@ -871,7 +873,7 @@ public class MainActivity extends GetUserInfoActivity
     // TODO: 12.07.2017 next milestone
     int animSteps = todaySteps;
     animationMan = (AnimationDrawable) ivAnimatedMan.getBackground();
-    if (todaySteps > 0 && myTrackings.length == 0) {
+    if (todaySteps > 0 && myTrackings.size() == 0) {
       //Timber.e(" updateAnimations 1");
       //ivAnimatedMan.setBackgroundResource(R.drawable.animation_sugarman_walkpoint);
       //animationMan = (AnimationDrawable) ivAnimatedMan.getBackground();
@@ -879,7 +881,7 @@ public class MainActivity extends GetUserInfoActivity
       //animationMan.start();
       //return;
     }
-    if (todaySteps == 0 && myTrackings.length == 0) {
+    if (todaySteps == 0 && myTrackings.size() == 0) {
       Timber.e(" updateAnimations 2");
       //
       //ivAnimatedMan.setBackgroundResource(R.drawable.animation_sugarman_point);
@@ -1463,13 +1465,13 @@ public class MainActivity extends GetUserInfoActivity
   }
 
   private void setActualDataToViews() {
-    myTrackings = new Tracking[actualTrackings.length];
+    myTrackings = new ArrayList<>(actualTrackings.length);
 
     System.arraycopy(actualTrackings, 0, myTrackings, 0, actualTrackings.length);
     for (Tracking t : myTrackings) {
       Log.e("TRAAAAAAAAAAAAACKING", "" + t.getGroup().getName() + " " + t.getId());
     }
-    Log.e("MainActivity", "huy huy huy " + myTrackings.length);
+    Log.e("MainActivity", "huy huy huy " + myTrackings.size());
 
     myNotifications.clear();
     myNotifications.addAll(prepareNotifications(actualNotifications));
@@ -1581,16 +1583,41 @@ public class MainActivity extends GetUserInfoActivity
 
   public void refreshTrackings() {
     Timber.e("refreshTrackings myTrackings= "
-        + myTrackings.length
+        + myTrackings.size()
         + " mMentorsGroups.size()= "
         + mMentorsGroups.size()
         + " bool= "
-        + (myTrackings.length + mMentorsGroups.size() != 0));
-    if (myTrackings.length + mMentorsGroups.size() != 0) {
+        + (myTrackings.size() + mMentorsGroups.size() != 0));
+    if (myTrackings.size() + mMentorsGroups.size() != 0) {
       showProgressFragment();
-      mGetMyTrackingsClient.getMyTrackings();
+      //if refreshCurrentTracking does not work , then uncomment  mGetMyTrackingsClient.getMyTrackings() line, and comment refreshCurrentTracking
+      //mGetMyTrackingsClient.getMyTrackings(); // updates all trackings
+      mPresenter.refreshCurrentTracking(trackingsAdapter.getTracking(vpTrackings.getCurrentItem()));//update only current tracking that is current in ViewPager
     }
   }
+
+  @Override public void updateCurrentTracking(TrackingInfoResponse body) {
+    List<Tracking> temp = new ArrayList<>();
+    int position = 0;
+    for (int i = 0; i <myTrackings.size() ; i++) {
+      if (!myTrackings.get(i).getId().equals(body.getResult().getId())){
+        temp.add(myTrackings.get(i));
+      }
+      else {
+        position=i;
+      }
+    }
+    myTrackings.clear();
+    myTrackings.addAll(temp);
+    myTrackings.add(position,body.getResult());
+    Timber.e("updateCurTra updateCurrentTracking position= " + position);
+    Timber.e("updateCurTra updateCurrentTracking myTrackings.size= " + myTrackings.size() + "tracking name: " + body.getResult().getGroup().getName());
+    updatePagerTrackings();
+  }
+
+  //@Override public void refreshCurrentTracking(Tracking tracking) {
+  //  mPresenter.refreshCurrentTracking(tracking);
+  //}
 
   private void openProfileActivity() {
 
@@ -1625,7 +1652,8 @@ public class MainActivity extends GetUserInfoActivity
   }
 
   private void getIntentData(Intent intent) {
-    myTrackings = IntentExtractorHelper.getTrackings(intent);
+    myTrackings.clear();
+    myTrackings.addAll( Arrays.asList(IntentExtractorHelper.getTrackings(intent)));
 
     myNotifications.clear();
     myNotifications.addAll(prepareNotifications(IntentExtractorHelper.getNotifications(intent)));
@@ -1693,16 +1721,16 @@ public class MainActivity extends GetUserInfoActivity
     Timber.e("updateTodaySteps "
         + !SharedPreferenceHelper.isRulesBlocked()
         + " l "
-        + myTrackings.length);
+        + myTrackings.size());
 
     if (!SharedPreferenceHelper.isRulesBlocked()) {
-      mPresenter.checkIfRuleStepsDone(todaySteps, myTrackings.length + mMentorsGroups.size());
+      mPresenter.checkIfRuleStepsDone(todaySteps, myTrackings.size() + mMentorsGroups.size());
       mPresenter.checkIfRule15KStepsDone(todaySteps);
     }
   }
 
   private List<BaseChallengeItem> convertTrackingsToItems() {
-    List<BaseChallengeItem> items = new ArrayList<>(myTrackings.length);
+    List<BaseChallengeItem> items = new ArrayList<>(myTrackings.size());
 
     if (mMentorsGroups != null) {
       for (Tracking mentorsGroup : mMentorsGroups) {
@@ -2000,6 +2028,7 @@ public class MainActivity extends GetUserInfoActivity
   }
 
   private void updatePagerTrackings() {
+    Timber.e("updateCurTra updatePagerTrackings");
     List<BaseChallengeItem> converted = prepareTrackingItems();
     if (converted.size() == 1) {
       vpTrackings.setPadding(0, 0, 0, 0);

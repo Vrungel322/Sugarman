@@ -28,6 +28,7 @@ import com.sugarman.myb.api.models.responses.animation.GetAnimationResponse;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.api.models.responses.me.stats.Stats;
 import com.sugarman.myb.api.models.responses.me.stats.StatsResponse;
+import com.sugarman.myb.api.models.responses.trackings.TrackingInfoResponse;
 import com.sugarman.myb.api.models.responses.trackings.TrackingStatsResponse;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.constants.Constants;
@@ -422,5 +423,9 @@ public class DataManager {
 
   public Observable<Response<Stats>> fetchStatByDate(String date) {
     return mRestApi.fetchStatByDate(date);
+  }
+
+  public Observable<Response<TrackingInfoResponse>> fetchCurrentTracking(String trackingId) {
+    return mRestApi.fetchCurrentTracking(trackingId);
   }
 }

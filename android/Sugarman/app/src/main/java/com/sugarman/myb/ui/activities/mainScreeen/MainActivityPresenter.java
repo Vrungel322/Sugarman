@@ -5,6 +5,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import com.arellomobile.mvp.InjectViewState;
 import com.sugarman.myb.App;
+import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.base.BasicActivity;
 import com.sugarman.myb.base.BasicPresenter;
 import com.sugarman.myb.constants.Constants;
@@ -58,6 +59,31 @@ import timber.log.Timber;
           getViewState().refreshTrackings();
         }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
+  }
+
+  //private void startFetchingTrackingsPeriodicallyCurrentTraking(Tracking tracking) {
+  //  //interval by default subscribeOn in Computation thread
+  //  Subscription subscription = Observable.interval(1000, 10000, TimeUnit.MILLISECONDS)
+  //      .observeOn(AndroidSchedulers.mainThread())
+  //      .subscribe(aLong -> {
+  //        Timber.e("startFetchingTrackingsPeriodically");
+  //        //getViewState().refreshCurrentTracking(tracking);
+  //        refreshCurrentTracking(tracking);
+  //      }, Throwable::printStackTrace);
+  //  addToUnsubscription(subscription);
+  //}
+
+  public void refreshCurrentTracking(Tracking tracking) {
+    if (tracking!=null) {
+      Subscription subscription = mDataManager.fetchCurrentTracking(tracking.getId())
+          .compose(ThreadSchedulers.applySchedulers())
+          .subscribe(trackingInfoResponseResponse -> {
+            Timber.e("updateCurTra refreshCurrentTracking code:" + trackingInfoResponseResponse.code());
+
+            getViewState().updateCurrentTracking(trackingInfoResponseResponse.body());
+          }, Throwable::printStackTrace);
+      addToUnsubscription(subscription);
+    }
   }
 
   private void subscribeShowDialogEvent() {
