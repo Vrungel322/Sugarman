@@ -75,8 +75,6 @@ public class InvitesActivity extends BaseActivity implements View.OnClickListene
 
     Collections.sort(actualInvites, Invite.BY_CREATE_AT_DESC);
 
-    inviteUnavailableTemplate = getString(R.string.invite_is_no_available_template);
-
     if (actualInvites.isEmpty()) {
       rcvInvites.setVisibility(View.GONE);
       vNoInvites.setVisibility(View.VISIBLE);
@@ -99,6 +97,22 @@ public class InvitesActivity extends BaseActivity implements View.OnClickListene
     }
 
     vBack.setOnClickListener(this);
+  }
+
+  @Override protected void onStart() {
+    super.onStart();
+
+    if (mInvitesManagerClient != null) {
+      mInvitesManagerClient.registerListener(this);
+    }
+  }
+
+  @Override protected void onStop() {
+    super.onStop();
+
+    if (mInvitesManagerClient != null) {
+      mInvitesManagerClient.unregisterListener();
+    }
   }
 
   private void actionOnClick(Invite invite, int position, boolean isAccepted) {
@@ -124,26 +138,6 @@ public class InvitesActivity extends BaseActivity implements View.OnClickListene
     }
   }
 
-  @Override protected void onStart() {
-    super.onStart();
-
-    if (mInvitesManagerClient != null) {
-      mInvitesManagerClient.registerListener(this);
-    }
-  }
-
-  @Override protected void onStop() {
-    super.onStop();
-
-    if (mInvitesManagerClient != null) {
-      mInvitesManagerClient.unregisterListener();
-    }
-  }
-
-  @Override public void onBackPressed() {
-    closeActivity();
-  }
-
   @Override public void onClick(View v) {
     int id = v.getId();
     switch (id) {
@@ -156,51 +150,6 @@ public class InvitesActivity extends BaseActivity implements View.OnClickListene
         break;
     }
   }
-
-  ///**
-  // * Method from Adapter click DeclineInvite
-  // * @param invite
-  // * @param position
-  // */
-  //@Override public void onDeclineInvite(Invite invite, int position) {
-  //  //Tracking tracking = invite.getTracking();
-  //  //long startTimestamp = tracking.getStartUTCDate().getTime();
-  //  //if (System.currentTimeMillis() - startTimestamp > Config.INVITE_TIME_LIVE
-  //  //    && !tracking.isMentors()) {
-  //  //  String groupName = tracking.getGroup().getName();
-  //  //  Timber.e("MENTORS" + tracking.isMentors());
-  //  //  showInviteUnavailableDialog(groupName);
-  //  //  invitesAdapter.removeItem(position);
-  //  //} else {
-  //  //  showProgressFragmentTemp();
-  //  //  actionPosition = position;
-  //  //  mPresenter.declineInvitation(invite.getId());
-  //  //  //mInvitesManagerClient.decline(invite.getId());
-  //  //}
-  //}
-  //
-  ///**
-  // * Method from Adapter click AcceptInvite
-  // * @param invite
-  // * @param position
-  // */
-  //@Override public void onAcceptInvite(Invite invite, int position) {
-  //  //Tracking tracking = invite.getTracking();
-  //  //long startTimestamp = tracking.getStartUTCDate().getTime();
-  //  //if (System.currentTimeMillis() - startTimestamp > Config.INVITE_TIME_LIVE
-  //  //    && !tracking.isMentors()) {
-  //  //  Timber.e("MENTORS" + tracking.isMentors());
-  //  //  String groupName = tracking.getGroup().getName();
-  //  //  showInviteUnavailableDialog(groupName);
-  //  //  invitesAdapter.removeItem(position);
-  //  //} else {
-  //  //  showProgressFragmentTemp();
-  //  //  actionPosition = position;
-  //  //
-  //  //  //mInvitesManagerClient.accept(invite.getId());
-  //  //  mPresenter.acceptInvitation(invite.getId());
-  //  //}
-  //}
 
   @Override public void declineInviteAction() {
     Timber.e("declineInvitation ");
@@ -242,55 +191,6 @@ public class InvitesActivity extends BaseActivity implements View.OnClickListene
     closeProgressFragment();
   }
 
-  //@Override public void onApiDeclineInviteSuccess() {
-  //  //Invite invite = invitesAdapter.getValue(actionPosition);
-  //  //if (invite != null) {
-  //  //  App.getEventBus().post(new InviteRemovedEvent(invite.getId()));
-  //  //}
-  //  //
-  //  //invitesAdapter.removeItem(actionPosition);
-  //  //actionPosition = -1;
-  //  //refreshNoInvites();
-  //  ////closeProgressFragment();
-  //
-  //}
-  //
-  //@Override public void onApiDeclineInviteFailure(String message) {
-  //  //closeProgressFragment();
-  //  //if (DeviceHelper.isNetworkConnected()) {
-  //  //  new SugarmanDialog.Builder(this, DialogConstants.API_DECLINE_INVITE_FAILURE_ID).content(
-  //  //      message).show();
-  //  //} else {
-  //  //  showNoInternetConnectionDialog();
-  //  //}
-  //}
-  //
-  //@Override public void onApiAcceptInviteSuccess() {
-  //  //AnalyticsHelper.reportChallenge();
-  //  //isNeedRefreshTrackings = true;
-  //  //
-  //  //Invite invite = invitesAdapter.getValue(actionPosition);
-  //  //lastAcceptTrackingId = invite.getTracking().getId();
-  //  //
-  //  //App.getEventBus().post(new InviteRemovedEvent(invite.getId()));
-  //  //App.getEventBus().post(new ReportStepsEvent());
-  //  //
-  //  //invitesAdapter.removeItem(actionPosition);
-  //  //actionPosition = -1;
-  //  //refreshNoInvites();
-  //  //closeProgressFragment();
-  //}
-  //
-  //@Override public void onApiAcceptInviteFailure(String message) {
-  //  //closeProgressFragment();
-  //  //if (DeviceHelper.isNetworkConnected()) {
-  //  //  new SugarmanDialog.Builder(this, DialogConstants.API_ACCEPT_INVITE_FAILURE_ID).content(
-  //  //      message).show();
-  //  //} else {
-  //  //  showNoInternetConnectionDialog();
-  //  //}
-  //}
-
   @Subscribe public void onEvent(InvitesUpdatedEvent event) {
     invitesAdapter.setValues(event.getInvites());
     refreshNoInvites();
@@ -308,7 +208,11 @@ public class InvitesActivity extends BaseActivity implements View.OnClickListene
 
   private void showInviteUnavailableDialog(String groupName) {
     new SugarmanDialog.Builder(this, DialogConstants.INVITE_IS_NOT_AVAILABLE_ID).content(
-        String.format(inviteUnavailableTemplate, groupName)).show();
+        String.format(getString(R.string.invite_is_no_available_template), groupName)).show();
+  }
+
+  @Override public void onBackPressed() {
+    closeActivity();
   }
 
   private void closeActivity() {
