@@ -26,6 +26,7 @@ import com.sugarman.myb.api.models.responses.RescueFriendResponse;
 import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.animation.GetAnimationResponse;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
+import com.sugarman.myb.api.models.responses.me.stats.Stats;
 import com.sugarman.myb.api.models.responses.me.stats.StatsResponse;
 import com.sugarman.myb.api.models.responses.trackings.TrackingStatsResponse;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
@@ -202,8 +203,7 @@ public class DataManager {
     return mRestApi.sendContacts(contactsForServer);
   }
 
-  @Deprecated
-  public Observable<Response<Subscriptions>> closeSubscription(
+  @Deprecated public Observable<Response<Subscriptions>> closeSubscription(
       PurchaseForServer purchaseForServer) {
     return mRestApi.closeSubscription(purchaseForServer);
   }
@@ -405,11 +405,11 @@ public class DataManager {
   public Observable<Response<Subscriptions>> checkPurchaseTransaction(
       PurchaseTransaction purchaseTransaction) {
     return mRestApi.
-    checkPurchaseTransaction(purchaseTransaction);
+        checkPurchaseTransaction(purchaseTransaction);
   }
 
   public Observable<Response<Void>> closeSubscription(String mentorId, String token) {
-    return mRestApi.closeSubscription(mentorId,token);
+    return mRestApi.closeSubscription(mentorId, token);
   }
 
   public Observable<Response<StatsResponse>> fetchStats() {
@@ -417,6 +417,10 @@ public class DataManager {
   }
 
   public Observable<Response<TrackingStatsResponse>> fetchTrackingStats(String trackingId) {
-    return mRestApi.fetchTrackingStats( trackingId);
+    return mRestApi.fetchTrackingStats(trackingId);
+  }
+
+  public Observable<Response<Stats>> fetchStatByDate(String date) {
+    return mRestApi.fetchStatByDate(date);
   }
 }

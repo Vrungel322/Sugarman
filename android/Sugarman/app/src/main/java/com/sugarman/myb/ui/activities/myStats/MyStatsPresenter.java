@@ -64,4 +64,13 @@ import timber.log.Timber;
       addToUnsubscription(subscription);
     }
   }
+
+  public void fetchStatByDate(String date) {
+    Subscription subscription = mDataManager.fetchStatByDate(date)
+        .compose(ThreadSchedulers.applySchedulers())
+        .subscribe(statsResponse -> {
+          Timber.e("fetchStatByDate" + statsResponse.code());
+        });
+    addToUnsubscription(subscription);
+  }
 }

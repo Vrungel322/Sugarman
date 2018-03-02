@@ -20,6 +20,7 @@ import com.sugarman.myb.api.models.responses.RescueFriendResponse;
 import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.animation.GetAnimationResponse;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
+import com.sugarman.myb.api.models.responses.me.stats.Stats;
 import com.sugarman.myb.api.models.responses.me.stats.StatsResponse;
 import com.sugarman.myb.api.models.responses.trackings.TrackingStatsResponse;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
@@ -308,7 +309,7 @@ public class RestApi {
   }
 
   public Observable<Response<Void>> closeSubscription(String mentorId, String token) {
-    return api.closeSubscription(mentorId,token,"android");
+    return api.closeSubscription(mentorId, token, "android");
   }
 
   public Observable<Response<StatsResponse>> fetchStats() {
@@ -316,6 +317,10 @@ public class RestApi {
   }
 
   public Observable<Response<TrackingStatsResponse>> fetchTrackingStats(String trackingId) {
-    return api.fetchTrackingStats( trackingId);
+    return api.fetchTrackingStats(trackingId);
+  }
+
+  public Observable<Response<Stats>> fetchStatByDate(String date) {
+    return api.fetchStatByDate(date);
   }
 }
