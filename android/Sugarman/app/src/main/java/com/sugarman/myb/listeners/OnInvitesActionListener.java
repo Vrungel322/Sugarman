@@ -2,6 +2,7 @@ package com.sugarman.myb.listeners;
 
 import com.sugarman.myb.api.models.responses.me.invites.Invite;
 
+@Deprecated
 public interface OnInvitesActionListener {
 
   void onDeclineInvite(Invite invite, int position);
