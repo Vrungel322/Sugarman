@@ -326,6 +326,10 @@ public class RestApi {
   }
 
   public Observable<Response<TrackingInfoResponse>> fetchCurrentTracking(String trackingId) {
-    return api.fetchCurrentTracking( trackingId);
+    return api.fetchCurrentTracking(trackingId);
+  }
+
+  public Observable<Response<Object>> declineInvite(String inviteId){
+    return api.declineInvite( inviteId);
   }
 }

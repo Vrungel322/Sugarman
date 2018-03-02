@@ -40,6 +40,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Response;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -182,4 +183,7 @@ public interface ApiRx {
   @GET("/v1/me/trackings/{tracking_id}")
   Observable<Response<TrackingInfoResponse>> fetchCurrentTracking(
       @Path("tracking_id") String trackingId);
+
+  @DELETE("/v1/me/invites/{invite_id}") Observable<Response<Object>> declineInvite(
+      @Path("invite_id") String inviteId);
 }

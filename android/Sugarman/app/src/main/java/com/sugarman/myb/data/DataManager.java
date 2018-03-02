@@ -428,4 +428,8 @@ public class DataManager {
   public Observable<Response<TrackingInfoResponse>> fetchCurrentTracking(String trackingId) {
     return mRestApi.fetchCurrentTracking(trackingId);
   }
+
+  public Observable<Response<Object>> declineInvite(String inviteId){
+    return mRestApi.declineInvite( inviteId);
+  }
 }

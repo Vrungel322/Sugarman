@@ -141,7 +141,8 @@ public class InvitesActivity extends BaseActivity
     } else {
       showProgressFragmentTemp();
       actionPosition = position;
-      mInvitesManagerClient.decline(invite.getId());
+      mPresenter.declineInvitation(invite.getId());
+      //mInvitesManagerClient.decline(invite.getId());
     }
   }
 
@@ -162,7 +163,9 @@ public class InvitesActivity extends BaseActivity
     }
   }
 
-  @Override public void onApiDeclineInviteSuccess() {
+  @Override public void declineInviteAction() {
+    Timber.e("declineInvitation " );
+
     Invite invite = invitesAdapter.getValue(actionPosition);
     if (invite != null) {
       App.getEventBus().post(new InviteRemovedEvent(invite.getId()));
@@ -171,7 +174,19 @@ public class InvitesActivity extends BaseActivity
     invitesAdapter.removeItem(actionPosition);
     actionPosition = -1;
     refreshNoInvites();
-    //closeProgressFragment();
+    closeProgressFragment();
+  }
+
+  @Override public void onApiDeclineInviteSuccess() {
+    //Invite invite = invitesAdapter.getValue(actionPosition);
+    //if (invite != null) {
+    //  App.getEventBus().post(new InviteRemovedEvent(invite.getId()));
+    //}
+    //
+    //invitesAdapter.removeItem(actionPosition);
+    //actionPosition = -1;
+    //refreshNoInvites();
+    ////closeProgressFragment();
 
   }
 
