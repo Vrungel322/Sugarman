@@ -32,12 +32,10 @@ import java.util.List;
 import org.greenrobot.eventbus.Subscribe;
 import timber.log.Timber;
 
-public class InvitesActivity extends BaseActivity
-    implements View.OnClickListener, /*OnInvitesActionListener,*/ /*ApiManageInvitesListener,*/ IInvitesActivityView {
-  @InjectPresenter InvitesActivityPresenter mPresenter;
-
+public class InvitesActivity extends BaseActivity implements View.OnClickListener, /*OnInvitesActionListener,*/ /*ApiManageInvitesListener,*/
+    IInvitesActivityView {
   private static final String TAG = InvitesActivity.class.getName();
-
+  @InjectPresenter InvitesActivityPresenter mPresenter;
   private InvitesAdapter invitesAdapter;
 
   private int actionPosition = -1;
@@ -86,39 +84,11 @@ public class InvitesActivity extends BaseActivity
       mInvitesManagerClient = new InviteManagerClient();
       invitesAdapter = new InvitesAdapter(this, new OnInvitesActionListener() {
         @Override public void onDeclineInvite(Invite invite, int position) {
-          Tracking tracking = invite.getTracking();
-          long startTimestamp = tracking.getStartUTCDate().getTime();
-          if (System.currentTimeMillis() - startTimestamp > Config.INVITE_TIME_LIVE
-              && !tracking.isMentors()) {
-            String groupName = tracking.getGroup().getName();
-            Timber.e("MENTORS" + tracking.isMentors());
-            showInviteUnavailableDialog(groupName);
-            invitesAdapter.removeItem(position);
-          } else {
-            showProgressFragmentTemp();
-            actionPosition = position;
-
-            //mInvitesManagerClient.decline(invite.getId());
-            mPresenter.declineInvitation(invite.getId());
-          }
+          actionOnClick(invite, position, false);
         }
 
         @Override public void onAcceptInvite(Invite invite, int position) {
-          Tracking tracking = invite.getTracking();
-          long startTimestamp = tracking.getStartUTCDate().getTime();
-          if (System.currentTimeMillis() - startTimestamp > Config.INVITE_TIME_LIVE
-              && !tracking.isMentors()) {
-            Timber.e("MENTORS" + tracking.isMentors());
-            String groupName = tracking.getGroup().getName();
-            showInviteUnavailableDialog(groupName);
-            invitesAdapter.removeItem(position);
-          } else {
-            showProgressFragmentTemp();
-            actionPosition = position;
-
-            //mInvitesManagerClient.accept(invite.getId());
-            mPresenter.acceptInvitation(invite.getId());
-          }
+          actionOnClick(invite, position, true);
         }
       });
       rcvInvites.setVisibility(View.VISIBLE);
@@ -129,6 +99,29 @@ public class InvitesActivity extends BaseActivity
     }
 
     vBack.setOnClickListener(this);
+  }
+
+  private void actionOnClick(Invite invite, int position, boolean isAccepted) {
+    Tracking tracking = invite.getTracking();
+    long startTimestamp = tracking.getStartUTCDate().getTime();
+    if (System.currentTimeMillis() - startTimestamp > Config.INVITE_TIME_LIVE
+        && !tracking.isMentors()) {
+      Timber.e("MENTORS" + tracking.isMentors());
+      String groupName = tracking.getGroup().getName();
+      showInviteUnavailableDialog(groupName);
+      invitesAdapter.removeItem(position);
+    } else {
+      showProgressFragmentTemp();
+      actionPosition = position;
+
+      if (isAccepted) {
+        //mInvitesManagerClient.accept(invite.getId());
+        mPresenter.acceptInvitation(invite.getId());
+      } else {
+        //mInvitesManagerClient.decline(invite.getId());
+        mPresenter.declineInvitation(invite.getId());
+      }
+    }
   }
 
   @Override protected void onStart() {
@@ -210,7 +203,7 @@ public class InvitesActivity extends BaseActivity
   //}
 
   @Override public void declineInviteAction() {
-    Timber.e("declineInvitation " );
+    Timber.e("declineInvitation ");
 
     Invite invite = invitesAdapter.getValue(actionPosition);
     if (invite != null) {
