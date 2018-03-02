@@ -34,7 +34,7 @@ public class CheckPhonesClient extends BaseApiClient {
       ResponseBody errorBody = dataResponse.errorBody();
       if (dataResponse != null) {
         Timber.e("SET INVITABLE 0");
-        if (!isCanceled && dataResponse.body()!=null) {
+        if (!isCanceled && dataResponse.body() != null) {
           ((ApiCheckPhoneListener) clientListener.get()).onApiCheckPhoneSuccess(
               dataResponse.body().getPhones());
         }

@@ -27,7 +27,7 @@ public final class RxBusHelper {
   }
 
   public static class ShowDialogRescue {
-   @Getter private final String trackingId;
+    @Getter private final String trackingId;
 
     public ShowDialogRescue(String trackingId) {
       this.trackingId = trackingId;
@@ -42,8 +42,7 @@ public final class RxBusHelper {
     }
   }
 
-  public static class ShowDialogUserSaved
-  {
+  public static class ShowDialogUserSaved {
     @Getter private final String trackingId;
 
     public ShowDialogUserSaved(String trackingId) {
@@ -51,8 +50,7 @@ public final class RxBusHelper {
     }
   }
 
-  public static class ShowDialogGroupSaved
-  {
+  public static class ShowDialogGroupSaved {
     @Getter private final String trackingId;
 
     public ShowDialogGroupSaved(String trackingId) {
@@ -66,9 +64,9 @@ public final class RxBusHelper {
     public final Intent data;
 
     public EventAboutInAppPurchase(int requestCode, int resultCode, Intent data) {
-      this.requestCode=requestCode;
-      this.resultCode=resultCode;
-      this.data=data;
+      this.requestCode = requestCode;
+      this.resultCode = resultCode;
+      this.data = data;
     }
   }
 }

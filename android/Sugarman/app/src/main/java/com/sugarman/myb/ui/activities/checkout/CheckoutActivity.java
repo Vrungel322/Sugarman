@@ -15,8 +15,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
-import com.appsflyer.AFInAppEventParameterName;
-import com.appsflyer.AppsFlyerLib;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalPayment;
@@ -24,14 +22,11 @@ import com.paypal.android.sdk.payments.PayPalService;
 import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
 import com.squareup.picasso.CustomPicasso;
-import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.base.BasicActivity;
 import com.sugarman.myb.constants.Config;
 import com.sugarman.myb.ui.views.CropCircleTransformation;
 import com.sugarman.myb.utils.apps_Fly.AppsFlyerEventSender;
-import java.util.HashMap;
-import java.util.Map;
 import timber.log.Timber;
 
 public class CheckoutActivity extends BasicActivity

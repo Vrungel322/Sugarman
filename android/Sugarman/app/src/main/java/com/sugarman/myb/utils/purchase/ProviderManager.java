@@ -96,8 +96,8 @@ public class ProviderManager {
     //mHelper = iabHelper;
   }
 
-  public Observable<Subscriptions> startFreePurchaseFlowByVendor(String vendor,
-      String mentorId, String slot) {
+  public Observable<Subscriptions> startFreePurchaseFlowByVendor(String vendor, String mentorId,
+      String slot) {
     return new Retrofit.Builder().baseUrl(vendor)
         .client(new OkHttpClient.Builder().readTimeout(30, TimeUnit.SECONDS)
             .addInterceptor(provideHttpLoggingInterceptor())
@@ -160,8 +160,8 @@ public class ProviderManager {
   public void startPurchaseFlow(String freeSku, MentorDetailActivity activity) {
     mFreeSku = freeSku;
     Timber.e("mFreeSku startPurchaseFlow " + freeSku);
-    activity.startPurchaseFlow((MentorDetailActivity)activity, mHelper, freeSku, mPurchaseFinishedListener,
-        "mypurchasetoken");
+    activity.startPurchaseFlow((MentorDetailActivity) activity, mHelper, freeSku,
+        mPurchaseFinishedListener, "mypurchasetoken");
 
     //mHelper.launchSubscriptionPurchaseFlow(activity, freeSku, 10001, mPurchaseFinishedListener,
     //    "mypurchasetoken");

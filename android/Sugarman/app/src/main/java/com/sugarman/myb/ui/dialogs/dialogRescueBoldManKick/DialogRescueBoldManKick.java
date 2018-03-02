@@ -94,10 +94,9 @@ public class DialogRescueBoldManKick extends MvpDialogFragment
         meFailuer = true;
       }
     }
-    if (meFailuer){
+    if (meFailuer) {
       tvYouGroupRescued.setText(R.string.you_still_have_time_to_rescue_the_group);
-    }
-    else {
+    } else {
       tvYouGroupRescued.setText(R.string.they_still_have_time_to_rescue_the_group);
     }
 

@@ -143,8 +143,9 @@ public abstract class BaseActivity extends BasicActivity
   @Override protected void onResume() {
     super.onResume();
 
-    Timber.e("isFirstLaunchOfTheDay " + SharedPreferenceHelper.isFirstLaunchOfTheDay(SharedPreferenceHelper.getUserId()));
-    if(SharedPreferenceHelper.isFirstLaunchOfTheDay(SharedPreferenceHelper.getUserId())){
+    Timber.e("isFirstLaunchOfTheDay " + SharedPreferenceHelper.isFirstLaunchOfTheDay(
+        SharedPreferenceHelper.getUserId()));
+    if (SharedPreferenceHelper.isFirstLaunchOfTheDay(SharedPreferenceHelper.getUserId())) {
       presenter.clearRuleDailyData();
     }
 

@@ -3,12 +3,10 @@ package com.sugarman.myb.utils.handlingExceptions;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
 import com.sugarman.myb.ui.activities.exceptionHidenActivity.SendExceptionHiddenActivity;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.HashMap;
-import java.util.Map;
 import timber.log.Timber;
 
 /**
@@ -38,14 +36,10 @@ public class ExceptionHandler implements java.lang.Thread.UncaughtExceptionHandl
     eventValue.put("Release", Build.VERSION.RELEASE);
     eventValue.put("Incremental", Build.VERSION.INCREMENTAL);
 
-
     Intent intent = new Intent(myContext, SendExceptionHiddenActivity.class);
     intent.putExtra(ERROR_KEY, eventValue);
     myContext.startActivity(intent);
     android.os.Process.killProcess(android.os.Process.myPid());
     System.exit(10);
-
-
-
   }
 }

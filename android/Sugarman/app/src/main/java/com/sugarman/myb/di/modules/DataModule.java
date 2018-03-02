@@ -83,7 +83,7 @@ import timber.log.Timber;
     return new PreferencesHelper(context, gson);
   }
 
-  @Provides @AppScope DbRepositoryStats provideDbRepositoryStats(){
+  @Provides @AppScope DbRepositoryStats provideDbRepositoryStats() {
     return new DbRepositoryStats();
   }
 }

@@ -169,7 +169,7 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
     if (mMentorEntity.getSubscriptionDuration() != null) {
       String durationModifier = "";
       Timber.e("Duration modifier " + mMentorEntity.getDurationModifier().toLowerCase());
-      if(mMentorEntity.getDurationModifier()!=null) {
+      if (mMentorEntity.getDurationModifier() != null) {
         switch (mMentorEntity.getDurationModifier().toLowerCase()) {
           case "d":
             durationModifier = getString(R.string.days);
@@ -191,8 +191,9 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
       }
       tvSubscriptionDuration.setText(getResources().getString(R.string.subscription_duration)
           + " "
-          + mMentorEntity.getSubscriptionDuration() + " "
-      + durationModifier);
+          + mMentorEntity.getSubscriptionDuration()
+          + " "
+          + durationModifier);
     } else {
       tvSubscriptionDuration.setText("");
     }
@@ -404,11 +405,7 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
     Timber.e("ivSubscribeMentorClicked mentorsId: " + mMentorEntity.getMentorId());
     mPresenter.getMentorsVendor(mMentorEntity.getMentorId(), this);
     disableButtons();
-
-
   }
-
-
 
   @Override public void startPurchaseFlow(String freeSku) {
     mFreeSku = freeSku;
@@ -461,8 +458,7 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
     ivSubscribeMentor.setEnabled(true);
   }
 
-  public void disableButtons()
-  {
+  public void disableButtons() {
     ivSubscribeMentor.setEnabled(false);
   }
 

@@ -438,7 +438,7 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
   }
 
   @Override public void setUpUI() {
-    if(getArguments().getString(GROUP_NAME, "").isEmpty()) {
+    if (getArguments().getString(GROUP_NAME, "").isEmpty()) {
       mEditTextGroupName.setText(String.format(getString(R.string.group_name_template),
           SharedPreferenceHelper.getUserName()));
     }

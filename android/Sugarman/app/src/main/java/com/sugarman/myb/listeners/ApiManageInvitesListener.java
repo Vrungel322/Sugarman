@@ -1,7 +1,6 @@
 package com.sugarman.myb.listeners;
 
-@Deprecated
-public interface ApiManageInvitesListener extends ApiBaseListener {
+@Deprecated public interface ApiManageInvitesListener extends ApiBaseListener {
 
   void onApiDeclineInviteSuccess();
 

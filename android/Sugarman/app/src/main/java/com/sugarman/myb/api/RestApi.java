@@ -329,10 +329,11 @@ public class RestApi {
     return api.fetchCurrentTracking(trackingId);
   }
 
-  public Observable<Response<Object>> declineInvite(String inviteId){
-    return api.declineInvite( inviteId);
+  public Observable<Response<Object>> declineInvite(String inviteId) {
+    return api.declineInvite(inviteId);
   }
-  public Observable<Response<Object>> acceptInvite(String inviteId){
-    return api.acceptInvite( inviteId);
+
+  public Observable<Response<Object>> acceptInvite(String inviteId) {
+    return api.acceptInvite(inviteId);
   }
 }

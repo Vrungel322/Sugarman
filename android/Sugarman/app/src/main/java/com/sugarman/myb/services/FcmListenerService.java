@@ -50,7 +50,6 @@ public class FcmListenerService extends FirebaseMessagingService {
       flags = getResources().getStringArray(R.array.notifications_types);
     }
 
-
     Timber.e("message : "
         + message.getData().get(Constants.FCM_MESSAGE)
         + " ;44444; "
@@ -65,7 +64,7 @@ public class FcmListenerService extends FirebaseMessagingService {
     try {
       JSONObject notificationJSON = new JSONObject(notification);
       Timber.e(notificationJSON.toString());
-      if(notificationJSON.has("remote_logging_enabled")) {
+      if (notificationJSON.has("remote_logging_enabled")) {
         SharedPreferenceHelper.setRemoteLoggingEnabled(
             notificationJSON.getBoolean("remote_logging_enabled"));
         return;
@@ -160,9 +159,10 @@ public class FcmListenerService extends FirebaseMessagingService {
       case NotificationMessageType.USER_NAME_HAS_POKED_YOU:
       case NotificationMessageType.GROUP_NAME_IN_HOUR:
         App.getEventBus().post(new GetInAppNotificationsEvent());
-        intent.putExtra(Constants.INTENT_OPEN_ACTIVITY, Constants.OPEN_GROPEDETAILS_ACTIVITY_WHERE_WAS_POKE);
+        intent.putExtra(Constants.INTENT_OPEN_ACTIVITY,
+            Constants.OPEN_GROPEDETAILS_ACTIVITY_WHERE_WAS_POKE);
         intent.putExtra(Constants.INTENT_FCM_TRACKING_ID, trackingId);
-        Timber.e("deepLinks "+trackingId);
+        Timber.e("deepLinks " + trackingId);
         break;
       case NotificationMessageType.USER_NAME_JOINED:
       case NotificationMessageType.CREATOR_NAME_APPROVED:
@@ -256,7 +256,6 @@ public class FcmListenerService extends FirebaseMessagingService {
     super.onDestroy();
     //Timber.e("processMessage onDestroy");
     startService(new Intent(getApplicationContext(), FcmListenerService.class));
-
   }
 }
 

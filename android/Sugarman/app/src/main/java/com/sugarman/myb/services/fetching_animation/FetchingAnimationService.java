@@ -13,8 +13,7 @@ import timber.log.Timber;
 
 public class FetchingAnimationService extends
     //Service
-    IntentService
-    implements IFetchingAnimationServiceView {
+    IntentService implements IFetchingAnimationServiceView {
   private FetchingAnimationServicePresenter mPresenter;
 
   public FetchingAnimationService() {

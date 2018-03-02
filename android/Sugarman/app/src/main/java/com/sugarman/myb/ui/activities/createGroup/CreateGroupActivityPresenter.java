@@ -58,12 +58,12 @@ import timber.log.Timber;
             @Override public void onComplete(VKResponse response) {
               super.onComplete(response);
               JSONObject resp = response.json;
-              Timber.e("sendInvitationInVk VK response"+ response.responseString);
+              Timber.e("sendInvitationInVk VK response" + response.responseString);
             }
 
             @Override public void onError(VKError error) {
               super.onError(error);
-              Timber.e(" sendInvitationInVk VK response "  + error.errorCode + error.toString());
+              Timber.e(" sendInvitationInVk VK response " + error.errorCode + error.toString());
             }
           });
         }

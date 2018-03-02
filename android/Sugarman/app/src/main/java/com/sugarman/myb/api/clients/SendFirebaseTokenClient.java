@@ -25,8 +25,7 @@ public class SendFirebaseTokenClient extends BaseApiClient {
     public void onResponse(Call<DevicesResponse> call, Response<DevicesResponse> response) {
       DevicesResponse dataResponse = response.body();
       ResponseBody errorBody = response.errorBody();
-        Log.d("fcm", "fcm token sent. Error: " + errorBody);
-
+      Log.d("fcm", "fcm token sent. Error: " + errorBody);
 
       if (clientListener.get() != null) {
         if (dataResponse != null) {

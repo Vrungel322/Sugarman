@@ -32,11 +32,11 @@ public abstract class BasicActivity extends MvpAppCompatActivity {
     ButterKnife.bind(this);
     App.getAppComponent().inject(this);
 
-    if(SharedPreferenceHelper.isRemoteLoggingEnabled()) {
+    if (SharedPreferenceHelper.isRemoteLoggingEnabled()) {
       Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
     }
 
-    Timber.e("Remote logging enabled "+ SharedPreferenceHelper.isRemoteLoggingEnabled());
+    Timber.e("Remote logging enabled " + SharedPreferenceHelper.isRemoteLoggingEnabled());
   }
 
   protected void showToastMessage(String message) {
@@ -60,7 +60,7 @@ public abstract class BasicActivity extends MvpAppCompatActivity {
         body.append(customEvent.getEventText());
         SharedPreferenceHelper.setEventXStepsDone(customEvent.getNumValue());
         Timber.e("doEventAction", +customEvent.getNumValue());
-        DialogCuteRule.newInstance(body.toString(), customEvent.getStrValue() ,() -> {
+        DialogCuteRule.newInstance(body.toString(), customEvent.getStrValue(), () -> {
           if (customEvent.getEventName().equals(Constants.EVENT_X_NEW_USERS_INVITE)) {
             SharedPreferenceHelper.setEventGroupWithXNewUsersDone();
           }

@@ -110,7 +110,7 @@ public class StatsTrackingActivity extends BaseActivity
     getTrackingStatsClient.registerListener(this);
     showProgressFragment();
     try {
-      mPresenter.fetchTrackingStats(trackingId,mTracking);
+      mPresenter.fetchTrackingStats(trackingId, mTracking);
     } catch (ParseException e) {
       e.printStackTrace();
     }

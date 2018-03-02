@@ -8,11 +8,8 @@ import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 import java.util.Comparator;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
-@AllArgsConstructor public class Stats extends RealmObject
-    implements Parcelable {
+@AllArgsConstructor public class Stats extends RealmObject implements Parcelable {
 
   public static final Comparator<Stats> BY_DATE_DESC = new Comparator<Stats>() {
     @Override public int compare(Stats o1, Stats o2) {
@@ -36,8 +33,7 @@ import lombok.ToString;
   //public Stats(){}
   @SerializedName("timestamp") private long dayTimestamp;
 
-  public Stats()
-  {
+  public Stats() {
 
   }
 

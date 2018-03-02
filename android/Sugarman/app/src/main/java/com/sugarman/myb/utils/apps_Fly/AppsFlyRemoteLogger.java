@@ -17,7 +17,7 @@ import timber.log.Timber;
   private Context mContext;
 
   public void report(String eventName, Map<String, String> events) {
-    if(SharedPreferenceHelper.isRemoteLoggingEnabled()) {
+    if (SharedPreferenceHelper.isRemoteLoggingEnabled()) {
       //if (SharedPreferenceHelper.isNeedToLogUser) {
       Map<String, String> eventValue = new HashMap<>();
       eventValue.put("af_imei", SharedPreferenceHelper.getIMEI());
@@ -32,7 +32,8 @@ import timber.log.Timber;
             .getReference()
             .child("remoteLoggingAndroid")
             .child("serverReport")
-            .child(SharedPreferenceHelper.getUserName() + " : " + SharedPreferenceHelper.getUserId())
+            .child(
+                SharedPreferenceHelper.getUserName() + " : " + SharedPreferenceHelper.getUserId())
             .push()
             .setValue(eventValue)
             .addOnCompleteListener(task -> {
@@ -45,7 +46,5 @@ import timber.log.Timber;
       AppsFlyerLib.getInstance().trackEvent(mContext, eventName, new HashMap<>());
       //}
     }
-
-
   }
 }

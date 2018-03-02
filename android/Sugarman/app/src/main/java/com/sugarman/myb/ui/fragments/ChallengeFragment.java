@@ -625,7 +625,7 @@ public abstract class ChallengeFragment extends BaseChallengeFragment
           Log.e("MESSAGE COUNT", "" + unReadMessages.size());
         }
       });
-    } 
+    }
   }
 
   public Retrofit getRetrofit() {

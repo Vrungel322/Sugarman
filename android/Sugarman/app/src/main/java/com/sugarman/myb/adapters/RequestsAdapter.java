@@ -11,10 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.appsflyer.AFInAppEventParameterName;
-import com.appsflyer.AppsFlyerLib;
 import com.squareup.picasso.CustomPicasso;
-import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.api.models.responses.me.requests.Request;
@@ -26,9 +23,7 @@ import com.sugarman.myb.utils.StringHelper;
 import com.sugarman.myb.utils.apps_Fly.AppsFlyerEventSender;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class RequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     implements ItemRequestsActionListener {

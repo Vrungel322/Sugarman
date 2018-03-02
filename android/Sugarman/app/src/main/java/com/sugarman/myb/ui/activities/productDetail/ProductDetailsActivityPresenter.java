@@ -20,9 +20,10 @@ import rx.Subscription;
   }
 
   public void checkNumberOfInviters() {
-    Subscription subscription =
-        mDataManager.countInvites().compose(ThreadSchedulers.applySchedulers()).subscribe(countInvitesResponse -> {
-          if (Integer.valueOf(countInvitesResponse.getCount())>= 5){
+    Subscription subscription = mDataManager.countInvites()
+        .compose(ThreadSchedulers.applySchedulers())
+        .subscribe(countInvitesResponse -> {
+          if (Integer.valueOf(countInvitesResponse.getCount()) >= 5) {
             getViewState().startCheckoutActivityWithFreePrice();
           }
         }, Throwable::printStackTrace);

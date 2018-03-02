@@ -1,7 +1,6 @@
 package com.sugarman.myb.api.models.responses;
 
 import com.google.gson.annotations.SerializedName;
-import com.sugarman.myb.api.models.responses.me.groups.CreatedGroup;
 
 /**
  * Created by yegoryeriomin on 1/19/18.

@@ -33,8 +33,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import butterknife.BindView;
 import butterknife.OnClick;
-import com.appsflyer.AFInAppEventParameterName;
-import com.appsflyer.AppsFlyerLib;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.clover_studio.spikachatmodule.utils.Const;
 import com.facebook.CallbackManager;
@@ -87,7 +85,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -100,9 +97,9 @@ import static com.sugarman.myb.utils.ImageHelper.scaleCenterCrop;
  */
 
 public class InviteForRescueActivity extends BaseActivity
-    implements View.OnClickListener, OnFBGetFriendsListener,
-    ApiJoinGroupListener, AsyncSaveBitmapToFileListener, View.OnFocusChangeListener,
-    IInviteForRescueActivityView, ApiCheckPhoneListener, ApiCheckVkListener {
+    implements View.OnClickListener, OnFBGetFriendsListener, ApiJoinGroupListener,
+    AsyncSaveBitmapToFileListener, View.OnFocusChangeListener, IInviteForRescueActivityView,
+    ApiCheckPhoneListener, ApiCheckVkListener {
 
   private static final String TAG = CreateGroupActivity.class.getName();
   public static final String TRACKING = "TRACKING";
@@ -703,7 +700,7 @@ public class InviteForRescueActivity extends BaseActivity
 
   @Override public void onGetFriendInfoFailure(String message) {
     //closeProgressFragment();
-hideProgress();
+    hideProgress();
     if (DeviceHelper.isNetworkConnected()) {
       new SugarmanDialog.Builder(this, DialogConstants.FAILURE_CONVERT_FB_FRIENDS_ID).content(
           message).show();
@@ -902,12 +899,12 @@ hideProgress();
     List<FacebookFriend> selectedFriends = friendsAdapter.getSelectedFriends();
     members.clear();
 
-   if (selectedFriends.isEmpty()) {
+    if (selectedFriends.isEmpty()) {
       new SugarmanDialog.Builder(this, DialogConstants.FRIENDS_LIST_IS_IMPTY_ID).content(
           R.string.members_list_is_empty).show();
     } else {
-     showProgress();
-     List<String> ids = new ArrayList<>();
+      showProgress();
+      List<String> ids = new ArrayList<>();
       String id;
       for (FacebookFriend friend : selectedFriends) {
         if (invitable.contains(friend)) {
@@ -1044,12 +1041,10 @@ hideProgress();
     }
   }
 
-  public void removeFriendsWithApplication()
-  {
-    for(int i = 0; i < allFriends.size(); i++)
-    {
+  public void removeFriendsWithApplication() {
+    for (int i = 0; i < allFriends.size(); i++) {
       Timber.e(allFriends.get(i).getName());
-      if(allFriends.get(i).getIsInvitable()==FacebookFriend.CODE_NOT_INVITABLE) {
+      if (allFriends.get(i).getIsInvitable() == FacebookFriend.CODE_NOT_INVITABLE) {
         allFriends.remove(i);
         i--;
       }
@@ -1072,7 +1067,6 @@ hideProgress();
           if (friend.getId().equals(p.getPhone())) {
             //    Timber.e("SET INVITABLE IF 4 " + friend.getName());
             friend.setIsInvitable(FacebookFriend.CODE_NOT_INVITABLE);
-
           }
         }
       }

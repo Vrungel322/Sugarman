@@ -147,9 +147,10 @@ public class FBApiClient {
         } catch (JSONException e) {
           e.printStackTrace();
         }
-        Timber.e("canLoadFriends SHP: " + SharedPreferenceHelper.getCountOfMembersFb() + " bool " + (
-            SharedPreferenceHelper.getCountOfMembersFb()
-                != countOfFbFriends));
+        Timber.e(
+            "canLoadFriends SHP: " + SharedPreferenceHelper.getCountOfMembersFb() + " bool " + (
+                SharedPreferenceHelper.getCountOfMembersFb()
+                    != countOfFbFriends));
         if (SharedPreferenceHelper.getCountOfMembersFb() != countOfFbFriends) {
           getFriends();
         }

@@ -30,7 +30,7 @@ import timber.log.Timber;
           if (objectResponse.isSuccessful()) {
             getViewState().superKickResponse();
           }
-        },Throwable::printStackTrace);
+        }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 }

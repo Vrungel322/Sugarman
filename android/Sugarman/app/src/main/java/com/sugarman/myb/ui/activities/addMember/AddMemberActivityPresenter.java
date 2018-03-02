@@ -35,15 +35,16 @@ import rx.Subscription;
         .subscribe(facebookFriends -> {
           getViewState().fillListByCachedData(facebookFriends);
           getViewState().hideProgress();
-        },Throwable::printStackTrace);
+        }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 
   private void subscribeAddVkFriendsEvent() {
     Subscription subscription = mRxBus.filteredObservable(RxBusHelper.AddMemberVkEvent.class)
         .compose(ThreadSchedulers.applySchedulers())
-        .subscribe(addMemberVkEvent -> getViewState().addMemberToServer(
-            addMemberVkEvent.mFacebookFriends), Throwable::printStackTrace);
+        .subscribe(
+            addMemberVkEvent -> getViewState().addMemberToServer(addMemberVkEvent.mFacebookFriends),
+            Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 

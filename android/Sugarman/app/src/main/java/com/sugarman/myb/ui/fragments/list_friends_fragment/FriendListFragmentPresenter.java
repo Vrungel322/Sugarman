@@ -59,7 +59,7 @@ import timber.log.Timber;
   }
 
   private void loadFbFriends() {
-    if (SharedPreferenceHelper.getCachedFbFriends()!=null) {
+    if (SharedPreferenceHelper.getCachedFbFriends() != null) {
       getViewState().showFBCounters(SharedPreferenceHelper.getCachedFbFriends());
     }
 
@@ -352,7 +352,6 @@ import timber.log.Timber;
         }
         allFriendsToShow.addAll(Arrays.asList(friends));
         SharedPreferenceHelper.cacheFbFriendsInviteble(Arrays.asList(friends));
-
       } else {
         Timber.e("facebook invitable friends list is empty");
       }

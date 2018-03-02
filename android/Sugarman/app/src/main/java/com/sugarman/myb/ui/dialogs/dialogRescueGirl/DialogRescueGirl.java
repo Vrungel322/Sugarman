@@ -111,10 +111,9 @@ public class DialogRescueGirl extends MvpDialogFragment implements IDialogRescue
         saverCount++;
       }
     }
-    
+
     mTextViewYouGotXRescues.setText(
         String.format(getString(R.string.you_got_x_rescues), (int) saverCount));
-    
   }
 
   @OnClick(R.id.ivCross) public void ivCrossClick() {

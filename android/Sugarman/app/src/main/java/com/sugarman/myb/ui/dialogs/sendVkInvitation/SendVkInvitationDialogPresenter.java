@@ -41,7 +41,7 @@ import timber.log.Timber;
             super.onComplete(response);
             JSONObject resp = response.json;
             getViewState().doAction();
-            Timber.e("sendInvitations VK response "+ response.responseString);
+            Timber.e("sendInvitations VK response " + response.responseString);
           }
 
           @Override public void onError(VKError error) {

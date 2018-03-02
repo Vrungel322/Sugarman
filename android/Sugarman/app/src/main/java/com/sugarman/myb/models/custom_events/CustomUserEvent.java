@@ -14,9 +14,9 @@ import lombok.Singular;
 @AllArgsConstructor @NoArgsConstructor @Builder public class CustomUserEvent {
   @Getter @Setter private int type;                                 // dialog or activity or other
   @Getter @Setter private String strType;
-      // dialog or activity or other same as int type
+  // dialog or activity or other same as int type
   @Getter @Setter private Integer numValue;
-      // count of smth (groups, days in a row, steps)
+  // count of smth (groups, days in a row, steps)
   @Getter @Setter private String strValue;                          // poka ne ebu
   @Getter @Setter private String eventName;                         // event title
   @Getter @Setter private String eventImage;                        //event img if needed

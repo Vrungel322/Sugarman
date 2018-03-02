@@ -23,7 +23,7 @@ import rx.Subscription;
     super.onFirstViewAttach();
     getViewState().setUpUI();
     List<MentorEntity> cachedMentors = mDataManager.getCachedMentors();
-    if (cachedMentors!=null && !cachedMentors.isEmpty()){
+    if (cachedMentors != null && !cachedMentors.isEmpty()) {
       getViewState().fillMentorsList(cachedMentors);
     }
     fetchMentors();

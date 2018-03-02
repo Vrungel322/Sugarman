@@ -160,7 +160,6 @@ public class FriendsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
       }
       Timber.e("click friendName:" + friend.getName());
 
-
       boolean isSelected = !friend.isSelected();
       Realm.getDefaultInstance().executeTransaction(realm -> {
         FacebookFriend myObject = friend;

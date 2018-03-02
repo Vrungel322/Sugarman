@@ -23,7 +23,7 @@ public class DataUtils {
       allPreviousDates.add(s.format(new Date(cal.getTimeInMillis())));
       Timber.e("getLastXDays i = " + i + " data : " + s.format(new Date(cal.getTimeInMillis())));
     }
-    if (countOfDays == 0){
+    if (countOfDays == 0) {
       Calendar cal = Calendar.getInstance();
       cal.add(Calendar.DATE, -0); // I just want date before 90 days. you can give that you want.
       allPreviousDates.add(s.format(new Date(cal.getTimeInMillis())));
@@ -35,13 +35,12 @@ public class DataUtils {
 
   public static Long getDateDiff(Date date1, Date date2, TimeUnit timeUnit) {
     Long diffInMillies = date2.getTime() - date1.getTime();
-    return timeUnit.convert(diffInMillies,TimeUnit.MILLISECONDS);
+    return timeUnit.convert(diffInMillies, TimeUnit.MILLISECONDS);
   }
 
-  public static Date subtractDays(Date date,int days)
-  {
-   long newDate = date.getTime() - days * 86400000l;
-   Date result = new Date(newDate);
-   return result;
+  public static Date subtractDays(Date date, int days) {
+    long newDate = date.getTime() - days * 86400000l;
+    Date result = new Date(newDate);
+    return result;
   }
 }

@@ -42,7 +42,7 @@ import timber.log.Timber;
         new Date(System.currentTimeMillis()), TimeUnit.DAYS).intValue();
     Timber.e("fetchTrackingStats diff: " + diff);
 
-    List<Stats> statsCached = mDbRepositoryStats.getAllEntities(diff+1);
+    List<Stats> statsCached = mDbRepositoryStats.getAllEntities(diff + 1);
     for (Stats s : statsCached) {
       if (s.getStepsCount() == Constants.FAKE_STEPS_COUNT) {
         needToUpdateData = true;

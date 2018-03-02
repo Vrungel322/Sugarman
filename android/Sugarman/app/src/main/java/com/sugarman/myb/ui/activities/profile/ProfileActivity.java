@@ -37,12 +37,12 @@ import com.sugarman.myb.eventbus.events.RequestsRemovedEvent;
 import com.sugarman.myb.eventbus.events.RequestsUpdatedEvent;
 import com.sugarman.myb.ui.activities.HighScoreActivity;
 import com.sugarman.myb.ui.activities.IntroActivity;
-import com.sugarman.myb.ui.activities.invitesScreen.InvitesActivity;
-import com.sugarman.myb.ui.activities.myStats.MyStatsActivity;
 import com.sugarman.myb.ui.activities.RequestsActivity;
 import com.sugarman.myb.ui.activities.SettingsActivity;
 import com.sugarman.myb.ui.activities.base.BaseActivity;
 import com.sugarman.myb.ui.activities.editProfile.EditProfileActivity;
+import com.sugarman.myb.ui.activities.invitesScreen.InvitesActivity;
+import com.sugarman.myb.ui.activities.myStats.MyStatsActivity;
 import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.ui.views.MaskTransformation;
@@ -181,7 +181,7 @@ public class ProfileActivity extends BaseActivity
       }
     });
 
-    tvWalked10k.setText(String.format(getString(R.string.walked10k),days));
+    tvWalked10k.setText(String.format(getString(R.string.walked10k), days));
 
     //level.setText(String.format(getString(R.string.level), SharedPreferenceHelper.getLevel()));
     level.setText(SharedPreferenceHelper.getUserName());
@@ -335,7 +335,6 @@ public class ProfileActivity extends BaseActivity
       case MotionEvent.ACTION_UP:
         v.setBackgroundColor(0xffffffff);
         switch (id) {
-
 
           case R.id.ll_settings_container:
             openSettingsActivity();

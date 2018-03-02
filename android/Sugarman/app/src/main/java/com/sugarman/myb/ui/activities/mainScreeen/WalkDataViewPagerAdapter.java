@@ -3,7 +3,6 @@ package com.sugarman.myb.ui.activities.mainScreeen;
 import android.content.Context;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.view.PagerAdapter;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

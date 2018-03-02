@@ -7,16 +7,10 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
-import com.appsflyer.AFInAppEventParameterName;
-import com.appsflyer.AppsFlyerLib;
-import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.constants.Config;
 import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
-import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.apps_Fly.AppsFlyerEventSender;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Y500 on 15.06.2017.

@@ -62,13 +62,14 @@ import rx.Subscription;
   }
 
   public void cancelSubscription(String mentorId, Purchase purchase) {
-    Subscription subscription = mDataManager.closeSubscription(mentorId,purchase==null?"":purchase.getToken())
-        .compose(ThreadSchedulers.applySchedulers())
-        .subscribe(voidResponse -> {
-          if (voidResponse.code() == 200) {
-            getViewState().moveToMainActivity();
-          }
-        }, Throwable::printStackTrace);
+    Subscription subscription =
+        mDataManager.closeSubscription(mentorId, purchase == null ? "" : purchase.getToken())
+            .compose(ThreadSchedulers.applySchedulers())
+            .subscribe(voidResponse -> {
+              if (voidResponse.code() == 200) {
+                getViewState().moveToMainActivity();
+              }
+            }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 }

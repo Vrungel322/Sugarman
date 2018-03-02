@@ -56,7 +56,7 @@ public class ContactsHelper {
                 case ContactsContract.CommonDataKinds.Phone.TYPE_CAR:
                 case ContactsContract.CommonDataKinds.Phone.TYPE_COMPANY_MAIN:
                 case ContactsContract.CommonDataKinds.Phone.TYPE_PAGER:
-                     contacts.put(name, lastnumber);
+                  contacts.put(name, lastnumber);
 
                   break;
               }
@@ -68,7 +68,7 @@ public class ContactsHelper {
     }
 
     for (String key : contacts.keySet()) {
-      Timber.e("getContactList "+key + " " + contacts.get(key));
+      Timber.e("getContactList " + key + " " + contacts.get(key));
     }
     return contacts;
   }

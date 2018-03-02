@@ -105,14 +105,16 @@ import timber.log.Timber;
   private void subscribeShowAddFriendBtnEvent() {
     Subscription subscription = mRxBus.filteredObservable(RxBusHelper.ShowAddFriendBtnEvent.class)
         .compose(ThreadSchedulers.applySchedulers())
-        .subscribe(showAddFriendBtnEvent -> getViewState().showAddFriendBtn(), Throwable::printStackTrace);
+        .subscribe(showAddFriendBtnEvent -> getViewState().showAddFriendBtn(),
+            Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 
   private void subscribeHideAddFriendBtnEvent() {
     Subscription subscription = mRxBus.filteredObservable(RxBusHelper.HideAddFriendBtnEvent.class)
         .compose(ThreadSchedulers.applySchedulers())
-        .subscribe(hideAddFriendBtnEvent -> getViewState().hideAddFriendButton(), Throwable::printStackTrace);
+        .subscribe(hideAddFriendBtnEvent -> getViewState().hideAddFriendButton(),
+            Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 

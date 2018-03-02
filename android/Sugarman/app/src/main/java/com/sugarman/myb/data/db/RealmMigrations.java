@@ -1,7 +1,6 @@
 package com.sugarman.myb.data.db;
 
 import io.realm.DynamicRealm;
-import io.realm.DynamicRealmObject;
 import io.realm.FieldAttribute;
 import io.realm.RealmMigration;
 import io.realm.RealmObjectSchema;
@@ -73,16 +72,18 @@ public class RealmMigrations implements RealmMigration {
               try {
                 int oldType = obj.getInt("id");
                 obj.setString("id_tmp", Integer.toString(oldType));
-                Timber.e("ID_TMP_REALM = " + Integer.toString(oldType) + " ; int = " +oldType);
+                Timber.e("ID_TMP_REALM = " + Integer.toString(oldType) + " ; int = " + oldType);
               } catch (IllegalArgumentException ex) {
                 Timber.e("Illegal argument!");
-                obj.setString(obj.getString("id"),"");
+                obj.setString(obj.getString("id"), "");
                 needToChange[0] = true;
               }
             });
-        if (needToChange[0])
-        {
-          schema1.addIndex("id_tmp").addPrimaryKey("id_tmp").removeField("id").renameField("id_tmp", "id");
+        if (needToChange[0]) {
+          schema1.addIndex("id_tmp")
+              .addPrimaryKey("id_tmp")
+              .removeField("id")
+              .renameField("id_tmp", "id");
         }
         if (!schema.get("ImageModel").getFieldNames().contains("name")) {
           schema.get("ImageModel")

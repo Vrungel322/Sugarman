@@ -42,19 +42,19 @@ import timber.log.Timber;
  */
 
 public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRescueBoldManView {
-    public static final int MONEY = 1;
-    public static final int INVITES = 0;
-    private static final String DIALOG_RESCUE_BOLD_MAN = "DIALOG_RESCUE_BOLD_MAN";
-    private static final String MODE = "MODE";
-    @InjectPresenter DialogRescueBoldManPresenter mPresenter;
-    @BindView(R.id.group_avatar) ImageView mImageViewGroupAvatar;
-    @BindView(R.id.ivCross) ImageView mImageViewCross;
-    @BindView(R.id.tvFailText) TextView mTextViewFailText;
-    @BindView(R.id.rvFailures) RecyclerView mRecyclerViewFailures;
-    @BindView(R.id.tvTimeLeftForRescue) TextView mTextViewTimeLeftForRescue;
-    @BindView(R.id.ivRescueLogo) ImageView mImageViewRescueLogo;
-    @BindView(R.id.tvRescueForWhat) TextView tvRescueForWhat;
-    @BindView(R.id.tvYouGroupRescued) TextView tvYouGroupRescued;
+  public static final int MONEY = 1;
+  public static final int INVITES = 0;
+  private static final String DIALOG_RESCUE_BOLD_MAN = "DIALOG_RESCUE_BOLD_MAN";
+  private static final String MODE = "MODE";
+  @InjectPresenter DialogRescueBoldManPresenter mPresenter;
+  @BindView(R.id.group_avatar) ImageView mImageViewGroupAvatar;
+  @BindView(R.id.ivCross) ImageView mImageViewCross;
+  @BindView(R.id.tvFailText) TextView mTextViewFailText;
+  @BindView(R.id.rvFailures) RecyclerView mRecyclerViewFailures;
+  @BindView(R.id.tvTimeLeftForRescue) TextView mTextViewTimeLeftForRescue;
+  @BindView(R.id.ivRescueLogo) ImageView mImageViewRescueLogo;
+  @BindView(R.id.tvRescueForWhat) TextView tvRescueForWhat;
+  @BindView(R.id.tvYouGroupRescued) TextView tvYouGroupRescued;
   @BindView(R.id.progressBar4) ProgressBar mProgressBar;
   private Tracking mTracking;
   private RescueMembersAdapter mRescueMembersAdapter;
@@ -113,12 +113,10 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
         meFailuer = true;
       }
     }
-    if (!meFailuer){
+    if (!meFailuer) {
       tvYouGroupRescued.setText(R.string.they_still_have_time_to_rescue_the_group);
-    }
-    else {
+    } else {
       tvYouGroupRescued.setText(R.string.you_still_have_time_to_rescue_the_group);
-
     }
 
     mTextViewFailText.setText(String.format(getString(R.string.your_group_has_failed_thanks_to),
@@ -138,8 +136,9 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
     mRescueMembersAdapter.setMembers(failures);
     mRecyclerViewFailures.setAdapter(mRescueMembersAdapter);
 
-    if (mTracking.getRemainToFailUTCDate()!=null) {
-      CountDownTimer timer = new CountDownTimer(mTracking.getRemainToFailUTCDate().getTime() - System.currentTimeMillis(), 1000) {
+    if (mTracking.getRemainToFailUTCDate() != null) {
+      CountDownTimer timer = new CountDownTimer(
+          mTracking.getRemainToFailUTCDate().getTime() - System.currentTimeMillis(), 1000) {
         @Override public void onTick(long l) {
           mTextViewTimeLeftForRescue.setText(
               Converters.timeFromMilliseconds(mTextViewTimeLeftForRescue.getContext(), l));
@@ -247,11 +246,10 @@ public class DialogRescueBoldMan extends MvpDialogFragment implements IDialogRes
         failCountLocal++;
       }
     }
-    if (failCountLocal>0) {
+    if (failCountLocal > 0) {
       DialogRescueGirl.newInstance(mTracking)
           .show(getActivity().getFragmentManager(), "DialogRescueGirl");
-    }
-    else {
+    } else {
       DialogRescueGirCongratulations.newInstance(mTracking)
           .show(getActivity().getFragmentManager(), "DialogRescueGirCongratulations");
     }

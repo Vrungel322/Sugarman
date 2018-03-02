@@ -13,8 +13,7 @@ import timber.log.Timber;
  * Created by Vrungel on 09.10.2017.
  */
 
-@Deprecated
-public class DbHelper {
+@Deprecated public class DbHelper {
 
   private final RealmConfiguration mConfiguration;
 

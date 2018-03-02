@@ -132,8 +132,7 @@ public class StatsWeekFragment extends BaseFragment {
         int month = day.get(Calendar.MONTH);
         int dayOfMonth = 0;
 
-           dayOfMonth = day.get(Calendar.DAY_OF_MONTH);
-
+        dayOfMonth = day.get(Calendar.DAY_OF_MONTH);
 
         if (todayYear == year && todayMonth == month && todayDayOfMonth == dayOfMonth) {
           isToday = true;
@@ -168,10 +167,13 @@ public class StatsWeekFragment extends BaseFragment {
       Activity activity = getActivity();
       String textFirstItem = "";
       int numberRow = 0;
-      if (activity != null && activity instanceof StatsTrackingActivity && !getArguments().getBoolean(Constants.IS_MENTORS)) {
+      if (activity != null
+          && activity instanceof StatsTrackingActivity
+          && !getArguments().getBoolean(Constants.IS_MENTORS)) {
         textFirstItem = activity.getString(R.string.warming_up_caps);
         numberRow = i;
-      } else if ((activity != null && activity instanceof MyStatsActivity) || getArguments().getBoolean(Constants.IS_MENTORS)) {
+      } else if ((activity != null && activity instanceof MyStatsActivity)
+          || getArguments().getBoolean(Constants.IS_MENTORS)) {
         textFirstItem = String.format(dayTemplate, 1);
         numberRow = i + 1;
       }

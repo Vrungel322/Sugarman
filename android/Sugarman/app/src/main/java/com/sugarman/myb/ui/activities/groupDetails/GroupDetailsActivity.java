@@ -520,12 +520,12 @@ public class GroupDetailsActivity extends BaseActivity
               sendDeleteMessage(message._id);
             }
 
-
             @Override public void onCancelClicked(NotifyDialog dialog) {
               dialog.dismiss();
             }
           });
-          dialog.setButtonsText(getString(com.clover_studio.spikachatmodule.R.string.NO_CAPITAL), getString(com.clover_studio.spikachatmodule.R.string.YES_CAPITAL));
+          dialog.setButtonsText(getString(com.clover_studio.spikachatmodule.R.string.NO_CAPITAL),
+              getString(com.clover_studio.spikachatmodule.R.string.YES_CAPITAL));
           dialog.show();
         }
 
@@ -1615,8 +1615,7 @@ public class GroupDetailsActivity extends BaseActivity
   @Override protected void onDestroy() {
     super.onDestroy();
     SocketManager.getInstance().closeAndDisconnectSocket();
-    if(mTrackingInfoClient!=null)
-    mTrackingInfoClient.unregisterListener();
+    if (mTrackingInfoClient != null) mTrackingInfoClient.unregisterListener();
     if (mTimer != null) {
       mTimer.cancel();
     }

@@ -6,11 +6,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import butterknife.BindView;
-import com.appsflyer.AFInAppEventParameterName;
-import com.appsflyer.AppsFlyerLib;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.mzelzoghbi.zgallery.CustomViewPager;
-import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.base.BasicActivity;
@@ -19,8 +16,6 @@ import com.sugarman.myb.ui.activities.checkout.CheckoutActivity;
 import com.sugarman.myb.ui.activities.shop.ShopActivity;
 import com.sugarman.myb.ui.activities.shopInviteFriend.ShopInviteFriendsActivity;
 import com.sugarman.myb.utils.apps_Fly.AppsFlyerEventSender;
-import java.util.HashMap;
-import java.util.Map;
 import timber.log.Timber;
 
 public class ProductDetailsActivity extends BasicActivity implements IProductDetailsActivityView {

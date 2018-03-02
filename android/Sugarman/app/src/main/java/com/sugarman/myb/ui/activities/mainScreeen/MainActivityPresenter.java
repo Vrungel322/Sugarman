@@ -74,11 +74,12 @@ import timber.log.Timber;
   //}
 
   public void refreshCurrentTracking(Tracking tracking) {
-    if (tracking!=null) {
+    if (tracking != null) {
       Subscription subscription = mDataManager.fetchCurrentTracking(tracking.getId())
           .compose(ThreadSchedulers.applySchedulers())
           .subscribe(trackingInfoResponseResponse -> {
-            Timber.e("updateCurTra refreshCurrentTracking code:" + trackingInfoResponseResponse.code());
+            Timber.e(
+                "updateCurTra refreshCurrentTracking code:" + trackingInfoResponseResponse.code());
 
             getViewState().updateCurrentTracking(trackingInfoResponseResponse.body());
           }, Throwable::printStackTrace);

@@ -46,7 +46,7 @@ public class Converters {
     return null;
   }
 
-  public static String timeFromMilliseconds(Context context,long timeMs) {
+  public static String timeFromMilliseconds(Context context, long timeMs) {
     //if (!date.equals("")) {
     //  String dateResult;
     //  SimpleDateFormat formatter =
@@ -68,8 +68,8 @@ public class Converters {
     int sec = (int) ((timeMs % Constants.MS_IN_MIN) / Constants.MS_IN_SEC);
 
     String timeFormatted =
-        String.format(context.getString(R.string.timer_template), timeFormatter.format(days), timeFormatter.format(hours),
-            timeFormatter.format(minutes), timeFormatter.format(sec));
+        String.format(context.getString(R.string.timer_template), timeFormatter.format(days),
+            timeFormatter.format(hours), timeFormatter.format(minutes), timeFormatter.format(sec));
     return timeFormatted;
   }
 }

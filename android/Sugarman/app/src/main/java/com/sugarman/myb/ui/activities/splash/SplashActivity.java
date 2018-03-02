@@ -18,7 +18,6 @@ import android.util.Log;
 import com.android.installreferrer.api.InstallReferrerClient;
 import com.android.installreferrer.api.InstallReferrerStateListener;
 import com.android.installreferrer.api.ReferrerDetails;
-import com.appsflyer.AFInAppEventParameterName;
 import com.appsflyer.AppsFlyerLib;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.facebook.FacebookException;
@@ -51,8 +50,6 @@ import com.sugarman.myb.utils.apps_Fly.AppsFlyerEventSender;
 import com.sugarman.myb.utils.inapp.IabHelper;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.Map;
 import rx.subscriptions.CompositeSubscription;
 import timber.log.Timber;
 
@@ -285,7 +282,6 @@ public class SplashActivity extends GetUserInfoActivity
         intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivityForResult(intent1, Constants.GROUP_DETAILS_ACTIVITY_REQUEST_CODE);
         App.getEventBus().post(new RefreshTrackingsEvent(trackingIdFromFcm));
-
       }
       // application is closed. usually run splash activity
       return false;

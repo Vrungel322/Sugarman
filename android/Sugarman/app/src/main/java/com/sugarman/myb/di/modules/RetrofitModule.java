@@ -73,8 +73,7 @@ import timber.log.Timber;
   }
 
   @Provides @AppScope OkHttpClient provideOkClient(HttpLoggingInterceptor httpLoggingInterceptor,
-      Cache cache,
-      @Named("CacheInterceptor") Interceptor cacheInterceptor,
+      Cache cache, @Named("CacheInterceptor") Interceptor cacheInterceptor,
       @Named("OfflineCacheInterceptor") Interceptor offlineCacheInterceptor,
       @Named("HeaderInterceptor") Interceptor headerInterceptor) {
     return new OkHttpClient.Builder().readTimeout(30, TimeUnit.SECONDS)

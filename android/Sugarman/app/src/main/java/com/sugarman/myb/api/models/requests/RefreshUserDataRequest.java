@@ -44,7 +44,6 @@ public class RefreshUserDataRequest {
   @Getter @Setter @SerializedName("utm_content") private String content;
   @Getter @Setter @SerializedName("utm_campaign") private String campaign;
 
-
   public void setPhoneToken(String phoneToken) {
     this.phoneToken = phoneToken;
   }

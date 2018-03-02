@@ -31,7 +31,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import timber.log.Timber;
 
 public class FailedActivity extends NotificationFullScreenActivity
     implements ApiRecreateGroupListener {
@@ -148,7 +147,7 @@ public class FailedActivity extends NotificationFullScreenActivity
       //Timber.e("Failer " + member.getName() + " " + member.getSteps());
       if (member.getSteps() >= Config.MAX_STEPS_PER_DAY) {
         iterator.remove();
-       // Timber.e("Failer removed");
+        // Timber.e("Failer removed");
       }
     }
 

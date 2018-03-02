@@ -18,7 +18,8 @@ public class SendExceptionHiddenActivity extends BasicActivity implements ISendE
     super.onCreate(savedInstanceState);
     Timber.e("uncaughtException onCreate");
 
-    HashMap<String, String> errorBody =  (HashMap<String, String>) getIntent().getSerializableExtra(ExceptionHandler.ERROR_KEY);
+    HashMap<String, String> errorBody =
+        (HashMap<String, String>) getIntent().getSerializableExtra(ExceptionHandler.ERROR_KEY);
     if (errorBody != null) {
       Timber.e("uncaughtException errorBody: " + errorBody);
       FirebaseDatabase.getInstance()
@@ -29,7 +30,10 @@ public class SendExceptionHiddenActivity extends BasicActivity implements ISendE
           .push()
           .setValue(errorBody)
           .addOnCompleteListener(task -> {
-            Timber.e("uncaughtException onCompleateListener " + task.isSuccessful() + " result: " + task.getResult());
+            Timber.e("uncaughtException onCompleateListener "
+                + task.isSuccessful()
+                + " result: "
+                + task.getResult());
             finishAffinity();
             //finish();
             //android.os.Process.killProcess(android.os.Process.myPid());

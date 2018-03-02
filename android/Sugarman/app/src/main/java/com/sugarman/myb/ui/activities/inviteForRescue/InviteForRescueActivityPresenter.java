@@ -10,7 +10,6 @@ import com.sugarman.myb.api.models.responses.ErrorResponse;
 import com.sugarman.myb.api.models.responses.RescueFriendResponse;
 import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
-import com.sugarman.myb.api.models.responses.me.groups.CreateGroupResponse;
 import com.sugarman.myb.base.BasicPresenter;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.data.DataManager;
@@ -116,25 +115,26 @@ import static com.sugarman.myb.api.clients.BaseApiClient.FAILURE_PARSE_ERROR_RES
   public void sendInvitersForRescue(List<FacebookFriend> members, Tracking tracking) {
     Subscription subscription = mDataManager.sendInvitersForRescue(members, tracking.getId())
         .compose(ThreadSchedulers.applySchedulers())
-        .subscribe(createGroupResponseResponse -> {  RescueFriendResponse dataResponse = createGroupResponseResponse.body();
+        .subscribe(createGroupResponseResponse -> {
+          RescueFriendResponse dataResponse = createGroupResponseResponse.body();
           ResponseBody errorBody = createGroupResponseResponse.errorBody();
 
-            if (dataResponse != null) {
-              //getViewState().onApiCreateGroupSuccess(
-              //    dataResponse.getResult());
-              getViewState().closeActivity();
-            } else if (errorBody != null) {
-              if (createGroupResponseResponse.code() == 401) {
-                getViewState().onApiUnauthorized();
-              } else if (createGroupResponseResponse.code() == BaseApiClient.OLD_VERSION_CODE) {
-                getViewState().onUpdateOldVersion();
-              } else {
-                getViewState().onApiCreateGroupFailure(getErrorMessage(errorBody));
-              }
+          if (dataResponse != null) {
+            //getViewState().onApiCreateGroupSuccess(
+            //    dataResponse.getResult());
+            getViewState().closeActivity();
+          } else if (errorBody != null) {
+            if (createGroupResponseResponse.code() == 401) {
+              getViewState().onApiUnauthorized();
+            } else if (createGroupResponseResponse.code() == BaseApiClient.OLD_VERSION_CODE) {
+              getViewState().onUpdateOldVersion();
             } else {
-              getViewState().onApiCreateGroupFailure(BaseApiClient.RESPONSE_IS_NULL);
+              getViewState().onApiCreateGroupFailure(getErrorMessage(errorBody));
             }
-          },Throwable::printStackTrace);
+          } else {
+            getViewState().onApiCreateGroupFailure(BaseApiClient.RESPONSE_IS_NULL);
+          }
+        }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 

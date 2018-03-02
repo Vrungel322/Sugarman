@@ -259,8 +259,7 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
 
   public static void saveStats(Stats s) {
     Timber.e("saveStats " + s.getDate());
-      putInt(s.getDate(), s.getStepsCount());
-
+    putInt(s.getDate(), s.getStepsCount());
   }
 
   public static List<Stats> getStats(int lastdaysCount) {
@@ -269,8 +268,7 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     for (int i = 0; i < DataUtils.getLastXDays(lastdaysCount).size(); i++) {
       String data = DataUtils.getLastXDays(lastdaysCount).get(i);
       Timber.e("saveStats getStats " + data);
-      stats.add(new Stats(i, data,"day "+data,getInt(data,Constants.FAKE_STEPS_COUNT),0));
-
+      stats.add(new Stats(i, data, "day " + data, getInt(data, Constants.FAKE_STEPS_COUNT), 0));
     }
     return stats;
   }

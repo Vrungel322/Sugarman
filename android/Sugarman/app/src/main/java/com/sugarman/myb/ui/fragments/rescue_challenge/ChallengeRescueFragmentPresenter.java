@@ -14,9 +14,8 @@ import timber.log.Timber;
 /**
  * Created by nikita on 06.12.2017.
  */
-@InjectViewState
-public class ChallengeRescueFragmentPresenter extends
-    BasicPresenter<IChallengeRescueFragmentView> {
+@InjectViewState public class ChallengeRescueFragmentPresenter
+    extends BasicPresenter<IChallengeRescueFragmentView> {
   @Override protected void inject() {
     App.getAppComponent().inject(this);
   }
@@ -33,7 +32,7 @@ public class ChallengeRescueFragmentPresenter extends
           if (objectResponse.isSuccessful()) {
             getViewState().superKickResponse();
           }
-        },Throwable::printStackTrace);
+        }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 
@@ -48,8 +47,7 @@ public class ChallengeRescueFragmentPresenter extends
             }
           }, Throwable::printStackTrace);
       addToUnsubscription(subscription);
-    }
-    else {
+    } else {
       getViewState().youCanNotPokeYourselfView();
     }
   }

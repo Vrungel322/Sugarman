@@ -253,8 +253,9 @@ public class AddMemberActivity extends BaseActivity
           mAddMembersClient.addMembers(IntentExtractorHelper.getTrackingId(getIntent()),
               membersToSendByEditing);
         } else {
-          new SugarmanDialog.Builder(AddMemberActivity.this, DialogConstants.GROUP_NAME_IS_EMPTY_ID).content(
-              R.string.group_name_is_empty).show();
+          new SugarmanDialog.Builder(AddMemberActivity.this, DialogConstants.GROUP_NAME_IS_EMPTY_ID)
+              .content(R.string.group_name_is_empty)
+              .show();
         }
       }
 

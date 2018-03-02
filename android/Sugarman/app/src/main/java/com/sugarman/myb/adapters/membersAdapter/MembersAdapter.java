@@ -48,10 +48,11 @@ public class MembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.ViewHold
     super(parentDelegate, "MembersAdapter");
     this.context = context;
 
-    if(invite)
+    if (invite) {
       add = context.getString(R.string.invite);
-      else
-    add = context.getString(R.string.add);
+    } else {
+      add = context.getString(R.string.add);
+    }
     added = context.getString(R.string.added);
     remove = context.getString(R.string.remove);
     pending = context.getString(R.string.pending);
@@ -115,7 +116,7 @@ public class MembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.ViewHold
         boolean isPending = friend.isPending();
         boolean isAdded = friend.isAdded();
         boolean isSelected = friend.isSelected();
-        Timber.e("onBindViewHolder " + name + " isPending:"+isPending);
+        Timber.e("onBindViewHolder " + name + " isPending:" + isPending);
         if (isPending || isAdded || isSelected) {
           if (isPending) membersHolder.tvActionBtn.setText(pending);
           if (isAdded) membersHolder.tvActionBtn.setText(added);

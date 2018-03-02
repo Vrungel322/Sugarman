@@ -22,8 +22,6 @@ import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import com.appsflyer.AFInAppEventParameterName;
-import com.appsflyer.AppsFlyerLib;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -37,7 +35,6 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.SignInButton;
-import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.requests.ReportStats;
 import com.sugarman.myb.constants.Constants;
@@ -59,8 +56,6 @@ import com.vk.sdk.api.VKParameters;
 import com.vk.sdk.api.VKRequest;
 import com.vk.sdk.api.VKResponse;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import jp.wasabeef.blurry.Blurry;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -91,7 +86,7 @@ public class LoginActivity extends GetUserInfoActivity implements View.OnClickLi
     }
   };
   SignInButton gplus;
-  RelativeLayout rlfb, rlvk, rlphone,rlGoogle;
+  RelativeLayout rlfb, rlvk, rlphone, rlGoogle;
   AlphaAnimation animation1;
   Thread t;
   int zeroPointY;
@@ -103,8 +98,7 @@ public class LoginActivity extends GetUserInfoActivity implements View.OnClickLi
   private float mCoeficient = 250f;
 
   private void saveIMEI() {
-    String androidId = Settings.Secure.getString(getContentResolver(),
-        Settings.Secure.ANDROID_ID);
+    String androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
 
     Timber.e("Secure ID " + androidId);
     SharedPreferenceHelper.setIMEI(androidId);

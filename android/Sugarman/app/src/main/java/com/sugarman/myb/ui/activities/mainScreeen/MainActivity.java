@@ -103,12 +103,12 @@ import com.sugarman.myb.ui.activities.DailyActivity;
 import com.sugarman.myb.ui.activities.FailedActivity;
 import com.sugarman.myb.ui.activities.GetUserInfoActivity;
 import com.sugarman.myb.ui.activities.SearchGroupsActivity;
-import com.sugarman.myb.ui.activities.statsTracking.StatsTrackingActivity;
 import com.sugarman.myb.ui.activities.createGroup.CreateGroupActivity;
 import com.sugarman.myb.ui.activities.groupDetails.GroupDetailsActivity;
 import com.sugarman.myb.ui.activities.mentorList.MentorListActivity;
 import com.sugarman.myb.ui.activities.profile.ProfileActivity;
 import com.sugarman.myb.ui.activities.shop.ShopActivity;
+import com.sugarman.myb.ui.activities.statsTracking.StatsTrackingActivity;
 import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.ui.dialogs.dialogRescueBoldMan.DialogRescueBoldMan;
@@ -461,7 +461,7 @@ public class MainActivity extends GetUserInfoActivity
             boolean isRefreshNotifications) {
           Timber.e("trackings:" + trackings.length + " mentorsGroup:" + mentorsGroup.size());
           myTrackings.clear();
-          myTrackings .addAll( Arrays.asList(trackings));
+          myTrackings.addAll(Arrays.asList(trackings));
           mMentorsGroups = mentorsGroup;
           List<BaseChallengeItem> converted = prepareTrackingItems();
 
@@ -1592,26 +1592,29 @@ public class MainActivity extends GetUserInfoActivity
       showProgressFragment();
       //if refreshCurrentTracking does not work , then uncomment  mGetMyTrackingsClient.getMyTrackings() line, and comment refreshCurrentTracking
       //mGetMyTrackingsClient.getMyTrackings(); // updates all trackings
-      mPresenter.refreshCurrentTracking(trackingsAdapter.getTracking(vpTrackings.getCurrentItem()));//update only current tracking that is current in ViewPager
+      mPresenter.refreshCurrentTracking(trackingsAdapter.getTracking(
+          vpTrackings.getCurrentItem()));//update only current tracking that is current in ViewPager
     }
   }
 
   @Override public void updateCurrentTracking(TrackingInfoResponse body) {
     List<Tracking> temp = new ArrayList<>();
     int position = 0;
-    for (int i = 0; i <myTrackings.size() ; i++) {
-      if (!myTrackings.get(i).getId().equals(body.getResult().getId())){
+    for (int i = 0; i < myTrackings.size(); i++) {
+      if (!myTrackings.get(i).getId().equals(body.getResult().getId())) {
         temp.add(myTrackings.get(i));
-      }
-      else {
-        position=i;
+      } else {
+        position = i;
       }
     }
     myTrackings.clear();
     myTrackings.addAll(temp);
-    myTrackings.add(position,body.getResult());
+    myTrackings.add(position, body.getResult());
     Timber.e("updateCurTra updateCurrentTracking position= " + position);
-    Timber.e("updateCurTra updateCurrentTracking myTrackings.size= " + myTrackings.size() + "tracking name: " + body.getResult().getGroup().getName());
+    Timber.e("updateCurTra updateCurrentTracking myTrackings.size= "
+        + myTrackings.size()
+        + "tracking name: "
+        + body.getResult().getGroup().getName());
     updatePagerTrackings();
   }
 
@@ -1653,7 +1656,7 @@ public class MainActivity extends GetUserInfoActivity
 
   private void getIntentData(Intent intent) {
     myTrackings.clear();
-    myTrackings.addAll( Arrays.asList(IntentExtractorHelper.getTrackings(intent)));
+    myTrackings.addAll(Arrays.asList(IntentExtractorHelper.getTrackings(intent)));
 
     myNotifications.clear();
     myNotifications.addAll(prepareNotifications(IntentExtractorHelper.getNotifications(intent)));

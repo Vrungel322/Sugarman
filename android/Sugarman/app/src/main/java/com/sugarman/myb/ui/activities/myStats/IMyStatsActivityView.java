@@ -10,8 +10,8 @@ import java.util.List;
  * Created by yegoryeriomin on 2/28/18.
  */
 
-@StateStrategyType(AddToEndSingleStrategy.class) public interface IMyStatsActivityView extends
-    MvpView {
+@StateStrategyType(AddToEndSingleStrategy.class) public interface IMyStatsActivityView
+    extends MvpView {
 
   void showStats(List<Stats> stats);
 }

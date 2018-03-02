@@ -7,19 +7,14 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 import butterknife.BindView;
 import butterknife.OnClick;
-import com.appsflyer.AFInAppEventParameterName;
-import com.appsflyer.AppsFlyerLib;
 import com.arellomobile.mvp.presenter.InjectPresenter;
-import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.base.BasicActivity;
 import com.sugarman.myb.models.mentor.MentorEntity;
 import com.sugarman.myb.ui.activities.mentorDetail.MentorDetailActivity;
 import com.sugarman.myb.utils.ItemClickSupport;
 import com.sugarman.myb.utils.apps_Fly.AppsFlyerEventSender;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MentorListActivity extends BasicActivity implements IMentorListActivityView {
   @InjectPresenter MentorListActivityPresenter mPresenter;
@@ -32,7 +27,6 @@ public class MentorListActivity extends BasicActivity implements IMentorListActi
     super.onCreate(savedInstanceState);
 
     AppsFlyerEventSender.sendEvent("af_shop_open_mentor_item");
-
   }
 
   @Override public void setUpUI() {

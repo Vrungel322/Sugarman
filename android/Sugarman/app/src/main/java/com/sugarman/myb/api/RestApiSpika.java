@@ -9,13 +9,12 @@ import rx.Observable;
 /**
  * Created by nikita on 29.01.2018.
  */
-@AllArgsConstructor
-public class RestApiSpika {
+@AllArgsConstructor public class RestApiSpika {
   private final SpikaOSRetroApiInterfaceRx api;
 
-  public Observable<GetMessagesModelRefactored> fetchMessagesSpika(String roomId, String lastMessageId,
-      String token) {
-    return api.getMessages(roomId,lastMessageId,token);
+  public Observable<GetMessagesModelRefactored> fetchMessagesSpika(String roomId,
+      String lastMessageId, String token) {
+    return api.getMessages(roomId, lastMessageId, token);
   }
 
   public Observable<Login> loginSpika(User user) {

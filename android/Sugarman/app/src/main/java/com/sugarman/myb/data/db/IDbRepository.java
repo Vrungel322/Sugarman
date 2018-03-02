@@ -14,5 +14,4 @@ public interface IDbRepository<T> {
   //void appendEntities(List<T> entityList);
 
   List<T> getAllEntities(int previousCountDays);
-
 }

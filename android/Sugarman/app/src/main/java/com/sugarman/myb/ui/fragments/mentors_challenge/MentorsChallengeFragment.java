@@ -179,12 +179,16 @@ public class MentorsChallengeFragment extends BasicFragment
             Timber.e("fastestSteps=" + mTracking.getMembers()[i].getSteps());
           }
         }
-         color = 0xff54cc14;
+        color = 0xff54cc14;
         if (mTracking.getDailySugarman().getUser().getSteps() < 5000) {
           color = 0xffe10f0f;
-        } else if (mTracking.getDailySugarman().getUser().getSteps() >= 5000 && mTracking.getDailySugarman().getUser().getSteps() < 7500) {
+        } else if (mTracking.getDailySugarman().getUser().getSteps() >= 5000
+            && mTracking.getDailySugarman().getUser().getSteps() < 7500) {
           color = 0xffeb6117;
-        } else if (mTracking.getDailySugarman().getUser().getSteps() >= 7500 && mTracking.getDailySugarman().getUser().getSteps() < 10000) color = 0xffF6B147;
+        } else if (mTracking.getDailySugarman().getUser().getSteps() >= 7500
+            && mTracking.getDailySugarman().getUser().getSteps() < 10000) {
+          color = 0xffF6B147;
+        }
         mImageViewFastestAvatarBorder.setColorFilter(color);
         mTextViewFastestName.setTextColor(color);
         mTextViewFastestSteps.setTextColor(color);
@@ -229,7 +233,7 @@ public class MentorsChallengeFragment extends BasicFragment
           .transform(new CropCircleTransformation(0xffff0000, 1))
           .into(mImageViewLaziestAvatar);
 
-       color = 0xff54cc14;
+      color = 0xff54cc14;
       if (laziest.getSteps() < 5000) {
         color = 0xffe10f0f;
       } else if (laziest.getSteps() >= 5000 && laziest.getSteps() < 7500) {
@@ -310,15 +314,17 @@ public class MentorsChallengeFragment extends BasicFragment
     mTextViewAllSteps.setText(String.format(Locale.US, "%,d", mAllSteps));
     //steps total
     mTextViewTotalSteps.setText(
-        "" + String.format(Locale.US, "%,d", mAllSteps) + "/" + String.format(Locale.US,
-            "%,d", (mMembers.length * 10000)));;
+        "" + String.format(Locale.US, "%,d", mAllSteps) + "/" + String.format(Locale.US, "%,d",
+            (mMembers.length * 10000)));
+    ;
   }
 
   @Override public void setUnreadMessages(int size) {
     mTextViewNumAvatarEvents.setText("" + size);
-    if(size>0)
-    mTextViewNumAvatarEvents.setVisibility(View.VISIBLE);
-    else
+    if (size > 0) {
+      mTextViewNumAvatarEvents.setVisibility(View.VISIBLE);
+    } else {
       mTextViewNumAvatarEvents.setVisibility(View.GONE);
+    }
   }
 }

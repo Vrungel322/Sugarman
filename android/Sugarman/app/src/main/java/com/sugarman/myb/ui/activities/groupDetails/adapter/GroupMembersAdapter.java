@@ -77,7 +77,7 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
   private int myPosition = -1;
   private boolean amIMentor = false;
   private boolean isMentorGroup = false;
-  private String mentorId="";
+  private String mentorId = "";
 
   public GroupMembersAdapter(MvpDelegate<?> parentDelegate, Context context,
       OnStepMembersActionListener listener, String trackingId, boolean isMentor,
@@ -492,7 +492,7 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
 
     AppsFlyerEventSender.sendEvent("af_kick_single_person");
 
-    if(isMentorGroup) {
+    if (isMentorGroup) {
       if (amIMentor) {
         GroupMember member = mData.get(position);
         member.setBroken(true);
@@ -502,18 +502,16 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
         } else {
           actionListener.get().onPokeMember(member);
         }
-      }
-      else
-      {
+      } else {
         GroupMember member = mData.get(position);
         int memberSteps = member.getSteps();
-        if (member.getId().equals(SharedPreferenceHelper.getUserId())){
+        if (member.getId().equals(SharedPreferenceHelper.getUserId())) {
           actionListener.get().youCantPokeYourself();
           return;
         }
-        if(TextUtils.equals(member.getId(),mentorId))
+        if (TextUtils.equals(member.getId(), mentorId)) {
           actionListener.get().onPokeMentor();
-        else {
+        } else {
           if (myPosition == -1) {
             actionListener.get().onPokeInForeignGroup();
           } else if (TextUtils.equals(member.getId(), userId)) {
@@ -529,7 +527,7 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
           }
         }
       }
-    }else {
+    } else {
       if (position >= 0 && position < mData.size()) {
         if (actionListener.get() != null) {
           GroupMember member = mData.get(position);
@@ -667,7 +665,7 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
 
   private void setMyStepsAndResortMembers(List<Member> members) {
     for (int i = 0; i < members.size(); i++) {
-      if (members.get(i).getId().equals(userId)){
+      if (members.get(i).getId().equals(userId)) {
         members.get(i).setSteps(userSteps);
       }
     }

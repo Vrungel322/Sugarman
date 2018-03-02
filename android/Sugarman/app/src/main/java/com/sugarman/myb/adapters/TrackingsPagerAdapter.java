@@ -39,7 +39,7 @@ public class TrackingsPagerAdapter extends FragmentStatePagerAdapter {
   }
 
   @Override public BaseFragment getItem(int position) {
-    Timber.e("updateCurTra getItem position: "+ position);
+    Timber.e("updateCurTra getItem position: " + position);
 
     BaseChallengeFragment requestedFragment = getFragment(position);
     if (requestedFragment == null) {

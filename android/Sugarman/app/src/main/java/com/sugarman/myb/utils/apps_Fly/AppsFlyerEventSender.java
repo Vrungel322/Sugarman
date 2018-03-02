@@ -5,10 +5,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.sugarman.myb.App;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -18,8 +15,7 @@ import java.util.TimeZone;
 
 public class AppsFlyerEventSender {
 
-  public static void sendEvent(String eventKey)
-  {
+  public static void sendEvent(String eventKey) {
     Map<String, Object> eventValue = new HashMap<>();
     eventValue.put("event", eventKey);
     eventValue.put("imei", SharedPreferenceHelper.getIMEI());
@@ -28,7 +24,6 @@ public class AppsFlyerEventSender {
     eventValue.put("timezone", TimeZone.getDefault().getID());
     eventValue.put("timestamp", System.currentTimeMillis() + "");
 
-
     AppsFlyerLib.getInstance()
         .trackEvent(App.getInstance().getApplicationContext(), eventKey, eventValue);
 
@@ -36,10 +31,11 @@ public class AppsFlyerEventSender {
     databaseRefference = FirebaseDatabase.getInstance().getReference();
     databaseRefference.child("remoteLoggingAndroid")
         .child("event")
-        .child(SharedPreferenceHelper.getUserName() + " : " + SharedPreferenceHelper.getUserId()).push()
+        .child(SharedPreferenceHelper.getUserName() + " : " + SharedPreferenceHelper.getUserId())
+        .push()
         .setValue(eventValue)
         .addOnCompleteListener(task -> {
 
-    });
+        });
   }
 }

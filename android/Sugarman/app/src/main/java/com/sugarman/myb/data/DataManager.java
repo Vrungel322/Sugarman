@@ -429,10 +429,11 @@ public class DataManager {
     return mRestApi.fetchCurrentTracking(trackingId);
   }
 
-  public Observable<Response<Object>> declineInvite(String inviteId){
-    return mRestApi.declineInvite( inviteId);
+  public Observable<Response<Object>> declineInvite(String inviteId) {
+    return mRestApi.declineInvite(inviteId);
   }
-  public Observable<Response<Object>> acceptInvite(String inviteId){
-    return mRestApi.acceptInvite( inviteId);
+
+  public Observable<Response<Object>> acceptInvite(String inviteId) {
+    return mRestApi.acceptInvite(inviteId);
   }
 }

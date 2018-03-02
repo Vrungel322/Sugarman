@@ -6,10 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.appsflyer.AFInAppEventParameterName;
-import com.appsflyer.AppsFlyerLib;
 import com.rd.PageIndicatorView;
-import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.adapters.IntroPagerAdapter;
 import com.sugarman.myb.constants.Constants;
@@ -18,8 +15,6 @@ import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
 import com.sugarman.myb.utils.IntentExtractorHelper;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.apps_Fly.AppsFlyerEventSender;
-import java.util.HashMap;
-import java.util.Map;
 
 public class IntroActivity extends BaseActivity implements View.OnClickListener {
 
