@@ -432,4 +432,7 @@ public class DataManager {
   public Observable<Response<Object>> declineInvite(String inviteId){
     return mRestApi.declineInvite( inviteId);
   }
+  public Observable<Response<Object>> acceptInvite(String inviteId){
+    return mRestApi.acceptInvite( inviteId);
+  }
 }

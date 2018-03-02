@@ -186,4 +186,7 @@ public interface ApiRx {
 
   @DELETE("/v1/me/invites/{invite_id}") Observable<Response<Object>> declineInvite(
       @Path("invite_id") String inviteId);
+
+  @POST("/v1/me/invites/{invite_id}") Observable<Response<Object>> acceptInvite(
+      @Path("invite_id") String inviteId);
 }

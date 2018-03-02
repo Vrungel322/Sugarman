@@ -129,6 +129,11 @@ public class InvitesActivity extends BaseActivity
     }
   }
 
+  /**
+   * Method from Adapter click DeclineInvite
+   * @param invite
+   * @param position
+   */
   @Override public void onDeclineInvite(Invite invite, int position) {
     Tracking tracking = invite.getTracking();
     long startTimestamp = tracking.getStartUTCDate().getTime();
@@ -146,6 +151,11 @@ public class InvitesActivity extends BaseActivity
     }
   }
 
+  /**
+   * Method from Adapter click AcceptInvite
+   * @param invite
+   * @param position
+   */
   @Override public void onAcceptInvite(Invite invite, int position) {
     Tracking tracking = invite.getTracking();
     long startTimestamp = tracking.getStartUTCDate().getTime();
@@ -159,7 +169,8 @@ public class InvitesActivity extends BaseActivity
       showProgressFragmentTemp();
       actionPosition = position;
 
-      mInvitesManagerClient.accept(invite.getId());
+      //mInvitesManagerClient.accept(invite.getId());
+      mPresenter.acceptInvitation(invite.getId());
     }
   }
 
@@ -187,6 +198,22 @@ public class InvitesActivity extends BaseActivity
     }
   }
 
+  @Override public void acceptInviteAction() {
+    AnalyticsHelper.reportChallenge();
+    isNeedRefreshTrackings = true;
+
+    Invite invite = invitesAdapter.getValue(actionPosition);
+    lastAcceptTrackingId = invite.getTracking().getId();
+
+    App.getEventBus().post(new InviteRemovedEvent(invite.getId()));
+    App.getEventBus().post(new ReportStepsEvent());
+
+    invitesAdapter.removeItem(actionPosition);
+    actionPosition = -1;
+    refreshNoInvites();
+    closeProgressFragment();
+  }
+
   @Override public void onApiDeclineInviteSuccess() {
     //Invite invite = invitesAdapter.getValue(actionPosition);
     //if (invite != null) {
@@ -211,29 +238,29 @@ public class InvitesActivity extends BaseActivity
   }
 
   @Override public void onApiAcceptInviteSuccess() {
-    AnalyticsHelper.reportChallenge();
-    isNeedRefreshTrackings = true;
-
-    Invite invite = invitesAdapter.getValue(actionPosition);
-    lastAcceptTrackingId = invite.getTracking().getId();
-
-    App.getEventBus().post(new InviteRemovedEvent(invite.getId()));
-    App.getEventBus().post(new ReportStepsEvent());
-
-    invitesAdapter.removeItem(actionPosition);
-    actionPosition = -1;
-    refreshNoInvites();
-    closeProgressFragment();
+    //AnalyticsHelper.reportChallenge();
+    //isNeedRefreshTrackings = true;
+    //
+    //Invite invite = invitesAdapter.getValue(actionPosition);
+    //lastAcceptTrackingId = invite.getTracking().getId();
+    //
+    //App.getEventBus().post(new InviteRemovedEvent(invite.getId()));
+    //App.getEventBus().post(new ReportStepsEvent());
+    //
+    //invitesAdapter.removeItem(actionPosition);
+    //actionPosition = -1;
+    //refreshNoInvites();
+    //closeProgressFragment();
   }
 
   @Override public void onApiAcceptInviteFailure(String message) {
-    closeProgressFragment();
-    if (DeviceHelper.isNetworkConnected()) {
-      new SugarmanDialog.Builder(this, DialogConstants.API_ACCEPT_INVITE_FAILURE_ID).content(
-          message).show();
-    } else {
-      showNoInternetConnectionDialog();
-    }
+    //closeProgressFragment();
+    //if (DeviceHelper.isNetworkConnected()) {
+    //  new SugarmanDialog.Builder(this, DialogConstants.API_ACCEPT_INVITE_FAILURE_ID).content(
+    //      message).show();
+    //} else {
+    //  showNoInternetConnectionDialog();
+    //}
   }
 
   @Subscribe public void onEvent(InvitesUpdatedEvent event) {

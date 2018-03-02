@@ -23,8 +23,21 @@ import timber.log.Timber;
           Timber.e("declineInvitation code: " + objectResponse.code());
           if (objectResponse.code() >= 200 && objectResponse.code() < 300) {
             getViewState().declineInviteAction();
+          } else {
+            getViewState().errorMsg(objectResponse.errorBody().toString());
           }
-          else {
+        }, Throwable::printStackTrace);
+    addToUnsubscription(subscription);
+  }
+
+  public void acceptInvitation(String inviteId) {
+    Subscription subscription = mDataManager.acceptInvite(inviteId)
+        .compose(ThreadSchedulers.applySchedulers())
+        .subscribe(objectResponse -> {
+          Timber.e("acceptInvitation code: " + objectResponse.code());
+          if (objectResponse.code() >= 200 && objectResponse.code() < 300) {
+            getViewState().acceptInviteAction();
+          } else {
             getViewState().errorMsg(objectResponse.errorBody().toString());
           }
         }, Throwable::printStackTrace);

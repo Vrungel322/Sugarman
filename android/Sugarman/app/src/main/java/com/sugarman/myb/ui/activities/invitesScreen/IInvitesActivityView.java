@@ -12,4 +12,6 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
   void declineInviteAction();
 
   void errorMsg(String errorMsg);
+
+  void acceptInviteAction();
 }
