@@ -24,6 +24,9 @@ import timber.log.Timber;
           if (objectResponse.code() >= 200 && objectResponse.code() < 300) {
             getViewState().declineInviteAction();
           }
+          else {
+            getViewState().errorMsg(objectResponse.errorBody().toString());
+          }
         }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }

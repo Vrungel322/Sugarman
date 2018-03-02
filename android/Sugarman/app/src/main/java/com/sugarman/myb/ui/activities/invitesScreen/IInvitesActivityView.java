@@ -10,4 +10,6 @@ import com.arellomobile.mvp.viewstate.strategy.StateStrategyType;
 @StateStrategyType(AddToEndSingleStrategy.class) public interface IInvitesActivityView
     extends MvpView {
   void declineInviteAction();
+
+  void errorMsg(String errorMsg);
 }

@@ -177,6 +177,16 @@ public class InvitesActivity extends BaseActivity
     closeProgressFragment();
   }
 
+  @Override public void errorMsg(String errorMsg) {
+    closeProgressFragment();
+    if (DeviceHelper.isNetworkConnected()) {
+      new SugarmanDialog.Builder(this, DialogConstants.API_DECLINE_INVITE_FAILURE_ID).content(
+          errorMsg).show();
+    } else {
+      showNoInternetConnectionDialog();
+    }
+  }
+
   @Override public void onApiDeclineInviteSuccess() {
     //Invite invite = invitesAdapter.getValue(actionPosition);
     //if (invite != null) {
@@ -191,13 +201,13 @@ public class InvitesActivity extends BaseActivity
   }
 
   @Override public void onApiDeclineInviteFailure(String message) {
-    closeProgressFragment();
-    if (DeviceHelper.isNetworkConnected()) {
-      new SugarmanDialog.Builder(this, DialogConstants.API_DECLINE_INVITE_FAILURE_ID).content(
-          message).show();
-    } else {
-      showNoInternetConnectionDialog();
-    }
+    //closeProgressFragment();
+    //if (DeviceHelper.isNetworkConnected()) {
+    //  new SugarmanDialog.Builder(this, DialogConstants.API_DECLINE_INVITE_FAILURE_ID).content(
+    //      message).show();
+    //} else {
+    //  showNoInternetConnectionDialog();
+    //}
   }
 
   @Override public void onApiAcceptInviteSuccess() {
