@@ -32,9 +32,16 @@ import timber.log.Timber;
     App.getAppComponent().inject(this);
   }
 
-  public void fetchTrackingStats(String trackingId, Tracking tracking) throws ParseException {
-    String startDate = new SimpleDateFormat("yyyy-MM-dd").format(
-        new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US).parse(tracking.getStartDate()));
+  public void fetchTrackingStats(String trackingId, Tracking tracking, boolean isMentors) throws ParseException {
+    String startDate;
+    if (!isMentors) {
+       startDate = new SimpleDateFormat("yyyy-MM-dd").format(
+          new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US).parse(tracking.getStartDate()));
+    }
+    else {
+      startDate = new SimpleDateFormat("yyyy-MM-dd").format(
+          new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US).parse(tracking.getStartDate()));
+    }
     Timber.e("fetchTrackingStats startDate: " + startDate);
 
     int diff = DataUtils.getDateDiff(DataUtils.subtractDays(
