@@ -150,6 +150,13 @@ public class MyStatsActivity extends BaseActivity
   @Override public void showStats(List<Stats> stats) {
     if (stats != null && stats.size() != 0) {
       Timber.e("showStats size = " + stats.size());
+      for (Stats s : stats) {
+        if (s.getStepsCount() < 0){
+          Timber.e("showStats s.getStepsCount() = " + s.getStepsCount());
+
+          s.setStepsCount(0);
+        }
+      }
       statsAdapter.setStats(stats);
       for (Stats s : stats) {
         Timber.e("onApiGetMyStatsSuccess " + s.getDate() + " " + s.getStepsCount());

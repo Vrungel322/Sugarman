@@ -14,7 +14,7 @@
         android:textColor="@color/gray"
         android:textSize="@dimen/stats_steps_text_size"
         app:font="@string/font_roboto_condensed"
-        tools:text="6,201" />
+        android:text="0" />
 
     <com.sugarman.myb.ui.views.VerticalIndicatorView
         android:id="@+id/viv_steps"
