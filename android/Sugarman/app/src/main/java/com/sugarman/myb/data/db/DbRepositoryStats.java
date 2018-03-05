@@ -18,11 +18,11 @@ public class DbRepositoryStats implements IDbRepository<Stats> {
     Timber.e("dropTable");
   }
 
-  @Override public void saveEntity(Stats statsList) {
-    if (statsList != null) {
-      Timber.e("saveEntityList entityList list size = " + statsList.getDate());
+  @Override public void saveEntity(Stats stat) {
+    if (stat != null) {
+      Timber.e("saveEntityList entityList list size = " + stat.getDate());
       dropTable();
-      SharedPreferenceHelper.saveStats(statsList);
+      SharedPreferenceHelper.saveStats(stat);
     }
   }
 
