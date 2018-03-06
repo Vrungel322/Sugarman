@@ -123,7 +123,10 @@ public class StatsWeekFragment extends BaseFragment {
       llDaysContainer.addView(tvDay);
 
       int steps = dayStats.getStepsCount();
+      Timber.e("steps " + steps + " " + dayStats.getDayTimestamp());
       long dayTimestamp = dayStats.getDayTimestamp();
+      if(dayTimestamp==-1)
+        dayTimestamp = 0;
 
       tvDay.setTextSize(TypedValue.COMPLEX_UNIT_SP, daysTextSize);
 
@@ -163,14 +166,14 @@ public class StatsWeekFragment extends BaseFragment {
         }
 
         tvSteps.setTextSize(TypedValue.COMPLEX_UNIT_SP, stepsTextSize);
-        if (todayYear <= year && todayMonth <= month && todayDayOfMonth <= dayOfMonth && dayTimestamp != 0) {
-          tvDay.setTextColor(gray);
-        } else {
-          tvDay.setTextColor(darkGray);
-        }
+
       }
 
-
+      if (todayTimestamp <= dayTimestamp|| dayTimestamp == 0) {
+        tvDay.setTextColor(gray);
+      } else {
+        tvDay.setTextColor(darkGray);
+      }
       Activity activity = getActivity();
       String textFirstItem = "";
       int numberRow = 0;

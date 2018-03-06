@@ -240,6 +240,9 @@ public class StatsTrackingActivity extends BaseActivity
         Timber.e("showTrackingStats " + s.getDayTimestamp());
         Timber.e("index " + i++ + " " + s.getStepsCount());
       }
+
+
+
       statsAdapter.setStats(stats, mTracking.isMentors());
       vpStats.setOffscreenPageLimit(statsAdapter.getCount());
       spiStats.setViewPager(vpStats, 0);
