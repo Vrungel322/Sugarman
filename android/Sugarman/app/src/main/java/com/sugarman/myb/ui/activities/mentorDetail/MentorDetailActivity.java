@@ -437,8 +437,10 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   }
 
   @Override public void slotUnavailableDialog() {
+    runOnUiThread(() -> {
+      hideProgress();
     new SugarmanDialog.Builder(MentorDetailActivity.this, DialogConstants.SLOT_UNAVAILABLE).content(
-        getString(R.string.slot_unavailable_dialog)).show();
+        getString(R.string.slot_unavailable_dialog)).show();});
   }
 
   @Override public void showProgress() {
