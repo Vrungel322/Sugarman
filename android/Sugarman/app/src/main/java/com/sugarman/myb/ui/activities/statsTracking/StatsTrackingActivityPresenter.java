@@ -55,7 +55,7 @@ import timber.log.Timber;
 
       Timber.e("User join date " + userJoinDate);
 
-      if(userJoinDate.isEmpty())
+      if(userJoinDate==null || userJoinDate.isEmpty())
         userJoinDate = tracking.getStartDate();
 
       startDate = new SimpleDateFormat("yyyy-MM-dd").format(
@@ -64,7 +64,7 @@ import timber.log.Timber;
     //Timber.e("fetchTrackingStats startDate: " + startDate);
 
     int diff = DataUtils.getDateDiff(DataUtils.subtractDays(
-        new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US).parse(tracking.getStartDate()), 1),
+        new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(startDate), 1),
         new Date(System.currentTimeMillis()), TimeUnit.DAYS).intValue();
     //Timber.e("fetchTrackingStats diff: " + diff);
 
