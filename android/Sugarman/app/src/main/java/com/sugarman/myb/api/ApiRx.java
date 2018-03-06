@@ -189,4 +189,10 @@ public interface ApiRx {
 
   @POST("/v1/me/invites/{invite_id}") Observable<Response<Object>> acceptInvite(
       @Path("invite_id") String inviteId);
+
+  @POST("/v1/requests/{request_id}/decline") Observable<Response<Object>> declineRequest(
+      @Path("request_id") String requestId);
+
+  @POST("/v1/requests/{request_id}/accept") Observable<Response<Object>> acceptRequest(
+      @Path("request_id") String requestId);
 }

@@ -1,4 +1,4 @@
-package com.sugarman.myb.ui.activities;
+package com.sugarman.myb.ui.activities.requestsScreen;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.adapters.RequestsAdapter;
@@ -29,7 +30,9 @@ import java.util.List;
 import org.greenrobot.eventbus.Subscribe;
 
 public class RequestsActivity extends BaseActivity
-    implements View.OnClickListener, OnRequestsActionListener, ApiManageRequestsListener {
+    implements View.OnClickListener, OnRequestsActionListener, ApiManageRequestsListener,
+    IRequestsActivityView {
+  @InjectPresenter RequestsActivityPresenter mPresenter;
 
   private static final String TAG = RequestsActivity.class.getName();
 
@@ -120,16 +123,30 @@ public class RequestsActivity extends BaseActivity
   @Override public void onDeclineRequest(Request request, int position) {
     showProgressFragmentTemp();
     actionPosition = position;
-    mRequestManagerClient.decline(request.getId());
+    //mRequestManagerClient.decline(request.getId());
+    mPresenter.declineRequest(request.getId());
+  }
+
+  @Override public void declineRequestAction() {
+    Request request = requestsAdapter.getValue(actionPosition);
+    if (request != null) {
+      App.getEventBus().post(new RequestsRemovedEvent(request.getId()));
+    }
+
+    requestsAdapter.removeItem(actionPosition);
+    actionPosition = -1;
+    refreshNoRequests();
+    closeProgressFragment();
   }
 
   @Override public void onApproveRequest(Request request, int position) {
     showProgressFragmentTemp();
     actionPosition = position;
-    mRequestManagerClient.accept(request.getId());
+    //mRequestManagerClient.accept(request.getId());
+    mPresenter.acceptRequest(request.getId());
   }
 
-  @Override public void onApiAcceptRequestSuccess() {
+  @Override public void acceptRequestAction() {
     isNeedRefreshTrackings = true;
     Request request = requestsAdapter.getValue(actionPosition);
     if (request != null) {
@@ -144,7 +161,7 @@ public class RequestsActivity extends BaseActivity
     closeProgressFragment();
   }
 
-  @Override public void onApiAcceptRequestFailure(String message) {
+  @Override public void errorMsg(String message) {
     closeProgressFragment();
     if (DeviceHelper.isNetworkConnected()) {
       new SugarmanDialog.Builder(this, DialogConstants.API_ACCEPT_REQUEST_FAILURE_ID).content(
@@ -154,26 +171,51 @@ public class RequestsActivity extends BaseActivity
     }
   }
 
-  @Override public void onApiDeclineRequestSuccess() {
-    Request request = requestsAdapter.getValue(actionPosition);
-    if (request != null) {
-      App.getEventBus().post(new RequestsRemovedEvent(request.getId()));
-    }
+  @Override public void onApiAcceptRequestSuccess() {
+    //isNeedRefreshTrackings = true;
+    //Request request = requestsAdapter.getValue(actionPosition);
+    //if (request != null) {
+    //  App.getEventBus().post(new RequestsRemovedEvent(request.getId()));
+    //}
+    //
+    //App.getEventBus().post(new ReportStepsEvent());
+    //
+    //requestsAdapter.removeItem(actionPosition);
+    //actionPosition = -1;
+    //refreshNoRequests();
+    //closeProgressFragment();
+  }
 
-    requestsAdapter.removeItem(actionPosition);
-    actionPosition = -1;
-    refreshNoRequests();
-    closeProgressFragment();
+  @Override public void onApiAcceptRequestFailure(String message) {
+    //closeProgressFragment();
+    //if (DeviceHelper.isNetworkConnected()) {
+    //  new SugarmanDialog.Builder(this, DialogConstants.API_ACCEPT_REQUEST_FAILURE_ID).content(
+    //      message).show();
+    //} else {
+    //  showNoInternetConnectionDialog();
+    //}
+  }
+
+  @Override public void onApiDeclineRequestSuccess() {
+    //Request request = requestsAdapter.getValue(actionPosition);
+    //if (request != null) {
+    //  App.getEventBus().post(new RequestsRemovedEvent(request.getId()));
+    //}
+    //
+    //requestsAdapter.removeItem(actionPosition);
+    //actionPosition = -1;
+    //refreshNoRequests();
+    //closeProgressFragment();
   }
 
   @Override public void onApiDeclineRequestFailure(String message) {
-    closeProgressFragment();
-    if (DeviceHelper.isNetworkConnected()) {
-      new SugarmanDialog.Builder(this, DialogConstants.API_DECLINE_REQUEST_FAILURE_ID).content(
-          message).show();
-    } else {
-      showNoInternetConnectionDialog();
-    }
+    //closeProgressFragment();
+    //if (DeviceHelper.isNetworkConnected()) {
+    //  new SugarmanDialog.Builder(this, DialogConstants.API_DECLINE_REQUEST_FAILURE_ID).content(
+    //      message).show();
+    //} else {
+    //  showNoInternetConnectionDialog();
+    //}
   }
 
   @Subscribe public void onEvent(RequestsUpdatedEvent event) {

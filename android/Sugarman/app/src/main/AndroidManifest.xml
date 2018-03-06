@@ -106,7 +106,7 @@
         android:screenOrientation="portrait"
         android:theme="@style/SugarmanBackgroundActivityTheme" />
     <activity
-        android:name=".ui.activities.RequestsActivity"
+        android:name=".ui.activities.requestsScreen.RequestsActivity"
         android:screenOrientation="portrait"
         android:theme="@style/SugarmanBackgroundActivityTheme" />
     <activity

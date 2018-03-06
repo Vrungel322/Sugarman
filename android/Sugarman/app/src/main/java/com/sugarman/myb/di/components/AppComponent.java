@@ -23,6 +23,7 @@ import com.sugarman.myb.ui.activities.mentorList.MentorListActivityPresenter;
 import com.sugarman.myb.ui.activities.myStats.MyStatsPresenter;
 import com.sugarman.myb.ui.activities.productDetail.ProductDetailsActivityPresenter;
 import com.sugarman.myb.ui.activities.profile.ProfileActivityPresenter;
+import com.sugarman.myb.ui.activities.requestsScreen.RequestsActivityPresenter;
 import com.sugarman.myb.ui.activities.shop.ShopActivityPresenter;
 import com.sugarman.myb.ui.activities.shopInviteFriend.ShopInviteFriendsActivityPresenter;
 import com.sugarman.myb.ui.activities.splash.SplashActivityPresenter;
@@ -113,4 +114,6 @@ import dagger.Component;
   void inject(StatsTrackingActivityPresenter presenter);
 
   void inject(InvitesActivityPresenter presenter);
+
+  void inject(RequestsActivityPresenter presenter);
 }

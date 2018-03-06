@@ -336,4 +336,12 @@ public class RestApi {
   public Observable<Response<Object>> acceptInvite(String inviteId) {
     return api.acceptInvite(inviteId);
   }
+
+  public Observable<Response<Object>> declineRequest(String inviteId) {
+    return api.declineRequest(inviteId);
+  }
+
+  public Observable<Response<Object>> acceptRequest(String inviteId) {
+    return api.acceptRequest(inviteId);
+  }
 }
