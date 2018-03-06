@@ -153,13 +153,15 @@ public class SplashActivity extends GetUserInfoActivity
           //Timber.e(inventory.getSkuDetails(subscriptionEntity.getSlot()).getSku());
 
           String skuName = "";
-          if (inventory.getSkuDetails(subscriptionEntity.getSlot()) == null) {
-            skuName = "null";
-          } else {
-            skuName = inventory.getSkuDetails(subscriptionEntity.getSlot()).getTitle();
+          if (inventory != null) {
+            if (inventory.getSkuDetails(subscriptionEntity.getSlot()) == null) {
+              skuName = "null";
+            } else {
+              skuName = inventory.getSkuDetails(subscriptionEntity.getSlot()).getTitle();
+            }
+            mPresenter.checkInAppBilling(inventory.getPurchase(subscriptionEntity.getSlot()),
+                skuName, null, subscriptionEntity.getSlot());
           }
-          mPresenter.checkInAppBilling(inventory.getPurchase(subscriptionEntity.getSlot()), skuName,
-              null, subscriptionEntity.getSlot());
         }
       }
     });
