@@ -112,7 +112,7 @@ public class StatsTrackingActivity extends BaseActivity
     getTrackingStatsClient.registerListener(this);
     showProgressFragment();
     try {
-      mPresenter.fetchTrackingStats(trackingId, mTracking, isMentors);
+      mPresenter.fetchTrackingStats(trackingId, mTracking,mTracking.isMentors());
     } catch (ParseException e) {
       e.printStackTrace();
     }
@@ -209,6 +209,13 @@ public class StatsTrackingActivity extends BaseActivity
   @Override public void showTrackingStats(List<Stats> stats) {
     if (stats != null && stats.size() != 0) {
       Timber.e("showStats size = " + stats.size());
+      for (Stats s : stats) {
+        Timber.e("showTrackingStats s.getStepsCount() = " + s.getStepsCount());
+        if (s.getStepsCount() < 0){
+
+          s.setStepsCount(0);
+        }
+      }
       int i = 0;
       //mTracking.getStartDate().equals()
 
