@@ -163,7 +163,7 @@ public class StatsWeekFragment extends BaseFragment {
         }
 
         tvSteps.setTextSize(TypedValue.COMPLEX_UNIT_SP, stepsTextSize);
-        if (todayYear <= year && todayMonth <= month && todayDayOfMonth <= dayOfMonth) {
+        if (todayYear <= year && todayMonth <= month && todayDayOfMonth <= dayOfMonth && dayTimestamp != 0) {
           tvDay.setTextColor(gray);
         } else {
           tvDay.setTextColor(darkGray);
