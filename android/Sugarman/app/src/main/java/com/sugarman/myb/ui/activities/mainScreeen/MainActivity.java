@@ -1600,21 +1600,39 @@ public class MainActivity extends GetUserInfoActivity
   @Override public void updateCurrentTracking(TrackingInfoResponse body) {
     List<Tracking> temp = new ArrayList<>();
     int position = 0;
-    for (int i = 0; i < myTrackings.size(); i++) {
-      if (!myTrackings.get(i).getId().equals(body.getResult().getId())) {
-        temp.add(myTrackings.get(i));
-      } else {
-        position = i;
+    if (!body.getResult().isMentors()) {
+      for (int i = 0; i < myTrackings.size(); i++) {
+        if (!myTrackings.get(i).getId().equals(body.getResult().getId())) {
+          temp.add(myTrackings.get(i));
+        } else {
+          position = i;
+        }
       }
+      myTrackings.clear();
+      myTrackings.addAll(temp);
+      myTrackings.add(position, body.getResult());
+      Timber.e("updateCurTra updateCurrentTracking myTrackings.size= "
+          + myTrackings.size()
+          + " tracking name: "
+          + body.getResult().getGroup().getName());
+    } else {
+      for (int i = 0; i < mMentorsGroups.size(); i++) {
+        if (!mMentorsGroups.get(i).getId().equals(body.getResult().getId())) {
+          temp.add(mMentorsGroups.get(i));
+        } else {
+          position = i;
+        }
+      }
+      mMentorsGroups.clear();
+      mMentorsGroups.addAll(temp);
+      mMentorsGroups.add(position, body.getResult());
+      Timber.e("updateCurTra updateCurrentTracking mMentorsGroups.size= "
+          + mMentorsGroups.size()
+          + " M-tracking name: "
+          + body.getResult().getGroup().getName());
     }
-    myTrackings.clear();
-    myTrackings.addAll(temp);
-    myTrackings.add(position, body.getResult());
     Timber.e("updateCurTra updateCurrentTracking position= " + position);
-    Timber.e("updateCurTra updateCurrentTracking myTrackings.size= "
-        + myTrackings.size()
-        + "tracking name: "
-        + body.getResult().getGroup().getName());
+
     updatePagerTrackings();
   }
 
