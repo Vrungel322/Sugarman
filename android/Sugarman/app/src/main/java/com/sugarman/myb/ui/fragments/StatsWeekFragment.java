@@ -31,6 +31,7 @@ import com.sugarman.myb.utils.IntentExtractorHelper;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import org.greenrobot.eventbus.Subscribe;
+import timber.log.Timber;
 
 public class StatsWeekFragment extends BaseFragment {
 
@@ -134,8 +135,12 @@ public class StatsWeekFragment extends BaseFragment {
 
         dayOfMonth = day.get(Calendar.DAY_OF_MONTH);
 
+        Timber.e("DATE FOR BULLSHIT " + year + " " + month + " " + dayOfMonth);
+
         if (todayYear == year && todayMonth == month && todayDayOfMonth == dayOfMonth) {
+
           isToday = true;
+          Timber.e("Date today is equal");
           tvSteps.setTextColor(darkGray);
           tvSteps.setTypeface(R.string.font_roboto_bold);
           tvTodaySteps = tvSteps;
@@ -148,6 +153,7 @@ public class StatsWeekFragment extends BaseFragment {
             }
           });
         } else {
+          Timber.e("Date today is equal not");
           tvSteps.setText(String.valueOf(steps));
           vivDay.updateIndicator(Config.MAX_STEPS_STATS, steps);
 
@@ -157,13 +163,14 @@ public class StatsWeekFragment extends BaseFragment {
         }
 
         tvSteps.setTextSize(TypedValue.COMPLEX_UNIT_SP, stepsTextSize);
+        if (todayYear <= year && todayMonth <= month && todayDayOfMonth <= dayOfMonth) {
+          tvDay.setTextColor(gray);
+        } else {
+          tvDay.setTextColor(darkGray);
+        }
       }
 
-      if (dayTimestamp <= todayTimestamp) {
-        tvDay.setTextColor(darkGray);
-      } else {
-        tvDay.setTextColor(gray);
-      }
+
       Activity activity = getActivity();
       String textFirstItem = "";
       int numberRow = 0;
