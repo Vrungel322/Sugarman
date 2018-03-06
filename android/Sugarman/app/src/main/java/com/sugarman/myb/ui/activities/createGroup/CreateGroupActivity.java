@@ -236,7 +236,7 @@ public class CreateGroupActivity extends BaseActivity
     //Если этот код раскоментирован то работает новый фрагмент, иначе все по старому
     //mFriendListFragment = FriendListFragment.newInstance(R.layout.fragment_friend_list_test);
     mFriendListFragment = FriendListFragment.newInstance(R.layout.activity_create_group_v2,
-        IntentExtractorHelper.getGroupName(getIntent()));
+        IntentExtractorHelper.getGroupName(getIntent()),FriendListFragment.IN_CREATE_GROUP);
     getSupportFragmentManager().beginTransaction()
         .add(R.id.llContainer, mFriendListFragment)
         .commit();

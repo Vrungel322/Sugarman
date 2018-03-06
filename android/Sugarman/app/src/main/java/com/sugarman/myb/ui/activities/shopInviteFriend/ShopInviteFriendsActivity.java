@@ -185,7 +185,7 @@ public class ShopInviteFriendsActivity extends BasicActivity
     //Если этот код раскоментирован то работает новый фрагмент, иначе все по старому
     //mFriendListFragment = FriendListFragment.newInstance(R.layout.fragment_friend_list_test);
     mFriendListFragment = FriendListFragment.newInstance(R.layout.activity_shop_invite_friends_v2,
-        IntentExtractorHelper.getGroupName(getIntent()));
+        IntentExtractorHelper.getGroupName(getIntent()),FriendListFragment.IN_SHOP_INVITE);
     getSupportFragmentManager().beginTransaction()
         .add(R.id.flContaiter, mFriendListFragment)
         .commit();

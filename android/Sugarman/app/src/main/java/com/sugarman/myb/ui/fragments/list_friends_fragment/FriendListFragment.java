@@ -43,7 +43,11 @@ import timber.log.Timber;
  */
 
 public class FriendListFragment extends BasicFragment implements IFriendListFragmentView {
+  public static final int IN_SHOP_INVITE = 1;
+  public static final int IN_CREATE_GROUP = 2;
+  public static final int IN_EDIT_GROUP = 3;
   private static final String GROUP_NAME = "GROUP_NAME";
+  private static final String FRAGMENT_SHOWS_IN = "FRAGMEN_SHOWS_IN";
   @InjectPresenter FriendListFragmentPresenter mPresenter;
 
   @BindView(R.id.rcv_friends) RecyclerView mRecyclerViewListOfFriends;
@@ -80,6 +84,7 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
   private boolean inviteToShopFlow;
   private List<Member> mPendingsMembers = new ArrayList<>();
   private List<Member> mAddedMembers = new ArrayList<>();
+  private int fragmentShowsIn;
 
   @SuppressLint("ValidFragment") public FriendListFragment(int layoutId) {
     super(layoutId);
@@ -89,10 +94,12 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
     super(R.layout.fragment_friend_list_test);
   }
 
-  public static FriendListFragment newInstance(int layoutId, String groupName) {
+  public static FriendListFragment newInstance(int layoutId, String groupName,
+      int fragmentShowsIn) {
     Bundle args = new Bundle();
     FriendListFragment fragment = new FriendListFragment(layoutId);
     args.putString(GROUP_NAME, groupName);
+    args.putInt(FRAGMENT_SHOWS_IN, fragmentShowsIn);
     fragment.setArguments(args);
     return fragment;
   }
@@ -107,6 +114,7 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
     mRecyclerViewListOfFriends.setLayoutManager(new LinearLayoutManager(getActivity()));
     mRecyclerViewListOfFriends.setAdapter(friendsAdapter);
     mEditTextGroupName.setText(getArguments().getString(GROUP_NAME, ""));
+    fragmentShowsIn = getArguments().getInt(FRAGMENT_SHOWS_IN, 111);
     highlightConnectedSocialNetworks();
   }
 
@@ -313,6 +321,7 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
   }
 
   @Override public void setFriendsFb(List<FacebookFriend> friends) {
+    removeNotInvIfShopInvite(friends);
     showCounters(friends, tvTotalFbCount, tvInAppFbCount, "fb");
     mPresenter.saveFBCounters(friends);
     //mPresenter.saveFBMembers(friends);
@@ -325,6 +334,7 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
   }
 
   @Override public void setFriendsVk(List<FacebookFriend> friends) {
+    removeNotInvIfShopInvite(friends);
     showCounters(friends, tvTotalVkCount, tvInAppVkCount, "vk");
     if (!mPendingsMembers.isEmpty() && !mAddedMembers.isEmpty()) {
       friendsAdapter.setValue(
@@ -335,6 +345,7 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
   }
 
   @Override public void setFriendsPh(List<FacebookFriend> friends) {
+    removeNotInvIfShopInvite(friends);
     showCounters(friends, tvTotalPhCount, tvInAppPhCount, "ph");
     mPresenter.savePhCounters(friends);
     mPresenter.savePhMembers(friends);
@@ -343,6 +354,19 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
           mPresenter.checkForUniqueMembers(mPendingsMembers, mAddedMembers, friends));
     } else {
       friendsAdapter.setValue(friends);
+    }
+  }
+
+  private void removeNotInvIfShopInvite(List<FacebookFriend> friends) {
+    List<FacebookFriend> temp = new ArrayList<>();
+    if (fragmentShowsIn == IN_SHOP_INVITE) {
+      for (int i = 0; i < friends.size(); i++) {
+        if (friends.get(i).getIsInvitable() != FacebookFriend.CODE_NOT_INVITABLE) {
+          temp.add(friends.get(i));
+        }
+      }
+      friends.clear();
+      friends.addAll(temp);
     }
   }
 
