@@ -2,12 +2,14 @@ package com.sugarman.myb.ui.activities.statsTracking;
 
 import com.arellomobile.mvp.InjectViewState;
 import com.sugarman.myb.App;
+import com.sugarman.myb.api.models.responses.Member;
 import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.api.models.responses.me.stats.Stats;
 import com.sugarman.myb.base.BasicPresenter;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.data.db.DbRepositoryStats;
 import com.sugarman.myb.utils.DataUtils;
+import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.ThreadSchedulers;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,20 +36,37 @@ import timber.log.Timber;
 
   public void fetchTrackingStats(String trackingId, Tracking tracking, boolean isMentors) throws ParseException {
     String startDate;
+    String userJoinDate = "";
     if (!isMentors) {
        startDate = new SimpleDateFormat("yyyy-MM-dd").format(
           new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US).parse(tracking.getStartDate()));
     }
     else {
+
+      Member[] members = tracking.getMembers();
+
+      for(Member m : members)
+      {
+        if(m.getId().equals(SharedPreferenceHelper.getUserId()))
+        {
+          userJoinDate = m.getCreatedAt();
+        }
+      }
+
+      Timber.e("User join date " + userJoinDate);
+
+      if(userJoinDate.isEmpty())
+        userJoinDate = tracking.getStartDate();
+
       startDate = new SimpleDateFormat("yyyy-MM-dd").format(
-          new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US).parse(tracking.getStartDate()));
+          new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US).parse(userJoinDate));
     }
-    Timber.e("fetchTrackingStats startDate: " + startDate);
+    //Timber.e("fetchTrackingStats startDate: " + startDate);
 
     int diff = DataUtils.getDateDiff(DataUtils.subtractDays(
         new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US).parse(tracking.getStartDate()), 1),
         new Date(System.currentTimeMillis()), TimeUnit.DAYS).intValue();
-    Timber.e("fetchTrackingStats diff: " + diff);
+    //Timber.e("fetchTrackingStats diff: " + diff);
 
     List<Stats> statsCached = mDbRepositoryStats.getAllEntities(diff + 1);
     for (Stats s : statsCached) {
@@ -55,12 +74,12 @@ import timber.log.Timber;
         needToUpdateData = true;
       }
     }
-    Timber.e("fetchTrackingStats statsCached.size:" + statsCached.size());
+    //Timber.e("fetchTrackingStats statsCached.size:" + statsCached.size());
 
     for (int i = statsCached.size(); i < 22; i++) {
       statsCached.add(new Stats(i, "", "", 0, 0));
     }
-    Timber.e("fetchTrackingStats needToupdateData:" + needToUpdateData);
+    //Timber.e("fetchTrackingStats needToupdateData:" + needToUpdateData);
 
     if (!needToUpdateData) {
       getViewState().showTrackingStats(statsCached);

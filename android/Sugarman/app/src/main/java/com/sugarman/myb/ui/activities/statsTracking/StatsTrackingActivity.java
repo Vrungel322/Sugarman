@@ -53,6 +53,7 @@ public class StatsTrackingActivity extends BaseActivity
   private GetTrackingStatsClient getTrackingStatsClient;
   private String trackingId;
   private Tracking mTracking;
+  boolean isMentors = false;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_tracking_stats);
@@ -78,6 +79,7 @@ public class StatsTrackingActivity extends BaseActivity
       if (day <= 0) {
         // TODO: 2/23/18 here
         if (mTracking.getChallengeName().equals("Mentors Chalange")) {
+          isMentors = true;
           tvDay.setText(String.format(getString(R.string.challenge_day_template), (int) (day + 1)));
           Timber.e("MENTORS CHALANGE BLYAD");
         } else {
@@ -110,7 +112,7 @@ public class StatsTrackingActivity extends BaseActivity
     getTrackingStatsClient.registerListener(this);
     showProgressFragment();
     try {
-      mPresenter.fetchTrackingStats(trackingId, mTracking);
+      mPresenter.fetchTrackingStats(trackingId, mTracking, isMentors);
     } catch (ParseException e) {
       e.printStackTrace();
     }

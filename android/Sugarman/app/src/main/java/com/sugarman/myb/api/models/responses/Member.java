@@ -28,15 +28,7 @@ import lombok.Setter;
       return o2.steps - o1.steps;
     }
   };
-  public static final Creator<Member> CREATOR = new Creator<Member>() {
-    @Override public Member createFromParcel(Parcel in) {
-      return new Member(in);
-    }
 
-    @Override public Member[] newArray(int size) {
-      return new Member[size];
-    }
-  };
   @Getter @Setter @SerializedName("steps") public int steps;
   @Getter @Setter @SerializedName("action") private int action;
   @Getter @Setter @SerializedName("ass_kick_count") private int kickCount;
@@ -48,6 +40,7 @@ import lombok.Setter;
   @Getter @Setter @SerializedName("phone_number") private String phoneNumber;
   @Getter @Setter @SerializedName("vkid") private String vkId;
   @Getter @Setter @SerializedName("failed_status") private int failureStatus;
+  @Getter @Setter @SerializedName("created_at") private String createdAt;
 
   protected Member(Parcel in) {
     steps = in.readInt();
@@ -61,6 +54,27 @@ import lombok.Setter;
     phoneNumber = in.readString();
     vkId = in.readString();
     failureStatus = in.readInt();
+    createdAt = in.readString();
+  }
+
+  public static final Creator<Member> CREATOR = new Creator<Member>() {
+    @Override public Member createFromParcel(Parcel in) {
+      return new Member(in);
+    }
+
+    @Override public Member[] newArray(int size) {
+      return new Member[size];
+    }
+  };
+
+  @Override public String toString() {
+    return "Member  ---> "
+        + "name-"
+        + name
+        + "   failed_status-"
+        + failureStatus
+        + "   steps-"
+        + steps;
   }
 
   @Override public int describeContents() {
@@ -79,15 +93,6 @@ import lombok.Setter;
     parcel.writeString(phoneNumber);
     parcel.writeString(vkId);
     parcel.writeInt(failureStatus);
-  }
-
-  @Override public String toString() {
-    return "Member  ---> "
-        + "name-"
-        + name
-        + "   failed_status-"
-        + failureStatus
-        + "   steps-"
-        + steps;
+    parcel.writeString(createdAt);
   }
 }
