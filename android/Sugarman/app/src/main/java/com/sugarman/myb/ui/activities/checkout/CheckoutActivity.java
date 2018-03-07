@@ -25,6 +25,7 @@ import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.R;
 import com.sugarman.myb.base.BasicActivity;
 import com.sugarman.myb.constants.Config;
+import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.ui.views.CropCircleTransformation;
 import com.sugarman.myb.utils.apps_Fly.AppsFlyerEventSender;
 import timber.log.Timber;
@@ -128,17 +129,26 @@ public class CheckoutActivity extends BasicActivity
 
         ImageView plusButton = (ImageView) v1.findViewById(R.id.plus);
         plusButton.setOnClickListener(view -> {
-          num++;
-          numberOfItems.setText(Integer.toString(num));
+          if (paymentType.equals(Constants.FREE_PAYMENT_TYPE)){
+            showToastMessage(R.string.can_not_increase_amount);
+          }
+          else {
+            num++;
+            numberOfItems.setText(Integer.toString(num));
+          }
           totalPrice.setText(num * Double.parseDouble(productPrice) + " $");
         });
 
         ImageView minusButton = (ImageView) v1.findViewById(R.id.minus);
         minusButton.setOnClickListener(view -> {
-          if (num > 1) {
-            num--;
-            numberOfItems.setText(Integer.toString(num));
-            totalPrice.setText(num * Double.parseDouble(productPrice) + " $");
+          if (paymentType.equals(Constants.FREE_PAYMENT_TYPE)){
+            showToastMessage(R.string.can_not_increase_amount);
+          }else {
+            if (num > 1) {
+              num--;
+              numberOfItems.setText(Integer.toString(num));
+              totalPrice.setText(num * Double.parseDouble(productPrice) + " $");
+            }
           }
         });
         addSeparator(verticalLayout, 1);
