@@ -244,7 +244,7 @@ public class CreateGroupActivity extends BaseActivity
       @Override public void createGroup(List<FacebookFriend> friendList, String groupName) {
         //mPresenter.sendInvitationInVk(friendList,getString(R.string.invite_message));
         mFriendListFragment.showProgress();
-        if (friendList.size() > 0) {
+        if (friendList.size() > 0 && friendList.size()<100) {
           mIntiteByVk.clear();
           for (FacebookFriend f : friendList) {
             if (f.getSocialNetwork().equals("vk")) {
@@ -256,7 +256,7 @@ public class CreateGroupActivity extends BaseActivity
               CreateGroupActivity.this);
         } else {
           new SugarmanDialog.Builder(CreateGroupActivity.this,
-              DialogConstants.FRIENDS_LIST_IS_IMPTY_ID).content(R.string.members_list_is_empty)
+              DialogConstants.FRIENDS_LIST_IS_IMPTY_ID).content(R.string.members_list_need_to_be_more0_less100)
               .show();
           mFriendListFragment.hideProgress();
         }
