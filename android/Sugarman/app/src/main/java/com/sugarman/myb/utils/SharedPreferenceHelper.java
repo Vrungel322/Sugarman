@@ -47,6 +47,12 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
       putBoolean(SharedPreferenceConstants.REMOTE_LOGGING_ENABLED, user.isRemoteLoggingEnabled());
       putString(SharedPreferenceConstants.SUBSCRIPTIONS_JSON,
           new Gson().toJson(user.getSubscriptionEntities()));
+      saveCountOfMembersFb("-1");
+      saveCountOfMembersPh("-1");
+      saveCountOfMembersVk("-1");
+      cacheFbFriendsInviteble(new ArrayList<>());
+      cacheFbFriendsNotInviteble(new ArrayList<>());
+      cachePhFriends(new ArrayList<>());
       Timber.e("user json " + new Gson().toJson(user.getSubscriptionEntities()).toString());
 
       if (user.getIsMentor() != null) {
