@@ -241,7 +241,10 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
     builder.setPositiveButton(R.string.OK, (dialog, id) -> {
       Intent intent = new Intent(getActivity().getApplicationContext(), EditProfileActivity.class);
       startActivity(intent);
-    }).create().show();
+    })
+        .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.cancel())
+        .create()
+        .show();
   }
 
   @OnTextChanged(value = R.id.et_search, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
