@@ -95,37 +95,6 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/rv_phone"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:background="@drawable/phone_button"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
-        >
-      <ImageView
-          android:id="@+id/ivPhLogo"
-          android:layout_width="32dp"
-          android:layout_height="32dp"
-          android:layout_marginTop="20dp"
-          android:tint="@color/white"
-          android:layout_marginRight="15dp"
-          android:layout_toLeftOf="@+id/tvPhoneConnect"
-          android:background="@drawable/phone_white"
-          />
-      <TextView
-          android:id="@+id/tvPhoneConnect"
-          android:layout_width="wrap_content"
-          android:layout_height="match_parent"
-          android:layout_centerHorizontal="true"
-          android:layout_centerVertical="true"
-          android:paddingTop="22dp"
-          android:text="Connect"
-          android:textColor="@color/white"
-          android:textSize="18sp"
-          />
-    </RelativeLayout>
-
-    <RelativeLayout
         android:id="@+id/rv_google"
         android:layout_width="match_parent"
         android:layout_height="80dp"
@@ -145,6 +114,37 @@
           />
       <TextView
           android:id="@+id/tvGoogleConnect"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:layout_centerHorizontal="true"
+          android:layout_centerVertical="true"
+          android:paddingTop="22dp"
+          android:text="Connect"
+          android:textColor="@color/white"
+          android:textSize="18sp"
+          />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rv_phone"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@drawable/phone_button"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        >
+      <ImageView
+          android:id="@+id/ivPhLogo"
+          android:layout_width="32dp"
+          android:layout_height="32dp"
+          android:layout_marginTop="20dp"
+          android:tint="@color/white"
+          android:layout_marginRight="15dp"
+          android:layout_toLeftOf="@+id/tvPhoneConnect"
+          android:background="@drawable/phone_white"
+          />
+      <TextView
+          android:id="@+id/tvPhoneConnect"
           android:layout_width="wrap_content"
           android:layout_height="match_parent"
           android:layout_centerHorizontal="true"

@@ -50,7 +50,7 @@ public class AnimationHelper {
     return workers;
   }
 
-  private Runnable newWorker(Callback callback) {
+  private synchronized Runnable newWorker(Callback callback) {
     return new Runnable() {
       @Override public void run() {
         while (!urls.empty()) {
