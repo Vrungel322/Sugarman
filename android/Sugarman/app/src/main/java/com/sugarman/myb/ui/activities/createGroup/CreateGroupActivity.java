@@ -244,7 +244,8 @@ public class CreateGroupActivity extends BaseActivity
       @Override public void createGroup(List<FacebookFriend> friendList, String groupName) {
         //mPresenter.sendInvitationInVk(friendList,getString(R.string.invite_message));
         mFriendListFragment.showProgress();
-        if (friendList.size() > 0 && friendList.size()<100) {
+        Timber.e("mFriendListFragment friendList.size:"+friendList.size());
+        if (friendList.size() > 0) {
           mIntiteByVk.clear();
           for (FacebookFriend f : friendList) {
             if (f.getSocialNetwork().equals("vk")) {
