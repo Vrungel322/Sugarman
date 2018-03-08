@@ -229,6 +229,7 @@ public class EditProfileActivity extends BasicActivity
     mBundleUserSettings.putBoolean(IS_FB_LOGGED_IN_FROM_SETTINGS, cbFb.isChecked());
     mBundleUserSettings.putBoolean(IS_VK_LOGGED_IN_FROM_SETTINGS, cbVk.isChecked());
     mBundleUserSettings.putBoolean(IS_PH_LOGGED_IN_FROM_SETTINGS, cbPh.isChecked());
+    mBundleUserSettings.putString("avatar", profileAvatar.getDrawable().toString());
   }
 
   @OnClick(R.id.cb_facebook) public void cbFacebookClicked() {
@@ -433,6 +434,7 @@ public class EditProfileActivity extends BasicActivity
         && mBundleUserSettings.getString(EMAIL_FROM_SETTINGS).equals(etEmail.getText().toString())
         && mBundleUserSettings.getString(AVATAR_URL_FROM_SETTINGS)
         .equals(SharedPreferenceHelper.getAvatar())
+        && mBundleUserSettings.getString("avatar").equals(profileAvatar.getDrawable().toString())
         && VKSdk.isLoggedIn() == mBundleUserSettings.getBoolean(IS_VK_LOGGED_IN_FROM_SETTINGS)
         && !SharedPreferenceHelper.getFbId().equals("none") == mBundleUserSettings.getBoolean(
         IS_FB_LOGGED_IN_FROM_SETTINGS)) {
