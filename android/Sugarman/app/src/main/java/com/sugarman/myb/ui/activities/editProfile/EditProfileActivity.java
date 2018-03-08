@@ -632,14 +632,17 @@ public class EditProfileActivity extends BasicActivity
       SharedPreferenceHelper.saveUser(response.getUser());
       otp = response.getResult().getUser().getPhoneOTP();
       showNextActivity();
-    } else
-
-    {
-      new SugarmanDialog.Builder(this, "soc network").content(response.getError()).build().show();
+    } else {
       if (response.getError().equals("This Facebook account is already created")) {
+        new SugarmanDialog.Builder(this, "soc network").content(R.string.fb_acc_already_exist)
+            .build()
+            .show();
         logoutFacebook();
       }
       if (response.getError().equals("This VK account is already created")) {
+        new SugarmanDialog.Builder(this, "soc network").content(R.string.vk_acc_already_exist)
+            .build()
+            .show();
         logoutVk();
       }
     }
@@ -697,13 +700,17 @@ public class EditProfileActivity extends BasicActivity
 
   @Override public void showSocialProblem(UsersResponse usersResponse) {
     hidePb();
-    new SugarmanDialog.Builder(this, "soc network").content(usersResponse.getError())
-        .build()
-        .show();
     if (usersResponse.getError().equals("This Facebook account is already created")) {
+      new SugarmanDialog.Builder(this, "soc network").content(R.string.fb_acc_already_exist)
+          .build()
+          .show();
+
       logoutFacebook();
     }
     if (usersResponse.getError().equals("This VK account is already created")) {
+      new SugarmanDialog.Builder(this, "soc network").content(R.string.vk_acc_already_exist)
+          .build()
+          .show();
       logoutVk();
     }
   }
