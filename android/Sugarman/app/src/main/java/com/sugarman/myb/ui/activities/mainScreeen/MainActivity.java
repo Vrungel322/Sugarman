@@ -463,8 +463,8 @@ public class MainActivity extends GetUserInfoActivity
           Timber.e("trackings:" + trackings.length + " mentorsGroup:" + mentorsGroup.size());
           myTrackings.clear();
           myTrackings.addAll(Arrays.asList(trackings));
-          checkHowManyUserTrackingsIn(myTrackings);
           mMentorsGroups = mentorsGroup;
+          checkHowManyUserTrackingsIn(myTrackings, mMentorsGroups);
           List<BaseChallengeItem> converted = prepareTrackingItems();
 
           updatePagerTrackings();
@@ -510,16 +510,6 @@ public class MainActivity extends GetUserInfoActivity
         }
       };
 
-  private void checkHowManyUserTrackingsIn(List<Tracking> myTrackings) {
-    int count = 0;
-    for (Tracking t : myTrackings) {
-      if (t.getGroupOwnerId().equals(SharedPreferenceHelper.getUserId())){
-        count++;
-      }
-    }
-    SharedPreferenceHelper.saveActiveTrackingsCreated(count);
-  }
-
   public static synchronized String getAdId(Context context) {
 
     if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.KITKAT) {
@@ -545,6 +535,23 @@ public class MainActivity extends GetUserInfoActivity
     }
 
     return advertId;
+  }
+
+  private void checkHowManyUserTrackingsIn(List<Tracking> myTrackings,
+      List<Tracking> mentorsGroups) {
+    int count = 0;
+    for (Tracking t : myTrackings) {
+      if (t.getGroupOwnerId().equals(SharedPreferenceHelper.getUserId())) {
+        count++;
+      }
+    }
+    for (Tracking t : mentorsGroups) {
+      if (t.getGroupOwnerId().equals(SharedPreferenceHelper.getUserId())) {
+        count++;
+      }
+    }
+
+    SharedPreferenceHelper.saveActiveTrackingsCreated(count);
   }
 
   @Override protected void onCreate(Bundle savedInstanceState) {
@@ -1160,6 +1167,8 @@ public class MainActivity extends GetUserInfoActivity
       case R.id.iv_create_group:
         //if (SharedPreferenceHelper.getActiveTrackingsCreated()
         //    < Config.MAX_ACTIVE_CREATED_TRACKINGS) {
+        Timber.e("groups limit:" + SharedPreferenceHelper.getGroupsLimit());
+        Timber.e(" active groups limit:" + SharedPreferenceHelper.getActiveTrackingsCreated());
         if (SharedPreferenceHelper.getActiveTrackingsCreated() < Integer.parseInt(
             SharedPreferenceHelper.getGroupsLimit())) {
           openCreateGroupActivity();
