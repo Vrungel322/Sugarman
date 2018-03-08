@@ -142,6 +142,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -1466,8 +1467,9 @@ public class MainActivity extends GetUserInfoActivity
 
   private void setActualDataToViews() {
     myTrackings = new ArrayList<>(actualTrackings.length);
-
-    System.arraycopy(actualTrackings, 0, myTrackings, 0, actualTrackings.length);
+    myTrackings.clear();
+    Collections.addAll(myTrackings, actualTrackings);
+    //System.arraycopy(actualTrackings, 0, myTrackings, 0, actualTrackings.length);
     for (Tracking t : myTrackings) {
       Log.e("TRAAAAAAAAAAAAACKING", "" + t.getGroup().getName() + " " + t.getId());
     }
