@@ -421,6 +421,7 @@ public abstract class BaseActivity extends BasicActivity
     SharedPreferenceHelper.saveVkToken("none");
     SharedPreferenceHelper.savePhoneNumber("none");
     SharedPreferenceHelper.saveBaseUrl(Config.SERVER_URL);
+    SharedPreferenceHelper.removeCachedStats();
     VKSdk.logout();
     LoginManager.getInstance().logOut();
   }

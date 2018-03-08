@@ -257,9 +257,14 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     }
   }
 
+  public static void removeCachedStats()
+  {
+    removeAllKeysStartingWith("cache_stats_");
+  }
+
   public static void saveStats(Stats s) {
     Timber.e("saveStats " + s.getDate());
-    putInt(s.getDate(), s.getStepsCount());
+    putInt("cache_stats_" + s.getDate(), s.getStepsCount());
   }
 
   public static List<Stats> getStats(int lastdaysCount) {
@@ -268,7 +273,7 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     for (int i = 0; i < DataUtils.getLastXDays(lastdaysCount).size(); i++) {
       String data = DataUtils.getLastXDays(lastdaysCount).get(i);
       Timber.e("saveStats getStats " + data);
-      stats.add(new Stats(i, data, "day " + data, getInt(data, Constants.FAKE_STEPS_COUNT), 0));
+      stats.add(new Stats(i, data, "day " + data, getInt("cache_stats_"+data, Constants.FAKE_STEPS_COUNT), 0));
     }
     return stats;
   }
@@ -330,6 +335,9 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
   public static int getStatsTodaySteps(String userId) {
     return getInt(userId + SharedPreferenceConstants.STATS_STEPS_COUNT + "_" + 0, 0);
   }
+
+
+
 
   public static void saveStatsTodaySteps(String userId, int steps) {
     putInt(userId + SharedPreferenceConstants.STATS_STEPS_COUNT + "_" + 0, steps);
