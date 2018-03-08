@@ -2312,8 +2312,13 @@ public class GroupDetailsActivity extends BaseActivity
   }
 
   @Override public void onPokeSelf() {
-    new SugarmanDialog.Builder(this, DialogConstants.YOU_CANT_KICK_SELF_ID).content(
-        R.string.you_cant_kick_self).show();
+    if (amIMentor){
+      new SugarmanDialog.Builder(this, DialogConstants.YOU_CANT_KICK_SELF_ID).content(
+          R.string.you_cant_delete_self).show();
+    }else {
+      new SugarmanDialog.Builder(this, DialogConstants.YOU_CANT_KICK_SELF_ID).content(
+          R.string.you_cant_kick_self).show();
+    }
   }
 
   @Override public void onPokeCompletedDaily() {
