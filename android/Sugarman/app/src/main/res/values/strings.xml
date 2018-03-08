@@ -623,5 +623,7 @@
   <string name="years">years</string>
   <string name="can_not_increase_amount">You can not increase amount!</string>
   <string name="you_cant_delete_self">Can\'t delete your own ass</string>
+  <string name="fb_acc_already_exist">This Facebook account is already created</string>
+  <string name="vk_acc_already_exist">This VK account is already created</string>
 
 </resources>
