@@ -24,6 +24,7 @@ import com.sugarman.myb.utils.apps_Fly.AppsFlyerEventSender;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import timber.log.Timber;
 
 public class InvitesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     implements ItemInvitesActionListener {
@@ -34,7 +35,7 @@ public class InvitesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
   private final Context context;
 
-  private final WeakReference<OnInvitesActionListener> mActionListener;
+  private OnInvitesActionListener mActionListener;
 
   private final Typeface fontBold;
   private final Typeface fontRegular;
@@ -44,7 +45,7 @@ public class InvitesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
   private final String flag2;
 
   public InvitesAdapter(Context context, OnInvitesActionListener listener) {
-    mActionListener = new WeakReference<>(listener);
+    mActionListener = listener;
     this.context = context;
 
     AssetManager assets = context.getAssets();
@@ -109,8 +110,8 @@ public class InvitesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     AppsFlyerEventSender.sendEvent("af_accept_invite");
 
     if (position >= 0 && position < mData.size()) {
-      if (mActionListener.get() != null) {
-        mActionListener.get().onAcceptInvite(mData.get(position), position);
+      if (mActionListener != null) {
+        mActionListener.onAcceptInvite(mData.get(position), position);
       }
     } else {
       notifyDataSetChanged();
@@ -118,12 +119,15 @@ public class InvitesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
   }
 
   @Override public void onClickDecline(int position) {
+    Timber.e("onClickDecline");
 
     AppsFlyerEventSender.sendEvent("af_decline_invite");
 
     if (position >= 0 && position < mData.size()) {
-      if (mActionListener.get() != null) {
-        mActionListener.get().onDeclineInvite(mData.get(position), position);
+      if (mActionListener != null) {
+        Timber.e("onClickDecline mActionListener != null");
+
+        mActionListener.onDeclineInvite(mData.get(position), position);
       }
     } else {
       notifyDataSetChanged();
@@ -160,8 +164,8 @@ public class InvitesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private final WeakReference<ItemInvitesActionListener> mActionItemListener;
 
     private final TextView tvInviteDescription;
-    private final StrokeImage ivAvatar;
 
+    private final StrokeImage ivAvatar;
     InvitesHolder(View itemView, ItemInvitesActionListener clickItemListener) {
       super(itemView);
 
@@ -198,5 +202,6 @@ public class InvitesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
           break;
       }
     }
+
   }
 }

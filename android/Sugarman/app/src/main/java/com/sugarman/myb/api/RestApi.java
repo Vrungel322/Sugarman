@@ -20,6 +20,8 @@ import com.sugarman.myb.api.models.responses.RescueFriendResponse;
 import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.animation.GetAnimationResponse;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
+import com.sugarman.myb.api.models.responses.me.invites.InvitesResponse;
+import com.sugarman.myb.api.models.responses.me.requests.RequestsResponse;
 import com.sugarman.myb.api.models.responses.me.stats.Stats;
 import com.sugarman.myb.api.models.responses.me.stats.StatsResponse;
 import com.sugarman.myb.api.models.responses.trackings.TrackingInfoResponse;
@@ -343,5 +345,13 @@ public class RestApi {
 
   public Observable<Response<Object>> acceptRequest(String inviteId) {
     return api.acceptRequest(inviteId);
+  }
+
+  public Observable<Response<InvitesResponse>> getMyInvites() {
+    return api.getMyInvites();
+  }
+
+  public Observable<Response<RequestsResponse>> getMyRequests() {
+    return api.getMyRequests();
   }
 }

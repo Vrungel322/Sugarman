@@ -1565,6 +1565,7 @@ public class MainActivity extends GetUserInfoActivity
   }
 
   public void openInvitesActivity() {
+    Timber.e("openInvitesActivity myInvites.size: " + myInvites.size());
     Intent intent = new Intent(this, ProfileActivity.class);
     intent.putExtra(Constants.INTENT_MY_INVITES, myInvites.toArray(new Invite[myInvites.size()]));
     intent.putExtra(Constants.INTENT_MY_REQUESTS,

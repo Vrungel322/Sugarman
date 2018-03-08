@@ -17,6 +17,8 @@ import com.sugarman.myb.api.models.responses.MentorsVendor;
 import com.sugarman.myb.api.models.responses.RescueFriendResponse;
 import com.sugarman.myb.api.models.responses.ShopProductEntity;
 import com.sugarman.myb.api.models.responses.animation.GetAnimationResponse;
+import com.sugarman.myb.api.models.responses.me.invites.InvitesResponse;
+import com.sugarman.myb.api.models.responses.me.requests.RequestsResponse;
 import com.sugarman.myb.api.models.responses.me.stats.Stats;
 import com.sugarman.myb.api.models.responses.me.stats.StatsResponse;
 import com.sugarman.myb.api.models.responses.trackings.TrackingInfoResponse;
@@ -195,4 +197,8 @@ public interface ApiRx {
 
   @POST("/v1/requests/{request_id}/accept") Observable<Response<Object>> acceptRequest(
       @Path("request_id") String requestId);
+
+  @GET("/v1/me/invites") Observable<Response<InvitesResponse>> getMyInvites();
+
+  @GET("/v1/me/requests") Observable<Response<RequestsResponse>> getMyRequests();
 }

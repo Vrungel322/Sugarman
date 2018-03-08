@@ -171,6 +171,10 @@ public class RequestsActivity extends BaseActivity
     }
   }
 
+  @Override public void showRequests(List<Request> requests) {
+    requestsAdapter.setValue(requests);
+  }
+
   @Override public void onApiAcceptRequestSuccess() {
     //isNeedRefreshTrackings = true;
     //Request request = requestsAdapter.getValue(actionPosition);

@@ -34,7 +34,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
   private final Context context;
 
-  private final WeakReference<OnRequestsActionListener> mActionListener;
+  private OnRequestsActionListener mActionListener;
 
   private final Typeface fontBold;
   private final Typeface fontRegular;
@@ -44,7 +44,7 @@ public class RequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
   private final String flag2;
 
   public RequestsAdapter(Context context, OnRequestsActionListener listener) {
-    mActionListener = new WeakReference<>(listener);
+    mActionListener = listener;
     this.context = context;
 
     AssetManager assets = context.getAssets();
@@ -101,8 +101,8 @@ public class RequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     AppsFlyerEventSender.sendEvent("af_accept_request");
 
     if (position >= 0 && position < mData.size()) {
-      if (mActionListener.get() != null) {
-        mActionListener.get().onApproveRequest(mData.get(position), position);
+      if (mActionListener != null) {
+        mActionListener.onApproveRequest(mData.get(position), position);
       }
     } else {
       notifyDataSetChanged();
@@ -114,8 +114,8 @@ public class RequestsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     AppsFlyerEventSender.sendEvent("af_decline_request");
 
     if (position >= 0 && position < mData.size()) {
-      if (mActionListener.get() != null) {
-        mActionListener.get().onDeclineRequest(mData.get(position), position);
+      if (mActionListener != null) {
+        mActionListener.onDeclineRequest(mData.get(position), position);
       }
     } else {
       notifyDataSetChanged();
