@@ -463,6 +463,7 @@ public class MainActivity extends GetUserInfoActivity
           Timber.e("trackings:" + trackings.length + " mentorsGroup:" + mentorsGroup.size());
           myTrackings.clear();
           myTrackings.addAll(Arrays.asList(trackings));
+          checkHowManyUserTrackingsIn(myTrackings);
           mMentorsGroups = mentorsGroup;
           List<BaseChallengeItem> converted = prepareTrackingItems();
 
@@ -508,6 +509,16 @@ public class MainActivity extends GetUserInfoActivity
           showUpdateOldVersionDialog();
         }
       };
+
+  private void checkHowManyUserTrackingsIn(List<Tracking> myTrackings) {
+    int count = 0;
+    for (Tracking t : myTrackings) {
+      if (t.getGroupOwnerId().equals(SharedPreferenceHelper.getUserId())){
+        count++;
+      }
+    }
+    SharedPreferenceHelper.saveActiveTrackingsCreated(count);
+  }
 
   public static synchronized String getAdId(Context context) {
 
