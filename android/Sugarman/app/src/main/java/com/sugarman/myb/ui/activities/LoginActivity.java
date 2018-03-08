@@ -210,6 +210,7 @@ public class LoginActivity extends GetUserInfoActivity implements View.OnClickLi
             rlvk.animate().y(mCoeficient + zeroPointY).setDuration(1100);
           }
         });
+
         try {
           Thread.currentThread().sleep(150);
         } catch (InterruptedException e) {
@@ -217,7 +218,7 @@ public class LoginActivity extends GetUserInfoActivity implements View.OnClickLi
         }
         runOnUiThread(new Runnable() {
           @Override public void run() {
-            rlphone.animate().y(mCoeficient * 2 + zeroPointY).setDuration(1000);
+            rlGoogle.animate().y(mCoeficient * 2 + zeroPointY).setDuration(1000);
           }
         });
         try {
@@ -227,7 +228,7 @@ public class LoginActivity extends GetUserInfoActivity implements View.OnClickLi
         }
         runOnUiThread(new Runnable() {
           @Override public void run() {
-            rlGoogle.animate().y(mCoeficient * 3 + zeroPointY).setDuration(900);
+            rlphone.animate().y(mCoeficient * 3 + zeroPointY).setDuration(900);
           }
         });
       }

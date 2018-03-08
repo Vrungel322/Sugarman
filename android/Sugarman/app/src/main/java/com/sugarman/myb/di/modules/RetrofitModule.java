@@ -119,12 +119,14 @@ import timber.log.Timber;
         request = requestBuilder.build();
         Response response = chain.proceed(request);
         //Remote Logger
-        Map<String, String> map = new HashMap<>();
-        map.put("url", original.url().toString());
-        map.put("response_code", "" + response.code());
-        //if(response.body()!=null)
-        //map.put("response_body" ,""+response.body().string());
-        appsFlyRemoteLogger.report("server_request", map);
+        if(SharedPreferenceHelper.isRemoteLoggingEnabled()) {
+          Map<String, String> map = new HashMap<>();
+          map.put("url", original.url().toString());
+          map.put("response_code", "" + response.code());
+          //if(response.body()!=null)
+          //map.put("response_body" ,""+response.body().string());
+          appsFlyRemoteLogger.report("server_request", map);
+        }
         return response;
       }
     };
