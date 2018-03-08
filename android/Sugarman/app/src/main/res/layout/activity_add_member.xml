@@ -220,6 +220,7 @@
                         android:hint="@string/search"
                         android:inputType="textVisiblePassword"
                         android:maxLines="1"
+                        android:visibility="invisible"
                         android:paddingBottom="@dimen/create_group_et_padding_vertical"
                         android:paddingEnd="@dimen/create_group_et_padding_horizontal"
                         android:paddingStart="@dimen/create_group_et_padding_horizontal"

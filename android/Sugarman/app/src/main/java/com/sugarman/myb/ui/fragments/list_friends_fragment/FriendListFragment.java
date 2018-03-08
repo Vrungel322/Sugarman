@@ -290,9 +290,14 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
 
             @Override public void onError(FacebookException error) {
               if (DeviceHelper.isNetworkConnected()) {
-                new SugarmanDialog.Builder(getActivity(),
-                    DialogConstants.FAILURE_INVITE_FB_FRIENDS_ID).content(error.getMessage())
-                    .show();
+                if (error.toString().substring(36,39).trim().equals("-8")){
+                  showNoInternetConnectionDialog();
+                }
+                else {
+                  new SugarmanDialog.Builder(getActivity(),
+                      DialogConstants.FAILURE_INVITE_FB_FRIENDS_ID).content(error.getLocalizedMessage())
+                      .show();
+                }
               } else {
                 showNoInternetConnectionDialog();
               }
