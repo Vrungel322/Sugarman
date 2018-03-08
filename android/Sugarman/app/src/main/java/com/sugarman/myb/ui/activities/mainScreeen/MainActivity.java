@@ -142,6 +142,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -462,6 +463,7 @@ public class MainActivity extends GetUserInfoActivity
           Timber.e("trackings:" + trackings.length + " mentorsGroup:" + mentorsGroup.size());
           myTrackings.clear();
           myTrackings.addAll(Arrays.asList(trackings));
+          checkHowManyUserTrackingsIn(myTrackings);
           mMentorsGroups = mentorsGroup;
           List<BaseChallengeItem> converted = prepareTrackingItems();
 
@@ -507,6 +509,16 @@ public class MainActivity extends GetUserInfoActivity
           showUpdateOldVersionDialog();
         }
       };
+
+  private void checkHowManyUserTrackingsIn(List<Tracking> myTrackings) {
+    int count = 0;
+    for (Tracking t : myTrackings) {
+      if (t.getGroupOwnerId().equals(SharedPreferenceHelper.getUserId())){
+        count++;
+      }
+    }
+    SharedPreferenceHelper.saveActiveTrackingsCreated(count);
+  }
 
   public static synchronized String getAdId(Context context) {
 
@@ -1466,8 +1478,9 @@ public class MainActivity extends GetUserInfoActivity
 
   private void setActualDataToViews() {
     myTrackings = new ArrayList<>(actualTrackings.length);
-
-    System.arraycopy(actualTrackings, 0, myTrackings, 0, actualTrackings.length);
+    myTrackings.clear();
+    Collections.addAll(myTrackings, actualTrackings);
+    //System.arraycopy(actualTrackings, 0, myTrackings, 0, actualTrackings.length);
     for (Tracking t : myTrackings) {
       Log.e("TRAAAAAAAAAAAAACKING", "" + t.getGroup().getName() + " " + t.getId());
     }

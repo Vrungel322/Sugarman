@@ -241,7 +241,10 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
     builder.setPositiveButton(R.string.OK, (dialog, id) -> {
       Intent intent = new Intent(getActivity().getApplicationContext(), EditProfileActivity.class);
       startActivity(intent);
-    }).create().show();
+    })
+        .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.cancel())
+        .create()
+        .show();
   }
 
   @OnTextChanged(value = R.id.et_search, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
@@ -266,37 +269,48 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
    * В методе onGetFriendInfoSuccess можно уже создавать ... добавлять в группу людей итд
    */
   private void convertFbInvitebleFrientdsIdsAndCreateGroup(List<String> ids) {
-    Timber.e("loadFbFriends " + ids.get(0));
-    fbCallbackManager = CallbackManager.Factory.create();
-    fbInviteDialog = new GameRequestDialog(this);
-    fbInviteDialog.registerCallback(fbCallbackManager,
-        new FacebookCallback<GameRequestDialog.Result>() {
-          @Override public void onSuccess(GameRequestDialog.Result result) {
-            Timber.e("loadFbFriends onSuccess");
-            List<String> recipients = result.getRequestRecipients();
-            mPresenter.getFriendsInfo(recipients);
-          }
-
-          @Override public void onCancel() {
-
-          }
-
-          @Override public void onError(FacebookException error) {
-            if (DeviceHelper.isNetworkConnected()) {
-              new SugarmanDialog.Builder(getActivity(),
-                  DialogConstants.FAILURE_INVITE_FB_FRIENDS_ID).content(error.getMessage()).show();
-            } else {
-              showNoInternetConnectionDialog();
+    if (ids.size() > 99) {
+      new SugarmanDialog.Builder(getActivity(), DialogConstants.FRIENDS_LIST_IS_IMPTY_ID).content(
+          R.string.members_list_need_to_be_more0_less100).show();
+    } else {
+      Timber.e("loadFbFriends " + ids.get(0));
+      fbCallbackManager = CallbackManager.Factory.create();
+      fbInviteDialog = new GameRequestDialog(this);
+      fbInviteDialog.registerCallback(fbCallbackManager,
+          new FacebookCallback<GameRequestDialog.Result>() {
+            @Override public void onSuccess(GameRequestDialog.Result result) {
+              Timber.e("loadFbFriends onSuccess");
+              List<String> recipients = result.getRequestRecipients();
+              mPresenter.getFriendsInfo(recipients);
             }
-          }
-        });
 
-    if (!ids.isEmpty()) {
-      GameRequestContent content =
-          new GameRequestContent.Builder().setMessage(getString(R.string.play_with_me))
-              .setRecipients(ids)
-              .build();
-      fbInviteDialog.show(content);
+            @Override public void onCancel() {
+
+            }
+
+            @Override public void onError(FacebookException error) {
+              if (DeviceHelper.isNetworkConnected()) {
+                if (error.toString().substring(36,39).trim().equals("-8")){
+                  showNoInternetConnectionDialog();
+                }
+                else {
+                  new SugarmanDialog.Builder(getActivity(),
+                      DialogConstants.FAILURE_INVITE_FB_FRIENDS_ID).content(error.getLocalizedMessage())
+                      .show();
+                }
+              } else {
+                showNoInternetConnectionDialog();
+              }
+            }
+          });
+
+      if (!ids.isEmpty()) {
+        GameRequestContent content =
+            new GameRequestContent.Builder().setMessage(getString(R.string.play_with_me))
+                .setRecipients(ids)
+                .build();
+        fbInviteDialog.show(content);
+      }
     }
   }
 
