@@ -651,6 +651,7 @@ public class EditProfileActivity extends BasicActivity
 
   private void showNextActivity() {
     Timber.e("Got in here");
+    DeviceHelper.hideKeyboard(this);
     Timber.e(
         "*" + SharedPreferenceHelper.getPhoneNumber() + "* *" + etPhone.getText().toString() + "*");
     if ((!SharedPreferenceHelper.getPhoneNumber().equals(etPhone.getText().toString())
