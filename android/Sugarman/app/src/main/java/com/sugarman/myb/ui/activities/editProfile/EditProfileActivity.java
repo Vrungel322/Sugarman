@@ -73,6 +73,7 @@ public class EditProfileActivity extends BasicActivity
   public static final String IS_VK_LOGGED_IN_FROM_SETTINGS = "IS_VK_LOGGED_IN_FROM_SETTINGS";
   public static final String IS_PH_LOGGED_IN_FROM_SETTINGS = "IS_PH_LOGGED_IN_FROM_SETTINGS";
   public static final String AVATAR_URL_FROM_SETTINGS = "AVATAR_URL_FROM_SETTINGS";
+  private static final String AVATAR = "AVATAR";
   @InjectPresenter EditProfileActivityPresenter mPresenter;
   @BindView(R.id.iv_profile_avatar) ImageView profileAvatar;
   @BindView(R.id.pb_spinner) ProgressBar pb;
@@ -646,14 +647,17 @@ public class EditProfileActivity extends BasicActivity
       SharedPreferenceHelper.saveUser(response.getUser());
       otp = response.getResult().getUser().getPhoneOTP();
       showNextActivity();
-    } else
-
-    {
-      new SugarmanDialog.Builder(this, "soc network").content(response.getError()).build().show();
+    } else {
       if (response.getError().equals("This Facebook account is already created")) {
+        new SugarmanDialog.Builder(this, "soc network").content(R.string.fb_acc_already_exist)
+            .build()
+            .show();
         logoutFacebook();
       }
       if (response.getError().equals("This VK account is already created")) {
+        new SugarmanDialog.Builder(this, "soc network").content(R.string.vk_acc_already_exist)
+            .build()
+            .show();
         logoutVk();
       }
     }
@@ -665,6 +669,7 @@ public class EditProfileActivity extends BasicActivity
 
   private void showNextActivity() {
     Timber.e("Got in here");
+    DeviceHelper.hideKeyboard(this);
     Timber.e(
         "*" + SharedPreferenceHelper.getPhoneNumber() + "* *" + etPhone.getText().toString() + "*");
     if ((!SharedPreferenceHelper.getPhoneNumber().equals(etPhone.getText().toString())
@@ -710,13 +715,17 @@ public class EditProfileActivity extends BasicActivity
 
   @Override public void showSocialProblem(UsersResponse usersResponse) {
     hidePb();
-    new SugarmanDialog.Builder(this, "soc network").content(usersResponse.getError())
-        .build()
-        .show();
     if (usersResponse.getError().equals("This Facebook account is already created")) {
+      new SugarmanDialog.Builder(this, "soc network").content(R.string.fb_acc_already_exist)
+          .build()
+          .show();
+
       logoutFacebook();
     }
     if (usersResponse.getError().equals("This VK account is already created")) {
+      new SugarmanDialog.Builder(this, "soc network").content(R.string.vk_acc_already_exist)
+          .build()
+          .show();
       logoutVk();
     }
   }

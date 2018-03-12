@@ -64,16 +64,14 @@ public class ProductDetailsActivity extends BasicActivity implements IProductDet
     });
 
     freeForFriends.setOnClickListener(view -> {
-      Intent intent1 = new Intent(ProductDetailsActivity.this, ShopInviteFriendsActivity.class);
-      intent1.putExtra("productId", mShopProductEntity.getId());
-      startActivityForResult(intent1, PURCHASE_FLOW_FOR_FRIENDS);
+      mPresenter.checkNumberOfInviters();
     });
   }
 
   @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
     if (requestCode == PURCHASE_FLOW_FOR_FRIENDS) {
-      mPresenter.checkNumberOfInviters();
+      //mPresenter.checkNumberOfInviters();
     }
   }
 
@@ -87,5 +85,11 @@ public class ProductDetailsActivity extends BasicActivity implements IProductDet
     Timber.e(mShopProductEntity.getProductPrice());
     intent1.putExtra("productPrice", "0");
     startActivity(intent1);
+  }
+
+  @Override public void startShopInviteFriendsActivity() {
+    Intent intent1 = new Intent(ProductDetailsActivity.this, ShopInviteFriendsActivity.class);
+    intent1.putExtra("productId", mShopProductEntity.getId());
+    startActivityForResult(intent1, PURCHASE_FLOW_FOR_FRIENDS);
   }
 }

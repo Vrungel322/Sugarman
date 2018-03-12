@@ -191,6 +191,11 @@ public class InvitesActivity extends BaseActivity implements View.OnClickListene
     closeProgressFragment();
   }
 
+  @Override public void showInvites(List<Invite> invites) {
+    invitesAdapter.setValues(invites);
+
+  }
+
   @Subscribe public void onEvent(InvitesUpdatedEvent event) {
     invitesAdapter.setValues(event.getInvites());
     refreshNoInvites();

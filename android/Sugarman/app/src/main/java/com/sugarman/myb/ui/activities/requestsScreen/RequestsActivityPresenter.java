@@ -3,7 +3,9 @@ package com.sugarman.myb.ui.activities.requestsScreen;
 import com.arellomobile.mvp.InjectViewState;
 import com.sugarman.myb.App;
 import com.sugarman.myb.base.BasicPresenter;
+import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.utils.ThreadSchedulers;
+import rx.Observable;
 import rx.Subscription;
 import timber.log.Timber;
 
@@ -14,6 +16,27 @@ import timber.log.Timber;
     extends BasicPresenter<IRequestsActivityView> {
   @Override protected void inject() {
     App.getAppComponent().inject(this);
+  }
+
+  @Override protected void onFirstViewAttach() {
+    super.onFirstViewAttach();
+    fetchRequests();
+  }
+
+  private void fetchRequests() {
+    Subscription subscription = mDataManager.getMyRequests()
+        .concatMap(
+            requestsResponseResponse -> Observable.from(requestsResponseResponse.body().getResult()))
+        .filter(request -> request.getTracking().getStatus() != Constants.STATUS_FAILED)
+        .filter(request -> request.getTracking().getStatus() != Constants.STATUS_COMPLETED)
+        .toList()
+        .filter(requests -> requests!=null)
+        .compose(ThreadSchedulers.applySchedulers())
+        .subscribe(requests -> {
+          Timber.e("fetchInvites size: " + requests.size());
+          getViewState().showRequests(requests);
+        }, Throwable::printStackTrace);
+    addToUnsubscription(subscription);
   }
 
   public void declineRequest(String requestId) {
