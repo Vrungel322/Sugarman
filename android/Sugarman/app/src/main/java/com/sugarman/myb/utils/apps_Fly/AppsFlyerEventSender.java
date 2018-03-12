@@ -9,10 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TimeZone;
 
-/**
- * Created by yegoryeriomin on 2/15/18.
- */
-
 public class AppsFlyerEventSender {
 
   public static void sendEvent(String eventKey) {

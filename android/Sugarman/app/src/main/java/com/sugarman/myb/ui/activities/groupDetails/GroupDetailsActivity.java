@@ -269,13 +269,18 @@ public class GroupDetailsActivity extends BaseActivity
   private ChatActivity.ButtonType buttonType = ChatActivity.ButtonType.MENU;
   protected OnMenuManageListener onMenuManagerListener = new OnMenuManageListener() {
     @Override public void onMenuOpened() {
+      Timber.e("HUY GOVNO CHMO EBAL ROT");
       buttonType = ChatActivity.ButtonType.MENU_OPENED;
+
+      sendClicked = true;
     }
 
     @Override public void onMenuClosed() {
+      Timber.e("HUY GOVNO CHMO EBAL ROT 2");
       buttonType = ChatActivity.ButtonType.MENU;
       etMessage.setEnabled(true);
       findViewById(R.id.viewForMenuBehind).setVisibility(View.GONE);
+      btnSend.setEnabled(true);
       sendClicked = false;
     }
   };
@@ -693,9 +698,10 @@ public class GroupDetailsActivity extends BaseActivity
     attachButton.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
         if(!sendClicked) {
-          sendClicked = true;
+
           menuManager.openMenu((ImageButton) attachButton);
           findViewById(R.id.viewForMenuBehind).setVisibility(View.VISIBLE);
+          //sendClicked = true;
         }
       }
     });
@@ -1495,6 +1501,7 @@ public class GroupDetailsActivity extends BaseActivity
     if (buttonType == ChatActivity.ButtonType.IN_ANIMATION) {
       return;
     }
+
     buttonType = ChatActivity.ButtonType.IN_ANIMATION;
 
     menuManager.closeMenu();
@@ -1504,11 +1511,15 @@ public class GroupDetailsActivity extends BaseActivity
     if (buttonType == ChatActivity.ButtonType.IN_ANIMATION) {
       return;
     }
-    etMessage.setEnabled(false);
-    buttonType = ChatActivity.ButtonType.IN_ANIMATION;
+    btnSend.setEnabled(false);
+    if(!sendClicked) {
+      Timber.e("NOT SEND CLICKED HUY");
+      etMessage.setEnabled(false);
+      buttonType = ChatActivity.ButtonType.IN_ANIMATION;
 
-    menuManager.openMenu(btnSend);
-    findViewById(R.id.viewForMenuBehind).setVisibility(View.VISIBLE);
+      menuManager.openMenu(btnSend);
+      findViewById(R.id.viewForMenuBehind).setVisibility(View.VISIBLE);
+    }
   }
 
   protected void onButtonSendClicked() {
