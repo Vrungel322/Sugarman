@@ -269,9 +269,11 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
    * В методе onGetFriendInfoSuccess можно уже создавать ... добавлять в группу людей итд
    */
   private void convertFbInvitebleFrientdsIdsAndCreateGroup(List<String> ids) {
-    if (ids.size() > 99) {
+    Timber.e("convertFbInvitebleFrientdsIdsAndCreateGroup ids:"+ids.size());
+    if (ids.size() > 49) {
       new SugarmanDialog.Builder(getActivity(), DialogConstants.FRIENDS_LIST_IS_IMPTY_ID).content(
-          R.string.members_list_need_to_be_more0_less100).show();
+          R.string.members_list_need_to_be_more0_less50).show();
+      return;
     } else {
       Timber.e("loadFbFriends " + ids.get(0));
       fbCallbackManager = CallbackManager.Factory.create();
