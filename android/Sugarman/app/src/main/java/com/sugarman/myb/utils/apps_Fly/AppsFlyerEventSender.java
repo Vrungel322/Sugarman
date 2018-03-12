@@ -24,18 +24,20 @@ public class AppsFlyerEventSender {
     eventValue.put("timezone", TimeZone.getDefault().getID());
     eventValue.put("timestamp", System.currentTimeMillis() + "");
 
-    AppsFlyerLib.getInstance()
-        .trackEvent(App.getInstance().getApplicationContext(), eventKey, eventValue);
+    if(SharedPreferenceHelper.isRemoteLoggingEnabled()) {
+      AppsFlyerLib.getInstance()
+          .trackEvent(App.getInstance().getApplicationContext(), eventKey, eventValue);
 
-    DatabaseReference databaseRefference;
-    databaseRefference = FirebaseDatabase.getInstance().getReference();
-    databaseRefference.child("remoteLoggingAndroid")
-        .child("event")
-        .child(SharedPreferenceHelper.getUserName() + " : " + SharedPreferenceHelper.getUserId())
-        .push()
-        .setValue(eventValue)
-        .addOnCompleteListener(task -> {
+      DatabaseReference databaseRefference;
+      databaseRefference = FirebaseDatabase.getInstance().getReference();
+      databaseRefference.child("remoteLoggingAndroid")
+          .child("event")
+          .child(SharedPreferenceHelper.getUserName() + " : " + SharedPreferenceHelper.getUserId())
+          .push()
+          .setValue(eventValue)
+          .addOnCompleteListener(task -> {
 
-        });
+          });
+    }
   }
 }

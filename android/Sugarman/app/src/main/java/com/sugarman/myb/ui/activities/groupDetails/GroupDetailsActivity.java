@@ -238,6 +238,7 @@ public class GroupDetailsActivity extends BaseActivity
   private long timestampCreate;
   private boolean isEditable = false;
   private int assesCount = 0;
+  boolean sendClicked = false;
   //LinearLayout tabsContainer;
   private int todaySteps;
   private int groupStepsWithoutMe;
@@ -275,6 +276,7 @@ public class GroupDetailsActivity extends BaseActivity
       buttonType = ChatActivity.ButtonType.MENU;
       etMessage.setEnabled(true);
       findViewById(R.id.viewForMenuBehind).setVisibility(View.GONE);
+      sendClicked = false;
     }
   };
   private ChatActivity.StickersType stickersType = ChatActivity.StickersType.CLOSED;
@@ -686,11 +688,15 @@ public class GroupDetailsActivity extends BaseActivity
       }
     });
 
+
     attachButton = (ImageView) findViewById(R.id.attach_file);
     attachButton.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
-        menuManager.openMenu((ImageButton) attachButton);
-        findViewById(R.id.viewForMenuBehind).setVisibility(View.VISIBLE);
+        if(!sendClicked) {
+          sendClicked = true;
+          menuManager.openMenu((ImageButton) attachButton);
+          findViewById(R.id.viewForMenuBehind).setVisibility(View.VISIBLE);
+        }
       }
     });
 
@@ -951,6 +957,11 @@ public class GroupDetailsActivity extends BaseActivity
     //END CHAT ************************************************************************************************************
 
     setupInAppPurchase();
+  }
+
+  @Override protected void onResume() {
+    super.onResume();
+    sendClicked = false;
   }
 
   private void setUpPieChart() {
@@ -2267,6 +2278,25 @@ public class GroupDetailsActivity extends BaseActivity
 
   public void massPokeMember() {
     boolean meFailuer = false;
+    int kickedCounter = 0;
+
+    if(amIMentor)
+    {
+      for (Member m : mTracking.getMembers()) {
+        if(!m.getId().equals(SharedPreferenceHelper.getUserId()) && m.getSteps()<10000) {
+          onPokeMember(new GroupMember(m));
+          kickedCounter++;
+        }
+      }
+      if(kickedCounter>0) {
+        new SugarmanDialog.Builder(this, "kicked_users").content(
+            String.format(getString(R.string.kicked_users), (int) kickedCounter)).show();
+        int id = new Random().nextInt(7);
+        SoundHelper.play(brokenGlassIds[id]);
+      }
+      return;
+    }
+
     for (Member m : mTracking.getMembers()) {
       if (m.getId().equals(SharedPreferenceHelper.getUserId())
           && m.getFailureStatus() == Member.FAIL_STATUS_FAILUER) {
@@ -2282,6 +2312,8 @@ public class GroupDetailsActivity extends BaseActivity
 
         if (lessThanYou.size() > 0) {
           for (Member m : lessThanYou) {
+            if(isMentorGroup && mentorId.equals(m.getId()))
+              continue;
             onPokeMember(new GroupMember(m));
           }
           new SugarmanDialog.Builder(this, "kicked_users").content(

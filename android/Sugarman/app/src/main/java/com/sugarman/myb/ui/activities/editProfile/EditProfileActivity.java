@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -229,7 +230,6 @@ public class EditProfileActivity extends BasicActivity
     mBundleUserSettings.putBoolean(IS_FB_LOGGED_IN_FROM_SETTINGS, cbFb.isChecked());
     mBundleUserSettings.putBoolean(IS_VK_LOGGED_IN_FROM_SETTINGS, cbVk.isChecked());
     mBundleUserSettings.putBoolean(IS_PH_LOGGED_IN_FROM_SETTINGS, cbPh.isChecked());
-    mBundleUserSettings.putString("avatar", profileAvatar.getDrawable().toString());
   }
 
   @OnClick(R.id.cb_facebook) public void cbFacebookClicked() {
@@ -434,13 +434,28 @@ public class EditProfileActivity extends BasicActivity
         && mBundleUserSettings.getString(EMAIL_FROM_SETTINGS).equals(etEmail.getText().toString())
         && mBundleUserSettings.getString(AVATAR_URL_FROM_SETTINGS)
         .equals(SharedPreferenceHelper.getAvatar())
-        && mBundleUserSettings.getString("avatar").equals(profileAvatar.getDrawable().toString())
         && VKSdk.isLoggedIn() == mBundleUserSettings.getBoolean(IS_VK_LOGGED_IN_FROM_SETTINGS)
         && !SharedPreferenceHelper.getFbId().equals("none") == mBundleUserSettings.getBoolean(
         IS_FB_LOGGED_IN_FROM_SETTINGS)) {
       return false;
     } else {
       return true;
+    }
+  }
+
+  private static boolean compare(Bitmap b1, Bitmap b2) {
+    if (b1.getWidth() == b2.getWidth() && b1.getHeight() == b2.getHeight()) {
+      int[] pixels1 = new int[b1.getWidth() * b1.getHeight()];
+      int[] pixels2 = new int[b2.getWidth() * b2.getHeight()];
+      b1.getPixels(pixels1, 0, b1.getWidth(), 0, 0, b1.getWidth(), b1.getHeight());
+      b2.getPixels(pixels2, 0, b2.getWidth(), 0, 0, b2.getWidth(), b2.getHeight());
+      if (Arrays.equals(pixels1, pixels2)) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
     }
   }
 
