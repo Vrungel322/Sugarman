@@ -257,7 +257,7 @@ public class CreateGroupActivity extends BaseActivity
               CreateGroupActivity.this);
         } else {
           new SugarmanDialog.Builder(CreateGroupActivity.this,
-              DialogConstants.FRIENDS_LIST_IS_IMPTY_ID).content(R.string.members_list_need_to_be_more0_less100)
+              DialogConstants.FRIENDS_LIST_IS_IMPTY_ID).content(R.string.members_list_need_to_be_more0_less50)
               .show();
           mFriendListFragment.hideProgress();
         }

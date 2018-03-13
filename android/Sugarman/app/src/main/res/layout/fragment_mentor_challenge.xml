@@ -389,7 +389,7 @@
                                 android:layout_centerInParent="true"
                                 android:textSize="13sp"
                                 android:textColor="#ff0000"
-                                android:text="VIEW"
+                                android:text="@string/view"
                                 />
                         </RelativeLayout>
                         <TextView

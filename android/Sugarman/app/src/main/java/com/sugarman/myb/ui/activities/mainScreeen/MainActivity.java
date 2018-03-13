@@ -550,6 +550,9 @@ public class MainActivity extends GetUserInfoActivity
         count++;
       }
     }
+    Timber.e("checkHowManyUserTrackingsIn myTrackings :" + myTrackings.size());
+    Timber.e("checkHowManyUserTrackingsIn mentorsGroups :" + mentorsGroups.size());
+    Timber.e("checkHowManyUserTrackingsIn count :" + count);
 
     SharedPreferenceHelper.saveActiveTrackingsCreated(count);
   }

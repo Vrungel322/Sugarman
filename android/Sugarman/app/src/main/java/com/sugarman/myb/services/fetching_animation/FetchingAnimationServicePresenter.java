@@ -114,7 +114,7 @@ public class FetchingAnimationServicePresenter
           }
 
           AnimationHelper animationHelper =
-              new AnimationHelper(filesDir, new ArrayList<>(urls), 30);
+              new AnimationHelper(filesDir, new ArrayList<>(urls), 10);
           //AnimationDrawable animationDrawable = new AnimationDrawable();
 
           animationHelper.download(new AnimationHelper.Callback() {
