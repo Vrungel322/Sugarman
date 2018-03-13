@@ -583,7 +583,6 @@
   <string name="apply_now_for_free">Приобрести</string>
     <string name="free">бесплатно</string>
 
-    <string name="members_list_need_to_be_more0_less100">In order to create group you need to choose more than 0 and less than 100 members</string>
 
     <string name="days">дней</string>
     <string name="weeks">недель</string>
@@ -593,7 +592,6 @@
     <string name="fb_acc_already_exist">Этот аккаунт Facebook уже создан</string>
     <string name="you_cant_delete_self">Вы не можете удалить самого себя :(</string>
     <string name="can_not_increase_amount">Вы не можете увеличить количество</string>
-    <string name="members_list_need_to_be_less100">Можно пригласить не больше 100 пользователей</string>
     <string name="members_list_need_to_be_more0_less50">Можно пригласить от 0 до 50 пользователей</string>
 
 </resources>

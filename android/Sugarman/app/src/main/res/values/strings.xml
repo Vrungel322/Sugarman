@@ -18,7 +18,6 @@
   <string name="group_name_is_empty">Please enter group name</string>
   <string name="members_list_is_empty">In order to create group you need to choose members</string>
   <string name="members_list_need_to_be_more0_less50">In order to create group you need to choose more than 0 and less than 50 members</string>
-  <string name="members_list_need_to_be_less100">In order to edit group you need to choose less than 100 members</string>
   <string name="play_with_me">Come play this level with me</string>
   <string name="max_active_groups">Sorry, you can only have up to %1$s active groups</string>
   <string name="this_user_has_completed_daily">This user has completed his daily steps!</string>
@@ -620,8 +619,8 @@
   <string name="weeks">weeks</string>
   <string name="months">months</string>
   <string name="years">years</string>
-  <string name="can_not_increase_amount">You can not increase amount!</string>
-  <string name="you_cant_delete_self">Can\'t delete your own ass</string>
+  <string name="can_not_increase_amount">Y﻿ou can buy 1 item for every 5 friends</string>
+  <string name="you_cant_delete_self">You can now delete yourself from the group</string>
   <string name="fb_acc_already_exist">This Facebook account is already created</string>
   <string name="vk_acc_already_exist">This VK account is already created</string>
   <string name="view">VIEW</string>
