@@ -344,7 +344,10 @@ public class GroupDetailsActivity extends BaseActivity
       }
       buttonType = ChatActivity.ButtonType.IN_ANIMATION;
 
-      menuManager.closeMenu();
+      if(sendClicked) {
+        Timber.e("HUY PIZDA onButtonMenuOpenedClicked");
+        menuManager.closeMenu();
+      }
     }
 
     @Override public void onFileClicked() {
@@ -699,9 +702,9 @@ public class GroupDetailsActivity extends BaseActivity
       @Override public void onClick(View view) {
         if(!sendClicked) {
 
-          menuManager.openMenu((ImageButton) attachButton);
+          sendClicked = true;
+          menuManager.openMenu((ImageButton) attachButton,sendClicked);
           findViewById(R.id.viewForMenuBehind).setVisibility(View.VISIBLE);
-          //sendClicked = true;
         }
       }
     });
@@ -1504,7 +1507,10 @@ public class GroupDetailsActivity extends BaseActivity
 
     buttonType = ChatActivity.ButtonType.IN_ANIMATION;
 
-    menuManager.closeMenu();
+    if(sendClicked) {
+      Timber.e("HUY PIZDA MANAGER CALLED onButtonMenuOpenedClicked");
+      menuManager.closeMenu();
+    }
   }
 
   private void onButtonMenuClicked() {
@@ -1517,7 +1523,7 @@ public class GroupDetailsActivity extends BaseActivity
       etMessage.setEnabled(false);
       buttonType = ChatActivity.ButtonType.IN_ANIMATION;
 
-      menuManager.openMenu(btnSend);
+      menuManager.openMenu(btnSend, sendClicked);
       findViewById(R.id.viewForMenuBehind).setVisibility(View.VISIBLE);
     }
   }

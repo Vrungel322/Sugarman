@@ -271,7 +271,7 @@
                     android:text="@string/cancel"
                     android:layout_marginTop="1dp"
                     android:textColor="@android:color/white"
-                    android:padding="10dp"
+                    android:padding="5dp"
                     android:layout_below="@id/thirdRow"
                     android:textSize="14sp"
                     android:background="@drawable/menu_background_bottom_corners_drawable"

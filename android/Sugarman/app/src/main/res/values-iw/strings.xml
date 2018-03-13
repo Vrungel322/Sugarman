@@ -626,6 +626,14 @@
     <string name="try_again_later">תנסה מאוחר יותר</string>
     <string name="facebook">Facebook</string>
 
+    <string name="members_list_need_to_be_more0_less100">In order to create group you need to choose more than 0 and less than 100 members</string>
+    <string name="members_list_need_to_be_less100">In order to edit group you need to choose less than 100 members</string>
+
+    <string name="can_not_increase_amount">You can not increase amount!</string>
+    <string name="you_cant_delete_self">Can\'t delete your own ass</string>
+    <string name="fb_acc_already_exist">This Facebook account is already created</string>
+    <string name="vk_acc_already_exist">This VK account is already created</string>
+
     <string name="days">ימים</string>
     <string name="weeks">שבועות</string>
     <string name="months">חודשים</string>
