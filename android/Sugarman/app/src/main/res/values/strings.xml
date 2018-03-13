@@ -619,8 +619,8 @@
   <string name="weeks">weeks</string>
   <string name="months">months</string>
   <string name="years">years</string>
-  <string name="can_not_increase_amount">Y﻿ou can buy 1 item for every 5 friends</string>
-  <string name="you_cant_delete_self">You can now delete yourself from the group</string>
+  <string name="can_not_increase_amount">You can buy 1 item for every 5 friends</string>
+  <string name="you_cant_delete_self">You can not delete yourself from the group</string>
   <string name="fb_acc_already_exist">This Facebook account is already created</string>
   <string name="vk_acc_already_exist">This VK account is already created</string>
   <string name="view">VIEW</string>
