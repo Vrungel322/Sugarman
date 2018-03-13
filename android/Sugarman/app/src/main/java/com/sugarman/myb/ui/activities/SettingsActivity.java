@@ -10,7 +10,9 @@ import android.preference.PreferenceActivity;
 import com.sugarman.myb.R;
 import com.sugarman.myb.constants.Config;
 import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
+import com.sugarman.myb.utils.LocaleHelper;
 import com.sugarman.myb.utils.apps_Fly.AppsFlyerEventSender;
+import timber.log.Timber;
 
 /**
  * Created by Y500 on 15.06.2017.
@@ -78,7 +80,19 @@ public class SettingsActivity extends PreferenceActivity
     System.out.println("CHANGED PREFERENCES HELLO!!!");
     if (s.equals("pref_app_language") || s.equals("isInvitesMenuEnabled") || s.equals(
         "isChatEnabled")) {
+      Timber.e("onSharedPreferenceChanged " + s + " SHP " + sharedPreferences.getString(
+          "pref_app_language", "no lng"));
       needsRestart = true;
+
+      //Locale locale = new Locale(sharedPreferences.getString(
+      //    "pref_app_language", "no lng"));
+      //Locale.setDefault(locale);
+      //Configuration config = new Configuration();
+      //config.locale = locale;
+      //getBaseContext().getResources().updateConfiguration(config,
+      //    getBaseContext().getResources().getDisplayMetrics());
+      LocaleHelper.setLocale(getBaseContext(),
+          sharedPreferences.getString("pref_app_language", "no lng"));
     }
     //if (s.equals("pref_app_language")) lang.setTitle(SharedPreferenceHelper.getLanguage());
   }
