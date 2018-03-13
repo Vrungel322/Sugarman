@@ -827,7 +827,7 @@ public class ChatActivity extends BaseActivity {
         etMessage.setEnabled(false);
         buttonType = ButtonType.IN_ANIMATION;
 
-        menuManager.openMenu(btnSend);
+        menuManager.openMenu(btnSend, false);
         findViewById(R.id.viewForMenuBehind).setVisibility(View.VISIBLE);
     }
 

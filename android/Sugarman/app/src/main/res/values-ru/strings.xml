@@ -583,6 +583,8 @@
   <string name="apply_now_for_free">Приобрести</string>
     <string name="free">бесплатно</string>
 
+    <string name="members_list_need_to_be_more0_less100">In order to create group you need to choose more than 0 and less than 100 members</string>
+
     <string name="days">дней</string>
     <string name="weeks">недель</string>
     <string name="months">месяцев</string>

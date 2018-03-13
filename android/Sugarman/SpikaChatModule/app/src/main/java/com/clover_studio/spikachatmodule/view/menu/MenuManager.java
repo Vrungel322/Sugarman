@@ -2,6 +2,7 @@ package com.clover_studio.spikachatmodule.view.menu;
 
 import android.app.Activity;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageButton;
@@ -30,6 +31,7 @@ public class MenuManager {
     private LinearLayout file;
     private LinearLayout contact;
     private CustomTextView cancel;
+    ImageButton btnSend;
 
     private OnMenuManageListener listener;
     private OnMenuButtonsListener buttonsListener;
@@ -98,6 +100,8 @@ public class MenuManager {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.e("HUY", "HUY PIZDA CANCEL CLICK");
+
                 closeMenu();
             }
         });
@@ -111,7 +115,8 @@ public class MenuManager {
 
     }
 
-    public void openMenu(ImageButton btnSend){
+    public void openMenu(ImageButton btnSend, boolean animate){
+        Log.e("HUY", "HUY PIZDA ANIMATOR");
 
         ((View)rlMenuMain
                 .getParent()
@@ -119,6 +124,7 @@ public class MenuManager {
                 .setVisibility(View.VISIBLE);
 
         // get the center for the clipping circle
+        this.btnSend = btnSend;
         int cx = btnSend.getLeft();
         int cy = rlMenuMain.getBottom();
 
@@ -146,9 +152,12 @@ public class MenuManager {
             public void onAnimationRepeat() {
             }
         });
-        menuAnimator.start();
+        if(!animate) {
+            menuAnimator.start();
+            Log.e("ANIMATOR", "HUY PIZDA ZASHLO");
+            handleButtonsOnOpen();
+        }
 
-        handleButtonsOnOpen();
 
     }
 
@@ -179,9 +188,23 @@ public class MenuManager {
 
     public void closeMenu(){
 
+        Log.e("HUY", "HUY PIZDA closeMenu");
+
         if(menuAnimator == null) {
             return;
         }
+        //listener.onMenuClosed();
+        //((View)rlMenuMain.getParent().getParent()).setVisibility(View.GONE);
+
+        int cx = btnSend.getLeft();
+        int cy = rlMenuMain.getBottom();
+
+        // get the final radius for the clipping circle
+        int finalRadius = Math.max(rlMenuMain.getWidth(), rlMenuMain.getHeight());
+
+        menuAnimator = ViewAnimationUtils.createCircularReveal(rlMenuMain, cx, cy, 0, finalRadius + 300);
+        menuAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
+        menuAnimator.setDuration(Const.AnimationDuration.MENU_LAYOUT_ANIMATION_DURATION);
 
         menuAnimator = menuAnimator.reverse();
         if(menuAnimator != null){
@@ -205,11 +228,14 @@ public class MenuManager {
             menuAnimator.start();
         }
 
+        listener.onMenuClosed();
         handleButtonsOnClose();
 
     }
 
     protected void handleButtonsOnClose(){
+
+        Log.e("HUY", "HUY PIZDA buttonsClose");
 
         singleButtonAnimationOff(audio, Const.AnimationDuration.MENU_LAYOUT_ANIMATION_DURATION);
         singleButtonAnimationOff(location, Const.AnimationDuration.MENU_LAYOUT_ANIMATION_DURATION);
