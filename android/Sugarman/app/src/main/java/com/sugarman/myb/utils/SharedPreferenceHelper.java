@@ -454,6 +454,7 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
   }
 
   public static void setTodayDate(String date) {
+    Timber.e("first Today date updated " + date);
     putString("todayDate", date);
   }
 
@@ -475,15 +476,13 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
       //Log.d("IS FIRST LAUNCH TODAY", "NO" + false);
       return false;
     }
+
+    Timber.e("first launch " + getTodayDate() + " " + date);
     //Log.d("IS FIRST LAUNCH TODAY", "YES" + true);
     //System.out.println("DAAAAAATE TRUE" + date);
-    setFirstLaunchOfTheDay(true);
     return true;
   }
 
-  public static void setFirstLaunchOfTheDay(boolean firstLaunch) {
-    putBoolean("new_day", firstLaunch);
-  }
 
   public static boolean introIsShown() {
     return getBoolean(SharedPreferenceConstants.INTRO_IS_SHOWN, false);
@@ -663,11 +662,13 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
   }
 
   public static void disableEventXStepsDone(Integer numValue) {
+    Timber.e("isEventXStepsDisabled " + numValue);
     putBoolean(SharedPreferenceConstants.EVENT_X_STEPS_DONE + numValue, false);
   }
 
   public static boolean isEventXStepsDone(Integer numValue) {
     Timber.e("isEventXStepsDone " + numValue);
+    Timber.e("isEventXStepsDone "+getBoolean(SharedPreferenceConstants.EVENT_X_STEPS_DONE + numValue, false));
     return getBoolean(SharedPreferenceConstants.EVENT_X_STEPS_DONE + numValue, false);
   }
 

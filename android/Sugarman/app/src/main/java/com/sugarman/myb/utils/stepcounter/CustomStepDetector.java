@@ -2,6 +2,10 @@ package com.sugarman.myb.utils.stepcounter;
 
 import android.util.Log;
 import com.sugarman.myb.listeners.StepListener;
+import com.sugarman.myb.utils.SharedPreferenceHelper;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class CustomStepDetector {
 
@@ -46,6 +50,8 @@ public class CustomStepDetector {
     currentAccel[1] = y;
     currentAccel[2] = z;
 
+    //SharedPreferenceHelper.isFirstLaunchOfTheDay(SharedPreferenceHelper.getUserId());
+
     // First step is to update our guess of where the global z vector is.
     accelRingCounter++;
     accelRingX[accelRingCounter % ACCEL_RING_SIZE] = currentAccel[0];
@@ -71,6 +77,9 @@ public class CustomStepDetector {
 
     if (velocityEstimate > STEP_THRESHOLD && oldVelocityEstimate <= STEP_THRESHOLD && (timeNs
         - lastStepTimeNs > STEP_DELAY_NS)) {
+      DateFormat dfDate = new SimpleDateFormat("yyyy-MM-dd");
+      String date = dfDate.format(Calendar.getInstance().getTime());
+      SharedPreferenceHelper.setTodayDate(date);
       Log.d("CUSTOM STEP DETECTOR", " Started if");
       if (stepChecker != null && stepChecker.isAlive()) stepChecker.interrupt();
       stepChecker = new Thread(new Runnable() {

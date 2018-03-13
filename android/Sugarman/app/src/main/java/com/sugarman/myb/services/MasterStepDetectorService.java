@@ -130,11 +130,9 @@ public class MasterStepDetectorService extends Service implements OnReportSendLi
                 SharedPreferenceHelper.setOnLaunch(false);
               }
 
-              SharedPreferenceHelper.setFirstLaunchOfTheDay(false);
             } else {
               //Log.e("baseline", "called first launch");
               SharedPreferenceHelper.saveBaseline(steps);
-              SharedPreferenceHelper.setFirstLaunchOfTheDay(false);
             }
           }
         }
