@@ -2361,7 +2361,8 @@ public class GroupDetailsActivity extends BaseActivity
   }
 
   @Override public void onPokeSelf() {
-    if (amIMentor){
+    Timber.e("onPokeSelf iMentor :" + amIMentor + "isEditMode:"+membersAdapter.isEditMode());
+    if (amIMentor && membersAdapter.isEditMode()){
       new SugarmanDialog.Builder(this, DialogConstants.YOU_CANT_KICK_SELF_ID).content(
           R.string.you_cant_delete_self).show();
     }else {
