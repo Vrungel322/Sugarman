@@ -18,6 +18,7 @@ import com.sugarman.myb.R;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.ui.activities.mainScreeen.MainActivity;
 import com.sugarman.myb.utils.IntentExtractorHelper;
+import timber.log.Timber;
 
 public class NoChallengesFragment extends BaseChallengeFragment implements View.OnClickListener {
 
@@ -27,6 +28,7 @@ public class NoChallengesFragment extends BaseChallengeFragment implements View.
   CardView cardViewNoChallenge;
 
   private static final String TAG = NoChallengesFragment.class.getName();
+  private Bitmap mBmp;
 
   public static NoChallengesFragment newInstance(int position) {
     NoChallengesFragment fragment = new NoChallengesFragment();
@@ -59,8 +61,9 @@ public class NoChallengesFragment extends BaseChallengeFragment implements View.
         Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
 
         if (width > 0 && height > 0) {
-          Bitmap bmp = Bitmap.createBitmap(width, height, conf); // this creates a MUTABLE bitmap
-          Canvas canvas = new Canvas(bmp);
+          // this creates a MUTABLE bitmap
+          mBmp = Bitmap.createBitmap(width, height, conf);
+          Canvas canvas = new Canvas(mBmp);
           int padding = height / 35 * 2;
           Paint p = new Paint();
           p.setStrokeWidth(height / 80);
@@ -81,7 +84,7 @@ public class NoChallengesFragment extends BaseChallengeFragment implements View.
           canvas.drawLine(width - padding, height - padding, width - padding,
               height - padding - height / 10, p);
 
-          textContainer.setBackground(new BitmapDrawable(getActivity().getResources(), bmp));
+          textContainer.setBackground(new BitmapDrawable(getActivity().getResources(), mBmp));
         }
       }
     });
@@ -89,6 +92,23 @@ public class NoChallengesFragment extends BaseChallengeFragment implements View.
     cardViewNoChallenge.setOnClickListener(this);
 
     return root;
+  }
+
+  @Override public void onDestroyView() {
+    super.onDestroyView();
+    clearBitmap();
+  }
+
+  private void clearBitmap() {
+    Timber.e("clearBitmap");
+    if (mBmp != null) {
+      Timber.e("clearBitmap mBmp != null");
+
+      if (!mBmp.isRecycled()) {
+        mBmp.recycle();
+      }
+      mBmp = null;
+    }
   }
 
   @Override public void onClick(View v) {
