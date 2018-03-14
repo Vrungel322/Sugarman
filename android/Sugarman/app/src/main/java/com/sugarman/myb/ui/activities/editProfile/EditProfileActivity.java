@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -588,6 +587,7 @@ public class EditProfileActivity extends BasicActivity
     selectedFile = new File(SaveFileHelper.saveFileTemp(bitmap, getApplicationContext()));
     bitmap = mi.transform(bitmap);
     profileAvatar.setImageBitmap(bitmap);
+    mi.clearBitmap();
   }
 
   private void processCaptureCamera() {
@@ -604,6 +604,8 @@ public class EditProfileActivity extends BasicActivity
     selectedFile = new File(SaveFileHelper.saveFileTemp(bitmap, getApplicationContext()));
     bitmap = mi.transform(bitmap);
     profileAvatar.setImageBitmap(bitmap);
+    mi.clearBitmap();
+
 
     if (!TextUtils.isEmpty(cameraUri)) {
       Uri uri = Uri.parse(cameraUri);

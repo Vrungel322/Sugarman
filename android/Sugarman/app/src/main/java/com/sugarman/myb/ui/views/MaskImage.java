@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import com.sugarman.myb.R;
+import timber.log.Timber;
 
 public class MaskImage {
 
@@ -24,6 +25,8 @@ public class MaskImage {
   static {
     mMaskingPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
   }
+
+  private Bitmap mBitmap;
 
   /**
    * @param maskId If you change the mask file, please also rename the mask file, or Glide will get
@@ -43,12 +46,12 @@ public class MaskImage {
     mWidth = (source.getWidth() - size) / 2;
     mHeight = (source.getHeight() - size) / 2;
 
-    Bitmap bitmap = Bitmap.createBitmap(source, mWidth, mHeight, size, size);
-    if (bitmap != source) {
+    mBitmap = Bitmap.createBitmap(source, mWidth, mHeight, size, size);
+    if (mBitmap != source) {
       source.recycle();
     }
 
-    return bitmap;
+    return mBitmap;
   }
 
   public Bitmap transform(Bitmap source) {
@@ -91,4 +94,16 @@ public class MaskImage {
 
     return drawable;
   }
+
+  public void clearBitmap() {
+      Timber.e("clearBitmap");
+      if (mBitmap != null) {
+        Timber.e("clearBitmap mBmp != null");
+
+        if (!mBitmap.isRecycled()) {
+          mBitmap.recycle();
+        }
+        mBitmap = null;
+      }
+    }
 }
