@@ -147,17 +147,22 @@ public class FcmListenerService extends FirebaseMessagingService {
     Intent intent = new Intent(this, SplashActivity.class);
     String trackingId = getTrackingId(notification);
     Timber.e(" processMessage Message " + text + " type " + type);
+    Timber.e("deepLinks " + trackingId);
+
 
     switch (type) {
-      case NotificationMessageType.GROUP_NAME_GOOD_LUCK:
       case NotificationMessageType.ONE_MORE_DAY_TO_ADD_FRIENDS:
       case NotificationMessageType.INVITATION_NO_AVAILABLE:
       case NotificationMessageType.IS_UNABLE_TO_START:
-        // nothing
+        //nothing
+        break;
+      case NotificationMessageType.GROUP_NAME_GOOD_LUCK:
+      case NotificationMessageType.GROUP_NAME_IN_HOUR:
+        intent.putExtra(Constants.INTENT_OPEN_ACTIVITY,
+            Constants.OPEN_MAIN_ACTIVITY);
         break;
       case NotificationMessageType.PINGED_YOU_TO_MYB:
       case NotificationMessageType.USER_NAME_HAS_POKED_YOU:
-      case NotificationMessageType.GROUP_NAME_IN_HOUR:
         App.getEventBus().post(new GetInAppNotificationsEvent());
         intent.putExtra(Constants.INTENT_OPEN_ACTIVITY,
             Constants.OPEN_GROPEDETAILS_ACTIVITY_WHERE_WAS_POKE);

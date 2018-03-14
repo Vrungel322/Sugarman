@@ -265,10 +265,10 @@ public class SplashActivity extends GetUserInfoActivity
   }
 
   private boolean openSpecificActivity() {
-    Timber.e("deepLinks openSpecificActivity");
     Intent intent = getIntent();
     openedActivityCode = intent.getIntExtra(Constants.INTENT_OPEN_ACTIVITY, -1);
     trackingIdFromFcm = intent.getStringExtra(Constants.INTENT_FCM_TRACKING_ID);
+    Timber.e("deepLinks openSpecificActivity openedActivityCode:"+openedActivityCode);
 
     boolean isForeground = App.getInstance().isAppForeground();
     Activity current = App.getInstance().getCurrentActivity();
@@ -284,6 +284,11 @@ public class SplashActivity extends GetUserInfoActivity
         intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivityForResult(intent1, Constants.GROUP_DETAILS_ACTIVITY_REQUEST_CODE);
         App.getEventBus().post(new RefreshTrackingsEvent(trackingIdFromFcm));
+      }
+      if (openedActivityCode == Constants.OPEN_MAIN_ACTIVITY) {
+        Intent intent1 = new Intent(this, MainActivity.class);
+        intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent1);
       }
       // application is closed. usually run splash activity
       return false;
