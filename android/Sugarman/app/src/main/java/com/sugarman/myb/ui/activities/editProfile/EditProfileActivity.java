@@ -320,11 +320,13 @@ public class EditProfileActivity extends BasicActivity
   private void editProfile() {
     String displayName = etName.getText().toString();
     Log.e("display name", displayName);
-    SharedPreferenceHelper.saveUserName(displayName);
+    if (!displayName.toString().trim().replace(" ", "").isEmpty()) {
+      SharedPreferenceHelper.saveUserName(displayName);
+    }
     String displayEmail = etEmail.getText().toString();
     displayNumber = etPhone.getText().toString();
 
-    if (!etName.getText().toString().trim().isEmpty()) {
+    if (!displayName.toString().trim().replace(" ", "").isEmpty()) {
       if (isEmailValid(displayEmail) || displayEmail.equals("")) {
         if (displayNumber.equals("")) {
           Timber.e("Got in here 1");
@@ -357,6 +359,8 @@ public class EditProfileActivity extends BasicActivity
       new SugarmanDialog.Builder(this, "Name").content(
           getResources().getString(R.string.name_can_not_be_empty)).build().show();
     }
+    nextButton.setEnabled(true);
+
     Log.e("EDIT PROFILE", "PRESSED");
   }
 
