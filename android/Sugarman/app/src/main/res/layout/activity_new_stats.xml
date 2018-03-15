@@ -7,4 +7,17 @@
     tools:context="com.sugarman.myb.ui.activities.newStats.NewStatsActivity"
     >
 
+  <com.github.mikephil.charting.charts.CombinedChart
+      android:id="@+id/chart1"
+      android:layout_width="match_parent"
+      android:layout_height="300dp"
+      android:layout_marginBottom="32dp"
+      android:layout_marginTop="32dp"
+      android:overScrollMode="ifContentScrolls"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
+
 </android.support.constraint.ConstraintLayout>
