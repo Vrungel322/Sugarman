@@ -106,6 +106,7 @@ import com.sugarman.myb.ui.activities.SearchGroupsActivity;
 import com.sugarman.myb.ui.activities.createGroup.CreateGroupActivity;
 import com.sugarman.myb.ui.activities.groupDetails.GroupDetailsActivity;
 import com.sugarman.myb.ui.activities.mentorList.MentorListActivity;
+import com.sugarman.myb.ui.activities.newStats.NewStatsActivity;
 import com.sugarman.myb.ui.activities.profile.ProfileActivity;
 import com.sugarman.myb.ui.activities.shop.ShopActivity;
 import com.sugarman.myb.ui.activities.statsTracking.StatsTrackingActivity;
@@ -561,6 +562,7 @@ public class MainActivity extends GetUserInfoActivity
     setContentView(R.layout.activity_main);
     super.onCreate(savedInstanceState);
     Timber.e("deepLinks onCreate");
+    startActivity(new Intent(getApplicationContext(), NewStatsActivity.class));
 
     //AccountManager accManager = AccountManager.get(getApplicationContext());
     //Account acc[] = accManager.getAccountsByType("com.google");
