@@ -38,14 +38,14 @@ import timber.log.Timber;
 public class StatsTrackingActivity extends BaseActivity
     implements View.OnClickListener, OnSwipeListener, ApiGetTrackingStatsListener,
     IStatsTrackingActivityView {
-  @InjectPresenter StatsTrackingActivityPresenter mPresenter;
-
   private static final String TAG = StatsTrackingActivity.class.getName();
   private final Runnable opened = new Runnable() {
     @Override public void run() {
       App.getEventBus().post(new StatsOpenedEvent());
     }
   };
+  @InjectPresenter StatsTrackingActivityPresenter mPresenter;
+  boolean isMentors = false;
   private StatsPagerAdapter statsAdapter;
   private ViewPager vpStats;
   private SquarePageIndicator spiStats;
@@ -53,7 +53,6 @@ public class StatsTrackingActivity extends BaseActivity
   private GetTrackingStatsClient getTrackingStatsClient;
   private String trackingId;
   private Tracking mTracking;
-  boolean isMentors = false;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_tracking_stats);
@@ -112,7 +111,7 @@ public class StatsTrackingActivity extends BaseActivity
     getTrackingStatsClient.registerListener(this);
     showProgressFragment();
     try {
-      mPresenter.fetchTrackingStats(trackingId, mTracking,mTracking.isMentors());
+      mPresenter.fetchTrackingStats(trackingId, mTracking, mTracking.isMentors());
     } catch (ParseException e) {
       e.printStackTrace();
     }
@@ -211,7 +210,7 @@ public class StatsTrackingActivity extends BaseActivity
       Timber.e("showStats size = " + stats.size());
       for (Stats s : stats) {
         Timber.e("showTrackingStats s.getStepsCount() = " + s.getStepsCount());
-        if (s.getStepsCount() < 0){
+        if (s.getStepsCount() < 0) {
 
           s.setStepsCount(0);
         }
@@ -241,8 +240,9 @@ public class StatsTrackingActivity extends BaseActivity
         Timber.e("index " + i++ + " " + s.getStepsCount());
       }
 
-
-
+      if (mTracking.isMentors() && stats != null && !stats.isEmpty()) {
+        stats.remove(0);
+      }
       statsAdapter.setStats(stats, mTracking.isMentors());
       vpStats.setOffscreenPageLimit(statsAdapter.getCount());
       spiStats.setViewPager(vpStats, 0);
