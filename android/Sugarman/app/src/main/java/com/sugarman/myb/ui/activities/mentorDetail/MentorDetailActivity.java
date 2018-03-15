@@ -159,7 +159,7 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
 
     ratingBar.setRating(Float.valueOf(mMentorEntity.getMentorRating()));
     mentorName.setText(mMentorEntity.getMentorName());
-    if (mMentorEntity.getPrice() != null) {
+    if (mMentorEntity.getPrice() != null && mMentorEntity.getPrice() > 0.0) {
       mentorPrice.setText(
           getResources().getString(R.string.apply_now) + " " + mMentorEntity.getPrice() + "$");
     } else {
