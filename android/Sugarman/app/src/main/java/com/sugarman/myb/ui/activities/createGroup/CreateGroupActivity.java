@@ -31,7 +31,6 @@ import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.arellomobile.mvp.presenter.InjectPresenter;
@@ -112,12 +111,12 @@ public class CreateGroupActivity extends BaseActivity
   @BindView(R.id.vkFilter) ImageView vkFilter;
   @BindView(R.id.phFilter) ImageView phFilter;
   @BindView(R.id.pb_spinner) RelativeLayout pb;
-  @BindView(R.id.tvInAppFbCount) TextView tvInAppFbCount;
-  @BindView(R.id.tvTotalFbCount) TextView tvTotalFbCount;
-  @BindView(R.id.tvInAppVkCount) TextView tvInAppVkCount;
-  @BindView(R.id.tvTotalVkCount) TextView tvTotalVkCount;
-  @BindView(R.id.tvInAppPhCount) TextView tvInAppPhCount;
-  @BindView(R.id.tvTotalPhCount) TextView tvTotalPhCount;
+  //@BindView(R.id.tvInAppFbCount) TextView tvInAppFbCount;
+  //@BindView(R.id.tvTotalFbCount) TextView tvTotalFbCount;
+  //@BindView(R.id.tvInAppVkCount) TextView tvInAppVkCount;
+  //@BindView(R.id.tvTotalVkCount) TextView tvTotalVkCount;
+  //@BindView(R.id.tvInAppPhCount) TextView tvInAppPhCount;
+  //@BindView(R.id.tvTotalPhCount) TextView tvTotalPhCount;
   String currentFilter = "";
   boolean isVkLoggedIn = false, isFbLoggedIn = false;
   MaskImage mi;
@@ -368,7 +367,7 @@ public class CreateGroupActivity extends BaseActivity
           //  Timber.e(contactList.get(key));
         }
         numberOfMemberTotalAppPh = contactList.size();
-        runOnUiThread(() -> tvTotalPhCount.setText(String.valueOf(numberOfMemberTotalAppPh)));
+        //runOnUiThread(() -> tvTotalPhCount.setText(String.valueOf(numberOfMemberTotalAppPh)));
         Timber.e("numberOfMemberTotalAppPh size " + numberOfMemberTotalAppPh);
 
         mCheckPhoneClient.checkPhones(phonesToCheck);
@@ -730,8 +729,8 @@ public class CreateGroupActivity extends BaseActivity
       List<FacebookFriend> invitable) {
     numberOfMemberWithAppFb = friends.size();
     numberOfMemberTotalAppFb = invitable.size();
-    tvInAppFbCount.setText(String.valueOf(numberOfMemberWithAppFb));
-    tvTotalFbCount.setText(String.valueOf(numberOfMemberTotalAppFb));
+    //tvInAppFbCount.setText(String.valueOf(numberOfMemberWithAppFb));
+    //tvTotalFbCount.setText(String.valueOf(numberOfMemberTotalAppFb));
     List<FacebookFriend> temp = new ArrayList<>();
     temp.addAll(friends);
     temp.addAll(invitable);
@@ -1150,7 +1149,7 @@ public class CreateGroupActivity extends BaseActivity
     Timber.e("onApiCheckPhoneSuccess phones size " + phones.size());
     mDistinktorList = phones;
     numberOfMemberWithAppPh = phones.size();
-    tvInAppPhCount.setText(String.valueOf(numberOfMemberWithAppPh));
+    //tvInAppPhCount.setText(String.valueOf(numberOfMemberWithAppPh));
 
     Timber.e("numberOfMemberWithAppPh size " + numberOfMemberWithAppPh);
 
@@ -1205,8 +1204,8 @@ public class CreateGroupActivity extends BaseActivity
         }
       }
     }
-    tvTotalVkCount.setText(String.valueOf(numberOfMemberTotalAppVk));
-    tvInAppVkCount.setText(String.valueOf(numberOfMemberWithAppVk));
+    //tvTotalVkCount.setText(String.valueOf(numberOfMemberTotalAppVk));
+    //tvInAppVkCount.setText(String.valueOf(numberOfMemberWithAppVk));
     Timber.e("numberOfMemberWithAppVk size " + numberOfMemberWithAppVk);
     Timber.e("numberOfMemberTotalAppVk size " + numberOfMemberTotalAppVk);
 
@@ -1241,8 +1240,8 @@ public class CreateGroupActivity extends BaseActivity
         friendsAdapter.setValue(facebookFriends);
         friendsAdapter.notifyDataSetChanged();
       }
-      tvInAppFbCount.setText(String.valueOf(numberOfMemberWithAppFb));
-      tvTotalFbCount.setText(String.valueOf(facebookFriends.size()));
+      //tvInAppFbCount.setText(String.valueOf(numberOfMemberWithAppFb));
+      //tvTotalFbCount.setText(String.valueOf(facebookFriends.size()));
     }
   }
 
