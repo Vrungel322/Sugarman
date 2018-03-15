@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import timber.log.Timber;
 
 /**
  * Created by nikita on 01.03.2018.
@@ -21,13 +20,13 @@ public class DataUtils {
       Calendar cal = Calendar.getInstance();
       cal.add(Calendar.DATE, -i); // I just want date before 90 days. you can give that you want.
       allPreviousDates.add(s.format(new Date(cal.getTimeInMillis())));
-      Timber.e("getLastXDays i = " + i + " data : " + s.format(new Date(cal.getTimeInMillis())));
+      //Timber.e("getLastXDays i = " + i + " data : " + s.format(new Date(cal.getTimeInMillis())));
     }
     if (countOfDays == 0) {
       Calendar cal = Calendar.getInstance();
       cal.add(Calendar.DATE, -0); // I just want date before 90 days. you can give that you want.
       allPreviousDates.add(s.format(new Date(cal.getTimeInMillis())));
-      Timber.e("getLastXDays i = " + 0 + " data : " + s.format(new Date(cal.getTimeInMillis())));
+      //Timber.e("getLastXDays i = " + 0 + " data : " + s.format(new Date(cal.getTimeInMillis())));
     }
     Collections.reverse(allPreviousDates);
     return allPreviousDates;
