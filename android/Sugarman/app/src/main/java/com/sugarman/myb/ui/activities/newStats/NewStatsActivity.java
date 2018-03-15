@@ -15,20 +15,12 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.BubbleData;
-import com.github.mikephil.charting.data.BubbleDataSet;
-import com.github.mikephil.charting.data.BubbleEntry;
-import com.github.mikephil.charting.data.CandleData;
-import com.github.mikephil.charting.data.CandleDataSet;
-import com.github.mikephil.charting.data.CandleEntry;
 import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.data.ScatterData;
-import com.github.mikephil.charting.data.ScatterDataSet;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.me.stats.Stats;
 import com.sugarman.myb.base.BasicActivity;
@@ -152,9 +144,9 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
 
     CombinedData data = new CombinedData();
 
-    data.setData(generateLineData()); // line
+    data.setData(generateLineData()); // line - dots
     data.setData(generateBarData()); // colomns
-    //data.setData(generateScatterData()); // dots
+    //data.setData(generateDashedData()); // dots
 
     mChart.getXAxis().setAxisMaximum(data.getXMax() + 0.25f);
     mChart.setData(null);
@@ -167,6 +159,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     LineData d = new LineData();
 
     ArrayList<Entry> entries = new ArrayList<Entry>();
+    ArrayList<Entry> entriesDashed = new ArrayList<Entry>();
 
     for (int index = 0; index < mStats.size(); index++) {
       //entries.add(new Entry(index + 0.5f, getRandom(15, 5)));
@@ -192,7 +185,34 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     set.setAxisDependency(YAxis.AxisDependency.LEFT);
     d.addDataSet(set);
 
-    return d;
+
+    //Dashed stuff
+    for (int index = 0; index < mStats.size(); index++) {
+      entriesDashed.add(new Entry(index, mStatsSteps.get(index)+2000));
+    }
+
+    LineDataSet setDashed = new LineDataSet(entriesDashed, "Group Steps");
+    setDashed.setColor(Color.rgb(240, 0, 0));
+    setDashed.setLineWidth(2.5f);
+    //setDashed.setCircleColor(Color.rgb(240, 0, 0));
+    //setDashed.setCircleRadius(5f);
+    //setDashed.setFillColor(Color.rgb(240, 0, 0));
+    //setDashed.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+    //setDashed.setDrawValues(true);
+    //setDashed.setValueTextSize(10f);
+    //setDashed.setValueTextColor(Color.rgb(240, 0, 0));
+
+    setDashed.enableDashedLine(10, 10, 0);
+
+    setDashed.setAxisDependency(YAxis.AxisDependency.LEFT);
+    d.addDataSet(setDashed);
+
+    ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
+    dataSets.add(set);
+    dataSets.add(setDashed);
+
+
+    return new LineData(dataSets);
   }
 
   private BarData generateBarData() {
@@ -247,67 +267,38 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     return d;
   }
 
-  protected ScatterData generateScatterData() {
+  //protected LineData generateDashedData() {
+  //
+  //  LineData d = new LineData();
+  //
+  //  ArrayList<Entry> entries = new ArrayList<Entry>();
+  //
+  //  for (int index = 0; index < mStats.size(); index++) {
+  //    //entries.add(new Entry(index + 0.5f, getRandom(15, 5)));
+  //    entries.add(new Entry(index, mStatsSteps.get(index)+2));
+  //
+  //  }
+  //
+  //  LineDataSet set = new LineDataSet(entries, "Group Steps");
+  //  set.setColor(Color.rgb(240, 0, 0));
+  //  set.setLineWidth(2.5f);
+  //  set.setCircleColor(Color.rgb(240, 0, 0));
+  //  set.setCircleRadius(5f);
+  //  set.setFillColor(Color.rgb(240, 0, 0));
+  //  set.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+  //  set.setDrawValues(true);
+  //  set.setValueTextSize(10f);
+  //  set.setValueTextColor(Color.rgb(240, 0, 0));
+  //
+  //  set.enableDashedLine(10, 10, 0);
+  //
+  //  set.setAxisDependency(YAxis.AxisDependency.LEFT);
+  //  d.addDataSet(set);
+  //
+  //  return d;
+  //}
 
-    ScatterData d = new ScatterData();
 
-    ArrayList<Entry> entries = new ArrayList<Entry>();
-
-    for (float index = 0; index < itemcount; index += 0.5f)
-      entries.add(new Entry(index + 0.25f, getRandom(10, 55)));
-
-    ScatterDataSet set = new ScatterDataSet(entries, "Scatter DataSet");
-    set.setColors(ColorTemplate.MATERIAL_COLORS);
-    set.setScatterShapeSize(7.5f);
-    set.setDrawValues(false);
-    set.setValueTextSize(10f);
-    d.addDataSet(set);
-
-    return d;
-  }
-
-  protected CandleData generateCandleData() {
-
-    CandleData d = new CandleData();
-
-    ArrayList<CandleEntry> entries = new ArrayList<CandleEntry>();
-
-    for (int index = 0; index < itemcount; index += 2)
-      entries.add(new CandleEntry(index + 1f, 90, 70, 85, 75f));
-
-    CandleDataSet set = new CandleDataSet(entries, "Candle DataSet");
-    set.setDecreasingColor(Color.rgb(142, 150, 175));
-    set.setShadowColor(Color.DKGRAY);
-    set.setBarSpace(0.3f);
-    set.setValueTextSize(10f);
-    set.setDrawValues(false);
-    d.addDataSet(set);
-
-    return d;
-  }
-
-  protected BubbleData generateBubbleData() {
-
-    BubbleData bd = new BubbleData();
-
-    ArrayList<BubbleEntry> entries = new ArrayList<BubbleEntry>();
-
-    for (int index = 0; index < itemcount; index++) {
-      float y = getRandom(10, 105);
-      float size = getRandom(100, 105);
-      entries.add(new BubbleEntry(index + 0.5f, y, size));
-    }
-
-    BubbleDataSet set = new BubbleDataSet(entries, "Bubble DataSet");
-    set.setColors(ColorTemplate.VORDIPLOM_COLORS);
-    set.setValueTextSize(10f);
-    set.setValueTextColor(Color.WHITE);
-    set.setHighlightCircleWidth(1.5f);
-    set.setDrawValues(true);
-    bd.addDataSet(set);
-
-    return bd;
-  }
 
   protected float getRandom(float range, float startsfrom) {
     return (float) (Math.random() * range) + startsfrom;
