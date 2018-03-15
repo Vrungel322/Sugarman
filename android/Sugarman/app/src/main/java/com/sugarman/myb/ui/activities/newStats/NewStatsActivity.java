@@ -56,6 +56,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     mChart.setDrawGridBackground(false);
     mChart.setDrawBarShadow(false);
     mChart.setHighlightFullBarEnabled(false);
+    mChart.setTouchEnabled(true);// enable touch gestures
 
     // draw bars behind lines
     mChart.setDrawOrder(new CombinedChart.DrawOrder[] {
