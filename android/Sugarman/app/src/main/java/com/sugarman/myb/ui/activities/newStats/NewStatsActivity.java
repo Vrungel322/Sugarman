@@ -1,7 +1,11 @@
 package com.sugarman.myb.ui.activities.newStats;
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
+import butterknife.BindView;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -31,6 +35,7 @@ import com.sugarman.myb.base.BasicActivity;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import java.util.ArrayList;
 import java.util.List;
+import timber.log.Timber;
 
 public class NewStatsActivity extends BasicActivity implements INewStatsActivityView {
   private final int itemcount = 12;
@@ -38,25 +43,27 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"
   };
   @InjectPresenter NewStatsActivityPresenter mPresenter;
-  private CombinedChart mChart;
+  @BindView(R.id.chart1) CombinedChart mChart;
   private List<Stats> mStats = new ArrayList<>();
   private List<String> mStatsDays = new ArrayList<>();
   private List<Integer> mStatsSteps = new ArrayList<>();
-  //protected Typeface mTfLight;
+  private int mStatsCount = 0;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_new_stats);
-    fillByStats(21);
+    super.onCreate(savedInstanceState);
+    fillByStats(7);
     //mTfLight = Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf");
+    setUpUI();
+  }
 
-    mChart = (CombinedChart) findViewById(R.id.chart1);
+  @SuppressLint("ClickableViewAccessibility") private void setUpUI() {
     mChart.getDescription().setEnabled(false);
     mChart.setBackgroundColor(Color.WHITE);
     mChart.setDrawGridBackground(false);
     mChart.setDrawBarShadow(false);
     mChart.setHighlightFullBarEnabled(false);
-    mChart.setTouchEnabled(true);// enable touch gestures
+    mChart.setTouchEnabled(false);// enable touch gestures
 
     // draw bars behind lines
     mChart.setDrawOrder(new CombinedChart.DrawOrder[] {
@@ -90,36 +97,69 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
         return mStatsDays.get((int) value % mStatsDays.size());
       }
     });
+    GestureDetector gd =
+        new GestureDetector(getApplicationContext(), new GestureDetector.SimpleOnGestureListener() {
+
+          @Override public boolean onDoubleTap(MotionEvent e) {
+            Timber.e("onTouchDouble " + mStatsCount);
+            if (mStatsCount == 20) {
+              fillByStats(7);
+              return true;
+            }
+            if (mStatsCount == 7) {
+              fillByStats(20);
+              return true;
+            }
+            return true;
+          }
+
+          @Override public void onLongPress(MotionEvent e) {
+            super.onLongPress(e);
+          }
+
+          @Override public boolean onDoubleTapEvent(MotionEvent e) {
+            return true;
+          }
+
+          @Override public boolean onDown(MotionEvent e) {
+            return true;
+          }
+        });
+    mChart.setOnTouchListener((v, event) -> gd.onTouchEvent(event));
+  }
+
+  private void fillByStats(int statsCount) {
+    mStatsCount = statsCount;
+    mStats.clear();
+    mStatsDays.clear();
+    mStatsSteps.clear();
+
+    mStats.addAll(SharedPreferenceHelper.getStats(mStatsCount));
+    Timber.e("onTouchDouble fillByStats " + mStats.size());
+
+    if (statsCount == 20) {
+      for (int i = 0; i < mStats.size(); i++) {
+        mStatsDays.add(String.valueOf(i + 1));
+        mStatsSteps.add(mStats.get(i).getStepsCount());
+      }
+    }
+    if (statsCount == 7) {
+      for (int i = 0; i < mStats.size(); i++) {
+        mStatsDays.add(mStats.get(i).getDate());
+        mStatsSteps.add(mStats.get(i).getStepsCount());
+      }
+    }
 
     CombinedData data = new CombinedData();
 
     data.setData(generateLineData()); // line
     data.setData(generateBarData()); // colomns
     //data.setData(generateScatterData()); // dots
-    //data.setData(generateBubbleData());
-    //data.setData(generateCandleData());
-    //data.setValueTypeface(mTfLight);
 
-    xAxis.setAxisMaximum(data.getXMax() + 0.25f);
-
+    mChart.getXAxis().setAxisMaximum(data.getXMax() + 0.25f);
+    mChart.setData(null);
     mChart.setData(data);
     mChart.invalidate();
-  }
-
-  private void fillByStats(int statsCount) {
-    mStats.addAll(SharedPreferenceHelper.getStats(statsCount));
-    if (statsCount<21){
-      for (int i = 0; i < mStats.size(); i++) {
-        mStatsDays.add(mStats.get(i).getDate());
-        mStatsSteps.add(mStats.get(i).getStepsCount());
-      }
-    }
-    if (statsCount>7){
-      for (int i = 0; i < mStats.size(); i++) {
-        mStatsDays.add(String.valueOf(i+1));
-        mStatsSteps.add(mStats.get(i).getStepsCount());
-      }
-    }
   }
 
   private LineData generateLineData() {
@@ -160,9 +200,9 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     ArrayList<BarEntry> entries1 = new ArrayList<BarEntry>();
     ArrayList<BarEntry> entries2 = new ArrayList<BarEntry>();
 
-    for (int index = 0; index < mStats.size()*2; index++) {
+    for (int index = 0; index < mStats.size() * 2; index++) {
       //entries1.add(new BarEntry(0, getRandom(25, 25)));
-      entries1.add(new BarEntry( index * 0.5f, 10000));
+      entries1.add(new BarEntry(index * 0.5f, 10000));
 
       //// stacked
       //entries2.add(new BarEntry(0, new float[] { getRandom(13, 12), getRandom(13, 12) }));
