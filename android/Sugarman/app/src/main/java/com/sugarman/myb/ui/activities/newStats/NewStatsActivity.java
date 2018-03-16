@@ -2,6 +2,7 @@ package com.sugarman.myb.ui.activities.newStats;
 
 import android.annotation.SuppressLint;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -134,8 +135,10 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
 
     CombinedData data = new CombinedData();
 
+    AnimationDrawable animationDrawable = new AnimationDrawable();
+
     data.setData(mPresenter.generateLineData(mStats,mStatsSteps,
-        getResources().getDrawable(R.drawable.animation_progress_bar))); // line - dots
+        getResources().getDrawable(R.drawable.animation_sugarman_fly))); // line - dots
     data.setData(mPresenter.generateBarData(mStats)); // colomns
     //data.setData(generateDashedData()); // dots
 

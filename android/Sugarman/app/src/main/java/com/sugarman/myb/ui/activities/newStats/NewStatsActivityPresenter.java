@@ -33,7 +33,7 @@ public class NewStatsActivityPresenter extends BasicPresenter<INewStatsActivityV
 
     for (int index = 0; index < stats.size() * 2; index++) {
       //entries1.add(new BarEntry(0, getRandom(25, 25)));
-      entries1.add(new BarEntry(index * 0.5f, 10000));
+      entries1.add(new BarEntry(index * 0.25f, 10000));
 
       //// stacked
       //entries2.add(new BarEntry(0, new float[] { getRandom(13, 12), getRandom(13, 12) }));
@@ -41,8 +41,7 @@ public class NewStatsActivityPresenter extends BasicPresenter<INewStatsActivityV
     }
 
     BarDataSet set1 = new BarDataSet(entries1, "10000 Steps");
-    set1.setColor(Color.rgb(0, 220, 78));
-    set1.setBarBorderColor(Color.rgb(0, 220, 78));
+    set1.setColor(Color.argb(150,242, 197, 197));
     //set1.setValueTextColor(Color.rgb(60, 220, 78));
     set1.setValueTextSize(0f); //make text invisible
     set1.setAxisDependency(YAxis.AxisDependency.LEFT);
@@ -95,15 +94,15 @@ public class NewStatsActivityPresenter extends BasicPresenter<INewStatsActivityV
     }
 
     LineDataSet set = new LineDataSet(entries, "Steps");
-    set.setColor(Color.rgb(240, 238, 70));
+    set.setColor(Color.rgb(255, 0, 0));
     set.setLineWidth(2.5f);
-    set.setCircleColor(Color.rgb(240, 238, 70));
+    set.setCircleColor(Color.rgb(0, 0, 0));
     set.setCircleRadius(5f);
-    set.setFillColor(Color.rgb(240, 238, 70));
+    set.setFillColor(Color.rgb(255, 0, 0));
     set.setMode(LineDataSet.Mode.CUBIC_BEZIER);
     set.setDrawValues(true);
     set.setValueTextSize(10f);
-    set.setValueTextColor(Color.rgb(240, 238, 70));
+    set.setValueTextColor(Color.rgb(0, 0, 0));
 
     set.setAxisDependency(YAxis.AxisDependency.LEFT);
     d.addDataSet(set);
@@ -114,7 +113,7 @@ public class NewStatsActivityPresenter extends BasicPresenter<INewStatsActivityV
     }
 
     LineDataSet setDashed = new LineDataSet(entriesDashed, "Group Steps");
-    setDashed.setColor(Color.rgb(240, 0, 0));
+    setDashed.setColor(Color.rgb(231, 145, 129));
     setDashed.setLineWidth(2.5f);
     //setDashed.setCircleColor(Color.rgb(240, 0, 0));
     //setDashed.setCircleRadius(5f);
