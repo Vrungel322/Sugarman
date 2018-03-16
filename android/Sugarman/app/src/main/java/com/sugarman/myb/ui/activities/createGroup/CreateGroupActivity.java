@@ -814,8 +814,10 @@ public class CreateGroupActivity extends BaseActivity
 
   @Override public void onApiCreateGroupFailure(String message) {
     if (DeviceHelper.isNetworkConnected()) {
-      new SugarmanDialog.Builder(this, DialogConstants.API_CREATE_GROUP_FAILURE_ID).content(message)
-          .show();
+      if (message.equals("Missing group name")){
+        new SugarmanDialog.Builder(this, DialogConstants.API_CREATE_GROUP_FAILURE_ID).content(R.string.missing_group_name)
+            .show();
+      }
       mFriendListFragment.hideProgress();
     } else {
       showNoInternetConnectionDialog();

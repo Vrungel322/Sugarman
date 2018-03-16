@@ -639,5 +639,6 @@
     <string name="free">בחינם</string>
     <string name="vk_acc_already_exist">﻿משתמש VK זה כבר קיים במערכת</string>
     <string name="members_list_need_to_be_more0_less50">﻿ לשם יצירת קבוצה יש לבחור בין 0 ל 50 משתתפים</string>
+  <string name="missing_group_name">שם הקבוצה חסר</string>
 
 </resources>

@@ -593,5 +593,6 @@
     <string name="you_cant_delete_self">Вы не можете удалить самого себя :(</string>
     <string name="can_not_increase_amount">Вы не можете увеличить количество</string>
     <string name="members_list_need_to_be_more0_less50">Можно пригласить от 0 до 50 пользователей</string>
+    <string name="missing_group_name">Название группы не должно быть пустым</string>
 
 </resources>
