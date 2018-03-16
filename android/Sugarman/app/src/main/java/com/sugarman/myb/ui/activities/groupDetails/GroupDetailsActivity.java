@@ -145,11 +145,14 @@ import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.SoundHelper;
 import com.sugarman.myb.utils.apps_Fly.AppsFlyerEventSender;
 import com.sugarman.myb.utils.inapp.IabHelper;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URI;
@@ -222,6 +225,7 @@ public class GroupDetailsActivity extends BaseActivity
   RelativeLayout rlChat, rlInfo;
   ImageView attachButton;
   String timeFormatted;
+  boolean sendClicked = false;
   private boolean amIMentor = false;
   private RelativeLayout rlComments;
   private CardView cvCommentContainer;
@@ -238,7 +242,6 @@ public class GroupDetailsActivity extends BaseActivity
   private long timestampCreate;
   private boolean isEditable = false;
   private int assesCount = 0;
-  boolean sendClicked = false;
   //LinearLayout tabsContainer;
   private int todaySteps;
   private int groupStepsWithoutMe;
@@ -344,7 +347,7 @@ public class GroupDetailsActivity extends BaseActivity
       }
       buttonType = ChatActivity.ButtonType.IN_ANIMATION;
 
-      if(sendClicked) {
+      if (sendClicked) {
         Timber.e("HUY PIZDA onButtonMenuOpenedClicked");
         menuManager.closeMenu();
       }
@@ -696,14 +699,13 @@ public class GroupDetailsActivity extends BaseActivity
       }
     });
 
-
     attachButton = (ImageView) findViewById(R.id.attach_file);
     attachButton.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
-        if(!sendClicked) {
+        if (!sendClicked) {
 
           sendClicked = true;
-          menuManager.openMenu((ImageButton) attachButton,sendClicked);
+          menuManager.openMenu((ImageButton) attachButton, sendClicked);
           findViewById(R.id.viewForMenuBehind).setVisibility(View.VISIBLE);
         }
       }
@@ -1507,7 +1509,7 @@ public class GroupDetailsActivity extends BaseActivity
 
     buttonType = ChatActivity.ButtonType.IN_ANIMATION;
 
-    if(sendClicked) {
+    if (sendClicked) {
       Timber.e("HUY PIZDA MANAGER CALLED onButtonMenuOpenedClicked");
       menuManager.closeMenu();
     }
@@ -1518,7 +1520,7 @@ public class GroupDetailsActivity extends BaseActivity
       return;
     }
     btnSend.setEnabled(false);
-    if(!sendClicked) {
+    if (!sendClicked) {
       Timber.e("NOT SEND CLICKED HUY");
       etMessage.setEnabled(false);
       buttonType = ChatActivity.ButtonType.IN_ANIMATION;
@@ -1635,7 +1637,6 @@ public class GroupDetailsActivity extends BaseActivity
   @Override protected void onStop() {
     super.onStop();
     handler.removeCallbacks(runnable);
-
 
     //SocketManager.getInstance().closeAndDisconnectSocket();
 
@@ -1767,6 +1768,7 @@ public class GroupDetailsActivity extends BaseActivity
         break;
       case Const.RequestCode.CONTACT_CHOOSE:
         if (resultCode == RESULT_OK) {
+          String vCard = "null";
           Uri contactData = data.getData();
           Cursor cursor = getContentResolver().query(contactData, null, null, null, null);
           try {
@@ -1777,12 +1779,31 @@ public class GroupDetailsActivity extends BaseActivity
                   cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.LOOKUP_KEY));
               Uri uri =
                   Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_VCARD_URI, lookupKey);
-              AssetFileDescriptor fd;
-              fd = getContentResolver().openAssetFileDescriptor(uri, "r");
-              FileInputStream fis = fd.createInputStream();
-              byte[] b = new byte[(int) fd.getDeclaredLength()];
-              fis.read(b);
-              String vCard = new String(b);
+              if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                AssetFileDescriptor fd;
+                fd = getContentResolver().openAssetFileDescriptor(uri, "r");
+                FileInputStream fis = fd.createInputStream();
+                byte[] b = new byte[(int) fd.getDeclaredLength()];
+                fis.read(b);
+
+                 vCard = new String(b);
+              } else {
+                InputStream inputStream = getContentResolver().openInputStream(uri);
+                BufferedReader br = null;
+                br = new BufferedReader(new InputStreamReader(inputStream));
+                StringBuilder sb = new StringBuilder();
+                try {
+                  if (br != null) {
+                    while ((vCard = br.readLine()) != null) {
+                      sb.append(vCard).append('\n');
+                    }
+                  }
+                  vCard=sb.toString();
+                } catch (Exception e) {
+                  e.printStackTrace();
+                }
+              }
+              Timber.e("contactUri name : " + name + " vCard : " + vCard);
 
               sendContact(name, vCard);
             } else {
@@ -1964,6 +1985,7 @@ public class GroupDetailsActivity extends BaseActivity
   }
 
   protected void sendContact(String name, String vCardLikeString) {
+    Timber.e("sendContact " + vCardLikeString);
     Message message = new Message();
     message.fillMessageForSend(activeUser, vCardLikeString, Const.MessageType.TYPE_CONTACT, null,
         null);
@@ -2299,15 +2321,14 @@ public class GroupDetailsActivity extends BaseActivity
     boolean meFailuer = false;
     int kickedCounter = 0;
 
-    if(amIMentor)
-    {
+    if (amIMentor) {
       for (Member m : mTracking.getMembers()) {
-        if(!m.getId().equals(SharedPreferenceHelper.getUserId()) && m.getSteps()<10000) {
+        if (!m.getId().equals(SharedPreferenceHelper.getUserId()) && m.getSteps() < 10000) {
           onPokeMember(new GroupMember(m));
           kickedCounter++;
         }
       }
-      if(kickedCounter>0) {
+      if (kickedCounter > 0) {
         new SugarmanDialog.Builder(this, "kicked_users").content(
             String.format(getString(R.string.kicked_users), (int) kickedCounter)).show();
         int id = new Random().nextInt(7);
@@ -2331,8 +2352,7 @@ public class GroupDetailsActivity extends BaseActivity
 
         if (lessThanYou.size() > 0) {
           for (Member m : lessThanYou) {
-            if(isMentorGroup && mentorId.equals(m.getId()))
-              continue;
+            if (isMentorGroup && mentorId.equals(m.getId())) continue;
             onPokeMember(new GroupMember(m));
           }
           new SugarmanDialog.Builder(this, "kicked_users").content(
@@ -2363,11 +2383,11 @@ public class GroupDetailsActivity extends BaseActivity
   }
 
   @Override public void onPokeSelf() {
-    Timber.e("onPokeSelf iMentor :" + amIMentor + "isEditMode:"+membersAdapter.isEditMode());
-    if (amIMentor && membersAdapter.isEditMode()){
+    Timber.e("onPokeSelf iMentor :" + amIMentor + "isEditMode:" + membersAdapter.isEditMode());
+    if (amIMentor && membersAdapter.isEditMode()) {
       new SugarmanDialog.Builder(this, DialogConstants.YOU_CANT_KICK_SELF_ID).content(
           R.string.you_cant_delete_self).show();
-    }else {
+    } else {
       new SugarmanDialog.Builder(this, DialogConstants.YOU_CANT_KICK_SELF_ID).content(
           R.string.you_cant_kick_self).show();
     }
