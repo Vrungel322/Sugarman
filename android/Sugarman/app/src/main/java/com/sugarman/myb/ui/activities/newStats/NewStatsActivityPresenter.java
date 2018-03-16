@@ -41,7 +41,8 @@ public class NewStatsActivityPresenter extends BasicPresenter<INewStatsActivityV
     }
 
     BarDataSet set1 = new BarDataSet(entries1, "10000 Steps");
-    set1.setColor(Color.rgb(0, 220, 78));
+    //set1.setColor(Color.rgb(0, 220, 78));
+    set1.setColor(Color.argb(150,242, 197, 197));
     set1.setBarBorderColor(Color.rgb(0, 220, 78));
     //set1.setValueTextColor(Color.rgb(60, 220, 78));
     set1.setValueTextSize(0f); //make text invisible
@@ -95,16 +96,19 @@ public class NewStatsActivityPresenter extends BasicPresenter<INewStatsActivityV
     }
 
     LineDataSet set = new LineDataSet(entries, "Steps");
-    set.setColor(Color.rgb(240, 238, 70));
+    //set.setColor(Color.rgb(240, 238, 70));
+    set.setColor(Color.rgb(255, 0, 0));
     set.setLineWidth(2.5f);
-    set.setCircleColor(Color.rgb(240, 238, 70));
+    //set.setCircleColor(Color.rgb(240, 238, 70));
+    set.setCircleColor(Color.rgb(0, 0, 0));
     set.setCircleRadius(5f);
-    set.setFillColor(Color.rgb(240, 238, 70));
+    //set.setFillColor(Color.rgb(240, 238, 70));
+    set.setFillColor(Color.rgb(255, 0, 0));
     set.setMode(LineDataSet.Mode.CUBIC_BEZIER);
     set.setDrawValues(true);
     set.setValueTextSize(10f);
-    set.setValueTextColor(Color.rgb(240, 238, 70));
-
+    //set.setValueTextColor(Color.rgb(240, 238, 70));
+    set.setValueTextColor(Color.rgb(0, 0, 0));
     set.setAxisDependency(YAxis.AxisDependency.LEFT);
     d.addDataSet(set);
 
@@ -114,7 +118,8 @@ public class NewStatsActivityPresenter extends BasicPresenter<INewStatsActivityV
     }
 
     LineDataSet setDashed = new LineDataSet(entriesDashed, "Group Steps");
-    setDashed.setColor(Color.rgb(240, 0, 0));
+    //setDashed.setColor(Color.rgb(240, 0, 0));
+    setDashed.setColor(Color.rgb(231, 145, 129));
     setDashed.setLineWidth(2.5f);
     //setDashed.setCircleColor(Color.rgb(240, 0, 0));
     //setDashed.setCircleRadius(5f);
