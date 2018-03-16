@@ -19,6 +19,7 @@ import com.sugarman.myb.api.models.responses.me.stats.Stats;
 import com.sugarman.myb.base.BasicActivity;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import timber.log.Timber;
 
@@ -131,6 +132,8 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       }
       mStatsSteps.add(mStats.get(i).getStepsCount());
     }
+
+    Collections.sort(mStats,(stats, t1) -> Integer.valueOf(String.valueOf(stats.getDayTimestamp() - t1.getDayTimestamp())));
 
     CombinedData data = new CombinedData();
 
