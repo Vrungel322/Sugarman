@@ -9,7 +9,6 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.provider.MediaStore;
@@ -20,7 +19,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.VideoView;
-
 import com.clover_studio.spikachatmodule.api.UploadFileManagement;
 import com.clover_studio.spikachatmodule.base.BaseActivity;
 import com.clover_studio.spikachatmodule.base.SingletonLikeApp;
@@ -31,9 +29,7 @@ import com.clover_studio.spikachatmodule.utils.Const;
 import com.clover_studio.spikachatmodule.utils.LogCS;
 import com.clover_studio.spikachatmodule.utils.Tools;
 import com.google.gson.Gson;
-
 import java.io.File;
-import java.io.IOException;
 import java.net.URI;
 
 
@@ -51,6 +47,7 @@ public class RecordVideoActivity extends BaseActivity {
 
     private LinearLayout chooseLayout;
     private LinearLayout confirmLayout;
+    private UploadFileDialog mDialog;
 
     public static void starVideoPreviewActivity(Context context){
         Intent intent = new Intent(context, RecordVideoActivity.class);
@@ -175,7 +172,7 @@ public class RecordVideoActivity extends BaseActivity {
     private View.OnClickListener onOkClickedListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            final UploadFileDialog dialog = UploadFileDialog.startDialog(getActivity());
+            mDialog = UploadFileDialog.startDialog(getActivity());
 
             UploadFileManagement tt = new UploadFileManagement();
             tt.new BackgroundUploader(SingletonLikeApp.getInstance().getConfig(getActivity()).apiBaseUrl + Const.Api.UPLOAD_FILE, new File(filePath), Const.ContentTypes.VIDEO_MP4, new UploadFileManagement.OnUploadResponse() {
@@ -189,7 +186,7 @@ public class RecordVideoActivity extends BaseActivity {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            dialog.setMax(max);
+                            mDialog.setMax(max);
                         }
                     });
                 }
@@ -199,7 +196,7 @@ public class RecordVideoActivity extends BaseActivity {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            dialog.setCurrent(current);
+                            mDialog.setCurrent(current);
                         }
                     });
                 }
@@ -209,7 +206,7 @@ public class RecordVideoActivity extends BaseActivity {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            dialog.fileUploaded();
+                            mDialog.fileUploaded();
                         }
                     });
                 }
@@ -219,7 +216,13 @@ public class RecordVideoActivity extends BaseActivity {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            dialog.dismiss();
+                            if (RecordVideoActivity.this.isFinishing()) { // or call isFinishing() if min sdk version < 17
+                                return;
+                            }
+
+                            if ((mDialog != null) && mDialog.isShowing()) {
+                                mDialog.dismiss();
+                            }
                             if(!isSuccess){
                                 onResponseFailed();
                             }else{
@@ -231,6 +234,15 @@ public class RecordVideoActivity extends BaseActivity {
             }).execute();
         }
     };
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if ((mDialog != null) && mDialog.isShowing())
+            mDialog.dismiss();
+        mDialog = null;
+    }
 
     private void onResponseFailed() {
         NotifyDialog.startInfo(getActivity(), getString(R.string.error), getString(R.string.file_not_found));
