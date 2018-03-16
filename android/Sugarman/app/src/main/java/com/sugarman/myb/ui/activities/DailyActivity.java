@@ -22,10 +22,6 @@ import timber.log.Timber;
 
 public class DailyActivity extends NotificationFullScreenActivity {
 
-  private StrokeImage ivGroupAvatar;
-  private TextView tvDescription;
-  ImageView girlPic;
-
   private final Callback avatarLoadCallback = new Callback() {
     @Override public void onSuccess() {
       makeScreenshot();
@@ -35,6 +31,9 @@ public class DailyActivity extends NotificationFullScreenActivity {
       makeScreenshot();
     }
   };
+  ImageView girlPic;
+  private StrokeImage ivGroupAvatar;
+  private TextView tvDescription;
 
   @Override protected void onCreate(Bundle saveStateInstance) {
     setContentView(R.layout.activity_daily);
@@ -85,14 +84,16 @@ public class DailyActivity extends NotificationFullScreenActivity {
       String flag1 = getString(R.string.daily_description_flag1_not);
       String flag2 = getString(R.string.daily_description_flag2_not);
       SpannableStringBuilder span = new SpannableStringBuilder(description);
-      int regularStartSecond = description.indexOf(flag2);
+      int regularStartSecond = description.indexOf(flag2); // return -1 if no flag2 found
       int boldStart = flag1.length();
 
       span.setSpan(new CustomFontSpan("", regular), 0, boldStart, Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-      span.setSpan(new CustomFontSpan("", bold), boldStart, regularStartSecond,
-          Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
-      span.setSpan(new CustomFontSpan("", regular), regularStartSecond, description.length(),
-          Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+      if (regularStartSecond != -1) {
+        span.setSpan(new CustomFontSpan("", bold), boldStart, regularStartSecond,
+            Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+        span.setSpan(new CustomFontSpan("", regular), regularStartSecond, description.length(),
+            Spanned.SPAN_EXCLUSIVE_INCLUSIVE);
+      }
       tvDescription.setText(span);
     }
 
