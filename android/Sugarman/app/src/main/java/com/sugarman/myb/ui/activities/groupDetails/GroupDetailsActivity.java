@@ -1634,6 +1634,8 @@ public class GroupDetailsActivity extends BaseActivity
 
   @Override protected void onStop() {
     super.onStop();
+    handler.removeCallbacks(runnable);
+
 
     //SocketManager.getInstance().closeAndDisconnectSocket();
 
