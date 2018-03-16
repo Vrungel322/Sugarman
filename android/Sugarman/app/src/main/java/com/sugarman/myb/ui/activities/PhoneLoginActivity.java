@@ -22,6 +22,7 @@ import com.sugarman.myb.models.CountryCodeEntity;
 import com.sugarman.myb.ui.activities.approveOtp.ApproveOtpActivity;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.utils.Converters;
+import com.sugarman.myb.utils.DeviceHelper;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -74,13 +75,17 @@ public class PhoneLoginActivity extends GetUserInfoActivity implements ApiRefres
   @OnClick(R.id.iv_cart) public void toApproveOtp() {
     phoneNumber = etPhoneNumber.getText().toString();
     //SharedPreferenceHelper.savePhoneNumber(phoneNumber);
-    if (isPhoneValid(phoneNumber)) {
-      nextButton.setEnabled(false);
-      refreshUserData("none", "none", "none", phoneNumber, "", phoneNumber, "none", "none", "none");
-    } else {
-      new SugarmanDialog.Builder(this, "Phone").content(
-          getResources().getString(R.string.the_phone_is_not_valid)).build().show();
-    }
+     if (DeviceHelper.isNetworkConnected()) {
+       if (isPhoneValid(phoneNumber)) {
+         nextButton.setEnabled(false);
+         refreshUserData("none", "none", "none", phoneNumber, "", phoneNumber, "none", "none",
+             "none");
+       } else {
+         new SugarmanDialog.Builder(this, "Phone").content(getResources().getString(R.string.the_phone_is_not_valid)).build().show();
+       }
+     }else {
+       new SugarmanDialog.Builder(this, "Phone").content(getResources().getString(R.string.no_internet_connection)).build().show();
+     }
   }
 
   @Override public void onApiRefreshUserDataSuccess(UsersResponse response) {
