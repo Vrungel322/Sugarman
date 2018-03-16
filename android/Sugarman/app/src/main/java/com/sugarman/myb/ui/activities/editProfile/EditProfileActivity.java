@@ -734,6 +734,7 @@ public class EditProfileActivity extends BasicActivity
           .show();
       logoutVk();
     }
+    nextButton.setEnabled(true);
   }
 
   @Override public void showPhoneProblem() {
