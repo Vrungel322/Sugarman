@@ -43,7 +43,10 @@ public class NewStatsActivityPresenter extends BasicPresenter<INewStatsActivityV
     BarDataSet set1 = new BarDataSet(entries1, "10000 Steps");
     //set1.setColor(Color.rgb(0, 220, 78));
     set1.setColor(Color.argb(150,242, 197, 197));
-    set1.setBarBorderColor(Color.rgb(0, 220, 78));
+set1.setBarBorderWidth(100);
+set1.setBarBorderColor(Color.argb(150,242, 197, 197));
+    //set1.setBarBorderColor(Color.rgb(0, 220, 78));
+
     //set1.setValueTextColor(Color.rgb(60, 220, 78));
     set1.setValueTextSize(0f); //make text invisible
     set1.setAxisDependency(YAxis.AxisDependency.LEFT);
@@ -91,7 +94,7 @@ public class NewStatsActivityPresenter extends BasicPresenter<INewStatsActivityV
       entries.add(new Entry(index, statsSteps.get(index)));
       //add icon to last point of chart
       if (index == stats.size() - 1) {
-        entries.add(new Entry(index, statsSteps.get(index),drawable)); // add icon to point on chart
+        entries.add(new Entry(index, statsSteps.get(index)/*,drawable*/)); // add icon to point on chart
       }
     }
 
