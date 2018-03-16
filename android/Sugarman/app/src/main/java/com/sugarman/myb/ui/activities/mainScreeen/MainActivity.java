@@ -1038,6 +1038,7 @@ public class MainActivity extends GetUserInfoActivity
   @Override protected void onStart() {
     super.onStart();
     Timber.e("onStart");
+    mPresenter.startFetchingTrackingsPeriodically();
 
     //if(animationMan!=null)
     //animationMan.start();
@@ -1076,6 +1077,8 @@ public class MainActivity extends GetUserInfoActivity
 
   @Override protected void onStop() {
     super.onStop();
+    mPresenter.stopPeriodicalFetchingTracking();
+
     SharedPreferenceHelper.canLaunchLastAnim(true);
 
     if (animationMan != null) animationMan.stop();

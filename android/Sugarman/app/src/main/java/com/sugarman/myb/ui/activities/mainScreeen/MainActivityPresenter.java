@@ -36,6 +36,7 @@ import timber.log.Timber;
  */
 @InjectViewState public class MainActivityPresenter extends BasicPresenter<IMainActivityView> {
   int duration = 30;
+  private Subscription mPeriodicalSubscription;
 
   @Override protected void inject() {
     App.getAppComponent().inject(this);
@@ -47,18 +48,20 @@ import timber.log.Timber;
     fetchCompletedTasks();
     fetchRules();
     subscribeShowDialogEvent();
-    startFetchingTrackingsPeriodically();
   }
 
-  private void startFetchingTrackingsPeriodically() {
+  public void startFetchingTrackingsPeriodically() {
     //interval by default subscribeOn in Computation thread
-    Subscription subscription = Observable.interval(1000, 10000, TimeUnit.MILLISECONDS)
+    mPeriodicalSubscription = Observable.interval(1000, 10000, TimeUnit.MILLISECONDS)
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(aLong -> {
           Timber.e("startFetchingTrackingsPeriodically");
           getViewState().refreshTrackings();
         }, Throwable::printStackTrace);
-    addToUnsubscription(subscription);
+  }
+
+  public void stopPeriodicalFetchingTracking() {
+    mPeriodicalSubscription.unsubscribe();
   }
 
   //private void startFetchingTrackingsPeriodicallyCurrentTraking(Tracking tracking) {
