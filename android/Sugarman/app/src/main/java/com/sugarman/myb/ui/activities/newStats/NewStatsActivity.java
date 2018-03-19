@@ -28,6 +28,7 @@ import com.sugarman.myb.utils.SharedPreferenceHelper;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import timber.log.Timber;
 
 public class NewStatsActivity extends BasicActivity implements INewStatsActivityView {
@@ -37,15 +38,22 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
   @BindView(R.id.ivAvatar) ImageView mImageViewAvatar;
   @BindView(R.id.tvName) TextView mTextViewName;
   @BindView(R.id.tvAvatarEvents) TextView mTextViewAvatarEvents;
-  @BindView(R.id.chart1) CombinedChart mChart;
   @BindView(R.id.tvStatsDay) TextView mTextViewStatsDay;
   @BindView(R.id.tvStatsPersonal) TextView mTextViewStatsPersonal;
   @BindView(R.id.tvStatsWeek) TextView mTextViewStatsWeek;
+  @BindView(R.id.chart1) CombinedChart mChart;
+  @BindView(R.id.ivStatsKm) ImageView mImageViewStatsKm;
+  @BindView(R.id.ivStatsSteps) ImageView mImageViewStatsSteps;
+  @BindView(R.id.ivStatsKcal) ImageView mImageViewStatsKcal;
+  @BindView(R.id.tvValueKm) TextView mTextViewValueKm;
+  @BindView(R.id.tvValueSteps) TextView mTextViewValueSteps;
+  @BindView(R.id.tvValueKcal) TextView mTextViewValueKcal;
   private Tracking mTracking;
   private List<Stats> mStats = new ArrayList<>();
   private List<String> mStatsDays = new ArrayList<>();
   private List<Integer> mStatsSteps = new ArrayList<>();
   private int mStatsCount = 0;
+  private int mCountOfStepsForLastXDays = 0;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_new_stats);
@@ -61,6 +69,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
 
   private void setUpUI() {
     changeStatsOnChart(mTextViewStatsPersonal);
+    changeStatsOnDescriptionDetails(mImageViewStatsSteps);
     if (mTracking != null) {
       mTextViewName.setText(mTracking.getGroup().getName());
       CustomPicasso.with(this)
@@ -162,6 +171,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     mStats.clear();
     mStatsDays.clear();
     mStatsSteps.clear();
+    mCountOfStepsForLastXDays = 0;
 
     mStats.addAll(SharedPreferenceHelper.getStats(mStatsCount));
     Timber.e("onTouchDouble fillByStatsPersonal " + mStats.size());
@@ -174,6 +184,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
         mStatsDays.add(getString(R.string.day) + " " + String.valueOf(i + 1));
       }
       mStatsSteps.add(mStats.get(i).getStepsCount());
+      mCountOfStepsForLastXDays += mStats.get(i).getStepsCount();
     }
 
     Collections.sort(mStats, (stats, t1) -> Integer.valueOf(
@@ -194,6 +205,26 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     mChart.getBarData().setHighlightEnabled(false);
     mChart.setDrawValueAboveBar(true);
     mChart.invalidate();
+    setUpKm();
+    setUpSteps();
+    setUpKcal();
+  }
+
+  private void setUpKm() {
+    mTextViewValueKm.setText(
+        String.format(Locale.US, "%.2f km", mCountOfStepsForLastXDays * 0.000762f));
+    Timber.e("setUpKm");
+  }
+
+  private void setUpSteps() {
+    mTextViewValueSteps.setText(String.valueOf(mCountOfStepsForLastXDays) + " steps");
+    Timber.e("setUpSteps");
+  }
+
+  private void setUpKcal() {
+    mTextViewValueKcal.setText(
+        String.format(Locale.US, "%.2f kcal", mCountOfStepsForLastXDays * 0.0435f));
+    Timber.e("setUpKcal");
   }
 
   @OnClick(R.id.ivClose) void ivCloseClicked() {
@@ -237,5 +268,38 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
 
   private void fillByStatsDay() {
     fillByStatsPersonal(7);//just mock
+  }
+
+  @OnClick({ R.id.ivStatsKm, R.id.ivStatsSteps, R.id.ivStatsKcal })
+  void changeStatsOnDescriptionDetails(View v) {
+    if (v.getId() == R.id.ivStatsKm) {
+      mImageViewStatsKm.setSelected(true);
+      mImageViewStatsSteps.setSelected(false);
+      mImageViewStatsKcal.setSelected(false);
+      fillDetailsByStatsKm();
+    }
+    if (v.getId() == R.id.ivStatsSteps) {
+      mImageViewStatsKm.setSelected(false);
+      mImageViewStatsSteps.setSelected(true);
+      mImageViewStatsKcal.setSelected(false);
+      fillDetailsByStatsSteps();
+    }
+    if (v.getId() == R.id.ivStatsKcal) {
+      mImageViewStatsKm.setSelected(false);
+      mImageViewStatsSteps.setSelected(false);
+      mImageViewStatsKcal.setSelected(true);
+      fillDetailsByStatsKcal();
+    }
+  }
+
+  private void fillDetailsByStatsKcal() {
+
+  }
+
+  private void fillDetailsByStatsSteps() {
+
+  }
+
+  private void fillDetailsByStatsKm() {
   }
 }
