@@ -127,9 +127,9 @@ public class FetchingAnimationServicePresenter
               Timber.e("Everything is downloaded");
               SharedPreferenceHelper.unBlockRules();
               Collections.reverse(animationList);
-              for (Drawable drawable : animationList) {
+              //for (Drawable drawable : animationList) {
                 //animationDrawable.addFrame(drawable, duration);
-              }
+              //}
               //getViewState().setAnimation(animationDrawable);
             }
           });
