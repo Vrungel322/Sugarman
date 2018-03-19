@@ -11,6 +11,8 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.arellomobile.mvp.presenter.InjectPresenter;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
@@ -50,6 +52,15 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
   @BindView(R.id.tvValueKcal) TextView mTextViewValueKcal;
   @BindView(R.id.ivStatsTab) ImageView mImageViewStatsTab;
   @BindView(R.id.ivDetailDescriptionIndicator) ImageView mImageViewDetailIndicator;
+  @BindView(R.id.ivMinMax) ImageView mImageViewMinMax;
+  @BindView(R.id.tvMaxValue) TextView mTextViewMaxValue;
+  @BindView(R.id.tvMinValue) TextView mTextViewMinValue;
+  @BindView(R.id.imageView10) ImageView mImageViewAverageValue;
+  @BindView(R.id.textViewAverage) TextView mTextViewAverageText;
+  @BindView(R.id.tvAverageAday) TextView mTextViewAverageAday;
+  @BindView(R.id.imageView11) ImageView mImageViewDaysAboveArerage;
+  @BindView(R.id.textView13) TextView mTextViewAboveAverageText;
+  @BindView(R.id.tvDaysAboveAverageValue) TextView mTextViewDaysAboveAverageValue;
   private Tracking mTracking;
   private List<Stats> mStats = new ArrayList<>();
   private List<String> mStatsDays = new ArrayList<>();
@@ -295,14 +306,31 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
   }
 
   private void fillDetailsByStatsKcal() {
+    playAnim();
     mImageViewDetailIndicator.setBackgroundResource(R.drawable.stats_kcal_icon);
   }
 
   private void fillDetailsByStatsSteps() {
+    playAnim();
     mImageViewDetailIndicator.setBackgroundResource(R.drawable.stats_step_icon);
   }
 
   private void fillDetailsByStatsKm() {
+    playAnim();
     mImageViewDetailIndicator.setBackgroundResource(R.drawable.stats_km_icon);
+  }
+
+  private void playAnim() {
+    YoYo.with(Techniques.SlideInRight).duration(1000).playOn(mImageViewDetailIndicator);
+    YoYo.with(Techniques.SlideInRight).duration(1000).playOn(mImageViewStatsTab);
+    YoYo.with(Techniques.SlideInRight).duration(1000).playOn(mImageViewMinMax);
+    YoYo.with(Techniques.SlideInRight).duration(1000).playOn(mTextViewMaxValue);
+    YoYo.with(Techniques.SlideInRight).duration(1000).playOn(mTextViewMinValue);
+    YoYo.with(Techniques.SlideInRight).duration(1000).playOn(mImageViewAverageValue);
+    YoYo.with(Techniques.SlideInRight).duration(1000).playOn(mTextViewAverageText);
+    YoYo.with(Techniques.SlideInRight).duration(1000).playOn(mTextViewAverageAday);
+    YoYo.with(Techniques.SlideInRight).duration(1000).playOn(mImageViewDaysAboveArerage);
+    YoYo.with(Techniques.SlideInRight).duration(1000).playOn(mTextViewAboveAverageText);
+    YoYo.with(Techniques.SlideInRight).duration(1000).playOn(mTextViewDaysAboveAverageValue);
   }
 }
