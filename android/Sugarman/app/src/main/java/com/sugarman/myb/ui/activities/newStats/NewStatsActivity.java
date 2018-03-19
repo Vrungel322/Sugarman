@@ -24,10 +24,8 @@ import java.util.List;
 import timber.log.Timber;
 
 public class NewStatsActivity extends BasicActivity implements INewStatsActivityView {
-  private final int itemcount = 12;
-  protected String[] mMonths = new String[] {
-      "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"
-  };
+  public static final int STATS_COUNT_7 = 7;
+  public static final int STATS_COUNT_21 = 21;
   @InjectPresenter NewStatsActivityPresenter mPresenter;
   @BindView(R.id.chart1) CombinedChart mChart;
   private List<Stats> mStats = new ArrayList<>();
@@ -38,8 +36,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
   @Override protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_new_stats);
     super.onCreate(savedInstanceState);
-    fillByStats(7);
-    //mTfLight = Typeface.createFromAsset(getAssets(), "OpenSans-Light.ttf");
+    fillByStats(STATS_COUNT_7);
     setUpUI();
   }
 
@@ -87,12 +84,12 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
 
           @Override public boolean onDoubleTap(MotionEvent e) {
             Timber.e("onTouchDouble " + mStatsCount);
-            if (mStatsCount == 21) {
-              fillByStats(7);
+            if (mStatsCount == STATS_COUNT_21) {
+              fillByStats(STATS_COUNT_7);
               return true;
             }
-            if (mStatsCount == 7) {
-              fillByStats(21);
+            if (mStatsCount == STATS_COUNT_7) {
+              fillByStats(STATS_COUNT_21);
               return true;
             }
             return true;
