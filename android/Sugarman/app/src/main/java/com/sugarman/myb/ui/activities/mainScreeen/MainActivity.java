@@ -562,8 +562,6 @@ public class MainActivity extends GetUserInfoActivity
     setContentView(R.layout.activity_main);
     super.onCreate(savedInstanceState);
     Timber.e("deepLinks onCreate");
-    startActivity(new Intent(getApplicationContext(), NewStatsActivity.class));
-
     //AccountManager accManager = AccountManager.get(getApplicationContext());
     //Account acc[] = accManager.getAccountsByType("com.google");
     //int accCount = acc.length;
@@ -861,6 +859,12 @@ public class MainActivity extends GetUserInfoActivity
     spiWalkData.setViewPager(vpWalkData);
     spiWalkData.requestLayout();
     spiWalkData.setVisibility(View.GONE);
+  }
+
+  private void testStartNewStats(Tracking result) {
+    Intent intent = new Intent(getApplicationContext(), NewStatsActivity.class);
+    intent.putExtra(Constants.TRACKING,result);
+    startActivity(intent);
   }
 
   @Override public void onRequestPermissionsResult(int requestCode, String permissions[],
@@ -1629,6 +1633,7 @@ public class MainActivity extends GetUserInfoActivity
   }
 
   @Override public void updateCurrentTracking(TrackingInfoResponse body) {
+    testStartNewStats(body.getResult());
     List<Tracking> temp = new ArrayList<>();
     int position = 0;
     if (!body.getResult().isMentors()) {

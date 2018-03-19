@@ -19,7 +19,7 @@
       >
 
     <ImageView
-        android:id="@+id/group_avatar"
+        android:id="@+id/ivAvatar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="10dp"
@@ -31,9 +31,9 @@
         android:id="@+id/tv_avatar_events"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_alignEnd="@id/group_avatar"
-        android:layout_alignRight="@id/group_avatar"
-        android:layout_alignTop="@id/group_avatar"
+        android:layout_alignEnd="@id/ivAvatar"
+        android:layout_alignRight="@id/ivAvatar"
+        android:layout_alignTop="@id/ivAvatar"
         android:layout_marginRight="29dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/circle_events"
@@ -56,13 +56,13 @@
       app:layout_constraintTop_toBottomOf="@+id/tvStatsWeek"
       />
   <TextView
-      android:id="@+id/tvGroupName"
+      android:id="@+id/tvName"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginEnd="8dp"
       android:layout_marginStart="8dp"
       android:layout_marginTop="32dp"
-      android:text="GroupName"
+      android:text="Name"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"

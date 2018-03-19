@@ -5,7 +5,10 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.widget.ImageView;
+import android.widget.TextView;
 import butterknife.BindView;
+import butterknife.OnClick;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.components.AxisBase;
@@ -14,9 +17,14 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.R;
+import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.api.models.responses.me.stats.Stats;
 import com.sugarman.myb.base.BasicActivity;
+import com.sugarman.myb.constants.Constants;
+import com.sugarman.myb.ui.views.CropSquareTransformation;
+import com.sugarman.myb.ui.views.MaskTransformation;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,6 +36,9 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
   public static final int STATS_COUNT_21 = 21;
   @InjectPresenter NewStatsActivityPresenter mPresenter;
   @BindView(R.id.chart1) CombinedChart mChart;
+  @BindView(R.id.tvName) TextView mTextViewName;
+  @BindView(R.id.ivAvatar) ImageView mImageViewAvatar;
+  private Tracking mTracking;
   private List<Stats> mStats = new ArrayList<>();
   private List<String> mStatsDays = new ArrayList<>();
   private List<Integer> mStatsSteps = new ArrayList<>();
@@ -36,11 +47,28 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
   @Override protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_new_stats);
     super.onCreate(savedInstanceState);
+    if (getIntent().getExtras().containsKey(Constants.TRACKING)) {
+      mTracking = getIntent().getExtras().getParcelable(Constants.TRACKING);
+    }
     fillByStats(STATS_COUNT_7);
+    setUpUIChart();
     setUpUI();
   }
 
-  @SuppressLint("ClickableViewAccessibility") private void setUpUI() {
+  private void setUpUI() {
+    if (mTracking!=null){
+      mTextViewName.setText(mTracking.getGroup().getName());
+      CustomPicasso.with(this)
+          .load(mTracking.getGroup().getPictureUrl())
+          .placeholder(R.drawable.ic_gray_avatar)
+          .error(R.drawable.ic_group)
+          .transform(new CropSquareTransformation())
+          .transform(new MaskTransformation(this, R.drawable.profile_mask, false, 0xffffffff))
+          .into(mImageViewAvatar);
+    }
+  }
+
+  @SuppressLint("ClickableViewAccessibility") private void setUpUIChart() {
     mChart.getDescription().setEnabled(false);
     mChart.setBackgroundColor(Color.WHITE);
     mChart.setDrawGridBackground(false);
@@ -50,8 +78,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
 
     // draw bars behind lines
     mChart.setDrawOrder(new CombinedChart.DrawOrder[] {
-        CombinedChart.DrawOrder.BAR,
-        CombinedChart.DrawOrder.LINE, CombinedChart.DrawOrder.SCATTER
+        CombinedChart.DrawOrder.BAR, CombinedChart.DrawOrder.LINE, CombinedChart.DrawOrder.SCATTER
     });
 
     Legend l = mChart.getLegend();
@@ -149,4 +176,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     mChart.invalidate();
   }
 
+  @OnClick(R.id.ivClose) void ivCloseClicked(){
+    finish();
+  }
 }

@@ -245,7 +245,8 @@
         android:name=".ui.activities.exceptionHidenActivity.SendExceptionHiddenActivity"
         android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
         android:theme="@style/Theme.AppCompat.Translucent" />
-    <activity android:name=".ui.activities.newStats.NewStatsActivity"></activity>
+    <activity android:name=".ui.activities.newStats.NewStatsActivity"
+        android:screenOrientation="portrait"></activity>
   </application>
 
 </manifest>
