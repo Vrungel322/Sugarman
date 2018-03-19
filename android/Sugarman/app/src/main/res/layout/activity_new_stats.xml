@@ -28,7 +28,7 @@
 
 
     <com.sugarman.myb.ui.views.CustomFontTextView
-        android:id="@+id/tv_avatar_events"
+        android:id="@+id/tvAvatarEvents"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_alignEnd="@id/ivAvatar"
@@ -85,18 +85,11 @@
       android:layout_height="wrap_content"
       android:layout_marginStart="48dp"
       android:layout_marginTop="8dp"
+      android:background="@drawable/selector_stats"
+      android:paddingLeft="8dp"
+      android:paddingRight="8dp"
       android:text="Day"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/relativeLayout4"
-      />
-  <TextView
-      android:id="@+id/tvStatsPersonal"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginEnd="48dp"
-      android:layout_marginTop="8dp"
-      android:text="Personal"
-      app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/relativeLayout4"
       />
   <TextView
@@ -106,9 +99,25 @@
       android:layout_marginEnd="8dp"
       android:layout_marginStart="8dp"
       android:layout_marginTop="8dp"
+      android:background="@drawable/selector_stats"
+      android:paddingLeft="8dp"
+      android:paddingRight="8dp"
       android:text="Week"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/relativeLayout4"
+      />
+  <TextView
+      android:id="@+id/tvStatsPersonal"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="48dp"
+      android:layout_marginTop="8dp"
+      android:background="@drawable/selector_stats"
+      android:paddingLeft="8dp"
+      android:paddingRight="8dp"
+      android:text="Personal"
+      app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/relativeLayout4"
       />
   <ImageView
@@ -188,9 +197,9 @@
       android:layout_height="48dp"
       android:layout_marginStart="32dp"
       android:layout_marginTop="48dp"
+      android:background="@drawable/stats_tab_min_max"
       app:layout_constraintStart_toStartOf="@+id/ivStatsTab"
       app:layout_constraintTop_toBottomOf="@+id/tvValueSteps"
-      android:background="@drawable/stats_tab_min_max"
       />
   <TextView
       android:id="@+id/tvMaxValue"
@@ -260,9 +269,9 @@
       android:layout_height="48dp"
       android:layout_marginEnd="32dp"
       android:layout_marginTop="48dp"
+      android:background="@drawable/stats_tab_ellipse"
       app:layout_constraintEnd_toEndOf="@+id/ivStatsTab"
       app:layout_constraintTop_toBottomOf="@+id/tvValueSteps"
-      android:background="@drawable/stats_tab_ellipse"
       />
   <TextView
       android:id="@+id/textView13"

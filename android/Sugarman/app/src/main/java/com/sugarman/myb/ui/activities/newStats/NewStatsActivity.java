@@ -5,18 +5,17 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.github.mikephil.charting.charts.CombinedChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.CombinedData;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.Tracking;
@@ -32,12 +31,16 @@ import java.util.List;
 import timber.log.Timber;
 
 public class NewStatsActivity extends BasicActivity implements INewStatsActivityView {
-  public static final int STATS_COUNT_7 = 7;
-  public static final int STATS_COUNT_21 = 21;
+  public static final int STATS_COUNT_PERSONAL_7 = 7;
+  public static final int STATS_COUNT_PERSONAL_21 = 21;
   @InjectPresenter NewStatsActivityPresenter mPresenter;
-  @BindView(R.id.chart1) CombinedChart mChart;
-  @BindView(R.id.tvName) TextView mTextViewName;
   @BindView(R.id.ivAvatar) ImageView mImageViewAvatar;
+  @BindView(R.id.tvName) TextView mTextViewName;
+  @BindView(R.id.tvAvatarEvents) TextView mTextViewAvatarEvents;
+  @BindView(R.id.chart1) CombinedChart mChart;
+  @BindView(R.id.tvStatsDay) TextView mTextViewStatsDay;
+  @BindView(R.id.tvStatsPersonal) TextView mTextViewStatsPersonal;
+  @BindView(R.id.tvStatsWeek) TextView mTextViewStatsWeek;
   private Tracking mTracking;
   private List<Stats> mStats = new ArrayList<>();
   private List<String> mStatsDays = new ArrayList<>();
@@ -47,19 +50,30 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
   @Override protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_new_stats);
     super.onCreate(savedInstanceState);
-    if (getIntent().getExtras().containsKey(Constants.TRACKING)) {
+    if (getIntent().getExtras() != null && getIntent().getExtras()
+        .containsKey(Constants.TRACKING)) {
       mTracking = getIntent().getExtras().getParcelable(Constants.TRACKING);
     }
-    fillByStats(STATS_COUNT_7);
+    fillByStatsPersonal(STATS_COUNT_PERSONAL_7);
     setUpUIChart();
     setUpUI();
   }
 
   private void setUpUI() {
-    if (mTracking!=null){
+    changeStatsOnChart(mTextViewStatsPersonal);
+    if (mTracking != null) {
       mTextViewName.setText(mTracking.getGroup().getName());
       CustomPicasso.with(this)
           .load(mTracking.getGroup().getPictureUrl())
+          .placeholder(R.drawable.ic_gray_avatar)
+          .error(R.drawable.ic_group)
+          .transform(new CropSquareTransformation())
+          .transform(new MaskTransformation(this, R.drawable.profile_mask, false, 0xffffffff))
+          .into(mImageViewAvatar);
+    } else {
+      mTextViewName.setText(SharedPreferenceHelper.getUserName());
+      CustomPicasso.with(this)
+          .load(SharedPreferenceHelper.getAvatar())
           .placeholder(R.drawable.ic_gray_avatar)
           .error(R.drawable.ic_group)
           .transform(new CropSquareTransformation())
@@ -75,6 +89,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     mChart.setDrawBarShadow(false);
     mChart.setHighlightFullBarEnabled(false);
     mChart.setTouchEnabled(true);// enable touch gestures
+    mChart.animateXY(3000, 3000);
 
     // draw bars behind lines
     mChart.setDrawOrder(new CombinedChart.DrawOrder[] {
@@ -101,24 +116,29 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // make text only on bottom
     xAxis.setAxisMinimum(0f);
     xAxis.setGranularity(1f);
-    xAxis.setValueFormatter(new IAxisValueFormatter() {
-      @Override public String getFormattedValue(float value, AxisBase axis) {
-        return mStatsDays.get((int) value % mStatsDays.size());
-      }
-    });
+    xAxis.setValueFormatter((value, axis) -> mStatsDays.get((int) value % mStatsDays.size()));
     GestureDetector gd =
         new GestureDetector(getApplicationContext(), new GestureDetector.SimpleOnGestureListener() {
 
           @Override public boolean onDoubleTap(MotionEvent e) {
             Timber.e("onTouchDouble " + mStatsCount);
-            if (mStatsCount == STATS_COUNT_21) {
-              fillByStats(STATS_COUNT_7);
-              return true;
+            if (mTextViewStatsDay.isSelected()) {
+              // empty for now
             }
-            if (mStatsCount == STATS_COUNT_7) {
-              fillByStats(STATS_COUNT_21);
-              return true;
+            if (mTextViewStatsWeek.isSelected()) {
+              // empty for now
             }
+            if (mTextViewStatsPersonal.isSelected()) { // only for personal will work double tapping
+              if (mStatsCount == STATS_COUNT_PERSONAL_21) {
+                fillByStatsPersonal(STATS_COUNT_PERSONAL_7);
+                return true;
+              }
+              if (mStatsCount == STATS_COUNT_PERSONAL_7) {
+                fillByStatsPersonal(STATS_COUNT_PERSONAL_21);
+                return true;
+              }
+            }
+
             return true;
           }
 
@@ -137,20 +157,20 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     mChart.setOnTouchListener((v, event) -> gd.onTouchEvent(event));
   }
 
-  private void fillByStats(int statsCount) {
+  private void fillByStatsPersonal(int statsCount) {
     mStatsCount = statsCount;
     mStats.clear();
     mStatsDays.clear();
     mStatsSteps.clear();
 
     mStats.addAll(SharedPreferenceHelper.getStats(mStatsCount));
-    Timber.e("onTouchDouble fillByStats " + mStats.size());
+    Timber.e("onTouchDouble fillByStatsPersonal " + mStats.size());
 
     for (int i = 0; i < mStats.size(); i++) {
-      if (statsCount == 21) {
+      if (statsCount == STATS_COUNT_PERSONAL_21) {
         mStatsDays.add(String.valueOf(i + 1));
       }
-      if (statsCount == 7) {
+      if (statsCount == STATS_COUNT_PERSONAL_7) {
         mStatsDays.add(getString(R.string.day) + " " + String.valueOf(i + 1));
       }
       mStatsSteps.add(mStats.get(i).getStepsCount());
@@ -176,7 +196,46 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     mChart.invalidate();
   }
 
-  @OnClick(R.id.ivClose) void ivCloseClicked(){
+  @OnClick(R.id.ivClose) void ivCloseClicked() {
     finish();
+  }
+
+  @OnClick({ R.id.tvStatsDay, R.id.tvStatsWeek, R.id.tvStatsPersonal }) void changeStatsOnChart(
+      View v) {
+    if (v.getId() == R.id.tvStatsDay) {
+      mTextViewStatsDay.setSelected(true);
+      mTextViewStatsDay.setTextColor(Color.WHITE);
+      mTextViewStatsWeek.setSelected(false);
+      mTextViewStatsWeek.setTextColor(Color.RED);
+      mTextViewStatsPersonal.setSelected(false);
+      mTextViewStatsPersonal.setTextColor(Color.RED);
+      fillByStatsDay();
+    }
+    if (v.getId() == R.id.tvStatsWeek) {
+      mTextViewStatsDay.setSelected(false);
+      mTextViewStatsDay.setTextColor(Color.RED);
+      mTextViewStatsWeek.setSelected(true);
+      mTextViewStatsWeek.setTextColor(Color.WHITE);
+      mTextViewStatsPersonal.setSelected(false);
+      mTextViewStatsPersonal.setTextColor(Color.RED);
+      fillByStatsWeek();
+    }
+    if (v.getId() == R.id.tvStatsPersonal) {
+      mTextViewStatsDay.setSelected(false);
+      mTextViewStatsDay.setTextColor(Color.RED);
+      mTextViewStatsWeek.setSelected(false);
+      mTextViewStatsWeek.setTextColor(Color.RED);
+      mTextViewStatsPersonal.setSelected(true);
+      mTextViewStatsPersonal.setTextColor(Color.WHITE);
+      fillByStatsPersonal(STATS_COUNT_PERSONAL_21);
+    }
+  }
+
+  private void fillByStatsWeek() {
+    fillByStatsPersonal(7);// just mock
+  }
+
+  private void fillByStatsDay() {
+    fillByStatsPersonal(7);//just mock
   }
 }

@@ -34,7 +34,7 @@ import java.util.List;
     }
 
     BarDataSet set1 = new BarDataSet(entries1, "10000 Steps");
-    set1.setColor(Color.argb(50, 242, 197, 197));
+    set1.setColor(Color.argb(20, 242, 197, 197));
     set1.setValueTextSize(0f); //make text invisible
     set1.setBarBorderColor(Color.argb(0, 242, 197, 197));
     set1.setAxisDependency(YAxis.AxisDependency.LEFT);
