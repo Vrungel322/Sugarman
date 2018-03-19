@@ -49,7 +49,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     mChart.setDrawGridBackground(false);
     mChart.setDrawBarShadow(false);
     mChart.setHighlightFullBarEnabled(false);
-    mChart.setTouchEnabled(false);// enable touch gestures
+    mChart.setTouchEnabled(true);// enable touch gestures
 
     // draw bars behind lines
     mChart.setDrawOrder(new CombinedChart.DrawOrder[] {
@@ -69,6 +69,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     YAxis rightAxis = mChart.getAxisRight();
     rightAxis.setDrawGridLines(false);
     rightAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
+    rightAxis.setEnabled(false);// turns of right numbers on chart
 
     YAxis leftAxis = mChart.getAxisLeft();
     leftAxis.setDrawGridLines(false);
@@ -133,11 +134,12 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       mStatsSteps.add(mStats.get(i).getStepsCount());
     }
 
-    Collections.sort(mStats,(stats, t1) -> Integer.valueOf(String.valueOf(stats.getDayTimestamp() - t1.getDayTimestamp())));
+    Collections.sort(mStats, (stats, t1) -> Integer.valueOf(
+        String.valueOf(stats.getDayTimestamp() - t1.getDayTimestamp())));
 
     CombinedData data = new CombinedData();
 
-    data.setData(mPresenter.generateLineData(mStats,mStatsSteps,
+    data.setData(mPresenter.generateLineData(mStats, mStatsSteps,
         getResources().getDrawable(R.drawable.animation_progress_bar))); // line - dots
     data.setData(mPresenter.generateBarData(mStats)); // colomns
     //data.setData(generateDashedData()); // dots
@@ -145,12 +147,12 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     mChart.getXAxis().setAxisMaximum(data.getXMax() + 0.25f);
     mChart.setData(null);
     mChart.setData(data);
+    mChart.getBarData().setBarWidth(100);
+    mChart.setDrawBarShadow(false);
+    mChart.setHighlightFullBarEnabled(false);
+    mChart.getBarData().setHighlightEnabled(false);mChart.setDrawValueAboveBar(true);
     mChart.invalidate();
   }
-
-
-
-
 
   //protected LineData generateDashedData() {
   //

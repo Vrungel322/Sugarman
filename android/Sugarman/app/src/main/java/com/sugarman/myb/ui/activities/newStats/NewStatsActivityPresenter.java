@@ -31,9 +31,9 @@ public class NewStatsActivityPresenter extends BasicPresenter<INewStatsActivityV
     ArrayList<BarEntry> entries1 = new ArrayList<BarEntry>();
     ArrayList<BarEntry> entries2 = new ArrayList<BarEntry>();
 
-    for (int index = 0; index < stats.size() * 2; index++) {
+    for (int index = 0; index < stats.size() * 1; index++) {
       //entries1.add(new BarEntry(0, getRandom(25, 25)));
-      entries1.add(new BarEntry(index * 0.5f, 10000));
+      entries1.add(new BarEntry(index, 10000));
 
       //// stacked
       //entries2.add(new BarEntry(0, new float[] { getRandom(13, 12), getRandom(13, 12) }));
@@ -43,8 +43,8 @@ public class NewStatsActivityPresenter extends BasicPresenter<INewStatsActivityV
     BarDataSet set1 = new BarDataSet(entries1, "10000 Steps");
     //set1.setColor(Color.rgb(0, 220, 78));
     set1.setColor(Color.argb(150,242, 197, 197));
-set1.setBarBorderWidth(100);
-set1.setBarBorderColor(Color.argb(150,242, 197, 197));
+//set1.setBarBorderWidth(1);
+//set1.setBarBorderColor(Color.argb(150,242, 197, 197));
     //set1.setBarBorderColor(Color.rgb(0, 220, 78));
 
     //set1.setValueTextColor(Color.rgb(60, 220, 78));
