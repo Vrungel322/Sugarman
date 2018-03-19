@@ -48,6 +48,8 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
   @BindView(R.id.tvValueKm) TextView mTextViewValueKm;
   @BindView(R.id.tvValueSteps) TextView mTextViewValueSteps;
   @BindView(R.id.tvValueKcal) TextView mTextViewValueKcal;
+  @BindView(R.id.ivStatsTab) ImageView mImageViewStatsTab;
+  @BindView(R.id.ivDetailDescriptionIndicator) ImageView mImageViewDetailIndicator;
   private Tracking mTracking;
   private List<Stats> mStats = new ArrayList<>();
   private List<String> mStatsDays = new ArrayList<>();
@@ -293,13 +295,14 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
   }
 
   private void fillDetailsByStatsKcal() {
-
+    mImageViewDetailIndicator.setBackgroundResource(R.drawable.stats_kcal_icon);
   }
 
   private void fillDetailsByStatsSteps() {
-
+    mImageViewDetailIndicator.setBackgroundResource(R.drawable.stats_step_icon);
   }
 
   private void fillDetailsByStatsKm() {
+    mImageViewDetailIndicator.setBackgroundResource(R.drawable.stats_km_icon);
   }
 }

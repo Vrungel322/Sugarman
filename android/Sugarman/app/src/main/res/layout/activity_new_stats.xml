@@ -191,7 +191,6 @@
       android:layout_height="wrap_content"
       android:text="tvValueKcal"
       android:textColor="@color/red"
-
       app:layout_constraintEnd_toEndOf="@+id/ivStatsKcal"
       app:layout_constraintStart_toStartOf="@+id/ivStatsKcal"
       app:layout_constraintTop_toBottomOf="@+id/ivStatsKcal"
@@ -305,6 +304,16 @@
       app:layout_constraintEnd_toEndOf="@+id/imageView11"
       app:layout_constraintStart_toStartOf="@+id/imageView11"
       app:layout_constraintTop_toTopOf="@+id/imageView11"
+      />
+  <ImageView
+      android:id="@+id/ivDetailDescriptionIndicator"
+      android:layout_width="16dp"
+      android:layout_height="16dp"
+      android:layout_marginEnd="16dp"
+      android:layout_marginTop="18dp"
+      app:layout_constraintEnd_toEndOf="@+id/ivStatsTab"
+      app:layout_constraintTop_toTopOf="@+id/ivStatsTab"
+      android:background="@drawable/stats_step_icon"
       />
 
 </android.support.constraint.ConstraintLayout>
