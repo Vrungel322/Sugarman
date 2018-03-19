@@ -54,8 +54,6 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     // draw bars behind lines
     mChart.setDrawOrder(new CombinedChart.DrawOrder[] {
         CombinedChart.DrawOrder.BAR,
-        //CombinedChart.DrawOrder.BUBBLE,
-        //CombinedChart.DrawOrder.CANDLE,
         CombinedChart.DrawOrder.LINE, CombinedChart.DrawOrder.SCATTER
     });
 
@@ -142,7 +140,6 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     data.setData(mPresenter.generateLineData(mStats, mStatsSteps,
         getResources().getDrawable(R.drawable.animation_progress_bar))); // line - dots
     data.setData(mPresenter.generateBarData(mStats)); // colomns
-    //data.setData(generateDashedData()); // dots
 
     mChart.getXAxis().setAxisMaximum(data.getXMax() + 0.25f);
     mChart.setData(null);
@@ -150,42 +147,9 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     mChart.getBarData().setBarWidth(100);
     mChart.setDrawBarShadow(false);
     mChart.setHighlightFullBarEnabled(false);
-    mChart.getBarData().setHighlightEnabled(false);mChart.setDrawValueAboveBar(true);
+    mChart.getBarData().setHighlightEnabled(false);
+    mChart.setDrawValueAboveBar(true);
     mChart.invalidate();
   }
 
-  //protected LineData generateDashedData() {
-  //
-  //  LineData d = new LineData();
-  //
-  //  ArrayList<Entry> entries = new ArrayList<Entry>();
-  //
-  //  for (int index = 0; index < mStats.size(); index++) {
-  //    //entries.add(new Entry(index + 0.5f, getRandom(15, 5)));
-  //    entries.add(new Entry(index, mStatsSteps.get(index)+2));
-  //
-  //  }
-  //
-  //  LineDataSet set = new LineDataSet(entries, "Group Steps");
-  //  set.setColor(Color.rgb(240, 0, 0));
-  //  set.setLineWidth(2.5f);
-  //  set.setCircleColor(Color.rgb(240, 0, 0));
-  //  set.setCircleRadius(5f);
-  //  set.setFillColor(Color.rgb(240, 0, 0));
-  //  set.setMode(LineDataSet.Mode.CUBIC_BEZIER);
-  //  set.setDrawValues(true);
-  //  set.setValueTextSize(10f);
-  //  set.setValueTextColor(Color.rgb(240, 0, 0));
-  //
-  //  set.enableDashedLine(10, 10, 0);
-  //
-  //  set.setAxisDependency(YAxis.AxisDependency.LEFT);
-  //  d.addDataSet(set);
-  //
-  //  return d;
-  //}
-
-  protected float getRandom(float range, float startsfrom) {
-    return (float) (Math.random() * range) + startsfrom;
-  }
 }
