@@ -108,32 +108,32 @@ import java.util.List;
     return Collections.min(integers);
   }
 
-  public int findAverageSteps(List<Stats> stats) {
-    Integer integer = 0;
-    for (int i = 0; i < stats.size(); i++) {
-      integer += stats.get(i).getStepsCount();
-    }
-    return integer / stats.size();
+  public float findAverageSteps(List<Stats> stats) {
+    //Integer integer = 0;
+    //for (int i = 0; i < stats.size(); i++) {
+    //  integer += stats.get(i).getStepsCount();
+    //}
+    return findMinSteps(stats) + findMaxSteps(stats) / 2;
   }
 
-  public int findMaxKm(List<Stats> stats) {
-    return (int) (findMaxSteps(stats) * 0.000762f);
+  public float findMaxKm(List<Stats> stats) {
+    return findMaxSteps(stats) * 0.000762f;
   }
 
-  public int findMinKm(List<Stats> stats) {
-    return (int) (findMinSteps(stats) * 0.000762f);
+  public float findMinKm(List<Stats> stats) {
+    return (findMinSteps(stats) * 0.000762f);
   }
 
   public float findAverageKm(List<Stats> stats) {
     return (findAverageSteps(stats) * 0.000762f);
   }
 
-  public int findMaxKcal(List<Stats> stats) {
-    return (int) (findMaxSteps(stats) * 0.0435f);
+  public float findMaxKcal(List<Stats> stats) {
+    return (findMaxSteps(stats) * 0.0435f);
   }
 
-  public int findMinKcal(List<Stats> stats) {
-    return (int) (findMinSteps(stats) * 0.0435f);
+  public float findMinKcal(List<Stats> stats) {
+    return (findMinSteps(stats) * 0.0435f);
   }
 
   public float findAverageKcal(List<Stats> stats) {

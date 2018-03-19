@@ -249,8 +249,12 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
         mStatsDays.add(getString(R.string.day) + " " + String.valueOf(i + 1));
       }
       mStatsSteps.add(mStats.get(i).getStepsCount());
-      mCountOfStepsForLastXDays += mStats.get(i).getStepsCount();
+      Timber.e("onTouchDouble mCountOfStepsForLastXDays " + mCountOfStepsForLastXDays);
+      if (mStats.get(i).getStepsCount() != -1) {
+        mCountOfStepsForLastXDays += mStats.get(i).getStepsCount();
+      }
     }
+    Timber.e("onTouchDouble mCountOfStepsForLastXDays " + mCountOfStepsForLastXDays);
 
     Collections.sort(mStats, (stats, t1) -> Integer.valueOf(
         String.valueOf(stats.getDayTimestamp() - t1.getDayTimestamp())));
@@ -308,9 +312,12 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
   private void fillDetailsByStatsKm(List<Stats> stats) {
     playAnim();
     mImageViewDetailIndicator.setBackgroundResource(R.drawable.stats_km_icon);
-    mTextViewMaxValue.setText(String.valueOf(mPresenter.findMaxKm(stats)));
-    mTextViewMinValue.setText(String.valueOf(mPresenter.findMinKm(stats)));
-    mTextViewAverageAday.setText(String.valueOf(String.format(Locale.US, "%.2f",mPresenter.findAverageKm(stats))));
+    mTextViewMaxValue.setText(
+        String.valueOf(String.format(Locale.US, "%.2f", mPresenter.findMaxKm(stats))));
+    mTextViewMinValue.setText(
+        String.valueOf(String.format(Locale.US, "%.2f", mPresenter.findMinKm(stats))));
+    mTextViewAverageAday.setText(
+        String.valueOf(String.format(Locale.US, "%.2f", mPresenter.findAverageKm(stats))));
   }
 
   private void fillDetailsByStatsSteps(List<Stats> stats) {
@@ -318,28 +325,32 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     mImageViewDetailIndicator.setBackgroundResource(R.drawable.stats_step_icon);
     mTextViewMaxValue.setText(String.valueOf(mPresenter.findMaxSteps(stats)));
     mTextViewMinValue.setText(String.valueOf(mPresenter.findMinSteps(stats)));
-    mTextViewAverageAday.setText(String.valueOf(mPresenter.findAverageSteps(stats)));
+    mTextViewAverageAday.setText(
+        String.valueOf(String.format(Locale.US, "%.2f", mPresenter.findAverageSteps(stats))));
   }
 
   private void fillDetailsByStatsKcal(List<Stats> stats) {
     playAnim();
     mImageViewDetailIndicator.setBackgroundResource(R.drawable.stats_kcal_icon);
-    mTextViewMaxValue.setText(String.valueOf(mPresenter.findMaxKcal(stats)));
-    mTextViewMinValue.setText(String.valueOf(mPresenter.findMinKcal(stats)));
-    mTextViewAverageAday.setText(String.valueOf(String.format(Locale.US, "%.2f",mPresenter.findAverageKcal(stats))));
+    mTextViewMaxValue.setText(
+        String.valueOf(String.format(Locale.US, "%.2f", mPresenter.findMaxKcal(stats))));
+    mTextViewMinValue.setText(
+        String.valueOf(String.format(Locale.US, "%.2f", mPresenter.findMinKcal(stats))));
+    mTextViewAverageAday.setText(
+        String.valueOf(String.format(Locale.US, "%.2f", mPresenter.findAverageKcal(stats))));
   }
 
   private void playAnim() {
-    YoYo.with(Techniques.SlideInRight).duration(1000).playOn(mImageViewDetailIndicator);
-    YoYo.with(Techniques.SlideInRight).duration(1000).playOn(mImageViewStatsTab);
-    YoYo.with(Techniques.SlideInRight).duration(1000).playOn(mImageViewMinMax);
-    YoYo.with(Techniques.SlideInRight).duration(1000).playOn(mTextViewMaxValue);
-    YoYo.with(Techniques.SlideInRight).duration(1000).playOn(mTextViewMinValue);
-    YoYo.with(Techniques.SlideInRight).duration(1000).playOn(mImageViewAverageValue);
-    YoYo.with(Techniques.SlideInRight).duration(1000).playOn(mTextViewAverageText);
-    YoYo.with(Techniques.SlideInRight).duration(1000).playOn(mTextViewAverageAday);
-    YoYo.with(Techniques.SlideInRight).duration(1000).playOn(mImageViewDaysAboveArerage);
-    YoYo.with(Techniques.SlideInRight).duration(1000).playOn(mTextViewAboveAverageText);
-    YoYo.with(Techniques.SlideInRight).duration(1000).playOn(mTextViewDaysAboveAverageValue);
+    YoYo.with(Techniques.SlideInLeft).duration(750).playOn(mImageViewDetailIndicator);
+    YoYo.with(Techniques.SlideInLeft).duration(750).playOn(mImageViewStatsTab);
+    YoYo.with(Techniques.SlideInLeft).duration(750).playOn(mImageViewMinMax);
+    YoYo.with(Techniques.SlideInLeft).duration(750).playOn(mTextViewMaxValue);
+    YoYo.with(Techniques.SlideInLeft).duration(750).playOn(mTextViewMinValue);
+    YoYo.with(Techniques.SlideInLeft).duration(750).playOn(mImageViewAverageValue);
+    YoYo.with(Techniques.SlideInLeft).duration(750).playOn(mTextViewAverageText);
+    YoYo.with(Techniques.SlideInLeft).duration(750).playOn(mTextViewAverageAday);
+    YoYo.with(Techniques.SlideInLeft).duration(750).playOn(mImageViewDaysAboveArerage);
+    YoYo.with(Techniques.SlideInLeft).duration(750).playOn(mTextViewAboveAverageText);
+    YoYo.with(Techniques.SlideInLeft).duration(750).playOn(mTextViewDaysAboveAverageValue);
   }
 }
