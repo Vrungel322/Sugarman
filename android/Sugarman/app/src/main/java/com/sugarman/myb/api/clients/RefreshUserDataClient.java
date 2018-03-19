@@ -62,7 +62,7 @@ public class RefreshUserDataClient extends BaseApiClient {
     }
 
     @Override public void onFailure(Call<UsersResponse> call, Throwable t) {
-      Log.e("Token", t.getLocalizedMessage());
+      if (t.getLocalizedMessage() != null) Timber.e("Token", t.getLocalizedMessage());
       if (clientListener.get() != null) {
         String message = requestFailure(TAG, t);
         ((ApiRefreshUserDataListener) clientListener.get()).onApiRefreshUserDataFailure(message);
