@@ -15,6 +15,7 @@ import com.sugarman.myb.App;
 import com.sugarman.myb.api.models.responses.me.stats.Stats;
 import com.sugarman.myb.base.BasicPresenter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -89,5 +90,53 @@ import java.util.List;
     dataSets.add(setDashed);
 
     return new LineData(dataSets);
+  }
+
+  public int findMaxSteps(List<Stats> stats) {
+    List<Integer> integers = new ArrayList<>();
+    for (int i = 0; i < stats.size(); i++) {
+      integers.add(stats.get(i).getStepsCount());
+    }
+    return Collections.max(integers);
+  }
+
+  public int findMinSteps(List<Stats> stats) {
+    List<Integer> integers = new ArrayList<>();
+    for (int i = 0; i < stats.size(); i++) {
+      integers.add(stats.get(i).getStepsCount());
+    }
+    return Collections.min(integers);
+  }
+
+  public int findAverageSteps(List<Stats> stats) {
+    Integer integer = 0;
+    for (int i = 0; i < stats.size(); i++) {
+      integer += stats.get(i).getStepsCount();
+    }
+    return integer / stats.size();
+  }
+
+  public int findMaxKm(List<Stats> stats) {
+    return (int) (findMaxSteps(stats) * 0.000762f);
+  }
+
+  public int findMinKm(List<Stats> stats) {
+    return (int) (findMinSteps(stats) * 0.000762f);
+  }
+
+  public float findAverageKm(List<Stats> stats) {
+    return (findAverageSteps(stats) * 0.000762f);
+  }
+
+  public int findMaxKcal(List<Stats> stats) {
+    return (int) (findMaxSteps(stats) * 0.0435f);
+  }
+
+  public int findMinKcal(List<Stats> stats) {
+    return (int) (findMinSteps(stats) * 0.0435f);
+  }
+
+  public float findAverageKcal(List<Stats> stats) {
+    return (findAverageSteps(stats) * 0.0435f);
   }
 }

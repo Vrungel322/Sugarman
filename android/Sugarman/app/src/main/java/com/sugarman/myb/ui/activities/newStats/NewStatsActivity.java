@@ -179,50 +179,6 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     mChart.setOnTouchListener((v, event) -> gd.onTouchEvent(event));
   }
 
-  private void fillByStatsPersonal(int statsCount) {
-    mStatsCount = statsCount;
-    mStats.clear();
-    mStatsDays.clear();
-    mStatsSteps.clear();
-    mCountOfStepsForLastXDays = 0;
-
-    mStats.addAll(SharedPreferenceHelper.getStats(mStatsCount));
-    Timber.e("onTouchDouble fillByStatsPersonal " + mStats.size());
-
-    for (int i = 0; i < mStats.size(); i++) {
-      if (statsCount == STATS_COUNT_PERSONAL_21) {
-        mStatsDays.add(String.valueOf(i + 1));
-      }
-      if (statsCount == STATS_COUNT_PERSONAL_7) {
-        mStatsDays.add(getString(R.string.day) + " " + String.valueOf(i + 1));
-      }
-      mStatsSteps.add(mStats.get(i).getStepsCount());
-      mCountOfStepsForLastXDays += mStats.get(i).getStepsCount();
-    }
-
-    Collections.sort(mStats, (stats, t1) -> Integer.valueOf(
-        String.valueOf(stats.getDayTimestamp() - t1.getDayTimestamp())));
-
-    CombinedData data = new CombinedData();
-
-    data.setData(mPresenter.generateLineData(mStats, mStatsSteps,
-        getResources().getDrawable(R.drawable.animation_progress_bar))); // line - dots
-    data.setData(mPresenter.generateBarData(mStats)); // colomns
-
-    mChart.getXAxis().setAxisMaximum(data.getXMax() + 0.25f);
-    mChart.setData(null);
-    mChart.setData(data);
-    mChart.getBarData().setBarWidth(100);
-    mChart.setDrawBarShadow(false);
-    mChart.setHighlightFullBarEnabled(false);
-    mChart.getBarData().setHighlightEnabled(false);
-    mChart.setDrawValueAboveBar(true);
-    mChart.invalidate();
-    setUpKm();
-    setUpSteps();
-    setUpKcal();
-  }
-
   private void setUpKm() {
     mTextViewValueKm.setText(
         String.format(Locale.US, "%.2f km", mCountOfStepsForLastXDays * 0.000762f));
@@ -275,6 +231,50 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     }
   }
 
+  private void fillByStatsPersonal(int statsCount) {
+    mStatsCount = statsCount;
+    mStats.clear();
+    mStatsDays.clear();
+    mStatsSteps.clear();
+    mCountOfStepsForLastXDays = 0;
+
+    mStats.addAll(SharedPreferenceHelper.getStats(mStatsCount));
+    Timber.e("onTouchDouble fillByStatsPersonal " + mStats.size());
+
+    for (int i = 0; i < mStats.size(); i++) {
+      if (statsCount == STATS_COUNT_PERSONAL_21) {
+        mStatsDays.add(String.valueOf(i + 1));
+      }
+      if (statsCount == STATS_COUNT_PERSONAL_7) {
+        mStatsDays.add(getString(R.string.day) + " " + String.valueOf(i + 1));
+      }
+      mStatsSteps.add(mStats.get(i).getStepsCount());
+      mCountOfStepsForLastXDays += mStats.get(i).getStepsCount();
+    }
+
+    Collections.sort(mStats, (stats, t1) -> Integer.valueOf(
+        String.valueOf(stats.getDayTimestamp() - t1.getDayTimestamp())));
+
+    CombinedData data = new CombinedData();
+
+    data.setData(mPresenter.generateLineData(mStats, mStatsSteps,
+        getResources().getDrawable(R.drawable.animation_progress_bar))); // line - dots
+    data.setData(mPresenter.generateBarData(mStats)); // colomns
+
+    mChart.getXAxis().setAxisMaximum(data.getXMax() + 0.25f);
+    mChart.setData(null);
+    mChart.setData(data);
+    mChart.getBarData().setBarWidth(100);
+    mChart.setDrawBarShadow(false);
+    mChart.setHighlightFullBarEnabled(false);
+    mChart.getBarData().setHighlightEnabled(false);
+    mChart.setDrawValueAboveBar(true);
+    mChart.invalidate();
+    setUpKm();
+    setUpSteps();
+    setUpKcal();
+  }
+
   private void fillByStatsWeek() {
     fillByStatsPersonal(7);// just mock
   }
@@ -289,35 +289,44 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       mImageViewStatsKm.setSelected(true);
       mImageViewStatsSteps.setSelected(false);
       mImageViewStatsKcal.setSelected(false);
-      fillDetailsByStatsKm();
+      fillDetailsByStatsKm(mStats);
     }
     if (v.getId() == R.id.ivStatsSteps) {
       mImageViewStatsKm.setSelected(false);
       mImageViewStatsSteps.setSelected(true);
       mImageViewStatsKcal.setSelected(false);
-      fillDetailsByStatsSteps();
+      fillDetailsByStatsSteps(mStats);
     }
     if (v.getId() == R.id.ivStatsKcal) {
       mImageViewStatsKm.setSelected(false);
       mImageViewStatsSteps.setSelected(false);
       mImageViewStatsKcal.setSelected(true);
-      fillDetailsByStatsKcal();
+      fillDetailsByStatsKcal(mStats);
     }
   }
 
-  private void fillDetailsByStatsKcal() {
-    playAnim();
-    mImageViewDetailIndicator.setBackgroundResource(R.drawable.stats_kcal_icon);
-  }
-
-  private void fillDetailsByStatsSteps() {
-    playAnim();
-    mImageViewDetailIndicator.setBackgroundResource(R.drawable.stats_step_icon);
-  }
-
-  private void fillDetailsByStatsKm() {
+  private void fillDetailsByStatsKm(List<Stats> stats) {
     playAnim();
     mImageViewDetailIndicator.setBackgroundResource(R.drawable.stats_km_icon);
+    mTextViewMaxValue.setText(String.valueOf(mPresenter.findMaxKm(stats)));
+    mTextViewMinValue.setText(String.valueOf(mPresenter.findMinKm(stats)));
+    mTextViewAverageAday.setText(String.valueOf(String.format(Locale.US, "%.2f",mPresenter.findAverageKm(stats))));
+  }
+
+  private void fillDetailsByStatsSteps(List<Stats> stats) {
+    playAnim();
+    mImageViewDetailIndicator.setBackgroundResource(R.drawable.stats_step_icon);
+    mTextViewMaxValue.setText(String.valueOf(mPresenter.findMaxSteps(stats)));
+    mTextViewMinValue.setText(String.valueOf(mPresenter.findMinSteps(stats)));
+    mTextViewAverageAday.setText(String.valueOf(mPresenter.findAverageSteps(stats)));
+  }
+
+  private void fillDetailsByStatsKcal(List<Stats> stats) {
+    playAnim();
+    mImageViewDetailIndicator.setBackgroundResource(R.drawable.stats_kcal_icon);
+    mTextViewMaxValue.setText(String.valueOf(mPresenter.findMaxKcal(stats)));
+    mTextViewMinValue.setText(String.valueOf(mPresenter.findMinKcal(stats)));
+    mTextViewAverageAday.setText(String.valueOf(String.format(Locale.US, "%.2f",mPresenter.findAverageKcal(stats))));
   }
 
   private void playAnim() {
