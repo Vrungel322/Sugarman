@@ -78,6 +78,10 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
   @BindView(R.id.tvLaziestSteps) TextView mTextViewLaziestSteps;
   @BindView(R.id.ivLaziestAvatar) ImageView mImageViewLaziestAvatar;
   @BindView(R.id.ivLaziestAvatarBorder) ImageView mImageViewLaziestAvatarBorder;
+  @BindView(R.id.tvAllName) TextView mTextViewAllName;
+  @BindView(R.id.tvAllSteps) TextView mTextViewAllSteps;
+  @BindView(R.id.ivAllAvatar) ImageView mImageViewAllAvatar;
+  @BindView(R.id.ivAllAvatarBorder) ImageView mImageViewAllAvatarBorder;
   private Tracking mTracking;
   private List<Stats> mStats = new ArrayList<>();
   private List<String> mStatsDays = new ArrayList<>();
@@ -558,6 +562,27 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     mImageViewLaziestAvatarBorder.setColorFilter(color);
     mTextViewLaziestName.setTextColor(color);
     mTextViewLaziestSteps.setTextColor(color);
+
+    //AllName
+     str = Integer.toString(mTracking.getMembers().length) + " " + getResources().getString(
+        R.string.users);
+    mTextViewAllName.setText(str);
+
+    //AllSteps
+    int allSteps = 0;
+    for (int i = 0; i < members.length; i++) {
+      allSteps += members[i].getSteps();
+    }
+    mTextViewAllSteps.setText("" + String.format(Locale.US, "%,d", allSteps));
+
+    //AllAvatar
+    CustomPicasso.with(mImageViewAllAvatar.getContext())
+        .load(R.drawable.white_bg)
+        //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+        .placeholder(R.drawable.ic_gray_avatar)
+        .error(R.drawable.ic_red_avatar)
+        .transform(new CropCircleTransformation(0xffff0000, 1))
+        .into(mImageViewAllAvatar);
   }
 
   @Override public void showStats(List<Stats> statsCached) {
