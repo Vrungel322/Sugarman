@@ -55,7 +55,7 @@
         android:layout_height="250dp"
         android:layout_marginTop="8dp"
         android:overScrollMode="ifContentScrolls"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvStatsWeek"
@@ -409,7 +409,7 @@
           android:text="tvFastestName"
           android:textColor="#ffbb00"
           android:textSize="10sp"
-          app:layout_constraintEnd_toStartOf="@+id/textView5"
+          app:layout_constraintEnd_toStartOf="@+id/tvLaziestName"
           app:layout_constraintStart_toEndOf="@+id/tvBestName"
           app:layout_constraintTop_toTopOf="parent"
           />
@@ -443,11 +443,11 @@
           android:layout_height="66dp"
           android:layout_marginEnd="8dp"
           android:layout_marginStart="8dp"
+          android:src="@drawable/rescue_circle_border"
           android:tint="#ffbb00"
           app:layout_constraintEnd_toEndOf="@+id/tvFastestSteps"
           app:layout_constraintStart_toStartOf="@+id/tvFastestSteps"
           app:layout_constraintTop_toTopOf="@+id/ivFastestAvatar"
-          android:src="@drawable/rescue_circle_border"
           />
       <ImageView
           android:id="@+id/imageView9"
@@ -455,11 +455,11 @@
           android:layout_height="wrap_content"
           android:layout_marginEnd="8dp"
           android:layout_marginStart="8dp"
+          android:background="@drawable/fastest"
           app:layout_constraintBottom_toBottomOf="@+id/ivFastestAvatarBorder"
           app:layout_constraintEnd_toEndOf="@+id/tvFastestSteps"
           app:layout_constraintStart_toStartOf="@+id/tvFastestSteps"
           app:layout_constraintTop_toBottomOf="@+id/ivFastestAvatar"
-          android:background="@drawable/fastest"
           />
       <TextView
           android:id="@+id/textView8"
@@ -473,11 +473,12 @@
           app:layout_constraintTop_toBottomOf="@+id/imageView9"
           />
       <TextView
-          android:id="@+id/textView5"
+          android:id="@+id/tvLaziestName"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginEnd="32dp"
-          android:text="TextView"
+          android:text="tvLaziestName"
+          android:textColor="#ff0000"
           android:textSize="10sp"
           app:layout_constraintEnd_toStartOf="@+id/textView6"
           app:layout_constraintTop_toTopOf="parent"
@@ -491,6 +492,61 @@
           android:textSize="10sp"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintTop_toTopOf="parent"
+          />
+      <TextView
+          android:id="@+id/tvLaziestSteps"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="tvLaziestSteps"
+          android:textColor="#ff0000"
+          android:textSize="10sp"
+          app:layout_constraintEnd_toEndOf="@+id/tvLaziestName"
+          app:layout_constraintStart_toStartOf="@+id/tvLaziestName"
+          app:layout_constraintTop_toBottomOf="@+id/tvLaziestName"
+          />
+      <ImageView
+          android:id="@+id/ivLaziestAvatar"
+          android:layout_width="64dp"
+          android:layout_height="64dp"
+          android:layout_marginEnd="8dp"
+          android:layout_marginStart="8dp"
+          android:layout_marginTop="8dp"
+          app:layout_constraintEnd_toEndOf="@+id/tvLaziestSteps"
+          app:layout_constraintStart_toStartOf="@+id/tvLaziestSteps"
+          app:layout_constraintTop_toBottomOf="@+id/tvLaziestSteps"
+          app:srcCompat="@drawable/ic_red_avatar"
+          />
+      <ImageView
+          android:id="@+id/ivLaziestAvatarBorder"
+          android:layout_width="66dp"
+          android:layout_height="66dp"
+          android:src="@drawable/rescue_circle_border"
+          android:tint="#ff0000"
+          app:layout_constraintEnd_toEndOf="@+id/tvLaziestSteps"
+          app:layout_constraintStart_toStartOf="@+id/tvLaziestSteps"
+          app:layout_constraintTop_toTopOf="@+id/ivLaziestAvatar"
+          />
+      <ImageView
+          android:id="@+id/imageView14"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginEnd="8dp"
+          android:layout_marginStart="8dp"
+          app:layout_constraintBottom_toBottomOf="@+id/ivLaziestAvatarBorder"
+          app:layout_constraintEnd_toEndOf="@+id/tvLaziestSteps"
+          app:layout_constraintStart_toStartOf="@+id/tvLaziestSteps"
+          app:layout_constraintTop_toBottomOf="@+id/ivLaziestAvatar"
+         android:src="@drawable/laziest"
+          />
+      <TextView
+          android:id="@+id/textView4"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/laziest"
+          android:textSize="8sp"
+          app:layout_constraintEnd_toEndOf="@+id/imageView14"
+          app:layout_constraintStart_toStartOf="@+id/imageView14"
+          app:layout_constraintTop_toBottomOf="@+id/imageView14"
           />
     </android.support.constraint.ConstraintLayout>
   </android.support.constraint.ConstraintLayout>

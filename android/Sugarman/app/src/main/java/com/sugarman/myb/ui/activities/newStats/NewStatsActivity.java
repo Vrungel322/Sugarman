@@ -74,6 +74,10 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
   @BindView(R.id.tvFastestSteps) TextView mTextViewFastestSteps;
   @BindView(R.id.ivFastestAvatar) ImageView mImageViewFastestAvatar;
   @BindView(R.id.ivFastestAvatarBorder) ImageView mImageViewFastestAvatarBorder;
+  @BindView(R.id.tvLaziestName) TextView mTextViewLaziestName;
+  @BindView(R.id.tvLaziestSteps) TextView mTextViewLaziestSteps;
+  @BindView(R.id.ivLaziestAvatar) ImageView mImageViewLaziestAvatar;
+  @BindView(R.id.ivLaziestAvatarBorder) ImageView mImageViewLaziestAvatarBorder;
   private Tracking mTracking;
   private List<Stats> mStats = new ArrayList<>();
   private List<String> mStatsDays = new ArrayList<>();
@@ -383,7 +387,6 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     YoYo.with(Techniques.SlideInLeft).duration(750).playOn(mTextViewDaysAboveAverageValue);
   }
 
-
   /**
    * Heroviy metod - cod skopirovan iz ChallengeFragment
    */
@@ -485,7 +488,6 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
           .into(mImageViewFastestAvatar);
 
       //FastestColoring
-
       if (fastest.getSteps() < 5000) {
         color = 0xffe10f0f;
       } else if (fastest.getSteps() >= 5000 && fastest.getSteps() < 7500) {
@@ -508,6 +510,54 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
           .transform(new CropCircleTransformation(0xffff0000, 1))
           .into(mImageViewFastestAvatar);
     }
+
+    //Laziest
+    Member laziest = members[0];
+
+    //LaziestName
+    str = laziest.getName();
+    str = str.replaceAll("( +)", " ").trim();
+    if (str.length() > 0 && str.contains(" ")) {
+      name = str.substring(0, (laziest.getName().indexOf(" ")));
+    } else {
+      name = str;
+    }
+    mTextViewLaziestName.setText(name);
+
+    //LaziestSteps
+    mTextViewLaziestSteps.setText(String.format(Locale.US, "%,d", laziest.getSteps()));
+    for (int i = 0; i < mTracking.getMembers().length; i++) {
+      if (laziest.getId().equals(SharedPreferenceHelper.getUserId())) {
+        mTextViewLaziestSteps.setText(String.format(Locale.US, "%,d",
+            SharedPreferenceHelper.getReportStatsLocal(
+                SharedPreferenceHelper.getUserId())[0].getStepsCount()));
+      }
+    }
+
+    //LaziestAvatar
+    if (laziest.getPictureUrl() == null
+        || laziest.getPictureUrl().equals("")
+        || laziest.getPictureUrl().equals(" ")) {
+      laziest.setPictureUrl("https://sugarman-myb.s3.amazonaws.com/Group_New.png");
+    }
+    CustomPicasso.with(mImageViewLaziestAvatar.getContext())
+        .load(laziest.getPictureUrl())
+        .placeholder(R.drawable.ic_gray_avatar)
+        .error(R.drawable.ic_red_avatar)
+        .transform(new CropCircleTransformation(0xffff0000, 1))
+        .into(mImageViewLaziestAvatar);
+
+    //LaziestColoring
+    if (laziest.getSteps() < 5000) {
+      color = 0xffe10f0f;
+    } else if (laziest.getSteps() >= 5000 && laziest.getSteps() < 7500) {
+      color = 0xffeb6117;
+    } else if (laziest.getSteps() >= 7500 && laziest.getSteps() < 10000) {
+      color = 0xffF6B147;
+    }
+    mImageViewLaziestAvatarBorder.setColorFilter(color);
+    mTextViewLaziestName.setTextColor(color);
+    mTextViewLaziestSteps.setTextColor(color);
   }
 
   @Override public void showStats(List<Stats> statsCached) {
