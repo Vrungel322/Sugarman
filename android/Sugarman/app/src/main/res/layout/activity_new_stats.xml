@@ -55,7 +55,6 @@
         android:layout_height="250dp"
         android:layout_marginTop="8dp"
         android:overScrollMode="ifContentScrolls"
-        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvStatsWeek"
@@ -326,7 +325,6 @@
         android:id="@+id/clGroupMembersPreview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#8bed41c2"
         app:layout_constraintTop_toBottomOf="@+id/ivStatsTab"
 
         >

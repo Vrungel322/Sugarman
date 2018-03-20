@@ -101,6 +101,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
   }
 
   private void setUpUI() {
+    Timber.e("setUpUI" + (mTracking != null));
     if (mTracking != null) {
       mTextViewName.setText(mTracking.getGroup().getName());
       CustomPicasso.with(this)
@@ -110,8 +111,10 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
           .transform(new CropSquareTransformation())
           .transform(new MaskTransformation(this, R.drawable.profile_mask, false, 0xffffffff))
           .into(mImageViewAvatar);
+      mConstraintLayoutGroupMembersPreview.setVisibility(View.VISIBLE);
       setupGroupsPreview();
     } else {
+      mConstraintLayoutGroupMembersPreview.setVisibility(View.GONE);
       mTextViewName.setText(SharedPreferenceHelper.getUserName());
       CustomPicasso.with(this)
           .load(SharedPreferenceHelper.getAvatar())
