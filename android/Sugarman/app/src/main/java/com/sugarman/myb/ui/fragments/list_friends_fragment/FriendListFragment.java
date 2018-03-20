@@ -243,6 +243,7 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
       startActivity(intent);
     })
         .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.cancel())
+        .setIcon(R.drawable.key_icon)
         .create()
         .show();
   }
