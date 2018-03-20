@@ -29,8 +29,8 @@
         android:layout_width="60dp"
         android:layout_height="40dp"
         android:layout_gravity="center"
-        android:visibility="gone"
         android:indeterminateDrawable="@drawable/animation_progress_bar"
+        android:visibility="gone"
         />
     <LinearLayout
         android:layout_width="match_parent"
@@ -99,8 +99,9 @@
                 android:id="@+id/tvTotalFbCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="0"
                 android:textSize="8sp"
-                tools:text="1555"
+
                 />
 
           </LinearLayout>
@@ -121,8 +122,9 @@
                 android:id="@+id/tvInAppFbCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="0"
                 android:textSize="8sp"
-                tools:text="1555"
+
                 />
 
           </LinearLayout>
@@ -159,8 +161,9 @@
                 android:id="@+id/tvTotalVkCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="0"
                 android:textSize="8sp"
-                tools:text="1555"
+
                 />
 
           </LinearLayout>
@@ -181,8 +184,9 @@
                 android:id="@+id/tvInAppVkCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="0"
                 android:textSize="8sp"
-                tools:text="1555"
+
                 />
 
           </LinearLayout>
@@ -218,8 +222,9 @@
                 android:id="@+id/tvTotalPhCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="0"
                 android:textSize="8sp"
-                tools:text="1555"
+
                 />
 
           </LinearLayout>
@@ -240,8 +245,9 @@
                 android:id="@+id/tvInAppPhCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="0"
                 android:textSize="8sp"
-                tools:text="1555"
+
                 />
 
           </LinearLayout>
