@@ -268,6 +268,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       mTextViewStatsPersonal.setTextColor(Color.WHITE);
       fillByStatsPersonal(STATS_COUNT_PERSONAL_21);
     }
+    fillDetailsCard();
   }
 
   private void fillByStatsPersonal(int statsCount) {
