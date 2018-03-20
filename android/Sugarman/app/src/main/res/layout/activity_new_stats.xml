@@ -361,10 +361,10 @@
           android:layout_marginEnd="8dp"
           android:layout_marginStart="16dp"
           android:layout_marginTop="8dp"
+          android:background="@drawable/ic_red_avatar"
           app:layout_constraintEnd_toEndOf="@+id/tvBestSteps"
           app:layout_constraintStart_toStartOf="@+id/tvBestSteps"
           app:layout_constraintTop_toBottomOf="@+id/tvBestSteps"
-          android:background="@drawable/ic_red_avatar"
           />
       <ImageView
           android:id="@+id/ivBestAvatarBorder"
@@ -373,31 +373,124 @@
           android:layout_marginEnd="8dp"
           android:layout_marginStart="16dp"
           android:layout_marginTop="8dp"
+          android:src="@drawable/rescue_circle_border"
           android:tint="#7ECC10"
           app:layout_constraintEnd_toEndOf="@+id/tvBestSteps"
           app:layout_constraintStart_toStartOf="@+id/tvBestSteps"
           app:layout_constraintTop_toBottomOf="@+id/tvBestSteps"
-          android:background="@drawable/rescue_circle_border"
           />
       <ImageView
           android:id="@+id/imageView6"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginStart="8dp"
+          android:background="@drawable/best"
           app:layout_constraintBottom_toBottomOf="@+id/ivBestAvatarBorder"
           app:layout_constraintEnd_toEndOf="@+id/tvBestSteps"
           app:layout_constraintStart_toStartOf="@+id/tvBestSteps"
           app:layout_constraintTop_toBottomOf="@+id/ivBestAvatar"
-          android:background="@drawable/best"
           />
       <TextView
           android:id="@+id/textView3"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="@string/best"
+          android:textSize="8sp"
           app:layout_constraintEnd_toEndOf="@+id/imageView6"
           app:layout_constraintStart_toStartOf="@+id/imageView6"
           app:layout_constraintTop_toBottomOf="@+id/imageView6"
+          />
+      <TextView
+          android:id="@+id/tvFastestName"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginEnd="8dp"
+          android:layout_marginStart="24dp"
+          android:text="tvFastestName"
+          android:textColor="#ffbb00"
+          android:textSize="10sp"
+          app:layout_constraintEnd_toStartOf="@+id/textView5"
+          app:layout_constraintStart_toEndOf="@+id/tvBestName"
+          app:layout_constraintTop_toTopOf="parent"
+          />
+      <TextView
+          android:id="@+id/tvFastestSteps"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="tvFastestSteps"
+          android:textColor="#ffbb00"
+          android:textSize="10sp"
+          app:layout_constraintEnd_toEndOf="@+id/tvFastestName"
+          app:layout_constraintStart_toStartOf="@+id/tvFastestName"
+          app:layout_constraintTop_toBottomOf="@+id/tvFastestName"
+          />
+
+      <ImageView
+          android:id="@+id/ivFastestAvatar"
+          android:layout_width="64dp"
+          android:layout_height="64dp"
+          android:layout_marginEnd="8dp"
+          android:layout_marginStart="8dp"
+          android:layout_marginTop="8dp"
+          app:layout_constraintEnd_toEndOf="@+id/tvFastestSteps"
+          app:layout_constraintStart_toStartOf="@+id/tvFastestSteps"
+          app:layout_constraintTop_toBottomOf="@+id/tvFastestSteps"
+          app:srcCompat="@drawable/ic_red_avatar"
+          />
+      <ImageView
+          android:id="@+id/ivFastestAvatarBorder"
+          android:layout_width="66dp"
+          android:layout_height="66dp"
+          android:layout_marginEnd="8dp"
+          android:layout_marginStart="8dp"
+          android:tint="#ffbb00"
+          app:layout_constraintEnd_toEndOf="@+id/tvFastestSteps"
+          app:layout_constraintStart_toStartOf="@+id/tvFastestSteps"
+          app:layout_constraintTop_toTopOf="@+id/ivFastestAvatar"
+          android:src="@drawable/rescue_circle_border"
+          />
+      <ImageView
+          android:id="@+id/imageView9"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginEnd="8dp"
+          android:layout_marginStart="8dp"
+          app:layout_constraintBottom_toBottomOf="@+id/ivFastestAvatarBorder"
+          app:layout_constraintEnd_toEndOf="@+id/tvFastestSteps"
+          app:layout_constraintStart_toStartOf="@+id/tvFastestSteps"
+          app:layout_constraintTop_toBottomOf="@+id/ivFastestAvatar"
+          android:background="@drawable/fastest"
+          />
+      <TextView
+          android:id="@+id/textView8"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="8dp"
+          android:text="DAILY SUGARMAN"
+          android:textSize="8sp"
+          app:layout_constraintEnd_toEndOf="@+id/imageView9"
+          app:layout_constraintStart_toStartOf="@+id/imageView9"
+          app:layout_constraintTop_toBottomOf="@+id/imageView9"
+          />
+      <TextView
+          android:id="@+id/textView5"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginEnd="32dp"
+          android:text="TextView"
+          android:textSize="10sp"
+          app:layout_constraintEnd_toStartOf="@+id/textView6"
+          app:layout_constraintTop_toTopOf="parent"
+          />
+      <TextView
+          android:id="@+id/textView6"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginEnd="16dp"
+          android:text="TextView"
+          android:textSize="10sp"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
           />
     </android.support.constraint.ConstraintLayout>
   </android.support.constraint.ConstraintLayout>

@@ -70,6 +70,10 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
   @BindView(R.id.tvBestSteps) TextView mTextViewBestSteps;
   @BindView(R.id.ivBestAvatar) ImageView mImageViewBestAvatar;
   @BindView(R.id.ivBestAvatarBorder) ImageView mImageViewBestAvatarBorder;
+  @BindView(R.id.tvFastestName) TextView mTextViewFastestName;
+  @BindView(R.id.tvFastestSteps) TextView mTextViewFastestSteps;
+  @BindView(R.id.ivFastestAvatar) ImageView mImageViewFastestAvatar;
+  @BindView(R.id.ivFastestAvatarBorder) ImageView mImageViewFastestAvatarBorder;
   private Tracking mTracking;
   private List<Stats> mStats = new ArrayList<>();
   private List<String> mStatsDays = new ArrayList<>();
@@ -379,19 +383,25 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     YoYo.with(Techniques.SlideInLeft).duration(750).playOn(mTextViewDaysAboveAverageValue);
   }
 
+
+  /**
+   * Heroviy metod - cod skopirovan iz ChallengeFragment
+   */
   private void setupGroupsPreview() {
     final Member[] members = mTracking.getMembers();
+    String str = "";
+    String name = str;
+    int color = 0xff54cc14;
 
+    //Best
     if (members.length > 0) {
       Arrays.sort(members, Member.BY_STEPS_ASC);
       Member best = members[members.length - 1];
-      //Best name
-      String str = "";
+      //BestName
       str = best.getName() == null ? "" : best.getName();
       Timber.e("Best " + best.getName());
       if (str.contains(" ")) str = str.replaceAll("( +)", " ").trim();
 
-      String name = str;
       if (str.length() > 0 && str.contains(" ")) {
         name = str.substring(0, (best.getName().indexOf(" ")));
 
@@ -418,7 +428,6 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
           .into(mImageViewBestAvatar);
 
       //BestColoring
-      int color = 0xff54cc14;
       if (best.getSteps() < 5000) {
         color = 0xffe10f0f;
       } else if (best.getSteps() >= 5000 && best.getSteps() < 7500) {
@@ -429,6 +438,75 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       mImageViewBestAvatarBorder.setColorFilter(color);
       mTextViewBestName.setTextColor(color);
       mTextViewBestSteps.setTextColor(color);
+    }
+
+    if (mTracking.hasDailyWinner()) {
+      Member fastest = mTracking.getDailySugarman().getUser();
+
+      //FastestName
+      str = fastest.getName();
+      str = str.replaceAll("( +)", " ").trim();
+      if (str.length() > 0) {
+        if (str.contains(" ")) {
+          name = str.substring(0, (fastest.getName().indexOf(" ")));
+        } else {
+          name = str;
+        }
+      }
+
+      mTextViewFastestName.setText(name);
+      for (Member f : members) {
+        if (fastest.getId().equals(f.getId())) {
+          mTextViewFastestName.setText(String.format(Locale.US, "%,d", f.getSteps()));
+        }
+      }
+
+      //FastestSteps
+      for (Member f : members) {
+        if (fastest.getId().equals(f.getId())) {
+          mTextViewFastestSteps.setText(String.format(Locale.US, "%,d", f.getSteps()));
+        }
+      }
+      //this is fixing of server bug, but on client
+      for (int i = 0; i < mTracking.getMembers().length; i++) {
+        if (fastest.getId().equals(SharedPreferenceHelper.getUserId())) {
+          mTextViewFastestSteps.setText(String.format(Locale.US, "%,d",
+              SharedPreferenceHelper.getReportStatsLocal(
+                  SharedPreferenceHelper.getUserId())[0].getStepsCount()));
+        }
+      }
+
+      //FastestAvatar
+      CustomPicasso.with(mImageViewFastestAvatar.getContext())
+          .load(fastest.getPictureUrl())
+          .placeholder(R.drawable.ic_gray_avatar)
+          .error(R.drawable.ic_red_avatar)
+          .transform(new CropCircleTransformation(0xffff0000, 1))
+          .into(mImageViewFastestAvatar);
+
+      //FastestColoring
+
+      if (fastest.getSteps() < 5000) {
+        color = 0xffe10f0f;
+      } else if (fastest.getSteps() >= 5000 && fastest.getSteps() < 7500) {
+        color = 0xffeb6117;
+      } else if (fastest.getSteps() >= 7500 && fastest.getSteps() < 10000) {
+        color = 0xffF6B147;
+      }
+
+      mImageViewFastestAvatarBorder.setColorFilter(color);
+      mTextViewFastestName.setTextColor(color);
+      mTextViewFastestSteps.setTextColor(color);
+    } else {
+      mTextViewFastestName.setText(getResources().getString(R.string.sugarman_is));
+      mTextViewFastestSteps.setText(getResources().getString(R.string.todays_fastest));
+      CustomPicasso.with(mImageViewFastestAvatar.getContext())
+          .load(R.drawable.sugar_next)
+          //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+          .placeholder(R.drawable.ic_gray_avatar)
+          .error(R.drawable.ic_red_avatar)
+          .transform(new CropCircleTransformation(0xffff0000, 1))
+          .into(mImageViewFastestAvatar);
     }
   }
 
