@@ -14,17 +14,72 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.sugarman.myb.App;
 import com.sugarman.myb.api.models.responses.me.stats.Stats;
 import com.sugarman.myb.base.BasicPresenter;
+import com.sugarman.myb.constants.Constants;
+import com.sugarman.myb.data.db.DbRepositoryStats;
+import com.sugarman.myb.utils.ThreadSchedulers;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.inject.Inject;
+import rx.Observable;
+import rx.Subscription;
+import timber.log.Timber;
 
 /**
  * Created by nikita on 15.03.2018.
  */
 @InjectViewState public class NewStatsActivityPresenter
     extends BasicPresenter<INewStatsActivityView> {
+  @Inject DbRepositoryStats mDbRepositoryStats;
+  private boolean needToupdateData;
   @Override protected void inject() {
     App.getAppComponent().inject(this);
+  }
+
+  @Override protected void onFirstViewAttach() {
+    super.onFirstViewAttach();
+    fetchStats();
+  }
+
+  /**
+   * make query if even one stat is empty (has FAKE_STEPS_COUNT), and update all stats
+   */
+  public void fetchStats() {
+    List<Stats> statsCached = mDbRepositoryStats.getAllEntities(21);
+    for (Stats s : statsCached) {
+      if (s.getStepsCount() == Constants.FAKE_STEPS_COUNT) {
+        needToupdateData = true;
+      }
+    }
+    Timber.e("fetchStats needToupdateData:" + needToupdateData);
+
+    if (!needToupdateData) {
+      getViewState().showStats(statsCached);
+    } else {
+
+      Timber.e("fetchStats");
+      Subscription subscription = mDataManager.fetchStats()
+          .filter(statsResponseResponse -> statsResponseResponse.body().getResult() != null)
+          .concatMap(
+              statsResponseResponse -> Observable.just(statsResponseResponse.body().getResult()))
+          //.concatMap(stats -> {
+          //  Collections.reverse(Arrays.asList(stats));
+          //  return Observable.just(stats);
+          //})
+          .concatMap(Observable::from)
+          .concatMap(stats -> {
+            mDbRepositoryStats.saveEntity(stats);
+            return Observable.just(stats);
+          })
+          .toList()
+          .compose(ThreadSchedulers.applySchedulers())
+          .subscribe(statsList -> {
+            Timber.e("fetchStats statsList.size = " + statsList.size());
+
+            getViewState().showStats(statsList);
+          }, Throwable::printStackTrace);
+      addToUnsubscription(subscription);
+    }
   }
 
   public BarData generateBarData(List<Stats> stats) {

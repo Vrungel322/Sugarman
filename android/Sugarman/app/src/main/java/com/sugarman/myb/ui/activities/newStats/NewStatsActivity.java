@@ -80,8 +80,6 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
   }
 
   private void setUpUI() {
-    changeStatsOnChart(mTextViewStatsPersonal);
-    changeStatsOnDescriptionDetails(mImageViewStatsSteps);
     if (mTracking != null) {
       mTextViewName.setText(mTracking.getGroup().getName());
       CustomPicasso.with(this)
@@ -368,5 +366,10 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     YoYo.with(Techniques.SlideInLeft).duration(750).playOn(mImageViewDaysAboveArerage);
     YoYo.with(Techniques.SlideInLeft).duration(750).playOn(mTextViewAboveAverageText);
     YoYo.with(Techniques.SlideInLeft).duration(750).playOn(mTextViewDaysAboveAverageValue);
+  }
+
+  @Override public void showStats(List<Stats> statsCached) {
+    changeStatsOnChart(mTextViewStatsPersonal);
+    changeStatsOnDescriptionDetails(mImageViewStatsSteps);
   }
 }
