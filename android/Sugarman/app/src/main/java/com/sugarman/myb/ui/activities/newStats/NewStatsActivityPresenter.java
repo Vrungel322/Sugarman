@@ -92,6 +92,7 @@ import java.util.List;
     return new LineData(dataSets);
   }
 
+  //STEPS
   public int findMaxSteps(List<Stats> stats) {
     List<Integer> integers = new ArrayList<>();
     for (int i = 0; i < stats.size(); i++) {
@@ -109,13 +110,15 @@ import java.util.List;
   }
 
   public float findAverageSteps(List<Stats> stats) {
-    //Integer integer = 0;
-    //for (int i = 0; i < stats.size(); i++) {
-    //  integer += stats.get(i).getStepsCount();
-    //}
-    return findMinSteps(stats) + findMaxSteps(stats) / 2;
+    Integer integer = 0;
+    for (int i = 0; i < stats.size(); i++) {
+      integer += stats.get(i).getStepsCount();
+    }
+    //return findMinSteps(stats) + findMaxSteps(stats) / 2;
+    return integer / stats.size();
   }
 
+  //KM
   public float findMaxKm(List<Stats> stats) {
     return findMaxSteps(stats) * 0.000762f;
   }
@@ -128,6 +131,7 @@ import java.util.List;
     return (findAverageSteps(stats) * 0.000762f);
   }
 
+  //KCAL
   public float findMaxKcal(List<Stats> stats) {
     return (findMaxSteps(stats) * 0.0435f);
   }

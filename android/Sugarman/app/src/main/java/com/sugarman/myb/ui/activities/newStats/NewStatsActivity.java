@@ -75,7 +75,6 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
         .containsKey(Constants.TRACKING)) {
       mTracking = getIntent().getExtras().getParcelable(Constants.TRACKING);
     }
-    fillByStatsPersonal(STATS_COUNT_PERSONAL_7);
     setUpUIChart();
     setUpUI();
   }
@@ -146,17 +145,21 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
             Timber.e("onTouchDouble " + mStatsCount);
             if (mTextViewStatsDay.isSelected()) {
               // empty for now
+              fillDetailsCard();
             }
             if (mTextViewStatsWeek.isSelected()) {
               // empty for now
+              fillDetailsCard();
             }
             if (mTextViewStatsPersonal.isSelected()) { // only for personal will work double tapping
               if (mStatsCount == STATS_COUNT_PERSONAL_21) {
                 fillByStatsPersonal(STATS_COUNT_PERSONAL_7);
+                fillDetailsCard();
                 return true;
               }
               if (mStatsCount == STATS_COUNT_PERSONAL_7) {
                 fillByStatsPersonal(STATS_COUNT_PERSONAL_21);
+                fillDetailsCard();
                 return true;
               }
             }
@@ -177,6 +180,19 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
           }
         });
     mChart.setOnTouchListener((v, event) -> gd.onTouchEvent(event));
+  }
+
+  private void fillDetailsCard() {
+    if (mImageViewStatsKm.isSelected()){
+      fillDetailsByStatsKm(mStats);
+    }
+    if (mImageViewStatsSteps.isSelected()){
+      Timber.e("mImageViewStatsSteps "+mImageViewStatsSteps.isSelected());
+      fillDetailsByStatsSteps(mStats);
+    }
+    if (mImageViewStatsKcal.isSelected()){
+      fillDetailsByStatsKcal(mStats);
+    }
   }
 
   private void setUpKm() {
@@ -250,7 +266,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       }
       mStatsSteps.add(mStats.get(i).getStepsCount());
       Timber.e("onTouchDouble mCountOfStepsForLastXDays " + mCountOfStepsForLastXDays);
-      if (mStats.get(i).getStepsCount() != -1) {
+      if (mStats.get(i).getStepsCount() != Constants.FAKE_STEPS_COUNT) {
         mCountOfStepsForLastXDays += mStats.get(i).getStepsCount();
       }
     }

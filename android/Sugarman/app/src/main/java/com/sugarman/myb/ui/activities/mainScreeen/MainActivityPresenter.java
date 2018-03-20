@@ -1,7 +1,6 @@
 package com.sugarman.myb.ui.activities.mainScreeen;
 
 import android.content.Intent;
-import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import com.arellomobile.mvp.InjectViewState;
 import com.sugarman.myb.App;
@@ -331,7 +330,7 @@ import timber.log.Timber;
     ImageModel anim = mDataManager.getAnimationByNameFromRealm(name);
     if (anim != null) {
       List<Drawable> animationList = new ArrayList<>();
-      AnimationDrawable animationDrawable = new AnimationDrawable();
+      //AnimationDrawable animationDrawable = new AnimationDrawable();
       for (int j = 0; j < anim.getImageUrl().size(); j++) {
         String framePath = "Pustaya stroka";
         try {
