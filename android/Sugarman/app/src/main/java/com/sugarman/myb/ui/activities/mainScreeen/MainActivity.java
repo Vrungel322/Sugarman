@@ -863,7 +863,7 @@ public class MainActivity extends GetUserInfoActivity
 
   private void testStartNewStats(Tracking result) {
     Intent intent = new Intent(getApplicationContext(), NewStatsActivity.class);
-    //intent.putExtra(Constants.TRACKING,result);
+    intent.putExtra(Constants.TRACKING,result);
     startActivity(intent);
   }
 

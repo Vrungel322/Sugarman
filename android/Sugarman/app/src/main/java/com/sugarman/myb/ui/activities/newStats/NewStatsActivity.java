@@ -3,6 +3,7 @@ package com.sugarman.myb.ui.activities.newStats;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,14 +21,17 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.CombinedData;
 import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.R;
+import com.sugarman.myb.api.models.responses.Member;
 import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.api.models.responses.me.stats.Stats;
 import com.sugarman.myb.base.BasicActivity;
 import com.sugarman.myb.constants.Constants;
+import com.sugarman.myb.ui.views.CropCircleTransformation;
 import com.sugarman.myb.ui.views.CropSquareTransformation;
 import com.sugarman.myb.ui.views.MaskTransformation;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -61,6 +65,11 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
   @BindView(R.id.imageView11) ImageView mImageViewDaysAboveArerage;
   @BindView(R.id.textView13) TextView mTextViewAboveAverageText;
   @BindView(R.id.tvDaysAboveAverageValue) TextView mTextViewDaysAboveAverageValue;
+  @BindView(R.id.clGroupMembersPreview) ConstraintLayout mConstraintLayoutGroupMembersPreview;
+  @BindView(R.id.tvBestName) TextView mTextViewBestName;
+  @BindView(R.id.tvBestSteps) TextView mTextViewBestSteps;
+  @BindView(R.id.ivBestAvatar) ImageView mImageViewBestAvatar;
+  @BindView(R.id.ivBestAvatarBorder) ImageView mImageViewBestAvatarBorder;
   private Tracking mTracking;
   private List<Stats> mStats = new ArrayList<>();
   private List<String> mStatsDays = new ArrayList<>();
@@ -89,6 +98,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
           .transform(new CropSquareTransformation())
           .transform(new MaskTransformation(this, R.drawable.profile_mask, false, 0xffffffff))
           .into(mImageViewAvatar);
+      setupGroupsPreview();
     } else {
       mTextViewName.setText(SharedPreferenceHelper.getUserName());
       CustomPicasso.with(this)
@@ -181,14 +191,14 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
   }
 
   private void fillDetailsCard() {
-    if (mImageViewStatsKm.isSelected()){
+    if (mImageViewStatsKm.isSelected()) {
       fillDetailsByStatsKm(mStats);
     }
-    if (mImageViewStatsSteps.isSelected()){
-      Timber.e("mImageViewStatsSteps "+mImageViewStatsSteps.isSelected());
+    if (mImageViewStatsSteps.isSelected()) {
+      Timber.e("mImageViewStatsSteps " + mImageViewStatsSteps.isSelected());
       fillDetailsByStatsSteps(mStats);
     }
-    if (mImageViewStatsKcal.isSelected()){
+    if (mImageViewStatsKcal.isSelected()) {
       fillDetailsByStatsKcal(mStats);
     }
   }
@@ -367,6 +377,59 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     YoYo.with(Techniques.SlideInLeft).duration(750).playOn(mImageViewDaysAboveArerage);
     YoYo.with(Techniques.SlideInLeft).duration(750).playOn(mTextViewAboveAverageText);
     YoYo.with(Techniques.SlideInLeft).duration(750).playOn(mTextViewDaysAboveAverageValue);
+  }
+
+  private void setupGroupsPreview() {
+    final Member[] members = mTracking.getMembers();
+
+    if (members.length > 0) {
+      Arrays.sort(members, Member.BY_STEPS_ASC);
+      Member best = members[members.length - 1];
+      //Best name
+      String str = "";
+      str = best.getName() == null ? "" : best.getName();
+      Timber.e("Best " + best.getName());
+      if (str.contains(" ")) str = str.replaceAll("( +)", " ").trim();
+
+      String name = str;
+      if (str.length() > 0 && str.contains(" ")) {
+        name = str.substring(0, (best.getName().indexOf(" ")));
+
+        mTextViewBestName.setText(name);
+      } else {
+        mTextViewBestName.setText(str);
+      }
+      //BestSteps usual user
+      mTextViewBestSteps.setText(String.format(Locale.US, "%,d", best.getSteps()));
+      //BestSteps user = me
+      for (int i = 0; i < mTracking.getMembers().length; i++) {
+        if (best.getId().equals(SharedPreferenceHelper.getUserId())) {
+          mTextViewBestSteps.setText(String.format(Locale.US, "%,d",
+              SharedPreferenceHelper.getReportStatsLocal(
+                  SharedPreferenceHelper.getUserId())[0].getStepsCount()));
+        }
+      }
+      //BestAvatar
+      CustomPicasso.with(mImageViewBestAvatar.getContext())
+          .load(best.getPictureUrl())
+          .placeholder(R.drawable.ic_gray_avatar)
+          .error(R.drawable.ic_red_avatar)
+          .transform(new CropCircleTransformation(0xff7ECC10, 1))
+          .into(mImageViewBestAvatar);
+
+      //BestColoring
+      int color = 0xff54cc14;
+      if (best.getSteps() < 5000) {
+        color = 0xffe10f0f;
+      } else if (best.getSteps() >= 5000 && best.getSteps() < 7500) {
+        color = 0xffeb6117;
+      } else if (best.getSteps() >= 7500 && best.getSteps() < 10000) {
+        color = 0xffF6B147;
+      }
+      mImageViewBestAvatarBorder.setColorFilter(color);
+      mTextViewBestName.setTextColor(color);
+      mTextViewBestSteps.setTextColor(color);
+    }
   }
 
   @Override public void showStats(List<Stats> statsCached) {
