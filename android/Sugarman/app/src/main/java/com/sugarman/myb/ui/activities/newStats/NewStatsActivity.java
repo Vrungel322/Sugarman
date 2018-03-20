@@ -287,6 +287,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     mChart.setHighlightFullBarEnabled(false);
     mChart.getBarData().setHighlightEnabled(false);
     mChart.setDrawValueAboveBar(true);
+    mChart.fitScreen();
     mChart.invalidate();
     setUpKm();
     setUpSteps();
