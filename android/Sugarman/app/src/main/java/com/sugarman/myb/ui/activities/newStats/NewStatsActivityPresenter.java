@@ -49,45 +49,41 @@ import timber.log.Timber;
   }
 
   public void startChartFlow(@Nullable Tracking tracking) throws ParseException {
-    if (tracking !=null){
-      fetchTrackingStats(tracking.getId(),tracking, tracking.isMentors());
-    }else {
+    if (tracking != null) {
+      fetchTrackingStats(tracking.getId(), tracking, tracking.isMentors());
+    } else {
       fetchStats();
     }
   }
 
-  public void fetchTrackingStats(String trackingId, Tracking tracking, boolean isMentors) throws
-      ParseException {
+  public void fetchTrackingStats(String trackingId, Tracking tracking, boolean isMentors)
+      throws ParseException {
     String startDate;
     String userJoinDate = "";
     if (!isMentors) {
       startDate = new SimpleDateFormat("yyyy-MM-dd").format(
           new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US).parse(tracking.getStartDate()));
-    }
-    else {
+    } else {
 
       Member[] members = tracking.getMembers();
 
-      for(Member m : members)
-      {
-        if(m.getId().equals(SharedPreferenceHelper.getUserId()))
-        {
+      for (Member m : members) {
+        if (m.getId().equals(SharedPreferenceHelper.getUserId())) {
           userJoinDate = m.getCreatedAt();
         }
       }
 
       Timber.e("User join date " + userJoinDate);
 
-      if(userJoinDate==null || userJoinDate.isEmpty())
-        userJoinDate = tracking.getStartDate();
+      if (userJoinDate == null || userJoinDate.isEmpty()) userJoinDate = tracking.getStartDate();
 
       startDate = new SimpleDateFormat("yyyy-MM-dd").format(
           new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US).parse(userJoinDate));
     }
     //Timber.e("fetchTrackingStats startDate: " + startDate);
 
-    int diff = DataUtils.getDateDiff(DataUtils.subtractDays(
-        new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(startDate), 1),
+    int diff = DataUtils.getDateDiff(
+        DataUtils.subtractDays(new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(startDate), 1),
         new Date(System.currentTimeMillis()), TimeUnit.DAYS).intValue();
     //Timber.e("fetchTrackingStats diff: " + diff);
 
@@ -194,11 +190,14 @@ import timber.log.Timber;
     ArrayList<Entry> entriesDashed = new ArrayList<Entry>();
 
     for (int index = 0; index < stats.size(); index++) {
-      entries.add(new Entry(index, statsSteps.get(index)));
-      //add icon to last point of chart
-      if (index == stats.size() - 1) {
-        entries.add(
-            new Entry(index, statsSteps.get(index)/*,drawable*/)); // add icon to point on chart
+      if (!stats.get(index).getLabel().trim().isEmpty()) {
+        Timber.e("generateLineData " + stats.get(index).getLabel());
+        entries.add(new Entry(index, stats.get(index).getStepsCount()));
+        //add icon to last point of chart
+        if (index == stats.size() - 1) {
+          entries.add(
+              new Entry(index, statsSteps.get(index)/*,drawable*/)); // add icon to point on chart
+        }
       }
     }
 

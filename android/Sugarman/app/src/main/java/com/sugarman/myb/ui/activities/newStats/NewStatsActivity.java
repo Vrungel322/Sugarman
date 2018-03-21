@@ -200,8 +200,9 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
                   return true;
                 }
               } else {
-                if (mStatsCount >STATS_COUNT_PERSONAL_7) {
-                  fillByStatsPersonalTrackingLast7Days(STATS_COUNT_PERSONAL_7,mStatsOfTracking.subList(0,7));
+                if (mStatsCount > STATS_COUNT_PERSONAL_7) {
+                  fillByStatsPersonalTrackingLast7Days(STATS_COUNT_PERSONAL_7,
+                      mStatsOfTracking.subList(0, 7));
                   fillDetailsCard();
                   return true;
                 }
@@ -230,7 +231,6 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
         });
     mChart.setOnTouchListener((v, event) -> gd.onTouchEvent(event));
   }
-
 
   private void fillDetailsCard() {
     if (mImageViewStatsKm.isSelected()) {
@@ -315,8 +315,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       for (Stats s : statsOfTracking) {
         Timber.e("showTrackingStats s.getStepsCount() = " + s.getStepsCount());
         if (s.getStepsCount() < 0) {
-
-          s.setStepsCount(0);
+          //s.setStepsCount(0);
         }
       }
       int k = 0;
@@ -335,7 +334,10 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
         Timber.e("index " + k++ + " " + s.getStepsCount());
       }
 
-      if (mTracking.isMentors() && statsOfTracking != null && !statsOfTracking.isEmpty() && !zeroDayremoved) {
+      if (mTracking.isMentors()
+          && statsOfTracking != null
+          && !statsOfTracking.isEmpty()
+          && !zeroDayremoved) {
         statsOfTracking.remove(0);
         zeroDayremoved = true;
       }
@@ -359,10 +361,11 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       Timber.e("onTouchDouble mCountOfStepsForLastXDays " + mCountOfStepsForLastXDays);
 
       Collections.sort(mStats, (stats, t1) -> Integer.valueOf(
-          String.valueOf(stats.getDayTimestamp()/1000 - t1.getDayTimestamp()/1000)));
+          String.valueOf(stats.getDayTimestamp() / 1000 - t1.getDayTimestamp() / 1000)));
 
       CombinedData data = new CombinedData();
 
+      Collections.reverse(mStats);
       data.setData(mPresenter.generateLineData(mStats, mStatsSteps,
           getResources().getDrawable(R.drawable.animation_progress_bar))); // line - dots
       data.setData(mPresenter.generateBarData(mStats)); // colomns
@@ -415,11 +418,13 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
         Timber.e("index " + k++ + " " + s.getStepsCount());
       }
 
-      if (mTracking.isMentors() && statsOfTracking != null && !statsOfTracking.isEmpty() && !zeroDayremoved) {
+      if (mTracking.isMentors()
+          && statsOfTracking != null
+          && !statsOfTracking.isEmpty()
+          && !zeroDayremoved) {
         statsOfTracking.remove(0);
         zeroDayremoved = true;
       }
-
 
       mStats.addAll(statsOfTracking);
       Timber.e("onTouchDouble fillByStatsPersonal " + mStats.size());
@@ -440,10 +445,10 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       Timber.e("onTouchDouble mCountOfStepsForLastXDays " + mCountOfStepsForLastXDays);
 
       Collections.sort(mStats, (stats, t1) -> Integer.valueOf(
-          String.valueOf(stats.getDayTimestamp()/1000 - t1.getDayTimestamp()/1000)));
+          String.valueOf(stats.getDayTimestamp() / 1000 - t1.getDayTimestamp() / 1000)));
 
       CombinedData data = new CombinedData();
-
+      Collections.reverse(mStats);
       data.setData(mPresenter.generateLineData(mStats, mStatsSteps,
           getResources().getDrawable(R.drawable.animation_progress_bar))); // line - dots
       data.setData(mPresenter.generateBarData(mStats)); // colomns
@@ -462,7 +467,6 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       setUpSteps();
       setUpKcal();
     }
-
   }
 
   private void fillByStatsPersonal(int statsCount) {
