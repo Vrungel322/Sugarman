@@ -454,7 +454,7 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
   }
 
   public static void setTodayDate(String date) {
-    Timber.e("first Today date updated " + date);
+    //Timber.e("first Today date updated " + date);
     putString("todayDate", date);
   }
 
