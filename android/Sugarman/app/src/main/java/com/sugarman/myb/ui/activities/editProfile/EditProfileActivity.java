@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -117,6 +118,28 @@ public class EditProfileActivity extends BasicActivity
       return true;
     }
     return false;
+  }
+
+  private static boolean compare(Bitmap b1, Bitmap b2) {
+    if (b1.getWidth() == b2.getWidth() && b1.getHeight() == b2.getHeight()) {
+      int[] pixels1 = new int[b1.getWidth() * b1.getHeight()];
+      int[] pixels2 = new int[b2.getWidth() * b2.getHeight()];
+      b1.getPixels(pixels1, 0, b1.getWidth(), 0, 0, b1.getWidth(), b1.getHeight());
+      b2.getPixels(pixels2, 0, b2.getWidth(), 0, 0, b2.getWidth(), b2.getHeight());
+      if (Arrays.equals(pixels1, pixels2)) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  public static Bitmap rotateImage(Bitmap source, float angle) {
+    Matrix matrix = new Matrix();
+    matrix.postRotate(angle);
+    return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
   }
 
   @Override protected void onCreate(Bundle savedInstanceState) {
@@ -447,22 +470,6 @@ public class EditProfileActivity extends BasicActivity
     }
   }
 
-  private static boolean compare(Bitmap b1, Bitmap b2) {
-    if (b1.getWidth() == b2.getWidth() && b1.getHeight() == b2.getHeight()) {
-      int[] pixels1 = new int[b1.getWidth() * b1.getHeight()];
-      int[] pixels2 = new int[b2.getWidth() * b2.getHeight()];
-      b1.getPixels(pixels1, 0, b1.getWidth(), 0, 0, b1.getWidth(), b1.getHeight());
-      b2.getPixels(pixels2, 0, b2.getWidth(), 0, 0, b2.getWidth(), b2.getHeight());
-      if (Arrays.equals(pixels1, pixels2)) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
-    }
-  }
-
   @Override public void onBackPressed() {
     ivBackClicked();
   }
@@ -588,6 +595,7 @@ public class EditProfileActivity extends BasicActivity
     MaskImage mi = new MaskImage(EditProfileActivity.this, R.drawable.mask, false, 0xfff);
     bitmap = mi.crop(bitmap);
     bitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, true);
+
     selectedFile = new File(SaveFileHelper.saveFileTemp(bitmap, getApplicationContext()));
     bitmap = mi.transform(bitmap);
     profileAvatar.setImageBitmap(bitmap);
@@ -605,11 +613,12 @@ public class EditProfileActivity extends BasicActivity
     MaskImage mi = new MaskImage(EditProfileActivity.this, R.drawable.mask, false, 0xfff);
     bitmap = mi.crop(bitmap);
     bitmap = Bitmap.createScaledBitmap(bitmap, 100, 100, true);
+    if (DeviceHelper.getDeviceName().contains("Samsung")) bitmap = rotateImage(bitmap, 90);
     selectedFile = new File(SaveFileHelper.saveFileTemp(bitmap, getApplicationContext()));
+    Timber.e("processCaptureCamera");
     bitmap = mi.transform(bitmap);
     profileAvatar.setImageBitmap(bitmap);
     mi.clearBitmap();
-
 
     if (!TextUtils.isEmpty(cameraUri)) {
       Uri uri = Uri.parse(cameraUri);
