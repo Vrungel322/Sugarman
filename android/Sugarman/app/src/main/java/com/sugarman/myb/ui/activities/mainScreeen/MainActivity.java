@@ -30,6 +30,8 @@ import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
+import butterknife.OnClick;
+import butterknife.OnLongClick;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.facebook.FacebookException;
 import com.google.android.gms.ads.identifier.AdvertisingIdClient;
@@ -861,12 +863,6 @@ public class MainActivity extends GetUserInfoActivity
     spiWalkData.setVisibility(View.GONE);
   }
 
-  private void testStartNewStats(Tracking result) {
-    Intent intent = new Intent(getApplicationContext(), NewStatsActivity.class);
-    intent.putExtra(Constants.TRACKING,result);
-    startActivity(intent);
-  }
-
   @Override public void onRequestPermissionsResult(int requestCode, String permissions[],
       int[] grantResults) {
     switch (requestCode) {
@@ -1633,7 +1629,6 @@ public class MainActivity extends GetUserInfoActivity
   }
 
   @Override public void updateCurrentTracking(TrackingInfoResponse body) {
-    testStartNewStats(body.getResult());
     List<Tracking> temp = new ArrayList<>();
     int position = 0;
     if (!body.getResult().isMentors()) {
@@ -2162,5 +2157,22 @@ public class MainActivity extends GetUserInfoActivity
             getFilesDir().getAbsolutePath());
       });
     }
+  }
+
+  //Test
+  @OnClick(R.id.iv_animated_man)
+  void testClicked(){
+    Intent intent = new Intent(getApplicationContext(), NewStatsActivity.class);
+    intent.putExtra(Constants.TRACKING,trackingsAdapter.getTracking(
+        vpTrackings.getCurrentItem()));
+    startActivity(intent);
+  }
+
+  @OnLongClick(R.id.iv_animated_man)
+  boolean testLongClicked(){
+    Intent intent = new Intent(getApplicationContext(), NewStatsActivity.class);
+    //intent.putExtra(Constants.TRACKING,result);
+    startActivity(intent);
+    return true;
   }
 }
