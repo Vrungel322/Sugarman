@@ -30,9 +30,12 @@ import com.sugarman.myb.ui.views.CropCircleTransformation;
 import com.sugarman.myb.ui.views.CropSquareTransformation;
 import com.sugarman.myb.ui.views.MaskTransformation;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import timber.log.Timber;
@@ -40,6 +43,7 @@ import timber.log.Timber;
 public class NewStatsActivity extends BasicActivity implements INewStatsActivityView {
   public static final int STATS_COUNT_PERSONAL_7 = 7;
   public static final int STATS_COUNT_PERSONAL_21 = 21;
+  private static final int STATS_COUNT_PERSONAL_22 = 22;
   @InjectPresenter NewStatsActivityPresenter mPresenter;
   @BindView(R.id.ivAvatar) ImageView mImageViewAvatar;
   @BindView(R.id.tvName) TextView mTextViewName;
@@ -88,6 +92,8 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
   private List<Integer> mStatsSteps = new ArrayList<>();
   private int mStatsCount = 0;
   private int mCountOfStepsForLastXDays = 0;
+  private List<Stats> mStatsOfTracking = new ArrayList<>();
+  private boolean zeroDayremoved;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_new_stats);
@@ -96,12 +102,17 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
         .containsKey(Constants.TRACKING)) {
       mTracking = getIntent().getExtras().getParcelable(Constants.TRACKING);
     }
-    setUpUIChart();
     setUpUI();
+    //setUpUIChart();
   }
 
   private void setUpUI() {
     Timber.e("setUpUI" + (mTracking != null));
+    try {
+      mPresenter.startChartFlow(mTracking);
+    } catch (ParseException e) {
+      e.printStackTrace();
+    }
     if (mTracking != null) {
       mTextViewName.setText(mTracking.getGroup().getName());
       CustomPicasso.with(this)
@@ -160,7 +171,9 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // make text only on bottom
     xAxis.setAxisMinimum(0f);
     xAxis.setGranularity(1f);
-    xAxis.setValueFormatter((value, axis) -> mStatsDays.get((int) value % mStatsDays.size()));
+    if (!mStatsDays.isEmpty() && mStatsDays.size() != 0) {
+      //xAxis.setValueFormatter((value, axis) -> mStatsDays.get((int) value % mStatsDays.size()));
+    }
     GestureDetector gd =
         new GestureDetector(getApplicationContext(), new GestureDetector.SimpleOnGestureListener() {
 
@@ -175,15 +188,28 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
               fillDetailsCard();
             }
             if (mTextViewStatsPersonal.isSelected()) { // only for personal will work double tapping
-              if (mStatsCount == STATS_COUNT_PERSONAL_21) {
-                fillByStatsPersonal(STATS_COUNT_PERSONAL_7);
-                fillDetailsCard();
-                return true;
-              }
-              if (mStatsCount == STATS_COUNT_PERSONAL_7) {
-                fillByStatsPersonal(STATS_COUNT_PERSONAL_21);
-                fillDetailsCard();
-                return true;
+              if (mTracking == null) {
+                if (mStatsCount == STATS_COUNT_PERSONAL_21) {
+                  fillByStatsPersonal(STATS_COUNT_PERSONAL_7);
+                  fillDetailsCard();
+                  return true;
+                }
+                if (mStatsCount == STATS_COUNT_PERSONAL_7) {
+                  fillByStatsPersonal(STATS_COUNT_PERSONAL_21);
+                  fillDetailsCard();
+                  return true;
+                }
+              } else {
+                if (mStatsCount >STATS_COUNT_PERSONAL_7) {
+                  fillByStatsPersonalTrackingLast7Days(STATS_COUNT_PERSONAL_7,mStatsOfTracking.subList(0,7));
+                  fillDetailsCard();
+                  return true;
+                }
+                if (mStatsCount <= STATS_COUNT_PERSONAL_7) {
+                  fillByStatsPersonalTracking(mStatsOfTracking);
+                  fillDetailsCard();
+                  return true;
+                }
               }
             }
 
@@ -204,6 +230,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
         });
     mChart.setOnTouchListener((v, event) -> gd.onTouchEvent(event));
   }
+
 
   private void fillDetailsCard() {
     if (mImageViewStatsKm.isSelected()) {
@@ -266,9 +293,176 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       mTextViewStatsWeek.setTextColor(Color.RED);
       mTextViewStatsPersonal.setSelected(true);
       mTextViewStatsPersonal.setTextColor(Color.WHITE);
-      fillByStatsPersonal(STATS_COUNT_PERSONAL_21);
+      if (mTracking == null) {
+        fillByStatsPersonal(STATS_COUNT_PERSONAL_21);
+      } else {
+        Timber.e("changeStatsOnChart " + mStatsOfTracking);
+        fillByStatsPersonalTracking(mStatsOfTracking);
+      }
     }
     fillDetailsCard();
+  }
+
+  private void fillByStatsPersonalTracking(List<Stats> statsOfTracking) {
+    mStatsCount = statsOfTracking.size();
+    mStats.clear();
+    mStatsDays.clear();
+    mStatsSteps.clear();
+    mCountOfStepsForLastXDays = 0;
+
+    if (statsOfTracking != null && statsOfTracking.size() != 0) {
+      Timber.e("showStats size = " + statsOfTracking.size());
+      for (Stats s : statsOfTracking) {
+        Timber.e("showTrackingStats s.getStepsCount() = " + s.getStepsCount());
+        if (s.getStepsCount() < 0) {
+
+          s.setStepsCount(0);
+        }
+      }
+      int k = 0;
+      Timber.e("Start date " + mTracking.getStartDate());
+
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
+      try {
+        Date date = sdf.parse(mTracking.getStartDate());
+        Timber.e("showTrackingStats Start time: " + date.getTime());
+      } catch (ParseException e) {
+        e.printStackTrace();
+      }
+
+      for (Stats s : statsOfTracking) {
+        Timber.e("showTrackingStats " + s.getDayTimestamp());
+        Timber.e("index " + k++ + " " + s.getStepsCount());
+      }
+
+      if (mTracking.isMentors() && statsOfTracking != null && !statsOfTracking.isEmpty() && !zeroDayremoved) {
+        statsOfTracking.remove(0);
+        zeroDayremoved = true;
+      }
+
+      mStats.addAll(statsOfTracking);
+      Timber.e("onTouchDouble fillByStatsPersonal " + mStats.size());
+
+      for (int i = 0; i < mStats.size(); i++) {
+        if (mStatsCount == STATS_COUNT_PERSONAL_21) {
+          mStatsDays.add(String.valueOf(i + 1));
+        }
+        if (mStatsCount == STATS_COUNT_PERSONAL_7) {
+          mStatsDays.add(getString(R.string.day) + " " + String.valueOf(i + 1));
+        }
+        mStatsSteps.add(mStats.get(i).getStepsCount());
+        Timber.e("onTouchDouble mCountOfStepsForLastXDays " + mCountOfStepsForLastXDays);
+        if (mStats.get(i).getStepsCount() != Constants.FAKE_STEPS_COUNT) {
+          mCountOfStepsForLastXDays += mStats.get(i).getStepsCount();
+        }
+      }
+      Timber.e("onTouchDouble mCountOfStepsForLastXDays " + mCountOfStepsForLastXDays);
+
+      Collections.sort(mStats, (stats, t1) -> Integer.valueOf(
+          String.valueOf(stats.getDayTimestamp()/1000 - t1.getDayTimestamp()/1000)));
+
+      CombinedData data = new CombinedData();
+
+      data.setData(mPresenter.generateLineData(mStats, mStatsSteps,
+          getResources().getDrawable(R.drawable.animation_progress_bar))); // line - dots
+      data.setData(mPresenter.generateBarData(mStats)); // colomns
+
+      mChart.getXAxis().setAxisMaximum(data.getXMax() + 0.25f);
+      mChart.setData(null);
+      mChart.setData(data);
+      mChart.getBarData().setBarWidth(100);
+      mChart.setDrawBarShadow(false);
+      mChart.setHighlightFullBarEnabled(false);
+      mChart.getBarData().setHighlightEnabled(false);
+      mChart.setDrawValueAboveBar(true);
+      mChart.fitScreen();
+      mChart.invalidate();
+      setUpKm();
+      setUpSteps();
+      setUpKcal();
+    }
+  }
+
+  private void fillByStatsPersonalTrackingLast7Days(int last7ays, List<Stats> statsOfTracking) {
+    mStatsCount = statsOfTracking.size();
+    mStats.clear();
+    mStatsDays.clear();
+    mStatsSteps.clear();
+    mCountOfStepsForLastXDays = 0;
+
+    if (statsOfTracking != null && statsOfTracking.size() != 0) {
+      Timber.e("showStats size = " + statsOfTracking.size());
+      for (Stats s : statsOfTracking) {
+        Timber.e("showTrackingStats s.getStepsCount() = " + s.getStepsCount());
+        if (s.getStepsCount() < 0) {
+
+          s.setStepsCount(0);
+        }
+      }
+      int k = 0;
+      Timber.e("Start date " + mTracking.getStartDate());
+
+      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
+      try {
+        Date date = sdf.parse(mTracking.getStartDate());
+        Timber.e("showTrackingStats Start time: " + date.getTime());
+      } catch (ParseException e) {
+        e.printStackTrace();
+      }
+
+      for (Stats s : statsOfTracking) {
+        Timber.e("showTrackingStats " + s.getDayTimestamp());
+        Timber.e("index " + k++ + " " + s.getStepsCount());
+      }
+
+      if (mTracking.isMentors() && statsOfTracking != null && !statsOfTracking.isEmpty() && !zeroDayremoved) {
+        statsOfTracking.remove(0);
+        zeroDayremoved = true;
+      }
+
+
+      mStats.addAll(statsOfTracking);
+      Timber.e("onTouchDouble fillByStatsPersonal " + mStats.size());
+
+      for (int i = 0; i < mStats.size(); i++) {
+        if (mStatsCount == STATS_COUNT_PERSONAL_21) {
+          mStatsDays.add(String.valueOf(i + 1));
+        }
+        if (mStatsCount == STATS_COUNT_PERSONAL_7) {
+          mStatsDays.add(getString(R.string.day) + " " + String.valueOf(i + 1));
+        }
+        mStatsSteps.add(mStats.get(i).getStepsCount());
+        Timber.e("onTouchDouble mCountOfStepsForLastXDays " + mCountOfStepsForLastXDays);
+        if (mStats.get(i).getStepsCount() != Constants.FAKE_STEPS_COUNT) {
+          mCountOfStepsForLastXDays += mStats.get(i).getStepsCount();
+        }
+      }
+      Timber.e("onTouchDouble mCountOfStepsForLastXDays " + mCountOfStepsForLastXDays);
+
+      Collections.sort(mStats, (stats, t1) -> Integer.valueOf(
+          String.valueOf(stats.getDayTimestamp()/1000 - t1.getDayTimestamp()/1000)));
+
+      CombinedData data = new CombinedData();
+
+      data.setData(mPresenter.generateLineData(mStats, mStatsSteps,
+          getResources().getDrawable(R.drawable.animation_progress_bar))); // line - dots
+      data.setData(mPresenter.generateBarData(mStats)); // colomns
+
+      mChart.getXAxis().setAxisMaximum(data.getXMax() + 0.25f);
+      mChart.setData(null);
+      mChart.setData(data);
+      mChart.getBarData().setBarWidth(100);
+      mChart.setDrawBarShadow(false);
+      mChart.setHighlightFullBarEnabled(false);
+      mChart.getBarData().setHighlightEnabled(false);
+      mChart.setDrawValueAboveBar(true);
+      mChart.fitScreen();
+      mChart.invalidate();
+      setUpKm();
+      setUpSteps();
+      setUpKcal();
+    }
+
   }
 
   private void fillByStatsPersonal(int statsCount) {
@@ -568,7 +762,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     mTextViewLaziestSteps.setTextColor(color);
 
     //AllName
-     str = Integer.toString(mTracking.getMembers().length) + " " + getResources().getString(
+    str = Integer.toString(mTracking.getMembers().length) + " " + getResources().getString(
         R.string.users);
     mTextViewAllName.setText(str);
 
@@ -591,6 +785,17 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
 
   @Override public void showStats(List<Stats> statsCached) {
     changeStatsOnChart(mTextViewStatsPersonal);
+    changeStatsOnDescriptionDetails(mImageViewStatsSteps);
+    setUpUIChart();
+  }
+
+  @Override public void showTrackingStats(List<Stats> statsCached) {
+    Timber.e("showTrackingStats statsCached size " + statsCached.size());
+    mStatsCount = statsCached.size();
+    mStatsOfTracking.clear();
+    mStatsOfTracking.addAll(statsCached);
+    changeStatsOnChart(mTextViewStatsPersonal);
+    setUpUIChart();
     changeStatsOnDescriptionDetails(mImageViewStatsSteps);
   }
 }

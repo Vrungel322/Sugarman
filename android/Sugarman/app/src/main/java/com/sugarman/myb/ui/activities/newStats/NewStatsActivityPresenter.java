@@ -12,14 +12,24 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.sugarman.myb.App;
+import com.sugarman.myb.api.models.responses.Member;
+import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.api.models.responses.me.stats.Stats;
 import com.sugarman.myb.base.BasicPresenter;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.data.db.DbRepositoryStats;
+import com.sugarman.myb.utils.DataUtils;
+import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.ThreadSchedulers;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import rx.Observable;
 import rx.Subscription;
@@ -31,18 +41,96 @@ import timber.log.Timber;
 @InjectViewState public class NewStatsActivityPresenter
     extends BasicPresenter<INewStatsActivityView> {
   @Inject DbRepositoryStats mDbRepositoryStats;
-  private boolean needToupdateData;
+  private boolean needToupdateData; // if on charts my stats data
+  private boolean needToUpdateDataTracking; // if on charts tracking data
+
   @Override protected void inject() {
     App.getAppComponent().inject(this);
   }
 
-  @Override protected void onFirstViewAttach() {
-    super.onFirstViewAttach();
-    fetchStats();
+  public void startChartFlow(@Nullable Tracking tracking) throws ParseException {
+    if (tracking !=null){
+      fetchTrackingStats(tracking.getId(),tracking, tracking.isMentors());
+    }else {
+      fetchStats();
+    }
+  }
+
+  public void fetchTrackingStats(String trackingId, Tracking tracking, boolean isMentors) throws
+      ParseException {
+    String startDate;
+    String userJoinDate = "";
+    if (!isMentors) {
+      startDate = new SimpleDateFormat("yyyy-MM-dd").format(
+          new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US).parse(tracking.getStartDate()));
+    }
+    else {
+
+      Member[] members = tracking.getMembers();
+
+      for(Member m : members)
+      {
+        if(m.getId().equals(SharedPreferenceHelper.getUserId()))
+        {
+          userJoinDate = m.getCreatedAt();
+        }
+      }
+
+      Timber.e("User join date " + userJoinDate);
+
+      if(userJoinDate==null || userJoinDate.isEmpty())
+        userJoinDate = tracking.getStartDate();
+
+      startDate = new SimpleDateFormat("yyyy-MM-dd").format(
+          new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US).parse(userJoinDate));
+    }
+    //Timber.e("fetchTrackingStats startDate: " + startDate);
+
+    int diff = DataUtils.getDateDiff(DataUtils.subtractDays(
+        new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(startDate), 1),
+        new Date(System.currentTimeMillis()), TimeUnit.DAYS).intValue();
+    //Timber.e("fetchTrackingStats diff: " + diff);
+
+    List<Stats> statsCached = mDbRepositoryStats.getAllEntities(diff + 1);
+    for (Stats s : statsCached) {
+      if (s.getStepsCount() == Constants.FAKE_STEPS_COUNT) {
+        needToUpdateDataTracking = true;
+      }
+    }
+    //Timber.e("fetchTrackingStats statsCached.size:" + statsCached.size());
+
+    for (int i = statsCached.size(); i < 22; i++) {
+      statsCached.add(new Stats(i, "", "", 0, 0));
+    }
+    Timber.e("fetchTrackingStats needToupdateData:" + needToUpdateDataTracking);
+
+    if (!needToUpdateDataTracking) {
+      getViewState().showTrackingStats(statsCached);
+    } else {
+      Subscription subscription = mDataManager.fetchTrackingStats(trackingId)
+          .concatMap(
+              statsResponseResponse -> Observable.just(statsResponseResponse.body().getResult()))
+          //.concatMap(stats -> {
+          //  Collections.reverse(Arrays.asList(stats));
+          //  return Observable.just(stats);
+          //})
+          .concatMap(Observable::from)
+          .concatMap(stats -> {
+            mDbRepositoryStats.saveEntity(stats);
+            return Observable.just(stats);
+          })
+          .toList()
+          .compose(ThreadSchedulers.applySchedulers())
+          .subscribe(statsList -> {
+            getViewState().showTrackingStats(statsList);
+          });
+      addToUnsubscription(subscription);
+    }
   }
 
   /**
    * make query if even one stat is empty (has FAKE_STEPS_COUNT), and update all stats
+   * Osobenno dlya MyStats
    */
   public void fetchStats() {
     List<Stats> statsCached = mDbRepositoryStats.getAllEntities(21);

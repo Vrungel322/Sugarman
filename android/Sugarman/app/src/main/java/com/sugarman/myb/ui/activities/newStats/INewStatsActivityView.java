@@ -12,4 +12,6 @@ import java.util.List;
 @StateStrategyType(AddToEndSingleStrategy.class) public interface INewStatsActivityView
     extends MvpView {
   void showStats(List<Stats> statsCached);
+
+  void showTrackingStats(List<Stats> statsCached);
 }
