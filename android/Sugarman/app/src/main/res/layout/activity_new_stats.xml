@@ -332,7 +332,7 @@
           android:id="@+id/tvBestName"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginStart="16dp"
+          android:layout_marginStart="24dp"
           android:gravity="center"
           android:text="tvBestName"
           android:textColor="#7ECC10"
@@ -402,8 +402,6 @@
           android:id="@+id/tvFastestName"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginEnd="8dp"
-          android:layout_marginStart="24dp"
           android:text="tvFastestName"
           android:textColor="#ffbb00"
           android:textSize="10sp"
@@ -474,11 +472,11 @@
           android:id="@+id/tvLaziestName"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginEnd="32dp"
           android:text="tvLaziestName"
           android:textColor="#ff0000"
           android:textSize="10sp"
           app:layout_constraintEnd_toStartOf="@+id/tvAllName"
+          app:layout_constraintStart_toEndOf="@+id/tvFastestName"
           app:layout_constraintTop_toTopOf="parent"
           />
       <TextView
@@ -540,11 +538,11 @@
           android:id="@+id/tvAllName"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginEnd="16dp"
           android:text="tvAllName"
           android:textColor="#959595"
           android:textSize="10sp"
           app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toEndOf="@+id/tvLaziestName"
           app:layout_constraintTop_toTopOf="parent"
           />
       <TextView
