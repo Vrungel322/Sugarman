@@ -29,6 +29,7 @@ import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.utils.DeviceHelper;
 import java.util.ArrayList;
 import java.util.List;
+import timber.log.Timber;
 
 public class SearchGroupsActivity extends BaseActivity
     implements View.OnClickListener, OnGroupsActionListener, ApiGetTrackingsListener,
@@ -150,33 +151,36 @@ public class SearchGroupsActivity extends BaseActivity
     openGroupDetailsActivity(trackingId);
   }
 
-  @Override public void showTrackings(Tracking[] trackings, String type) {
-    List<SearchTracking> searchTrackings = convertTrackingToSearch(trackings);
+  @Override public void showTrackings(List<Tracking> trackings, String type) {
+    if (trackings!=null) {
+      Timber.e("showTrackings");
+      List<SearchTracking> searchTrackings = convertTrackingToSearch(trackings);
 
-    switch (type) {
-      case GetTrackingsClient.AVAILABLE_TYPE:
-        groupsAdapter.setValues(searchTrackings, true);
-        vNoGroups.setVisibility(!TextUtils.isEmpty(etSearch.getText()) ? View.GONE : View.VISIBLE);
-        //if (!TextUtils.isEmpty(etSearch.getText())) {
-        updateResult();
-        //}
-        if (trackings != null && trackings.length != 0) {
-          vNoGroups.setVisibility(View.GONE);
-        } else {
-          vNoGroups.setVisibility(View.VISIBLE);
-        }
-        closeProgressFragment();
-        break;
-      case GetTrackingsClient.UNAVAILABLE_TYPE:
-        groupsAdapter.setValues(searchTrackings, false);
-        if (!TextUtils.isEmpty(etSearch.getText())) {
+      switch (type) {
+        case GetTrackingsClient.AVAILABLE_TYPE:
+          groupsAdapter.setValues(searchTrackings, true);
+          vNoGroups.setVisibility(!TextUtils.isEmpty(etSearch.getText()) ? View.GONE : View.VISIBLE);
+          //if (!TextUtils.isEmpty(etSearch.getText())) {
           updateResult();
-        }
-        closeProgressFragment();
-        break;
-      default:
-        Log.d(TAG, "not supported tracking type: " + type);
-        break;
+          //}
+          if (trackings != null && trackings.size() != 0) {
+            vNoGroups.setVisibility(View.GONE);
+          } else {
+            vNoGroups.setVisibility(View.VISIBLE);
+          }
+          closeProgressFragment();
+          break;
+        case GetTrackingsClient.UNAVAILABLE_TYPE:
+          groupsAdapter.setValues(searchTrackings, false);
+          if (!TextUtils.isEmpty(etSearch.getText())) {
+            updateResult();
+          }
+          closeProgressFragment();
+          break;
+        default:
+          Log.d(TAG, "not supported tracking type: " + type);
+          break;
+      }
     }
   }
 
@@ -269,8 +273,8 @@ public class SearchGroupsActivity extends BaseActivity
     }
   }
 
-  private List<SearchTracking> convertTrackingToSearch(Tracking[] trackings) {
-    List<SearchTracking> searchTrackings = new ArrayList<>(trackings.length);
+  private List<SearchTracking> convertTrackingToSearch(List<Tracking> trackings) {
+    List<SearchTracking> searchTrackings = new ArrayList<>(trackings.size());
     for (Tracking tracking : trackings) {
       searchTrackings.add(new SearchTracking(tracking));
     }

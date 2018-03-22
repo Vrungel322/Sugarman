@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import com.sugarman.myb.api.models.requests.ReportStats;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.api.models.responses.me.stats.Stats;
+import com.sugarman.myb.api.models.responses.trackings.TrackingsResponse;
 import com.sugarman.myb.api.models.responses.users.Tokens;
 import com.sugarman.myb.api.models.responses.users.User;
 import com.sugarman.myb.constants.Config;
@@ -263,8 +264,7 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     }
   }
 
-  public static void removeCachedStats()
-  {
+  public static void removeCachedStats() {
     removeAllKeysStartingWith("cache_stats_");
   }
 
@@ -279,7 +279,8 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     for (int i = 0; i < DataUtils.getLastXDays(lastdaysCount).size(); i++) {
       String data = DataUtils.getLastXDays(lastdaysCount).get(i);
       Timber.e("saveStats getStats " + data);
-      stats.add(new Stats(i, data, "day " + data, getInt("cache_stats_"+data, Constants.FAKE_STEPS_COUNT), 0));
+      stats.add(new Stats(i, data, "day " + data,
+          getInt("cache_stats_" + data, Constants.FAKE_STEPS_COUNT), 0));
     }
     return stats;
   }
@@ -341,9 +342,6 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
   public static int getStatsTodaySteps(String userId) {
     return getInt(userId + SharedPreferenceConstants.STATS_STEPS_COUNT + "_" + 0, 0);
   }
-
-
-
 
   public static void saveStatsTodaySteps(String userId, int steps) {
     putInt(userId + SharedPreferenceConstants.STATS_STEPS_COUNT + "_" + 0, steps);
@@ -482,7 +480,6 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     //System.out.println("DAAAAAATE TRUE" + date);
     return true;
   }
-
 
   public static boolean introIsShown() {
     return getBoolean(SharedPreferenceConstants.INTRO_IS_SHOWN, false);
@@ -668,7 +665,9 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
 
   public static boolean isEventXStepsDone(Integer numValue) {
     Timber.e("isEventXStepsDone " + numValue);
-    Timber.e("isEventXStepsDone "+getBoolean(SharedPreferenceConstants.EVENT_X_STEPS_DONE + numValue, false));
+    Timber.e(
+        "isEventXStepsDone " + getBoolean(SharedPreferenceConstants.EVENT_X_STEPS_DONE + numValue,
+            false));
     return getBoolean(SharedPreferenceConstants.EVENT_X_STEPS_DONE + numValue, false);
   }
 
@@ -908,5 +907,15 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
 
   public static void setRemoteLoggingEnabled(boolean b) {
     putBoolean(SharedPreferenceConstants.REMOTE_LOGGING_ENABLED, b);
+  }
+
+  public static void saveTrackingResponce(TrackingsResponse trackingsResponse) {
+    putString(SharedPreferenceConstants.CACHED_TRACKING_RESPONCE,
+        new Gson().toJson(trackingsResponse));
+  }
+
+  public static TrackingsResponse getTrackingResponce() {
+    return new Gson().fromJson(getString(SharedPreferenceConstants.CACHED_TRACKING_RESPONCE, ""),
+        TrackingsResponse.class);
   }
 }
