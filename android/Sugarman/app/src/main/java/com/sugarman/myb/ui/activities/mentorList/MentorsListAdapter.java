@@ -37,6 +37,7 @@ public class MentorsListAdapter extends RecyclerView.Adapter<MentorsListAdapter.
   }
 
   @Override public void onBindViewHolder(MentorViewHolder holder, int position) {
+    if (mMentorEntities.get(position).isOwned()) holder.mTextViewHaveThisMentor.setVisibility(View.VISIBLE);
 
     CustomPicasso.with(holder.mImageViewAvatar.getContext())
         .load(mMentorEntities.get(position).getMentorImgUrl())
@@ -74,6 +75,7 @@ public class MentorsListAdapter extends RecyclerView.Adapter<MentorsListAdapter.
     @BindView(R.id.appCompatRatingBar) AppCompatRatingBar mRatingBar;
     @BindView(R.id.tv_comments_number) TextView mTextViewCommentsNumber;
     @BindView(R.id.tv_description) TextView mTextViewDescription;
+    @BindView(R.id.tvHaveThisMentor) TextView mTextViewHaveThisMentor;
 
     MentorViewHolder(View view) {
       super(view);

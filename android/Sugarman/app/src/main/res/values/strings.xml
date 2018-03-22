@@ -627,5 +627,6 @@
   <string name="missing_group_name">Missing group name</string>
   <string name="average_a_day">Average\na day</string>
   <string name="days_above_average">Days Above\naverage</string>
+  <string name="already_register">already register</string>
 
 </resources>
