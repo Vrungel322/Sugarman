@@ -90,6 +90,19 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   @BindView(R.id.llVideos) LinearLayout llVideos;
   @BindView(R.id.rvVideos) RecyclerView mRecyclerViewVideos;
   private String mFreeSku;
+  IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = (result, purchase) -> {
+    Timber.e("mFreeSku mPurchaseFinishedListener " + mFreeSku);
+
+    if (result.isFailure()) {
+      // Handle error
+      return;
+    } else if (purchase.getSku().equals(mFreeSku)) {
+      consumeItem();
+      Timber.e(mHelper.getMDataSignature());
+    } else {
+      Timber.e(result.getMessage());
+    }
+  };
   private MentorEntity mMentorEntity;
   //IabHelper.OnConsumeMultiFinishedListener mOnConsumeMultiFinishedListener = (purchases, results) -> {
   //
@@ -113,19 +126,6 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
           }
         }
       };
-  IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = (result, purchase) -> {
-    Timber.e("mFreeSku mPurchaseFinishedListener " + mFreeSku);
-
-    if (result.isFailure()) {
-      // Handle error
-      return;
-    } else if (purchase.getSku().equals(mFreeSku)) {
-      consumeItem();
-      Timber.e(mHelper.getMDataSignature());
-    } else {
-      Timber.e(result.getMessage());
-    }
-  };
   private MentorsFriendAdapter mMentorsFriendAdapter;
   private MentorsCommentsAdapter mMentorsCommentsAdapter;
   private MentorsVideosAdapter mMentorsVideosAdapter;
@@ -306,6 +306,7 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
 
   @Override protected void onResume() {
     super.onResume();
+    hideProgress();
     String urlAvatar = mMentorEntity.getMentorImgUrl();
 
     if (TextUtils.isEmpty(urlAvatar)) {
@@ -439,8 +440,10 @@ public class MentorDetailActivity extends BasicActivity implements IMentorDetail
   @Override public void slotUnavailableDialog() {
     runOnUiThread(() -> {
       hideProgress();
-    new SugarmanDialog.Builder(MentorDetailActivity.this, DialogConstants.SLOT_UNAVAILABLE).content(
-        getString(R.string.slot_unavailable_dialog)).show();});
+      new SugarmanDialog.Builder(MentorDetailActivity.this,
+          DialogConstants.SLOT_UNAVAILABLE).content(getString(R.string.slot_unavailable_dialog))
+          .show();
+    });
   }
 
   @Override public void showProgress() {
