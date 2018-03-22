@@ -627,10 +627,10 @@
   <string name="facebook">Facebook</string>
 
 
-  <string name="can_not_increase_amount">﻿אפשרי לקנות מוצר אחד עבור כל חמישה חברים</string>
-  <string name="you_cant_delete_self">﻿אי אפר למחוק את עצמך מהקבוצה</string>
-  <string name="fb_acc_already_exist">﻿משתמש פייסבוק זה כבר קיין במערכת</string>
-  <string name="vk_acc_already_exist">﻿משתמש VK זה כבר קיים במערכת</string>
+  <string name="can_not_increase_amount">אפשרי לקנות מוצר אחד עבור כל חמישה חברים</string>
+  <string name="you_cant_delete_self">אי אפר למחוק את עצמך מהקבוצה</string>
+  <string name="fb_acc_already_exist">משתמש פייסבוק זה כבר קיין במערכת</string>
+  <string name="vk_acc_already_exist">משתמש VK זה כבר קיים במערכת</string>
 
   <string name="days">ימים</string>
   <string name="weeks">שבועות</string>
@@ -638,7 +638,10 @@
   <string name="years">שנים</string>
   <string name="apply_now_for_free">החל עכשיו בחינם</string>
   <string name="free">בחינם</string>
-  <string name="members_list_need_to_be_more0_less50">﻿ לשם יצירת קבוצה יש לבחור בין 0 ל 50 משתתפים</string>
+  <string name="members_list_need_to_be_more0_less50">לשם יצירת קבוצה יש לבחור בין 0 ל 50 משתתפים</string>
   <string name="missing_group_name">שם הקבוצה חסר</string>
+  <string name="average_a_day">ממוצע יומי</string>
+  <string name="days_above_average">ימים מעל ממוצע</string>
+  <string name="already_register">רשום כבר</string>
 
 </resources>

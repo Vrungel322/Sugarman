@@ -30,8 +30,6 @@ import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.BindView;
-import butterknife.OnClick;
-import butterknife.OnLongClick;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.facebook.FacebookException;
 import com.google.android.gms.ads.identifier.AdvertisingIdClient;
@@ -104,12 +102,11 @@ import com.sugarman.myb.ui.activities.CongratulationsActivity;
 import com.sugarman.myb.ui.activities.DailyActivity;
 import com.sugarman.myb.ui.activities.FailedActivity;
 import com.sugarman.myb.ui.activities.GetUserInfoActivity;
-import com.sugarman.myb.ui.activities.searchGroups.SearchGroupsActivity;
 import com.sugarman.myb.ui.activities.createGroup.CreateGroupActivity;
 import com.sugarman.myb.ui.activities.groupDetails.GroupDetailsActivity;
 import com.sugarman.myb.ui.activities.mentorList.MentorListActivity;
-import com.sugarman.myb.ui.activities.newStats.NewStatsActivity;
 import com.sugarman.myb.ui.activities.profile.ProfileActivity;
+import com.sugarman.myb.ui.activities.searchGroups.SearchGroupsActivity;
 import com.sugarman.myb.ui.activities.shop.ShopActivity;
 import com.sugarman.myb.ui.activities.statsTracking.StatsTrackingActivity;
 import com.sugarman.myb.ui.dialogs.DialogButton;
@@ -2162,16 +2159,16 @@ public class MainActivity extends GetUserInfoActivity
   }
 
   //Test
-  @OnClick(R.id.iv_animated_man) void testClicked() {
-    Intent intent = new Intent(getApplicationContext(), NewStatsActivity.class);
-    intent.putExtra(Constants.TRACKING, trackingsAdapter.getTracking(vpTrackings.getCurrentItem()));
-    startActivity(intent);
-  }
-
-  @OnLongClick(R.id.iv_animated_man) boolean testLongClicked() {
-    Intent intent = new Intent(getApplicationContext(), NewStatsActivity.class);
-    //intent.putExtra(Constants.TRACKING,result);
-    startActivity(intent);
-    return true;
-  }
+  //@OnClick(R.id.iv_animated_man) void testClicked() {
+  //  Intent intent = new Intent(getApplicationContext(), NewStatsActivity.class);
+  //  intent.putExtra(Constants.TRACKING, trackingsAdapter.getTracking(vpTrackings.getCurrentItem()));
+  //  startActivity(intent);
+  //}
+  //
+  //@OnLongClick(R.id.iv_animated_man) boolean testLongClicked() {
+  //  Intent intent = new Intent(getApplicationContext(), NewStatsActivity.class);
+  //  //intent.putExtra(Constants.TRACKING,result);
+  //  startActivity(intent);
+  //  return true;
+  //}
 }
