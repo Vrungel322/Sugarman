@@ -140,6 +140,7 @@ import com.sugarman.myb.utils.licence.LicenceChecker;
 import com.sugarman.myb.utils.md5.MD5Util;
 import java.io.File;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -218,7 +219,7 @@ public class MainActivity extends GetUserInfoActivity
   @InjectPresenter MainActivityPresenter mPresenter;
   float angle;
   ImageToDraw img;
-  Bitmap bmp;
+  WeakReference<Bitmap> bmp;
   ImageView ivAnimatedMan;
   ImageView ivAvatar;
   boolean isUpdating = false;
@@ -1748,13 +1749,14 @@ public class MainActivity extends GetUserInfoActivity
 
         if (width > 0 && height > 0) {
 
-          if (bmp != null) {
-            bmp.recycle();
+          if (bmp != null && bmp.get() != null) {
+            bmp.get().recycle();
             bmp = null;
           }
-          bmp = BitmapFactory.decodeResource(getResources(), R.drawable.red_circle);
+          bmp = new WeakReference<Bitmap>(
+              BitmapFactory.decodeResource(getResources(), R.drawable.red_circle));
           ivColoredStrip.setImageBitmap(
-              Bitmap.createScaledBitmap(img.transform(bmp, angle), width, height, false));
+              Bitmap.createScaledBitmap(img.transform(bmp.get(), angle), width, height, false));
         }
       }
     });
@@ -2160,16 +2162,13 @@ public class MainActivity extends GetUserInfoActivity
   }
 
   //Test
-  @OnClick(R.id.iv_animated_man)
-  void testClicked(){
+  @OnClick(R.id.iv_animated_man) void testClicked() {
     Intent intent = new Intent(getApplicationContext(), NewStatsActivity.class);
-    intent.putExtra(Constants.TRACKING,trackingsAdapter.getTracking(
-        vpTrackings.getCurrentItem()));
+    intent.putExtra(Constants.TRACKING, trackingsAdapter.getTracking(vpTrackings.getCurrentItem()));
     startActivity(intent);
   }
 
-  @OnLongClick(R.id.iv_animated_man)
-  boolean testLongClicked(){
+  @OnLongClick(R.id.iv_animated_man) boolean testLongClicked() {
     Intent intent = new Intent(getApplicationContext(), NewStatsActivity.class);
     //intent.putExtra(Constants.TRACKING,result);
     startActivity(intent);
