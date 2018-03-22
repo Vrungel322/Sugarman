@@ -118,7 +118,7 @@
         android:screenOrientation="portrait"
         android:theme="@style/SugarmanActivityTheme" />
     <activity
-        android:name=".ui.activities.SearchGroupsActivity"
+        android:name=".ui.activities.searchGroups.SearchGroupsActivity"
         android:screenOrientation="portrait"
         android:theme="@style/SugarmanActivityTheme" />
     <activity

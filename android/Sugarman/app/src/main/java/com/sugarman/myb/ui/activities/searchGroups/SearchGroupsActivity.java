@@ -1,4 +1,4 @@
-package com.sugarman.myb.ui.activities;
+package com.sugarman.myb.ui.activities.searchGroups;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.sugarman.myb.R;
 import com.sugarman.myb.adapters.GroupsAdapter;
 import com.sugarman.myb.api.clients.GetTrackingsClient;
@@ -31,7 +32,8 @@ import java.util.List;
 
 public class SearchGroupsActivity extends BaseActivity
     implements View.OnClickListener, OnGroupsActionListener, ApiGetTrackingsListener,
-    ApiJoinGroupListener {
+    ApiJoinGroupListener, ISearchGroupsActivityView {
+  @InjectPresenter SearchGroupsActivityPresenter mPresenter;
 
   private static final String TAG = SearchGroupsActivity.class.getName();
 
