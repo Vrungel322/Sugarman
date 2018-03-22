@@ -37,7 +37,9 @@ public class MentorsListAdapter extends RecyclerView.Adapter<MentorsListAdapter.
   }
 
   @Override public void onBindViewHolder(MentorViewHolder holder, int position) {
-    if (mMentorEntities.get(position).isOwned()) holder.mTextViewHaveThisMentor.setVisibility(View.VISIBLE);
+    if (mMentorEntities.get(position).isOwned()) {
+      holder.mTextViewHaveThisMentor.setVisibility(View.VISIBLE);
+    }
 
     CustomPicasso.with(holder.mImageViewAvatar.getContext())
         .load(mMentorEntities.get(position).getMentorImgUrl())
@@ -66,7 +68,11 @@ public class MentorsListAdapter extends RecyclerView.Adapter<MentorsListAdapter.
   }
 
   public MentorEntity getItem(int position) {
-    return mMentorEntities.get(position);
+    if (position >= 0){
+      return mMentorEntities.get(position);
+    }else {
+      return mMentorEntities.get(0);
+    }
   }
 
   static class MentorViewHolder extends RecyclerView.ViewHolder {
