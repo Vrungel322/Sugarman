@@ -23,6 +23,7 @@ import com.sugarman.myb.api.models.responses.me.stats.Stats;
 import com.sugarman.myb.api.models.responses.me.stats.StatsResponse;
 import com.sugarman.myb.api.models.responses.trackings.TrackingInfoResponse;
 import com.sugarman.myb.api.models.responses.trackings.TrackingStatsResponse;
+import com.sugarman.myb.api.models.responses.trackings.TrackingsResponse;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.models.ContactListForServer;
 import com.sugarman.myb.models.ab_testing.ABTesting;
@@ -201,4 +202,9 @@ public interface ApiRx {
   @GET("/v1/me/invites") Observable<Response<InvitesResponse>> getMyInvites();
 
   @GET("/v1/me/requests") Observable<Response<RequestsResponse>> getMyRequests();
+
+  @GET("/v1/trackings") Observable<Response<TrackingsResponse>> getTrackings(@Query("type") String type);
+
+  @GET("/v1/trackings") Observable<Response<TrackingsResponse>> getTrackings(@Query("query") String query,
+      @Query("type") String type);
 }

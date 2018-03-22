@@ -26,6 +26,7 @@ import com.sugarman.myb.api.models.responses.me.stats.Stats;
 import com.sugarman.myb.api.models.responses.me.stats.StatsResponse;
 import com.sugarman.myb.api.models.responses.trackings.TrackingInfoResponse;
 import com.sugarman.myb.api.models.responses.trackings.TrackingStatsResponse;
+import com.sugarman.myb.api.models.responses.trackings.TrackingsResponse;
 import com.sugarman.myb.api.models.responses.users.UsersResponse;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.models.ContactListForServer;
@@ -353,5 +354,13 @@ public class RestApi {
 
   public Observable<Response<RequestsResponse>> getMyRequests() {
     return api.getMyRequests();
+  }
+
+  public Observable<Response<TrackingsResponse>> getTrackings(String type) {
+    return api.getTrackings(type);
+  }
+
+  public Observable<Response<TrackingsResponse>> getTrackings(String query, String type) {
+    return api.getTrackings(query, type);
   }
 }

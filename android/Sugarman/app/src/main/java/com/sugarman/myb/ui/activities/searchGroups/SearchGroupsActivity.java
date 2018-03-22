@@ -89,7 +89,8 @@ public class SearchGroupsActivity extends BaseActivity
     mGetTrackingsClient = new GetTrackingsClient();
     mJoinGroupClient = new JoinGroupClient();
 
-    mGetTrackingsClient.getTrackings(GetTrackingsClient.AVAILABLE_TYPE, "");
+    //mGetTrackingsClient.getTrackings(GetTrackingsClient.AVAILABLE_TYPE, "");
+    mPresenter.fetchTrackings(GetTrackingsClient.AVAILABLE_TYPE, "");
     //  vNoGroups.setVisibility(View.VISIBLE);
   }
 
@@ -149,7 +150,7 @@ public class SearchGroupsActivity extends BaseActivity
     openGroupDetailsActivity(trackingId);
   }
 
-  @Override public void onApiGetTrackingsSuccess(String type, Tracking[] trackings) {
+  @Override public void showTrackings(Tracking[] trackings, String type) {
     List<SearchTracking> searchTrackings = convertTrackingToSearch(trackings);
 
     switch (type) {
@@ -177,6 +178,36 @@ public class SearchGroupsActivity extends BaseActivity
         Log.d(TAG, "not supported tracking type: " + type);
         break;
     }
+  }
+
+  @Override public void onApiGetTrackingsSuccess(String type, Tracking[] trackings) {
+  //  List<SearchTracking> searchTrackings = convertTrackingToSearch(trackings);
+  //
+  //  switch (type) {
+  //    case GetTrackingsClient.AVAILABLE_TYPE:
+  //      groupsAdapter.setValues(searchTrackings, true);
+  //      vNoGroups.setVisibility(!TextUtils.isEmpty(etSearch.getText()) ? View.GONE : View.VISIBLE);
+  //      //if (!TextUtils.isEmpty(etSearch.getText())) {
+  //      updateResult();
+  //      //}
+  //      if (trackings != null && trackings.length != 0) {
+  //        vNoGroups.setVisibility(View.GONE);
+  //      } else {
+  //        vNoGroups.setVisibility(View.VISIBLE);
+  //      }
+  //      closeProgressFragment();
+  //      break;
+  //    case GetTrackingsClient.UNAVAILABLE_TYPE:
+  //      groupsAdapter.setValues(searchTrackings, false);
+  //      if (!TextUtils.isEmpty(etSearch.getText())) {
+  //        updateResult();
+  //      }
+  //      closeProgressFragment();
+  //      break;
+  //    default:
+  //      Log.d(TAG, "not supported tracking type: " + type);
+  //      break;
+  //  }
   }
 
   @Override public void onApiGetTrackingsFailure(String type, String message) {
