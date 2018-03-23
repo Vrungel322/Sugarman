@@ -556,9 +556,7 @@ public class EditProfileActivity extends BasicActivity
         logoutVk();
         // ÐŸÑ€Ð¾Ð¸Ð·Ð¾ÑˆÐ»Ð° Ð¾ÑˆÐ¸Ð±ÐºÐ° Ð°Ð²Ñ‚Ð¾Ñ€Ð¸Ð·Ð°Ñ†Ð¸Ð¸ (Ð½Ð°Ð¿Ñ€Ð¸Ð¼ÐµÑ€, Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÑŒ Ð·Ð°Ð¿Ñ€ÐµÑ‚Ð¸Ð» Ð°Ð²Ñ‚Ð¾Ñ€Ð¸Ð·Ð°Ñ†Ð¸ÑŽ)
       }
-    })) {
-      ;
-    }
+    }))
 
     if (requestCode == Constants.INTENT_CHOOSER_IMAGE_REQUEST_CODE) {
       if (resultCode == RESULT_OK) {
