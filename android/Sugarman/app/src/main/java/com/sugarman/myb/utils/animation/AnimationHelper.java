@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 import java.util.concurrent.atomic.AtomicBoolean;
+import timber.log.Timber;
 
 /**
  * Created by yegoryeriomin on 11/29/17.
@@ -17,7 +18,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AnimationHelper {
 
-  public int workers = 10;
+  public int workers = Runtime.getRuntime().availableProcessors() + 1;
 
   private AtomicBoolean done;
   private File imagesDir;
@@ -29,6 +30,7 @@ public class AnimationHelper {
     this.urls.addAll(urls);
     this.workers = workersThread;
     done = new AtomicBoolean(false);
+    Timber.e("workers " + workers);
   }
 
   /**
