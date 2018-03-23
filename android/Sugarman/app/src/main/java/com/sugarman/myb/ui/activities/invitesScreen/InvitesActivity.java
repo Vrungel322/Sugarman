@@ -11,7 +11,6 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.adapters.InvitesAdapter;
-import com.sugarman.myb.api.clients.InviteManagerClient;
 import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.api.models.responses.me.invites.Invite;
 import com.sugarman.myb.constants.Config;
@@ -43,7 +42,7 @@ public class InvitesActivity extends BaseActivity implements View.OnClickListene
   private View vNoInvites;
   private RecyclerView rcvInvites;
 
-  private InviteManagerClient mInvitesManagerClient;
+  //private InviteManagerClient mInvitesManagerClient;
 
   private String inviteUnavailableTemplate;
 
@@ -79,7 +78,7 @@ public class InvitesActivity extends BaseActivity implements View.OnClickListene
       rcvInvites.setVisibility(View.GONE);
       vNoInvites.setVisibility(View.VISIBLE);
     } else {
-      mInvitesManagerClient = new InviteManagerClient();
+      //mInvitesManagerClient = new InviteManagerClient();
       invitesAdapter = new InvitesAdapter(this, new OnInvitesActionListener() {
         @Override public void onDeclineInvite(Invite invite, int position) {
           actionOnClick(invite, position, false);
@@ -102,17 +101,17 @@ public class InvitesActivity extends BaseActivity implements View.OnClickListene
   @Override protected void onStart() {
     super.onStart();
 
-    if (mInvitesManagerClient != null) {
-      mInvitesManagerClient.registerListener(this);
-    }
+    //if (mInvitesManagerClient != null) {
+    //  mInvitesManagerClient.registerListener(this);
+    //}
   }
 
   @Override protected void onStop() {
     super.onStop();
 
-    if (mInvitesManagerClient != null) {
-      mInvitesManagerClient.unregisterListener();
-    }
+    //if (mInvitesManagerClient != null) {
+    //  mInvitesManagerClient.unregisterListener();
+    //}
   }
 
   private void actionOnClick(Invite invite, int position, boolean isAccepted) {
@@ -192,8 +191,19 @@ public class InvitesActivity extends BaseActivity implements View.OnClickListene
   }
 
   @Override public void showInvites(List<Invite> invites) {
-    invitesAdapter.setValues(invites);
+    if (invites != null) {
+      Timber.e("showInvites");
+      List<Invite> tempList = new ArrayList<>();
+      for (Invite inv : invites) {
+        Tracking tracking = inv.getTracking();
+        long startTimestamp = tracking.getStartUTCDate().getTime();
+        if (startTimestamp > System.currentTimeMillis() && !tracking.isMentors()) {
+          tempList.add(inv);
+        }
+      }
 
+      if (invitesAdapter != null) invitesAdapter.setValues(tempList);
+    }
   }
 
   @Subscribe public void onEvent(InvitesUpdatedEvent event) {

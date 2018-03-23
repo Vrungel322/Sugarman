@@ -10,6 +10,7 @@ import com.sugarman.myb.api.SpikaOSRetroApiInterfaceRx;
 import com.sugarman.myb.constants.Config;
 import com.sugarman.myb.data.DataManager;
 import com.sugarman.myb.data.db.DbHelper;
+import com.sugarman.myb.data.db.DbRepositoryInvites;
 import com.sugarman.myb.data.db.DbRepositorySearchTrackings;
 import com.sugarman.myb.data.db.DbRepositoryStats;
 import com.sugarman.myb.data.local.PreferencesHelper;
@@ -90,5 +91,9 @@ import timber.log.Timber;
 
   @Provides @AppScope DbRepositorySearchTrackings provideDDbRepositorySearchTrackings() {
     return new DbRepositorySearchTrackings();
+  }
+
+  @Provides @AppScope DbRepositoryInvites provideDbRepositoryInvites() {
+    return new DbRepositoryInvites();
   }
 }

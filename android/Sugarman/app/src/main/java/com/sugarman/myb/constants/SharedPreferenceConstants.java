@@ -99,6 +99,7 @@ public abstract class SharedPreferenceConstants {
   public static final String CACHED_FB_FRIENDS_NOT_INVITEBLE = "CACHED_FB_FRIENDS_NOT_INVITEBLE";
   public static final String REMOTE_LOGGING_ENABLED = "remote_logging_enabled";
   public static final String CACHED_TRACKING_RESPONCE = "CACHED_TRACKING_RESPONCE";
+  public static final String CACHED_INVITES = "CACHED_INVITES";
 
   private SharedPreferenceConstants() {
     // only static methods and fields

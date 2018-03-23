@@ -4,7 +4,9 @@ import com.arellomobile.mvp.InjectViewState;
 import com.sugarman.myb.App;
 import com.sugarman.myb.base.BasicPresenter;
 import com.sugarman.myb.constants.Constants;
+import com.sugarman.myb.data.db.DbRepositoryInvites;
 import com.sugarman.myb.utils.ThreadSchedulers;
+import javax.inject.Inject;
 import rx.Observable;
 import rx.Subscription;
 import timber.log.Timber;
@@ -14,6 +16,7 @@ import timber.log.Timber;
  */
 @InjectViewState public class InvitesActivityPresenter
     extends BasicPresenter<IInvitesActivityView> {
+  @Inject DbRepositoryInvites mDbRepositoryInvites;
   @Override protected void inject() {
     App.getAppComponent().inject(this);
   }
@@ -24,6 +27,7 @@ import timber.log.Timber;
   }
 
   private void fetchInvites() {
+    getViewState().showInvites(mDbRepositoryInvites.getAllEntities());
     Subscription subscription = mDataManager.getMyInvites()
         .concatMap(
             invitesResponseResponse -> Observable.from(invitesResponseResponse.body().getResult()))
@@ -31,6 +35,10 @@ import timber.log.Timber;
         .filter(invite -> invite.getTracking().getStatus() != Constants.STATUS_COMPLETED)
         .toList()
         .filter(invites -> invites!=null)
+        .flatMap(invites -> {
+          mDbRepositoryInvites.saveEntity(invites);
+          return Observable.just(invites);
+        })
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(invites -> {
           Timber.e("fetchInvites size: " + invites.size());
