@@ -9,8 +9,7 @@ import java.util.List;
  */
 
 public class DbRepositoryInvites {
-  @Deprecated
-  public void dropTable() {
+  @Deprecated public void dropTable() {
 
   }
 

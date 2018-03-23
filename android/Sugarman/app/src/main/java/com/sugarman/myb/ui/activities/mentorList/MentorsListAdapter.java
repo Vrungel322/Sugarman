@@ -68,9 +68,9 @@ public class MentorsListAdapter extends RecyclerView.Adapter<MentorsListAdapter.
   }
 
   public MentorEntity getItem(int position) {
-    if (position >= 0){
+    if (position >= 0) {
       return mMentorEntities.get(position);
-    }else {
+    } else {
       return mMentorEntities.get(0);
     }
   }

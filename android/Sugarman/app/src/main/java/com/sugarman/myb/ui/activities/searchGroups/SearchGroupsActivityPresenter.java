@@ -30,17 +30,20 @@ import timber.log.Timber;
           availableType);
     }
     //if (DeviceHelper.isNetworkConnected()) {
-      Subscription subscription = mDataManager.getTrackings(query, availableType)
-          .compose(ThreadSchedulers.applySchedulers())
-          .flatMap(trackingsResponseResponse -> {
-            Timber.e("fetchTrackings code: " + trackingsResponseResponse.code() + " size: " + trackingsResponseResponse.body().getResult().size());
-            mDbRepositorySearchTrackings.saveEntity(trackingsResponseResponse.body());
+    Subscription subscription = mDataManager.getTrackings(query, availableType)
+        .compose(ThreadSchedulers.applySchedulers())
+        .flatMap(trackingsResponseResponse -> {
+          Timber.e("fetchTrackings code: "
+              + trackingsResponseResponse.code()
+              + " size: "
+              + trackingsResponseResponse.body().getResult().size());
+          mDbRepositorySearchTrackings.saveEntity(trackingsResponseResponse.body());
 
-            return Observable.just(trackingsResponseResponse.body());
-          })
-          .subscribe(trackingsResponse -> getViewState().showTrackings(trackingsResponse.getResult(),
-              availableType), Throwable::printStackTrace);
-      addToUnsubscription(subscription);
+          return Observable.just(trackingsResponseResponse.body());
+        })
+        .subscribe(trackingsResponse -> getViewState().showTrackings(trackingsResponse.getResult(),
+            availableType), Throwable::printStackTrace);
+    addToUnsubscription(subscription);
     //}
   }
 }

@@ -17,6 +17,7 @@ import timber.log.Timber;
 @InjectViewState public class InvitesActivityPresenter
     extends BasicPresenter<IInvitesActivityView> {
   @Inject DbRepositoryInvites mDbRepositoryInvites;
+
   @Override protected void inject() {
     App.getAppComponent().inject(this);
   }
@@ -34,7 +35,7 @@ import timber.log.Timber;
         .filter(invite -> invite.getTracking().getStatus() != Constants.STATUS_FAILED)
         .filter(invite -> invite.getTracking().getStatus() != Constants.STATUS_COMPLETED)
         .toList()
-        .filter(invites -> invites!=null)
+        .filter(invites -> invites != null)
         .flatMap(invites -> {
           mDbRepositoryInvites.saveEntity(invites);
           return Observable.just(invites);

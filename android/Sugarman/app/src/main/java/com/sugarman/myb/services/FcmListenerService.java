@@ -150,7 +150,6 @@ public class FcmListenerService extends FirebaseMessagingService {
     Timber.e("deepLinks " + trackingId);
     Timber.e("notification " + notification);
 
-
     switch (type) {
       case NotificationMessageType.ONE_MORE_DAY_TO_ADD_FRIENDS:
       case NotificationMessageType.INVITATION_NO_AVAILABLE:
@@ -159,8 +158,7 @@ public class FcmListenerService extends FirebaseMessagingService {
         break;
       case NotificationMessageType.GROUP_NAME_GOOD_LUCK:
       case NotificationMessageType.GROUP_NAME_IN_HOUR:
-        intent.putExtra(Constants.INTENT_OPEN_ACTIVITY,
-            Constants.OPEN_MAIN_ACTIVITY);
+        intent.putExtra(Constants.INTENT_OPEN_ACTIVITY, Constants.OPEN_MAIN_ACTIVITY);
         break;
       case NotificationMessageType.PINGED_YOU_TO_MYB:
       case NotificationMessageType.USER_NAME_HAS_POKED_YOU:

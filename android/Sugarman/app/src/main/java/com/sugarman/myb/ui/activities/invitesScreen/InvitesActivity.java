@@ -202,7 +202,7 @@ public class InvitesActivity extends BaseActivity implements View.OnClickListene
         }
       }
 
-      Timber.e("showInvites adapter "+(invitesAdapter != null));
+      Timber.e("showInvites adapter " + (invitesAdapter != null));
       if (invitesAdapter != null) {
         invitesAdapter.setValues(tempList);
       }
@@ -210,7 +210,7 @@ public class InvitesActivity extends BaseActivity implements View.OnClickListene
   }
 
   @Subscribe public void onEvent(InvitesUpdatedEvent event) {
-    Timber.e("event "+ event.getInvites().size());
+    Timber.e("event " + event.getInvites().size());
     invitesAdapter = new InvitesAdapter(this, new OnInvitesActionListener() {
       @Override public void onDeclineInvite(Invite invite, int position) {
         actionOnClick(invite, position, false);

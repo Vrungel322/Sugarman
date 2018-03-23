@@ -96,14 +96,14 @@ public class MaskImage {
   }
 
   public void clearBitmap() {
-      Timber.e("clearBitmap");
-      if (mBitmap != null) {
-        Timber.e("clearBitmap mBmp != null");
+    Timber.e("clearBitmap");
+    if (mBitmap != null) {
+      Timber.e("clearBitmap mBmp != null");
 
-        if (!mBitmap.isRecycled()) {
-          mBitmap.recycle();
-        }
-        mBitmap = null;
+      if (!mBitmap.isRecycled()) {
+        mBitmap.recycle();
       }
+      mBitmap = null;
     }
+  }
 }

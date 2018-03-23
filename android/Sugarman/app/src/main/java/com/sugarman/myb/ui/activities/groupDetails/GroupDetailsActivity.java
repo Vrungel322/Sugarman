@@ -1786,7 +1786,7 @@ public class GroupDetailsActivity extends BaseActivity
                 byte[] b = new byte[(int) fd.getDeclaredLength()];
                 fis.read(b);
 
-                 vCard = new String(b);
+                vCard = new String(b);
               } else {
                 InputStream inputStream = getContentResolver().openInputStream(uri);
                 BufferedReader br = null;
@@ -1798,7 +1798,7 @@ public class GroupDetailsActivity extends BaseActivity
                       sb.append(vCard).append('\n');
                     }
                   }
-                  vCard=sb.toString();
+                  vCard = sb.toString();
                 } catch (Exception e) {
                   e.printStackTrace();
                 }

@@ -268,7 +268,7 @@ public class SplashActivity extends GetUserInfoActivity
     Intent intent = getIntent();
     openedActivityCode = intent.getIntExtra(Constants.INTENT_OPEN_ACTIVITY, -1);
     trackingIdFromFcm = intent.getStringExtra(Constants.INTENT_FCM_TRACKING_ID);
-    Timber.e("deepLinks openSpecificActivity openedActivityCode:"+openedActivityCode);
+    Timber.e("deepLinks openSpecificActivity openedActivityCode:" + openedActivityCode);
 
     boolean isForeground = App.getInstance().isAppForeground();
     Activity current = App.getInstance().getCurrentActivity();

@@ -152,14 +152,15 @@ public class SearchGroupsActivity extends BaseActivity
   }
 
   @Override public void showTrackings(List<Tracking> trackings, String type) {
-    if (trackings!=null) {
+    if (trackings != null) {
       Timber.e("showTrackings");
       List<SearchTracking> searchTrackings = convertTrackingToSearch(trackings);
 
       switch (type) {
         case GetTrackingsClient.AVAILABLE_TYPE:
           groupsAdapter.setValues(searchTrackings, true);
-          vNoGroups.setVisibility(!TextUtils.isEmpty(etSearch.getText()) ? View.GONE : View.VISIBLE);
+          vNoGroups.setVisibility(
+              !TextUtils.isEmpty(etSearch.getText()) ? View.GONE : View.VISIBLE);
           //if (!TextUtils.isEmpty(etSearch.getText())) {
           updateResult();
           //}
@@ -185,33 +186,33 @@ public class SearchGroupsActivity extends BaseActivity
   }
 
   @Override public void onApiGetTrackingsSuccess(String type, Tracking[] trackings) {
-  //  List<SearchTracking> searchTrackings = convertTrackingToSearch(trackings);
-  //
-  //  switch (type) {
-  //    case GetTrackingsClient.AVAILABLE_TYPE:
-  //      groupsAdapter.setValues(searchTrackings, true);
-  //      vNoGroups.setVisibility(!TextUtils.isEmpty(etSearch.getText()) ? View.GONE : View.VISIBLE);
-  //      //if (!TextUtils.isEmpty(etSearch.getText())) {
-  //      updateResult();
-  //      //}
-  //      if (trackings != null && trackings.length != 0) {
-  //        vNoGroups.setVisibility(View.GONE);
-  //      } else {
-  //        vNoGroups.setVisibility(View.VISIBLE);
-  //      }
-  //      closeProgressFragment();
-  //      break;
-  //    case GetTrackingsClient.UNAVAILABLE_TYPE:
-  //      groupsAdapter.setValues(searchTrackings, false);
-  //      if (!TextUtils.isEmpty(etSearch.getText())) {
-  //        updateResult();
-  //      }
-  //      closeProgressFragment();
-  //      break;
-  //    default:
-  //      Log.d(TAG, "not supported tracking type: " + type);
-  //      break;
-  //  }
+    //  List<SearchTracking> searchTrackings = convertTrackingToSearch(trackings);
+    //
+    //  switch (type) {
+    //    case GetTrackingsClient.AVAILABLE_TYPE:
+    //      groupsAdapter.setValues(searchTrackings, true);
+    //      vNoGroups.setVisibility(!TextUtils.isEmpty(etSearch.getText()) ? View.GONE : View.VISIBLE);
+    //      //if (!TextUtils.isEmpty(etSearch.getText())) {
+    //      updateResult();
+    //      //}
+    //      if (trackings != null && trackings.length != 0) {
+    //        vNoGroups.setVisibility(View.GONE);
+    //      } else {
+    //        vNoGroups.setVisibility(View.VISIBLE);
+    //      }
+    //      closeProgressFragment();
+    //      break;
+    //    case GetTrackingsClient.UNAVAILABLE_TYPE:
+    //      groupsAdapter.setValues(searchTrackings, false);
+    //      if (!TextUtils.isEmpty(etSearch.getText())) {
+    //        updateResult();
+    //      }
+    //      closeProgressFragment();
+    //      break;
+    //    default:
+    //      Log.d(TAG, "not supported tracking type: " + type);
+    //      break;
+    //  }
   }
 
   @Override public void onApiGetTrackingsFailure(String type, String message) {

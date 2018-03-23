@@ -8,8 +8,7 @@ import com.sugarman.myb.utils.SharedPreferenceHelper;
  */
 
 public class DbRepositorySearchTrackings {
-  @Deprecated
-  public void dropTable() {
+  @Deprecated public void dropTable() {
 
   }
 

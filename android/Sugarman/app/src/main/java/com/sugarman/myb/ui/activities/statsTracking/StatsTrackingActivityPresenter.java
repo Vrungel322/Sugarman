@@ -34,37 +34,34 @@ import timber.log.Timber;
     App.getAppComponent().inject(this);
   }
 
-  public void fetchTrackingStats(String trackingId, Tracking tracking, boolean isMentors) throws ParseException {
+  public void fetchTrackingStats(String trackingId, Tracking tracking, boolean isMentors)
+      throws ParseException {
     String startDate;
     String userJoinDate = "";
     if (!isMentors) {
-       startDate = new SimpleDateFormat("yyyy-MM-dd").format(
+      startDate = new SimpleDateFormat("yyyy-MM-dd").format(
           new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US).parse(tracking.getStartDate()));
-    }
-    else {
+    } else {
 
       Member[] members = tracking.getMembers();
 
-      for(Member m : members)
-      {
-        if(m.getId().equals(SharedPreferenceHelper.getUserId()))
-        {
+      for (Member m : members) {
+        if (m.getId().equals(SharedPreferenceHelper.getUserId())) {
           userJoinDate = m.getCreatedAt();
         }
       }
 
       Timber.e("User join date " + userJoinDate);
 
-      if(userJoinDate==null || userJoinDate.isEmpty())
-        userJoinDate = tracking.getStartDate();
+      if (userJoinDate == null || userJoinDate.isEmpty()) userJoinDate = tracking.getStartDate();
 
       startDate = new SimpleDateFormat("yyyy-MM-dd").format(
           new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US).parse(userJoinDate));
     }
     //Timber.e("fetchTrackingStats startDate: " + startDate);
 
-    int diff = DataUtils.getDateDiff(DataUtils.subtractDays(
-        new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(startDate), 1),
+    int diff = DataUtils.getDateDiff(
+        DataUtils.subtractDays(new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(startDate), 1),
         new Date(System.currentTimeMillis()), TimeUnit.DAYS).intValue();
     //Timber.e("fetchTrackingStats diff: " + diff);
 
@@ -100,7 +97,7 @@ import timber.log.Timber;
           .compose(ThreadSchedulers.applySchedulers())
           .subscribe(statsList -> {
             getViewState().showTrackingStats(statsList);
-          },Throwable::printStackTrace);
+          }, Throwable::printStackTrace);
       addToUnsubscription(subscription);
     }
   }

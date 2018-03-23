@@ -270,7 +270,7 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
    * В методе onGetFriendInfoSuccess можно уже создавать ... добавлять в группу людей итд
    */
   private void convertFbInvitebleFrientdsIdsAndCreateGroup(List<String> ids) {
-    Timber.e("convertFbInvitebleFrientdsIdsAndCreateGroup ids:"+ids.size());
+    Timber.e("convertFbInvitebleFrientdsIdsAndCreateGroup ids:" + ids.size());
     if (ids.size() > 49) {
       new SugarmanDialog.Builder(getActivity(), DialogConstants.FRIENDS_LIST_IS_IMPTY_ID).content(
           R.string.members_list_need_to_be_more0_less50).show();
@@ -293,13 +293,12 @@ public class FriendListFragment extends BasicFragment implements IFriendListFrag
 
             @Override public void onError(FacebookException error) {
               if (DeviceHelper.isNetworkConnected()) {
-                if (error.toString().substring(36,39).trim().equals("-8")){
+                if (error.toString().substring(36, 39).trim().equals("-8")) {
                   showNoInternetConnectionDialog();
-                }
-                else {
+                } else {
                   new SugarmanDialog.Builder(getActivity(),
-                      DialogConstants.FAILURE_INVITE_FB_FRIENDS_ID).content(error.getLocalizedMessage())
-                      .show();
+                      DialogConstants.FAILURE_INVITE_FB_FRIENDS_ID).content(
+                      error.getLocalizedMessage()).show();
                 }
               } else {
                 showNoInternetConnectionDialog();

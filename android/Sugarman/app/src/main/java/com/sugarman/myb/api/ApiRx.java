@@ -203,8 +203,9 @@ public interface ApiRx {
 
   @GET("/v1/me/requests") Observable<Response<RequestsResponse>> getMyRequests();
 
-  @GET("/v1/trackings") Observable<Response<TrackingsResponse>> getTrackings(@Query("type") String type);
-
-  @GET("/v1/trackings") Observable<Response<TrackingsResponse>> getTrackings(@Query("query") String query,
+  @GET("/v1/trackings") Observable<Response<TrackingsResponse>> getTrackings(
       @Query("type") String type);
+
+  @GET("/v1/trackings") Observable<Response<TrackingsResponse>> getTrackings(
+      @Query("query") String query, @Query("type") String type);
 }

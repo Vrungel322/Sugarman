@@ -151,7 +151,7 @@ public class MyStatsActivity extends BaseActivity
     if (stats != null && stats.size() != 0) {
       Timber.e("showStats size = " + stats.size());
       for (Stats s : stats) {
-        if (s.getStepsCount() < 0){
+        if (s.getStepsCount() < 0) {
           Timber.e("showStats s.getStepsCount() = " + s.getStepsCount());
 
           s.setStepsCount(0);

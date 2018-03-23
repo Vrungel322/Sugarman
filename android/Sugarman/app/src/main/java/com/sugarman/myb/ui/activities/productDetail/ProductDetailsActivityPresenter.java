@@ -25,7 +25,7 @@ import rx.Subscription;
         .subscribe(countInvitesResponse -> {
           if (Integer.valueOf(countInvitesResponse.getCount()) >= 5) {
             getViewState().startCheckoutActivityWithFreePrice();
-          }else {
+          } else {
             getViewState().startShopInviteFriendsActivity();
           }
         }, Throwable::printStackTrace);

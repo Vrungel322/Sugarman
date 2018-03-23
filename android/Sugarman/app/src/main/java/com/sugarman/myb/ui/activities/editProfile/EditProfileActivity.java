@@ -558,16 +558,18 @@ public class EditProfileActivity extends BasicActivity
       }
     }))
 
-    if (requestCode == Constants.INTENT_CHOOSER_IMAGE_REQUEST_CODE) {
-      if (resultCode == RESULT_OK) {
-        if (data == null || (data.getData() == null && data.getClipData() == null)) {
-          // return data from camera
-          processCaptureCamera();
+    {
+      if (requestCode == Constants.INTENT_CHOOSER_IMAGE_REQUEST_CODE) {
+        if (resultCode == RESULT_OK) {
+          if (data == null || (data.getData() == null && data.getClipData() == null)) {
+            // return data from camera
+            processCaptureCamera();
+          } else {
+            // return data from gallery
+            processCameraGallery(data);
+          }
         } else {
-          // return data from gallery
-          processCameraGallery(data);
         }
-      } else {
       }
     }
 

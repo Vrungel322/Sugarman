@@ -922,27 +922,22 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
   }
 
   public static void saveInvites(List<Invite> invites) {
-    putString(SharedPreferenceConstants.CACHED_INVITES,
-        new Gson().toJson(invites));
+    putString(SharedPreferenceConstants.CACHED_INVITES, new Gson().toJson(invites));
   }
 
   public static List<Invite> getInvites() {
     Type type = new TypeToken<List<Invite>>() {
     }.getType();
-    return new Gson().fromJson(
-        getString(SharedPreferenceConstants.CACHED_INVITES, ""), type);
+    return new Gson().fromJson(getString(SharedPreferenceConstants.CACHED_INVITES, ""), type);
   }
 
   public static void saveRequests(List<Request> requests) {
-    putString(SharedPreferenceConstants.CACHED_REQUESTS,
-        new Gson().toJson(requests));
+    putString(SharedPreferenceConstants.CACHED_REQUESTS, new Gson().toJson(requests));
   }
 
   public static List<Request> getRequests() {
     Type type = new TypeToken<List<Request>>() {
     }.getType();
-    return new Gson().fromJson(
-        getString(SharedPreferenceConstants.CACHED_REQUESTS, ""), type);
-
+    return new Gson().fromJson(getString(SharedPreferenceConstants.CACHED_REQUESTS, ""), type);
   }
 }

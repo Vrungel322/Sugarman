@@ -20,7 +20,7 @@ public class AppsFlyerEventSender {
     eventValue.put("timezone", TimeZone.getDefault().getID());
     eventValue.put("timestamp", System.currentTimeMillis() + "");
 
-    if(SharedPreferenceHelper.isRemoteLoggingEnabled()) {
+    if (SharedPreferenceHelper.isRemoteLoggingEnabled()) {
       AppsFlyerLib.getInstance()
           .trackEvent(App.getInstance().getApplicationContext(), eventKey, eventValue);
 

@@ -129,10 +129,9 @@ public class CheckoutActivity extends BasicActivity
 
         ImageView plusButton = (ImageView) v1.findViewById(R.id.plus);
         plusButton.setOnClickListener(view -> {
-          if (paymentType.equals(Constants.FREE_PAYMENT_TYPE)){
+          if (paymentType.equals(Constants.FREE_PAYMENT_TYPE)) {
             showToastMessage(R.string.can_not_increase_amount);
-          }
-          else {
+          } else {
             num++;
             numberOfItems.setText(Integer.toString(num));
           }
@@ -141,9 +140,9 @@ public class CheckoutActivity extends BasicActivity
 
         ImageView minusButton = (ImageView) v1.findViewById(R.id.minus);
         minusButton.setOnClickListener(view -> {
-          if (paymentType.equals(Constants.FREE_PAYMENT_TYPE)){
+          if (paymentType.equals(Constants.FREE_PAYMENT_TYPE)) {
             showToastMessage(R.string.can_not_increase_amount);
-          }else {
+          } else {
             if (num > 1) {
               num--;
               numberOfItems.setText(Integer.toString(num));

@@ -103,7 +103,7 @@ import timber.log.Timber;
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(stats -> {
           Timber.e("fetchStatByDate stats.size = " + stats.size());
-        },Throwable::printStackTrace);
+        }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
 
     //Subscription subscription = mDataManager.fetchStatByDate(date)

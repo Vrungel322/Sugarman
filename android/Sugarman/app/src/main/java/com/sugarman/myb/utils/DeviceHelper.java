@@ -437,7 +437,6 @@ public abstract class DeviceHelper {
     }
   }
 
-
   private static String capitalize(String s) {
     if (s == null || s.length() == 0) {
       return "";

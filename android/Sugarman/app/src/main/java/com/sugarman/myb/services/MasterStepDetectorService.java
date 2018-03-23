@@ -129,7 +129,6 @@ public class MasterStepDetectorService extends Service implements OnReportSendLi
                 //Log.d("BASELINE ", "BASELINE ADDED " + delta + " steps");
                 SharedPreferenceHelper.setOnLaunch(false);
               }
-
             } else {
               //Log.e("baseline", "called first launch");
               SharedPreferenceHelper.saveBaseline(steps);

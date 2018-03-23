@@ -59,8 +59,7 @@ abstract class BaseSharedPreferenceHelper {
     editor.apply();
   }
 
-  static void removeAllKeysStartingWith(String string)
-  {
+  static void removeAllKeysStartingWith(String string) {
     SharedPreferences.Editor editor = getPrefsInstance().edit();
     for (String key : getPrefsInstance().getAll().keySet()) {
       if (key.startsWith(string)) {

@@ -166,6 +166,7 @@ public class InvitesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private final TextView tvInviteDescription;
 
     private final StrokeImage ivAvatar;
+
     InvitesHolder(View itemView, ItemInvitesActionListener clickItemListener) {
       super(itemView);
 
@@ -202,6 +203,5 @@ public class InvitesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
           break;
       }
     }
-
   }
 }

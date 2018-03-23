@@ -128,7 +128,7 @@ public class FetchingAnimationServicePresenter
               SharedPreferenceHelper.unBlockRules();
               Collections.reverse(animationList);
               //for (Drawable drawable : animationList) {
-                //animationDrawable.addFrame(drawable, duration);
+              //animationDrawable.addFrame(drawable, duration);
               //}
               //getViewState().setAnimation(animationDrawable);
             }

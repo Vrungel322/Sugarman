@@ -460,10 +460,10 @@ public class DataManager {
   //  return getTrackings(type);
   //}
 
- public Observable<Response<TrackingsResponse>> getTrackings(String query, String type) {
-    if (type.isEmpty()){
+  public Observable<Response<TrackingsResponse>> getTrackings(String query, String type) {
+    if (type.isEmpty()) {
       return mRestApi.getTrackings(type);
-    }else {
+    } else {
       return mRestApi.getTrackings(query, type);
     }
   }
