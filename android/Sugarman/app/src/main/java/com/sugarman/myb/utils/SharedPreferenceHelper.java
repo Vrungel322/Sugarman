@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import com.sugarman.myb.api.models.requests.ReportStats;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.api.models.responses.me.invites.Invite;
+import com.sugarman.myb.api.models.responses.me.requests.Request;
 import com.sugarman.myb.api.models.responses.me.stats.Stats;
 import com.sugarman.myb.api.models.responses.trackings.TrackingsResponse;
 import com.sugarman.myb.api.models.responses.users.Tokens;
@@ -930,5 +931,18 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     }.getType();
     return new Gson().fromJson(
         getString(SharedPreferenceConstants.CACHED_INVITES, ""), type);
+  }
+
+  public static void saveRequests(List<Request> requests) {
+    putString(SharedPreferenceConstants.CACHED_REQUESTS,
+        new Gson().toJson(requests));
+  }
+
+  public static List<Request> getRequests() {
+    Type type = new TypeToken<List<Request>>() {
+    }.getType();
+    return new Gson().fromJson(
+        getString(SharedPreferenceConstants.CACHED_REQUESTS, ""), type);
+
   }
 }

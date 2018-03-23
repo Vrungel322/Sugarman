@@ -12,6 +12,7 @@ import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.adapters.RequestsAdapter;
 import com.sugarman.myb.api.clients.RequestManagerClient;
+import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.api.models.responses.me.requests.Request;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.constants.DialogConstants;
@@ -28,14 +29,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.greenrobot.eventbus.Subscribe;
+import timber.log.Timber;
 
 public class RequestsActivity extends BaseActivity
     implements View.OnClickListener, OnRequestsActionListener, ApiManageRequestsListener,
     IRequestsActivityView {
-  @InjectPresenter RequestsActivityPresenter mPresenter;
-
   private static final String TAG = RequestsActivity.class.getName();
-
+  @InjectPresenter RequestsActivityPresenter mPresenter;
   private RequestsAdapter requestsAdapter;
 
   private RequestManagerClient mRequestManagerClient;
@@ -172,7 +172,18 @@ public class RequestsActivity extends BaseActivity
   }
 
   @Override public void showRequests(List<Request> requests) {
-    requestsAdapter.setValue(requests);
+    if (requests != null) {
+      Timber.e("showRequest: " + requests.size());
+      List<Request> tempList = new ArrayList<>();
+      for (Request inv : requests) {
+        Tracking tracking = inv.getTracking();
+        long startTimestamp = tracking.getStartUTCDate().getTime();
+        if (startTimestamp > System.currentTimeMillis() && !tracking.isMentors()) {
+          tempList.add(inv);
+        }
+      }
+      if (requestsAdapter != null) requestsAdapter.setValue(tempList);
+    }
   }
 
   @Override public void onApiAcceptRequestSuccess() {

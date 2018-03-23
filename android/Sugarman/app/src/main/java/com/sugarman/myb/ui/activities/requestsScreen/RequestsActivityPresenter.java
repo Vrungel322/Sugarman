@@ -4,7 +4,9 @@ import com.arellomobile.mvp.InjectViewState;
 import com.sugarman.myb.App;
 import com.sugarman.myb.base.BasicPresenter;
 import com.sugarman.myb.constants.Constants;
+import com.sugarman.myb.data.db.DbRepositoryRequests;
 import com.sugarman.myb.utils.ThreadSchedulers;
+import javax.inject.Inject;
 import rx.Observable;
 import rx.Subscription;
 import timber.log.Timber;
@@ -14,6 +16,8 @@ import timber.log.Timber;
  */
 @InjectViewState public class RequestsActivityPresenter
     extends BasicPresenter<IRequestsActivityView> {
+  @Inject DbRepositoryRequests mDbRepositoryRequests;
+
   @Override protected void inject() {
     App.getAppComponent().inject(this);
   }
@@ -24,16 +28,21 @@ import timber.log.Timber;
   }
 
   private void fetchRequests() {
+    getViewState().showRequests(mDbRepositoryRequests.getAllEntities());
     Subscription subscription = mDataManager.getMyRequests()
-        .concatMap(
-            requestsResponseResponse -> Observable.from(requestsResponseResponse.body().getResult()))
+        .concatMap(requestsResponseResponse -> Observable.from(
+            requestsResponseResponse.body().getResult()))
         .filter(request -> request.getTracking().getStatus() != Constants.STATUS_FAILED)
         .filter(request -> request.getTracking().getStatus() != Constants.STATUS_COMPLETED)
         .toList()
-        .filter(requests -> requests!=null)
+        .filter(requests -> requests != null)
+        .flatMap(requests -> {
+          mDbRepositoryRequests.saveEntity(requests);
+          return Observable.just(requests);
+        })
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(requests -> {
-          Timber.e("fetchInvites size: " + requests.size());
+          Timber.e("fetchRequests size: " + requests.size());
           getViewState().showRequests(requests);
         }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
