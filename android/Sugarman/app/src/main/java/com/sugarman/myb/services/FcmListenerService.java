@@ -148,6 +148,7 @@ public class FcmListenerService extends FirebaseMessagingService {
     String trackingId = getTrackingId(notification);
     Timber.e(" processMessage Message " + text + " type " + type);
     Timber.e("deepLinks " + trackingId);
+    Timber.e("notification " + notification);
 
 
     switch (type) {
