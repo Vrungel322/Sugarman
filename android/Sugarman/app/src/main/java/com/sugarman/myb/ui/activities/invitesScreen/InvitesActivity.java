@@ -192,7 +192,7 @@ public class InvitesActivity extends BaseActivity implements View.OnClickListene
 
   @Override public void showInvites(List<Invite> invites) {
     if (invites != null) {
-      Timber.e("showInvites");
+      Timber.e("showInvites: " + invites.size());
       List<Invite> tempList = new ArrayList<>();
       for (Invite inv : invites) {
         Tracking tracking = inv.getTracking();
@@ -202,13 +202,27 @@ public class InvitesActivity extends BaseActivity implements View.OnClickListene
         }
       }
 
-      if (invitesAdapter != null) invitesAdapter.setValues(tempList);
+      Timber.e("showInvites adapter "+(invitesAdapter != null));
+      if (invitesAdapter != null) {
+        invitesAdapter.setValues(tempList);
+      }
     }
   }
 
   @Subscribe public void onEvent(InvitesUpdatedEvent event) {
-    invitesAdapter.setValues(event.getInvites());
-    refreshNoInvites();
+    Timber.e("event "+ event.getInvites().size());
+    invitesAdapter = new InvitesAdapter(this, new OnInvitesActionListener() {
+      @Override public void onDeclineInvite(Invite invite, int position) {
+        actionOnClick(invite, position, false);
+      }
+
+      @Override public void onAcceptInvite(Invite invite, int position) {
+        actionOnClick(invite, position, true);
+      }
+    });
+    showInvites(event.getInvites());
+    //invitesAdapter.setValues(event.getInvites());
+    //refreshNoInvites();
   }
 
   private void refreshNoInvites() {
