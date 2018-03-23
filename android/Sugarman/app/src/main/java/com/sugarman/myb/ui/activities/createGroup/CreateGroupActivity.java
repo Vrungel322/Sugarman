@@ -235,7 +235,7 @@ public class CreateGroupActivity extends BaseActivity
     //Если этот код раскоментирован то работает новый фрагмент, иначе все по старому
     //mFriendListFragment = FriendListFragment.newInstance(R.layout.fragment_friend_list_test);
     mFriendListFragment = FriendListFragment.newInstance(R.layout.activity_create_group_v2,
-        IntentExtractorHelper.getGroupName(getIntent()),FriendListFragment.IN_CREATE_GROUP);
+        IntentExtractorHelper.getGroupName(getIntent()), FriendListFragment.IN_CREATE_GROUP);
     getSupportFragmentManager().beginTransaction()
         .add(R.id.llContainer, mFriendListFragment)
         .commit();
@@ -243,7 +243,7 @@ public class CreateGroupActivity extends BaseActivity
       @Override public void createGroup(List<FacebookFriend> friendList, String groupName) {
         //mPresenter.sendInvitationInVk(friendList,getString(R.string.invite_message));
         mFriendListFragment.showProgress();
-        Timber.e("mFriendListFragment friendList.size:"+friendList.size());
+        Timber.e("mFriendListFragment friendList.size:" + friendList.size());
         if (friendList.size() > 0) {
           mIntiteByVk.clear();
           for (FacebookFriend f : friendList) {
@@ -256,8 +256,8 @@ public class CreateGroupActivity extends BaseActivity
               CreateGroupActivity.this);
         } else {
           new SugarmanDialog.Builder(CreateGroupActivity.this,
-              DialogConstants.FRIENDS_LIST_IS_IMPTY_ID).content(R.string.members_list_need_to_be_more0_less50)
-              .show();
+              DialogConstants.FRIENDS_LIST_IS_IMPTY_ID).content(
+              R.string.members_list_need_to_be_more0_less50).show();
           mFriendListFragment.hideProgress();
         }
       }
@@ -814,9 +814,9 @@ public class CreateGroupActivity extends BaseActivity
 
   @Override public void onApiCreateGroupFailure(String message) {
     if (DeviceHelper.isNetworkConnected()) {
-      if (message.equals("Missing group name")){
-        new SugarmanDialog.Builder(this, DialogConstants.API_CREATE_GROUP_FAILURE_ID).content(R.string.missing_group_name)
-            .show();
+      if (message.equals("Missing group name")) {
+        new SugarmanDialog.Builder(this, DialogConstants.API_CREATE_GROUP_FAILURE_ID).content(
+            R.string.missing_group_name).show();
       }
       mFriendListFragment.hideProgress();
     } else {
@@ -855,7 +855,7 @@ public class CreateGroupActivity extends BaseActivity
       SendVkInvitationDialog sendVkInvitationDialog =
           SendVkInvitationDialog.newInstance(mIntiteByVk, (Dialog dialog) -> {
             Timber.e("onApiJoinGroupSuccess vk listener");
-            dialog.dismiss();
+            if (dialog != null) dialog.dismiss();
             finish();
           });
       sendVkInvitationDialog.show(getFragmentManager(), "SendVkInvitationDialog");
