@@ -119,7 +119,7 @@ import timber.log.Timber;
           .compose(ThreadSchedulers.applySchedulers())
           .subscribe(statsList -> {
             getViewState().showTrackingStats(statsList);
-          });
+          },Throwable::printStackTrace);
       addToUnsubscription(subscription);
     }
   }
