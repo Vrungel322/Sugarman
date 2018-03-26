@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,6 +18,8 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.CombinedData;
+import com.github.mikephil.charting.listener.ChartTouchListener;
+import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.squareup.picasso.CustomPicasso;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.Member;
@@ -94,6 +95,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
   private int mCountOfStepsForLastXDays = 0;
   private List<Stats> mStatsOfTracking = new ArrayList<>();
   private boolean zeroDayremoved;
+  private boolean is21stats = true;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_new_stats);
@@ -144,6 +146,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     mChart.setDrawBarShadow(false);
     mChart.setHighlightFullBarEnabled(false);
     mChart.setTouchEnabled(true);// enable touch gestures
+
     mChart.animateXY(3000, 3000);
 
     // draw bars behind lines
@@ -172,64 +175,129 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     xAxis.setAxisMinimum(0f);
     xAxis.setGranularity(1f);
     if (!mStatsDays.isEmpty() && mStatsDays.size() != 0) {
-      //xAxis.setValueFormatter((value, axis) -> mStatsDays.get((int) value % mStatsDays.size()));
+      xAxis.setValueFormatter((value, axis) -> mStatsDays.get((int) value % mStatsDays.size()));
     }
-    GestureDetector gd =
-        new GestureDetector(getApplicationContext(), new GestureDetector.SimpleOnGestureListener() {
+    //GestureDetector gd =
+    //    new GestureDetector(getApplicationContext(), new GestureDetector.SimpleOnGestureListener() {
+    //
+    //      @Override public boolean onDoubleTap(MotionEvent e) {
+    //        Timber.e("onTouchDouble " + mStatsCount);
+    //        if (mTextViewStatsDay.isSelected()) {
+    //          // empty for now
+    //          fillDetailsCard();
+    //        }
+    //        if (mTextViewStatsWeek.isSelected()) {
+    //          // empty for now
+    //          fillDetailsCard();
+    //        }
+    //        if (mTextViewStatsPersonal.isSelected()) { // only for personal will work double tapping
+    //          if (mTracking == null) {
+    //            if (mStatsCount == STATS_COUNT_PERSONAL_21) {
+    //              fillByStatsPersonal(STATS_COUNT_PERSONAL_7);
+    //              fillDetailsCard();
+    //              return true;
+    //            }
+    //            if (mStatsCount == STATS_COUNT_PERSONAL_7) {
+    //              fillByStatsPersonal(STATS_COUNT_PERSONAL_21);
+    //              fillDetailsCard();
+    //              return true;
+    //            }
+    //          } else {
+    //            if (mStatsCount > STATS_COUNT_PERSONAL_7) {
+    //              fillByStatsPersonalTrackingLast7Days(STATS_COUNT_PERSONAL_7,
+    //                  mStatsOfTracking.subList(0, 7));
+    //              fillDetailsCard();
+    //              return true;
+    //            }
+    //            if (mStatsCount <= STATS_COUNT_PERSONAL_7) {
+    //              fillByStatsPersonalTracking(mStatsOfTracking);
+    //              fillDetailsCard();
+    //              return true;
+    //            }
+    //          }
+    //        }
+    //
+    //        return true;
+    //      }
+    //
+    //      @Override public void onLongPress(MotionEvent e) {
+    //        super.onLongPress(e);
+    //      }
+    //
+    //      @Override public boolean onDoubleTapEvent(MotionEvent e) {
+    //        return true;
+    //      }
+    //
+    //      @Override public boolean onDown(MotionEvent e) {
+    //        return true;
+    //      }
+    //    });
+    //mChart.setOnTouchListener((v, event) -> gd.onTouchEvent(event));
+    mChart.setOnChartGestureListener(new OnChartGestureListener() {
+      @Override public void onChartGestureStart(MotionEvent me,
+          ChartTouchListener.ChartGesture lastPerformedGesture) {
 
-          @Override public boolean onDoubleTap(MotionEvent e) {
-            Timber.e("onTouchDouble " + mStatsCount);
-            if (mTextViewStatsDay.isSelected()) {
-              // empty for now
-              fillDetailsCard();
-            }
-            if (mTextViewStatsWeek.isSelected()) {
-              // empty for now
-              fillDetailsCard();
-            }
-            if (mTextViewStatsPersonal.isSelected()) { // only for personal will work double tapping
-              if (mTracking == null) {
-                if (mStatsCount == STATS_COUNT_PERSONAL_21) {
-                  fillByStatsPersonal(STATS_COUNT_PERSONAL_7);
-                  fillDetailsCard();
-                  return true;
-                }
-                if (mStatsCount == STATS_COUNT_PERSONAL_7) {
-                  fillByStatsPersonal(STATS_COUNT_PERSONAL_21);
-                  fillDetailsCard();
-                  return true;
-                }
-              } else {
-                if (mStatsCount > STATS_COUNT_PERSONAL_7) {
-                  fillByStatsPersonalTrackingLast7Days(STATS_COUNT_PERSONAL_7,
-                      mStatsOfTracking.subList(0, 7));
-                  fillDetailsCard();
-                  return true;
-                }
-                if (mStatsCount <= STATS_COUNT_PERSONAL_7) {
-                  fillByStatsPersonalTracking(mStatsOfTracking);
-                  fillDetailsCard();
-                  return true;
-                }
-              }
-            }
+      }
 
-            return true;
+      @Override public void onChartGestureEnd(MotionEvent me,
+          ChartTouchListener.ChartGesture lastPerformedGesture) {
+
+      }
+
+      @Override public void onChartLongPressed(MotionEvent me) {
+
+      }
+
+      @Override public void onChartDoubleTapped(MotionEvent me) {
+        mChart.fitScreen();
+        if (mTextViewStatsPersonal.isSelected()) { // only for personal will work double tapping
+          //if (mTracking == null) {
+          if (!is21stats) {
+            is21stats = true;
+            mChart.setVisibleXRange(0, STATS_COUNT_PERSONAL_21);
+            mChart.moveViewToX(0);
+            mChart.resetViewPortOffsets();
+            mChart.invalidate();
+            fillDetailsCard();
+          } else {
+            is21stats = false;
+            mChart.setVisibleXRange(0, 6);
+            mChart.moveViewToX(0);
+            mChart.resetViewPortOffsets();
+            mChart.invalidate();
+            fillDetailsCard();
           }
+          //} else {
+          //  if (mStatsCount > STATS_COUNT_PERSONAL_7) {
+          //    fillByStatsPersonalTrackingLast7Days(STATS_COUNT_PERSONAL_7,
+          //        mStatsOfTracking.subList(0, 7));
+          //    fillDetailsCard();
+          //  }
+          //  if (mStatsCount <= STATS_COUNT_PERSONAL_7) {
+          //    fillByStatsPersonalTracking(mStatsOfTracking);
+          //    fillDetailsCard();
+          //  }
+          //}
+        }
+      }
 
-          @Override public void onLongPress(MotionEvent e) {
-            super.onLongPress(e);
-          }
+      @Override public void onChartSingleTapped(MotionEvent me) {
 
-          @Override public boolean onDoubleTapEvent(MotionEvent e) {
-            return true;
-          }
+      }
 
-          @Override public boolean onDown(MotionEvent e) {
-            return true;
-          }
-        });
-    mChart.setOnTouchListener((v, event) -> gd.onTouchEvent(event));
+      @Override
+      public void onChartFling(MotionEvent me1, MotionEvent me2, float velocityX, float velocityY) {
+
+      }
+
+      @Override public void onChartScale(MotionEvent me, float scaleX, float scaleY) {
+
+      }
+
+      @Override public void onChartTranslate(MotionEvent me, float dX, float dY) {
+
+      }
+    });
   }
 
   private void fillDetailsCard() {
@@ -370,7 +438,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
           getResources().getDrawable(R.drawable.animation_progress_bar))); // line - dots
       data.setData(mPresenter.generateBarData(mStats)); // colomns
 
-      mChart.getXAxis().setAxisMaximum(data.getXMax() + 0.25f);
+      //mChart.getXAxis().setAxisMaximum(data.getXMax() + 0.25f);
       mChart.setData(null);
       mChart.setData(data);
       mChart.getBarData().setBarWidth(100);
@@ -453,7 +521,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
           getResources().getDrawable(R.drawable.animation_progress_bar))); // line - dots
       data.setData(mPresenter.generateBarData(mStats)); // colomns
 
-      mChart.getXAxis().setAxisMaximum(data.getXMax() + 0.25f);
+      //mChart.getXAxis().setAxisMaximum(data.getXMax() + 0.25f);
       mChart.setData(null);
       mChart.setData(data);
       mChart.getBarData().setBarWidth(100);
@@ -503,7 +571,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
         getResources().getDrawable(R.drawable.animation_progress_bar))); // line - dots
     data.setData(mPresenter.generateBarData(mStats)); // colomns
 
-    mChart.getXAxis().setAxisMaximum(data.getXMax() + 0.25f);
+    //mChart.getXAxis().setAxisMaximum(data.getXMax() + 0.25f);
     mChart.setData(null);
     mChart.setData(data);
     mChart.getBarData().setBarWidth(100);
