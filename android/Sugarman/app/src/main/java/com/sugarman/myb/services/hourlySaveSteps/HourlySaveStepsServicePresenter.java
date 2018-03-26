@@ -27,7 +27,7 @@ public class HourlySaveStepsServicePresenter extends BasicPresenter<IHourlySaveS
   }
 
   public void startHourlySaveSteps() {
-    mPeriodicalSubscription = Observable.interval(1000, 500, TimeUnit.MILLISECONDS)
+    mPeriodicalSubscription = Observable.interval(1000, 10000, TimeUnit.MILLISECONDS)
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(aLong -> {
           steps = SharedPreferenceHelper.getReportStatsLocal(
@@ -53,7 +53,7 @@ public class HourlySaveStepsServicePresenter extends BasicPresenter<IHourlySaveS
 
   private void clearLast24HoursSteps() {
     Timber.e("clearLast24HoursSteps");
-    for (int i = 0; i < 23; i++) {
+    for (int i = 0; i < 24; i++) {
       SharedPreferenceHelper.saveHourlySteps(i, Constants.FAKE_STEPS_COUNT);
     }
   }

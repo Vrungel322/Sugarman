@@ -148,7 +148,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     mChart.setHighlightFullBarEnabled(false);
     mChart.setTouchEnabled(true);// enable touch gestures
 
-    mChart.animateXY(3000, 3000);
+    mChart.animateXY(1500, 1500);
 
     // draw bars behind lines
     mChart.setDrawOrder(new CombinedChart.DrawOrder[] {
@@ -176,7 +176,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     xAxis.setAxisMinimum(0f);
     xAxis.setGranularity(1f);
     if (!mStatsDays.isEmpty() && mStatsDays.size() != 0) {
-      xAxis.setValueFormatter((value, axis) -> mStatsDays.get((int) value % mStatsDays.size()));
+      //xAxis.setValueFormatter((value, axis) -> mStatsDays.get((int) value % mStatsDays.size()));
     }
     //GestureDetector gd =
     //    new GestureDetector(getApplicationContext(), new GestureDetector.SimpleOnGestureListener() {
@@ -254,6 +254,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
         if (mTextViewStatsPersonal.isSelected()
             || mTextViewStatsDay.isSelected()) { // only for personal will work double tapping
           //if (mTracking == null) {
+          Timber.e("onChartDoubleTapped mStatsCount:"+mStatsCount);
           if (!is21stats) {
             is21stats = true;
             mChart.setVisibleXRange(0, STATS_COUNT_PERSONAL_21);
@@ -263,8 +264,8 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
             fillDetailsCard();
           } else {
             is21stats = false;
-            mChart.setVisibleXRange(0, 6);
-            mChart.moveViewToX(0);
+            mChart.setVisibleXRange(mStatsCount-7, mStatsCount);
+            mChart.moveViewToX(mStatsCount-7);
             mChart.resetViewPortOffsets();
             mChart.invalidate();
             fillDetailsCard();
@@ -858,6 +859,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
   }
 
   @Override public void showStats(List<Stats> statsCached) {
+    mStatsCount = statsCached.size();
     changeStatsOnChart(mTextViewStatsPersonal);
     changeStatsOnDescriptionDetails(mImageViewStatsSteps);
     setUpUIChart();
@@ -878,6 +880,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     mStatsCount = stats.size();
     mStats.clear();
     mStats.addAll(stats);
+    mCountOfStepsForLastXDays=0;
     for (int i = 0; i < mStats.size(); i++) {
       Timber.e("showDayStats mCountOfStepsForLastXDays " + mStats.get(i).toString());
       if (mStats.get(i).getStepsCount() != Constants.FAKE_STEPS_COUNT) {
