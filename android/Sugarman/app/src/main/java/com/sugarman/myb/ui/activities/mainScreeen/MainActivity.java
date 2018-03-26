@@ -100,6 +100,7 @@ import com.sugarman.myb.models.ab_testing.ABTesting;
 import com.sugarman.myb.models.custom_events.CustomUserEvent;
 import com.sugarman.myb.services.MasterStepDetectorService;
 import com.sugarman.myb.services.fetching_animation.FetchingAnimationService;
+import com.sugarman.myb.services.hourlySaveSteps.HourlySaveStepsService;
 import com.sugarman.myb.ui.activities.CongratulationsActivity;
 import com.sugarman.myb.ui.activities.DailyActivity;
 import com.sugarman.myb.ui.activities.FailedActivity;
@@ -565,14 +566,8 @@ public class MainActivity extends GetUserInfoActivity
     setContentView(R.layout.activity_main);
     super.onCreate(savedInstanceState);
     Timber.e("deepLinks onCreate");
-    //AccountManager accManager = AccountManager.get(getApplicationContext());
-    //Account acc[] = accManager.getAccountsByType("com.google");
-    //int accCount = acc.length;
-    //
-    //for(int i = 0; i < accCount; i++)
-    //{
-    //  Timber.e(acc[i].name);
-    //}
+
+    startService(new Intent(getApplicationContext(), HourlySaveStepsService.class));
 
     saveIMEI();
 

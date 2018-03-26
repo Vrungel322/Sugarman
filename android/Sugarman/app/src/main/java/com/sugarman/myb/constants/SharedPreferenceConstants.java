@@ -101,6 +101,7 @@ public abstract class SharedPreferenceConstants {
   public static final String CACHED_TRACKING_RESPONCE = "CACHED_TRACKING_RESPONCE";
   public static final String CACHED_INVITES = "CACHED_INVITES";
   public static final String CACHED_REQUESTS = "CACHED_REQUESTS";
+  public static final String HOUR_ = "HOUR_";
 
   private SharedPreferenceConstants() {
     // only static methods and fields

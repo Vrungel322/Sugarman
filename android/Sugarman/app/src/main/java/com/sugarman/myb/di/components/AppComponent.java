@@ -6,6 +6,7 @@ import com.sugarman.myb.base.BasicFragment;
 import com.sugarman.myb.di.modules.AppModule;
 import com.sugarman.myb.di.scopes.AppScope;
 import com.sugarman.myb.services.fetching_animation.FetchingAnimationServicePresenter;
+import com.sugarman.myb.services.hourlySaveSteps.HourlySaveStepsServicePresenter;
 import com.sugarman.myb.ui.activities.addMember.AddMemberActivityPresenter;
 import com.sugarman.myb.ui.activities.approveOtp.ApproveOtpActivityPresenter;
 import com.sugarman.myb.ui.activities.base.BasicActivityPresenter;
@@ -122,4 +123,6 @@ import dagger.Component;
   void inject(NewStatsActivityPresenter presenter);
 
   void inject(SearchGroupsActivityPresenter presenter);
+
+  void inject(HourlySaveStepsServicePresenter presenter);
 }

@@ -25,6 +25,8 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import timber.log.Timber;
 
 public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
@@ -939,5 +941,20 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     Type type = new TypeToken<List<Request>>() {
     }.getType();
     return new Gson().fromJson(getString(SharedPreferenceConstants.CACHED_REQUESTS, ""), type);
+  }
+
+  public static void saveHourlySteps(int numOfHours, int steps) {
+    Timber.e(
+        "saveHourlySteps key: " + SharedPreferenceConstants.HOUR_ + numOfHours + " val: " + steps);
+    putInt(SharedPreferenceConstants.HOUR_ + numOfHours, steps);
+  }
+
+  public static SortedMap<String, Integer> getStepsPerDay() {
+    SortedMap<String, Integer> hashMap = new TreeMap<>();
+    for (int i = 0; i < 24; i++) {
+      hashMap.put(SharedPreferenceConstants.HOUR_ + i,
+          getInt(SharedPreferenceConstants.HOUR_ + i, Constants.FAKE_STEPS_COUNT));
+    }
+    return hashMap;
   }
 }

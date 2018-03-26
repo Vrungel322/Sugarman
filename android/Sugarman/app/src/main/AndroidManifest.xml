@@ -248,6 +248,12 @@
         android:theme="@style/Theme.AppCompat.Translucent" />
     <activity android:name=".ui.activities.newStats.NewStatsActivity"
         android:screenOrientation="portrait"></activity>
+
+    <service
+        android:name=".services.hourlySaveSteps.HourlySaveStepsService"
+        android:enabled="true"
+        android:exported="true"
+        android:stopWithTask="false"/>
   </application>
 
 </manifest>
