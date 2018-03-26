@@ -114,6 +114,7 @@ public class ShopInviteFriendsActivity extends BasicActivity
   }) List<ImageView> ivListInviter;
   Typeface tfDin;
   List<TextView> allTexts;
+  FriendListFragment mFriendListFragment;
   private MembersAdapter membersAdapter;
   private RecyclerView rcvMembers;
   private final TextWatcher membersWatcher = new TextWatcher() {
@@ -162,7 +163,6 @@ public class ShopInviteFriendsActivity extends BasicActivity
   private boolean isVkLoggedIn;
   private boolean isFbLoggedIn;
   private String currentFilter = "";
-
   // number of total count/ number of count people with app BY PH
   private int numberOfMemberTotalAppPh;
   private int numberOfMemberWithAppPh;
@@ -172,8 +172,6 @@ public class ShopInviteFriendsActivity extends BasicActivity
   // number of total count/ number of count people with app BY VK
   private int numberOfMemberTotalAppVk;
   private int numberOfMemberWithAppVk;
-
-  FriendListFragment mFriendListFragment;
 
   @Override protected void onCreate(Bundle savedStateInstance) {
     setContentView(R.layout.activity_shop_invite_friends);
@@ -594,7 +592,7 @@ public class ShopInviteFriendsActivity extends BasicActivity
       Timber.e("Vk here " + mIntiteByVk.size());
       SendVkInvitationDialog sendVkInvitationDialog =
           SendVkInvitationDialog.newInstance(mIntiteByVk, (Dialog dialog) -> {
-            dialog.dismiss();
+            if (dialog != null) dialog.dismiss();
             mPresenter.addFriendsToShopGroup(new ArrayList<>(mIntiteByVk));
             mIntiteByPh.clear();
           });
