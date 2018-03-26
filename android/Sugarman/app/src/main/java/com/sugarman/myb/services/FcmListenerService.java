@@ -1,5 +1,6 @@
 package com.sugarman.myb.services;
 
+import android.app.ActivityManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -253,13 +254,23 @@ public class FcmListenerService extends FirebaseMessagingService {
   @Override public void onCreate() {
     super.onCreate();
     //Timber.e("processMessage onCreate");
-
   }
 
   @Override public void onDestroy() {
     super.onDestroy();
     //Timber.e("processMessage onDestroy");
     startService(new Intent(getApplicationContext(), FcmListenerService.class));
+  }
+
+  private boolean isMyServiceRunning(Class<?> serviceClass) {
+    ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+    for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(
+        Integer.MAX_VALUE)) {
+      if (serviceClass.getName().equals(service.service.getClassName())) {
+        return true;
+      }
+    }
+    return false;
   }
 }
 

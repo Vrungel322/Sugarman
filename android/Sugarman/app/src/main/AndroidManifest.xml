@@ -157,6 +157,7 @@
 
     <service
         android:name=".services.FcmListenerService"
+        android:stopWithTask="false"
         android:exported="true">
       <intent-filter>
         <action android:name="com.google.firebase.MESSAGING_EVENT" />
