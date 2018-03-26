@@ -14,4 +14,6 @@ import java.util.List;
   void showStats(List<Stats> statsCached);
 
   void showTrackingStats(List<Stats> statsCached);
+
+  void showDayStats(List<Stats> stats);
 }

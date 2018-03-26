@@ -8,7 +8,9 @@ import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 import java.util.Comparator;
 import lombok.AllArgsConstructor;
+import lombok.ToString;
 
+@ToString
 @AllArgsConstructor public class Stats extends RealmObject implements Parcelable {
 
   public static final Comparator<Stats> BY_DATE_DESC = new Comparator<Stats>() {

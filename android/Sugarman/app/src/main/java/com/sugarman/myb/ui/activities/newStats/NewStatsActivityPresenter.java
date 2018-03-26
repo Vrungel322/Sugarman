@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -46,6 +47,22 @@ import timber.log.Timber;
 
   @Override protected void inject() {
     App.getAppComponent().inject(this);
+  }
+
+  public void fetchDayStats() {
+    Subscription subscription =
+        Observable.just(SharedPreferenceHelper.getStepsPerDay())
+            .flatMap(stringIntegerSortedMap -> {
+              List<Stats> stats = new ArrayList<>();
+              for (Map.Entry<String, Integer> entry : stringIntegerSortedMap.entrySet()) {
+                stats.add(
+                    new Stats(0, entry.getKey(), "H_" + entry.getKey(), entry.getValue(), 1L));
+              }
+              return Observable.just(stats);
+            })
+            .compose(ThreadSchedulers.applySchedulers())
+            .subscribe(stats -> getViewState().showDayStats(stats),Throwable::printStackTrace);
+    addToUnsubscription(subscription);
   }
 
   public void startChartFlow(@Nullable Tracking tracking) throws ParseException {

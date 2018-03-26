@@ -27,6 +27,7 @@ import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.api.models.responses.me.stats.Stats;
 import com.sugarman.myb.base.BasicActivity;
 import com.sugarman.myb.constants.Constants;
+import com.sugarman.myb.constants.SharedPreferenceConstants;
 import com.sugarman.myb.ui.views.CropCircleTransformation;
 import com.sugarman.myb.ui.views.CropSquareTransformation;
 import com.sugarman.myb.ui.views.MaskTransformation;
@@ -250,7 +251,8 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
 
       @Override public void onChartDoubleTapped(MotionEvent me) {
         mChart.fitScreen();
-        if (mTextViewStatsPersonal.isSelected()) { // only for personal will work double tapping
+        if (mTextViewStatsPersonal.isSelected()
+            || mTextViewStatsDay.isSelected()) { // only for personal will work double tapping
           //if (mTracking == null) {
           if (!is21stats) {
             is21stats = true;
@@ -587,11 +589,11 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
   }
 
   private void fillByStatsWeek() {
-    fillByStatsPersonal(7);// just mock
+    //fillByStatsPersonal(7);// just mock
   }
 
   private void fillByStatsDay() {
-    fillByStatsPersonal(7);//just mock
+    mPresenter.fetchDayStats();
   }
 
   @OnClick({ R.id.ivStatsKm, R.id.ivStatsSteps, R.id.ivStatsKcal })
@@ -869,5 +871,46 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     changeStatsOnChart(mTextViewStatsPersonal);
     setUpUIChart();
     changeStatsOnDescriptionDetails(mImageViewStatsSteps);
+  }
+
+  @Override public void showDayStats(List<Stats> stats) {
+    Timber.e("showDayStats stats size " + stats.size());
+    mStatsCount = stats.size();
+    mStats.clear();
+    mStats.addAll(stats);
+    for (int i = 0; i < mStats.size(); i++) {
+      Timber.e("showDayStats mCountOfStepsForLastXDays " + mStats.get(i).toString());
+      if (mStats.get(i).getStepsCount() != Constants.FAKE_STEPS_COUNT) {
+        mStatsSteps.add(mStats.get(i).getStepsCount());
+        mCountOfStepsForLastXDays += mStats.get(i).getStepsCount();
+      }
+    }
+    Timber.e("onTouchDouble mCountOfStepsForLastXDays " + mCountOfStepsForLastXDays);
+
+    Collections.sort(mStats,
+        (left, t1) -> (Integer.valueOf(left.getDate().replace(SharedPreferenceConstants.HOUR_, ""))
+            - Integer.valueOf(t1.getDate().replace(SharedPreferenceConstants.HOUR_, ""))));
+
+    CombinedData data = new CombinedData();
+
+    data.setData(mPresenter.generateLineData(mStats, mStatsSteps,
+        getResources().getDrawable(R.drawable.animation_progress_bar))); // line - dots
+    data.setData(mPresenter.generateBarData(mStats)); // colomns
+
+    //mChart.getXAxis().setAxisMaximum(data.getXMax() + 0.25f);
+    mChart.setData(null);
+    mChart.setData(data);
+    mChart.getBarData().setBarWidth(100);
+    mChart.setDrawBarShadow(false);
+    mChart.setHighlightFullBarEnabled(false);
+    mChart.getBarData().setHighlightEnabled(false);
+    mChart.setDrawValueAboveBar(true);
+    mChart.fitScreen();
+    mChart.invalidate();
+    setUpKm();
+    setUpSteps();
+    setUpKcal();
+    //setUpUI();
+    //changeStatsOnDescriptionDetails(mImageViewStatsSteps);
   }
 }
