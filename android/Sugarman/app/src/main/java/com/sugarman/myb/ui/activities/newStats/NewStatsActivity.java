@@ -254,7 +254,13 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
         if (mTextViewStatsPersonal.isSelected()
             || mTextViewStatsDay.isSelected()) { // only for personal will work double tapping
           //if (mTracking == null) {
-          Timber.e("onChartDoubleTapped mStatsCount:"+mStatsCount);
+          int localCounter = 0;
+          for (int index = 0; index < mStats.size(); index++) {
+            if (!mStats.get(index).getLabel().trim().isEmpty()) {
+              localCounter++;
+            }
+          }
+          Timber.e("onChartDoubleTapped mStatsCount:" + localCounter);
           if (!is21stats) {
             is21stats = true;
             mChart.setVisibleXRange(0, STATS_COUNT_PERSONAL_21);
@@ -264,8 +270,13 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
             fillDetailsCard();
           } else {
             is21stats = false;
-            mChart.setVisibleXRange(mStatsCount-7, mStatsCount);
-            mChart.moveViewToX(mStatsCount-7);
+            //if (localCounter - 7 <= 0) {
+              mChart.setVisibleXRange(1, 7);
+              mChart.moveViewToX(1);
+            //} else {
+              //mChart.setVisibleXRange(localCounter - 17, localCounter);
+              //mChart.moveViewToX(1);
+            //}
             mChart.resetViewPortOffsets();
             mChart.invalidate();
             fillDetailsCard();
@@ -880,7 +891,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     mStatsCount = stats.size();
     mStats.clear();
     mStats.addAll(stats);
-    mCountOfStepsForLastXDays=0;
+    mCountOfStepsForLastXDays = 0;
     for (int i = 0; i < mStats.size(); i++) {
       Timber.e("showDayStats mCountOfStepsForLastXDays " + mStats.get(i).toString());
       if (mStats.get(i).getStepsCount() != Constants.FAKE_STEPS_COUNT) {
