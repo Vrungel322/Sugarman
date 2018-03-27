@@ -436,7 +436,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
 
       CombinedData data = new CombinedData();
 
-      Collections.reverse(mStats);
+      //Collections.reverse(mStats);
       data.setData(mPresenter.generateLineData(mStats, mStatsSteps,
           getResources().getDrawable(R.drawable.animation_progress_bar))); // line - dots
       data.setData(mPresenter.generateBarData(mStats)); // colomns

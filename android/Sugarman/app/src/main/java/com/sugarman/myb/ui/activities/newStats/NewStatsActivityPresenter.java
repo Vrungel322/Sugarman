@@ -205,16 +205,20 @@ import timber.log.Timber;
 
     ArrayList<Entry> entries = new ArrayList<Entry>();
     ArrayList<Entry> entriesDashed = new ArrayList<Entry>();
+    ArrayList<Stats> sempStat = new ArrayList<Stats>();
 
     for (int index = 0; index < stats.size(); index++) {
       if (!stats.get(index).getLabel().trim().isEmpty()) {
-        Timber.e("generateLineData " + stats.get(index).getLabel());
-        entries.add(new Entry(index, stats.get(index).getStepsCount()));
-        //add icon to last point of chart
-        if (index == stats.size() - 1) {
-          entries.add(
-              new Entry(index, statsSteps.get(index)/*,drawable*/)); // add icon to point on chart
+        sempStat.add(stats.get(index));
         }
+      }
+
+    for (int i = 0; i < sempStat.size(); i++) {
+      Timber.e("generateLineData " + stats.get(i).getLabel());
+      entries.add(new Entry(i, sempStat.get(i).getStepsCount()));
+      //add icon to last point of chart
+      if (i == stats.size() - 1) {
+        entries.add(new Entry(i, sempStat.get(i).getStepsCount()/*,drawable*/)); // add icon to point on chart
       }
     }
 
