@@ -523,12 +523,13 @@ public class GroupDetailsActivity extends BaseActivity
 
         private void confirmDeleteMessage(final Message message) {
           Timber.e("CONFIRM DELETE MESSAGE CALLED");
-          sendDeleteMessage(message._id);
           NotifyDialog dialog = NotifyDialog.startConfirm(GroupDetailsActivity.this,
               getString(com.clover_studio.spikachatmodule.R.string.delete_message_title),
               getString(com.clover_studio.spikachatmodule.R.string.delete_message_text));
           dialog.setTwoButtonListener(new NotifyDialog.TwoButtonDialogListener() {
             @Override public void onOkClicked(NotifyDialog dialog) {
+              sendDeleteMessage(message._id);
+
               dialog.dismiss();
               sendDeleteMessage(message._id);
             }

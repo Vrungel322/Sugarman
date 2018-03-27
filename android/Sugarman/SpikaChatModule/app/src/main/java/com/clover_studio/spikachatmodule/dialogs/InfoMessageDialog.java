@@ -5,32 +5,20 @@ import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-
 import com.clover_studio.spikachatmodule.R;
 import com.clover_studio.spikachatmodule.models.Message;
-import com.clover_studio.spikachatmodule.models.SeenByModel;
 import com.clover_studio.spikachatmodule.models.User;
 import com.clover_studio.spikachatmodule.utils.AnimUtils;
-import com.clover_studio.spikachatmodule.utils.Const;
 import com.clover_studio.spikachatmodule.utils.Tools;
 import com.clover_studio.spikachatmodule.view.CustomTextView;
-
-import org.w3c.dom.Text;
 
 public class InfoMessageDialog extends Dialog {
 
@@ -209,16 +197,17 @@ public class InfoMessageDialog extends Dialog {
     }
 
     private void dismissWithDelete() {
-        AnimUtils.fade(parentLayout, 1, 0, 300, new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
+        Log.e("dismissWithDelete","dismissWithDelete");
+        //AnimUtils.fade(parentLayout, 1, 0, 300, new AnimatorListenerAdapter() {
+        //    @Override
+        //    public void onAnimationEnd(Animator animation) {
+        //        super.onAnimationEnd(animation);
                 if (listener != null) {
                     listener.onDeleteMessage(message, InfoMessageDialog.this);
                 }
                 InfoMessageDialog.super.dismiss();
-            }
-        });
+            //}
+        //});
     }
 
     private void dismissWithCopy() {
