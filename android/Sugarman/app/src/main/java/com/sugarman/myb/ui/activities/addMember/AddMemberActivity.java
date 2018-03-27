@@ -242,7 +242,7 @@ public class AddMemberActivity extends BaseActivity
 
       @Override
       public void editGroup(List<FacebookFriend> membersToSendByEditing, String groupName) {
-        if (!groupName.isEmpty()) {
+        if (!groupName.trim().isEmpty() || groupName.trim().equals(" ")) {
           mFriendListFragment.showProgress();
           Timber.e("editGroup name: "
               + groupName
