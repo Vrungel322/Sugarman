@@ -201,6 +201,9 @@ import timber.log.Timber;
   }
 
   public LineData generateLineData(List<Stats> stats, List<Integer> statsSteps, Drawable drawable) {
+    //MyMarkerView mv = new MyMarkerView(this, R.layout.custom_marker_view);
+    //mChart.setMarker(mv);
+
     LineData d = new LineData();
 
     ArrayList<Entry> entries = new ArrayList<Entry>();
