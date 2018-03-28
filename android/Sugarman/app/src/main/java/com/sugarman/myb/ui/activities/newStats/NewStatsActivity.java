@@ -272,9 +272,20 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
             if (!mStatsDays.isEmpty() && mStatsDays.size() != 0) {
               xAxis.setValueFormatter((value, axis) -> {
                 if ((value + 1) % 7 == 0) {
-                  return "week" + (int)((value + 1) / 7);
+                  return "week" + (int) ((value + 1) / 7);
                 }
-                return "";
+                return "" + (int) value;
+              });
+            }
+          }
+          if (mTextViewStatsDay.isSelected()) {
+            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // make text only on bottom
+            if (!mStatsDays.isEmpty() && mStatsDays.size() != 0) {
+              xAxis.setValueFormatter((value, axis) -> {
+                if ((value + 1) % 3 == 0) {
+                  return "" + (int) value;
+                }
+                return "" + (int) value;
               });
             }
           }
@@ -294,9 +305,20 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
             if (!mStatsDays.isEmpty() && mStatsDays.size() != 0) {
               xAxis.setValueFormatter((value, axis) -> {
                 if ((value + 1) % 7 == 0) {
-                  return "week" + (int)((value + 1) / 7);
+                  return "week" + (int) ((value + 1) / 7);
                 }
-                return "" + (int)value;
+                return "" + (int) value;
+              });
+            }
+          }
+          if (mTextViewStatsDay.isSelected()) {
+            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // make text only on bottom
+            if (!mStatsDays.isEmpty() && mStatsDays.size() != 0) {
+              xAxis.setValueFormatter((value, axis) -> {
+                if ((value + 1) % 3 == 0) {
+                  return "" + (int) value;
+                }
+                return "";
               });
             }
           }
@@ -604,7 +626,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     if (!mStatsDays.isEmpty() && mStatsDays.size() != 0) {
       xAxis.setValueFormatter((value, axis) -> {
 
-        return "" + (int)value;
+        return "" + (int) value;
       });
     }
 
@@ -631,17 +653,30 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     xAxis.setAxisMinimum(0f);
     xAxis.setGranularity(1f);
     if (!mStatsDays.isEmpty() && mStatsDays.size() != 0) {
+      xAxis.setValueFormatter(null);
       xAxis.setValueFormatter((value, axis) -> {
         if ((value + 1) % 7 == 0) {
-          return "week" + (int)((value + 1) / 7);
+          Timber.e("fillByStatsWeek %7 == 0");
+          axis.setAxisLineColor(Color.RED);
+          return "week" + (int) ((value + 1) / 7);
         }
-        return "" + (int)value;
+        return "" + (int) value;
       });
     }
   }
 
   private void fillByStatsDay() {
     mPresenter.fetchDayStats();
+    XAxis xAxis = mChart.getXAxis();
+    xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // make text only on bottom
+    if (!mStatsDays.isEmpty() && mStatsDays.size() != 0) {
+      xAxis.setValueFormatter((value, axis) -> {
+        if ((value + 1) % 3 == 0) {
+          return "" + (int) ((value + 1) / 3);
+        }
+        return "" + (int) value;
+      });
+    }
   }
 
   @OnClick({ R.id.ivStatsKm, R.id.ivStatsSteps, R.id.ivStatsKcal })
