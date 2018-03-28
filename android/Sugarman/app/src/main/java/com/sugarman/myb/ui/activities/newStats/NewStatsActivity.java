@@ -137,6 +137,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
           .transform(new CropSquareTransformation())
           .transform(new MaskTransformation(this, R.drawable.profile_mask, false, 0xffffffff))
           .into(mImageViewAvatar);
+      mTextViewStatsWeek.setVisibility(View.GONE);
     }
   }
 
