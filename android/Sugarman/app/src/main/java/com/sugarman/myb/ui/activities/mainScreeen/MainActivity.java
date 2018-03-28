@@ -1034,6 +1034,9 @@ public class MainActivity extends GetUserInfoActivity
   @Override protected void onStart() {
     super.onStart();
     Timber.e("onStart");
+    mGetMyTrackingsClient.getMyTrackings(); // updates all trackings
+
+
     mPresenter.startFetchingTrackingsPeriodically();
 
     //if(animationMan!=null)
