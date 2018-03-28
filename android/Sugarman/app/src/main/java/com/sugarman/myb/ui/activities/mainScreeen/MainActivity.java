@@ -19,7 +19,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -579,31 +578,11 @@ public class MainActivity extends GetUserInfoActivity
 
     Timber.e(MD5Util.md5("md5 test"));
 
-    ivLifebuoy.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View view) {
-        vpTrackings.setCurrentItem(firstFailedGroupPosition);
-      }
-    });
+    ivLifebuoy.setOnClickListener(view -> vpTrackings.setCurrentItem(firstFailedGroupPosition));
 
     cachedImagesFolder = new File(getFilesDir() + "/animations/");
 
-    //mPresenter.getAnimations(cachedImagesFolder);
     startService(new Intent(this, FetchingAnimationService.class));
-    //Timber.e("!!!! " +new File(cachedImagesFolder.list()[0]));
-    //Timber.e(
-    //    "!!!! " + MD5Util.calculateMD5(new File(getFilesDir() + "/animations/"+cachedImagesFolder.list()[0])));
-
-    //Timber.e("!!!! " +new File(cachedImagesFolder.list()[0]));
-    //Timber.e(
-    //    "!!!! " + MD5Util.calculateMD5(new File("android.resource://com.sugarman.myb/drawable/image_name")));
-
-    //new SugarmanDialog.Builder(this,"doesn't work").content("INSTALLER PACKAGE NAME : " + getPackageManager()
-    //    .getInstallerPackageName(getPackageName()) + " LICENCE CHECKED " + LicenceChecker.isStoreVersion(this)).build().show();
-
-    Timber.e("INSTALLER PACKAGE NAME : "
-        + getPackageManager().getInstallerPackageName(getPackageName())
-        + " LICENCE CHECKED "
-        + LicenceChecker.isStoreVersion(this));
 
     if (!LicenceChecker.isStoreVersion(this) && !BuildConfig.DEBUG) {
       Timber.e("Ochko ebuchee chmo");
@@ -618,51 +597,15 @@ public class MainActivity extends GetUserInfoActivity
 
     AppsFlyerEventSender.sendEvent("af_launch_main");
 
-    ////Get IMEI
-    //int permissionCheck =
-    //    ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE);
-    //if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
-    //  ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.READ_PHONE_STATE },
-    //      REQUEST_READ_PHONE_STATE);
-    //} else {
-    //  saveIMEI();
-    //}
 
     ActivityCompat.requestPermissions(this, new String[] {
         Manifest.permission.READ_CONTACTS, Manifest.permission.CAMERA,
         Manifest.permission.READ_PHONE_STATE
     }, 1);
-    //ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, 2);
-    //ViewTreeObserver vto = loadingStrip.getViewTreeObserver();
-    //vto.addOnGlobalLayoutListener (new ViewTreeObserver.OnGlobalLayoutListener() {
-    //    @Override
-    //    public void onGlobalLayout() {
-    //        loadingStrip.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-    //        int width  = loadingStrip.getMeasuredWidth();
-    //        int height = loadingStrip.getMeasuredHeight();
-    //        Bitmap.Config conf = Bitmap.Config.ARGB_8888; // see other conf types
-    //        Bitmap bmp = Bitmap.createBitmap(width, height, conf); // this creates a MUTABLE bitmap
-    //        Canvas canvas = new Canvas(bmp);
-    //        Paint p = new Paint();
-    //        p.setStrokeWidth(height/2);
-    //        p.setStrokeCap(Paint.Cap.ROUND);
-    //        p.setColor(0xfff8C1C1);
-    //        canvas.drawLine(50,height/2,width-50,height/2, p);
-    //        p.setColor(0xffFD3E3E);
-    //        int drawto=((width-100)/21) * days;
-    //        canvas.drawLine(50,height/2,drawto,height/2, p);
-    //-
-
-    //        loadingStrip.setImageBitmap(bmp);
-    //
-    //    }
-    //});
 
     vShopButton = findViewById(R.id.iv_shop);
     vShopButton.setOnClickListener(view -> {
-
       AppsFlyerEventSender.sendEvent("af_open_shop");
-
       Intent intent = new Intent(MainActivity.this, ShopActivity.class);
       startActivity(intent);
     });
@@ -679,20 +622,9 @@ public class MainActivity extends GetUserInfoActivity
 
     SharedPreferenceHelper.setOnLaunch(true);
 
-    //refreshUserData(AccessToken.getCurrentAccessToken());
-    System.out.println(
-        "HOW MANY MILISECONDS TO MIDNIGHT: " + DeviceHelper.howManyMillisecondsToMidnight());
     new Handler().postDelayed(() -> {
       Timber.e("Save Showed Steps 0");
       SharedPreferenceHelper.saveShowedSteps(0);
-      //SharedPreferenceHelper.shiftStatsLocalOnOneDay(SharedPreferenceHelper.getUserId());
-      Log.d("Helper local pref", ""
-          + SharedPreferenceHelper.getReportStatsLocal(userId)[0].getDate()
-          + " - "
-          + SharedPreferenceHelper.getReportStatsLocal(userId)[0].getStepsCount());
-      //SharedPreferenceHelper.shiftStatsOnOneDay(SharedPreferenceHelper.getUserId());
-
-      //      refreshUserData(AccessToken.getCurrentAccessToken());
       todaySteps = SharedPreferenceHelper.getReportStatsLocal(SharedPreferenceHelper.getUserId())[0]
           .getStepsCount();
       Calendar c = Calendar.getInstance();
@@ -718,7 +650,6 @@ public class MainActivity extends GetUserInfoActivity
     Intent intent = getIntent();
     getIntentData(intent);
 
-    //brokenGlassSoundId = SharedPreferenceHelper.getBrokenGlassId();
     brokenGlassSoundIds = SharedPreferenceHelper.getBrokenGlassIds();
 
     mSendFirebaseTokenClient.unregisterListener();
@@ -743,7 +674,6 @@ public class MainActivity extends GetUserInfoActivity
     tvBlinkTitle = (CustomFontTextView) findViewById(R.id.tv_blink_title);
     ivColoredStrip = (ImageView) findViewById(R.id.colored_strip);
     ivBackgroundMenu = (ImageView) findViewById(R.id.background_menu);
-    Log.e("Indicator in create", "" + civMain.getWidth());
 
     Typeface tfDin = Typeface.createFromAsset(getAssets(), "din_light.ttf");
 
@@ -759,29 +689,10 @@ public class MainActivity extends GetUserInfoActivity
       }
     });
 
-    if (BuildConfig.DEBUG) {
-      //tvCalculated.setVisibility(View.VISIBLE);
-      //tvCache.setVisibility(View.VISIBLE);
-      //tvStartValue.setVisibility(View.VISIBLE);
-    }
-
     updateEventsCount();
 
     trackingsAdapter = new TrackingsPagerAdapter(getSupportFragmentManager());
 
-    vpTrackings.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-      @Override
-      public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-      }
-
-      @Override public void onPageSelected(int position) {
-        //setTrackingsArrowsVisibility(position);
-      }
-
-      @Override public void onPageScrollStateChanged(int state) {
-
-      }
-    });
     vpTrackings.setAdapter(trackingsAdapter);
 
     updatePagerTrackings();
@@ -839,7 +750,6 @@ public class MainActivity extends GetUserInfoActivity
     userId = SharedPreferenceHelper.getUserId();
 
     ivAnimatedMan = (ImageView) findViewById(R.id.iv_animated_man);
-    Log.e("Showed steps before ai", "" + SharedPreferenceHelper.getShowedSteps());
     updateAnimations(todaySteps);
 
     mGetMyInvitesClient.getInvites(true);
@@ -1038,6 +948,8 @@ public class MainActivity extends GetUserInfoActivity
 
 
     mPresenter.startFetchingTrackingsPeriodically();
+
+    updateAnimations(todaySteps);
 
     //if(animationMan!=null)
     //animationMan.start();
