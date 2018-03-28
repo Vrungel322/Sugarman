@@ -175,6 +175,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // make text only on bottom
     xAxis.setAxisMinimum(0f);
     xAxis.setGranularity(1f);
+    xAxis.setLabelCount(100);
     if (!mStatsDays.isEmpty() && mStatsDays.size() != 0) {
       //xAxis.setValueFormatter((value, axis) -> mStatsDays.get((int) value % mStatsDays.size()));
     }
@@ -274,7 +275,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
                 if ((value + 1) % 7 == 0) {
                   return "week" + (int) ((value + 1) / 7);
                 }
-                return "" + (int) value;
+                return "";
               });
             }
           }
@@ -285,7 +286,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
                 if ((value + 1) % 3 == 0) {
                   return "" + (int) value;
                 }
-                return "" + (int) value;
+                return "";
               });
             }
           }
@@ -318,7 +319,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
                 if ((value + 1) % 3 == 0) {
                   return "" + (int) value;
                 }
-                return "";
+                return ""+ (int) value;
               });
             }
           }
@@ -660,7 +661,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
           axis.setAxisLineColor(Color.RED);
           return "week" + (int) ((value + 1) / 7);
         }
-        return "" + (int) value;
+        return "" ;
       });
     }
   }
@@ -674,7 +675,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
         if ((value + 1) % 3 == 0) {
           return "" + (int) ((value + 1) / 3);
         }
-        return "" + (int) value;
+        return "";
       });
     }
   }
