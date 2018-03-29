@@ -2071,17 +2071,17 @@ public class MainActivity extends GetUserInfoActivity
     }
   }
 
-  ////Test
-  //@OnClick(R.id.iv_animated_man) void testClicked() {
-  //  Intent intent = new Intent(getApplicationContext(), NewStatsActivity.class);
-  //  intent.putExtra(Constants.TRACKING, trackingsAdapter.getTracking(vpTrackings.getCurrentItem()));
-  //  startActivity(intent);
-  //}
-  //
-  //@OnLongClick(R.id.iv_animated_man) boolean testLongClicked() {
-  //  Intent intent = new Intent(getApplicationContext(), NewStatsActivity.class);
-  //  //intent.putExtra(Constants.TRACKING,result);
-  //  startActivity(intent);
-  //  return true;
-  //}
+  //Test
+  @OnClick(R.id.iv_animated_man) void testClicked() {
+    Intent intent = new Intent(getApplicationContext(), NewStatsActivity.class);
+    intent.putExtra(Constants.TRACKING, trackingsAdapter.getTracking(vpTrackings.getCurrentItem()));
+    startActivity(intent);
+  }
+
+  @OnLongClick(R.id.iv_animated_man) boolean testLongClicked() {
+    Intent intent = new Intent(getApplicationContext(), NewStatsActivity.class);
+    //intent.putExtra(Constants.TRACKING,result);
+    startActivity(intent);
+    return true;
+  }
 }

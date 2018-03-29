@@ -412,7 +412,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       mTextViewStatsPersonal.setSelected(true);
       mTextViewStatsPersonal.setTextColor(Color.WHITE);
       if (mTracking == null) {
-        fillByStatsPersonal(STATS_COUNT_PERSONAL_21);
+        fillByStatsPersonal(STATS_COUNT_PERSONAL_21,false);
       } else {
         Timber.e("changeStatsOnChart " + mStatsOfTracking);
         fillByStatsPersonalTracking(mStatsOfTracking);
@@ -485,7 +485,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
 
       //Collections.reverse(mStats);
       data.setData(mPresenter.generateLineData(mStats, mStatsSteps,
-          getResources().getDrawable(R.drawable.animation_progress_bar))); // line - dots
+          getResources().getDrawable(R.drawable.animation_progress_bar), false)); // line - dots
       data.setData(mPresenter.generateBarData(mStats)); // colomns
 
       //mChart.getXAxis().setAxisMaximum(data.getXMax() + 0.25f);
@@ -568,7 +568,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       CombinedData data = new CombinedData();
       Collections.reverse(mStats);
       data.setData(mPresenter.generateLineData(mStats, mStatsSteps,
-          getResources().getDrawable(R.drawable.animation_progress_bar))); // line - dots
+          getResources().getDrawable(R.drawable.animation_progress_bar), false)); // line - dots
       data.setData(mPresenter.generateBarData(mStats)); // colomns
 
       //mChart.getXAxis().setAxisMaximum(data.getXMax() + 0.25f);
@@ -587,7 +587,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     }
   }
 
-  private void fillByStatsPersonal(int statsCount) {
+  private void fillByStatsPersonal(int statsCount,boolean isAverageLineNeed) {
     mStatsCount = statsCount;
     mStats.clear();
     mStatsDays.clear();
@@ -618,7 +618,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     CombinedData data = new CombinedData();
 
     data.setData(mPresenter.generateLineData(mStats, mStatsSteps,
-        getResources().getDrawable(R.drawable.animation_progress_bar))); // line - dots
+        getResources().getDrawable(R.drawable.animation_progress_bar), isAverageLineNeed)); // line - dots
     data.setData(mPresenter.generateBarData(mStats)); // colomns
 
     XAxis xAxis = mChart.getXAxis();
@@ -648,7 +648,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
   }
 
   private void fillByStatsWeek() {
-    fillByStatsPersonal(STATS_COUNT_PERSONAL_21);
+    fillByStatsPersonal(STATS_COUNT_PERSONAL_21, true);
 
     XAxis xAxis = mChart.getXAxis();
     xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // make text only on bottom
@@ -981,7 +981,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     CombinedData data = new CombinedData();
 
     data.setData(mPresenter.generateLineData(mStats, mStatsSteps,
-        getResources().getDrawable(R.drawable.animation_progress_bar))); // line - dots
+        getResources().getDrawable(R.drawable.animation_progress_bar), false)); // line - dots
     data.setData(mPresenter.generateBarData(mStats)); // colomns
 
     //mChart.getXAxis().setAxisMaximum(data.getXMax() + 0.25f);

@@ -61,7 +61,7 @@ import timber.log.Timber;
               return Observable.just(stats);
             })
             .compose(ThreadSchedulers.applySchedulers())
-            .subscribe(stats -> getViewState().showDayStats(stats),Throwable::printStackTrace);
+            .subscribe(stats -> getViewState().showDayStats(stats), Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 
@@ -200,9 +200,11 @@ import timber.log.Timber;
     return d;
   }
 
-  public LineData generateLineData(List<Stats> stats, List<Integer> statsSteps, Drawable drawable) {
+  public LineData generateLineData(List<Stats> stats, List<Integer> statsSteps, Drawable drawable,
+      boolean isAverageLineNeed) {
     //MyMarkerView mv = new MyMarkerView(this, R.layout.custom_marker_view);
     //mChart.setMarker(mv);
+    ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
 
     LineData d = new LineData();
 
@@ -213,15 +215,16 @@ import timber.log.Timber;
     for (int index = 0; index < stats.size(); index++) {
       if (!stats.get(index).getLabel().trim().isEmpty()) {
         sempStat.add(stats.get(index));
-        }
       }
+    }
 
     for (int i = 0; i < sempStat.size(); i++) {
       Timber.e("generateLineData " + stats.get(i).getLabel());
       entries.add(new Entry(i, sempStat.get(i).getStepsCount()));
       //add icon to last point of chart
       if (i == stats.size() - 1) {
-        entries.add(new Entry(i, sempStat.get(i).getStepsCount()/*,drawable*/)); // add icon to point on chart
+        entries.add(new Entry(i,
+            sempStat.get(i).getStepsCount()/*,drawable*/)); // add icon to point on chart
       }
     }
 
@@ -237,23 +240,26 @@ import timber.log.Timber;
     set.setValueTextColor(Color.rgb(0, 0, 0));
     set.setAxisDependency(YAxis.AxisDependency.LEFT);
     d.addDataSet(set);
+    dataSets.add(set);
+
 
     //Dashed stuff
-    for (int index = 0; index < stats.size(); index++) {
-      entriesDashed.add(new Entry(index, statsSteps.get(index) + 2000));
+    if (isAverageLineNeed) {
+      for (int index = 0; index < stats.size(); index++) {
+        entriesDashed.add(new Entry(index, statsSteps.get(index) + 2000));
+      }
+
+      LineDataSet setDashed = new LineDataSet(entriesDashed, "Group Steps");
+      setDashed.setColor(Color.rgb(231, 145, 129));
+      setDashed.setLineWidth(2.5f);
+      setDashed.setValueTextSize(0f);
+      setDashed.enableDashedLine(10, 10, 0);
+      setDashed.setAxisDependency(YAxis.AxisDependency.LEFT);
+      d.addDataSet(setDashed);
+      dataSets.add(setDashed);
     }
 
-    LineDataSet setDashed = new LineDataSet(entriesDashed, "Group Steps");
-    setDashed.setColor(Color.rgb(231, 145, 129));
-    setDashed.setLineWidth(2.5f);
-    setDashed.setValueTextSize(0f);
-    setDashed.enableDashedLine(10, 10, 0);
-    setDashed.setAxisDependency(YAxis.AxisDependency.LEFT);
-    d.addDataSet(setDashed);
 
-    ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
-    dataSets.add(set);
-    dataSets.add(setDashed);
 
     return new LineData(dataSets);
   }
