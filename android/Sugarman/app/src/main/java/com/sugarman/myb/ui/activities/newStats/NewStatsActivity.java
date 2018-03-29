@@ -143,7 +143,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
   private void setUpUI() {
     Timber.e("setUpUI" + (mTracking != null));
     try {
-      mPresenter.startChartFlow(mTracking);
+      mPresenter.startChartFlow(mTracking, this);
     } catch (ParseException e) {
       e.printStackTrace();
     }
@@ -442,12 +442,12 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       mTextViewStatsWeek.setTextColor(Color.RED);
       mTextViewStatsPersonal.setSelected(true);
       mTextViewStatsPersonal.setTextColor(Color.WHITE);
-      if (mTracking == null) {
-        fillByStatsPersonal(STATS_COUNT_PERSONAL_21, false);
-      } else {
-        Timber.e("changeStatsOnChart " + mStatsOfTracking);
-        fillByStatsPersonalTracking(mStatsOfTracking);
-      }
+      //if (mTracking == null) {
+      fillByStatsPersonal(STATS_COUNT_PERSONAL_21, false);
+      //} else {
+      //  Timber.e("changeStatsOnChart " + mStatsOfTracking);
+      //  fillByStatsPersonalTracking(mStatsOfTracking);
+      //}
     }
     fillDetailsCard();
   }
@@ -516,7 +516,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
 
       //Collections.reverse(mStats);
       data.setData(mPresenter.generateLineData(mStats, mStatsSteps,
-          getResources().getDrawable(R.drawable.animation_progress_bar), false)); // line - dots
+          getResources().getDrawable(R.drawable.animation_progress_bar), true)); // line - dots
       data.setData(mPresenter.generateBarData(mStats)); // colomns
 
       //mChart.getXAxis().setAxisMaximum(data.getXMax() + 0.25f);
@@ -680,7 +680,11 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
   }
 
   private void fillByStatsWeek() {
-    fillByStatsPersonal(STATS_COUNT_PERSONAL_21, true);
+    if (mTracking == null) {
+      fillByStatsPersonal(STATS_COUNT_PERSONAL_21, true);
+    } else {
+      fillByStatsPersonalTracking(mStatsOfTracking);
+    }
 
     XAxis xAxis = mChart.getXAxis();
     xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // make text only on bottom
@@ -1056,5 +1060,15 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     setUpKcal();
     //setUpUI();
     //changeStatsOnDescriptionDetails(mImageViewStatsSteps);
+  }
+
+  @Override public void setUnreadMessages(int size) {
+    Timber.e("setUnreadMessages " + size);
+    mTextViewAvatarEvents.setText("" + size);
+    if (size > 0) {
+      mTextViewAvatarEvents.setVisibility(View.VISIBLE);
+    } else {
+      mTextViewAvatarEvents.setVisibility(View.GONE);
+    }
   }
 }

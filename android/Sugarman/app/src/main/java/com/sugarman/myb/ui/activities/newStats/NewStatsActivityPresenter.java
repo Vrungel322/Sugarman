@@ -1,8 +1,12 @@
 package com.sugarman.myb.ui.activities.newStats;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import com.arellomobile.mvp.InjectViewState;
+import com.clover_studio.spikachatmodule.base.SingletonLikeApp;
+import com.clover_studio.spikachatmodule.models.User;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -18,9 +22,12 @@ import com.sugarman.myb.api.models.responses.me.stats.Stats;
 import com.sugarman.myb.base.BasicPresenter;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.data.db.DbRepositoryStats;
+import com.sugarman.myb.models.chat_refactor.Message;
+import com.sugarman.myb.models.chat_refactor.SeenBy;
 import com.sugarman.myb.utils.DataUtils;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.ThreadSchedulers;
+import java.lang.ref.WeakReference;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -68,9 +75,13 @@ import timber.log.Timber;
     addToUnsubscription(subscription);
   }
 
-  public void startChartFlow(@Nullable Tracking tracking) throws ParseException {
+  public void startChartFlow(@Nullable Tracking tracking, Context context) throws ParseException {
+    WeakReference<Context> contextWeakReference = new WeakReference<Context>(context);
     if (tracking != null) {
       fetchTrackingStats(tracking.getId(), tracking, tracking.isMentors());
+      fetchMessages(tracking.getId(), "0", SingletonLikeApp.getInstance()
+          .getSharedPreferences(contextWeakReference.get())
+          .getToken());
     } else {
       fetchStats();
     }
@@ -214,7 +225,6 @@ import timber.log.Timber;
 
     LineData d = new LineData();
 
-
     for (int index = 0; index < stats.size(); index++) {
       if (!stats.get(index).getLabel().trim().isEmpty()) {
         sempStat.add(stats.get(index));
@@ -222,7 +232,7 @@ import timber.log.Timber;
     }
 
     for (int i = 0; i < sempStat.size(); i++) {
-//      Timber.e("generateLineData " + stats.get(i).getLabel());
+      //      Timber.e("generateLineData " + stats.get(i).getLabel());
       entries.add(new Entry(i, sempStat.get(i).getStepsCount()));
       //add icon to last point of chart
       if (i == stats.size() - 1) {
@@ -264,9 +274,8 @@ import timber.log.Timber;
     return new LineData(dataSets);
   }
 
-  public void setTodaySteps(int steps)
-  {
-    entries.remove(entries.size()-1);
+  public void setTodaySteps(int steps) {
+    entries.remove(entries.size() - 1);
     entries.add(new Entry(entries.size(), steps));
 
     getViewState().changeGraphData();
@@ -286,7 +295,8 @@ import timber.log.Timber;
     for (int i = 0; i < stats.size(); i++) {
       Timber.e("AVG Steps " + stats.get(i).getStepsCount());
       if (stats.get(i).getStepsCount() != -1) integers.add(stats.get(i).getStepsCount());
-    } return Collections.min(integers);
+    }
+    return Collections.min(integers);
   }
 
   public float findAverageSteps(List<Stats> stats) {
@@ -299,7 +309,7 @@ import timber.log.Timber;
       }
     }
     //return findMinSteps(stats) + findMaxSteps(stats) / 2;
-    return integer /countNotFake;
+    return integer / countNotFake;
   }
 
   public int findDaysAboveAverageSteps(List<Stats> stats) {
@@ -353,5 +363,63 @@ import timber.log.Timber;
       if (s.getStepsCount() * 0.0435f > avg) avgCount++;
     }
     return avgCount;
+  }
+
+  public void fetchMessages(String roomId, String lastMessageId, String token) {
+    Timber.e(" fetchMessages token: "
+        + token
+        + "   lastMessageId: "
+        + lastMessageId
+        + "  roomId: "
+        + roomId);
+    if (TextUtils.isEmpty(lastMessageId)) {
+      lastMessageId = "0";
+    }
+
+    User user = new User();
+    user.roomID = roomId; // ->  id of room
+    user.userID = SharedPreferenceHelper.getUserId(); // ->  id of user
+    user.name = SharedPreferenceHelper.getUserName(); // ->  name of user
+    user.avatarURL = SharedPreferenceHelper.getAvatar();//  ->  user avatar, this is optional
+
+    Timber.e("user :" + user.toString());
+
+    String finalLastMessageId = lastMessageId;
+    Subscription subscription = mDataManager.fetchMessagesSpika(roomId, finalLastMessageId, token)
+        .filter(getMessagesModelRefactored -> (getMessagesModelRefactored != null
+            && getMessagesModelRefactored.getData() != null))
+        .concatMap(getMessagesModelRefactored -> {
+          List<String> unReadMessagesIds =
+              getUnSeenMessages(getMessagesModelRefactored.getData().getMessages(),
+                  SharedPreferenceHelper.getUserId());
+          return Observable.just(unReadMessagesIds);
+        })
+        .compose(ThreadSchedulers.applySchedulers())
+        .subscribe(unReadMessagesIds -> {
+          Timber.e(" fetchMessages" + "   unReadMessages: " + unReadMessagesIds.size());
+          getViewState().setUnreadMessages(unReadMessagesIds.size());
+        }, Throwable::printStackTrace);
+    addToUnsubscription(subscription);
+  }
+
+  private List<String> getUnSeenMessages(List<Message> allMessages, String userID) {
+    List<String> unSeenMessagesIds = new ArrayList<>();
+    for (Message item : allMessages) {
+      boolean seen = false;
+      if (userID.equals(item.getUser().getUserID())) {
+        seen = true;
+      } else {
+        for (SeenBy itemUser : item.getSeenBy()) {
+          if (itemUser.getUser().getUserID().equals(userID)) {
+            seen = true;
+            continue;
+          }
+        }
+      }
+      if (!seen) {
+        unSeenMessagesIds.add(item.getId());
+      }
+    }
+    return unSeenMessagesIds;
   }
 }

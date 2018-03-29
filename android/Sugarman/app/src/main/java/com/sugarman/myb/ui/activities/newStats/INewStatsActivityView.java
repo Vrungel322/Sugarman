@@ -18,4 +18,6 @@ import java.util.List;
   void showDayStats(List<Stats> stats);
 
   void changeGraphData();
+
+  void setUnreadMessages(int size);
 }
