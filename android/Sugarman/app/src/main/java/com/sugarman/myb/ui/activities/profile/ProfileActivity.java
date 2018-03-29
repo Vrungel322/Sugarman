@@ -41,7 +41,7 @@ import com.sugarman.myb.ui.activities.SettingsActivity;
 import com.sugarman.myb.ui.activities.base.BaseActivity;
 import com.sugarman.myb.ui.activities.editProfile.EditProfileActivity;
 import com.sugarman.myb.ui.activities.invitesScreen.InvitesActivity;
-import com.sugarman.myb.ui.activities.myStats.MyStatsActivity;
+import com.sugarman.myb.ui.activities.newStats.NewStatsActivity;
 import com.sugarman.myb.ui.activities.requestsScreen.RequestsActivity;
 import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
@@ -542,8 +542,13 @@ public class ProfileActivity extends BaseActivity
   private void openMyStatsActivity() {
 
     AppsFlyerEventSender.sendEvent("af_open_my_stats");
+    //old My Stats
+    //Intent intent = new Intent(ProfileActivity.this, MyStatsActivity.class);
+    //startActivity(intent);
 
-    Intent intent = new Intent(ProfileActivity.this, MyStatsActivity.class);
+    //new MyStats
+    Intent intent = new Intent(getApplicationContext(), NewStatsActivity.class);
     startActivity(intent);
+    overridePendingTransition(R.anim.move_right_in_activity, R.anim.move_left_out_activity);
   }
 }

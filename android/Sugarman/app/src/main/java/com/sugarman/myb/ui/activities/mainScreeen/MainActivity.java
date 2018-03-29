@@ -111,7 +111,6 @@ import com.sugarman.myb.ui.activities.newStats.NewStatsActivity;
 import com.sugarman.myb.ui.activities.profile.ProfileActivity;
 import com.sugarman.myb.ui.activities.searchGroups.SearchGroupsActivity;
 import com.sugarman.myb.ui.activities.shop.ShopActivity;
-import com.sugarman.myb.ui.activities.statsTracking.StatsTrackingActivity;
 import com.sugarman.myb.ui.dialogs.DialogButton;
 import com.sugarman.myb.ui.dialogs.SugarmanDialog;
 import com.sugarman.myb.ui.dialogs.dialogRescueBoldMan.DialogRescueBoldMan;
@@ -1605,8 +1604,14 @@ public class MainActivity extends GetUserInfoActivity
     if (tracking != null) {
       vOpenStats.setOnClickListener(null);
 
-      Intent intent = new Intent(this, StatsTrackingActivity.class);
-      intent.putExtra(Constants.INTENT_TRACKING, tracking);
+      //old Stats
+      //Intent intent = new Intent(this, StatsTrackingActivity.class);
+      //intent.putExtra(Constants.INTENT_TRACKING, tracking);
+      //startActivity(intent);
+
+      //new Stats
+      Intent intent = new Intent(getApplicationContext(), NewStatsActivity.class);
+      intent.putExtra(Constants.TRACKING, trackingsAdapter.getTracking(vpTrackings.getCurrentItem()));
       startActivity(intent);
       overridePendingTransition(R.anim.slide_down, R.anim.slide_up);
     } else {
