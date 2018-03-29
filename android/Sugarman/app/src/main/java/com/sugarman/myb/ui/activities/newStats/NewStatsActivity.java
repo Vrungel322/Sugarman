@@ -112,7 +112,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
   private void setUpUI() {
     Timber.e("setUpUI" + (mTracking != null));
     try {
-      mPresenter.startChartFlow(mTracking);
+      mPresenter.startChartFlow(mTracking,this);
     } catch (ParseException e) {
       e.printStackTrace();
     }
@@ -1018,5 +1018,15 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     setUpKcal();
     //setUpUI();
     //changeStatsOnDescriptionDetails(mImageViewStatsSteps);
+  }
+
+  @Override public void setUnreadMessages(int size) {
+    Timber.e("setUnreadMessages " + size);
+    mTextViewAvatarEvents.setText("" + size);
+    if (size > 0) {
+      mTextViewAvatarEvents.setVisibility(View.VISIBLE);
+    } else {
+      mTextViewAvatarEvents.setVisibility(View.GONE);
+    }
   }
 }

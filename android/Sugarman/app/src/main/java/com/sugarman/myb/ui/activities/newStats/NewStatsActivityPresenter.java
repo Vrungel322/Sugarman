@@ -1,8 +1,12 @@
 package com.sugarman.myb.ui.activities.newStats;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import com.arellomobile.mvp.InjectViewState;
+import com.clover_studio.spikachatmodule.base.SingletonLikeApp;
+import com.clover_studio.spikachatmodule.models.User;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -18,9 +22,12 @@ import com.sugarman.myb.api.models.responses.me.stats.Stats;
 import com.sugarman.myb.base.BasicPresenter;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.data.db.DbRepositoryStats;
+import com.sugarman.myb.models.chat_refactor.Message;
+import com.sugarman.myb.models.chat_refactor.SeenBy;
 import com.sugarman.myb.utils.DataUtils;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.ThreadSchedulers;
+import java.lang.ref.WeakReference;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -65,9 +72,12 @@ import timber.log.Timber;
     addToUnsubscription(subscription);
   }
 
-  public void startChartFlow(@Nullable Tracking tracking) throws ParseException {
+  public void startChartFlow(@Nullable Tracking tracking,Context context) throws ParseException {
+    WeakReference<Context> contextWeakReference = new WeakReference<Context>(context);
     if (tracking != null) {
       fetchTrackingStats(tracking.getId(), tracking, tracking.isMentors());
+      fetchMessages(tracking.getId(), "0",
+          SingletonLikeApp.getInstance().getSharedPreferences(contextWeakReference.get()).getToken());
     } else {
       fetchStats();
     }
@@ -242,7 +252,6 @@ import timber.log.Timber;
     d.addDataSet(set);
     dataSets.add(set);
 
-
     //Dashed stuff
     if (isAverageLineNeed) {
       for (int index = 0; index < stats.size(); index++) {
@@ -258,8 +267,6 @@ import timber.log.Timber;
       d.addDataSet(setDashed);
       dataSets.add(setDashed);
     }
-
-
 
     return new LineData(dataSets);
   }
@@ -314,5 +321,63 @@ import timber.log.Timber;
 
   public float findAverageKcal(List<Stats> stats) {
     return (findAverageSteps(stats) * 0.0435f);
+  }
+
+  public void fetchMessages(String roomId, String lastMessageId, String token) {
+    Timber.e(" fetchMessages token: "
+        + token
+        + "   lastMessageId: "
+        + lastMessageId
+        + "  roomId: "
+        + roomId);
+    if (TextUtils.isEmpty(lastMessageId)) {
+      lastMessageId = "0";
+    }
+
+    User user = new User();
+    user.roomID = roomId; // ->  id of room
+    user.userID = SharedPreferenceHelper.getUserId(); // ->  id of user
+    user.name = SharedPreferenceHelper.getUserName(); // ->  name of user
+    user.avatarURL = SharedPreferenceHelper.getAvatar();//  ->  user avatar, this is optional
+
+    Timber.e("user :" + user.toString());
+
+    String finalLastMessageId = lastMessageId;
+    Subscription subscription = mDataManager.fetchMessagesSpika(roomId, finalLastMessageId, token)
+        .filter(getMessagesModelRefactored -> (getMessagesModelRefactored != null
+            && getMessagesModelRefactored.getData() != null))
+        .concatMap(getMessagesModelRefactored -> {
+          List<String> unReadMessagesIds =
+              getUnSeenMessages(getMessagesModelRefactored.getData().getMessages(),
+                  SharedPreferenceHelper.getUserId());
+          return Observable.just(unReadMessagesIds);
+        })
+        .compose(ThreadSchedulers.applySchedulers())
+        .subscribe(unReadMessagesIds -> {
+          Timber.e(" fetchMessages" + "   unReadMessages: " + unReadMessagesIds.size());
+          getViewState().setUnreadMessages(unReadMessagesIds.size());
+        }, Throwable::printStackTrace);
+    addToUnsubscription(subscription);
+  }
+
+  private List<String> getUnSeenMessages(List<Message> allMessages, String userID) {
+    List<String> unSeenMessagesIds = new ArrayList<>();
+    for (Message item : allMessages) {
+      boolean seen = false;
+      if (userID.equals(item.getUser().getUserID())) {
+        seen = true;
+      } else {
+        for (SeenBy itemUser : item.getSeenBy()) {
+          if (itemUser.getUser().getUserID().equals(userID)) {
+            seen = true;
+            continue;
+          }
+        }
+      }
+      if (!seen) {
+        unSeenMessagesIds.add(item.getId());
+      }
+    }
+    return unSeenMessagesIds;
   }
 }
