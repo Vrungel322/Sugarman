@@ -235,11 +235,19 @@ import timber.log.Timber;
       //      Timber.e("generateLineData " + stats.get(i).getLabel());
       entries.add(new Entry(i, sempStat.get(i).getStepsCount()));
       //add icon to last point of chart
-      if (i == stats.size() - 1) {
+      if (i == sempStat.size() - 1) {
+        entries.remove(sempStat.size()-1);
         entries.add(new Entry(i,
-            sempStat.get(i).getStepsCount()/*,drawable*/)); // add icon to point on chart
+            SharedPreferenceHelper.getReportStatsLocal(SharedPreferenceHelper.getUserId())[0]
+                .getStepsCount()/*,drawable*/)); // add icon to point on chart
+        Timber.e("SHARED HUY " + SharedPreferenceHelper.getUserTodaySteps());
       }
     }
+    //setTodaySteps(SharedPreferenceHelper.getUserTodaySteps());
+    //entries.remove(entries.size() - 1);
+    //entries.add(new Entry(entries.size(), SharedPreferenceHelper.getUserTodaySteps()));
+    //
+    //getViewState().changeGraphData();
 
     LineDataSet set = new LineDataSet(entries, "Steps");
     set.setColor(Color.rgb(255, 0, 0));
