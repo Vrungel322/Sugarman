@@ -320,7 +320,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
                 if ((value + 1) % 3 == 0) {
                   return "" + (int) value;
                 }
-                return ""+ (int) value;
+                return "" + (int) value;
               });
             }
           }
@@ -412,7 +412,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       mTextViewStatsPersonal.setSelected(true);
       mTextViewStatsPersonal.setTextColor(Color.WHITE);
       if (mTracking == null) {
-        fillByStatsPersonal(STATS_COUNT_PERSONAL_21,false);
+        fillByStatsPersonal(STATS_COUNT_PERSONAL_21, false);
       } else {
         Timber.e("changeStatsOnChart " + mStatsOfTracking);
         fillByStatsPersonalTracking(mStatsOfTracking);
@@ -587,7 +587,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     }
   }
 
-  private void fillByStatsPersonal(int statsCount,boolean isAverageLineNeed) {
+  private void fillByStatsPersonal(int statsCount, boolean isAverageLineNeed) {
     mStatsCount = statsCount;
     mStats.clear();
     mStatsDays.clear();
@@ -618,7 +618,8 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     CombinedData data = new CombinedData();
 
     data.setData(mPresenter.generateLineData(mStats, mStatsSteps,
-        getResources().getDrawable(R.drawable.animation_progress_bar), isAverageLineNeed)); // line - dots
+        getResources().getDrawable(R.drawable.animation_progress_bar),
+        isAverageLineNeed)); // line - dots
     data.setData(mPresenter.generateBarData(mStats)); // colomns
 
     XAxis xAxis = mChart.getXAxis();
@@ -662,7 +663,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
           axis.setAxisLineColor(Color.RED);
           return "week" + (int) ((value + 1) / 7);
         }
-        return "" ;
+        return "";
       });
     }
   }
@@ -712,6 +713,12 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
         String.valueOf(String.format(Locale.US, "%.2f", mPresenter.findMinKm(stats))));
     mTextViewAverageAday.setText(
         String.valueOf(String.format(Locale.US, "%.2f", mPresenter.findAverageKm(stats))));
+    if (mTextViewStatsDay.isSelected()) {
+      mTextViewDaysAboveAverageValue.setText(mPresenter.findMaxKm(stats) + "");
+      mTextViewAboveAverageText.setText("Best of the day");
+    } else {
+      mTextViewAboveAverageText.setText(getString(R.string.days_above_average));
+    }
   }
 
   private void fillDetailsByStatsSteps(List<Stats> stats) {
@@ -721,6 +728,12 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     mTextViewMinValue.setText(String.valueOf(mPresenter.findMinSteps(stats)));
     mTextViewAverageAday.setText(
         String.valueOf(String.format(Locale.US, "%.2f", mPresenter.findAverageSteps(stats))));
+    if (mTextViewStatsDay.isSelected()) {
+      mTextViewDaysAboveAverageValue.setText(mPresenter.findMaxSteps(stats) + "");
+      mTextViewAboveAverageText.setText("Best of the day");
+    } else {
+      mTextViewAboveAverageText.setText(getString(R.string.days_above_average));
+    }
   }
 
   private void fillDetailsByStatsKcal(List<Stats> stats) {
@@ -732,6 +745,12 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
         String.valueOf(String.format(Locale.US, "%.2f", mPresenter.findMinKcal(stats))));
     mTextViewAverageAday.setText(
         String.valueOf(String.format(Locale.US, "%.2f", mPresenter.findAverageKcal(stats))));
+    if (mTextViewStatsDay.isSelected()) {
+      mTextViewDaysAboveAverageValue.setText(mPresenter.findMaxKcal(stats) + "");
+      mTextViewAboveAverageText.setText("Best of the day");
+    } else {
+      mTextViewAboveAverageText.setText(getString(R.string.days_above_average));
+    }
   }
 
   private void playAnim() {
