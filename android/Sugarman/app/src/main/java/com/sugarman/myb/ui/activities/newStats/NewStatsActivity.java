@@ -21,13 +21,16 @@ import com.github.mikephil.charting.data.CombinedData;
 import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.squareup.picasso.CustomPicasso;
+import com.sugarman.myb.App;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.Member;
 import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.api.models.responses.me.stats.Stats;
 import com.sugarman.myb.base.BasicActivity;
+import com.sugarman.myb.constants.Config;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.constants.SharedPreferenceConstants;
+import com.sugarman.myb.eventbus.events.DebugRealStepAddedEvent;
 import com.sugarman.myb.ui.views.CropCircleTransformation;
 import com.sugarman.myb.ui.views.CropSquareTransformation;
 import com.sugarman.myb.ui.views.MaskTransformation;
@@ -40,6 +43,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import org.greenrobot.eventbus.Subscribe;
 import timber.log.Timber;
 
 public class NewStatsActivity extends BasicActivity implements INewStatsActivityView {
@@ -97,6 +101,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
   private List<Stats> mStatsOfTracking = new ArrayList<>();
   private boolean zeroDayremoved;
   private boolean is21stats = true;
+  private int todaySteps;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_new_stats);
@@ -107,6 +112,32 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     }
     setUpUI();
     //setUpUIChart();
+
+    if (!App.getEventBus().isRegistered(this)) {
+      App.getEventBus().register(this);
+    }
+
+  }
+
+  @Override public void changeGraphData() {
+    mChart.notifyDataSetChanged();
+    mChart.invalidate();
+  }
+
+  @Subscribe public void onEvent(DebugRealStepAddedEvent event) {
+    todaySteps = event.getStepsCalculated();
+    //if (tvTodaySteps != null && vivToday != null) {
+    //  updateTodaySteps(todaySteps);
+    //}
+    mPresenter.setTodaySteps(todaySteps);
+    Timber.e("TODAY STEPS " + todaySteps);
+  }
+
+  private void updateTodaySteps(int steps) {
+    //if (tvTodaySteps != null && vivToday != null) {
+    //  tvTodaySteps.setText(String.valueOf(steps));
+    //  vivToday.updateIndicator(Config.MAX_STEPS_STATS, steps);
+    //}
   }
 
   private void setUpUI() {

@@ -44,6 +44,9 @@ import timber.log.Timber;
   @Inject DbRepositoryStats mDbRepositoryStats;
   private boolean needToupdateData; // if on charts my stats data
   private boolean needToUpdateDataTracking; // if on charts tracking data
+  ArrayList<Entry> entries = new ArrayList<Entry>();
+  ArrayList<Entry> entriesDashed = new ArrayList<Entry>();
+  ArrayList<Stats> sempStat = new ArrayList<Stats>();
 
   @Override protected void inject() {
     App.getAppComponent().inject(this);
@@ -202,15 +205,15 @@ import timber.log.Timber;
 
   public LineData generateLineData(List<Stats> stats, List<Integer> statsSteps, Drawable drawable,
       boolean isAverageLineNeed) {
+    entries = new ArrayList<>();
+    entriesDashed = new ArrayList<Entry>();
+    sempStat = new ArrayList<Stats>();
     //MyMarkerView mv = new MyMarkerView(this, R.layout.custom_marker_view);
     //mChart.setMarker(mv);
     ArrayList<ILineDataSet> dataSets = new ArrayList<ILineDataSet>();
 
     LineData d = new LineData();
 
-    ArrayList<Entry> entries = new ArrayList<Entry>();
-    ArrayList<Entry> entriesDashed = new ArrayList<Entry>();
-    ArrayList<Stats> sempStat = new ArrayList<Stats>();
 
     for (int index = 0; index < stats.size(); index++) {
       if (!stats.get(index).getLabel().trim().isEmpty()) {
@@ -219,7 +222,7 @@ import timber.log.Timber;
     }
 
     for (int i = 0; i < sempStat.size(); i++) {
-      Timber.e("generateLineData " + stats.get(i).getLabel());
+//      Timber.e("generateLineData " + stats.get(i).getLabel());
       entries.add(new Entry(i, sempStat.get(i).getStepsCount()));
       //add icon to last point of chart
       if (i == stats.size() - 1) {
@@ -261,6 +264,14 @@ import timber.log.Timber;
     return new LineData(dataSets);
   }
 
+  public void setTodaySteps(int steps)
+  {
+    entries.remove(entries.size()-1);
+    entries.add(new Entry(entries.size(), steps));
+
+    getViewState().changeGraphData();
+  }
+
   //STEPS
   public int findMaxSteps(List<Stats> stats) {
     List<Integer> integers = new ArrayList<>();
@@ -280,13 +291,15 @@ import timber.log.Timber;
 
   public float findAverageSteps(List<Stats> stats) {
     Integer integer = 0;
-    Timber.e("AVG Steps" + stats.size());
+    Integer countNotFake = 0;
     for (int i = 0; i < stats.size(); i++) {
-      integer += stats.get(i).getStepsCount();
-      Timber.e("AVG STEPS " + stats.get(i).getStepsCount());
+      if (stats.get(i).getStepsCount() != -1) {
+        integer += stats.get(i).getStepsCount();
+        countNotFake++;
+      }
     }
     //return findMinSteps(stats) + findMaxSteps(stats) / 2;
-    return integer / stats.size();
+    return integer /countNotFake;
   }
 
   public int findDaysAboveAverageSteps(List<Stats> stats) {

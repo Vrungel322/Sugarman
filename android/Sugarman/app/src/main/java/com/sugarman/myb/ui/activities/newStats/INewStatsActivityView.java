@@ -16,4 +16,6 @@ import java.util.List;
   void showTrackingStats(List<Stats> statsCached);
 
   void showDayStats(List<Stats> stats);
+
+  void changeGraphData();
 }
