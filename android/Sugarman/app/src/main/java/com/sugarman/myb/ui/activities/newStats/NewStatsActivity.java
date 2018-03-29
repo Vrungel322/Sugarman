@@ -718,6 +718,8 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       mTextViewAboveAverageText.setText("Best of the day");
     } else {
       mTextViewAboveAverageText.setText(getString(R.string.days_above_average));
+      mTextViewDaysAboveAverageValue.setText(
+          "" + mPresenter.findDaysAboveAverageKm(stats));
     }
   }
 
@@ -733,6 +735,8 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       mTextViewAboveAverageText.setText("Best of the day");
     } else {
       mTextViewAboveAverageText.setText(getString(R.string.days_above_average));
+      mTextViewDaysAboveAverageValue.setText(
+          "" + mPresenter.findDaysAboveAverageSteps(stats));
     }
   }
 
@@ -750,6 +754,9 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       mTextViewAboveAverageText.setText("Best of the day");
     } else {
       mTextViewAboveAverageText.setText(getString(R.string.days_above_average));
+
+      mTextViewDaysAboveAverageValue.setText(
+          "" + mPresenter.findDaysAboveAverageKcal(stats));
     }
   }
 

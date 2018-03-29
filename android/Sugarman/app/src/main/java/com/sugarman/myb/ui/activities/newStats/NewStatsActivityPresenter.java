@@ -242,7 +242,6 @@ import timber.log.Timber;
     d.addDataSet(set);
     dataSets.add(set);
 
-
     //Dashed stuff
     if (isAverageLineNeed) {
       for (int index = 0; index < stats.size(); index++) {
@@ -259,8 +258,6 @@ import timber.log.Timber;
       dataSets.add(setDashed);
     }
 
-
-
     return new LineData(dataSets);
   }
 
@@ -276,18 +273,29 @@ import timber.log.Timber;
   public int findMinSteps(List<Stats> stats) {
     List<Integer> integers = new ArrayList<>();
     for (int i = 0; i < stats.size(); i++) {
-      integers.add(stats.get(i).getStepsCount());
-    }
-    return Collections.min(integers);
+      Timber.e("AVG Steps " + stats.get(i).getStepsCount());
+      if (stats.get(i).getStepsCount() != -1) integers.add(stats.get(i).getStepsCount());
+    } return Collections.min(integers);
   }
 
   public float findAverageSteps(List<Stats> stats) {
     Integer integer = 0;
+    Timber.e("AVG Steps" + stats.size());
     for (int i = 0; i < stats.size(); i++) {
       integer += stats.get(i).getStepsCount();
+      Timber.e("AVG STEPS " + stats.get(i).getStepsCount());
     }
     //return findMinSteps(stats) + findMaxSteps(stats) / 2;
     return integer / stats.size();
+  }
+
+  public int findDaysAboveAverageSteps(List<Stats> stats) {
+    int avgCount = 0;
+    float avg = findAverageSteps(stats);
+    for (Stats s : stats) {
+      if (s.getStepsCount() > avg) avgCount++;
+    }
+    return avgCount;
   }
 
   //KM
@@ -303,6 +311,15 @@ import timber.log.Timber;
     return (findAverageSteps(stats) * 0.000762f);
   }
 
+  public int findDaysAboveAverageKm(List<Stats> stats) {
+    int avgCount = 0;
+    float avg = findAverageSteps(stats) * 0.000762f;
+    for (Stats s : stats) {
+      if (s.getStepsCount() * 0.000762f > avg) avgCount++;
+    }
+    return avgCount;
+  }
+
   //KCAL
   public float findMaxKcal(List<Stats> stats) {
     return (findMaxSteps(stats) * 0.0435f);
@@ -314,5 +331,14 @@ import timber.log.Timber;
 
   public float findAverageKcal(List<Stats> stats) {
     return (findAverageSteps(stats) * 0.0435f);
+  }
+
+  public int findDaysAboveAverageKcal(List<Stats> stats) {
+    int avgCount = 0;
+    float avg = findAverageSteps(stats) * 0.0435f;
+    for (Stats s : stats) {
+      if (s.getStepsCount() * 0.0435f > avg) avgCount++;
+    }
+    return avgCount;
   }
 }
