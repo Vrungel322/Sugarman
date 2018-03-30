@@ -468,8 +468,16 @@ public class DataManager {
     }
   }
 
-  public Observable<Response<List<Stats>>> fetchAverageStats(String trackingId, String startDate,
+  public Observable<Response<StatsResponse>> fetchAverageStats(String trackingId, String startDate,
       String endDate) {
     return mRestApi.fetchAverageStats(trackingId, startDate, endDate);
+  }
+
+  public void saveAverageStats(StatsResponse body) {
+    SharedPreferenceHelper.saveAverageStats(body);
+  }
+
+  public StatsResponse getAverageStatsFromSHP() {
+    return SharedPreferenceHelper.getAverageStatsFromSHP();
   }
 }

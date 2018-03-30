@@ -102,6 +102,7 @@ public abstract class SharedPreferenceConstants {
   public static final String CACHED_INVITES = "CACHED_INVITES";
   public static final String CACHED_REQUESTS = "CACHED_REQUESTS";
   public static final String HOUR_ = "HOUR_";
+  public static final String CACHED_AVERAGE_STATS = "CACHED_AVERAGE_STATS";
 
   private SharedPreferenceConstants() {
     // only static methods and fields

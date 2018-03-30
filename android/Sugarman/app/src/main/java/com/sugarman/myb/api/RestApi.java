@@ -364,7 +364,7 @@ public class RestApi {
     return api.getTrackings(query, type);
   }
 
-  public Observable<Response<List<Stats>>> fetchAverageStats(String trackingId, String startDate,
+  public Observable<Response<StatsResponse>> fetchAverageStats(String trackingId, String startDate,
       String endDate) {
     return api.fetchAverageStats(trackingId, startDate, endDate);
   }

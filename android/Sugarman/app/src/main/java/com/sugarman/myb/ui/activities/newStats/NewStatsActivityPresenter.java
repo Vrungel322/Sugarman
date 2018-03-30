@@ -19,6 +19,7 @@ import com.sugarman.myb.App;
 import com.sugarman.myb.api.models.responses.Member;
 import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.api.models.responses.me.stats.Stats;
+import com.sugarman.myb.api.models.responses.me.stats.StatsResponse;
 import com.sugarman.myb.base.BasicPresenter;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.data.db.DbRepositoryStats;
@@ -49,11 +50,11 @@ import timber.log.Timber;
 @InjectViewState public class NewStatsActivityPresenter
     extends BasicPresenter<INewStatsActivityView> {
   @Inject DbRepositoryStats mDbRepositoryStats;
-  private boolean needToupdateData; // if on charts my stats data
-  private boolean needToUpdateDataTracking; // if on charts tracking data
   ArrayList<Entry> entries = new ArrayList<Entry>();
   ArrayList<Entry> entriesDashed = new ArrayList<Entry>();
   ArrayList<Stats> sempStat = new ArrayList<Stats>();
+  private boolean needToupdateData; // if on charts my stats data
+  private boolean needToUpdateDataTracking; // if on charts tracking data
 
   @Override protected void inject() {
     App.getAppComponent().inject(this);
@@ -197,6 +198,23 @@ import timber.log.Timber;
     }
   }
 
+  public void fetchAverageStats(Tracking tracking) {
+    StatsResponse statsResponse = mDataManager.getAverageStatsFromSHP();
+    //if (statsResponse != null) getViewState().showStats(Arrays.asList(statsResponse.getResult()));
+    Subscription subscription =
+        mDataManager.fetchAverageStats(tracking.getId(), tracking.getStartDate(),
+            tracking.getEndDate()).flatMap(statsResponseResponse -> {
+          Timber.e("fetchAverageStats " + statsResponseResponse.code());
+          mDataManager.saveAverageStats(statsResponseResponse.body());
+          return Observable.just(statsResponseResponse.body().getResult());
+        }).compose(ThreadSchedulers.applySchedulers()).subscribe(stats -> {
+          if (stats != null) {
+
+          }
+        }, Throwable::printStackTrace);
+    addToUnsubscription(subscription);
+  }
+
   public BarData generateBarData(List<Stats> stats) {
     ArrayList<BarEntry> entries1 = new ArrayList<BarEntry>();
 
@@ -236,10 +254,9 @@ import timber.log.Timber;
       entries.add(new Entry(i, sempStat.get(i).getStepsCount()));
       //add icon to last point of chart
       if (i == sempStat.size() - 1) {
-        entries.remove(sempStat.size()-1);
-        entries.add(new Entry(i,
-            SharedPreferenceHelper.getReportStatsLocal(SharedPreferenceHelper.getUserId())[0]
-                .getStepsCount()/*,drawable*/)); // add icon to point on chart
+        entries.remove(sempStat.size() - 1);
+        entries.add(new Entry(i, SharedPreferenceHelper.getReportStatsLocal(
+            SharedPreferenceHelper.getUserId())[0].getStepsCount()/*,drawable*/)); // add icon to point on chart
         Timber.e("SHARED HUY " + SharedPreferenceHelper.getUserTodaySteps());
       }
     }
@@ -289,6 +306,27 @@ import timber.log.Timber;
     getViewState().changeGraphData();
   }
 
+  private List<String> getUnSeenMessages(List<Message> allMessages, String userID) {
+    List<String> unSeenMessagesIds = new ArrayList<>();
+    for (Message item : allMessages) {
+      boolean seen = false;
+      if (userID.equals(item.getUser().getUserID())) {
+        seen = true;
+      } else {
+        for (SeenBy itemUser : item.getSeenBy()) {
+          if (itemUser.getUser().getUserID().equals(userID)) {
+            seen = true;
+            continue;
+          }
+        }
+      }
+      if (!seen) {
+        unSeenMessagesIds.add(item.getId());
+      }
+    }
+    return unSeenMessagesIds;
+  }
+
   //STEPS
   public int findMaxSteps(List<Stats> stats) {
     List<Integer> integers = new ArrayList<>();
@@ -328,8 +366,8 @@ import timber.log.Timber;
     }
     return avgCount;
   }
-
   //KM
+
   public float findMaxKm(List<Stats> stats) {
     return findMaxSteps(stats) * 0.000762f;
   }
@@ -350,8 +388,8 @@ import timber.log.Timber;
     }
     return avgCount;
   }
-
   //KCAL
+
   public float findMaxKcal(List<Stats> stats) {
     return (findMaxSteps(stats) * 0.0435f);
   }
@@ -408,26 +446,5 @@ import timber.log.Timber;
           getViewState().setUnreadMessages(unReadMessagesIds.size());
         }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
-  }
-
-  private List<String> getUnSeenMessages(List<Message> allMessages, String userID) {
-    List<String> unSeenMessagesIds = new ArrayList<>();
-    for (Message item : allMessages) {
-      boolean seen = false;
-      if (userID.equals(item.getUser().getUserID())) {
-        seen = true;
-      } else {
-        for (SeenBy itemUser : item.getSeenBy()) {
-          if (itemUser.getUser().getUserID().equals(userID)) {
-            seen = true;
-            continue;
-          }
-        }
-      }
-      if (!seen) {
-        unSeenMessagesIds.add(item.getId());
-      }
-    }
-    return unSeenMessagesIds;
   }
 }

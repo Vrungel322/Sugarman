@@ -8,6 +8,7 @@ import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.api.models.responses.me.invites.Invite;
 import com.sugarman.myb.api.models.responses.me.requests.Request;
 import com.sugarman.myb.api.models.responses.me.stats.Stats;
+import com.sugarman.myb.api.models.responses.me.stats.StatsResponse;
 import com.sugarman.myb.api.models.responses.trackings.TrackingsResponse;
 import com.sugarman.myb.api.models.responses.users.Tokens;
 import com.sugarman.myb.api.models.responses.users.User;
@@ -956,5 +957,16 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
           getInt(SharedPreferenceConstants.HOUR_ + i, Constants.FAKE_STEPS_COUNT));
     }
     return hashMap;
+  }
+
+  public static void saveAverageStats(StatsResponse body) {
+    if (body != null) {
+      putString(SharedPreferenceConstants.CACHED_AVERAGE_STATS, new Gson().toJson(body));
+    }
+  }
+
+  public static StatsResponse getAverageStatsFromSHP() {
+    return new Gson().fromJson(getString(SharedPreferenceConstants.CACHED_AVERAGE_STATS, ""),
+        StatsResponse.class);
   }
 }
