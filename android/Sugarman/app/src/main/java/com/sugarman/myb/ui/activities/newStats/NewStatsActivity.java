@@ -115,7 +115,6 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     if (!App.getEventBus().isRegistered(this)) {
       App.getEventBus().register(this);
     }
-
   }
 
   @Override public void changeGraphData() {
@@ -185,6 +184,11 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     mChart.setDrawOrder(new CombinedChart.DrawOrder[] {
         CombinedChart.DrawOrder.BAR, CombinedChart.DrawOrder.LINE, CombinedChart.DrawOrder.SCATTER
     });
+
+    mChart.setXAxisRenderer(
+        new RendererColoredLabelXAxis(mChart.getViewPortHandler(), mChart.getXAxis(),
+            mChart.getTransformer(
+                YAxis.AxisDependency.LEFT))); //paint all labels to RED, but "week" to BLACK
 
     Legend l = mChart.getLegend();
     l.setWordWrapEnabled(true);
@@ -301,21 +305,21 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
           xAxis.setAxisMinimum(0f);
           xAxis.setGranularity(1f);
           if (mTextViewStatsWeek.isSelected()) {
-              xAxis.setValueFormatter((value, axis) -> {
-                if ((value + 1) % 7 == 0) {
-                  return "week" + (int) ((value + 1) / 7);
-                }
-                return "";
-              });
+            xAxis.setValueFormatter((value, axis) -> {
+              if ((value + 1) % 7 == 0) {
+                return "week" + (int) ((value + 1) / 7);
+              }
+              return "";
+            });
           }
           if (mTextViewStatsDay.isSelected()) {
             xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // make text only on bottom
-              xAxis.setValueFormatter((value, axis) -> {
-                if ((value + 1) % 3 == 0) {
-                  return "" + (int) value;
-                }
-                return "";
-              });
+            xAxis.setValueFormatter((value, axis) -> {
+              if ((value + 1) % 3 == 0) {
+                return "" + (int) value;
+              }
+              return "";
+            });
           }
           mChart.resetViewPortOffsets();
           mChart.invalidate();
@@ -330,21 +334,21 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
           //mChart.moveViewToX(1);
           //}
           if (mTextViewStatsWeek.isSelected()) {
-              xAxis.setValueFormatter((value, axis) -> {
-                if ((value + 1) % 7 == 0) {
-                  return "week" + (int) ((value + 1) / 7);
-                }
-                return "" + (int) value;
-              });
+            xAxis.setValueFormatter((value, axis) -> {
+              if ((value + 1) % 7 == 0) {
+                return "week" + (int) ((value + 1) / 7);
+              }
+              return "" + (int) value;
+            });
           }
           if (mTextViewStatsDay.isSelected()) {
             xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // make text only on bottom
-              xAxis.setValueFormatter((value, axis) -> {
-                if ((value + 1) % 3 == 0) {
-                  return "" + (int) value;
-                }
+            xAxis.setValueFormatter((value, axis) -> {
+              if ((value + 1) % 3 == 0) {
                 return "" + (int) value;
-              });
+              }
+              return "" + (int) value;
+            });
           }
 
           mChart.resetViewPortOffsets();
@@ -416,7 +420,6 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       mTextViewStatsPersonal.setSelected(false);
       mTextViewStatsPersonal.setTextColor(Color.RED);
       fillByStatsDay();
-
     }
     if (v.getId() == R.id.tvStatsWeek) {
       mTextViewStatsDay.setSelected(false);
@@ -649,10 +652,10 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // make text only on bottom
     xAxis.setAxisMinimum(0f);
     xAxis.setGranularity(1f);
-      xAxis.setValueFormatter((value, axis) -> {
+    xAxis.setValueFormatter((value, axis) -> {
 
-        return "" + (int) value;
-      });
+      return "" + (int) value;
+    });
 
     //mChart.getXAxis().setAxisMaximum(data.getXMax() + 0.25f);
     mChart.setData(null);
@@ -680,26 +683,26 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // make text only on bottom
     xAxis.setAxisMinimum(0f);
     xAxis.setGranularity(1f);
-      xAxis.setValueFormatter((value, axis) -> {
-        if ((value + 1) % 7 == 0) {
-          Timber.e("fillByStatsWeek %7 == 0");
-          axis.setAxisLineColor(Color.RED);
-          return "week" + (int) ((value + 1) / 7);
-        }
-        return "";
-      });
-    }
+    xAxis.setValueFormatter((value, axis) -> {
+      if ((value + 1) % 7 == 0) {
+        Timber.e("fillByStatsWeek %7 == 0");
+        axis.setAxisLineColor(Color.RED);
+        return "week" + (int) ((value + 1) / 7);
+      }
+      return "";
+    });
+  }
 
   private void fillByStatsDay() {
     mPresenter.fetchDayStats();
     XAxis xAxis = mChart.getXAxis();
     xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // make text only on bottom
-      xAxis.setValueFormatter((value, axis) -> {
-        if ((value + 1) % 3 == 0) {
-          return "" + (int) ((value + 1) / 3);
-        }
-        return "";
-      });
+    xAxis.setValueFormatter((value, axis) -> {
+      if ((value + 1) % 3 == 0) {
+        return "" + (int) ((value + 1) / 3);
+      }
+      return "";
+    });
     //setUpKm();
     //setUpSteps();
     //setUpKcal();
@@ -741,8 +744,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       mTextViewAboveAverageText.setText("Best of the day");
     } else {
       mTextViewAboveAverageText.setText(getString(R.string.days_above_average));
-      mTextViewDaysAboveAverageValue.setText(
-          "" + mPresenter.findDaysAboveAverageKm(stats));
+      mTextViewDaysAboveAverageValue.setText("" + mPresenter.findDaysAboveAverageKm(stats));
     }
   }
 
@@ -758,8 +760,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       mTextViewAboveAverageText.setText("Best of the day");
     } else {
       mTextViewAboveAverageText.setText(getString(R.string.days_above_average));
-      mTextViewDaysAboveAverageValue.setText(
-          "" + mPresenter.findDaysAboveAverageSteps(stats));
+      mTextViewDaysAboveAverageValue.setText("" + mPresenter.findDaysAboveAverageSteps(stats));
     }
   }
 
@@ -778,8 +779,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     } else {
       mTextViewAboveAverageText.setText(getString(R.string.days_above_average));
 
-      mTextViewDaysAboveAverageValue.setText(
-          "" + mPresenter.findDaysAboveAverageKcal(stats));
+      mTextViewDaysAboveAverageValue.setText("" + mPresenter.findDaysAboveAverageKcal(stats));
     }
   }
 

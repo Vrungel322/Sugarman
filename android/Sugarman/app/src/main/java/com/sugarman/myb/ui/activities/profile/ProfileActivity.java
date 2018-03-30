@@ -60,31 +60,8 @@ public class ProfileActivity extends BaseActivity
     implements View.OnTouchListener, IProfileActivityView {
 
   private static final String TAG = ProfileActivity.class.getName();
-
-  private WebView wvProfile;
-  private TextView tvInvitesCounter;
-  private TextView tvRequestsCounter;
-  private TextView tvInviteFriendsCounter;
-  @InjectPresenter ProfileActivityPresenter mPresenter;
-  @BindView(R.id.wave1) ImageView wave1;
-  @BindView(R.id.wave2) ImageView wave2;
-  @BindView(R.id.wave3) ImageView wave3;
-  @BindView(R.id.tv_level) TextView level;
-  @BindView(R.id.tvTestServer) TextView tvTestEnvironment;
-  @BindView(R.id.tvWalked10k) TextView tvWalked10k;
-  ImageView ivNoInvites, ivNoRequests;
-  ImageView ivAvatar;
-  int days;
-  private ImageView loadingStrip;
-
-  boolean invitesEnabled;
-
   private final List<Invite> invites = new ArrayList<>();
   private final List<Request> requests = new ArrayList<>();
-
-  private boolean isNeedRefreshTrackings;
-  private String lastAcceptInviteTrackingId;
-
   private final WebViewClient webViewClient = new WebViewClient() {
 
     @Override public void onPageFinished(WebView view, String url) {
@@ -106,6 +83,24 @@ public class ProfileActivity extends BaseActivity
           req.getUrl().toString());
     }
   };
+  @InjectPresenter ProfileActivityPresenter mPresenter;
+  @BindView(R.id.wave1) ImageView wave1;
+  @BindView(R.id.wave2) ImageView wave2;
+  @BindView(R.id.wave3) ImageView wave3;
+  @BindView(R.id.tv_level) TextView level;
+  @BindView(R.id.tvTestServer) TextView tvTestEnvironment;
+  @BindView(R.id.tvWalked10k) TextView tvWalked10k;
+  ImageView ivNoInvites, ivNoRequests;
+  ImageView ivAvatar;
+  int days;
+  boolean invitesEnabled;
+  private WebView wvProfile;
+  private TextView tvInvitesCounter;
+  private TextView tvRequestsCounter;
+  private TextView tvInviteFriendsCounter;
+  private ImageView loadingStrip;
+  private boolean isNeedRefreshTrackings;
+  private String lastAcceptInviteTrackingId;
 
   @SuppressLint("SetJavaScriptEnabled") @Override
   protected void onCreate(Bundle savedStateInstance) {
@@ -506,7 +501,6 @@ public class ProfileActivity extends BaseActivity
   }
 
   private void openIntroActivity() {
-
     AppsFlyerEventSender.sendEvent("af_open_tutorial_from_menu");
 
     Intent intent = new Intent(ProfileActivity.this, IntroActivity.class);
