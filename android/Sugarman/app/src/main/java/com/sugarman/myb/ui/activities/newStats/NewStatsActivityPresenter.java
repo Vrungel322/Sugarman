@@ -32,6 +32,7 @@ import java.lang.ref.WeakReference;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -83,6 +84,7 @@ import timber.log.Timber;
       fetchMessages(tracking.getId(), "0", SingletonLikeApp.getInstance()
           .getSharedPreferences(contextWeakReference.get())
           .getToken());
+      fetchAverageStats(tracking);
     } else {
       fetchStats();
     }
@@ -203,13 +205,13 @@ import timber.log.Timber;
     //if (statsResponse != null) getViewState().showStats(Arrays.asList(statsResponse.getResult()));
     Subscription subscription =
         mDataManager.fetchAverageStats(tracking.getId(), tracking.getStartDate(),
-            tracking.getEndDate()).flatMap(statsResponseResponse -> {
+           "2019-01-26T00:00:00-05:00").flatMap(statsResponseResponse -> {
           Timber.e("fetchAverageStats " + statsResponseResponse.code());
           mDataManager.saveAverageStats(statsResponseResponse.body());
           return Observable.just(statsResponseResponse.body().getResult());
         }).compose(ThreadSchedulers.applySchedulers()).subscribe(stats -> {
           if (stats != null) {
-
+            Timber.e("fetchAverageStats stats length" + stats.length);
           }
         }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
@@ -281,9 +283,11 @@ import timber.log.Timber;
     dataSets.add(set);
 
     //Dashed stuff
-    if (isAverageLineNeed) {
-      for (int index = 0; index < stats.size(); index++) {
-        entriesDashed.add(new Entry(index, statsSteps.get(index) + 2000));
+    List<Stats> cashedStats = new ArrayList<>();
+    cashedStats.addAll(Arrays.asList(mDataManager.getAverageStatsFromSHP().getResult()));
+    if (isAverageLineNeed && !cashedStats.isEmpty()) {
+      for (int index = 0; index < cashedStats.size(); index++) {
+        entriesDashed.add(new Entry(index, cashedStats.get(index).getStepsCount() + 2000));
       }
 
       LineDataSet setDashed = new LineDataSet(entriesDashed, "Group Steps");

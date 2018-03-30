@@ -209,6 +209,6 @@ public interface ApiRx {
   @GET("/v1/trackings") Observable<Response<TrackingsResponse>> getTrackings(
       @Query("query") String query, @Query("type") String type);
 
-  @POST("v1/stats/{tracking_id}/average") Observable<Response<StatsResponse>> fetchAverageStats(
+  @POST("v1/stats/{tracking_id}/average") @FormUrlEncoded Observable<Response<StatsResponse>> fetchAverageStats(
       @Path("tracking_id") String trackingId, @Field("start_date") String startDate, @Field("end_date")String endDate);
 }
