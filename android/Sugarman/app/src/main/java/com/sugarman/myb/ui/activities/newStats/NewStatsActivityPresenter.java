@@ -211,7 +211,7 @@ import timber.log.Timber;
           return Observable.just(statsResponseResponse.body().getResult());
         }).compose(ThreadSchedulers.applySchedulers()).subscribe(stats -> {
           if (stats != null) {
-            Timber.e("fetchAverageStats stats length" + stats.length);
+            Timber.e("fetchAverageStats stats length " + stats.length);
           }
         }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
