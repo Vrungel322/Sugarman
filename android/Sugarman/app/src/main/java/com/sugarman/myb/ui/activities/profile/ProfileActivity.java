@@ -26,6 +26,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.squareup.picasso.CustomPicasso;
+import com.sugarman.myb.BuildConfig;
 import com.sugarman.myb.R;
 import com.sugarman.myb.api.models.responses.me.invites.Invite;
 import com.sugarman.myb.api.models.responses.me.requests.Request;
@@ -185,8 +186,9 @@ public class ProfileActivity extends BaseActivity
     tvTotal.setTypeface(tfDin);
 
     String version = DeviceHelper.getAppVersionName();
+
     if (!TextUtils.isEmpty(version)) {
-      version = "V." + version;
+      version = "V." + version + " (" + BuildConfig.VERSION_CODE + ")";
       tvVersion.setText(version);
     }
 

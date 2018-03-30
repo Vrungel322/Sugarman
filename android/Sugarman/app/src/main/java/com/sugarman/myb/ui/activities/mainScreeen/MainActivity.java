@@ -2077,18 +2077,18 @@ public class MainActivity extends GetUserInfoActivity
   }
 
   //Test
-  @OnClick(R.id.iv_animated_man) void testClicked() {
-    Intent intent = new Intent(getApplicationContext(), NewStatsActivity.class);
-    intent.putExtra(Constants.TRACKING, trackingsAdapter.getTracking(vpTrackings.getCurrentItem()));
-    startActivity(intent);
-    overridePendingTransition(R.anim.slide_down, R.anim.slide_up);
-  }
-
-  @OnLongClick(R.id.iv_animated_man) boolean testLongClicked() {
-    Intent intent = new Intent(getApplicationContext(), NewStatsActivity.class);
-    //intent.putExtra(Constants.TRACKING,result);
-    startActivity(intent);
-    overridePendingTransition(R.anim.move_right_in_activity, R.anim.move_left_out_activity);
-    return true;
-  }
+  //@OnClick(R.id.iv_animated_man) void testClicked() {
+  //  Intent intent = new Intent(getApplicationContext(), NewStatsActivity.class);
+  //  intent.putExtra(Constants.TRACKING, trackingsAdapter.getTracking(vpTrackings.getCurrentItem()));
+  //  startActivity(intent);
+  //  overridePendingTransition(R.anim.slide_down, R.anim.slide_up);
+  //}
+  //
+  //@OnLongClick(R.id.iv_animated_man) boolean testLongClicked() {
+  //  Intent intent = new Intent(getApplicationContext(), NewStatsActivity.class);
+  //  //intent.putExtra(Constants.TRACKING,result);
+  //  startActivity(intent);
+  //  overridePendingTransition(R.anim.move_right_in_activity, R.anim.move_left_out_activity);
+  //  return true;
+  //}
 }

@@ -27,7 +27,7 @@ public class HourlySaveStepsServicePresenter extends BasicPresenter<IHourlySaveS
   }
 
   public void startHourlySaveSteps() {
-    mPeriodicalSubscription = Observable.interval(1000, 10000, TimeUnit.MILLISECONDS)
+    mPeriodicalSubscription = Observable.interval(1000, 3600000, TimeUnit.MILLISECONDS)
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(aLong -> {
           steps = SharedPreferenceHelper.getReportStatsLocal(
