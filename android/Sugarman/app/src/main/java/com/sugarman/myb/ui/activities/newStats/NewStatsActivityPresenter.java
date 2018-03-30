@@ -204,8 +204,8 @@ import timber.log.Timber;
     StatsResponse statsResponse = mDataManager.getAverageStatsFromSHP();
     //if (statsResponse != null) getViewState().showStats(Arrays.asList(statsResponse.getResult()));
     Subscription subscription =
-        mDataManager.fetchAverageStats(tracking.getId(), tracking.getStartDate(),
-           "2019-01-26T00:00:00-05:00").flatMap(statsResponseResponse -> {
+        mDataManager.fetchAverageStats("5abe2210a8a79a00086e0a23", "2018-03-15",
+            "2019-01-26").flatMap(statsResponseResponse -> {
           Timber.e("fetchAverageStats " + statsResponseResponse.code());
           mDataManager.saveAverageStats(statsResponseResponse.body());
           return Observable.just(statsResponseResponse.body().getResult());
@@ -284,10 +284,14 @@ import timber.log.Timber;
 
     //Dashed stuff
     List<Stats> cashedStats = new ArrayList<>();
-    cashedStats.addAll(Arrays.asList(mDataManager.getAverageStatsFromSHP().getResult()));
-    if (isAverageLineNeed && !cashedStats.isEmpty()) {
+    Timber.e("generateLineData cashedStats "+ mDataManager.getAverageStatsFromSHP().getResult().length);
+
+    if (isAverageLineNeed
+        && mDataManager.getAverageStatsFromSHP() != null) {
+      cashedStats.addAll(Arrays.asList(mDataManager.getAverageStatsFromSHP().getResult()));
+
       for (int index = 0; index < cashedStats.size(); index++) {
-        entriesDashed.add(new Entry(index, cashedStats.get(index).getStepsCount() + 2000));
+        entriesDashed.add(new Entry(index, cashedStats.get(index).getStepsCount()));
       }
 
       LineDataSet setDashed = new LineDataSet(entriesDashed, "Group Steps");

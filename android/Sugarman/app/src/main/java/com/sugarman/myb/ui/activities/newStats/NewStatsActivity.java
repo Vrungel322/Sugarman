@@ -441,7 +441,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       fillByStatsPersonal(STATS_COUNT_PERSONAL_21, false);
       //} else {
       //  Timber.e("changeStatsOnChart " + mStatsOfTracking);
-      //  fillByStatsPersonalTracking(mStatsOfTracking);
+      //  fillByStatsPersonal(STATS_COUNT_PERSONAL_21, true);
       //}
     }
     fillDetailsCard();

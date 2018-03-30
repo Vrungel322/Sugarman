@@ -961,6 +961,7 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
 
   public static void saveAverageStats(StatsResponse body) {
     if (body != null) {
+      Timber.e("saveAverageStats"  +body.getResult().length);
       putString(SharedPreferenceConstants.CACHED_AVERAGE_STATS, new Gson().toJson(body));
     }
   }
