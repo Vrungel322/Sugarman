@@ -467,4 +467,9 @@ public class DataManager {
       return mRestApi.getTrackings(query, type);
     }
   }
+
+  public Observable<Response<List<Stats>>> fetchAverageStats(String trackingId, String startDate,
+      String endDate) {
+    return mRestApi.fetchAverageStats(trackingId, startDate, endDate);
+  }
 }
