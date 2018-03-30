@@ -2,6 +2,7 @@ package com.sugarman.myb.api;
 
 import android.util.Log;
 import com.google.gson.Gson;
+import com.sugarman.myb.api.models.StatsAverageRequest;
 import com.sugarman.myb.api.models.levelSystem.TaskEntity;
 import com.sugarman.myb.api.models.requests.ApproveOtpRequest;
 import com.sugarman.myb.api.models.requests.CheckPhoneRequest;
@@ -366,6 +367,6 @@ public class RestApi {
 
   public Observable<Response<StatsResponse>> fetchAverageStats(String trackingId, String startDate,
       String endDate) {
-    return api.fetchAverageStats(trackingId, startDate, endDate);
+    return api.fetchAverageStats(trackingId, new StatsAverageRequest(startDate, endDate));
   }
 }
