@@ -204,16 +204,18 @@ import timber.log.Timber;
     StatsResponse statsResponse = mDataManager.getAverageStatsFromSHP();
     //if (statsResponse != null) getViewState().showStats(Arrays.asList(statsResponse.getResult()));
     Subscription subscription =
-        mDataManager.fetchAverageStats("5abe2210a8a79a00086e0a23", "2018-03-15",
-            "2019-01-26").flatMap(statsResponseResponse -> {
-          Timber.e("fetchAverageStats " + statsResponseResponse.code());
-          mDataManager.saveAverageStats(statsResponseResponse.body());
-          return Observable.just(statsResponseResponse.body().getResult());
-        }).compose(ThreadSchedulers.applySchedulers()).subscribe(stats -> {
-          if (stats != null) {
-            Timber.e("fetchAverageStats stats length " + stats.length);
-          }
-        }, Throwable::printStackTrace);
+        mDataManager.fetchAverageStats("5a69ecb2f3831b004f4490c9", "2018-03-15", "2019-01-26")
+            .flatMap(statsResponseResponse -> {
+              Timber.e("fetchAverageStats " + statsResponseResponse.code());
+              mDataManager.saveAverageStats(statsResponseResponse.body());
+              return Observable.just(statsResponseResponse.body().getResult());
+            })
+            .compose(ThreadSchedulers.applySchedulers())
+            .subscribe(stats -> {
+              if (stats != null) {
+                Timber.e("fetchAverageStats stats length " + stats.length);
+              }
+            }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 
@@ -284,10 +286,10 @@ import timber.log.Timber;
 
     //Dashed stuff
     List<Stats> cashedStats = new ArrayList<>();
-    Timber.e("generateLineData cashedStats "+ mDataManager.getAverageStatsFromSHP().getResult().length);
 
-    if (isAverageLineNeed
-        && mDataManager.getAverageStatsFromSHP() != null) {
+    if (isAverageLineNeed && mDataManager.getAverageStatsFromSHP() != null) {
+      Timber.e("generateLineData cashedStats " + mDataManager.getAverageStatsFromSHP()
+          .getResult().length);
       cashedStats.addAll(Arrays.asList(mDataManager.getAverageStatsFromSHP().getResult()));
 
       for (int index = 0; index < cashedStats.size(); index++) {
@@ -348,7 +350,9 @@ import timber.log.Timber;
     List<Integer> integers = new ArrayList<>();
     for (int i = 0; i < stats.size(); i++) {
       Timber.e("AVG Steps " + stats.get(i).getStepsCount());
-      if (stats.get(i).getStepsCount() != -1) integers.add(stats.get(i).getStepsCount());
+      if (stats.get(i).getStepsCount() != -1 && stats.get(i).getStepsCount() != 0) {
+        integers.add(stats.get(i).getStepsCount());
+      }
     }
     return Collections.min(integers);
   }
