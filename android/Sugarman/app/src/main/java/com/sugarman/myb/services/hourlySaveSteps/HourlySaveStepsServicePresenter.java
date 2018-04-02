@@ -38,9 +38,23 @@ public class HourlySaveStepsServicePresenter extends BasicPresenter<IHourlySaveS
             clearLast24HoursSteps();
           }
           Timber.e("startHourlySaveSteps " + numOfHours);
-          SharedPreferenceHelper.saveHourlySteps(numOfHours, steps);
+          Timber.e("startHourlySaveSteps difference" + (steps - countSumOfStats(
+              SharedPreferenceHelper.getStepsPerDay())));
+
+          SharedPreferenceHelper.saveHourlySteps(numOfHours,
+              (steps - countSumOfStats(SharedPreferenceHelper.getStepsPerDay())));
+
           numOfHours++;
         }, Throwable::printStackTrace);
+  }
+
+  private int countSumOfStats(SortedMap<String, Integer> stats) {
+    int sum = 0;
+    for (Map.Entry<String, Integer> s : stats.entrySet()) {
+      sum += s.getValue();
+    }
+    Timber.e("countSumOfStats " + sum);
+    return sum;
   }
 
   private void printDebug() {
