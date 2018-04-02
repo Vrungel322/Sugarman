@@ -217,6 +217,7 @@ import timber.log.Timber;
     Calendar calendar = Calendar.getInstance();
     calendar.setTimeInMillis(now);
 
+    Timber.e( "fetchAverageStats startDate = " + tracking.getCreatedAt());
     Timber.e( "fetchAverageStats endDate = " + formatter.format(calendar.getTime()));
 
     Subscription subscription =
@@ -362,6 +363,7 @@ import timber.log.Timber;
     for (int i = 0; i < stats.size(); i++) {
       integers.add(stats.get(i).getStepsCount());
     }
+    if(integers.size()==0) return 0;
     return Collections.max(integers);
   }
 

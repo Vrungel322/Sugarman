@@ -358,7 +358,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
 
   private void setUpKcal() {
     mTextViewValueKcal.setText(
-        String.format(Locale.US, "%.2f kcal", mCountOfStepsForLastXDays * 0.0435f));
+        String.format(Locale.US, "%.2f kcal", mCountOfStepsForLastXDays * NewStatsActivityPresenter.KCAL_COEFFICIENT));
     Timber.e("setUpKcal");
   }
 
