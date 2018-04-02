@@ -43,7 +43,7 @@ public abstract class StringHelper {
   private static final DateFormat API_DATE_FORMATTER =
       new SimpleDateFormat(SERVER_DATE_FORMAT, Locale.getDefault());
 
-  private static final DateFormat REPORT_STATS_DATE_FORMATTER =
+  public static final DateFormat REPORT_STATS_DATE_FORMATTER =
       new SimpleDateFormat(REPORT_STATS_DATE_FORMAT, Locale.getDefault());
 
   private StringHelper() {

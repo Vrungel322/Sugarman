@@ -762,6 +762,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
               if (s.getStepsCount() > sShp.getStepsCount()) averageDaysCount++;
             }
           }
+          Timber.e("fillDetailsByStatsSteps averageDaysCount "+averageDaysCount);
           mTextViewDaysAboveAverageValue.setText("" + averageDaysCount+"/"+diff);
         }
       }

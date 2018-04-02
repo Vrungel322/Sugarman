@@ -29,10 +29,12 @@ import com.sugarman.myb.utils.DataUtils;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
 import com.sugarman.myb.utils.ThreadSchedulers;
 import java.lang.ref.WeakReference;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -75,7 +77,8 @@ import timber.log.Timber;
               return Observable.just(stats);
             })
             .compose(ThreadSchedulers.applySchedulers())
-            .subscribe(stats -> getViewState().showDayStats(stats,coefficient), Throwable::printStackTrace);
+            .subscribe(stats -> getViewState().showDayStats(stats, coefficient),
+                Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 
@@ -202,11 +205,23 @@ import timber.log.Timber;
     }
   }
 
-  public void fetchAverageStats(Tracking tracking) {
+  public void fetchAverageStats(Tracking tracking) throws ParseException {
     StatsResponse statsResponse = mDataManager.getAverageStatsFromSHP();
     //if (statsResponse != null) getViewState().showStats(Arrays.asList(statsResponse.getResult()));
+    String startDate = "none date";
+
+    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+    long now = System.currentTimeMillis();
+
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTimeInMillis(now);
+
+    Timber.e( "fetchAverageStats endDate = " + formatter.format(calendar.getTime()));
+
     Subscription subscription =
-        mDataManager.fetchAverageStats("5a69ecb2f3831b004f4490c9", "2018-03-15", "2019-01-26")
+        mDataManager.fetchAverageStats(tracking.getId(), tracking.getCreatedAt(),
+            formatter.format(calendar.getTime()))
             .flatMap(statsResponseResponse -> {
               Timber.e("fetchAverageStats " + statsResponseResponse.code());
               mDataManager.saveAverageStats(statsResponseResponse.body());
@@ -225,7 +240,7 @@ import timber.log.Timber;
     ArrayList<BarEntry> entries1 = new ArrayList<BarEntry>();
 
     for (int index = 0; index < stats.size() * 1; index++) {
-      entries1.add(new BarEntry(index, 10000*coeficient));
+      entries1.add(new BarEntry(index, 10000 * coeficient));
     }
 
     BarDataSet set1 = new BarDataSet(entries1, "10000 Steps");
@@ -239,7 +254,7 @@ import timber.log.Timber;
   }
 
   public LineData generateLineData(List<Stats> stats, List<Integer> statsSteps, Drawable drawable,
-      boolean isAverageLineNeed,float coeficient) {
+      boolean isAverageLineNeed, float coeficient) {
     entries = new ArrayList<>();
     entriesDashed = new ArrayList<Entry>();
     sempStat = new ArrayList<Stats>();
@@ -257,12 +272,13 @@ import timber.log.Timber;
 
     for (int i = 0; i < sempStat.size(); i++) {
       //      Timber.e("generateLineData " + stats.get(i).getLabel());
-      entries.add(new Entry(i, sempStat.get(i).getStepsCount()*coeficient));
+      entries.add(new Entry(i, sempStat.get(i).getStepsCount() * coeficient));
       //add icon to last point of chart
       if (i == sempStat.size() - 1) {
         entries.remove(sempStat.size() - 1);
         entries.add(new Entry(i, SharedPreferenceHelper.getReportStatsLocal(
-            SharedPreferenceHelper.getUserId())[0].getStepsCount()*coeficient/*,drawable*/)); // add icon to point on chart
+            SharedPreferenceHelper.getUserId())[0].getStepsCount()
+            * coeficient/*,drawable*/)); // add icon to point on chart
         Timber.e("SHARED HUY " + SharedPreferenceHelper.getUserTodaySteps());
       }
     }
@@ -295,7 +311,7 @@ import timber.log.Timber;
       cashedStats.addAll(Arrays.asList(mDataManager.getAverageStatsFromSHP().getResult()));
 
       for (int index = 0; index < cashedStats.size(); index++) {
-        entriesDashed.add(new Entry(index, cashedStats.get(index).getStepsCount()*coeficient));
+        entriesDashed.add(new Entry(index, cashedStats.get(index).getStepsCount() * coeficient));
       }
 
       LineDataSet setDashed = new LineDataSet(entriesDashed, "Group Steps");
