@@ -349,7 +349,7 @@ import timber.log.Timber;
   }
 
   public int findMinSteps(List<Stats> stats) {
-    if (stats == null || stats.isEmpty()) return 0;
+
     List<Integer> integers = new ArrayList<>();
     for (int i = 0; i < stats.size(); i++) {
       Timber.e("AVG Steps " + stats.get(i).getStepsCount());
@@ -357,6 +357,7 @@ import timber.log.Timber;
         integers.add(stats.get(i).getStepsCount());
       }
     }
+    if (integers.isEmpty()) return 0;
     return Collections.min(integers);
   }
 
