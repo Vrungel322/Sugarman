@@ -51,7 +51,7 @@ import timber.log.Timber;
 @InjectViewState public class NewStatsActivityPresenter
     extends BasicPresenter<INewStatsActivityView> {
   public static final float KM_COEFFICIENT = 0.000762f;
-  public static final float KCAL_COEFFICIENT = 0.0435f;
+  public static final float KCAL_COEFFICIENT = 0.0303f;
   @Inject DbRepositoryStats mDbRepositoryStats;
   ArrayList<Entry> entries = new ArrayList<Entry>();
   ArrayList<Entry> entriesDashed = new ArrayList<Entry>();
