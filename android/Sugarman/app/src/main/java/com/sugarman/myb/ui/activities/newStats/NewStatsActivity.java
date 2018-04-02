@@ -704,11 +704,9 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     } else {
       mTextViewAboveAverageText.setText(getString(R.string.days_above_average));
       if (!mTextViewStatsWeek.isSelected()) {
+        diff = stats.size();
         mTextViewDaysAboveAverageValue.setText("" + mPresenter.findDaysAboveAverageKm(stats)+"/"+diff);
       } else {
-
-
-
         List<Stats> statsList = new ArrayList<>();
         if (SharedPreferenceHelper.getAverageStatsFromSHP() != null) {
           statsList.addAll(
@@ -746,6 +744,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     } else {
       mTextViewAboveAverageText.setText(getString(R.string.days_above_average));
       if (!mTextViewStatsWeek.isSelected()) {
+        diff = stats.size();
         mTextViewDaysAboveAverageValue.setText("" + mPresenter.findDaysAboveAverageSteps(stats)+"/"+diff);
       } else {
 
@@ -794,6 +793,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     } else {
       mTextViewAboveAverageText.setText(getString(R.string.days_above_average));
       if (!mTextViewStatsWeek.isSelected()) {
+        diff = stats.size();
         mTextViewDaysAboveAverageValue.setText("" + mPresenter.findDaysAboveAverageKcal(stats)+"/"+diff);
       } else {
 

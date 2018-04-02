@@ -625,8 +625,8 @@
   <string name="vk_acc_already_exist">This VK account is already created</string>
   <string name="view">VIEW</string>
   <string name="missing_group_name">Missing group name</string>
-  <string name="average_a_day">Average a day</string>
-  <string name="days_above_average">Days Above average</string>
+  <string name="average_a_day">Average\na day</string>
+  <string name="days_above_average">Days Above\naverage</string>
   <string name="already_register">already register</string>
   <string name="for_5_friends">For 5 friends</string>
 
