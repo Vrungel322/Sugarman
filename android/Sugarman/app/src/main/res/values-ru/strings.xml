@@ -597,5 +597,7 @@
   <string name="average_a_day">Среднее\nза день</string>
     <string name="days_above_average">Дней выше\nсреднего</string>
     <string name="already_register">Уже в группе</string>
+    <string name="best_of_the_day">Лучший за день</string>
+    <string name="for_5_friends">За 5 друзей</string>
 
 </resources>
