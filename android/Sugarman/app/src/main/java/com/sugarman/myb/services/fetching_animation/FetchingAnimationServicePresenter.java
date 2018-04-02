@@ -40,10 +40,10 @@ public class FetchingAnimationServicePresenter
         .concatMap(getAnimationResponseResponse -> {
           GetAnimationResponse getAnimationResponseFromDB = mDataManager.getAnimationFromBd();
           if (getAnimationResponseFromDB != null) {
-            Timber.e("getAnimations db_anim_side:"
-                + getAnimationResponseFromDB.getAnimations().size()
-                + "   server_anim_size:"
-                + getAnimationResponseResponse.body().getAnimations().size());
+            //Timber.e("getAnimations db_anim_side:"
+            //    + getAnimationResponseFromDB.getAnimations().size()
+            //    + "   server_anim_size:"
+            //    + getAnimationResponseResponse.body().getAnimations().size());
 
             if (getAnimationResponseFromDB != null
                 && getAnimationResponseFromDB.getAnimations().size()

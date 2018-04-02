@@ -421,7 +421,8 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       mTextViewStatsWeek.setTextColor(Color.RED);
       mTextViewStatsPersonal.setSelected(false);
       mTextViewStatsPersonal.setTextColor(Color.RED);
-      fillByStatsDay(NewStatsActivityPresenter.KCAL_COEFFICIENT);
+      //fillByStatsDay(NewStatsActivityPresenter.KCAL_COEFFICIENT);
+      fillByStatsDay(1f);
     }
     if (v.getId() == R.id.tvStatsWeek) {
       mTextViewStatsDay.setSelected(false);
@@ -635,16 +636,16 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       mImageViewStatsKcal.setSelected(false);
       fillDetailsByStatsKm(mStats);
 
-      if (mTextViewStatsDay.isSelected()) {
-        fillByStatsDay(NewStatsActivityPresenter.KM_COEFFICIENT);
-      }
-      if (mTextViewStatsWeek.isSelected()) {
-        fillByStatsWeek(NewStatsActivityPresenter.KM_COEFFICIENT);
-      }
-      if (mTextViewStatsPersonal.isSelected()) {
-        fillByStatsPersonal(STATS_COUNT_PERSONAL_21, false,
-            NewStatsActivityPresenter.KM_COEFFICIENT);
-      }
+      //if (mTextViewStatsDay.isSelected()) {
+      //  fillByStatsDay(NewStatsActivityPresenter.KM_COEFFICIENT);
+      //}
+      //if (mTextViewStatsWeek.isSelected()) {
+      //  fillByStatsWeek(NewStatsActivityPresenter.KM_COEFFICIENT);
+      //}
+      //if (mTextViewStatsPersonal.isSelected()) {
+      //  fillByStatsPersonal(STATS_COUNT_PERSONAL_21, false,
+      //      NewStatsActivityPresenter.KM_COEFFICIENT);
+      //}
     }
     if (v.getId() == R.id.ivStatsSteps) {
       mImageViewStatsKm.setSelected(false);
@@ -652,15 +653,15 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       mImageViewStatsKcal.setSelected(false);
       fillDetailsByStatsSteps(mStats);
 
-      if (mTextViewStatsDay.isSelected()) {
-        fillByStatsDay(1f);
-      }
-      if (mTextViewStatsWeek.isSelected()) {
-        fillByStatsWeek(1f);
-      }
-      if (mTextViewStatsPersonal.isSelected()) {
-        fillByStatsPersonal(STATS_COUNT_PERSONAL_21, false, 1f);
-      }
+      //if (mTextViewStatsDay.isSelected()) {
+      //  fillByStatsDay(1f);
+      //}
+      //if (mTextViewStatsWeek.isSelected()) {
+      //  fillByStatsWeek(1f);
+      //}
+      //if (mTextViewStatsPersonal.isSelected()) {
+      //  fillByStatsPersonal(STATS_COUNT_PERSONAL_21, false, 1f);
+      //}
     }
     if (v.getId() == R.id.ivStatsKcal) {
       mImageViewStatsKm.setSelected(false);
@@ -668,16 +669,16 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       mImageViewStatsKcal.setSelected(true);
       fillDetailsByStatsKcal(mStats);
 
-      if (mTextViewStatsDay.isSelected()) {
-        fillByStatsDay(NewStatsActivityPresenter.KCAL_COEFFICIENT);
-      }
-      if (mTextViewStatsWeek.isSelected()) {
-        fillByStatsWeek(NewStatsActivityPresenter.KCAL_COEFFICIENT);
-      }
-      if (mTextViewStatsPersonal.isSelected()) {
-        fillByStatsPersonal(STATS_COUNT_PERSONAL_21, false,
-            NewStatsActivityPresenter.KCAL_COEFFICIENT);
-      }
+      //if (mTextViewStatsDay.isSelected()) {
+      //  fillByStatsDay(NewStatsActivityPresenter.KCAL_COEFFICIENT);
+      //}
+      //if (mTextViewStatsWeek.isSelected()) {
+      //  fillByStatsWeek(NewStatsActivityPresenter.KCAL_COEFFICIENT);
+      //}
+      //if (mTextViewStatsPersonal.isSelected()) {
+      //  fillByStatsPersonal(STATS_COUNT_PERSONAL_21, false,
+      //      NewStatsActivityPresenter.KCAL_COEFFICIENT);
+      //}
     }
   }
 
@@ -1077,7 +1078,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     setUpKm();
     setUpSteps();
     setUpKcal();
-    changeStatsOnDescriptionDetails(mImageViewStatsSteps);
+    changeStatsOnDescriptionDetails(mImageViewStatsKm);
   }
 
   @Override public void setUnreadMessages(int size) {
