@@ -902,7 +902,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       mTextViewFastestName.setText(name);
       for (Member f : members) {
         if (fastest.getId().equals(f.getId())) {
-          mTextViewFastestName.setText(String.format(Locale.US, "%,d", f.getSteps()));
+          mTextViewFastestSteps.setText(String.format(Locale.US, "%,d", f.getSteps()));
         }
       }
 
