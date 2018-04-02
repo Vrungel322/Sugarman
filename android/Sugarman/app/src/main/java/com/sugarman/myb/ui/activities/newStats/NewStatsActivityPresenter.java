@@ -50,7 +50,6 @@ import timber.log.Timber;
  */
 @InjectViewState public class NewStatsActivityPresenter
     extends BasicPresenter<INewStatsActivityView> {
-
   public static final float KM_COEFFICIENT = 0.000762f;
   public static final float KCAL_COEFFICIENT = 0.0435f;
   @Inject DbRepositoryStats mDbRepositoryStats;
@@ -64,7 +63,7 @@ import timber.log.Timber;
     App.getAppComponent().inject(this);
   }
 
-  public void fetchDayStats() {
+  public void fetchDayStats(float coefficient) {
     Subscription subscription =
         Observable.just(SharedPreferenceHelper.getStepsPerDay())
             .flatMap(stringIntegerSortedMap -> {
@@ -76,7 +75,7 @@ import timber.log.Timber;
               return Observable.just(stats);
             })
             .compose(ThreadSchedulers.applySchedulers())
-            .subscribe(stats -> getViewState().showDayStats(stats), Throwable::printStackTrace);
+            .subscribe(stats -> getViewState().showDayStats(stats,coefficient), Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 
@@ -222,11 +221,11 @@ import timber.log.Timber;
     addToUnsubscription(subscription);
   }
 
-  public BarData generateBarData(List<Stats> stats) {
+  public BarData generateBarData(List<Stats> stats, float coeficient) {
     ArrayList<BarEntry> entries1 = new ArrayList<BarEntry>();
 
     for (int index = 0; index < stats.size() * 1; index++) {
-      entries1.add(new BarEntry(index, 10000));
+      entries1.add(new BarEntry(index, 10000*coeficient));
     }
 
     BarDataSet set1 = new BarDataSet(entries1, "10000 Steps");
@@ -240,7 +239,7 @@ import timber.log.Timber;
   }
 
   public LineData generateLineData(List<Stats> stats, List<Integer> statsSteps, Drawable drawable,
-      boolean isAverageLineNeed) {
+      boolean isAverageLineNeed,float coeficient) {
     entries = new ArrayList<>();
     entriesDashed = new ArrayList<Entry>();
     sempStat = new ArrayList<Stats>();
@@ -258,12 +257,12 @@ import timber.log.Timber;
 
     for (int i = 0; i < sempStat.size(); i++) {
       //      Timber.e("generateLineData " + stats.get(i).getLabel());
-      entries.add(new Entry(i, sempStat.get(i).getStepsCount()));
+      entries.add(new Entry(i, sempStat.get(i).getStepsCount()*coeficient));
       //add icon to last point of chart
       if (i == sempStat.size() - 1) {
         entries.remove(sempStat.size() - 1);
         entries.add(new Entry(i, SharedPreferenceHelper.getReportStatsLocal(
-            SharedPreferenceHelper.getUserId())[0].getStepsCount()/*,drawable*/)); // add icon to point on chart
+            SharedPreferenceHelper.getUserId())[0].getStepsCount()*coeficient/*,drawable*/)); // add icon to point on chart
         Timber.e("SHARED HUY " + SharedPreferenceHelper.getUserTodaySteps());
       }
     }
@@ -296,7 +295,7 @@ import timber.log.Timber;
       cashedStats.addAll(Arrays.asList(mDataManager.getAverageStatsFromSHP().getResult()));
 
       for (int index = 0; index < cashedStats.size(); index++) {
-        entriesDashed.add(new Entry(index, cashedStats.get(index).getStepsCount()));
+        entriesDashed.add(new Entry(index, cashedStats.get(index).getStepsCount()*coeficient));
       }
 
       LineDataSet setDashed = new LineDataSet(entriesDashed, "Group Steps");
@@ -350,6 +349,7 @@ import timber.log.Timber;
   }
 
   public int findMinSteps(List<Stats> stats) {
+    if (stats == null || stats.isEmpty()) return 0;
     List<Integer> integers = new ArrayList<>();
     for (int i = 0; i < stats.size(); i++) {
       Timber.e("AVG Steps " + stats.get(i).getStepsCount());

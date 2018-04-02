@@ -419,7 +419,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       mTextViewStatsWeek.setTextColor(Color.RED);
       mTextViewStatsPersonal.setSelected(false);
       mTextViewStatsPersonal.setTextColor(Color.RED);
-      fillByStatsDay();
+      fillByStatsDay(NewStatsActivityPresenter.KCAL_COEFFICIENT);
     }
     if (v.getId() == R.id.tvStatsWeek) {
       mTextViewStatsDay.setSelected(false);
@@ -428,7 +428,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       mTextViewStatsWeek.setTextColor(Color.WHITE);
       mTextViewStatsPersonal.setSelected(false);
       mTextViewStatsPersonal.setTextColor(Color.RED);
-      fillByStatsWeek();
+      fillByStatsWeek(1f);
     }
     if (v.getId() == R.id.tvStatsPersonal) {
       mTextViewStatsDay.setSelected(false);
@@ -438,7 +438,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       mTextViewStatsPersonal.setSelected(true);
       mTextViewStatsPersonal.setTextColor(Color.WHITE);
       //if (mTracking == null) {
-      fillByStatsPersonal(STATS_COUNT_PERSONAL_21, false);
+      fillByStatsPersonal(STATS_COUNT_PERSONAL_21, false, 1f);
       //} else {
       //  Timber.e("changeStatsOnChart " + mStatsOfTracking);
       //  fillByStatsPersonal(STATS_COUNT_PERSONAL_21, true);
@@ -447,7 +447,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     fillDetailsCard();
   }
 
-  private void fillByStatsPersonalTracking(List<Stats> statsOfTracking) {
+  private void fillByStatsPersonalTracking(List<Stats> statsOfTracking,float coefficient) {
     mStatsCount = statsOfTracking.size();
     mStats.clear();
     mStatsDays.clear();
@@ -511,8 +511,8 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
 
       //Collections.reverse(mStats);
       data.setData(mPresenter.generateLineData(mStats, mStatsSteps,
-          getResources().getDrawable(R.drawable.animation_progress_bar), true)); // line - dots
-      data.setData(mPresenter.generateBarData(mStats)); // colomns
+          getResources().getDrawable(R.drawable.animation_progress_bar), true,coefficient)); // line - dots
+      data.setData(mPresenter.generateBarData(mStats,coefficient)); // colomns
 
       //mChart.getXAxis().setAxisMaximum(data.getXMax() + 0.25f);
       mChart.setData(null);
@@ -530,90 +530,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     }
   }
 
-  private void fillByStatsPersonalTrackingLast7Days(int last7ays, List<Stats> statsOfTracking) {
-    mStatsCount = statsOfTracking.size();
-    mStats.clear();
-    mStatsDays.clear();
-    mStatsSteps.clear();
-    mCountOfStepsForLastXDays = 0;
-
-    if (statsOfTracking != null && statsOfTracking.size() != 0) {
-      Timber.e("showStats size = " + statsOfTracking.size());
-      for (Stats s : statsOfTracking) {
-        Timber.e("showTrackingStats s.getStepsCount() = " + s.getStepsCount());
-        if (s.getStepsCount() < 0) {
-
-          s.setStepsCount(0);
-        }
-      }
-      int k = 0;
-      Timber.e("Start date " + mTracking.getStartDate());
-
-      SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
-      try {
-        Date date = sdf.parse(mTracking.getStartDate());
-        Timber.e("showTrackingStats Start time: " + date.getTime());
-      } catch (ParseException e) {
-        e.printStackTrace();
-      }
-
-      for (Stats s : statsOfTracking) {
-        Timber.e("showTrackingStats " + s.getDayTimestamp());
-        Timber.e("index " + k++ + " " + s.getStepsCount());
-      }
-
-      if (mTracking.isMentors()
-          && statsOfTracking != null
-          && !statsOfTracking.isEmpty()
-          && !zeroDayremoved) {
-        statsOfTracking.remove(0);
-        zeroDayremoved = true;
-      }
-
-      mStats.addAll(statsOfTracking);
-      Timber.e("onTouchDouble fillByStatsPersonal " + mStats.size());
-
-      for (int i = 0; i < mStats.size(); i++) {
-        if (mStatsCount == STATS_COUNT_PERSONAL_21) {
-          mStatsDays.add(String.valueOf(i + 1));
-        }
-        if (mStatsCount == STATS_COUNT_PERSONAL_7) {
-          mStatsDays.add(getString(R.string.day) + " " + String.valueOf(i + 1));
-        }
-        mStatsSteps.add(mStats.get(i).getStepsCount());
-        Timber.e("onTouchDouble mCountOfStepsForLastXDays " + mCountOfStepsForLastXDays);
-        if (mStats.get(i).getStepsCount() != Constants.FAKE_STEPS_COUNT) {
-          mCountOfStepsForLastXDays += mStats.get(i).getStepsCount();
-        }
-      }
-      Timber.e("onTouchDouble mCountOfStepsForLastXDays " + mCountOfStepsForLastXDays);
-
-      Collections.sort(mStats, (stats, t1) -> Integer.valueOf(
-          String.valueOf(stats.getDayTimestamp() / 1000 - t1.getDayTimestamp() / 1000)));
-
-      CombinedData data = new CombinedData();
-      Collections.reverse(mStats);
-      data.setData(mPresenter.generateLineData(mStats, mStatsSteps,
-          getResources().getDrawable(R.drawable.animation_progress_bar), false)); // line - dots
-      data.setData(mPresenter.generateBarData(mStats)); // colomns
-
-      //mChart.getXAxis().setAxisMaximum(data.getXMax() + 0.25f);
-      mChart.setData(null);
-      mChart.setData(data);
-      mChart.getBarData().setBarWidth(100);
-      mChart.setDrawBarShadow(false);
-      mChart.setHighlightFullBarEnabled(false);
-      mChart.getBarData().setHighlightEnabled(false);
-      mChart.setDrawValueAboveBar(true);
-      mChart.fitScreen();
-      mChart.invalidate();
-      setUpKm();
-      setUpSteps();
-      setUpKcal();
-    }
-  }
-
-  private void fillByStatsPersonal(int statsCount, boolean isAverageLineNeed) {
+  private void fillByStatsPersonal(int statsCount, boolean isAverageLineNeed, float coeficient) {
     mStatsCount = statsCount;
     mStats.clear();
     mStatsDays.clear();
@@ -644,9 +561,9 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     CombinedData data = new CombinedData();
 
     data.setData(mPresenter.generateLineData(mStats, mStatsSteps,
-        getResources().getDrawable(R.drawable.animation_progress_bar),
-        isAverageLineNeed)); // line - dots
-    data.setData(mPresenter.generateBarData(mStats)); // colomns
+        getResources().getDrawable(R.drawable.animation_progress_bar), isAverageLineNeed,
+        coeficient)); // line - dots
+    data.setData(mPresenter.generateBarData(mStats, coeficient)); // colomns
 
     XAxis xAxis = mChart.getXAxis();
     xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // make text only on bottom
@@ -672,11 +589,11 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     setUpKcal();
   }
 
-  private void fillByStatsWeek() {
+  private void fillByStatsWeek(float coefficient) {
     if (mTracking == null) {
-      fillByStatsPersonal(STATS_COUNT_PERSONAL_21, true);
+      fillByStatsPersonal(STATS_COUNT_PERSONAL_21, true,coefficient);
     } else {
-      fillByStatsPersonalTracking(mStatsOfTracking);
+      fillByStatsPersonalTracking(mStatsOfTracking,coefficient);
     }
 
     XAxis xAxis = mChart.getXAxis();
@@ -693,8 +610,8 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     });
   }
 
-  private void fillByStatsDay() {
-    mPresenter.fetchDayStats();
+  private void fillByStatsDay(float coefficient) {
+    mPresenter.fetchDayStats(coefficient);
     XAxis xAxis = mChart.getXAxis();
     xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // make text only on bottom
     xAxis.setValueFormatter((value, axis) -> {
@@ -715,18 +632,50 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       mImageViewStatsSteps.setSelected(false);
       mImageViewStatsKcal.setSelected(false);
       fillDetailsByStatsKm(mStats);
+
+      if (mTextViewStatsDay.isSelected()) {
+        fillByStatsDay(NewStatsActivityPresenter.KM_COEFFICIENT);
+      }
+      if (mTextViewStatsWeek.isSelected()) {
+        fillByStatsWeek(NewStatsActivityPresenter.KM_COEFFICIENT);
+      }
+      if (mTextViewStatsPersonal.isSelected()) {
+        fillByStatsPersonal(STATS_COUNT_PERSONAL_21, false,
+            NewStatsActivityPresenter.KM_COEFFICIENT);
+      }
     }
     if (v.getId() == R.id.ivStatsSteps) {
       mImageViewStatsKm.setSelected(false);
       mImageViewStatsSteps.setSelected(true);
       mImageViewStatsKcal.setSelected(false);
       fillDetailsByStatsSteps(mStats);
+
+      if (mTextViewStatsDay.isSelected()) {
+        fillByStatsDay(1f);
+      }
+      if (mTextViewStatsWeek.isSelected()) {
+        fillByStatsWeek(1f);
+      }
+      if (mTextViewStatsPersonal.isSelected()) {
+        fillByStatsPersonal(STATS_COUNT_PERSONAL_21, false, 1f);
+      }
     }
     if (v.getId() == R.id.ivStatsKcal) {
       mImageViewStatsKm.setSelected(false);
       mImageViewStatsSteps.setSelected(false);
       mImageViewStatsKcal.setSelected(true);
       fillDetailsByStatsKcal(mStats);
+
+      if (mTextViewStatsDay.isSelected()) {
+        fillByStatsDay(NewStatsActivityPresenter.KCAL_COEFFICIENT);
+      }
+      if (mTextViewStatsWeek.isSelected()) {
+        fillByStatsWeek(NewStatsActivityPresenter.KCAL_COEFFICIENT);
+      }
+      if (mTextViewStatsPersonal.isSelected()) {
+        fillByStatsPersonal(STATS_COUNT_PERSONAL_21, false,
+            NewStatsActivityPresenter.KCAL_COEFFICIENT);
+      }
     }
   }
 
@@ -1053,7 +1002,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     changeStatsOnDescriptionDetails(mImageViewStatsSteps);
   }
 
-  @Override public void showDayStats(List<Stats> stats) {
+  @Override public void showDayStats(List<Stats> stats, float coefficient) {
     Timber.e("showDayStats stats size " + stats.size());
     mStatsCount = stats.size();
     mStats.clear();
@@ -1075,8 +1024,8 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     CombinedData data = new CombinedData();
 
     data.setData(mPresenter.generateLineData(mStats, mStatsSteps,
-        getResources().getDrawable(R.drawable.animation_progress_bar), false)); // line - dots
-    data.setData(mPresenter.generateBarData(mStats)); // colomns
+        getResources().getDrawable(R.drawable.animation_progress_bar), false,coefficient)); // line - dots
+    data.setData(mPresenter.generateBarData(mStats,coefficient)); // colomns
 
     //mChart.getXAxis().setAxisMaximum(data.getXMax() + 0.25f);
     mChart.setData(null);
