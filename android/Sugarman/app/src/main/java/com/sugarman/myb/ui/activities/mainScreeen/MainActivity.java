@@ -27,10 +27,9 @@ import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import butterknife.BindView;
-import butterknife.OnClick;
-import butterknife.OnLongClick;
 import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.facebook.FacebookException;
 import com.google.android.gms.ads.identifier.AdvertisingIdClient;
@@ -285,6 +284,7 @@ public class MainActivity extends GetUserInfoActivity
   private boolean isAnimationRunned;
   private int createdTrackingPosition = -1;
   private Tracking swipedTracking;
+  private RelativeLayout rlToOpenStats;
   private final Runnable showCreatedTracking = new Runnable() {
     @Override public void run() {
       if (vpTrackings != null
@@ -657,6 +657,7 @@ public class MainActivity extends GetUserInfoActivity
     vCreateGroup = findViewById(R.id.iv_create_group);
     ivAvatar = (ImageView) findViewById(R.id.iv_avatar);
     vOpenStats = findViewById(R.id.rl_main_steps_container);
+    rlToOpenStats = (RelativeLayout) findViewById(R.id.rlToOpenStats);
     vCircleContainer = findViewById(R.id.rl_container_circle);
     tvCounter = (TextView) findViewById(R.id.tv_counter);
     tvCalculated = (TextView) findViewById(R.id.tv_calculated);
@@ -700,6 +701,7 @@ public class MainActivity extends GetUserInfoActivity
     vSearchGroup.setOnClickListener(this);
     ivAvatar.setOnClickListener(this);
     vOpenStats.setOnClickListener(this);
+    rlToOpenStats.setOnClickListener(this);
 
     startStepDetectorService();
 
@@ -1099,7 +1101,9 @@ public class MainActivity extends GetUserInfoActivity
       case R.id.ll_search_container:
         openSearchGroupActivity();
         break;
-      case R.id.rl_main_steps_container:
+      //case R.id.rl_main_steps_container:
+      case R.id.rlToOpenStats:
+        Timber.e("ivToOpenStats");
         openStatsActivity();
         break;
       default:

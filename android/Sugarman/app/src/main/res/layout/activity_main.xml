@@ -28,6 +28,13 @@
                     android:layout_height="0dp"
                     android:layout_weight="7">
                     <RelativeLayout
+                        android:id="@+id/rlToOpenStats"
+                        android:layout_width="250dp"
+                        android:layout_height="250dp"
+                        android:clickable="true"
+                        android:layout_centerInParent="true"
+                        />
+                    <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp">
@@ -138,8 +145,6 @@
                                 android:layout_height="330dp"
                                 android:layout_centerInParent="true"
                                 />
-
-
 
                                 <com.sugarman.myb.ui.views.CircleIndicatorView
                                     android:layout_centerInParent="true"
