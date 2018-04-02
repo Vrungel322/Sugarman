@@ -216,62 +216,16 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     if (!mStatsDays.isEmpty() && mStatsDays.size() != 0) {
       //xAxis.setValueFormatter((value, axis) -> mStatsDays.get((int) value % mStatsDays.size()));
     }
-    //GestureDetector gd =
-    //    new GestureDetector(getApplicationContext(), new GestureDetector.SimpleOnGestureListener() {
+    //limit line
+    //LimitLine ll1 = new LimitLine(10000f, "10k Limit");
+    //ll1.setLineWidth(4f);
+    //ll1.enableDashedLine(8f, 8f, 0f);
+    //ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
+    //ll1.setTextSize(8f);
     //
-    //      @Override public boolean onDoubleTap(MotionEvent e) {
-    //        Timber.e("onTouchDouble " + mStatsCount);
-    //        if (mTextViewStatsDay.isSelected()) {
-    //          // empty for now
-    //          fillDetailsCard();
-    //        }
-    //        if (mTextViewStatsWeek.isSelected()) {
-    //          // empty for now
-    //          fillDetailsCard();
-    //        }
-    //        if (mTextViewStatsPersonal.isSelected()) { // only for personal will work double tapping
-    //          if (mTracking == null) {
-    //            if (mStatsCount == STATS_COUNT_PERSONAL_21) {
-    //              fillByStatsPersonal(STATS_COUNT_PERSONAL_7);
-    //              fillDetailsCard();
-    //              return true;
-    //            }
-    //            if (mStatsCount == STATS_COUNT_PERSONAL_7) {
-    //              fillByStatsPersonal(STATS_COUNT_PERSONAL_21);
-    //              fillDetailsCard();
-    //              return true;
-    //            }
-    //          } else {
-    //            if (mStatsCount > STATS_COUNT_PERSONAL_7) {
-    //              fillByStatsPersonalTrackingLast7Days(STATS_COUNT_PERSONAL_7,
-    //                  mStatsOfTracking.subList(0, 7));
-    //              fillDetailsCard();
-    //              return true;
-    //            }
-    //            if (mStatsCount <= STATS_COUNT_PERSONAL_7) {
-    //              fillByStatsPersonalTracking(mStatsOfTracking);
-    //              fillDetailsCard();
-    //              return true;
-    //            }
-    //          }
-    //        }
-    //
-    //        return true;
-    //      }
-    //
-    //      @Override public void onLongPress(MotionEvent e) {
-    //        super.onLongPress(e);
-    //      }
-    //
-    //      @Override public boolean onDoubleTapEvent(MotionEvent e) {
-    //        return true;
-    //      }
-    //
-    //      @Override public boolean onDown(MotionEvent e) {
-    //        return true;
-    //      }
-    //    });
-    //mChart.setOnTouchListener((v, event) -> gd.onTouchEvent(event));
+    //leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
+    //leftAxis.addLimitLine(ll1);
+
     mChart.setOnChartGestureListener(new OnChartGestureListener() {
       @Override public void onChartGestureStart(MotionEvent me,
           ChartTouchListener.ChartGesture lastPerformedGesture) {
@@ -701,7 +655,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
         String.valueOf(String.format(Locale.US, "%.2f", mPresenter.findAverageKm(stats))));
     if (mTextViewStatsDay.isSelected()) {
       mTextViewDaysAboveAverageValue.setText(mPresenter.findMaxKm(stats) + "");
-      mTextViewAboveAverageText.setText("Best of the day");
+      mTextViewAboveAverageText.setText(getString(R.string.best_of_the_day));
     } else {
       mTextViewAboveAverageText.setText(getString(R.string.days_above_average));
       if (!mTextViewStatsWeek.isSelected()) {
@@ -741,7 +695,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
         String.valueOf(String.format(Locale.US, "%.2f", mPresenter.findAverageSteps(stats))));
     if (mTextViewStatsDay.isSelected()) {
       mTextViewDaysAboveAverageValue.setText(mPresenter.findMaxSteps(stats) + "");
-      mTextViewAboveAverageText.setText("Best of the day");
+      mTextViewAboveAverageText.setText(getString(R.string.best_of_the_day));
     } else {
       mTextViewAboveAverageText.setText(getString(R.string.days_above_average));
       if (!mTextViewStatsWeek.isSelected()) {
@@ -790,7 +744,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
         String.valueOf(String.format(Locale.US, "%.2f", mPresenter.findAverageKcal(stats))));
     if (mTextViewStatsDay.isSelected()) {
       mTextViewDaysAboveAverageValue.setText(mPresenter.findMaxKcal(stats) + "");
-      mTextViewAboveAverageText.setText("Best of the day");
+      mTextViewAboveAverageText.setText(getString(R.string.best_of_the_day));
     } else {
       mTextViewAboveAverageText.setText(getString(R.string.days_above_average));
       if (!mTextViewStatsWeek.isSelected()) {

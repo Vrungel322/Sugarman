@@ -301,6 +301,7 @@ import timber.log.Timber;
     set.setAxisDependency(YAxis.AxisDependency.LEFT);
     d.addDataSet(set);
     dataSets.add(set);
+    //set.setDrawFilled(true); // coloring under chart
 
     //Dashed stuff
     List<Stats> cashedStats = new ArrayList<>();
