@@ -404,7 +404,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     fillDetailsCard();
   }
 
-  private void fillByStatsPersonalTracking(List<Stats> statsOfTracking,float coefficient) {
+  private void fillByStatsPersonalTracking(List<Stats> statsOfTracking, float coefficient) {
     mStatsCount = statsOfTracking.size();
     mStats.clear();
     mStatsDays.clear();
@@ -468,8 +468,9 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
 
       //Collections.reverse(mStats);
       data.setData(mPresenter.generateLineData(mStats, mStatsSteps,
-          getResources().getDrawable(R.drawable.animation_progress_bar), true,coefficient)); // line - dots
-      data.setData(mPresenter.generateBarData(mStats,coefficient)); // colomns
+          getResources().getDrawable(R.drawable.animation_progress_bar), true,
+          coefficient)); // line - dots
+      data.setData(mPresenter.generateBarData(mStats, coefficient)); // colomns
 
       //mChart.getXAxis().setAxisMaximum(data.getXMax() + 0.25f);
       mChart.setData(null);
@@ -548,9 +549,9 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
 
   private void fillByStatsWeek(float coefficient) {
     if (mTracking == null) {
-      fillByStatsPersonal(STATS_COUNT_PERSONAL_21, true,coefficient);
+      fillByStatsPersonal(STATS_COUNT_PERSONAL_21, true, coefficient);
     } else {
-      fillByStatsPersonalTracking(mStatsOfTracking,coefficient);
+      fillByStatsPersonalTracking(mStatsOfTracking, coefficient);
     }
 
     XAxis xAxis = mChart.getXAxis();
@@ -638,12 +639,14 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
 
   private void fillDetailsByStatsKm(List<Stats> stats) {
     int diff = 0;
-    try {
-      diff = DataUtils.getDateDiff(
-          DataUtils.subtractDays(new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(mTracking.getCreatedAt()), 1),
-          new Date(System.currentTimeMillis()), TimeUnit.DAYS).intValue();
-    } catch (ParseException e) {
-      e.printStackTrace();
+    if (mTracking != null) {
+      try {
+        diff = DataUtils.getDateDiff(DataUtils.subtractDays(
+            new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(mTracking.getCreatedAt()), 1),
+            new Date(System.currentTimeMillis()), TimeUnit.DAYS).intValue();
+      } catch (ParseException e) {
+        e.printStackTrace();
+      }
     }
     playAnim();
     mImageViewDetailIndicator.setBackgroundResource(R.drawable.stats_km_icon);
@@ -660,7 +663,8 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       mTextViewAboveAverageText.setText(getString(R.string.days_above_average));
       if (!mTextViewStatsWeek.isSelected()) {
         diff = stats.size();
-        mTextViewDaysAboveAverageValue.setText("" + mPresenter.findDaysAboveAverageKm(stats)+"/"+diff);
+        mTextViewDaysAboveAverageValue.setText(
+            "" + mPresenter.findDaysAboveAverageKm(stats) + "/" + diff);
       } else {
         List<Stats> statsList = new ArrayList<>();
         if (SharedPreferenceHelper.getAverageStatsFromSHP() != null) {
@@ -672,7 +676,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
               if (s.getStepsCount() > sShp.getStepsCount()) averageDaysCount++;
             }
           }
-          mTextViewDaysAboveAverageValue.setText("" + averageDaysCount+"/"+diff);
+          mTextViewDaysAboveAverageValue.setText("" + averageDaysCount + "/" + diff);
         }
       }
     }
@@ -680,12 +684,14 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
 
   private void fillDetailsByStatsSteps(List<Stats> stats) {
     int diff = 0;
-    try {
-      diff = DataUtils.getDateDiff(
-          DataUtils.subtractDays(new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(mTracking.getCreatedAt()), 1),
-          new Date(System.currentTimeMillis()), TimeUnit.DAYS).intValue();
-    } catch (ParseException e) {
-      e.printStackTrace();
+    if (mTracking != null) {
+      try {
+        diff = DataUtils.getDateDiff(DataUtils.subtractDays(
+            new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(mTracking.getCreatedAt()), 1),
+            new Date(System.currentTimeMillis()), TimeUnit.DAYS).intValue();
+      } catch (ParseException e) {
+        e.printStackTrace();
+      }
     }
     playAnim();
     mImageViewDetailIndicator.setBackgroundResource(R.drawable.stats_step_icon);
@@ -700,10 +706,9 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       mTextViewAboveAverageText.setText(getString(R.string.days_above_average));
       if (!mTextViewStatsWeek.isSelected()) {
         diff = stats.size();
-        mTextViewDaysAboveAverageValue.setText("" + mPresenter.findDaysAboveAverageSteps(stats)+"/"+diff);
+        mTextViewDaysAboveAverageValue.setText(
+            "" + mPresenter.findDaysAboveAverageSteps(stats) + "/" + diff);
       } else {
-
-
 
         List<Stats> statsList = new ArrayList<>();
         if (SharedPreferenceHelper.getAverageStatsFromSHP() != null) {
@@ -716,8 +721,8 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
               if (s.getStepsCount() > sShp.getStepsCount()) averageDaysCount++;
             }
           }
-          Timber.e("fillDetailsByStatsSteps averageDaysCount "+averageDaysCount);
-          mTextViewDaysAboveAverageValue.setText("" + averageDaysCount+"/"+diff);
+          Timber.e("fillDetailsByStatsSteps averageDaysCount " + averageDaysCount);
+          mTextViewDaysAboveAverageValue.setText("" + averageDaysCount + "/" + diff);
         }
       }
     }
@@ -726,12 +731,14 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
   private void fillDetailsByStatsKcal(List<Stats> stats) {
 
     int diff = 0;
-    try {
-      diff = DataUtils.getDateDiff(
-          DataUtils.subtractDays(new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(mTracking.getCreatedAt()), 1),
-          new Date(System.currentTimeMillis()), TimeUnit.DAYS).intValue();
-    } catch (ParseException e) {
-      e.printStackTrace();
+    if (mTracking != null) {
+      try {
+        diff = DataUtils.getDateDiff(DataUtils.subtractDays(
+            new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(mTracking.getCreatedAt()), 1),
+            new Date(System.currentTimeMillis()), TimeUnit.DAYS).intValue();
+      } catch (ParseException e) {
+        e.printStackTrace();
+      }
     }
 
     playAnim();
@@ -749,9 +756,9 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       mTextViewAboveAverageText.setText(getString(R.string.days_above_average));
       if (!mTextViewStatsWeek.isSelected()) {
         diff = stats.size();
-        mTextViewDaysAboveAverageValue.setText("" + mPresenter.findDaysAboveAverageKcal(stats)+"/"+diff);
+        mTextViewDaysAboveAverageValue.setText(
+            "" + mPresenter.findDaysAboveAverageKcal(stats) + "/" + diff);
       } else {
-
 
         List<Stats> statsList = new ArrayList<>();
         if (SharedPreferenceHelper.getAverageStatsFromSHP() != null) {
@@ -763,7 +770,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
               if (s.getStepsCount() > sShp.getStepsCount()) averageDaysCount++;
             }
           }
-          mTextViewDaysAboveAverageValue.setText("" + averageDaysCount +"/" + diff);
+          mTextViewDaysAboveAverageValue.setText("" + averageDaysCount + "/" + diff);
         }
       }
     }
@@ -1016,8 +1023,9 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     CombinedData data = new CombinedData();
 
     data.setData(mPresenter.generateLineData(mStats, mStatsSteps,
-        getResources().getDrawable(R.drawable.animation_progress_bar), false,coefficient)); // line - dots
-    data.setData(mPresenter.generateBarData(mStats,coefficient)); // colomns
+        getResources().getDrawable(R.drawable.animation_progress_bar), false,
+        coefficient)); // line - dots
+    data.setData(mPresenter.generateBarData(mStats, coefficient)); // colomns
 
     //mChart.getXAxis().setAxisMaximum(data.getXMax() + 0.25f);
     mChart.setData(null);
