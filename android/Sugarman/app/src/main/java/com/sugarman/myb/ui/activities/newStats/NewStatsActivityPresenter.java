@@ -50,6 +50,9 @@ import timber.log.Timber;
  */
 @InjectViewState public class NewStatsActivityPresenter
     extends BasicPresenter<INewStatsActivityView> {
+
+  public static final float KM_COEFFICIENT = 0.000762f;
+  public static final float KCAL_COEFFICIENT = 0.0435f;
   @Inject DbRepositoryStats mDbRepositoryStats;
   ArrayList<Entry> entries = new ArrayList<Entry>();
   ArrayList<Entry> entriesDashed = new ArrayList<Entry>();
@@ -381,44 +384,44 @@ import timber.log.Timber;
   //KM
 
   public float findMaxKm(List<Stats> stats) {
-    return findMaxSteps(stats) * 0.000762f;
+    return findMaxSteps(stats) * KM_COEFFICIENT;
   }
 
   public float findMinKm(List<Stats> stats) {
-    return (findMinSteps(stats) * 0.000762f);
+    return (findMinSteps(stats) * KM_COEFFICIENT);
   }
 
   public float findAverageKm(List<Stats> stats) {
-    return (findAverageSteps(stats) * 0.000762f);
+    return (findAverageSteps(stats) * KM_COEFFICIENT);
   }
 
   public int findDaysAboveAverageKm(List<Stats> stats) {
     int avgCount = 0;
-    float avg = findAverageSteps(stats) * 0.000762f;
+    float avg = findAverageSteps(stats) * KM_COEFFICIENT;
     for (Stats s : stats) {
-      if (s.getStepsCount() * 0.000762f > avg) avgCount++;
+      if (s.getStepsCount() * KM_COEFFICIENT > avg) avgCount++;
     }
     return avgCount;
   }
   //KCAL
 
   public float findMaxKcal(List<Stats> stats) {
-    return (findMaxSteps(stats) * 0.0435f);
+    return (findMaxSteps(stats) * KCAL_COEFFICIENT);
   }
 
   public float findMinKcal(List<Stats> stats) {
-    return (findMinSteps(stats) * 0.0435f);
+    return (findMinSteps(stats) * KCAL_COEFFICIENT);
   }
 
   public float findAverageKcal(List<Stats> stats) {
-    return (findAverageSteps(stats) * 0.0435f);
+    return (findAverageSteps(stats) * KCAL_COEFFICIENT);
   }
 
   public int findDaysAboveAverageKcal(List<Stats> stats) {
     int avgCount = 0;
-    float avg = findAverageSteps(stats) * 0.0435f;
+    float avg = findAverageSteps(stats) * KCAL_COEFFICIENT;
     for (Stats s : stats) {
-      if (s.getStepsCount() * 0.0435f > avg) avgCount++;
+      if (s.getStepsCount() * KCAL_COEFFICIENT > avg) avgCount++;
     }
     return avgCount;
   }
