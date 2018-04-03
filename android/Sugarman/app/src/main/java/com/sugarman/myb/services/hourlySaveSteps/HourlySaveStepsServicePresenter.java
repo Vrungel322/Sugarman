@@ -74,7 +74,7 @@ public class HourlySaveStepsServicePresenter extends BasicPresenter<IHourlySaveS
   private void clearLast24HoursSteps() {
     Timber.e("clearLast24HoursSteps");
     for (int i = 0; i < 24; i++) {
-      SharedPreferenceHelper.saveHourlySteps(i, Constants.FAKE_STEPS_COUNT);
+      SharedPreferenceHelper.saveHourlySteps(i, 0);
     }
   }
 

@@ -469,7 +469,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       //Collections.reverse(mStats);
       data.setData(mPresenter.generateLineData(mStats, mStatsSteps,
           getResources().getDrawable(R.drawable.animation_progress_bar), true,
-          coefficient)); // line - dots
+          coefficient,true)); // line - dots
       data.setData(mPresenter.generateBarData(mStats, coefficient)); // colomns
 
       //mChart.getXAxis().setAxisMaximum(data.getXMax() + 0.25f);
@@ -520,7 +520,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
 
     data.setData(mPresenter.generateLineData(mStats, mStatsSteps,
         getResources().getDrawable(R.drawable.animation_progress_bar), isAverageLineNeed,
-        coeficient)); // line - dots
+        coeficient,true)); // line - dots
     data.setData(mPresenter.generateBarData(mStats, coeficient)); // colomns
 
     XAxis xAxis = mChart.getXAxis();
@@ -1027,7 +1027,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
 
     data.setData(mPresenter.generateLineData(mStats, mStatsSteps,
         getResources().getDrawable(R.drawable.animation_progress_bar), false,
-        coefficient)); // line - dots
+        coefficient, false)); // line - dots
     data.setData(mPresenter.generateBarData(mStats, coefficient)); // colomns
 
     //mChart.getXAxis().setAxisMaximum(data.getXMax() + 0.25f);

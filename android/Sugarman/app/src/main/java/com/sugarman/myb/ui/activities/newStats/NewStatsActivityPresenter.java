@@ -260,7 +260,7 @@ import timber.log.Timber;
   }
 
   public LineData generateLineData(List<Stats> stats, List<Integer> statsSteps, Drawable drawable,
-      boolean isAverageLineNeed, float coeficient) {
+      boolean isAverageLineNeed, float coeficient, boolean displayLastValue) {
     entries = new ArrayList<>();
     entriesDashed = new ArrayList<Entry>();
     sempStat = new ArrayList<Stats>();
@@ -280,7 +280,7 @@ import timber.log.Timber;
       //      Timber.e("generateLineData " + stats.get(i).getLabel());
       entries.add(new Entry(i, sempStat.get(i).getStepsCount() * coeficient));
       //add icon to last point of chart
-      if (i == sempStat.size() - 1) {
+      if (i == sempStat.size() - 1 && displayLastValue) {
         entries.remove(sempStat.size() - 1);
         entries.add(new Entry(i, SharedPreferenceHelper.getReportStatsLocal(
             SharedPreferenceHelper.getUserId())[0].getStepsCount()
