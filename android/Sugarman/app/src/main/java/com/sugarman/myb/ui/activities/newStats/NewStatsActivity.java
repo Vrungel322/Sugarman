@@ -129,8 +129,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     //if (tvTodaySteps != null && vivToday != null) {
     //  updateTodaySteps(todaySteps);
     //}
-    if(!mTextViewStatsDay.isSelected())
-    mPresenter.setTodaySteps(todaySteps);
+    if (!mTextViewStatsDay.isSelected()) mPresenter.setTodaySteps(todaySteps);
     Timber.e("TODAY STEPS " + todaySteps);
   }
 
@@ -754,7 +753,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
         String.valueOf(String.format(Locale.US, "%.2f", mPresenter.findAverageKcal(stats))));
     if (mTextViewStatsDay.isSelected()) {
       mTextViewDaysAboveAverageValue.setText(
-          String.valueOf(String.format(Locale.US, "%.2f", mPresenter.findMaxKcal(stats) )));
+          String.valueOf(String.format(Locale.US, "%.2f", mPresenter.findMaxKcal(stats))));
       mTextViewAboveAverageText.setText(getString(R.string.best_of_the_day));
     } else {
       mTextViewAboveAverageText.setText(getString(R.string.days_above_average));

@@ -4,10 +4,7 @@ import com.sugarman.myb.App;
 import com.sugarman.myb.base.BasicPresenter;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import rx.Observable;
 import rx.Subscription;
@@ -31,7 +28,7 @@ public class HourlySaveStepsServicePresenter extends BasicPresenter<IHourlySaveS
   public void startHourlySaveSteps() {
     //printDebug();
 
-    mPeriodicalSubscription = Observable.interval(1000, 2000, TimeUnit.MILLISECONDS)
+    mPeriodicalSubscription = Observable.interval(1000, /*3600000*/2000, TimeUnit.MILLISECONDS)
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(aLong -> {
           steps = SharedPreferenceHelper.getReportStatsLocal(
@@ -45,11 +42,10 @@ public class HourlySaveStepsServicePresenter extends BasicPresenter<IHourlySaveS
           Timber.e("startHourlySaveSteps steps" + steps);
           Timber.e("startHourlySaveSteps countSumOfStats" + countSumOfStats(
               SharedPreferenceHelper.getStepsPerDay()));
-          Timber.e("startHourlySaveSteps difference" +  Math.abs(steps - countSumOfStats(
+          Timber.e("startHourlySaveSteps difference" + ( steps - countSumOfStats(
               SharedPreferenceHelper.getStepsPerDay())));
 
-          SharedPreferenceHelper.saveHourlySteps(numOfHours,
-              Math.abs(steps - countSumOfStats(SharedPreferenceHelper.getStepsPerDay())));
+          SharedPreferenceHelper.saveHourlySteps(numOfHours,steps - countSumOfStats(SharedPreferenceHelper.getStepsPerDay()));
 
           //SharedPreferenceHelper.saveHourlySteps(numOfHours,steps );
 
@@ -59,10 +55,11 @@ public class HourlySaveStepsServicePresenter extends BasicPresenter<IHourlySaveS
 
   private int countSumOfStats(List<Integer> stats) {
     int sum = 0;
-    for (Integer i : stats) {
+    Timber.e("countSumOfStats stats size" + stats.size());
+    for (int i : stats) {
+      Timber.e("countSumOfStats IN FOR" + sum );
       sum += i;
     }
-    //Timber.e("countSumOfStats " + sum);
     return sum;
   }
 
