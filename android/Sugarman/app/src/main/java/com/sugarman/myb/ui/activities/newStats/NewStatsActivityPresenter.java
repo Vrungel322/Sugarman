@@ -217,12 +217,15 @@ import timber.log.Timber;
     Calendar calendar = Calendar.getInstance();
     calendar.setTimeInMillis(now);
 
-    Timber.e( "fetchAverageStats startDate = " + tracking.getCreatedAt());
-    Timber.e( "fetchAverageStats endDate = " + formatter.format(calendar.getTime()));
+    Timber.e("fetchAverageStats startDate = " + tracking.getCreatedAt());
+    Timber.e("fetchAverageStats endDate = " + formatter.format(calendar.getTime()));
 
     Subscription subscription =
         mDataManager.fetchAverageStats(tracking.getId(), tracking.getCreatedAt(),
             formatter.format(calendar.getTime()))
+            .filter(statsResponseResponse -> statsResponseResponse.body() != null)
+            .filter(statsResponseResponse -> statsResponseResponse.body().getResult() != null)
+            .filter(statsResponseResponse -> statsResponseResponse.body().getResult().length != 0)
             .flatMap(statsResponseResponse -> {
               Timber.e("fetchAverageStats " + statsResponseResponse.code());
               mDataManager.saveAverageStats(statsResponseResponse.body());
@@ -363,7 +366,7 @@ import timber.log.Timber;
     for (int i = 0; i < stats.size(); i++) {
       integers.add(stats.get(i).getStepsCount());
     }
-    if(integers.size()==0) return 0;
+    if (integers.size() == 0) return 0;
     return Collections.max(integers);
   }
 
