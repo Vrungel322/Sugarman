@@ -357,8 +357,8 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
   }
 
   private void setUpKcal() {
-    mTextViewValueKcal.setText(
-        String.format(Locale.US, "%.2f kcal", mCountOfStepsForLastXDays * NewStatsActivityPresenter.KCAL_COEFFICIENT));
+    mTextViewValueKcal.setText(String.format(Locale.US, "%.2f kcal",
+        mCountOfStepsForLastXDays * NewStatsActivityPresenter.KCAL_COEFFICIENT));
     Timber.e("setUpKcal");
   }
 
@@ -658,7 +658,8 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     mTextViewAverageAday.setText(
         String.valueOf(String.format(Locale.US, "%.2f", mPresenter.findAverageKm(stats))));
     if (mTextViewStatsDay.isSelected()) {
-      mTextViewDaysAboveAverageValue.setText(mPresenter.findMaxKm(stats) + "");
+      mTextViewDaysAboveAverageValue.setText(
+          String.valueOf(String.format(Locale.US, "%.2f", mPresenter.findMaxKm(stats))));
       mTextViewAboveAverageText.setText(getString(R.string.best_of_the_day));
     } else {
       mTextViewAboveAverageText.setText(getString(R.string.days_above_average));
@@ -751,7 +752,8 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     mTextViewAverageAday.setText(
         String.valueOf(String.format(Locale.US, "%.2f", mPresenter.findAverageKcal(stats))));
     if (mTextViewStatsDay.isSelected()) {
-      mTextViewDaysAboveAverageValue.setText(mPresenter.findMaxKcal(stats) + "");
+      mTextViewDaysAboveAverageValue.setText(
+          String.valueOf(String.format(Locale.US, "%.2f", mPresenter.findMaxKcal(stats) )));
       mTextViewAboveAverageText.setText(getString(R.string.best_of_the_day));
     } else {
       mTextViewAboveAverageText.setText(getString(R.string.days_above_average));
