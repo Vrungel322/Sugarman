@@ -73,6 +73,8 @@ import timber.log.Timber;
               for (Map.Entry<String, Integer> entry : stringIntegerSortedMap.entrySet()) {
                 stats.add(
                     new Stats(0, entry.getKey(), "H_" + entry.getKey(), entry.getValue(), 1L));
+                Timber.e("fetchDayStats " + new Stats(0, entry.getKey(), "H_" + entry.getKey(),
+                    entry.getValue(), 1L).toString());
               }
               return Observable.just(stats);
             })

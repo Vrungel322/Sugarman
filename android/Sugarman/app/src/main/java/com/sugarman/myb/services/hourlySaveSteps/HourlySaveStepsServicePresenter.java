@@ -4,8 +4,8 @@ import com.sugarman.myb.App;
 import com.sugarman.myb.base.BasicPresenter;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.SortedMap;
 import java.util.concurrent.TimeUnit;
 import rx.Observable;
 import rx.Subscription;
@@ -27,7 +27,9 @@ public class HourlySaveStepsServicePresenter extends BasicPresenter<IHourlySaveS
   }
 
   public void startHourlySaveSteps() {
-    mPeriodicalSubscription = Observable.interval(1000, 3600000, TimeUnit.MILLISECONDS)
+    //printDebug();
+
+    mPeriodicalSubscription = Observable.interval(1000, 2000, TimeUnit.MILLISECONDS)
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(aLong -> {
           steps = SharedPreferenceHelper.getReportStatsLocal(
@@ -37,28 +39,33 @@ public class HourlySaveStepsServicePresenter extends BasicPresenter<IHourlySaveS
             printDebug();
             clearLast24HoursSteps();
           }
-          Timber.e("startHourlySaveSteps " + numOfHours);
-          Timber.e("startHourlySaveSteps difference" + (steps - countSumOfStats(
+          Timber.e("startHourlySaveSteps numOfHours" + numOfHours);
+          Timber.e("startHourlySaveSteps steps" + steps);
+          Timber.e("startHourlySaveSteps countSumOfStats" + countSumOfStats(
+              SharedPreferenceHelper.getStepsPerDay()));
+          Timber.e("startHourlySaveSteps difference" +  Math.abs(steps - countSumOfStats(
               SharedPreferenceHelper.getStepsPerDay())));
 
-          SharedPreferenceHelper.saveHourlySteps(numOfHours,
-              (steps - countSumOfStats(SharedPreferenceHelper.getStepsPerDay())));
+          //SharedPreferenceHelper.saveHourlySteps(numOfHours,
+          //    Math.abs(steps - countSumOfStats(SharedPreferenceHelper.getStepsPerDay())));
+
+          SharedPreferenceHelper.saveHourlySteps(numOfHours,steps );
 
           numOfHours++;
         }, Throwable::printStackTrace);
   }
 
-  private int countSumOfStats(SortedMap<String, Integer> stats) {
+  private int countSumOfStats(HashMap<String, Integer> stats) {
     int sum = 0;
     for (Map.Entry<String, Integer> s : stats.entrySet()) {
       sum += s.getValue();
     }
-    Timber.e("countSumOfStats " + sum);
+    //Timber.e("countSumOfStats " + sum);
     return sum;
   }
 
   private void printDebug() {
-    SortedMap<String, Integer> hashMap = SharedPreferenceHelper.getStepsPerDay();
+    HashMap<String, Integer> hashMap = SharedPreferenceHelper.getStepsPerDay();
     for (Map.Entry<String, Integer> entry : hashMap.entrySet()) {
       Timber.e("printDebug key: " + entry.getKey() + " value: " + entry.getValue());
     }

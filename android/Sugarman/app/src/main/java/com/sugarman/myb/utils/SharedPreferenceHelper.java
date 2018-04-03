@@ -25,9 +25,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-import java.util.SortedMap;
-import java.util.TreeMap;
 import timber.log.Timber;
 
 public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
@@ -950,11 +949,11 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     putInt(SharedPreferenceConstants.HOUR_ + numOfHours, steps);
   }
 
-  public static SortedMap<String, Integer> getStepsPerDay() {
-    SortedMap<String, Integer> hashMap = new TreeMap<>();
-    for (int i = 0; i < 24; i++) {
+  public static HashMap<String, Integer> getStepsPerDay() {
+    HashMap<String, Integer> hashMap = new HashMap<>();
+    for (int i = 0; i < 23; i++) {
       hashMap.put(SharedPreferenceConstants.HOUR_ + i,
-          getInt(SharedPreferenceConstants.HOUR_ + i, Constants.FAKE_STEPS_COUNT));
+          getInt(SharedPreferenceConstants.HOUR_ + i, 0));
     }
     return hashMap;
   }
