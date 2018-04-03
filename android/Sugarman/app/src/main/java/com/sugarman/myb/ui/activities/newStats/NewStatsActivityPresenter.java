@@ -70,11 +70,11 @@ import timber.log.Timber;
         Observable.just(SharedPreferenceHelper.getStepsPerDay())
             .flatMap(stringIntegerSortedMap -> {
               List<Stats> stats = new ArrayList<>();
-              for (Map.Entry<String, Integer> entry : stringIntegerSortedMap.entrySet()) {
+              for (int i = 0; i < stringIntegerSortedMap.size(); i++) {
                 stats.add(
-                    new Stats(0, entry.getKey(), "H_" + entry.getKey(), entry.getValue(), 1L));
-                Timber.e("fetchDayStats " + new Stats(0, entry.getKey(), "H_" + entry.getKey(),
-                    entry.getValue(), 1L).toString());
+                    new Stats(0, ""+i, "H_" + i, stringIntegerSortedMap.get(i), 1L));
+                Timber.e("fetchDayStats " + new Stats(0, ""+i, "H_" + i,
+                    stringIntegerSortedMap.get(i), 1L).toString());
               }
               return Observable.just(stats);
             })

@@ -129,6 +129,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     //if (tvTodaySteps != null && vivToday != null) {
     //  updateTodaySteps(todaySteps);
     //}
+    if(!mTextViewStatsDay.isSelected())
     mPresenter.setTodaySteps(todaySteps);
     Timber.e("TODAY STEPS " + todaySteps);
   }

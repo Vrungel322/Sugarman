@@ -4,7 +4,9 @@ import com.sugarman.myb.App;
 import com.sugarman.myb.base.BasicPresenter;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import rx.Observable;
@@ -46,28 +48,28 @@ public class HourlySaveStepsServicePresenter extends BasicPresenter<IHourlySaveS
           Timber.e("startHourlySaveSteps difference" +  Math.abs(steps - countSumOfStats(
               SharedPreferenceHelper.getStepsPerDay())));
 
-          //SharedPreferenceHelper.saveHourlySteps(numOfHours,
-          //    Math.abs(steps - countSumOfStats(SharedPreferenceHelper.getStepsPerDay())));
+          SharedPreferenceHelper.saveHourlySteps(numOfHours,
+              Math.abs(steps - countSumOfStats(SharedPreferenceHelper.getStepsPerDay())));
 
-          SharedPreferenceHelper.saveHourlySteps(numOfHours,steps );
+          //SharedPreferenceHelper.saveHourlySteps(numOfHours,steps );
 
           numOfHours++;
         }, Throwable::printStackTrace);
   }
 
-  private int countSumOfStats(HashMap<String, Integer> stats) {
+  private int countSumOfStats(List<Integer> stats) {
     int sum = 0;
-    for (Map.Entry<String, Integer> s : stats.entrySet()) {
-      sum += s.getValue();
+    for (Integer i : stats) {
+      sum += i;
     }
     //Timber.e("countSumOfStats " + sum);
     return sum;
   }
 
   private void printDebug() {
-    HashMap<String, Integer> hashMap = SharedPreferenceHelper.getStepsPerDay();
-    for (Map.Entry<String, Integer> entry : hashMap.entrySet()) {
-      Timber.e("printDebug key: " + entry.getKey() + " value: " + entry.getValue());
+    List<Integer> hashMap = SharedPreferenceHelper.getStepsPerDay();
+    for (Integer i : hashMap) {
+      Timber.e("printDebug key: " + i);
     }
     Timber.e("printDebug _________________________________________________________________ ");
   }

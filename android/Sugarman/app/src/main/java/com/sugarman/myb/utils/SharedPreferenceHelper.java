@@ -949,13 +949,13 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     putInt(SharedPreferenceConstants.HOUR_ + numOfHours, steps);
   }
 
-  public static HashMap<String, Integer> getStepsPerDay() {
-    HashMap<String, Integer> hashMap = new HashMap<>();
+  public static List<Integer> getStepsPerDay() {
+    List<Integer> lst = new ArrayList<>();
     for (int i = 0; i < 23; i++) {
-      hashMap.put(SharedPreferenceConstants.HOUR_ + i,
+      lst.add(
           getInt(SharedPreferenceConstants.HOUR_ + i, 0));
     }
-    return hashMap;
+    return lst;
   }
 
   public static void saveAverageStats(StatsResponse body) {
