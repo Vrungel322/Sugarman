@@ -574,7 +574,8 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // make text only on bottom
     xAxis.setValueFormatter((value, axis) -> {
       if ((value + 1) % 3 == 0) {
-        return "" + (int) ((value + 1) / 3);
+        Timber.e("fillByStatsDay value" + value);
+        return "" + (int) value;
       }
       return "";
     });
