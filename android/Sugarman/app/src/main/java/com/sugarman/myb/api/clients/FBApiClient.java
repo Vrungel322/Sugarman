@@ -137,24 +137,26 @@ public class FBApiClient {
       parameters.putString(Constants.FB_FIELDS, Config.FB_FRIENDS_FIELDS);
 
       new GraphRequest(accessToken, graphPathCountFriends, parameters, HttpMethod.GET, response -> {
-        JSONObject jsonResponse = response.getJSONObject();
-        Integer countOfFbFriends = 11;
-        try {
+        if (response != null && response.getJSONObject() != null) {
+          JSONObject jsonResponse = response.getJSONObject();
+          Integer countOfFbFriends = 11;
+          try {
+            Timber.e(
+                "canLoadFriends " + jsonResponse.getJSONObject("summary").getString("total_count"));
+            countOfFbFriends =
+                Integer.parseInt(jsonResponse.getJSONObject("summary").getString("total_count"));
+          } catch (JSONException e) {
+            e.printStackTrace();
+          }
           Timber.e(
-              "canLoadFriends " + jsonResponse.getJSONObject("summary").getString("total_count"));
-          countOfFbFriends =
-              Integer.parseInt(jsonResponse.getJSONObject("summary").getString("total_count"));
-        } catch (JSONException e) {
-          e.printStackTrace();
+              "canLoadFriends SHP: " + SharedPreferenceHelper.getCountOfMembersFb() + " bool " + (
+                  SharedPreferenceHelper.getCountOfMembersFb()
+                      != countOfFbFriends));
+          if (SharedPreferenceHelper.getCountOfMembersFb() != countOfFbFriends) {
+            getFriends();
+          }
+          SharedPreferenceHelper.saveCountOfMembersFb(String.valueOf(countOfFbFriends));
         }
-        Timber.e(
-            "canLoadFriends SHP: " + SharedPreferenceHelper.getCountOfMembersFb() + " bool " + (
-                SharedPreferenceHelper.getCountOfMembersFb()
-                    != countOfFbFriends));
-        if (SharedPreferenceHelper.getCountOfMembersFb() != countOfFbFriends) {
-          getFriends();
-        }
-        SharedPreferenceHelper.saveCountOfMembersFb(String.valueOf(countOfFbFriends));
       }).executeAsync();
     }
   }
