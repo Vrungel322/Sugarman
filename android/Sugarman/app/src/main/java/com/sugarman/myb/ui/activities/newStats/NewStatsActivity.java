@@ -269,6 +269,8 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
             });
           }
           if (mTextViewStatsDay.isSelected()) {
+            mChart.setVisibleXRange(0, SharedPreferenceHelper.getStepsPerDay().size());
+            mChart.moveViewToX(0);
             xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // make text only on bottom
             xAxis.setValueFormatter((value, axis) -> {
               if ((value + 1) % 3 == 0) {
@@ -714,9 +716,10 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       } else {
 
         List<Stats> statsList = new ArrayList<>();
-        if (mTracking!=null&&SharedPreferenceHelper.getAverageStatsFromSHP(mTracking.getId()) != null) {
-          statsList.addAll(
-              Arrays.asList(SharedPreferenceHelper.getAverageStatsFromSHP(mTracking.getId()).getResult()));
+        if (mTracking != null
+            && SharedPreferenceHelper.getAverageStatsFromSHP(mTracking.getId()) != null) {
+          statsList.addAll(Arrays.asList(
+              SharedPreferenceHelper.getAverageStatsFromSHP(mTracking.getId()).getResult()));
 
           int averageDaysCount = 0;
           for (Stats s : stats) {
@@ -1041,6 +1044,8 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     mChart.getBarData().setHighlightEnabled(false);
     mChart.setDrawValueAboveBar(true);
     mChart.fitScreen();
+    mChart.getXAxis().setAxisMinimum(0f);
+    mChart.getXAxis().setGranularity(1f);
     mChart.invalidate();
     setUpKm();
     setUpSteps();
@@ -1049,37 +1054,33 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
 
     //__To show 21 dots from_________________________________________________________________________________________
 
-    //mChart.fitScreen();
-    ////if (mTracking == null) {
-    //int localCounter = 0;
-    //for (int index = 0; index < mStats.size(); index++) {
-    //  if (!mStats.get(index).getLabel().trim().isEmpty()) {
-    //    localCounter++;
-    //  }
-    //}
-    //Timber.e("onChartDoubleTapped mStatsCount:" + localCounter);
-    //
-    //mChart.setVisibleXRange(0, STATS_COUNT_PERSONAL_21);
-    //mChart.moveViewToX(0);
-    //
-    //XAxis xAxis = mChart.getXAxis();
-    //xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // make text only on bottom
-    //xAxis.setAxisMinimum(0f);
-    //xAxis.setGranularity(1f);
-    //if (mTextViewStatsDay.isSelected()) {
-    //  xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // make text only on bottom
-    //  xAxis.setValueFormatter((value, axis) -> {
-    //    if ((value + 1) % 3 == 0) {
-    //      return "" + (int) value;
-    //    }
-    //    return "";
-    //  });
-    //}
-    //
-    //xAxis.setGranularity(1f);
-    //mChart.resetViewPortOffsets();
-    //mChart.invalidate();
-    //fillDetailsCard();
+    mChart.setVisibleXRange(0, SharedPreferenceHelper.getStepsPerDay().size());
+    mChart.moveViewToX(0);
+
+    XAxis xAxis = mChart.getXAxis();
+    xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // make text only on bottom
+    xAxis.setAxisMinimum(0f);
+    xAxis.setGranularity(1f);
+    if (mTextViewStatsWeek.isSelected()) {
+      xAxis.setValueFormatter((value, axis) -> {
+        if ((value + 1) % 7 == 0) {
+          return "week" + (int) ((value + 1) / 7);
+        }
+        return "";
+      });
+    }
+    if (mTextViewStatsDay.isSelected()) {
+      xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // make text only on bottom
+      xAxis.setValueFormatter((value, axis) -> {
+        if ((value + 1) % 3 == 0) {
+          return "" + (int) value;
+        }
+        return "";
+      });
+    }
+    mChart.resetViewPortOffsets();
+    mChart.invalidate();
+    fillDetailsCard();
 
     //_____________________________________________________________________________________________----
   }

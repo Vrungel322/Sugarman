@@ -953,8 +953,9 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     int index = 0;
     Calendar rightNow = Calendar.getInstance();
 
-    while (BaseSharedPreferenceHelper.getPrefsInstance()
-        .contains(SharedPreferenceConstants.HOUR_ + index)) {
+    //while (BaseSharedPreferenceHelper.getPrefsInstance()
+    //    .contains(SharedPreferenceConstants.HOUR_ + index)) {
+    for (int i = 0; i<23;i++){
       if (index < rightNow.get(Calendar.HOUR_OF_DAY)) {
         int countSteps =
             getInt(SharedPreferenceConstants.HOUR_ + index, Constants.FAKE_STEPS_COUNT);
