@@ -221,7 +221,7 @@ import timber.log.Timber;
     if (!tracking.isMentors()) startDate = tracking.getCreatedAt();
     if (tracking.isMentors()) {
       for (Member me : tracking.getMembers()) {
-        if (me.getId().equals(SharedPreferenceHelper.getUserId()) && me.getCreatedAt()!=null) {
+        if (me.getId().equals(SharedPreferenceHelper.getUserId()) && me.getCreatedAt() != null) {
           startDate = me.getCreatedAt().split("T")[0];
         }
       }
@@ -322,14 +322,31 @@ import timber.log.Timber;
     //Dashed stuff
     List<Stats> cashedStats = new ArrayList<>();
 
-    if (isAverageLineNeed && tracking != null && mDataManager.getAverageStatsFromSHP(tracking.getId()) != null) {
-      Timber.e("generateLineData cashedStats " + mDataManager.getAverageStatsFromSHP(
-          tracking.getId())
-          .getResult().length);
-      cashedStats.addAll(Arrays.asList(mDataManager.getAverageStatsFromSHP(tracking.getId()).getResult()));
+    if (isAverageLineNeed
+        && tracking != null
+        && mDataManager.getAverageStatsFromSHP(tracking.getId()) != null) {
+      Timber.e(
+          "generateLineData cashedStats " + mDataManager.getAverageStatsFromSHP(tracking.getId())
+              .getResult().length);
+      cashedStats.addAll(
+          Arrays.asList(mDataManager.getAverageStatsFromSHP(tracking.getId()).getResult()));
 
       for (int index = 0; index < cashedStats.size(); index++) {
         entriesDashed.add(new Entry(index, cashedStats.get(index).getStepsCount() * coeficient));
+      }
+
+      //add last day average count it on device
+      if (entriesDashed.size() < 21) {
+        int lastDayAverage = 0;
+        for (Member m : tracking.getMembers()) {
+          lastDayAverage += m.steps;
+        }
+        Timber.e("lastDayAverage sum : "
+            + lastDayAverage
+            + "tracking members : "
+            + tracking.getMembers().length);
+        entriesDashed.add(
+            new Entry(entriesDashed.size(), lastDayAverage / tracking.getMembers().length));
       }
 
       LineDataSet setDashed = new LineDataSet(entriesDashed, "Group Steps");
