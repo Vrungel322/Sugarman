@@ -468,8 +468,8 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
 
       //Collections.reverse(mStats);
       data.setData(mPresenter.generateLineData(mStats, mStatsSteps,
-          getResources().getDrawable(R.drawable.animation_progress_bar), true,
-          coefficient,true)); // line - dots
+          getResources().getDrawable(R.drawable.animation_progress_bar), true, coefficient,
+          true)); // line - dots
       data.setData(mPresenter.generateBarData(mStats, coefficient)); // colomns
 
       //mChart.getXAxis().setAxisMaximum(data.getXMax() + 0.25f);
@@ -520,7 +520,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
 
     data.setData(mPresenter.generateLineData(mStats, mStatsSteps,
         getResources().getDrawable(R.drawable.animation_progress_bar), isAverageLineNeed,
-        coeficient,true)); // line - dots
+        coeficient, true)); // line - dots
     data.setData(mPresenter.generateBarData(mStats, coeficient)); // colomns
 
     XAxis xAxis = mChart.getXAxis();
@@ -1026,8 +1026,8 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     CombinedData data = new CombinedData();
 
     data.setData(mPresenter.generateLineData(mStats, mStatsSteps,
-        getResources().getDrawable(R.drawable.animation_progress_bar), false,
-        coefficient, false)); // line - dots
+        getResources().getDrawable(R.drawable.animation_progress_bar), false, coefficient,
+        false)); // line - dots
     data.setData(mPresenter.generateBarData(mStats, coefficient)); // colomns
 
     //mChart.getXAxis().setAxisMaximum(data.getXMax() + 0.25f);
@@ -1047,35 +1047,37 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
 
     //__To show 21 dots from_________________________________________________________________________________________
 
-    mChart.fitScreen();
-    //if (mTracking == null) {
-    int localCounter = 0;
-    for (int index = 0; index < mStats.size(); index++) {
-      if (!mStats.get(index).getLabel().trim().isEmpty()) {
-        localCounter++;
-      }
-    }
-    Timber.e("onChartDoubleTapped mStatsCount:" + localCounter);
-
-      mChart.setVisibleXRange(0, STATS_COUNT_PERSONAL_21);
-      mChart.moveViewToX(0);
-
-      XAxis xAxis = mChart.getXAxis();
-      xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // make text only on bottom
-      xAxis.setAxisMinimum(0f);
-      xAxis.setGranularity(1f);
-      if (mTextViewStatsDay.isSelected()) {
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // make text only on bottom
-        xAxis.setValueFormatter((value, axis) -> {
-          if ((value + 1) % 3 == 0) {
-            return "" + (int) value;
-          }
-          return "";
-        });
-      }
-      mChart.resetViewPortOffsets();
-      mChart.invalidate();
-      fillDetailsCard();
+    //mChart.fitScreen();
+    ////if (mTracking == null) {
+    //int localCounter = 0;
+    //for (int index = 0; index < mStats.size(); index++) {
+    //  if (!mStats.get(index).getLabel().trim().isEmpty()) {
+    //    localCounter++;
+    //  }
+    //}
+    //Timber.e("onChartDoubleTapped mStatsCount:" + localCounter);
+    //
+    //mChart.setVisibleXRange(0, STATS_COUNT_PERSONAL_21);
+    //mChart.moveViewToX(0);
+    //
+    //XAxis xAxis = mChart.getXAxis();
+    //xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // make text only on bottom
+    //xAxis.setAxisMinimum(0f);
+    //xAxis.setGranularity(1f);
+    //if (mTextViewStatsDay.isSelected()) {
+    //  xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // make text only on bottom
+    //  xAxis.setValueFormatter((value, axis) -> {
+    //    if ((value + 1) % 3 == 0) {
+    //      return "" + (int) value;
+    //    }
+    //    return "";
+    //  });
+    //}
+    //
+    //xAxis.setGranularity(1f);
+    //mChart.resetViewPortOffsets();
+    //mChart.invalidate();
+    //fillDetailsCard();
 
     //_____________________________________________________________________________________________----
   }

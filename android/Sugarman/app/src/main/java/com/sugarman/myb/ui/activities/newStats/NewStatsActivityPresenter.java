@@ -218,26 +218,37 @@ import timber.log.Timber;
     Calendar calendar = Calendar.getInstance();
     calendar.setTimeInMillis(now);
 
-    Timber.e("fetchAverageStats startDate = " + tracking.getCreatedAt());
+    if (!tracking.isMentors()) startDate = tracking.getCreatedAt();
+    if (tracking.isMentors()) {
+      for (Member me : tracking.getMembers()) {
+        if (me.getId().equals(SharedPreferenceHelper.getUserId())) {
+          startDate = me.getCreatedAt().split("T")[0];
+        }
+      }
+      if (startDate == null || startDate.equals("none date")) {
+        startDate = DataUtils.getLastXDays(21).get(0);
+      }
+    }
+    Timber.e("fetchAverageStats prev from 21 = " + DataUtils.getLastXDays(21).get(0));
+    Timber.e("fetchAverageStats startDate = " + startDate);
     Timber.e("fetchAverageStats endDate = " + formatter.format(calendar.getTime()));
 
-    Subscription subscription =
-        mDataManager.fetchAverageStats(tracking.getId(), tracking.getCreatedAt(),
-            formatter.format(calendar.getTime()))
-            .filter(statsResponseResponse -> statsResponseResponse.body() != null)
-            .filter(statsResponseResponse -> statsResponseResponse.body().getResult() != null)
-            .filter(statsResponseResponse -> statsResponseResponse.body().getResult().length != 0)
-            .flatMap(statsResponseResponse -> {
-              Timber.e("fetchAverageStats " + statsResponseResponse.code());
-              mDataManager.saveAverageStats(statsResponseResponse.body());
-              return Observable.just(statsResponseResponse.body().getResult());
-            })
-            .compose(ThreadSchedulers.applySchedulers())
-            .subscribe(stats -> {
-              if (stats != null) {
-                Timber.e("fetchAverageStats stats length " + stats.length);
-              }
-            }, Throwable::printStackTrace);
+    Subscription subscription = mDataManager.fetchAverageStats(tracking.getId(), startDate,
+        formatter.format(calendar.getTime()))
+        .filter(statsResponseResponse -> statsResponseResponse.body() != null)
+        .filter(statsResponseResponse -> statsResponseResponse.body().getResult() != null)
+        .filter(statsResponseResponse -> statsResponseResponse.body().getResult().length != 0)
+        .flatMap(statsResponseResponse -> {
+          Timber.e("fetchAverageStats " + statsResponseResponse.code());
+          mDataManager.saveAverageStats(statsResponseResponse.body());
+          return Observable.just(statsResponseResponse.body().getResult());
+        })
+        .compose(ThreadSchedulers.applySchedulers())
+        .subscribe(stats -> {
+          if (stats != null) {
+            Timber.e("fetchAverageStats stats length " + stats.length);
+          }
+        }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
   }
 
