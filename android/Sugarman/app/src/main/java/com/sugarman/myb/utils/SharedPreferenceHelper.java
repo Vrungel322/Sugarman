@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import timber.log.Timber;
 
@@ -951,16 +950,42 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
 
   public static List<Integer> getStepsPerDay() {
     List<Integer> lst = new ArrayList<>();
-    for (int i = 0; i < 23; i++) {
-      lst.add(
-          getInt(SharedPreferenceConstants.HOUR_ + i, 0));
+    int index = 0;
+    Calendar rightNow = Calendar.getInstance();
+
+    while (BaseSharedPreferenceHelper.getPrefsInstance()
+        .contains(SharedPreferenceConstants.HOUR_ + index)) {
+      if (index < rightNow.get(Calendar.HOUR_OF_DAY)) {
+        int countSteps =
+            getInt(SharedPreferenceConstants.HOUR_ + index, Constants.FAKE_STEPS_COUNT);
+        if (countSteps == -1) {
+          countSteps = 0;
+        }
+        //if (countSteps == -1) {
+        //  lst.add(0);
+        //} else {
+        lst.add(countSteps);
+        //}
+        index++;
+      }else {
+        break;
+      }
     }
+    //for (int i = 0; i < 23; i++) {
+    //  //  lst.add(
+    //  //      getInt(SharedPreferenceConstants.HOUR_ + i, 0));
+    //  if (countSteps == -1) {
+    //    lst.add(0);
+    //  } else {
+    //    lst.add(countSteps);
+    //  }
+    //}
     return lst;
   }
 
   public static void saveAverageStats(StatsResponse body) {
     if (body != null) {
-      Timber.e("saveAverageStats"  +body.getResult().length);
+      Timber.e("saveAverageStats" + body.getResult().length);
       putString(SharedPreferenceConstants.CACHED_AVERAGE_STATS, new Gson().toJson(body));
     }
   }

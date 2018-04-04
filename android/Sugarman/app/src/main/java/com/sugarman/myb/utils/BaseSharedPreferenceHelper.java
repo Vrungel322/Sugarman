@@ -8,11 +8,11 @@ import com.sugarman.myb.App;
 import com.sugarman.myb.constants.SharedPreferenceConstants;
 import java.util.Date;
 
-abstract class BaseSharedPreferenceHelper {
+public abstract class BaseSharedPreferenceHelper {
 
   private static volatile SharedPreferences instancePrefs;
 
-  private static synchronized SharedPreferences getPrefsInstance() {
+  public static synchronized SharedPreferences getPrefsInstance() {
     SharedPreferences localInstance = instancePrefs;
     if (localInstance == null) {
       synchronized (BaseSharedPreferenceHelper.class) {
