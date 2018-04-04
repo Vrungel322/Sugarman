@@ -39,7 +39,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -71,10 +70,10 @@ import timber.log.Timber;
             .flatMap(stringIntegerSortedMap -> {
               List<Stats> stats = new ArrayList<>();
               for (int i = 0; i < stringIntegerSortedMap.size(); i++) {
-                stats.add(
-                    new Stats(0, ""+i, "H_" + i, stringIntegerSortedMap.get(i), 1L));
-                Timber.e("fetchDayStats " + new Stats(0, ""+i, "H_" + i,
-                    stringIntegerSortedMap.get(i), 1L).toString());
+                stats.add(new Stats(0, "" + i, "H_" + i, stringIntegerSortedMap.get(i), 1L));
+                Timber.e(
+                    "fetchDayStats " + new Stats(0, "" + i, "H_" + i, stringIntegerSortedMap.get(i),
+                        1L).toString());
               }
               return Observable.just(stats);
             })
@@ -394,7 +393,7 @@ import timber.log.Timber;
         countNotFake++;
       }
     }
-    //return findMinSteps(stats) + findMaxSteps(stats) / 2;
+    if (countNotFake == 0) return integer;
     return integer / countNotFake;
   }
 
