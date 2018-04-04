@@ -991,7 +991,7 @@ public class MainActivity extends GetUserInfoActivity
   @Override protected void onPause() {
     super.onPause();
     Timber.e("onPause");
-    if (bmp != null) {
+    if (bmp != null && bmp.get()!=null) {
       bmp.get().recycle();
       bmp = null;
     }
