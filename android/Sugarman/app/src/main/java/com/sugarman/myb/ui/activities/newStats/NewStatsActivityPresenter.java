@@ -207,7 +207,7 @@ import timber.log.Timber;
   }
 
   public void fetchAverageStats(Tracking tracking) throws ParseException {
-    StatsResponse statsResponse = mDataManager.getAverageStatsFromSHP();
+    StatsResponse statsResponse = mDataManager.getAverageStatsFromSHP(tracking.getId());
     //if (statsResponse != null) getViewState().showStats(Arrays.asList(statsResponse.getResult()));
     String startDate = "none date";
 
@@ -221,7 +221,7 @@ import timber.log.Timber;
     if (!tracking.isMentors()) startDate = tracking.getCreatedAt();
     if (tracking.isMentors()) {
       for (Member me : tracking.getMembers()) {
-        if (me.getId().equals(SharedPreferenceHelper.getUserId())) {
+        if (me.getId().equals(SharedPreferenceHelper.getUserId()) && me.getCreatedAt()!=null) {
           startDate = me.getCreatedAt().split("T")[0];
         }
       }
@@ -240,7 +240,7 @@ import timber.log.Timber;
         .filter(statsResponseResponse -> statsResponseResponse.body().getResult().length != 0)
         .flatMap(statsResponseResponse -> {
           Timber.e("fetchAverageStats " + statsResponseResponse.code());
-          mDataManager.saveAverageStats(statsResponseResponse.body());
+          mDataManager.saveAverageStats(statsResponseResponse.body(), tracking.getId());
           return Observable.just(statsResponseResponse.body().getResult());
         })
         .compose(ThreadSchedulers.applySchedulers())
@@ -270,7 +270,7 @@ import timber.log.Timber;
   }
 
   public LineData generateLineData(List<Stats> stats, List<Integer> statsSteps, Drawable drawable,
-      boolean isAverageLineNeed, float coeficient, boolean displayLastValue) {
+      boolean isAverageLineNeed, float coeficient, boolean displayLastValue, Tracking tracking) {
     entries = new ArrayList<>();
     entriesDashed = new ArrayList<Entry>();
     sempStat = new ArrayList<Stats>();
@@ -322,10 +322,11 @@ import timber.log.Timber;
     //Dashed stuff
     List<Stats> cashedStats = new ArrayList<>();
 
-    if (isAverageLineNeed && mDataManager.getAverageStatsFromSHP() != null) {
-      Timber.e("generateLineData cashedStats " + mDataManager.getAverageStatsFromSHP()
+    if (isAverageLineNeed && tracking != null && mDataManager.getAverageStatsFromSHP(tracking.getId()) != null) {
+      Timber.e("generateLineData cashedStats " + mDataManager.getAverageStatsFromSHP(
+          tracking.getId())
           .getResult().length);
-      cashedStats.addAll(Arrays.asList(mDataManager.getAverageStatsFromSHP().getResult()));
+      cashedStats.addAll(Arrays.asList(mDataManager.getAverageStatsFromSHP(tracking.getId()).getResult()));
 
       for (int index = 0; index < cashedStats.size(); index++) {
         entriesDashed.add(new Entry(index, cashedStats.get(index).getStepsCount() * coeficient));

@@ -473,11 +473,11 @@ public class DataManager {
     return mRestApi.fetchAverageStats(trackingId, startDate, endDate);
   }
 
-  public void saveAverageStats(StatsResponse body) {
-    SharedPreferenceHelper.saveAverageStats(body);
+  public void saveAverageStats(StatsResponse body, String id) {
+    SharedPreferenceHelper.saveAverageStats(body, id);
   }
 
-  public StatsResponse getAverageStatsFromSHP() {
-    return SharedPreferenceHelper.getAverageStatsFromSHP();
+  public StatsResponse getAverageStatsFromSHP(String id) {
+    return SharedPreferenceHelper.getAverageStatsFromSHP(id);
   }
 }

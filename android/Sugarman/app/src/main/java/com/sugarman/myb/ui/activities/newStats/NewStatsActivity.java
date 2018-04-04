@@ -468,8 +468,8 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
 
       //Collections.reverse(mStats);
       data.setData(mPresenter.generateLineData(mStats, mStatsSteps,
-          getResources().getDrawable(R.drawable.animation_progress_bar), true, coefficient,
-          true)); // line - dots
+          getResources().getDrawable(R.drawable.animation_progress_bar), true, coefficient, true,
+          mTracking)); // line - dots
       data.setData(mPresenter.generateBarData(mStats, coefficient)); // colomns
 
       //mChart.getXAxis().setAxisMaximum(data.getXMax() + 0.25f);
@@ -520,7 +520,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
 
     data.setData(mPresenter.generateLineData(mStats, mStatsSteps,
         getResources().getDrawable(R.drawable.animation_progress_bar), isAverageLineNeed,
-        coeficient, true)); // line - dots
+        coeficient, true, null)); // line - dots
     data.setData(mPresenter.generateBarData(mStats, coeficient)); // colomns
 
     XAxis xAxis = mChart.getXAxis();
@@ -669,9 +669,10 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
             "" + mPresenter.findDaysAboveAverageKm(stats) + "/" + diff);
       } else {
         List<Stats> statsList = new ArrayList<>();
-        if (SharedPreferenceHelper.getAverageStatsFromSHP() != null) {
-          statsList.addAll(
-              Arrays.asList(SharedPreferenceHelper.getAverageStatsFromSHP().getResult()));
+        if (mTracking != null
+            && SharedPreferenceHelper.getAverageStatsFromSHP(mTracking.getId()) != null) {
+          statsList.addAll(Arrays.asList(
+              SharedPreferenceHelper.getAverageStatsFromSHP(mTracking.getId()).getResult()));
           int averageDaysCount = 0;
           for (Stats s : stats) {
             for (Stats sShp : statsList) {
@@ -713,9 +714,9 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       } else {
 
         List<Stats> statsList = new ArrayList<>();
-        if (SharedPreferenceHelper.getAverageStatsFromSHP() != null) {
+        if (mTracking!=null&&SharedPreferenceHelper.getAverageStatsFromSHP(mTracking.getId()) != null) {
           statsList.addAll(
-              Arrays.asList(SharedPreferenceHelper.getAverageStatsFromSHP().getResult()));
+              Arrays.asList(SharedPreferenceHelper.getAverageStatsFromSHP(mTracking.getId()).getResult()));
 
           int averageDaysCount = 0;
           for (Stats s : stats) {
@@ -764,9 +765,10 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       } else {
 
         List<Stats> statsList = new ArrayList<>();
-        if (SharedPreferenceHelper.getAverageStatsFromSHP() != null) {
-          statsList.addAll(
-              Arrays.asList(SharedPreferenceHelper.getAverageStatsFromSHP().getResult()));
+        if (mTracking != null
+            && SharedPreferenceHelper.getAverageStatsFromSHP(mTracking.getId()) != null) {
+          statsList.addAll(Arrays.asList(
+              SharedPreferenceHelper.getAverageStatsFromSHP(mTracking.getId()).getResult()));
           int averageDaysCount = 0;
           for (Stats s : stats) {
             for (Stats sShp : statsList) {
@@ -1026,8 +1028,8 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     CombinedData data = new CombinedData();
 
     data.setData(mPresenter.generateLineData(mStats, mStatsSteps,
-        getResources().getDrawable(R.drawable.animation_progress_bar), false, coefficient,
-        false)); // line - dots
+        getResources().getDrawable(R.drawable.animation_progress_bar), false, coefficient, false,
+        null)); // line - dots
     data.setData(mPresenter.generateBarData(mStats, coefficient)); // colomns
 
     //mChart.getXAxis().setAxisMaximum(data.getXMax() + 0.25f);

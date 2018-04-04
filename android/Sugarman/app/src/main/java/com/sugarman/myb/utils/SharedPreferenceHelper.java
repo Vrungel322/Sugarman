@@ -983,15 +983,15 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     return lst;
   }
 
-  public static void saveAverageStats(StatsResponse body) {
+  public static void saveAverageStats(StatsResponse body, String id) {
     if (body != null) {
       Timber.e("saveAverageStats" + body.getResult().length);
-      putString(SharedPreferenceConstants.CACHED_AVERAGE_STATS, new Gson().toJson(body));
+      putString(SharedPreferenceConstants.CACHED_AVERAGE_STATS+id, new Gson().toJson(body));
     }
   }
 
-  public static StatsResponse getAverageStatsFromSHP() {
-    return new Gson().fromJson(getString(SharedPreferenceConstants.CACHED_AVERAGE_STATS, ""),
+  public static StatsResponse getAverageStatsFromSHP(String id) {
+    return new Gson().fromJson(getString(SharedPreferenceConstants.CACHED_AVERAGE_STATS+id, ""),
         StatsResponse.class);
   }
 }
