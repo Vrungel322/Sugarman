@@ -475,81 +475,43 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
   }
 
   @Override public void onClickMemberAvatar(int position) {
-    if (amIMentor && isEditMode()) {
-      GroupMember toDelete = mData.get(position);
-      if (!toDelete.getId().equals(SharedPreferenceHelper.getUserId())) {
-        DialogHelper.createSimpleDialog(context.getString(R.string.okay),
-            context.getString(R.string.discard), context.getString(R.string.warning),
-            context.getString(R.string.delete_user_from_group), context, (dialogInterface, i) -> {
-              mAdapterPresenter.deleteUser(mTrackingId, toDelete.getId(), position);
+    if (position >= 0) {
+      if (amIMentor && isEditMode()) {
+        GroupMember toDelete = mData.get(position);
+        if (!toDelete.getId().equals(SharedPreferenceHelper.getUserId())) {
+          DialogHelper.createSimpleDialog(context.getString(R.string.okay),
+              context.getString(R.string.discard), context.getString(R.string.warning),
+              context.getString(R.string.delete_user_from_group), context, (dialogInterface, i) -> {
+                mAdapterPresenter.deleteUser(mTrackingId, toDelete.getId(), position);
 
-              AppsFlyerEventSender.sendEvent("af_delete_person_from_group");
-            }, (dialogInterface, i) -> {
-              dialogInterface.dismiss();
-            }).create().show();
+                AppsFlyerEventSender.sendEvent("af_delete_person_from_group");
+              }, (dialogInterface, i) -> {
+                dialogInterface.dismiss();
+              }).create().show();
+        }
       }
-    }
 
-    AppsFlyerEventSender.sendEvent("af_kick_single_person");
+      AppsFlyerEventSender.sendEvent("af_kick_single_person");
 
-    if (isMentorGroup) {
-      if (amIMentor) {
-        GroupMember member = mData.get(position);
-        member.setBroken(true);
-        notifyItemChanged(position);
-        if (TextUtils.equals(member.getId(), userId)) {
-          actionListener.get().onPokeSelf();
-        } else {
-          actionListener.get().onPokeMember(member);
-        }
-      } else {
-        GroupMember member = mData.get(position);
-        int memberSteps = member.getSteps();
-        if (member.getId().equals(SharedPreferenceHelper.getUserId())) {
-          actionListener.get().youCantPokeYourself();
-          return;
-        }
-        if (TextUtils.equals(member.getId(), mentorId)) {
-          actionListener.get().onPokeMentor();
-        } else {
-          if (myPosition == -1) {
-            actionListener.get().onPokeInForeignGroup();
-          } else if (TextUtils.equals(member.getId(), userId)) {
+      if (isMentorGroup) {
+        if (amIMentor) {
+          GroupMember member = mData.get(position);
+          member.setBroken(true);
+          notifyItemChanged(position);
+          if (TextUtils.equals(member.getId(), userId)) {
             actionListener.get().onPokeSelf();
-          } else if (memberSteps >= Config.MAX_STEPS_PER_DAY) {
-            actionListener.get().onPokeCompletedDaily();
-          } else if (memberSteps >= userSteps) {
-            actionListener.get().onPokeMoreThatSelf();
           } else {
-            member.setBroken(true);
-            notifyItemChanged(position);
             actionListener.get().onPokeMember(member);
           }
-        }
-      }
-    } else {
-      if (position >= 0 && position < mData.size()) {
-        if (actionListener.get() != null) {
+        } else {
           GroupMember member = mData.get(position);
           int memberSteps = member.getSteps();
           if (member.getId().equals(SharedPreferenceHelper.getUserId())) {
             actionListener.get().youCantPokeYourself();
             return;
           }
-          for (GroupMember gm : mData) {
-            if (gm.getId().equals(SharedPreferenceHelper.getUserId())
-                && gm.getFailedStatus() == Member.FAIL_STATUS_FAILUER) {
-              actionListener.get().failuerCantPokeAnyone();
-              return;
-            }
-          }
-          Timber.e("Failer status = " + member.getFailedStatus());
-          if (member.getFailedStatus() == Member.FAIL_STATUS_FAILUER) {
-            Timber.e("Clicked on failer");
-            actionListener.get().onPokeMember(member);
-          } else if (member.getFailedStatus() == Member.FAIL_STATUS_SAVED) {
-            Timber.e("Clicked on saver");
-            actionListener.get().onPokeSaver();
+          if (TextUtils.equals(member.getId(), mentorId)) {
+            actionListener.get().onPokeMentor();
           } else {
             if (myPosition == -1) {
               actionListener.get().onPokeInForeignGroup();
@@ -566,10 +528,50 @@ public class GroupMembersAdapter extends MvpBaseRecyclerAdapter<RecyclerView.Vie
             }
           }
         }
-
-        notifyItemChanged(position);
       } else {
-        notifyDataSetChanged();
+        if (position >= 0 && position < mData.size()) {
+          if (actionListener.get() != null) {
+            GroupMember member = mData.get(position);
+            int memberSteps = member.getSteps();
+            if (member.getId().equals(SharedPreferenceHelper.getUserId())) {
+              actionListener.get().youCantPokeYourself();
+              return;
+            }
+            for (GroupMember gm : mData) {
+              if (gm.getId().equals(SharedPreferenceHelper.getUserId())
+                  && gm.getFailedStatus() == Member.FAIL_STATUS_FAILUER) {
+                actionListener.get().failuerCantPokeAnyone();
+                return;
+              }
+            }
+            Timber.e("Failer status = " + member.getFailedStatus());
+            if (member.getFailedStatus() == Member.FAIL_STATUS_FAILUER) {
+              Timber.e("Clicked on failer");
+              actionListener.get().onPokeMember(member);
+            } else if (member.getFailedStatus() == Member.FAIL_STATUS_SAVED) {
+              Timber.e("Clicked on saver");
+              actionListener.get().onPokeSaver();
+            } else {
+              if (myPosition == -1) {
+                actionListener.get().onPokeInForeignGroup();
+              } else if (TextUtils.equals(member.getId(), userId)) {
+                actionListener.get().onPokeSelf();
+              } else if (memberSteps >= Config.MAX_STEPS_PER_DAY) {
+                actionListener.get().onPokeCompletedDaily();
+              } else if (memberSteps >= userSteps) {
+                actionListener.get().onPokeMoreThatSelf();
+              } else {
+                member.setBroken(true);
+                notifyItemChanged(position);
+                actionListener.get().onPokeMember(member);
+              }
+            }
+          }
+
+          notifyItemChanged(position);
+        } else {
+          notifyDataSetChanged();
+        }
       }
     }
   }
