@@ -1044,6 +1044,40 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     setUpSteps();
     setUpKcal();
     changeStatsOnDescriptionDetails(mImageViewStatsKm);
+
+    //__To show 21 dots from_________________________________________________________________________________________
+
+    mChart.fitScreen();
+    //if (mTracking == null) {
+    int localCounter = 0;
+    for (int index = 0; index < mStats.size(); index++) {
+      if (!mStats.get(index).getLabel().trim().isEmpty()) {
+        localCounter++;
+      }
+    }
+    Timber.e("onChartDoubleTapped mStatsCount:" + localCounter);
+
+      mChart.setVisibleXRange(0, STATS_COUNT_PERSONAL_21);
+      mChart.moveViewToX(0);
+
+      XAxis xAxis = mChart.getXAxis();
+      xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // make text only on bottom
+      xAxis.setAxisMinimum(0f);
+      xAxis.setGranularity(1f);
+      if (mTextViewStatsDay.isSelected()) {
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // make text only on bottom
+        xAxis.setValueFormatter((value, axis) -> {
+          if ((value + 1) % 3 == 0) {
+            return "" + (int) value;
+          }
+          return "";
+        });
+      }
+      mChart.resetViewPortOffsets();
+      mChart.invalidate();
+      fillDetailsCard();
+
+    //_____________________________________________________________________________________________----
   }
 
   @Override public void setUnreadMessages(int size) {
