@@ -259,7 +259,11 @@ public class FcmListenerService extends FirebaseMessagingService {
   @Override public void onDestroy() {
     super.onDestroy();
     //Timber.e("processMessage onDestroy");
-    startService(new Intent(getApplicationContext(), FcmListenerService.class));
+    Timber.e("onDestroy is FcmListenerService is running " + isMyServiceRunning(
+        FcmListenerService.class));
+    if (!isMyServiceRunning(FcmListenerService.class)) {
+      startService(new Intent(getApplicationContext(), FcmListenerService.class));
+    }
   }
 
   private boolean isMyServiceRunning(Class<?> serviceClass) {
