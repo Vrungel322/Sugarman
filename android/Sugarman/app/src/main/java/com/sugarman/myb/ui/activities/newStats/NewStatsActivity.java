@@ -341,6 +341,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     if (mImageViewStatsSteps.isSelected()) {
       Timber.e("mImageViewStatsSteps " + mImageViewStatsSteps.isSelected());
       fillDetailsByStatsSteps(mStats);
+      Timber.e("Huinia 1");
     }
     if (mImageViewStatsKcal.isSelected()) {
       fillDetailsByStatsKcal(mStats);
@@ -610,6 +611,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       mImageViewStatsSteps.setSelected(true);
       mImageViewStatsKcal.setSelected(false);
       fillDetailsByStatsSteps(mStats);
+      Timber.e("Huinia 2");
 
       //if (mTextViewStatsDay.isSelected()) {
       //  fillByStatsDay(1f);
@@ -664,12 +666,37 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
           String.valueOf(String.format(Locale.US, "%.2f", mPresenter.findMaxKm(stats))));
       mTextViewAboveAverageText.setText(getString(R.string.best_of_the_day));
     } else {
-      mTextViewAboveAverageText.setText(getString(R.string.days_above_average));
+
       if (!mTextViewStatsWeek.isSelected()) {
         diff = stats.size();
-        mTextViewDaysAboveAverageValue.setText(
-            "" + mPresenter.findDaysAboveAverageKm(stats) + "/" + diff);
+        if(mTextViewStatsDay.isSelected()) {
+          mTextViewDaysAboveAverageValue.setText(
+              "" + mPresenter.findDaysAboveAverageKm(stats) + "/" + diff);
+        }
+        else
+        {
+          mTextViewAboveAverageText.setText(getString(R.string.days_challenge_completed));
+          if (mTracking != null) {
+            int averageDaysCount = 0;
+            for (Stats s : stats) {
+                if (s.getStepsCount() > 10000) averageDaysCount++;
+            }
+            mTextViewDaysAboveAverageValue.setText("" + averageDaysCount + "/" + diff);
+          }
+        }
       } else {
+
+        if (mTracking != null) {
+          try {
+            diff = DataUtils.getDateDiff(DataUtils.subtractDays(
+                new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(mTracking.getCreatedAt()), 1),
+                new Date(System.currentTimeMillis()), TimeUnit.DAYS).intValue();
+            Timber.e("huinia diff " + diff);
+          } catch (ParseException e) {
+            e.printStackTrace();
+          }
+        }
+
         List<Stats> statsList = new ArrayList<>();
         if (mTracking != null
             && SharedPreferenceHelper.getAverageStatsFromSHP(mTracking.getId()) != null) {
@@ -683,17 +710,23 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
           }
           mTextViewDaysAboveAverageValue.setText("" + averageDaysCount + "/" + diff);
         }
+        else if (mTracking!=null)
+        {
+          mTextViewDaysAboveAverageValue.setText("" + 0 + "/" + diff);
+        }
       }
     }
   }
 
   private void fillDetailsByStatsSteps(List<Stats> stats) {
+    Timber.e("Poshe huinyaaa " + stats.size());
     int diff = 0;
     if (mTracking != null) {
       try {
         diff = DataUtils.getDateDiff(DataUtils.subtractDays(
             new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(mTracking.getCreatedAt()), 1),
             new Date(System.currentTimeMillis()), TimeUnit.DAYS).intValue();
+        Timber.e("huinia diff " + diff);
       } catch (ParseException e) {
         e.printStackTrace();
       }
@@ -711,9 +744,33 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       mTextViewAboveAverageText.setText(getString(R.string.days_above_average));
       if (!mTextViewStatsWeek.isSelected()) {
         diff = stats.size();
-        mTextViewDaysAboveAverageValue.setText(
-            "" + mPresenter.findDaysAboveAverageSteps(stats) + "/" + diff);
+        if(mTextViewStatsDay.isSelected()) {
+          mTextViewDaysAboveAverageValue.setText(
+              "" + mPresenter.findDaysAboveAverageSteps(stats) + "/" + diff);
+        }
+        else
+        {
+          mTextViewAboveAverageText.setText(getString(R.string.days_challenge_completed));
+          if (mTracking != null) {
+            int averageDaysCount = 0;
+            for (Stats s : stats) {
+              if (s.getStepsCount() > 10000) averageDaysCount++;
+            }
+            mTextViewDaysAboveAverageValue.setText("" + averageDaysCount + "/" + diff);
+          }
+        }
       } else {
+
+        if (mTracking != null) {
+          try {
+            diff = DataUtils.getDateDiff(DataUtils.subtractDays(
+                new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(mTracking.getCreatedAt()), 1),
+                new Date(System.currentTimeMillis()), TimeUnit.DAYS).intValue();
+            Timber.e("huinia diff " + diff);
+          } catch (ParseException e) {
+            e.printStackTrace();
+          }
+        }
 
         List<Stats> statsList = new ArrayList<>();
         if (mTracking != null
@@ -729,6 +786,10 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
           }
           Timber.e("fillDetailsByStatsSteps averageDaysCount " + averageDaysCount);
           mTextViewDaysAboveAverageValue.setText("" + averageDaysCount + "/" + diff);
+        }
+        else if (mTracking!=null)
+        {
+          mTextViewDaysAboveAverageValue.setText("" + 0 + "/" + diff);
         }
       }
     }
@@ -763,9 +824,33 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       mTextViewAboveAverageText.setText(getString(R.string.days_above_average));
       if (!mTextViewStatsWeek.isSelected()) {
         diff = stats.size();
-        mTextViewDaysAboveAverageValue.setText(
-            "" + mPresenter.findDaysAboveAverageKcal(stats) + "/" + diff);
+        if(mTextViewStatsDay.isSelected()) {
+          mTextViewDaysAboveAverageValue.setText(
+              "" + mPresenter.findDaysAboveAverageKm(stats) + "/" + diff);
+        }
+        else
+        {
+          mTextViewAboveAverageText.setText(getString(R.string.days_challenge_completed));
+          if (mTracking != null) {
+            int averageDaysCount = 0;
+            for (Stats s : stats) {
+              if (s.getStepsCount() > 10000) averageDaysCount++;
+            }
+            mTextViewDaysAboveAverageValue.setText("" + averageDaysCount + "/" + diff);
+          }
+        }
       } else {
+
+        if (mTracking != null) {
+          try {
+            diff = DataUtils.getDateDiff(DataUtils.subtractDays(
+                new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(mTracking.getCreatedAt()), 1),
+                new Date(System.currentTimeMillis()), TimeUnit.DAYS).intValue();
+            Timber.e("huinia diff " + diff);
+          } catch (ParseException e) {
+            e.printStackTrace();
+          }
+        }
 
         List<Stats> statsList = new ArrayList<>();
         if (mTracking != null
@@ -778,7 +863,12 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
               if (s.getStepsCount() > sShp.getStepsCount()) averageDaysCount++;
             }
           }
+          Timber.e("inside huinia 3 " + averageDaysCount + " " + diff);
           mTextViewDaysAboveAverageValue.setText("" + averageDaysCount + "/" + diff);
+        }
+        else if (mTracking!=null)
+        {
+          mTextViewDaysAboveAverageValue.setText("" + 0 + "/" + diff);
         }
       }
     }

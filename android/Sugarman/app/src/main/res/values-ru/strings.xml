@@ -599,5 +599,6 @@
     <string name="already_register">Уже в группе</string>
     <string name="best_of_the_day">Лучший\nза день</string>
     <string name="for_5_friends">За 5 друзей</string>
+    <string name="days_challenge_completed">Пройдено больше\nнормы</string>
 
 </resources>
