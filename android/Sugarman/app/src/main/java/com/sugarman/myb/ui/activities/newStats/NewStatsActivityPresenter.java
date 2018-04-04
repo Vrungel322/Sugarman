@@ -85,15 +85,17 @@ import timber.log.Timber;
 
   public void startChartFlow(@Nullable Tracking tracking, Context context) throws ParseException {
     WeakReference<Context> contextWeakReference = new WeakReference<Context>(context);
-    if (tracking != null) {
+    //if (tracking != null) {
       fetchTrackingStats(tracking.getId(), tracking, tracking.isMentors());
       fetchMessages(tracking.getId(), "0", SingletonLikeApp.getInstance()
           .getSharedPreferences(contextWeakReference.get())
           .getToken());
       fetchAverageStats(tracking);
-    } else {
       fetchStats();
-    }
+
+    //} else {
+    //  fetchStats();
+    //}
   }
 
   public void fetchTrackingStats(String trackingId, Tracking tracking, boolean isMentors)
