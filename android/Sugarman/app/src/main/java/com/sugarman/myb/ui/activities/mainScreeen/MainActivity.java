@@ -987,6 +987,16 @@ public class MainActivity extends GetUserInfoActivity
     //mGetMyTrackingsClient.getMyTrackings(true);
   }
 
+
+  @Override protected void onPause() {
+    super.onPause();
+    Timber.e("onPause");
+    if (bmp != null) {
+      bmp.get().recycle();
+      bmp = null;
+    }
+  }
+
   @Override protected void onStop() {
     super.onStop();
     mPresenter.stopPeriodicalFetchingTracking();
