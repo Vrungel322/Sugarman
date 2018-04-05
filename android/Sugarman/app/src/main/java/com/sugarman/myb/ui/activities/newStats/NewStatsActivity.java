@@ -1140,7 +1140,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     setUpKm();
     setUpSteps();
     setUpKcal();
-    changeStatsOnDescriptionDetails(mImageViewStatsKm);
+    changeStatsOnDescriptionDetails(mImageViewStatsSteps);
 
     //__To show 21 dots from_________________________________________________________________________________________
 
