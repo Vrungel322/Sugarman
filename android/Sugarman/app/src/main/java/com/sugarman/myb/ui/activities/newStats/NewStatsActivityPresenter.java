@@ -124,7 +124,7 @@ import timber.log.Timber;
     int diff = DataUtils.getDateDiff(
         DataUtils.subtractDays(new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(startDate), 1),
         new Date(System.currentTimeMillis()), TimeUnit.DAYS).intValue();
-    //Timber.e("fetchTrackingStats diff: " + diff);
+    Timber.e("fetchTrackingStats diff: " + diff);
 
     List<Stats> statsCached = mDbRepositoryStats.getAllEntities(diff + 1);
     for (Stats s : statsCached) {
@@ -157,6 +157,7 @@ import timber.log.Timber;
           .toList()
           .compose(ThreadSchedulers.applySchedulers())
           .subscribe(statsList -> {
+            Timber.e("fetchTrackingStats statsList subscribe "+statsList.size() );
             getViewState().showTrackingStats(statsList);
           }, Throwable::printStackTrace);
       addToUnsubscription(subscription);
@@ -316,7 +317,7 @@ import timber.log.Timber;
     set.setAxisDependency(YAxis.AxisDependency.LEFT);
     d.addDataSet(set);
     dataSets.add(set);
-    //set.setDrawFilled(true); // coloring under chart
+    set.setDrawFilled(true); // coloring under chart
 
     //Dashed stuff
     List<Stats> cashedStats = new ArrayList<>();

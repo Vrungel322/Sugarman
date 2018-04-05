@@ -15,6 +15,7 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.github.mikephil.charting.charts.CombinedChart;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.CombinedData;
@@ -129,7 +130,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     //if (tvTodaySteps != null && vivToday != null) {
     //  updateTodaySteps(todaySteps);
     //}
-     mPresenter.setTodaySteps(todaySteps);
+    mPresenter.setTodaySteps(todaySteps);
     Timber.e("TODAY STEPS " + todaySteps);
   }
 
@@ -217,14 +218,14 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       //xAxis.setValueFormatter((value, axis) -> mStatsDays.get((int) value % mStatsDays.size()));
     }
     //limit line
-    //LimitLine ll1 = new LimitLine(10000f, "10k Limit");
-    //ll1.setLineWidth(4f);
-    //ll1.enableDashedLine(8f, 8f, 0f);
-    //ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
-    //ll1.setTextSize(8f);
-    //
-    //leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
-    //leftAxis.addLimitLine(ll1);
+    LimitLine ll1 = new LimitLine(10000f, "10k Limit");
+    ll1.setLineWidth(4f);
+    ll1.enableDashedLine(8f, 8f, 0f);
+    ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
+    ll1.setTextSize(8f);
+
+    leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
+    leftAxis.addLimitLine(ll1);
 
     mChart.setOnChartGestureListener(new OnChartGestureListener() {
       @Override public void onChartGestureStart(MotionEvent me,
@@ -473,15 +474,15 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       data.setData(mPresenter.generateLineData(mStats, mStatsSteps,
           getResources().getDrawable(R.drawable.animation_progress_bar), true, coefficient, true,
           mTracking)); // line - dots
-      data.setData(mPresenter.generateBarData(mStats, coefficient)); // colomns
+      //data.setData(mPresenter.generateBarData(mStats, coefficient)); // colomns
 
       //mChart.getXAxis().setAxisMaximum(data.getXMax() + 0.25f);
       mChart.setData(null);
       mChart.setData(data);
-      mChart.getBarData().setBarWidth(100);
+      //mChart.getBarData().setBarWidth(100);
       mChart.setDrawBarShadow(false);
       mChart.setHighlightFullBarEnabled(false);
-      mChart.getBarData().setHighlightEnabled(false);
+      //mChart.getBarData().setHighlightEnabled(false);
       mChart.setDrawValueAboveBar(true);
       mChart.fitScreen();
       mChart.invalidate();
@@ -524,7 +525,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     data.setData(mPresenter.generateLineData(mStats, mStatsSteps,
         getResources().getDrawable(R.drawable.animation_progress_bar), isAverageLineNeed,
         coeficient, true, null)); // line - dots
-    data.setData(mPresenter.generateBarData(mStats, coeficient)); // colomns
+    //data.setData(mPresenter.generateBarData(mStats, coeficient)); // colomns
 
     XAxis xAxis = mChart.getXAxis();
     xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // make text only on bottom
@@ -538,10 +539,10 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     //mChart.getXAxis().setAxisMaximum(data.getXMax() + 0.25f);
     mChart.setData(null);
     mChart.setData(data);
-    mChart.getBarData().setBarWidth(100);
+    //mChart.getBarData().setBarWidth(100);
     mChart.setDrawBarShadow(false);
     mChart.setHighlightFullBarEnabled(false);
-    mChart.getBarData().setHighlightEnabled(false);
+    //mChart.getBarData().setHighlightEnabled(false);
     mChart.setDrawValueAboveBar(true);
     mChart.fitScreen();
     mChart.invalidate();
@@ -669,17 +670,15 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
 
       if (!mTextViewStatsWeek.isSelected()) {
         diff = stats.size();
-        if(mTextViewStatsDay.isSelected()) {
+        if (mTextViewStatsDay.isSelected()) {
           mTextViewDaysAboveAverageValue.setText(
               "" + mPresenter.findDaysAboveAverageKm(stats) + "/" + diff);
-        }
-        else
-        {
+        } else {
           mTextViewAboveAverageText.setText(getString(R.string.days_challenge_completed));
           if (mTracking != null) {
             int averageDaysCount = 0;
             for (Stats s : stats) {
-                if (s.getStepsCount() > 10000) averageDaysCount++;
+              if (s.getStepsCount() > 10000) averageDaysCount++;
             }
             mTextViewDaysAboveAverageValue.setText("" + averageDaysCount + "/" + diff);
           }
@@ -689,7 +688,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
         if (mTracking != null) {
           try {
             diff = DataUtils.getDateDiff(DataUtils.subtractDays(
-                new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(mTracking.getCreatedAt()), 1),
+                new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(getStartDateCorrect()), 1),
                 new Date(System.currentTimeMillis()), TimeUnit.DAYS).intValue();
             Timber.e("huinia diff " + diff);
           } catch (ParseException e) {
@@ -705,13 +704,14 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
           int averageDaysCount = 0;
           for (Stats s : stats) {
             for (Stats sShp : statsList) {
-              if (s.getStepsCount() > sShp.getStepsCount()) averageDaysCount++;
+              if (s.getStepsCount() > sShp.getStepsCount()) {
+                averageDaysCount++;
+                break;
+              }
             }
           }
           mTextViewDaysAboveAverageValue.setText("" + averageDaysCount + "/" + diff);
-        }
-        else if (mTracking!=null)
-        {
+        } else if (mTracking != null) {
           mTextViewDaysAboveAverageValue.setText("" + 0 + "/" + diff);
         }
       }
@@ -744,12 +744,10 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       mTextViewAboveAverageText.setText(getString(R.string.days_above_average));
       if (!mTextViewStatsWeek.isSelected()) {
         diff = stats.size();
-        if(mTextViewStatsDay.isSelected()) {
+        if (mTextViewStatsDay.isSelected()) {
           mTextViewDaysAboveAverageValue.setText(
               "" + mPresenter.findDaysAboveAverageSteps(stats) + "/" + diff);
-        }
-        else
-        {
+        } else {
           mTextViewAboveAverageText.setText(getString(R.string.days_challenge_completed));
           if (mTracking != null) {
             int averageDaysCount = 0;
@@ -763,8 +761,9 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
 
         if (mTracking != null) {
           try {
+
             diff = DataUtils.getDateDiff(DataUtils.subtractDays(
-                new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(mTracking.getCreatedAt()), 1),
+                new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(getStartDateCorrect()), 1),
                 new Date(System.currentTimeMillis()), TimeUnit.DAYS).intValue();
             Timber.e("huinia diff " + diff);
           } catch (ParseException e) {
@@ -779,16 +778,21 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
               SharedPreferenceHelper.getAverageStatsFromSHP(mTracking.getId()).getResult()));
 
           int averageDaysCount = 0;
+          Timber.e("fillDetailsByStatsSteps stats size "
+              + stats.size()
+              + " SHP list "
+              + statsList.size());
           for (Stats s : stats) {
             for (Stats sShp : statsList) {
-              if (s.getStepsCount() > sShp.getStepsCount()) averageDaysCount++;
+              if (s.getStepsCount() > sShp.getStepsCount()) {
+                averageDaysCount++;
+                break;
+              }
             }
           }
           Timber.e("fillDetailsByStatsSteps averageDaysCount " + averageDaysCount);
           mTextViewDaysAboveAverageValue.setText("" + averageDaysCount + "/" + diff);
-        }
-        else if (mTracking!=null)
-        {
+        } else if (mTracking != null) {
           mTextViewDaysAboveAverageValue.setText("" + 0 + "/" + diff);
         }
       }
@@ -824,12 +828,10 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       mTextViewAboveAverageText.setText(getString(R.string.days_above_average));
       if (!mTextViewStatsWeek.isSelected()) {
         diff = stats.size();
-        if(mTextViewStatsDay.isSelected()) {
+        if (mTextViewStatsDay.isSelected()) {
           mTextViewDaysAboveAverageValue.setText(
               "" + mPresenter.findDaysAboveAverageKm(stats) + "/" + diff);
-        }
-        else
-        {
+        } else {
           mTextViewAboveAverageText.setText(getString(R.string.days_challenge_completed));
           if (mTracking != null) {
             int averageDaysCount = 0;
@@ -844,7 +846,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
         if (mTracking != null) {
           try {
             diff = DataUtils.getDateDiff(DataUtils.subtractDays(
-                new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(mTracking.getCreatedAt()), 1),
+                new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(getStartDateCorrect()), 1),
                 new Date(System.currentTimeMillis()), TimeUnit.DAYS).intValue();
             Timber.e("huinia diff " + diff);
           } catch (ParseException e) {
@@ -860,14 +862,15 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
           int averageDaysCount = 0;
           for (Stats s : stats) {
             for (Stats sShp : statsList) {
-              if (s.getStepsCount() > sShp.getStepsCount()) averageDaysCount++;
+              if (s.getStepsCount() > sShp.getStepsCount()) {
+                averageDaysCount++;
+                break;
+              }
             }
           }
           Timber.e("inside huinia 3 " + averageDaysCount + " " + diff);
           mTextViewDaysAboveAverageValue.setText("" + averageDaysCount + "/" + diff);
-        }
-        else if (mTracking!=null)
-        {
+        } else if (mTracking != null) {
           mTextViewDaysAboveAverageValue.setText("" + 0 + "/" + diff);
         }
       }
@@ -1123,15 +1126,15 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     data.setData(mPresenter.generateLineData(mStats, mStatsSteps,
         getResources().getDrawable(R.drawable.animation_progress_bar), false, coefficient, false,
         null)); // line - dots
-    data.setData(mPresenter.generateBarData(mStats, coefficient)); // colomns
+    //data.setData(mPresenter.generateBarData(mStats, coefficient)); // colomns
 
     //mChart.getXAxis().setAxisMaximum(data.getXMax() + 0.25f);
     mChart.setData(null);
     mChart.setData(data);
-    mChart.getBarData().setBarWidth(100);
+    //mChart.getBarData().setBarWidth(100);
     mChart.setDrawBarShadow(false);
     mChart.setHighlightFullBarEnabled(false);
-    mChart.getBarData().setHighlightEnabled(false);
+    //mChart.getBarData().setHighlightEnabled(false);
     mChart.setDrawValueAboveBar(true);
     mChart.fitScreen();
     mChart.getXAxis().setAxisMinimum(0f);
@@ -1183,5 +1186,21 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     } else {
       mTextViewAvatarEvents.setVisibility(View.GONE);
     }
+  }
+
+  private String getStartDateCorrect() {
+    String startDate = "noNe";
+    if (!mTracking.isMentors()) startDate = mTracking.getCreatedAt();
+    if (mTracking.isMentors()) {
+      for (Member me : mTracking.getMembers()) {
+        if (me.getId().equals(SharedPreferenceHelper.getUserId()) && me.getCreatedAt() != null) {
+          startDate = me.getCreatedAt().split("T")[0];
+        }
+      }
+      if (startDate == null || startDate.equals("none date")) {
+        startDate = DataUtils.getLastXDays(21).get(0);
+      }
+    }
+    return startDate;
   }
 }
