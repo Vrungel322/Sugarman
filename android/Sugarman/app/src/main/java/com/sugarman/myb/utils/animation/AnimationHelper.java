@@ -95,6 +95,9 @@ public class AnimationHelper {
         bmp.compress(Bitmap.CompressFormat.PNG, 0, out);
         out.flush();
         out.close();
+        if (bmp!=null){
+          bmp.recycle();
+        }
       } catch (Exception e) {
         e.printStackTrace();
       }
