@@ -86,12 +86,11 @@ import timber.log.Timber;
   public void startChartFlow(@Nullable Tracking tracking, Context context) throws ParseException {
     WeakReference<Context> contextWeakReference = new WeakReference<Context>(context);
     //if (tracking != null) {
-      fetchTrackingStats(tracking.getId(), tracking, tracking.isMentors());
-      fetchMessages(tracking.getId(), "0", SingletonLikeApp.getInstance()
-          .getSharedPreferences(contextWeakReference.get())
-          .getToken());
-      fetchAverageStats(tracking);
-      fetchStats();
+    fetchTrackingStats(tracking.getId(), tracking, tracking.isMentors());
+    fetchMessages(tracking.getId(), "0",
+        SingletonLikeApp.getInstance().getSharedPreferences(contextWeakReference.get()).getToken());
+    fetchAverageStats(tracking);
+    fetchStats();
 
     //} else {
     //  fetchStats();
@@ -398,7 +397,7 @@ import timber.log.Timber;
     for (int i = 0; i < stats.size(); i++) {
       integers.add(stats.get(i).getStepsCount());
     }
-    if (integers.size() == 0) return 0;
+    if (integers.size() == 0 || Collections.max(integers) < 0) return 0;
     return Collections.max(integers);
   }
 
@@ -411,7 +410,7 @@ import timber.log.Timber;
         integers.add(stats.get(i).getStepsCount());
       }
     }
-    if (integers.isEmpty()) return 0;
+    if (integers.isEmpty() || Collections.min(integers) < 0) return 0;
     return Collections.min(integers);
   }
 
