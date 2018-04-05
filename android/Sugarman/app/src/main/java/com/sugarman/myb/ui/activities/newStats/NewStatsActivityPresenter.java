@@ -346,6 +346,9 @@ import timber.log.Timber;
             + lastDayAverage
             + "tracking members : "
             + tracking.getMembers().length);
+        if (tracking.isMentors()) {
+          entriesDashed.remove(entriesDashed.size() - 1);
+        }
         entriesDashed.add(
             new Entry(entriesDashed.size(), lastDayAverage / tracking.getMembers().length));
       }
