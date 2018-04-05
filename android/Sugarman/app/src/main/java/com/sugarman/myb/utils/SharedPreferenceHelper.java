@@ -955,7 +955,7 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
 
     //while (BaseSharedPreferenceHelper.getPrefsInstance()
     //    .contains(SharedPreferenceConstants.HOUR_ + index)) {
-    for (int i = 0; i<23;i++){
+    for (int i = 0; i < 23; i++) {
       if (index < rightNow.get(Calendar.HOUR_OF_DAY)) {
         int countSteps =
             getInt(SharedPreferenceConstants.HOUR_ + index, Constants.FAKE_STEPS_COUNT);
@@ -968,7 +968,7 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
         lst.add(countSteps);
         //}
         index++;
-      }else {
+      } else {
         break;
       }
     }
@@ -987,12 +987,26 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
   public static void saveAverageStats(StatsResponse body, String id) {
     if (body != null) {
       Timber.e("saveAverageStats" + body.getResult().length);
-      putString(SharedPreferenceConstants.CACHED_AVERAGE_STATS+id, new Gson().toJson(body));
+      putString(SharedPreferenceConstants.CACHED_AVERAGE_STATS + id, new Gson().toJson(body));
     }
   }
 
   public static StatsResponse getAverageStatsFromSHP(String id) {
-    return new Gson().fromJson(getString(SharedPreferenceConstants.CACHED_AVERAGE_STATS+id, ""),
+    return new Gson().fromJson(getString(SharedPreferenceConstants.CACHED_AVERAGE_STATS + id, ""),
         StatsResponse.class);
+  }
+
+  public static void saveDateOfClearingDaysHours() {
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTimeInMillis(System.currentTimeMillis());
+    int mYear = calendar.get(Calendar.YEAR);
+    int mMonth = calendar.get(Calendar.MONTH);
+    int mDay = calendar.get(Calendar.DAY_OF_MONTH);
+    putString(SharedPreferenceConstants.DATE_OF_CLEARING_DAYS_STEPS,
+        mYear + "-" + mMonth + "-" + mDay);
+  }
+
+  public static String getDateOfClearingDaysHours() {
+    return getString(SharedPreferenceConstants.DATE_OF_CLEARING_DAYS_STEPS, "noNe");
   }
 }

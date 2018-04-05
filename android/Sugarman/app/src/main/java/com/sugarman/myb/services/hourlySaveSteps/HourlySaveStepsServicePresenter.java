@@ -4,6 +4,7 @@ import com.sugarman.myb.App;
 import com.sugarman.myb.base.BasicPresenter;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import rx.Observable;
@@ -33,23 +34,33 @@ public class HourlySaveStepsServicePresenter extends BasicPresenter<IHourlySaveS
         .subscribe(aLong -> {
           steps = SharedPreferenceHelper.getReportStatsLocal(
               SharedPreferenceHelper.getUserId())[0].getStepsCount();
-          if (numOfHours == 24) {
+          Calendar calendar = Calendar.getInstance();
+          calendar.setTimeInMillis(System.currentTimeMillis());
+          int mYear = calendar.get(Calendar.YEAR);
+          int mMonth = calendar.get(Calendar.MONTH);
+          int mDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+          if (!SharedPreferenceHelper.getDateOfClearingDaysHours()
+              .equals(mYear + "-" + mMonth + "-" + mDay)) {
             numOfHours = 0;
             printDebug();
             clearLast24HoursSteps();
           }
-          Timber.e("startHourlySaveSteps numOfHours" + numOfHours);
+          Calendar rightNow = Calendar.getInstance();
+          numOfHours = rightNow.get(Calendar.HOUR_OF_DAY);
+
+          Timber.e("startHourlySaveSteps numOfHours " + numOfHours);
           Timber.e("startHourlySaveSteps steps" + steps);
           Timber.e("startHourlySaveSteps countSumOfStats" + countSumOfStats(
               SharedPreferenceHelper.getStepsPerDay()));
-          Timber.e("startHourlySaveSteps difference" + ( steps - countSumOfStats(
+          Timber.e("startHourlySaveSteps difference" + (steps - countSumOfStats(
               SharedPreferenceHelper.getStepsPerDay())));
 
-          SharedPreferenceHelper.saveHourlySteps(numOfHours,steps - countSumOfStats(SharedPreferenceHelper.getStepsPerDay()));
+          SharedPreferenceHelper.saveHourlySteps(numOfHours,
+              steps - countSumOfStats(SharedPreferenceHelper.getStepsPerDay()));
 
           //SharedPreferenceHelper.saveHourlySteps(numOfHours,steps );
 
-          numOfHours++;
         }, Throwable::printStackTrace);
   }
 
@@ -57,7 +68,7 @@ public class HourlySaveStepsServicePresenter extends BasicPresenter<IHourlySaveS
     int sum = 0;
     Timber.e("countSumOfStats stats size" + stats.size());
     for (int i : stats) {
-      Timber.e("countSumOfStats IN FOR" + sum );
+      Timber.e("countSumOfStats IN FOR" + sum);
       sum += i;
     }
     return sum;
@@ -78,7 +89,7 @@ public class HourlySaveStepsServicePresenter extends BasicPresenter<IHourlySaveS
     //    .contains(SharedPreferenceConstants.HOUR_ + index)) {
     for (int i = 0; i < 24; i++) {
       SharedPreferenceHelper.saveHourlySteps(i, Constants.FAKE_STEPS_COUNT);
-      //SharedPreferenceHelper.saveHourlySteps(i, 0);
+      SharedPreferenceHelper.saveDateOfClearingDaysHours();
     }
   }
 
