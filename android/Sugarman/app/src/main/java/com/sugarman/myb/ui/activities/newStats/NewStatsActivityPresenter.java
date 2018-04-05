@@ -273,6 +273,7 @@ import timber.log.Timber;
       boolean isAverageLineNeed, float coeficient, boolean displayLastValue, Tracking tracking) {
     entries = new ArrayList<>();
     entriesDashed = new ArrayList<Entry>();
+    ArrayList<Entry> entriesBold = new ArrayList<Entry>();
     sempStat = new ArrayList<Stats>();
     //MyMarkerView mv = new MyMarkerView(this, R.layout.custom_marker_view);
     //mChart.setMarker(mv);
@@ -306,7 +307,7 @@ import timber.log.Timber;
 
     LineDataSet set = new LineDataSet(entries, "Steps");
     set.setColor(Color.rgb(255, 0, 0));
-    set.setLineWidth(2.5f);
+    set.setLineWidth(2.0f);
     set.setCircleColor(Color.rgb(0, 0, 0));
     set.setCircleRadius(5f);
     set.setFillColor(Color.rgb(255, 0, 0));
@@ -354,13 +355,27 @@ import timber.log.Timber;
 
       LineDataSet setDashed = new LineDataSet(entriesDashed, "Group Steps");
       setDashed.setColor(Color.rgb(231, 145, 129));
-      setDashed.setLineWidth(2.5f);
+      setDashed.setLineWidth(2.0f);
       setDashed.setValueTextSize(0f);
       setDashed.enableDashedLine(10, 10, 0);
       setDashed.setAxisDependency(YAxis.AxisDependency.LEFT);
       d.addDataSet(setDashed);
       dataSets.add(setDashed);
     }
+
+
+    //Bold stuff
+    for (int i = 0; i< 3;i++){
+      entriesBold.add(new Entry(i+3, 10000*i));
+    }
+    LineDataSet setBold = new LineDataSet(entriesBold, "Bold");
+    setBold.setColor(Color.rgb(231, 145, 129));
+    setBold.setLineWidth(5.0f);
+    setBold.setValueTextSize(0f);
+    setBold.setAxisDependency(YAxis.AxisDependency.LEFT);
+    d.addDataSet(setBold);
+    dataSets.add(setBold);
+
 
     return new LineData(dataSets);
   }
