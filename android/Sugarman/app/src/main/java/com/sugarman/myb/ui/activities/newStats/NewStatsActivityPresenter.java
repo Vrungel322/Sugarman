@@ -361,11 +361,17 @@ import timber.log.Timber;
       cashedStats.addAll(mDataManager.getAverageStatsFromSHP(tracking.getId(), tracking));
 
       int i = 0;
-      for (int index = cashedStats.size() - 21; index < cashedStats.size(); index++) {
-        entriesDashed.add(new Entry(i, cashedStats.get(index).getStepsCount() * coeficient));
-        i++;
+      if(cashedStats.size()>21) {
+        for (int index = cashedStats.size() - 21; index < cashedStats.size(); index++) {
+          entriesDashed.add(new Entry(i, cashedStats.get(index).getStepsCount() * coeficient));
+          i++;
+        }
       }
-
+else {
+        for (int index = 0; index < cashedStats.size(); index++) {
+          entriesDashed.add(new Entry(index, cashedStats.get(index).getStepsCount() * coeficient));
+        }
+      }
       //add last day average count it on device
       if (entriesDashed.size() < 21) {
         int lastDayAverage = 0;

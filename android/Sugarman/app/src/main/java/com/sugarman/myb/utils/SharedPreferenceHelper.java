@@ -1033,6 +1033,7 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     try {
       dif = DataUtils.getDateDiff(df1.parse(startDate), Calendar.getInstance().getTime(),
           TimeUnit.DAYS);
+      dif = Math.min(dif,21);
     } catch (ParseException e) {
       e.printStackTrace();
     }
