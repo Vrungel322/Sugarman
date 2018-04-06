@@ -132,6 +132,7 @@ import timber.log.Timber;
     int diff = DataUtils.getDateDiff(
         DataUtils.subtractDays(new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(startDate), 1),
         new Date(System.currentTimeMillis()), TimeUnit.DAYS).intValue();
+    diff = Math.min(diff,21);
     Timber.e("fetchTrackingStats diff: " + diff);
 
     List<Stats> statsCached = mDbRepositoryStats.getAllEntities(diff + 1);
@@ -369,6 +370,7 @@ import timber.log.Timber;
       }
 else {
         for (int index = 0; index < cashedStats.size(); index++) {
+          if(cashedStats.get(index)!=null)
           entriesDashed.add(new Entry(index, cashedStats.get(index).getStepsCount() * coeficient));
         }
       }

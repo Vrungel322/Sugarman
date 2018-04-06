@@ -809,6 +809,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
               + statsList.size());
           for (Stats s : stats) {
             for (Stats sShp : statsList) {
+              if(sShp!=null)
               if (s.getStepsCount() > sShp.getStepsCount()) {
                 averageDaysCount++;
                 break;
