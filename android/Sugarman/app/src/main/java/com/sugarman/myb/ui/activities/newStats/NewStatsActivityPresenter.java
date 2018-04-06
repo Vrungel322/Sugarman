@@ -462,10 +462,10 @@ import timber.log.Timber;
       if (stats.get(i).getStepsCount() > NORM) {
         tmp++;
 
-        if (i == 0 && stats.get(i + 1).getStepsCount() > NORM) {
+        if (i!=stats.size()-1 && (stats.get(i + 1).getStepsCount() > NORM || tmp>1) ) {
           Timber.e("huy");
           strikes.add(new Strike(i, stats.get(i).getStepsCount()));
-        } else if (i != 0) strikes.add(new Strike(i, stats.get(i).getStepsCount()));
+        }
       } else {
         if (tmp < 2) {
           tmp = 0;
