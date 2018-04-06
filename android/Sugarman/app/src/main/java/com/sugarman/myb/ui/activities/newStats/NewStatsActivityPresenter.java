@@ -151,7 +151,23 @@ import timber.log.Timber;
     if (!needToUpdateDataTracking) {
       getViewState().showTrackingStats(statsCached);
     } else {
-      Subscription subscription = mDataManager.fetchTrackingStats(trackingId)
+
+      String startDate1 = "";
+      startDate1 = tracking.getStartDate();
+      try {
+        diff = DataUtils.getDateDiff(
+            new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(startDate1),
+            new Date(System.currentTimeMillis()), TimeUnit.DAYS).intValue();
+      } catch (ParseException e) {
+        e.printStackTrace();
+      }
+    diff = Math.min(21,diff);
+      SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+      String queryStartDate = dateFormat.format(DataUtils.subtractDays(Calendar.getInstance().getTime(),diff-1));
+      String queryEndDate = dateFormat.format(Calendar.getInstance().getTime());
+      Timber.e("QUery Start Date " + queryStartDate + "/" + queryEndDate);
+
+      Subscription subscription = mDataManager.fetchStats(queryStartDate, queryEndDate)
           .concatMap(
               statsResponseResponse -> Observable.just(statsResponseResponse.body().getResult()))
           //.concatMap(stats -> {
@@ -160,6 +176,7 @@ import timber.log.Timber;
           //})
           .concatMap(Observable::from)
           .concatMap(stats -> {
+
             mDbRepositoryStats.saveEntity(stats);
             return Observable.just(stats);
           })
@@ -422,6 +439,7 @@ else {
         dataSets.add(setBold);
       }
     }
+
 
     return new LineData(dataSets);
   }

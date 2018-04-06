@@ -481,7 +481,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
           mCountOfStepsForLastXDays += mStats.get(i).getStepsCount();
         }
       }
-      Timber.e("onTouchDouble mCountOfStepsForLastXDays " + mCountOfStepsForLastXDays);
+      //Timber.e("onTouchDouble mCountOfStepsForLastXDays " + mCountOfStepsForLastXDays);
 
       Collections.sort(mStats, (stats, t1) -> Integer.valueOf(
           String.valueOf(stats.getDayTimestamp() / 1000 - t1.getDayTimestamp() / 1000)));
@@ -1129,11 +1129,11 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
 
   @Override public void showStats(List<Stats> statsCached) {
     mStatsCount = statsCached.size();
-    changeStatsOnChart(mTextViewStatsPersonal);
+    //changeStatsOnChart(mTextViewStatsPersonal);
     changeStatsOnDescriptionDetails(mImageViewStatsSteps);
     setUpUIChart();
     // не трогая уже прописанную логику открытия Персонал таба, дописал логику открытия Вик таба
-    changeStatsOnChart(mTextViewStatsWeek);
+    //changeStatsOnChart(mTextViewStatsWeek);
   }
 
   @Override public void showTrackingStats(List<Stats> statsCached) {
@@ -1141,7 +1141,10 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     mStatsCount = statsCached.size();
     mStatsOfTracking.clear();
     mStatsOfTracking.addAll(statsCached);
-    changeStatsOnChart(mTextViewStatsPersonal);
+    if(mTracking==null) {
+      changeStatsOnChart(mTextViewStatsPersonal);
+      Timber.e("Mtracking null");
+    }
     setUpUIChart();
     changeStatsOnDescriptionDetails(mImageViewStatsSteps);
 
