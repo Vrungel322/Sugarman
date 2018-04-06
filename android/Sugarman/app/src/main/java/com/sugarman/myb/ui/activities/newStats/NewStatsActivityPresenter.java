@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
-import android.text.format.DateUtils;
 import com.arellomobile.mvp.InjectViewState;
 import com.clover_studio.spikachatmodule.base.SingletonLikeApp;
 import com.clover_studio.spikachatmodule.models.User;
@@ -41,7 +40,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -64,6 +62,13 @@ import timber.log.Timber;
   int maxStrike = 0;
   private boolean needToupdateData; // if on charts my stats data
   private boolean needToUpdateDataTracking; // if on charts tracking data
+
+  public static <T> int getLength(T[] arr) {
+    int count = 0;
+    for (T el : arr)
+      if (el != null) ++count;
+    return count;
+  }
 
   @Override protected void inject() {
     App.getAppComponent().inject(this);
@@ -162,7 +167,7 @@ import timber.log.Timber;
           .toList()
           .compose(ThreadSchedulers.applySchedulers())
           .subscribe(statsList -> {
-            Timber.e("fetchTrackingStats statsList subscribe "+statsList.size() );
+            Timber.e("fetchTrackingStats statsList subscribe " + statsList.size());
             getViewState().showTrackingStats(statsList);
           }, Throwable::printStackTrace);
       addToUnsubscription(subscription);
@@ -174,9 +179,11 @@ import timber.log.Timber;
    * Osobenno dlya MyStats
    */
   public void fetchStats() {
+    List<Stats> missingStats = new ArrayList<>();
     List<Stats> statsCached = mDbRepositoryStats.getAllEntities(21);
     for (Stats s : statsCached) {
       if (s.getStepsCount() == Constants.FAKE_STEPS_COUNT) {
+        missingStats.add(s);
         needToupdateData = true;
       }
     }
@@ -187,7 +194,9 @@ import timber.log.Timber;
     } else {
 
       Timber.e("fetchStats");
-      Subscription subscription = mDataManager.fetchStats()
+      //Subscription subscription = mDataManager.fetchStats()
+      Subscription subscription = Observable.from(missingStats)
+          .flatMap(stats -> mDataManager.fetchStats(stats.getDate(),stats.getDate()))
           .filter(statsResponseResponse -> statsResponseResponse.body().getResult() != null)
           .concatMap(
               statsResponseResponse -> Observable.just(statsResponseResponse.body().getResult()))
@@ -232,7 +241,9 @@ import timber.log.Timber;
           df.parse(me.getCreatedAt());
           Calendar cal = Calendar.getInstance();
           cal.getTime();
-          int diff = DataUtils.getDateDiff(df.parse(me.getCreatedAt()), cal.getTime(),TimeUnit.DAYS).intValue();
+          int diff =
+              DataUtils.getDateDiff(df.parse(me.getCreatedAt()), cal.getTime(), TimeUnit.DAYS)
+                  .intValue();
           Timber.e("DATE DIFF " + Math.min(diff, 21));
           Timber.e("DATE DIFFERENCE " + diff);
           startDate = me.getCreatedAt().split("T")[0];
@@ -313,7 +324,6 @@ import timber.log.Timber;
       }
     }
 
-
     //setTodaySteps(SharedPreferenceHelper.getUserTodaySteps());
     //entries.remove(entries.size() - 1);
     //entries.add(new Entry(entries.size(), SharedPreferenceHelper.getUserTodaySteps()));
@@ -381,13 +391,11 @@ import timber.log.Timber;
       dataSets.add(setDashed);
     }
 
-
     //Bold stuff
 
-    for (List<Strike> s : findStrikeSteps(stats))
-    {
+    for (List<Strike> s : findStrikeSteps(stats)) {
       ArrayList<Entry> boldEntries = new ArrayList<>();
-      if(s!=null) {
+      if (s != null) {
         for (int i = 0; i < s.size(); i++) {
           boldEntries.add(new Entry(s.get(i).getStartingPosition(), s.get(i).getValue()));
         }
@@ -405,14 +413,6 @@ import timber.log.Timber;
     }
 
     return new LineData(dataSets);
-  }
-
-  public static <T> int getLength(T[] arr){
-    int count = 0;
-    for(T el : arr)
-      if (el != null)
-        ++count;
-    return count;
   }
 
   public void setTodaySteps(int steps) {
@@ -456,32 +456,22 @@ import timber.log.Timber;
     List<Strike> strikes = new ArrayList<>();
 
     for (int i = 0; i < stats.size(); i++) {
-      if(stats.get(i).getStepsCount()>NORM)
-      {
+      if (stats.get(i).getStepsCount() > NORM) {
         tmp++;
 
-        if(i == 0 && stats.get(i+1).getStepsCount()>NORM) {
+        if (i == 0 && stats.get(i + 1).getStepsCount() > NORM) {
           Timber.e("huy");
           strikes.add(new Strike(i, stats.get(i).getStepsCount()));
-        }
-        else
-          if (i!=0)
-          strikes.add(new Strike(i, stats.get(i).getStepsCount()));
-      }
-      else
-      {
-        if(tmp<2)
-        {
+        } else if (i != 0) strikes.add(new Strike(i, stats.get(i).getStepsCount()));
+      } else {
+        if (tmp < 2) {
           tmp = 0;
-        }
-        else
-        {
-          if(maxStrike<tmp)
-            maxStrike = tmp;
+        } else {
+          if (maxStrike < tmp) maxStrike = tmp;
           strikesList[arrayIndex] = strikes;
           strikes = new ArrayList<>();
           arrayIndex++;
-          tmp=0;
+          tmp = 0;
         }
       }
     }
@@ -489,8 +479,7 @@ import timber.log.Timber;
     return strikesList;
   }
 
-  public int getMaxStrike()
-  {
+  public int getMaxStrike() {
     return maxStrike;
   }
 
@@ -503,8 +492,6 @@ import timber.log.Timber;
     if (integers.size() == 0 || Collections.max(integers) < 0) return 0;
     return Collections.max(integers);
   }
-
-
 
   public int findMinSteps(List<Stats> stats) {
 

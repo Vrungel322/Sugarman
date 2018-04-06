@@ -1,6 +1,6 @@
 package com.sugarman.myb.api;
 
-import com.sugarman.myb.api.models.StatsAverageRequest;
+import com.sugarman.myb.api.models.StatsRequest;
 import com.sugarman.myb.api.models.levelSystem.TaskEntity;
 import com.sugarman.myb.api.models.requests.ApproveOtpRequest;
 import com.sugarman.myb.api.models.requests.CheckPhoneRequest;
@@ -178,6 +178,9 @@ public interface ApiRx {
 
   @GET("/v2/me/stats") Observable<Response<StatsResponse>> fetchStats();
 
+  @POST("/v2/me/stats") Observable<Response<StatsResponse>> fetchStats(
+      @Body StatsRequest statsRequest);
+
   @GET("/v1/me/trackings/{tracking_id}/stats")
   Observable<Response<TrackingStatsResponse>> fetchTrackingStats(
       @Path("tracking_id") String trackingId);
@@ -211,5 +214,5 @@ public interface ApiRx {
       @Query("query") String query, @Query("type") String type);
 
   @POST("v1/stats/{tracking_id}/average") Observable<Response<StatsResponse>> fetchAverageStats(
-      @Path("tracking_id") String trackingId, @Body StatsAverageRequest statsAverageRequest);
+      @Path("tracking_id") String trackingId, @Body StatsRequest statsRequest);
 }

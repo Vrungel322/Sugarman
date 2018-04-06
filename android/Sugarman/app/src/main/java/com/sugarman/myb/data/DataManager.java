@@ -420,6 +420,10 @@ public class DataManager {
     return mRestApi.fetchStats();
   }
 
+  public Observable<Response<StatsResponse>> fetchStats(String startDate, String endDate) {
+    return mRestApi.fetchStats(startDate, endDate);
+  }
+
   public Observable<Response<TrackingStatsResponse>> fetchTrackingStats(String trackingId) {
     return mRestApi.fetchTrackingStats(trackingId);
   }

@@ -7,7 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @AllArgsConstructor @ToString
-public class StatsAverageRequest {
+public class StatsRequest {
   @Getter @Setter @SerializedName("start_date") private String startDate;
   @Getter @Setter @SerializedName("end_date") private String endDate;
 }
