@@ -14,7 +14,6 @@ import com.arellomobile.mvp.presenter.InjectPresenter;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.github.mikephil.charting.charts.CombinedChart;
-import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -1126,6 +1125,9 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     changeStatsOnChart(mTextViewStatsPersonal);
     setUpUIChart();
     changeStatsOnDescriptionDetails(mImageViewStatsSteps);
+
+    // не трогая уже прописанную логику открытия Персонал таба, дописал логику открытия Вик таба
+    changeStatsOnChart(mTextViewStatsWeek);
   }
 
   @Override public void showDayStats(List<Stats> stats, float coefficient) {
