@@ -24,6 +24,7 @@ import com.sugarman.myb.api.models.responses.InvitersImgUrls;
 import com.sugarman.myb.api.models.responses.MentorsVendor;
 import com.sugarman.myb.api.models.responses.RescueFriendResponse;
 import com.sugarman.myb.api.models.responses.ShopProductEntity;
+import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.api.models.responses.animation.GetAnimationResponse;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.api.models.responses.me.invites.InvitesResponse;
@@ -477,11 +478,11 @@ public class DataManager {
     return mRestApi.fetchAverageStats(trackingId, startDate, endDate);
   }
 
-  public void saveAverageStats(StatsResponse body, String id) {
-    SharedPreferenceHelper.saveAverageStats(body, id);
+  public void saveAverageStats(Stats body, String id,String date) {
+    SharedPreferenceHelper.saveAverageStats(body, id,date);
   }
 
-  public StatsResponse getAverageStatsFromSHP(String id) {
-    return SharedPreferenceHelper.getAverageStatsFromSHP(id);
+  public List<Stats> getAverageStatsFromSHP(String id,Tracking tracking) {
+    return SharedPreferenceHelper.getAverageStatsFromSHP(id,tracking);
   }
 }

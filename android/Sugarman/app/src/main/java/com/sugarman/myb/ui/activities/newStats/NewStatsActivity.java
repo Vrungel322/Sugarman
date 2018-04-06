@@ -711,9 +711,10 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
 
         List<Stats> statsList = new ArrayList<>();
         if (mTracking != null
-            && SharedPreferenceHelper.getAverageStatsFromSHP(mTracking.getId()) != null) {
-          statsList.addAll(Arrays.asList(
-              SharedPreferenceHelper.getAverageStatsFromSHP(mTracking.getId()).getResult()));
+            && SharedPreferenceHelper.getAverageStatsFromSHP(mTracking.getId(), mTracking)
+            != null) {
+          statsList.addAll(
+              SharedPreferenceHelper.getAverageStatsFromSHP(mTracking.getId(), mTracking));
           int averageDaysCount = 0;
           for (Stats s : stats) {
             for (Stats sShp : statsList) {
@@ -792,9 +793,10 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
 
         List<Stats> statsList = new ArrayList<>();
         if (mTracking != null
-            && SharedPreferenceHelper.getAverageStatsFromSHP(mTracking.getId()) != null) {
-          statsList.addAll(Arrays.asList(
-              SharedPreferenceHelper.getAverageStatsFromSHP(mTracking.getId()).getResult()));
+            && SharedPreferenceHelper.getAverageStatsFromSHP(mTracking.getId(), mTracking)
+            != null) {
+          statsList.addAll(
+              SharedPreferenceHelper.getAverageStatsFromSHP(mTracking.getId(), mTracking));
 
           int averageDaysCount = 0;
           Timber.e("fillDetailsByStatsSteps stats size "
@@ -880,9 +882,10 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
 
         List<Stats> statsList = new ArrayList<>();
         if (mTracking != null
-            && SharedPreferenceHelper.getAverageStatsFromSHP(mTracking.getId()) != null) {
-          statsList.addAll(Arrays.asList(
-              SharedPreferenceHelper.getAverageStatsFromSHP(mTracking.getId()).getResult()));
+            && SharedPreferenceHelper.getAverageStatsFromSHP(mTracking.getId(), mTracking)
+            != null) {
+          statsList.addAll(
+              SharedPreferenceHelper.getAverageStatsFromSHP(mTracking.getId(), mTracking));
           int averageDaysCount = 0;
           for (Stats s : stats) {
             for (Stats sShp : statsList) {

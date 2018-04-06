@@ -19,7 +19,6 @@ import com.sugarman.myb.App;
 import com.sugarman.myb.api.models.responses.Member;
 import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.api.models.responses.me.stats.Stats;
-import com.sugarman.myb.api.models.responses.me.stats.StatsResponse;
 import com.sugarman.myb.base.BasicPresenter;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.data.db.DbRepositoryStats;
@@ -34,7 +33,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -195,7 +193,8 @@ import timber.log.Timber;
 
       Timber.e("fetchStats");
       //Subscription subscription = mDataManager.fetchStats()
-      Subscription subscription = mDataManager.fetchStats(missingStats.get(0).getDate(),missingStats.get(missingStats.size()-1).getDate())
+      Subscription subscription = mDataManager.fetchStats(missingStats.get(0).getDate(),
+          missingStats.get(missingStats.size() - 1).getDate())
           .filter(statsResponseResponse -> statsResponseResponse.body().getResult() != null)
           .concatMap(
               statsResponseResponse -> Observable.just(statsResponseResponse.body().getResult()))
@@ -220,7 +219,7 @@ import timber.log.Timber;
   }
 
   public void fetchAverageStats(Tracking tracking) throws ParseException {
-    StatsResponse statsResponse = mDataManager.getAverageStatsFromSHP(tracking.getId());
+    List<Stats> cachedAverageStats = mDataManager.getAverageStatsFromSHP(tracking.getId(), tracking);
     //if (statsResponse != null) getViewState().showStats(Arrays.asList(statsResponse.getResult()));
     String startDate = "none date";
 
@@ -237,7 +236,7 @@ import timber.log.Timber;
         if (me.getId().equals(SharedPreferenceHelper.getUserId()) && me.getCreatedAt() != null) {
 
           DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
-          df.parse(me.getCreatedAt());
+          //df.parse(me.getCreatedAt());
           Calendar cal = Calendar.getInstance();
           cal.getTime();
           int diff =
@@ -249,7 +248,11 @@ import timber.log.Timber;
         }
       }
       if (startDate == null || startDate.equals("none date")) {
-        startDate = DataUtils.getLastXDays(21).get(0);
+        if (cachedAverageStats!=null&& !cachedAverageStats.isEmpty()){
+          startDate= cachedAverageStats.get(cachedAverageStats.size()-1).getDate();
+        }else {
+          startDate = DataUtils.getLastXDays(21).get(0);
+        }
       }
     }
     Timber.e("fetchAverageStats prev from 21 = " + DataUtils.getLastXDays(21).get(0));
@@ -261,15 +264,17 @@ import timber.log.Timber;
         .filter(statsResponseResponse -> statsResponseResponse.body() != null)
         .filter(statsResponseResponse -> statsResponseResponse.body().getResult() != null)
         .filter(statsResponseResponse -> statsResponseResponse.body().getResult().length != 0)
+        .flatMap(statsResponseResponse -> Observable.from(statsResponseResponse.body().getResult()))
         .flatMap(statsResponseResponse -> {
-          Timber.e("fetchAverageStats " + statsResponseResponse.code());
-          mDataManager.saveAverageStats(statsResponseResponse.body(), tracking.getId());
-          return Observable.just(statsResponseResponse.body().getResult());
+          mDataManager.saveAverageStats(statsResponseResponse, tracking.getId(),
+              statsResponseResponse.getDate());
+          return Observable.just(statsResponseResponse);
         })
+        .toList()
         .compose(ThreadSchedulers.applySchedulers())
         .subscribe(stats -> {
           if (stats != null) {
-            Timber.e("fetchAverageStats stats length " + stats.length);
+            Timber.e("fetchAverageStats stats length " + stats.size());
           }
         }, Throwable::printStackTrace);
     addToUnsubscription(subscription);
@@ -349,12 +354,11 @@ import timber.log.Timber;
 
     if (isAverageLineNeed
         && tracking != null
-        && mDataManager.getAverageStatsFromSHP(tracking.getId()) != null) {
+        && mDataManager.getAverageStatsFromSHP(tracking.getId(), tracking) != null) {
       Timber.e(
-          "generateLineData cashedStats " + mDataManager.getAverageStatsFromSHP(tracking.getId())
-              .getResult().length);
-      cashedStats.addAll(
-          Arrays.asList(mDataManager.getAverageStatsFromSHP(tracking.getId()).getResult()));
+          "generateLineData cashedStats " + mDataManager.getAverageStatsFromSHP(tracking.getId(),
+              tracking).size());
+      cashedStats.addAll(mDataManager.getAverageStatsFromSHP(tracking.getId(), tracking));
 
       int i = 0;
       for (int index = cashedStats.size() - 21; index < cashedStats.size(); index++) {

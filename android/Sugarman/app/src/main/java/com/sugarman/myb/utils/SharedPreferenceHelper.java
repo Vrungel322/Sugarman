@@ -4,11 +4,12 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.sugarman.myb.api.models.requests.ReportStats;
+import com.sugarman.myb.api.models.responses.Member;
+import com.sugarman.myb.api.models.responses.Tracking;
 import com.sugarman.myb.api.models.responses.facebook.FacebookFriend;
 import com.sugarman.myb.api.models.responses.me.invites.Invite;
 import com.sugarman.myb.api.models.responses.me.requests.Request;
 import com.sugarman.myb.api.models.responses.me.stats.Stats;
-import com.sugarman.myb.api.models.responses.me.stats.StatsResponse;
 import com.sugarman.myb.api.models.responses.trackings.TrackingsResponse;
 import com.sugarman.myb.api.models.responses.users.Tokens;
 import com.sugarman.myb.api.models.responses.users.User;
@@ -20,12 +21,15 @@ import com.sugarman.myb.models.mentor.MentorEntity;
 import com.sugarman.myb.models.splash_activity.DataForMainActivity;
 import java.lang.reflect.Type;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 import timber.log.Timber;
 
 public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
@@ -984,16 +988,64 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     return lst;
   }
 
-  public static void saveAverageStats(StatsResponse body, String id) {
+  public static void saveAverageStats(Stats body, String id, String data) {
     if (body != null) {
-      Timber.e("saveAverageStats" + body.getResult().length);
-      putString(SharedPreferenceConstants.CACHED_AVERAGE_STATS + id, new Gson().toJson(body));
+      //Timber.e("saveAverageStats" + body.getResult().length);
+      putString(SharedPreferenceConstants.CACHED_AVERAGE_STATS + id + data,
+          new Gson().toJson(body));
     }
   }
 
-  public static StatsResponse getAverageStatsFromSHP(String id) {
-    return new Gson().fromJson(getString(SharedPreferenceConstants.CACHED_AVERAGE_STATS + id, ""),
-        StatsResponse.class);
+  public static List<Stats> getAverageStatsFromSHP(String id, Tracking tracking) {
+
+    String startDate = "noNe";
+    long now = System.currentTimeMillis();
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTimeInMillis(now);
+
+    if (!tracking.isMentors()) startDate = tracking.getCreatedAt();
+    if (tracking.isMentors()) {
+      for (Member me : tracking.getMembers()) {
+        if (me.getId().equals(SharedPreferenceHelper.getUserId()) && me.getCreatedAt() != null) {
+
+          DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
+          //df.parse(me.getCreatedAt());
+          Calendar cal = Calendar.getInstance();
+          cal.getTime();
+          int diff = 0;
+          try {
+            diff = DataUtils.getDateDiff(df.parse(me.getCreatedAt()), cal.getTime(), TimeUnit.DAYS)
+                .intValue();
+          } catch (ParseException e) {
+            e.printStackTrace();
+          }
+          Timber.e("DATE DIFF " + Math.min(diff, 21));
+          Timber.e("DATE DIFFERENCE " + diff);
+          startDate = me.getCreatedAt().split("T")[0];
+        }
+      }
+      if (startDate == null || startDate.equals("none date")) {
+        startDate = DataUtils.getLastXDays(21).get(0);
+      }
+    }
+    DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+    long dif = 0;
+    try {
+      dif = DataUtils.getDateDiff(df1.parse(startDate), Calendar.getInstance().getTime(),
+          TimeUnit.DAYS);
+    } catch (ParseException e) {
+      e.printStackTrace();
+    }
+    List<Stats> statsList = new ArrayList<>();
+    List<String> dates = new ArrayList<>();
+    dates.addAll(DataUtils.getLastXDays((int) dif));
+    for (int i = 0; i < dates.size(); i++) {
+      statsList.add(new Gson().fromJson(
+          getString(SharedPreferenceConstants.CACHED_AVERAGE_STATS + id + dates.get(i), ""),
+          Stats.class));
+    }
+
+    return statsList;
   }
 
   public static void saveDateOfClearingDaysHours() {
