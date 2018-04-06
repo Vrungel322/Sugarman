@@ -94,6 +94,11 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
   @BindView(R.id.tvAllSteps) TextView mTextViewAllSteps;
   @BindView(R.id.ivAllAvatar) ImageView mImageViewAllAvatar;
   @BindView(R.id.ivAllAvatarBorder) ImageView mImageViewAllAvatarBorder;
+  @BindView(R.id.clDaysAboveAverage) ConstraintLayout clDaysAboveAverage;
+  @BindView(R.id.clPersonalStrike) ConstraintLayout clPersonalStrike;
+  @BindView(R.id.tv10KDays) TextView tv10KDays;
+  @BindView(R.id.tvDaysInARow) TextView tvDaysInARow;
+  @BindView(R.id.ivStrike) ImageView mImageViewStrike;
   private Tracking mTracking;
   private List<Stats> mStats = new ArrayList<>();
   private List<String> mStatsDays = new ArrayList<>();
@@ -114,6 +119,8 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     }
     setUpUI();
     //setUpUIChart();
+
+    //Timber.e(""+ SharedPreferenceHelper.getAverageStatsFromSHP(mTracking.getId()).getResult().length);
 
     if (!App.getEventBus().isRegistered(this)) {
       App.getEventBus().register(this);
@@ -193,12 +200,13 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
             mChart.getTransformer(
                 YAxis.AxisDependency.LEFT))); //paint all labels to RED, but "week" to BLACK
 
-    Legend l = mChart.getLegend();
-    l.setWordWrapEnabled(true);
-    l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-    l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
-    l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
-    l.setDrawInside(false);
+    //Legend l = mChart.getLegend();
+    //l.setWordWrapEnabled(true);
+    //l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+    //l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+    //l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+    //l.setDrawInside(false);
+    //l.setEnabled(false);
 
     YAxis rightAxis = mChart.getAxisRight();
     rightAxis.setDrawGridLines(false);
@@ -218,11 +226,12 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       //xAxis.setValueFormatter((value, axis) -> mStatsDays.get((int) value % mStatsDays.size()));
     }
     //limit line
-    LimitLine ll1 = new LimitLine(10000f, "10k Limit");
-    ll1.setLineWidth(4f);
-    ll1.enableDashedLine(8f, 8f, 0f);
+    LimitLine ll1 = new LimitLine(10000f, "10k");
+    ll1.setLineWidth(2f);
+    ll1.enableDashedLine(2f, 2f, 0f);
     ll1.setLabelPosition(LimitLine.LimitLabelPosition.RIGHT_TOP);
     ll1.setTextSize(8f);
+    ll1.setLineColor(0xff000000);
 
     leftAxis.removeAllLimitLines(); // reset all limit lines to avoid overlapping lines
     leftAxis.addLimitLine(ll1);
@@ -655,6 +664,8 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       }
     }
     playAnim();
+    clPersonalStrike.setVisibility(View.GONE);
+    clDaysAboveAverage.setVisibility(View.VISIBLE);
     mImageViewDetailIndicator.setBackgroundResource(R.drawable.stats_km_icon);
     mTextViewMaxValue.setText(
         String.valueOf(String.format(Locale.US, "%.2f", mPresenter.findMaxKm(stats))));
@@ -674,13 +685,16 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
           mTextViewDaysAboveAverageValue.setText(
               "" + mPresenter.findDaysAboveAverageKm(stats) + "/" + diff);
         } else {
+          clPersonalStrike.setVisibility(View.VISIBLE);
+          clDaysAboveAverage.setVisibility(View.GONE);
           mTextViewAboveAverageText.setText(getString(R.string.days_challenge_completed));
           if (mTracking != null) {
             int averageDaysCount = 0;
             for (Stats s : stats) {
               if (s.getStepsCount() > 10000) averageDaysCount++;
             }
-            mTextViewDaysAboveAverageValue.setText("" + averageDaysCount + "/" + diff);
+            tv10KDays.setText("" + averageDaysCount);
+            tvDaysInARow.setText("" + mPresenter.getMaxStrike());
           }
         }
       } else {
@@ -719,6 +733,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
   }
 
   private void fillDetailsByStatsSteps(List<Stats> stats) {
+    mPresenter.findStrikeSteps(stats);
     Timber.e("Poshe huinyaaa " + stats.size());
     int diff = 0;
     if (mTracking != null) {
@@ -732,11 +747,13 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       }
     }
     playAnim();
+    clPersonalStrike.setVisibility(View.GONE);
+    clDaysAboveAverage.setVisibility(View.VISIBLE);
     mImageViewDetailIndicator.setBackgroundResource(R.drawable.stats_step_icon);
     mTextViewMaxValue.setText(String.valueOf(mPresenter.findMaxSteps(stats)));
     mTextViewMinValue.setText(String.valueOf(mPresenter.findMinSteps(stats)));
     mTextViewAverageAday.setText(
-        String.valueOf(String.format(Locale.US, "%.2f", mPresenter.findAverageSteps(stats))));
+        String.valueOf(String.format(Locale.US, "%.0f", mPresenter.findAverageSteps(stats))));
     if (mTextViewStatsDay.isSelected()) {
       mTextViewDaysAboveAverageValue.setText(mPresenter.findMaxSteps(stats) + "");
       mTextViewAboveAverageText.setText(getString(R.string.best_of_the_day));
@@ -748,13 +765,16 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
           mTextViewDaysAboveAverageValue.setText(
               "" + mPresenter.findDaysAboveAverageSteps(stats) + "/" + diff);
         } else {
+          clPersonalStrike.setVisibility(View.VISIBLE);
+          clDaysAboveAverage.setVisibility(View.GONE);
           mTextViewAboveAverageText.setText(getString(R.string.days_challenge_completed));
           if (mTracking != null) {
             int averageDaysCount = 0;
             for (Stats s : stats) {
               if (s.getStepsCount() > 10000) averageDaysCount++;
             }
-            mTextViewDaysAboveAverageValue.setText("" + averageDaysCount + "/" + diff);
+            tv10KDays.setText("" + averageDaysCount);
+            tvDaysInARow.setText("" + mPresenter.getMaxStrike());
           }
         }
       } else {
@@ -813,6 +833,8 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     }
 
     playAnim();
+    clPersonalStrike.setVisibility(View.GONE);
+    clDaysAboveAverage.setVisibility(View.VISIBLE);
     mImageViewDetailIndicator.setBackgroundResource(R.drawable.stats_kcal_icon);
     mTextViewMaxValue.setText(
         String.valueOf(String.format(Locale.US, "%.2f", mPresenter.findMaxKcal(stats))));
@@ -832,13 +854,16 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
           mTextViewDaysAboveAverageValue.setText(
               "" + mPresenter.findDaysAboveAverageKm(stats) + "/" + diff);
         } else {
+          clPersonalStrike.setVisibility(View.VISIBLE);
+          clDaysAboveAverage.setVisibility(View.GONE);
           mTextViewAboveAverageText.setText(getString(R.string.days_challenge_completed));
           if (mTracking != null) {
             int averageDaysCount = 0;
             for (Stats s : stats) {
               if (s.getStepsCount() > 10000) averageDaysCount++;
             }
-            mTextViewDaysAboveAverageValue.setText("" + averageDaysCount + "/" + diff);
+            tv10KDays.setText("" + averageDaysCount);
+            tvDaysInARow.setText("" + mPresenter.getMaxStrike());
           }
         }
       } else {
@@ -886,9 +911,10 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     YoYo.with(Techniques.SlideInLeft).duration(750).playOn(mImageViewAverageValue);
     YoYo.with(Techniques.SlideInLeft).duration(750).playOn(mTextViewAverageText);
     YoYo.with(Techniques.SlideInLeft).duration(750).playOn(mTextViewAverageAday);
-    YoYo.with(Techniques.SlideInLeft).duration(750).playOn(mImageViewDaysAboveArerage);
-    YoYo.with(Techniques.SlideInLeft).duration(750).playOn(mTextViewAboveAverageText);
-    YoYo.with(Techniques.SlideInLeft).duration(750).playOn(mTextViewDaysAboveAverageValue);
+    //YoYo.with(Techniques.SlideInLeft).duration(750).playOn(mImageViewDaysAboveArerage);
+    //YoYo.with(Techniques.SlideInLeft).duration(750).playOn(mImageViewStrike);
+    YoYo.with(Techniques.SlideInLeft).duration(750).playOn(clDaysAboveAverage);
+    YoYo.with(Techniques.SlideInLeft).duration(750).playOn(clPersonalStrike);
   }
 
   /**
@@ -1136,6 +1162,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     mChart.setHighlightFullBarEnabled(false);
     //mChart.getBarData().setHighlightEnabled(false);
     mChart.setDrawValueAboveBar(true);
+    mChart.getLegend().setEnabled(false);
     mChart.fitScreen();
     mChart.getXAxis().setAxisMinimum(0f);
     mChart.getXAxis().setGranularity(1f);

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
+import android.text.format.DateUtils;
 import com.arellomobile.mvp.InjectViewState;
 import com.clover_studio.spikachatmodule.base.SingletonLikeApp;
 import com.clover_studio.spikachatmodule.models.User;
@@ -23,6 +24,7 @@ import com.sugarman.myb.api.models.responses.me.stats.StatsResponse;
 import com.sugarman.myb.base.BasicPresenter;
 import com.sugarman.myb.constants.Constants;
 import com.sugarman.myb.data.db.DbRepositoryStats;
+import com.sugarman.myb.models.Strike;
 import com.sugarman.myb.models.chat_refactor.Message;
 import com.sugarman.myb.models.chat_refactor.SeenBy;
 import com.sugarman.myb.utils.DataUtils;
@@ -39,6 +41,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -57,6 +60,8 @@ import timber.log.Timber;
   ArrayList<Entry> entries = new ArrayList<Entry>();
   ArrayList<Entry> entriesDashed = new ArrayList<Entry>();
   ArrayList<Stats> sempStat = new ArrayList<Stats>();
+  ArrayList<Entry>[] entriesBold = new ArrayList[10];
+  int maxStrike = 0;
   private boolean needToupdateData; // if on charts my stats data
   private boolean needToUpdateDataTracking; // if on charts tracking data
 
@@ -222,6 +227,14 @@ import timber.log.Timber;
     if (tracking.isMentors()) {
       for (Member me : tracking.getMembers()) {
         if (me.getId().equals(SharedPreferenceHelper.getUserId()) && me.getCreatedAt() != null) {
+
+          DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH);
+          df.parse(me.getCreatedAt());
+          Calendar cal = Calendar.getInstance();
+          cal.getTime();
+          int diff = DataUtils.getDateDiff(df.parse(me.getCreatedAt()), cal.getTime(),TimeUnit.DAYS).intValue();
+          Timber.e("DATE DIFF " + Math.min(diff, 21));
+          Timber.e("DATE DIFFERENCE " + diff);
           startDate = me.getCreatedAt().split("T")[0];
         }
       }
@@ -260,7 +273,7 @@ import timber.log.Timber;
     }
 
     BarDataSet set1 = new BarDataSet(entries1, "10000 Steps");
-    set1.setColor(Color.argb(20, 242, 197, 197));
+    set1.setColor(Color.argb(255, 0, 0, 0));
     set1.setValueTextSize(0f); //make text invisible
     set1.setBarBorderColor(Color.argb(0, 242, 197, 197));
     set1.setAxisDependency(YAxis.AxisDependency.LEFT);
@@ -273,7 +286,7 @@ import timber.log.Timber;
       boolean isAverageLineNeed, float coeficient, boolean displayLastValue, Tracking tracking) {
     entries = new ArrayList<>();
     entriesDashed = new ArrayList<Entry>();
-    ArrayList<Entry> entriesBold = new ArrayList<Entry>();
+    entriesBold = new ArrayList[10];
     sempStat = new ArrayList<Stats>();
     //MyMarkerView mv = new MyMarkerView(this, R.layout.custom_marker_view);
     //mChart.setMarker(mv);
@@ -299,6 +312,8 @@ import timber.log.Timber;
         Timber.e("SHARED HUY " + SharedPreferenceHelper.getUserTodaySteps());
       }
     }
+
+
     //setTodaySteps(SharedPreferenceHelper.getUserTodaySteps());
     //entries.remove(entries.size() - 1);
     //entries.add(new Entry(entries.size(), SharedPreferenceHelper.getUserTodaySteps()));
@@ -307,7 +322,7 @@ import timber.log.Timber;
 
     LineDataSet set = new LineDataSet(entries, "Steps");
     set.setColor(Color.rgb(255, 0, 0));
-    set.setLineWidth(2.0f);
+    set.setLineWidth(1.5f);
     set.setCircleColor(Color.rgb(0, 0, 0));
     set.setCircleRadius(5f);
     set.setFillColor(Color.rgb(255, 0, 0));
@@ -332,8 +347,10 @@ import timber.log.Timber;
       cashedStats.addAll(
           Arrays.asList(mDataManager.getAverageStatsFromSHP(tracking.getId()).getResult()));
 
-      for (int index = 0; index < cashedStats.size(); index++) {
-        entriesDashed.add(new Entry(index, cashedStats.get(index).getStepsCount() * coeficient));
+      int i = 0;
+      for (int index = cashedStats.size() - 21; index < cashedStats.size(); index++) {
+        entriesDashed.add(new Entry(i, cashedStats.get(index).getStepsCount() * coeficient));
+        i++;
       }
 
       //add last day average count it on device
@@ -357,6 +374,7 @@ import timber.log.Timber;
       setDashed.setColor(Color.rgb(231, 145, 129));
       setDashed.setLineWidth(2.0f);
       setDashed.setValueTextSize(0f);
+      setDashed.setCircleColor(0x00000000);
       setDashed.enableDashedLine(10, 10, 0);
       setDashed.setAxisDependency(YAxis.AxisDependency.LEFT);
       d.addDataSet(setDashed);
@@ -365,19 +383,36 @@ import timber.log.Timber;
 
 
     //Bold stuff
-    for (int i = 0; i< 3;i++){
-      entriesBold.add(new Entry(i+3, 10000*i));
-    }
-    LineDataSet setBold = new LineDataSet(entriesBold, "Bold");
-    setBold.setColor(Color.rgb(231, 145, 129));
-    setBold.setLineWidth(5.0f);
-    setBold.setValueTextSize(0f);
-    setBold.setAxisDependency(YAxis.AxisDependency.LEFT);
-    d.addDataSet(setBold);
-    dataSets.add(setBold);
 
+    for (List<Strike> s : findStrikeSteps(stats))
+    {
+      ArrayList<Entry> boldEntries = new ArrayList<>();
+      if(s!=null) {
+        for (int i = 0; i < s.size(); i++) {
+          boldEntries.add(new Entry(s.get(i).getStartingPosition(), s.get(i).getValue()));
+        }
+        LineDataSet setBold = new LineDataSet(boldEntries, "Bold");
+        setBold.setColor(Color.rgb(255, 0, 0));
+        setBold.setLineWidth(7.0f);
+        setBold.setValueTextSize(0f);
+        setBold.setCircleRadius(0);
+        setBold.setDrawCircles(false);
+        setBold.setAxisDependency(YAxis.AxisDependency.LEFT);
+        setBold.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+        d.addDataSet(setBold);
+        dataSets.add(setBold);
+      }
+    }
 
     return new LineData(dataSets);
+  }
+
+  public static <T> int getLength(T[] arr){
+    int count = 0;
+    for(T el : arr)
+      if (el != null)
+        ++count;
+    return count;
   }
 
   public void setTodaySteps(int steps) {
@@ -408,6 +443,57 @@ import timber.log.Timber;
     return unSeenMessagesIds;
   }
 
+  public List<Strike>[] findStrikeSteps(List<Stats> stats) {
+
+    final int NORM = 10000;
+    int tmp = 0;
+    maxStrike = 0;
+    int lastIndex = 0;
+    int arrayIndex = 0;
+
+    List<Strike>[] strikesList = new List[5];
+
+    List<Strike> strikes = new ArrayList<>();
+
+    for (int i = 0; i < stats.size(); i++) {
+      if(stats.get(i).getStepsCount()>NORM)
+      {
+        tmp++;
+
+        if(i == 0 && stats.get(i+1).getStepsCount()>NORM) {
+          Timber.e("huy");
+          strikes.add(new Strike(i, stats.get(i).getStepsCount()));
+        }
+        else
+          if (i!=0)
+          strikes.add(new Strike(i, stats.get(i).getStepsCount()));
+      }
+      else
+      {
+        if(tmp<2)
+        {
+          tmp = 0;
+        }
+        else
+        {
+          if(maxStrike<tmp)
+            maxStrike = tmp;
+          strikesList[arrayIndex] = strikes;
+          strikes = new ArrayList<>();
+          arrayIndex++;
+          tmp=0;
+        }
+      }
+    }
+    //Timber.e("findStrikeSteps " + maxStrike +" " + strikesList[0].size());
+    return strikesList;
+  }
+
+  public int getMaxStrike()
+  {
+    return maxStrike;
+  }
+
   //STEPS
   public int findMaxSteps(List<Stats> stats) {
     List<Integer> integers = new ArrayList<>();
@@ -417,6 +503,8 @@ import timber.log.Timber;
     if (integers.size() == 0 || Collections.max(integers) < 0) return 0;
     return Collections.max(integers);
   }
+
+
 
   public int findMinSteps(List<Stats> stats) {
 
