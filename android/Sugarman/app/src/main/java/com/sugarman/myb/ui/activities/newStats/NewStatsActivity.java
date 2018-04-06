@@ -739,13 +739,15 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     if (mTracking != null) {
       try {
         diff = DataUtils.getDateDiff(DataUtils.subtractDays(
-            new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(mTracking.getCreatedAt()), 1),
+            new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(getStartDateCorrect()), 1),
             new Date(System.currentTimeMillis()), TimeUnit.DAYS).intValue();
-        Timber.e("huinia diff " + diff);
       } catch (ParseException e) {
         e.printStackTrace();
       }
     }
+    diff = Math.min(21,diff);
+
+
     playAnim();
     clPersonalStrike.setVisibility(View.GONE);
     clDaysAboveAverage.setVisibility(View.VISIBLE);
@@ -771,7 +773,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
           if (mTracking != null) {
             int averageDaysCount = 0;
             for (Stats s : stats) {
-              if (s.getStepsCount() > 10000) averageDaysCount++;
+              if (s.getStepsCount() > 10000)  averageDaysCount++;
             }
             tv10KDays.setText("" + averageDaysCount);
             tvDaysInARow.setText("" + mPresenter.getMaxStrike());
@@ -790,6 +792,8 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
             e.printStackTrace();
           }
         }
+        diff = Math.min(21,diff);
+
 
         List<Stats> statsList = new ArrayList<>();
         if (mTracking != null

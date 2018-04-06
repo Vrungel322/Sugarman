@@ -1036,6 +1036,8 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     } catch (ParseException e) {
       e.printStackTrace();
     }
+    dif = Math.min(21,dif);
+
     List<Stats> statsList = new ArrayList<>();
     List<String> dates = new ArrayList<>();
     dates.addAll(DataUtils.getLastXDays((int) dif));
