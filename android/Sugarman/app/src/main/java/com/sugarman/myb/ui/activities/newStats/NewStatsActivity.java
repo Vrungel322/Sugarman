@@ -1115,6 +1115,8 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     changeStatsOnChart(mTextViewStatsPersonal);
     changeStatsOnDescriptionDetails(mImageViewStatsSteps);
     setUpUIChart();
+    // не трогая уже прописанную логику открытия Персонал таба, дописал логику открытия Вик таба
+    changeStatsOnChart(mTextViewStatsWeek);
   }
 
   @Override public void showTrackingStats(List<Stats> statsCached) {

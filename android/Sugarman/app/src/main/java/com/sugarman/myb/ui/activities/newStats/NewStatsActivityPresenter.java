@@ -195,8 +195,7 @@ import timber.log.Timber;
 
       Timber.e("fetchStats");
       //Subscription subscription = mDataManager.fetchStats()
-      Subscription subscription = Observable.from(missingStats)
-          .flatMap(stats -> mDataManager.fetchStats(stats.getDate(),stats.getDate()))
+      Subscription subscription = mDataManager.fetchStats(missingStats.get(0).getDate(),missingStats.get(missingStats.size()-1).getDate())
           .filter(statsResponseResponse -> statsResponseResponse.body().getResult() != null)
           .concatMap(
               statsResponseResponse -> Observable.just(statsResponseResponse.body().getResult()))
