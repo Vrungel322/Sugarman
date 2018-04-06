@@ -451,7 +451,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
           && statsOfTracking != null
           && !statsOfTracking.isEmpty()
           && !zeroDayremoved) {
-        statsOfTracking.remove(0);
+        //statsOfTracking.remove(0);
         zeroDayremoved = true;
       }
 
