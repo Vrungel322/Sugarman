@@ -960,7 +960,7 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
     //while (BaseSharedPreferenceHelper.getPrefsInstance()
     //    .contains(SharedPreferenceConstants.HOUR_ + index)) {
     for (int i = 0; i < 23; i++) {
-      if (index < rightNow.get(Calendar.HOUR_OF_DAY)) {
+      if (index < rightNow.get(Calendar.HOUR_OF_DAY)+1) {
         int countSteps =
             getInt(SharedPreferenceConstants.HOUR_ + index, Constants.FAKE_STEPS_COUNT);
         if (countSteps == -1) {
