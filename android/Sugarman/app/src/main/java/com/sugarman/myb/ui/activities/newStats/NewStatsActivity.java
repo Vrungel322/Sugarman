@@ -137,10 +137,19 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     //if (tvTodaySteps != null && vivToday != null) {
     //  updateTodaySteps(todaySteps);
     //}
-    mChart.getAxisLeft()
-        .setAxisMaximum(
-            todaySteps - StatsUtils.countSumOfStats(SharedPreferenceHelper.getStepsPerDay())
-                + 100f);
+    if (mTextViewStatsPersonal.isSelected()) {
+      if (Collections.max(mStatsSteps) < 10000) {
+        mChart.getAxisLeft().setAxisMaximum(10000f);
+      } else {
+        mChart.getAxisLeft().setAxisMaximum(Collections.max(mStatsSteps) + 100f);
+      }
+    }
+    if (mTextViewStatsDay.isSelected()) {
+      mChart.getAxisLeft()
+          .setAxisMaximum(
+              todaySteps - StatsUtils.countSumOfStats(SharedPreferenceHelper.getStepsPerDay())
+                  + 100f);
+    }
     mChart.invalidate();
     mPresenter.setTodaySteps(
         todaySteps - StatsUtils.countSumOfStats(SharedPreferenceHelper.getStepsPerDay()));
@@ -495,6 +504,12 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       //data.setData(mPresenter.generateBarData(mStats, coefficient)); // colomns
 
       //mChart.getXAxis().setAxisMaximum(data.getXMax() + 0.25f);
+      if (Collections.max(mStatsSteps) < 10000) {
+        mChart.getAxisLeft().setAxisMaximum(10000);
+      } else {
+        mChart.getAxisLeft().setAxisMaximum(Collections.max(mStatsSteps) + 100f);
+      }
+      mChart.invalidate();
       mChart.setData(null);
       mChart.setData(data);
       //mChart.getBarData().setBarWidth(100);
@@ -555,6 +570,11 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     });
 
     //mChart.getXAxis().setAxisMaximum(data.getXMax() + 0.25f);
+    if (Collections.max(mStatsSteps) < 10000) {
+      mChart.getAxisLeft().setAxisMaximum(10000);
+    } else {
+      mChart.getAxisLeft().setAxisMaximum(Collections.max(mStatsSteps) + 100f);
+    }
     mChart.setData(null);
     mChart.setData(data);
     //mChart.getBarData().setBarWidth(100);
@@ -601,6 +621,9 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
       }
       return "";
     });
+    mChart.getAxisLeft()
+        .setAxisMaximum(SharedPreferenceHelper.getReportStatsLocal(
+            SharedPreferenceHelper.getUserId())[0].getStepsCount() + 100f);
     //setUpKm();
     //setUpSteps();
     //setUpKcal();
