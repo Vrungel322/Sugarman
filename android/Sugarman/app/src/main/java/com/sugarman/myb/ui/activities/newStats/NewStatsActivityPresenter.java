@@ -33,6 +33,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -220,8 +221,12 @@ import timber.log.Timber;
           //  Collections.reverse(Arrays.asList(stats));
           //  return Observable.just(stats);
           //})
+          .flatMap(stats -> Observable.just(Arrays.copyOf(stats, stats.length-1)))
           .concatMap(Observable::from)
           .concatMap(stats -> {
+
+            Timber.e("STATS AFTER REMOVAL " + stats.getDate());
+            //if()
             mDbRepositoryStats.saveEntity(stats);
             return Observable.just(stats);
           })

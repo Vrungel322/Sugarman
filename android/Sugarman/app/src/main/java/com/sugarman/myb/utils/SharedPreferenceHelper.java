@@ -283,11 +283,14 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
   public static List<Stats> getStats(int lastdaysCount) {
     List<Stats> stats = new ArrayList<>();
 
-    for (int i = 0; i < DataUtils.getLastXDays(lastdaysCount).size(); i++) {
-      String data = DataUtils.getLastXDays(lastdaysCount).get(i);
+    List <String> lastXDays = DataUtils.getLastXDays(lastdaysCount);
+    //lastXDays.remove(lastXDays.size()-1);
+    for (int i = 0; i < lastXDays.size(); i++) {
+      String data = lastXDays.get(i);
       Timber.e("saveStats getStats " + data);
       stats.add(new Stats(i, data, "day " + data,
           getInt("cache_stats_" + data, Constants.FAKE_STEPS_COUNT), 0));
+      Timber.e("Take steps from cache week " + getInt("cache_stats_" + data, Constants.FAKE_STEPS_COUNT) + " data " + data);
     }
     return stats;
   }
@@ -971,6 +974,7 @@ public class SharedPreferenceHelper extends BaseSharedPreferenceHelper {
         //} else {
         lst.add(countSteps);
         //}
+        Timber.e("Take steps from cache hour " + countSteps + " index " + index);
         index++;
       } else {
         break;

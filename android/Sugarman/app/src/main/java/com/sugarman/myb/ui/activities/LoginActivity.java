@@ -309,7 +309,7 @@ public class LoginActivity extends GetUserInfoActivity implements View.OnClickLi
 
       LoginManager.getInstance()
           .logInWithReadPermissions(this,
-              Arrays.asList("public_profile", "user_friends", "email", "read_custom_friendlists"));
+              Arrays.asList("public_profile", "user_friends", "email"));
     });
 
     // View vTerms = findViewById(R.id.tv_terms_of_use);
