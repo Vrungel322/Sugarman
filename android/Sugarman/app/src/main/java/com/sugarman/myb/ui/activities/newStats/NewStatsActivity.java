@@ -35,6 +35,7 @@ import com.sugarman.myb.ui.views.CropSquareTransformation;
 import com.sugarman.myb.ui.views.MaskTransformation;
 import com.sugarman.myb.utils.DataUtils;
 import com.sugarman.myb.utils.SharedPreferenceHelper;
+import com.sugarman.myb.utils.StatsUtils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -136,7 +137,8 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     //if (tvTodaySteps != null && vivToday != null) {
     //  updateTodaySteps(todaySteps);
     //}
-    mPresenter.setTodaySteps(todaySteps);
+    mPresenter.setTodaySteps(
+        todaySteps - StatsUtils.countSumOfStats(SharedPreferenceHelper.getStepsPerDay()));
     Timber.e("TODAY STEPS " + todaySteps);
   }
 
@@ -745,8 +747,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
         e.printStackTrace();
       }
     }
-    diff = Math.min(21,diff);
-
+    diff = Math.min(21, diff);
 
     playAnim();
     clPersonalStrike.setVisibility(View.GONE);
@@ -773,7 +774,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
           if (mTracking != null) {
             int averageDaysCount = 0;
             for (Stats s : stats) {
-              if (s.getStepsCount() > 10000)  averageDaysCount++;
+              if (s.getStepsCount() > 10000) averageDaysCount++;
             }
             tv10KDays.setText("" + averageDaysCount);
             tvDaysInARow.setText("" + mPresenter.getMaxStrike());
@@ -792,8 +793,7 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
             e.printStackTrace();
           }
         }
-        diff = Math.min(21,diff);
-
+        diff = Math.min(21, diff);
 
         List<Stats> statsList = new ArrayList<>();
         if (mTracking != null
@@ -809,10 +809,11 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
               + statsList.size());
           for (Stats s : stats) {
             for (Stats sShp : statsList) {
-              if(sShp!=null)
-              if (s.getStepsCount() > sShp.getStepsCount()) {
-                averageDaysCount++;
-                break;
+              if (sShp != null) {
+                if (s.getStepsCount() > sShp.getStepsCount()) {
+                  averageDaysCount++;
+                  break;
+                }
               }
             }
           }
