@@ -137,9 +137,17 @@ public class NewStatsActivity extends BasicActivity implements INewStatsActivity
     //if (tvTodaySteps != null && vivToday != null) {
     //  updateTodaySteps(todaySteps);
     //}
+    mChart.getAxisLeft()
+        .setAxisMaximum(
+            todaySteps - StatsUtils.countSumOfStats(SharedPreferenceHelper.getStepsPerDay())
+                + 100f);
+    mChart.invalidate();
     mPresenter.setTodaySteps(
         todaySteps - StatsUtils.countSumOfStats(SharedPreferenceHelper.getStepsPerDay()));
     Timber.e("TODAY STEPS " + todaySteps);
+    //mChart.setVisibleYRangeMaximum(
+    //    todaySteps,
+    //    YAxis.AxisDependency.LEFT);
   }
 
   private void updateTodaySteps(int steps) {
